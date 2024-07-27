@@ -320,5 +320,10 @@ namespace OverhaulMod.Utils
         /// <see cref="ModCore"/>
         /// </summary>
         public const string STREAMER_MODE = "StreamerMode";
+
+        /// <summary>
+        /// <see cref="UI.UIPersonalizationItemsBrowser"/>
+        /// </summary>
+        public const string HAS_EVER_ROTATED_THE_CAMERA = "HasEverRotatedTheCamera";
     }
 }

@@ -470,10 +470,14 @@ namespace OverhaulMod.UI
 
             if (CameraFOVController.EnableFOVOverride)
             {
-                _ = pageBuilder.Slider(-10f, 25f, false, ModSettingsManager.GetFloatValue(ModSettingsConstants.CAMERA_FOV_OFFSET), delegate (float value)
+                _ = pageBuilder.Slider(-10f, 40f, false, ModSettingsManager.GetFloatValue(ModSettingsConstants.CAMERA_FOV_OFFSET), delegate (float value)
                 {
                     ModSettingsManager.SetFloatValue(ModSettingsConstants.CAMERA_FOV_OFFSET, value, true);
-                }, true);
+                }, true, (float val) =>
+                {
+                    float roundedValue = Mathf.Round(val * 10f) / 10f;
+                    return $"{(val > 0f ? "+" : string.Empty)}{roundedValue} ({60f + roundedValue})";
+                });
             }
 
             _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_CAMERA_ROLLING), delegate (bool value)
@@ -1216,7 +1220,7 @@ namespace OverhaulMod.UI
                 return instantiateDropdown(list, value, callback, SettingsMenu.DropdownWithImage169Prefab, parentOverride);
             }
 
-            public Slider Slider(float min, float max, bool wholeNumbers, float value, UnityAction<float> callback, bool noBetterSlider = false, Transform parentOverride = null)
+            public Slider Slider(float min, float max, bool wholeNumbers, float value, UnityAction<float> callback, bool noBetterSlider = false, Func<float, string> fillTextFunc = null, Transform parentOverride = null)
             {
                 Slider slider = Instantiate(SettingsMenu.SliderPrefab, parentOverride ? parentOverride : SettingsMenu.PageContentsTransform);
                 slider.gameObject.SetActive(true);
@@ -1229,6 +1233,16 @@ namespace OverhaulMod.UI
 
                 if (!noBetterSlider)
                     _ = slider.gameObject.AddComponent<BetterSliderCallback>();
+
+                if (fillTextFunc == null)
+                    fillTextFunc = GetFillText;
+
+                ModdedObject moddedObject = slider.GetComponent<ModdedObject>();
+
+                SliderFillText sliderFillText = slider.gameObject.AddComponent<SliderFillText>();
+                sliderFillText.SliderComponent = slider;
+                sliderFillText.Label = moddedObject.GetObject<Text>(0);
+                sliderFillText.Function = fillTextFunc;
 
                 return slider;
             }
@@ -1381,6 +1395,11 @@ namespace OverhaulMod.UI
             public void Dispose()
             {
                 SettingsMenu = null;
+            }
+
+            public static string GetFillText(float value)
+            {
+                return $"{Mathf.Round(value * 100f)}%";
             }
         }
     }

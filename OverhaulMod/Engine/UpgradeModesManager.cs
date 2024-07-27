@@ -1,4 +1,5 @@
-﻿using OverhaulMod.Utils;
+﻿using OverhaulMod.Combat;
+using OverhaulMod.Utils;
 using System;
 using UnityEngine;
 using UnityEngine.UI;
@@ -14,6 +15,7 @@ namespace OverhaulMod.Engine
             new Tuple<UpgradeType, int>(UpgradeType.SpearUnlock, 1),
             new Tuple<UpgradeType, int>(UpgradeType.BowUnlock, 1),
             new Tuple<UpgradeType, int>(UpgradeType.Armor, 0),
+            new Tuple<UpgradeType, int>(ModUpgradesManager.SCYTHE_UNLOCK_UPGRADE, 1),
         };
 
         public static bool IsUnrevertableUpgrade(UpgradeType type, int level)

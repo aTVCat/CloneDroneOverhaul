@@ -1,12 +1,6 @@
-- Added new arena interior
-- Updated sprites and UIs
-- Increased mod load speed
-- Adjusted default SSAO intensity
-- Temporary removed reworked gamemode screens
-- Temporary removed blur shaders due to performance issues
-- Temporary removed weapon skins updates since the system will be reworked in ver. 4
-- Removed fast arrows
-- Fixed game version mismatch
-- Fixed settings menu icons
-- Fixed startup crash
-- Fixed bugs
+- Updated arrow model
+- Updated player data synchronization system
+- Minor level editor inspector changes
+- Removed "Outfits" button from the shortcuts category in settings menu
+- Fixed title screen message panel appearing blank
+- Fixed "Browse workshop" button being interactable if Steam is not initialized

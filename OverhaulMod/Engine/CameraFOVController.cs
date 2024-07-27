@@ -34,6 +34,9 @@ namespace OverhaulMod.Engine
 
         private void LateUpdate()
         {
+            if (!EnableFOVOverride && !CameraManager.EnableFirstPersonMode)
+                return;
+
             FirstPersonMover owner = m_owner;
             if (!owner || owner._isGrabbedForUpgrade)
                 return;
@@ -47,7 +50,7 @@ namespace OverhaulMod.Engine
                 return;
 
             m_lerpedOffset = Mathf.Lerp(m_lerpedOffset, getFovOffset(), Time.unscaledDeltaTime * 9f);
-            camera.fieldOfView = Mathf.Min(camera.fieldOfView + m_lerpedOffset, Time.time < m_timeToAllowUnclampedFovUntil ? 150f : 100f);
+            camera.fieldOfView = Mathf.Min(camera.fieldOfView + m_lerpedOffset, Time.time < m_timeToAllowUnclampedFovUntil ? 150f : 110f);
         }
 
         public void SetOwner(FirstPersonMover firstPersonMover)

@@ -29,6 +29,9 @@ namespace OverhaulMod.UI
         public const string ITEM_DISPLAY_NONVERIFIED_EXCLUSIVE_TEXT_OUTLINE_COLOR = "#006A0D";
         public const string ITEM_DISPLAY_NONVERIFIED_EXCLUSIVE_TEXT_GLOW_COLOR = "#00F81F";
 
+        [ModSetting(ModSettingsConstants.HAS_EVER_ROTATED_THE_CAMERA, false)]
+        public static bool HasEverRotatedTheCamera;
+
         public static bool IsPreviewing;
 
         [UIElementAction(nameof(Hide))]
@@ -107,6 +110,9 @@ namespace OverhaulMod.UI
         [UIElement("LoadingSawblade")]
         private readonly Image m_loadingSawblade;
 
+        [UIElement("CameraRotationTutorial")]
+        private readonly GameObject m_cameraRotationTutorial;
+
         private Dictionary<string, GameObject> m_cachedDisplays;
 
         private RectTransform m_rectTransform;
@@ -126,6 +132,10 @@ namespace OverhaulMod.UI
         private Button m_defaultSkinButton;
 
         private bool m_allowUICallbacks;
+
+        private Transform m_cameraHolderTransform;
+
+        private float m_cameraHolderRotationY;
 
         public override bool enableCursor => true;
 
@@ -213,6 +223,25 @@ namespace OverhaulMod.UI
             Color color = m_loadingSawblade.color;
             color.a = 1f - a;
             m_loadingSawblade.color = color;
+
+            Transform holder = m_cameraHolderTransform;
+            if (holder)
+            {
+                bool mouseButtonDown = Input.GetMouseButton(1);
+                if(mouseButtonDown && !HasEverRotatedTheCamera)
+                {
+                    ModSettingsManager.SetBoolValue(ModSettingsConstants.HAS_EVER_ROTATED_THE_CAMERA, true);
+                }
+
+                float d2 = Time.deltaTime * 10f;
+                m_cameraHolderRotationY = Mathf.Lerp(m_cameraHolderRotationY, mouseButtonDown ? Input.GetAxis("Mouse X") * 1.25f : 0f, d2);
+
+                Vector3 currentEulerAngles = holder.localEulerAngles;
+                currentEulerAngles.y = currentEulerAngles.y + m_cameraHolderRotationY;
+                holder.localEulerAngles = currentEulerAngles;
+            }
+
+            m_cameraRotationTutorial.SetActive(!HasEverRotatedTheCamera);
         }
 
         private void LateUpdate()
@@ -369,36 +398,36 @@ namespace OverhaulMod.UI
 
                 if (!Enum.TryParse(m_selectedSubcategory, out WeaponType weaponType))
                     weaponType = WeaponType.Sword;
-                else 
+                else
 
-                ModGameUtils.WaitForPlayerInputUpdate(delegate (IFPMoveCommandInput input)
-                {
-                    switch (weaponType)
+                    ModGameUtils.WaitForPlayerInputUpdate(delegate (IFPMoveCommandInput input)
                     {
-                        case WeaponType.Sword:
-                            input.Weapon1 = true;
-                            break;
-                        case WeaponType.Bow:
-                            input.Weapon2 = true;
-                            break;
-                        case WeaponType.Hammer:
-                            input.Weapon3 = true;
-                            break;
-                        case WeaponType.Spear:
-                            input.Weapon4 = true;
-                            break;
-                        case WeaponType.Shield:
-                            input.Weapon4 = true;
-                            break;
-                        case ModWeaponsManager.SCYTHE_TYPE:
-                            FirstPersonMover firstPersonMover = CharacterTracker.Instance.GetPlayerRobot();
-                            if(firstPersonMover)
-                            {
-                                firstPersonMover.SetEquippedWeaponType(ModWeaponsManager.SCYTHE_TYPE);
-                            }
-                            break;
-                    }
-                });
+                        switch (weaponType)
+                        {
+                            case WeaponType.Sword:
+                                input.Weapon1 = true;
+                                break;
+                            case WeaponType.Bow:
+                                input.Weapon2 = true;
+                                break;
+                            case WeaponType.Hammer:
+                                input.Weapon3 = true;
+                                break;
+                            case WeaponType.Spear:
+                                input.Weapon4 = true;
+                                break;
+                            case WeaponType.Shield:
+                                input.Weapon4 = true;
+                                break;
+                            case ModWeaponsManager.SCYTHE_TYPE:
+                                FirstPersonMover firstPersonMover = CharacterTracker.Instance.GetPlayerRobot();
+                                if (firstPersonMover)
+                                {
+                                    firstPersonMover.SetEquippedWeaponType(ModWeaponsManager.SCYTHE_TYPE);
+                                }
+                                break;
+                        }
+                    });
 
                 if (weaponType == WeaponType.Bow && ModSpecialUtils.IsModEnabled("ee32ba1b-8c92-4f50-bdf4-400a14da829e"))
                 {
@@ -589,6 +618,7 @@ namespace OverhaulMod.UI
                 cameraManager.ResetCameraHolderEulerAngles(firstPersonMover);
                 cameraManager.enableForceFOVOffset = false;
                 cameraManager.enableThirdPerson = false;
+                m_cameraHolderTransform = null;
                 return;
             }
 
@@ -598,6 +628,10 @@ namespace OverhaulMod.UI
             cameraManager.enableForceFOVOffset = true;
             cameraManager.enableThirdPerson = true;
             cameraManager.forceFOVOffset = -5f;
+
+            FirstPersonMover robot = CharacterTracker.Instance.GetPlayerRobot();
+            if (robot)
+                m_cameraHolderTransform = robot._cameraHolderTransform;
 
             ModGameUtils.WaitForPlayerInputUpdate(delegate (IFPMoveCommandInput commandInput)
             {

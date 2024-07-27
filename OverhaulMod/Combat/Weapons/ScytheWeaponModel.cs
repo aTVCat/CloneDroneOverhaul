@@ -8,6 +8,8 @@ namespace OverhaulMod.Combat.Weapons
     {
         private bool m_hasUpdatedShaderForNormalVariant, m_hasUpdatedShaderForFireVariant;
 
+        private GameObject m_fireVfx;
+
         public override float attackSpeed
         {
             get
@@ -71,6 +73,9 @@ namespace OverhaulMod.Combat.Weapons
             };
             base.PartsToHideInsteadOfRoot = Array.Empty<GameObject>();
 
+            moddedObject.GetObject<GameObject>(3).SetActive(true);
+            moddedObject.GetObject<GameObject>(4).SetActive(true);
+
             Transform fireParticles = Instantiate(TransformUtils.FindChildRecursive(WeaponManager.Instance.FireSwordModelPrefab, "SwordFireVFX"), moddedObject.GetObject<Transform>(4));
             fireParticles.localPosition = new Vector3(-0.75f, 0.15f, 1.5f);
             fireParticles.localEulerAngles = Vector3.zero;
@@ -79,6 +84,7 @@ namespace OverhaulMod.Combat.Weapons
             particleSystem.startLifetime = 0.6f;
             ParticleSystem.ShapeModule shape = particleSystem.shape;
             shape.scale = new Vector3(140f, 8f, 1f);
+            m_fireVfx = fireParticles.gameObject;
 
             RefreshRenderer();
         }
@@ -132,6 +138,7 @@ namespace OverhaulMod.Combat.Weapons
                     m_hasUpdatedShaderForFireVariant = true;
                 }
                 meshRenderer2.enabled = fire && IsModelActive;
+                m_fireVfx.SetActive(fire && IsModelActive);
             }
         }
     }
