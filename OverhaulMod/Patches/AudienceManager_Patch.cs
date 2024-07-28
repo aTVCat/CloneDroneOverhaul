@@ -26,11 +26,10 @@ namespace OverhaulMod.Patches
             return audiencePlacementLine && audiencePlacementLine.StartPos && audiencePlacementLine.EndPos;
         }
 
-        [HarmonyPrefix]
+        [HarmonyFinalizer]
         [HarmonyPatch(nameof(AudienceManager.PlayAudienceReaction))]
-        private static bool PlayAudienceReaction_Prefix(AudienceManager __instance, AudienceReactionType reactionType)
+        private static void PlayAudienceReaction_Finalizer(AudienceManager __instance, AudienceReactionType reactionType)
         {
-            return __instance.getReactionConfiguration(reactionType) != null;
         }
     }
 }

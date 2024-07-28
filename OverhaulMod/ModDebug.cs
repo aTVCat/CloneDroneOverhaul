@@ -49,6 +49,15 @@ namespace OverhaulMod
             ModUIUtils.MessagePopupOK("hmm", desc, 175f, true);
         }
 
+        public static void UpdatePopupTest()
+        {
+            ModUIUtils.MessagePopup(true, LocalizationManager.Instance.GetTranslatedString("update_available_header"), string.Format(LocalizationManager.Instance.GetTranslatedString("update_available_description"), new Version(10, 10, 10, 10)), 150f, MessageMenu.ButtonLayout.EnableDisableButtons, "ok", "Yes", "No", null, delegate
+            {
+                UI.UIUpdatesWindow window = ModUIConstants.ShowUpdatesWindow();
+                window.SelectBranchAndSearchForUpdates(1);
+            });
+        }
+
         public static void FileDownloadTest()
         {
             FileDownloader fileDownloader = new FileDownloader();
