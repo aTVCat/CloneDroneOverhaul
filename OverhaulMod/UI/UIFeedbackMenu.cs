@@ -107,7 +107,7 @@ namespace OverhaulMod.UI
             m_3rankButton.interactable = selectedRank != 3 && shouldBeInteractable;
             m_4rankButton.interactable = selectedRank != 4 && shouldBeInteractable;
             m_5rankButton.interactable = selectedRank != 5 && shouldBeInteractable;
-            m_sendButton.interactable = shouldBeInteractable && selectedRank > 0 && selectedRank < 6 && !m_improveField.text.IsNullOrEmpty();
+            m_sendButton.interactable = shouldBeInteractable && selectedRank > 0 && selectedRank < 6 && !m_improveField.text.IsNullOrEmpty() && !m_improveField.text.IsNullOrWhiteSpace();
 
             m_loadingIndicator.SetActive(m_isSendingFeedback);
         }
@@ -116,7 +116,7 @@ namespace OverhaulMod.UI
         {
             HasLikedTheMod = true;
             m_likeButton.interactable = false;
-            ModBotWebsiteAPI.API.Like("rAnDomPaTcHeS1", "true", delegate (JsonObject jsonObject)
+            API.Like("rAnDomPaTcHeS1", "true", delegate (JsonObject jsonObject)
             {
                 ModUIUtils.MessagePopupOK("Successfully liked the mod!", "Thanks!", false);
             });

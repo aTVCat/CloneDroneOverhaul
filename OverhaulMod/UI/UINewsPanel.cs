@@ -116,12 +116,12 @@ namespace OverhaulMod.UI
 
         public void ShowNewsDetails(NewsInfo newsInfo)
         {
-            ModUIConstants.ShowNewsDetailsPanel(base.transform, newsInfo);
+            _ = ModUIConstants.ShowNewsDetailsPanel(base.transform, newsInfo);
         }
 
         public void OnEditorButtonClicked()
         {
-            ModUIConstants.ShowNewsInfoEditor(base.transform);
+            _ = ModUIConstants.ShowNewsInfoEditor(base.transform);
         }
 
         public void OnRefreshButtonClicked()

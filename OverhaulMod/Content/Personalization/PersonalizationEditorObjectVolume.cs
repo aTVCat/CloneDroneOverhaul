@@ -251,7 +251,7 @@ namespace OverhaulMod.Content.Personalization
                         {
                             Frame frame = volumeComponent.GetCurrentFrame();
                             int allDimensions = frame.XSize + frame.YSize + frame.ZSize;
-                            if(allDimensions > 145)
+                            if (allDimensions > 145)
                             {
                                 UIPersonalizationEditor.instance.ShowNotification("Performance warning", "The size of this model is very huge which can cause lags. Simplify your model.", Color.yellow, 30f);
                             }
@@ -260,8 +260,7 @@ namespace OverhaulMod.Content.Personalization
                 }
                 else
                 {
-                    if (ModBuildInfo.debug)
-                        Debug.Log("Loaded the model from memory");
+                    ModDebug.Log("Loaded the model from memory");
 
                     MagicaVoxelImporter.ImportModelFromMemory(base.gameObject, array, "Import", preset.VoxelSize, preset.CenterPivot);
                 }

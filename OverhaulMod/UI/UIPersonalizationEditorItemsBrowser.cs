@@ -117,6 +117,8 @@ namespace OverhaulMod.UI
                     moddedObject.GetObject<Text>(1).text = PersonalizationItemInfo.GetCategoryString(item.Category);
                     moddedObject.GetObject<Text>(2).text = item.GetSpecialInfoString();
                     moddedObject.GetObject<GameObject>(3).SetActive(item.IsVerified);
+                    moddedObject.GetObject<Text>(4).text = item.GetAuthorsString(false);
+                    moddedObject.GetObject<GameObject>(5).SetActive(item.IsExclusive());
 
                     Button button = moddedObject.GetComponent<Button>();
                     button.onClick.AddListener(delegate
@@ -161,6 +163,12 @@ namespace OverhaulMod.UI
 
         public void OnCreateNewButtonClicked()
         {
+            UIPersonalizationEditorItemCreationDialog panel = ModUIConstants.ShowPersonalizationEditorItemCreationDialog(base.transform);
+            panel.TargetDirectory = m_usePersistentDirectoryToggle.isOn ? ModCore.customizationPersistentFolder : ModCore.customizationFolder;
+            panel.UsePersistentFolder = m_usePersistentDirectoryToggle.isOn;
+            panel.ItemCreatedCallback = Hide;
+
+            /*
             ModUIUtils.InputFieldWindow("Create new item", "Enter folder name", 150f, delegate (string str)
             {
                 string rootDirectory = m_usePersistentDirectoryToggle.isOn ? ModCore.customizationPersistentFolder : ModCore.customizationFolder;
@@ -182,7 +190,7 @@ namespace OverhaulMod.UI
                 {
                     ModUIUtils.MessagePopupOK("Item creation error", "A folder with the name has been already created.\nTry giving your folder an alternate name.", true);
                 }
-            });
+            });*/
         }
 
         public void OnSearchBoxChanged(string text)

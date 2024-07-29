@@ -94,7 +94,7 @@ namespace OverhaulMod.Content
 
             if (newVersion > ModBuildInfo.version && GameModeManager.IsOnTitleScreen())
             {
-                ModUIUtils.MessagePopup(true, "Overhaul Mod update available!", $"Version {newVersion} is available to install via updates menu.\nWould you like to install it now?", 150f, MessageMenu.ButtonLayout.EnableDisableButtons, "ok", "Yes", "No", null, delegate
+                ModUIUtils.MessagePopup(true, LocalizationManager.Instance.GetTranslatedString("update_available_header"), string.Format(LocalizationManager.Instance.GetTranslatedString("update_available_description"), newVersion), 150f, MessageMenu.ButtonLayout.EnableDisableButtons, "ok", "Yes", "No", null, delegate
                 {
                     UI.UIUpdatesWindow window = ModUIConstants.ShowUpdatesWindow();
                     window.SelectBranchAndSearchForUpdates(isTester ? 1 : 0);
@@ -165,7 +165,7 @@ namespace OverhaulMod.Content
         public void DownloadBuildFromSource(string source, string directoryName, Action callback, Action<string> errorCallback, out UnityWebRequest unityWebRequest)
         {
             unityWebRequest = null;
-            string directoryPath = ModsManager.Instance.ModFolderPath + directoryName.Replace('.', '_');
+            string directoryPath = Path.Combine(ModsManager.Instance.ModFolderPath, directoryName.Replace('.', '_'));
             if (Directory.Exists(directoryPath))
             {
                 try

@@ -74,7 +74,7 @@ namespace OverhaulMod.UI
         private void LateUpdate()
         {
             bool newObjectState = m_object;
-            if(newObjectState != m_prevObjectState)
+            if (newObjectState != m_prevObjectState)
             {
                 if (!newObjectState)
                 {

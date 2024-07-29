@@ -197,6 +197,11 @@ namespace OverhaulMod.Utils
         public const string SHIELD_SKIN = "ShieldSkinV2";
 
         /// <summary>
+        /// <see cref="Content.Personalization.PersonalizationController"/>
+        /// </summary>
+        public const string SCYTHE_SKIN = "ScytheSkin";
+
+        /// <summary>
         /// <see cref="Visuals.RobotWeaponBag"/>
         /// </summary>
         public const string ENABLE_WEAPON_BAG = "EnableWeaponBag";
@@ -309,6 +314,16 @@ namespace OverhaulMod.Utils
         /// <summary>
         /// <see cref="UI.UIPatchNotes"/>
         /// </summary>
-        public const string HAS_SHOWED_PATCH_NOTES = "HasShowedPatchNotes";
+        public const string LAST_BUILD_CHANGELOG_WAS_SHOWN = "LastBuildChangelogWasShownOn";
+
+        /// <summary>
+        /// <see cref="ModCore"/>
+        /// </summary>
+        public const string STREAMER_MODE = "StreamerMode";
+
+        /// <summary>
+        /// <see cref="UI.UIPersonalizationItemsBrowser"/>
+        /// </summary>
+        public const string HAS_EVER_ROTATED_THE_CAMERA = "HasEverRotatedTheCamera";
     }
 }

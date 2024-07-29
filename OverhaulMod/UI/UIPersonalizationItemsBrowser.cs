@@ -1,4 +1,5 @@
-﻿using OverhaulMod.Content.Personalization;
+﻿using OverhaulMod.Combat;
+using OverhaulMod.Content.Personalization;
 using OverhaulMod.Engine;
 using OverhaulMod.Utils;
 using System;
@@ -27,6 +28,9 @@ namespace OverhaulMod.UI
         public const string ITEM_DISPLAY_NONVERIFIED_EXCLUSIVE_TEXT_COLOR = "#FFFFFF";
         public const string ITEM_DISPLAY_NONVERIFIED_EXCLUSIVE_TEXT_OUTLINE_COLOR = "#006A0D";
         public const string ITEM_DISPLAY_NONVERIFIED_EXCLUSIVE_TEXT_GLOW_COLOR = "#00F81F";
+
+        [ModSetting(ModSettingsConstants.HAS_EVER_ROTATED_THE_CAMERA, false)]
+        public static bool HasEverRotatedTheCamera;
 
         public static bool IsPreviewing;
 
@@ -106,6 +110,9 @@ namespace OverhaulMod.UI
         [UIElement("LoadingSawblade")]
         private readonly Image m_loadingSawblade;
 
+        [UIElement("CameraRotationTutorial")]
+        private readonly GameObject m_cameraRotationTutorial;
+
         private Dictionary<string, GameObject> m_cachedDisplays;
 
         private RectTransform m_rectTransform;
@@ -125,6 +132,10 @@ namespace OverhaulMod.UI
         private Button m_defaultSkinButton;
 
         private bool m_allowUICallbacks;
+
+        private Transform m_cameraHolderTransform;
+
+        private float m_cameraHolderRotationY;
 
         public override bool enableCursor => true;
 
@@ -175,6 +186,8 @@ namespace OverhaulMod.UI
             ShowDownloadCustomizationAssetsDownloadMenuIfRequired();
             refreshUpdateButton();
 
+            UIVersionLabel.instance.offsetX = 325f;
+
             m_cachedDisplays.Clear();
             if (m_container.childCount != 0)
                 TransformUtils.DestroyAllChildren(m_container);
@@ -189,6 +202,12 @@ namespace OverhaulMod.UI
             base.Hide();
             m_isOpen = false;
             setCameraZoomedIn(false);
+            UIVersionLabel.instance.offsetX = 0f;
+
+            PersonalizationManager.Instance.userInfo.SaveIfDirty();
+            ModSettingsDataManager.Instance.Save();
+
+            PersonalizationMultiplayerManager.Instance.SendPlayerCustomizationDataEvent(false);
         }
 
         public override void Update()
@@ -204,17 +223,30 @@ namespace OverhaulMod.UI
             Color color = m_loadingSawblade.color;
             color.a = 1f - a;
             m_loadingSawblade.color = color;
+
+            Transform holder = m_cameraHolderTransform;
+            if (holder)
+            {
+                bool mouseButtonDown = Input.GetMouseButton(1);
+                if(mouseButtonDown && !HasEverRotatedTheCamera)
+                {
+                    ModSettingsManager.SetBoolValue(ModSettingsConstants.HAS_EVER_ROTATED_THE_CAMERA, true);
+                }
+
+                float d2 = Time.deltaTime * 10f;
+                m_cameraHolderRotationY = Mathf.Lerp(m_cameraHolderRotationY, mouseButtonDown ? Input.GetAxis("Mouse X") * 1.25f : 0f, d2);
+
+                Vector3 currentEulerAngles = holder.localEulerAngles;
+                currentEulerAngles.y = currentEulerAngles.y + m_cameraHolderRotationY;
+                holder.localEulerAngles = currentEulerAngles;
+            }
+
+            m_cameraRotationTutorial.SetActive(!HasEverRotatedTheCamera);
         }
 
         private void LateUpdate()
         {
             refreshCameraRect();
-        }
-
-        public override void OnEnable()
-        {
-            base.OnEnable();
-            UIVersionLabel.instance.forceHide = true;
         }
 
         public override void OnDisable()
@@ -223,12 +255,6 @@ namespace OverhaulMod.UI
 
             IsPreviewing = false;
             m_isPopulating = false;
-            UIVersionLabel.instance.forceHide = false;
-
-            PersonalizationManager.Instance.userInfo.SaveIfDirty();
-            ModSettingsDataManager.Instance.Save();
-
-            PersonalizationMultiplayerManager.Instance.SendPlayerCustomizationDataEvent(false);
         }
 
         private void tryHide()
@@ -261,7 +287,7 @@ namespace OverhaulMod.UI
         public void ShowDownloadCustomizationAssetsDownloadMenuIfRequired()
         {
             if (PersonalizationManager.Instance.GetPersonalizationAssetsState() != PersonalizationAssetsState.Installed)
-                ModUIConstants.ShowDownloadPersonalizationAssetsMenu(base.transform);
+                _ = ModUIConstants.ShowDownloadPersonalizationAssetsMenu(base.transform);
         }
 
         public void OnCategoryTabSelected(UIElementTab elementTab)
@@ -296,6 +322,9 @@ namespace OverhaulMod.UI
 
                 if (ModFeatures.IsEnabled(ModFeatures.FeatureType.ShieldSkins))
                     m_subcategoryTabs.AddTab("Shield");
+
+                if (ModFeatures.IsEnabled(ModFeatures.FeatureType.ScytheSkins) && BoltNetwork.IsServer)
+                    m_subcategoryTabs.AddTab(ModWeaponsManager.SCYTHE_TYPE.ToString());
 
                 m_subcategoryTabs.SelectTab("Sword");
             }
@@ -369,28 +398,36 @@ namespace OverhaulMod.UI
 
                 if (!Enum.TryParse(m_selectedSubcategory, out WeaponType weaponType))
                     weaponType = WeaponType.Sword;
+                else
 
-                ModGameUtils.WaitForPlayerInputUpdate(delegate (IFPMoveCommandInput input)
-                {
-                    switch (weaponType)
+                    ModGameUtils.WaitForPlayerInputUpdate(delegate (IFPMoveCommandInput input)
                     {
-                        case WeaponType.Sword:
-                            input.Weapon1 = true;
-                            break;
-                        case WeaponType.Bow:
-                            input.Weapon2 = true;
-                            break;
-                        case WeaponType.Hammer:
-                            input.Weapon3 = true;
-                            break;
-                        case WeaponType.Spear:
-                            input.Weapon4 = true;
-                            break;
-                        case WeaponType.Shield:
-                            input.Weapon4 = true;
-                            break;
-                    }
-                });
+                        switch (weaponType)
+                        {
+                            case WeaponType.Sword:
+                                input.Weapon1 = true;
+                                break;
+                            case WeaponType.Bow:
+                                input.Weapon2 = true;
+                                break;
+                            case WeaponType.Hammer:
+                                input.Weapon3 = true;
+                                break;
+                            case WeaponType.Spear:
+                                input.Weapon4 = true;
+                                break;
+                            case WeaponType.Shield:
+                                input.Weapon4 = true;
+                                break;
+                            case ModWeaponsManager.SCYTHE_TYPE:
+                                FirstPersonMover firstPersonMover = CharacterTracker.Instance.GetPlayerRobot();
+                                if (firstPersonMover)
+                                {
+                                    firstPersonMover.SetEquippedWeaponType(ModWeaponsManager.SCYTHE_TYPE);
+                                }
+                                break;
+                        }
+                    });
 
                 if (weaponType == WeaponType.Bow && ModSpecialUtils.IsModEnabled("ee32ba1b-8c92-4f50-bdf4-400a14da829e"))
                 {
@@ -413,11 +450,13 @@ namespace OverhaulMod.UI
                     defaultSkinButton.interactable = !PersonalizationController.GetWeaponSkin(weaponType).IsNullOrEmpty();
                     m_defaultSkinButton = defaultSkinButton;
 
+                    bool isDeveloper = ModUserInfo.isDeveloper;
+
                     System.Collections.Generic.List<PersonalizationItemInfo> list = PersonalizationManager.Instance.itemList.GetItems(m_selectedCategory, (PersonalizationItemsSortType)m_sortType);
                     for (int i = 0; i < list.Count; i++)
                     {
                         PersonalizationItemInfo item = list[i];
-                        if (item.Weapon != weaponType)
+                        if (item.Weapon != weaponType || (item.HideInBrowser && !isDeveloper))
                             continue;
 
                         bool isExclusive = item.IsExclusive();
@@ -432,7 +471,7 @@ namespace OverhaulMod.UI
                             prefix = LocalizationManager.Instance.GetTranslatedString("customization_vanilla");
                         }
                         else
-                            prefix = $"{((item.Authors.IsNullOrEmpty() || item.Authors.Count <= 1) ? LocalizationManager.Instance.GetTranslatedString("customization_author"): LocalizationManager.Instance.GetTranslatedString("customization_authors"))} ";
+                            prefix = $"{((item.Authors.IsNullOrEmpty() || item.Authors.Count <= 1) ? LocalizationManager.Instance.GetTranslatedString("customization_author") : LocalizationManager.Instance.GetTranslatedString("customization_authors"))} ";
 
                         string authorsStringToDisplay;
                         if (noSpecificAuthor)
@@ -581,6 +620,7 @@ namespace OverhaulMod.UI
                 cameraManager.ResetCameraHolderEulerAngles(firstPersonMover);
                 cameraManager.enableForceFOVOffset = false;
                 cameraManager.enableThirdPerson = false;
+                m_cameraHolderTransform = null;
                 return;
             }
 
@@ -591,6 +631,10 @@ namespace OverhaulMod.UI
             cameraManager.enableThirdPerson = true;
             cameraManager.forceFOVOffset = -5f;
 
+            FirstPersonMover robot = CharacterTracker.Instance.GetPlayerRobot();
+            if (robot)
+                m_cameraHolderTransform = robot._cameraHolderTransform;
+
             ModGameUtils.WaitForPlayerInputUpdate(delegate (IFPMoveCommandInput commandInput)
             {
                 commandInput.IsResetLookKeyDown = true;
@@ -599,12 +643,12 @@ namespace OverhaulMod.UI
 
         public void OnSettingsButtonClicked()
         {
-            ModUIConstants.ShowPersonalizationSettingsMenu(base.transform);
+            _ = ModUIConstants.ShowPersonalizationSettingsMenu(base.transform);
         }
 
         public void OnUpdateButtonClicked()
         {
-            ModUIConstants.ShowDownloadPersonalizationAssetsMenu(base.transform);
+            _ = ModUIConstants.ShowDownloadPersonalizationAssetsMenu(base.transform);
         }
 
         public void OnSearchBoxChanged(string text)

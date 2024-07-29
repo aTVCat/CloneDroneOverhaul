@@ -8,7 +8,7 @@ namespace OverhaulMod.Patches
     internal static class SeveredVolumeGenerator_Patch
     {
         [HarmonyPostfix]
-        [HarmonyPatch("CreateVolumeCopy")]
+        [HarmonyPatch(nameof(SeveredVolumeGenerator.CreateVolumeCopy))]
         private static void CreateVolumeCopy_Postfix(SeveredBodyPart __result)
         {
             if (Random.Range(0, 10) < 5)

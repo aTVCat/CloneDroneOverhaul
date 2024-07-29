@@ -407,18 +407,18 @@ namespace OverhaulMod.UI
 
         public void OnAchievementsButtonClicked()
         {
-            ModUIConstants.ShowAdvancementsMenuRework();
+            _ = ModUIConstants.ShowAdvancementsMenuRework();
         }
 
         public void OnCustomizationButtonClicked()
         {
             Hide();
-            ModUIConstants.ShowPersonalizationItemsBrowser();
+            _ = ModUIConstants.ShowPersonalizationItemsBrowser();
         }
 
         public void OnSettingsButtonClicked()
         {
-            ModUIConstants.ShowSettingsMenuRework(false);
+            _ = ModUIConstants.ShowSettingsMenuRework(false);
         }
 
         public void OnModsButtonClicked()
@@ -428,7 +428,7 @@ namespace OverhaulMod.UI
 
         public void OnGiveFeedbackButtonClicked()
         {
-            ModUIConstants.ShowFeedbackUIRework(false);
+            _ = ModUIConstants.ShowFeedbackUIRework(false);
         }
 
         public void OnMainMenuButtonClicked()

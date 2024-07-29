@@ -27,7 +27,7 @@ namespace OverhaulMod.Engine
 
             foreach (KeyValuePair<UpgradeType, int> kv in gameData.PlayerUpgrades)
             {
-                UpgradeType upgradeType = kv.key;
+                UpgradeType upgradeType = kv.Key;
                 int level = kv.Value;
 
                 if (level > 1)

@@ -67,7 +67,7 @@ namespace OverhaulMod.UI
 
         public void OnHelpButtonClicked()
         {
-            ModUIConstants.ShowPersonalizationEditorHelpMenu(UIPersonalizationEditor.instance.transform);
+            _ = ModUIConstants.ShowPersonalizationEditorHelpMenu(UIPersonalizationEditor.instance.transform);
         }
 
         public void OnImportVoxButtonClicked()

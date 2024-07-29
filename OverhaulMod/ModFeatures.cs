@@ -98,6 +98,9 @@ namespace OverhaulMod
                 case FeatureType.PersonalizationEditorTutorialVideo:
                     result = true;
                     break;
+                case FeatureType.ScytheSkins:
+                    result = true;
+                    break;
                 default:
                     return false;
             }
@@ -159,7 +162,9 @@ namespace OverhaulMod
 
             ShieldSkins,
 
-            PersonalizationEditorTutorialVideo
+            PersonalizationEditorTutorialVideo,
+
+            ScytheSkins,
         }
     }
 }

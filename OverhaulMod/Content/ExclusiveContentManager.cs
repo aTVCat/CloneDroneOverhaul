@@ -216,5 +216,10 @@ namespace OverhaulMod.Content
         {
             return !GetAllUnlockedContentOfType<ExclusiveContentTesterRole>().IsNullOrEmpty();
         }
+
+        public bool IsLocalUserAbleToVerifyItems()
+        {
+            return !GetAllUnlockedContentOfType<ExclusiveContentItemsVerifierRole>().IsNullOrEmpty();
+        }
     }
 }

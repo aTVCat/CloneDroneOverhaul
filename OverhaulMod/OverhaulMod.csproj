@@ -340,6 +340,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AssetLoadingState.cs" />
     <Compile Include="Combat\Enemies\BackwardDashAIBehaviour.cs" />
     <Compile Include="Combat\Enemies\InsaneBackwardDashAIBehaviour.cs" />
     <Compile Include="Combat\Enemies\InsaneLongSprintAIBehaviour.cs" />
@@ -357,6 +358,7 @@
     <Compile Include="Content\ContentDownloadInfo.cs" />
     <Compile Include="Content\ContentInfo.cs" />
     <Compile Include="Content\ContentListInfo.cs" />
+    <Compile Include="Content\ExclusiveContentItemsVerifierRole.cs" />
     <Compile Include="Content\ExclusiveContentTesterRole.cs" />
     <Compile Include="Content\GoogleDriveManager.cs" />
     <Compile Include="Content\LevelEditor\LevelEditorWeatherSettingsOverride.cs" />
@@ -382,6 +384,7 @@
     <Compile Include="Content\Personalization\PersonalizationEditorObjectInfo.cs" />
     <Compile Include="Content\Personalization\PersonalizationEditorObjectPropertyAttribute.cs" />
     <Compile Include="Content\Personalization\PersonalizationEditorObjectPropertyValueInfo.cs" />
+    <Compile Include="Content\Personalization\PersonalizationEditorTemplateManager.cs" />
     <Compile Include="Content\Personalization\PersonalizationItemLockInfo.cs" />
     <Compile Include="Content\Personalization\PersonalizationItemMetaData.cs" />
     <Compile Include="Content\Personalization\PersonalizationMultiplayerManager.cs" />
@@ -489,62 +492,64 @@
     <Compile Include="ModDataManager.cs" />
     <Compile Include="Content\NewsInfoList.cs" />
     <Compile Include="ModUserInfo.cs" />
+    <Compile Include="Patches\AttackManager_Patch.cs" />
+    <Compile Include="Patches\AudienceManager_Patch.cs" />
     <Compile Include="Patches\Behaviours\EnergyUIPatchBehaviour.cs" />
     <Compile Include="Patches\Behaviours\LocalizationManagerPatchBehaviour.cs" />
     <Compile Include="Patches\Behaviours\ColorsPatchBehaviour.cs" />
     <Compile Include="Patches\Behaviours\MenuButtonsPatchBehaviour.cs" />
     <Compile Include="Patches\Behaviours\MinorPatchBehaviour.cs" />
-    <Compile Include="Patches\AttackManager_Patch.cs" />
-    <Compile Include="Patches\AudienceManager_Patch.cs" />
     <Compile Include="Patches\Behaviours\ChallengeManagerPatchBehaviour.cs" />
     <Compile Include="Patches\Behaviours\SubtitleTextFieldPatchBehaviour.cs" />
-    <Compile Include="Patches\EnergyUI_Patch.cs" />
     <Compile Include="Patches\CacheManager_Patch.cs" />
-    <Compile Include="Patches\LevelLightSettings_Patch.cs" />
-    <Compile Include="Patches\LevelEditorLevelObject_Patch.cs" />
+    <Compile Include="Patches\CameraShaker_Patch.cs" />
+    <Compile Include="Patches\ChapterLoadingScreen_Patch.cs" />
+    <Compile Include="Patches\CharacterModel_Patch.cs" />
+    <Compile Include="Patches\CustomUpgradeManager_Patch.cs" />
+    <Compile Include="Patches\EndlessModeManager_Patch.cs" />
     <Compile Include="Patches\EndlessResultScreen_Patch.cs" />
-    <Compile Include="Patches\SingleplayerServerStarter_Patch.cs" />
-    <Compile Include="Patches\UpgradeDescription_Patch.cs" />
-    <Compile Include="Patches\UpgradeUI_Patch.cs" />
-    <Compile Include="Patches\WinLoseDialog_Patch.cs" />
-    <Compile Include="Patches\GlobalFireParticleSystem_Patch.cs" />
-    <Compile Include="Patches\Character_Patch.cs" />
+    <Compile Include="Patches\EnergyUI_Patch.cs" />
     <Compile Include="Patches\ErrorManager_Patch.cs" />
-    <Compile Include="Patches\PhotoManager_Patch.cs" />
-    <Compile Include="Patches\FlyingCameraController_Patch.cs" />
     <Compile Include="Patches\ErrorWindow_Patch.cs" />
-    <Compile Include="Patches\PhotoModeControlsDisplay_Patch.cs" />
-    <Compile Include="Patches\LevelEditorLightManager_Patch.cs" />
-    <Compile Include="Patches\SettingsMenu_Patch.cs" />
-    <Compile Include="Patches\SeveredVolumeGenerator_Patch.cs" />
-    <Compile Include="Patches\TitleScreenUI_Patch.cs" />
-    <Compile Include="Patches\GameFlowManager_Patch.cs" />
-    <Compile Include="Patches\LevelManager_Patch.cs" />
-    <Compile Include="Patches\LocalizedTextField_Patch.cs" />
-    <Compile Include="Patches\MultiplayerErrorPopupBubble_Patch.cs" />
-    <Compile Include="Patches\GameModeSelectScreen_Patch.cs" />
     <Compile Include="Patches\EscMenu_Patch.cs" />
     <Compile Include="Patches\FirstPersonMover_Patch.cs" />
+    <Compile Include="Patches\FlyingCameraController_Patch.cs" />
     <Compile Include="Patches\GameDataManager_Patch.cs" />
-    <Compile Include="Patches\EndlessModeManager_Patch.cs" />
+    <Compile Include="Patches\GameFlowManager_Patch.cs" />
     <Compile Include="Patches\GameModeManager_Patch.cs" />
+    <Compile Include="Patches\GameModeSelectScreen_Patch.cs" />
     <Compile Include="Patches\GameplayAchievementManager_Patch.cs" />
     <Compile Include="Patches\GameUIRoot_Patch.cs" />
+    <Compile Include="Patches\GlobalFireParticleSystem_Patch.cs" />
     <Compile Include="Patches\LevelEditorDataManager_Patch.cs" />
+    <Compile Include="Patches\LevelEditorLevelObject_Patch.cs" />
+    <Compile Include="Patches\LevelEditorLightManager_Patch.cs" />
+    <Compile Include="Patches\LevelLightSettings_Patch.cs" />
+    <Compile Include="Patches\LevelManager_Patch.cs" />
     <Compile Include="Patches\LoadingScreen_Patch.cs" />
+    <Compile Include="Patches\LocalizedTextField_Patch.cs" />
     <Compile Include="Patches\MechBodyPart_Patch.cs" />
     <Compile Include="Patches\MetagameLevelTrigger_Patch.cs" />
+    <Compile Include="Patches\MultiplayerMatchManager_Patch.cs" />
+    <Compile Include="Patches\MultiplayerErrorPopupBubble_Patch.cs" />
+    <Compile Include="Patches\PhotoManager_Patch.cs" />
+    <Compile Include="Patches\PhotoModeControlsDisplay_Patch.cs" />
     <Compile Include="Patches\PlanetCollider_Patch.cs" />
     <Compile Include="Patches\SceneTransitionManager_Patch.cs" />
     <Compile Include="Patches\SelectableUI_Patch.cs" />
     <Compile Include="Patches\SettingsManager_Patch.cs" />
+    <Compile Include="Patches\SettingsMenu_Patch.cs" />
+    <Compile Include="Patches\SeveredVolumeGenerator_Patch.cs" />
+    <Compile Include="Patches\SingleplayerServerStarter_Patch.cs" />
     <Compile Include="Patches\SkyBoxManager_Patch.cs" />
     <Compile Include="Patches\Story3_IntroCutScene_Patch.cs" />
     <Compile Include="Patches\SubtitleTextField_Patch.cs" />
+    <Compile Include="Patches\TitleScreenUI_Patch.cs" />
+    <Compile Include="Patches\UpgradeDescription_Patch.cs" />
     <Compile Include="Patches\UpgradeUIIcon_Patch.cs" />
+    <Compile Include="Patches\UpgradeUI_Patch.cs" />
     <Compile Include="Patches\WeaponAITuningManager_Patch.cs" />
-    <Compile Include="Patches\CameraShaker_Patch.cs" />
-    <Compile Include="Patches\CustomUpgradeManager_Patch.cs" />
+    <Compile Include="Patches\WinLoseDialog_Patch.cs" />
     <Compile Include="Patches\WorldAudioSource_Patch.cs" />
     <Compile Include="UI\Attributes\KeyBindSetterAttribute.cs" />
     <Compile Include="UI\Attributes\ColorPickerAttribute.cs" />
@@ -557,6 +562,8 @@
     <Compile Include="UI\Components\DraggablePanel.cs" />
     <Compile Include="UI\Components\EnergyUIBehaviour.cs" />
     <Compile Include="UI\Components\EventController.cs" />
+    <Compile Include="UI\Components\SliderFillText.cs" />
+    <Compile Include="UI\DropdownPersonalizationItemInfo.cs" />
     <Compile Include="UI\DropdownWeaponVariantOptionData.cs" />
     <Compile Include="UI\DropdownWeaponTypeOptionData.cs" />
     <Compile Include="UI\Elements\UIElementBattleRoyaleStatsBox.cs" />
@@ -568,6 +575,7 @@
     <Compile Include="UI\Elements\UIElementMultiplayerMessageBox.cs" />
     <Compile Include="UI\Elements\UIElementMultiplayerMessageButton.cs" />
     <Compile Include="UI\Elements\UIElementNetworkAddonDisplay.cs" />
+    <Compile Include="UI\Elements\UIElementOverhaulUIInfo.cs" />
     <Compile Include="UI\Elements\UIElementPersonalizationExclusiveForField.cs" />
     <Compile Include="UI\Elements\UIElementPersonalizationAuthorsField.cs" />
     <Compile Include="UI\Elements\UIElementPersonalizationEditorColorPairDisplay.cs" />
@@ -614,6 +622,7 @@
     <Compile Include="UI\UIDownloadPersonalizationAssetsMenu.cs" />
     <Compile Include="UI\UIDiscordServerMenu.cs" />
     <Compile Include="UI\UIAssetBundleAssetsBrowser.cs" />
+    <Compile Include="UI\UIPersonalizationEditorItemCreationDialog.cs" />
     <Compile Include="UI\UIPatchNotes.cs" />
     <Compile Include="UI\UIPersonalizationEditorAboutDialog.cs" />
     <Compile Include="UI\UIPersonalizationEditorExclusivityEditMenu.cs" />
@@ -651,8 +660,6 @@
     <Compile Include="ModDebug.cs" />
     <Compile Include="Patches\Behaviours\ProjectilePatchBehaviour.cs" />
     <Compile Include="Patches\Behaviours\SkyboxesPatchBehaviour.cs" />
-    <Compile Include="Patches\CharacterModel_Patch.cs" />
-    <Compile Include="Patches\ChapterLoadingScreen_Patch.cs" />
     <Compile Include="Engine\TransformInfo.cs" />
     <Compile Include="UI\Elements\UIElementAdvancementDisplay.cs" />
     <Compile Include="UI\Elements\UIElementContentColorPropertyDisplay.cs" />
@@ -737,9 +744,13 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup />
-  <PropertyGroup>
-    <PublicizeAll>true</PublicizeAll>
-  </PropertyGroup>
+  <ItemGroup>
+    <Publicize Include="Assembly-CSharp" />
+    <Publicize Include="Assembly-CSharp-firstpass" />
+    <Publicize Include="ModLibrary" />
+    <Publicize Include="AdvancedAPI" />
+    <Publicize Include="UnityEngine.UI" />
+  </ItemGroup>
   <PropertyGroup>
     <ApplicationIcon>
     </ApplicationIcon>

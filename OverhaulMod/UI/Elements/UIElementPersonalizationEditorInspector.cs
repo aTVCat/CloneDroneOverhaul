@@ -1,4 +1,5 @@
-﻿using OverhaulMod.Content.Personalization;
+﻿using OverhaulMod.Combat;
+using OverhaulMod.Content.Personalization;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -79,6 +80,8 @@ namespace OverhaulMod.UI
             weaponList.Add(new DropdownWeaponTypeOptionData(WeaponType.Spear));
             if (ModFeatures.IsEnabled(ModFeatures.FeatureType.ShieldSkins))
                 weaponList.Add(new DropdownWeaponTypeOptionData(WeaponType.Shield));
+            if (ModFeatures.IsEnabled(ModFeatures.FeatureType.ScytheSkins))
+                weaponList.Add(new DropdownWeaponTypeOptionData(ModWeaponsManager.SCYTHE_TYPE));
             m_weaponDropdown.RefreshShownValue();
 
             List<Dropdown.OptionData> overrideParentList = m_overrideParentDropdown.options;
@@ -165,7 +168,7 @@ namespace OverhaulMod.UI
                 }
             }
 
-            FirstPersonMover firstPersonMover = CharacterTracker.Instance.GetPlayerRobot();
+            FirstPersonMover firstPersonMover = PersonalizationEditorManager.Instance.GetBot();
             firstPersonMover.SetEquippedWeaponType(personalizationItemInfo.Weapon, false);
 
             m_disallowCallbacks = false;
@@ -202,8 +205,9 @@ namespace OverhaulMod.UI
             WeaponType weaponType = (m_weaponDropdown.options[value] as DropdownWeaponTypeOptionData).Weapon;
             personalizationItemInfo.Weapon = weaponType;
 
-            FirstPersonMover firstPersonMover = CharacterTracker.Instance.GetPlayerRobot();
-            firstPersonMover.SetEquippedWeaponType(weaponType, false);
+            FirstPersonMover firstPersonMover = PersonalizationEditorManager.Instance.GetBot();
+            if(firstPersonMover)
+                firstPersonMover.SetEquippedWeaponType(weaponType, false);
 
             PersonalizationEditorManager manager = PersonalizationEditorManager.Instance;
             manager.SerializeRoot();

@@ -34,7 +34,7 @@ namespace OverhaulMod.Combat.Weapons
 
         public override void OnInstantiated(FirstPersonMover owner)
         {
-            MeleeWeaponAITuning meleeWeaponTuning = (MeleeWeaponAITuning)WeaponAITuningManager.Instance.SwordAITuning.MemberwiseClone();
+            MeleeWeaponAITuning meleeWeaponTuning = WeaponAITuningManager.Instance.SwordAITuning.Clone();
             meleeWeaponTuning.MaxRangeToAttack = 12f;
             meleeWeaponTuning.RunForwardUntilRange = 6f;
             AITuning = meleeWeaponTuning;

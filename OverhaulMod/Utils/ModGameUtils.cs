@@ -183,7 +183,7 @@ namespace OverhaulMod.Utils
 
         public static Renderer[] GetRenderersOfBodyPart(this FirstPersonMover firstPersonMover, string bodyPart)
         {
-            if (!firstPersonMover || string.IsNullOrEmpty(bodyPart))
+            if (!firstPersonMover || bodyPart.IsNullOrEmpty())
             {
                 return Array.Empty<Renderer>();
             }

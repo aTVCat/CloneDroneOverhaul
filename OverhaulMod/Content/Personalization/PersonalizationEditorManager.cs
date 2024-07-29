@@ -1,4 +1,5 @@
 ﻿using ICSharpCode.SharpZipLib.Zip;
+using OverhaulMod.Combat;
 using OverhaulMod.Engine;
 using OverhaulMod.UI;
 using OverhaulMod.UI.Elements;
@@ -32,16 +33,12 @@ namespace OverhaulMod.Content.Personalization
 
         private GreatSwordPreviewController m_greatSwordPreviewController;
 
-        private PersonalizationController m_currentPersonalizationController;
+        private FirstPersonMover m_bot;
+
         public PersonalizationController currentPersonalizationController
         {
-            get
-            {
-                if (!m_currentPersonalizationController)
-                    m_currentPersonalizationController = CharacterTracker.Instance?.GetPlayer()?.GetComponent<PersonalizationController>();
-
-                return m_currentPersonalizationController;
-            }
+            get;
+            set;
         }
 
         public PersonalizationItemInfo currentEditingItemInfo
@@ -112,7 +109,7 @@ namespace OverhaulMod.Content.Personalization
         {
             get
             {
-                return ModUserInfo.isDeveloper;
+                return ExclusiveContentManager.Instance.IsLocalUserAbleToVerifyItems();
             }
         }
 
@@ -120,7 +117,7 @@ namespace OverhaulMod.Content.Personalization
         {
             get
             {
-                return ModUserInfo.isDeveloper;
+                return ExclusiveContentManager.Instance.IsLocalUserAbleToVerifyItems();
             }
         }
 
@@ -128,7 +125,7 @@ namespace OverhaulMod.Content.Personalization
         {
             get
             {
-                return ModUserInfo.isDeveloper;
+                return ExclusiveContentManager.Instance.IsLocalUserAbleToVerifyItems();
             }
         }
 
@@ -170,7 +167,6 @@ namespace OverhaulMod.Content.Personalization
                 m_hasConfiguredGameData = true;
             }
 
-            m_currentPersonalizationController = null;
             currentEditingItemInfo = null;
             currentEditingRoot = null;
             previewPresetKey = WeaponVariant.Normal;
@@ -184,6 +180,8 @@ namespace OverhaulMod.Content.Personalization
             GameDataManager.Instance.SaveHighScoreDataWithoutModifyingIt();
             CacheManager.Instance.CreateOrClearInstance();
             GarbageManager.Instance.DestroyAllGarbage();
+
+            PersonalizationEditorTemplateManager.Instance.LoadTemplates();
 
             SingleplayerServerStarter.Instance.StartServerThenCall(delegate
             {
@@ -201,6 +199,11 @@ namespace OverhaulMod.Content.Personalization
                 _ = base.StartCoroutine(spawnLevelCoroutine(useTransitionManager, levelEditorLevelData));
             });
             yield break;
+        }
+
+        public FirstPersonMover GetBot()
+        {
+            return m_bot;
         }
 
         public void RefreshGreatswordPreview()
@@ -241,7 +244,7 @@ namespace OverhaulMod.Content.Personalization
                 list.Add(new DropdownWeaponVariantOptionData(WeaponVariant.NormalMultiplayer));
                 list.Add(new DropdownWeaponVariantOptionData(WeaponVariant.OnFireMultiplayer));
             }
-            else if (weaponType == WeaponType.Hammer || weaponType == WeaponType.Spear)
+            else if (weaponType == WeaponType.Hammer || weaponType == WeaponType.Spear || weaponType == ModWeaponsManager.SCYTHE_TYPE)
             {
                 list.Add(new DropdownWeaponVariantOptionData(WeaponVariant.OnFire));
             }
@@ -249,17 +252,13 @@ namespace OverhaulMod.Content.Personalization
             return list;
         }
 
-        public bool CreateItem(string name, bool usePersistentFolder, out PersonalizationItemInfo personalizationItem)
+        public bool CreateItem(string directoryName, string name, bool usePersistentFolder, PersonalizationItemInfo templateSource, out PersonalizationItemInfo personalizationItem)
         {
-            personalizationItem = null;
-            if (name.IsNullOrEmpty())
-                return false;
-
             string rootDirectory = usePersistentFolder ? ModCore.customizationPersistentFolder : ModCore.customizationFolder;
-            string directoryName = name.Replace(" ", string.Empty);
-            string directoryPath = $"{Path.Combine(rootDirectory, directoryName)}/";
-            string filesDirectoryPath = Path.Combine(directoryPath, "files/");
+            string directoryPath = Path.Combine(rootDirectory, directoryName);
+            string filesDirectoryPath = Path.Combine(directoryPath, "files");
 
+            personalizationItem = null;
             if (Directory.Exists(directoryPath))
                 return false;
             else
@@ -268,23 +267,56 @@ namespace OverhaulMod.Content.Personalization
             if (!Directory.Exists(filesDirectoryPath))
                 _ = Directory.CreateDirectory(filesDirectoryPath);
 
-            personalizationItem = new PersonalizationItemInfo()
+            bool useTemplate = true;
+            if (templateSource != null)
             {
-                Name = name,
-                Description = "No description provided.",
-                IsVerified = false,
-                Category = PersonalizationCategory.WeaponSkins,
-                EditorID = Instance.editorId,
-                ItemID = Guid.NewGuid().ToString(),
-                FolderPath = directoryPath,
-                RootFolderPath = rootDirectory,
-                RootFolderName = usePersistentFolder ? ModCore.CUSTOMIZATION_PERSISTENT_FOLDER_NAME : ModCore.CUSTOMIZATION_FOLDER_NAME,
-                IsPersistentAsset = usePersistentFolder,
-                MetaData = new PersonalizationItemMetaData()
+                try
                 {
-                    CustomizationSystemVersion = PersonalizationItemMetaData.CurrentCustomizationSystemVersion,
+                    personalizationItem = ModJsonUtils.Deserialize<PersonalizationItemInfo>(ModJsonUtils.Serialize(templateSource));
+
+                    personalizationItem.Name = name;
+                    personalizationItem.Description = "No description provided.";
+                    personalizationItem.IsVerified = false;
+                    personalizationItem.EditorID = Instance.editorId;
+                    personalizationItem.ItemID = Guid.NewGuid().ToString();
+                    personalizationItem.FolderPath = directoryPath;
+                    personalizationItem.RootFolderPath = rootDirectory;
+                    personalizationItem.RootFolderName = usePersistentFolder ? ModCore.CUSTOMIZATION_PERSISTENT_FOLDER_NAME : ModCore.CUSTOMIZATION_FOLDER_NAME;
+                    personalizationItem.IsPersistentAsset = usePersistentFolder;
+                    personalizationItem.MetaData = new PersonalizationItemMetaData()
+                    {
+                        CustomizationSystemVersion = PersonalizationItemMetaData.CurrentCustomizationSystemVersion,
+                    };
                 }
-            };
+                catch
+                {
+                    useTemplate = false;
+                }
+            }
+            else
+                useTemplate = false;
+
+            if (!useTemplate)
+            {
+                personalizationItem = new PersonalizationItemInfo()
+                {
+                    Name = name,
+                    Description = "No description provided.",
+                    IsVerified = false,
+                    Category = PersonalizationCategory.WeaponSkins,
+                    EditorID = Instance.editorId,
+                    ItemID = Guid.NewGuid().ToString(),
+                    FolderPath = directoryPath,
+                    RootFolderPath = rootDirectory,
+                    RootFolderName = usePersistentFolder ? ModCore.CUSTOMIZATION_PERSISTENT_FOLDER_NAME : ModCore.CUSTOMIZATION_FOLDER_NAME,
+                    IsPersistentAsset = usePersistentFolder,
+                    MetaData = new PersonalizationItemMetaData()
+                    {
+                        CustomizationSystemVersion = PersonalizationItemMetaData.CurrentCustomizationSystemVersion,
+                    }
+                };
+            }
+
             personalizationItem.FixValues();
             personalizationItem.SetAuthor(SteamFriends.GetPersonaName());
             PersonalizationManager.Instance.itemList.Items.Add(personalizationItem);
@@ -377,7 +409,7 @@ namespace OverhaulMod.Content.Personalization
 
             GameObject spawnPoint = new GameObject();
 
-            FirstPersonMover bot = GameFlowManager.Instance.SpawnPlayer(spawnPoint.transform, true, true);
+            FirstPersonMover bot = GameFlowManager.Instance.SpawnPlayer(spawnPoint.transform, true, false);
             bot._upgradeCollection._upgradeLevels = new Dictionary<UpgradeType, int>();
             bot._upgradeCollection.AddUpgradeIfMissing(UpgradeType.SwordUnlock, 1);
             bot._upgradeCollection.AddUpgradeIfMissing(UpgradeType.BowUnlock, 1);
@@ -385,10 +417,12 @@ namespace OverhaulMod.Content.Personalization
             bot._upgradeCollection.AddUpgradeIfMissing(UpgradeType.SpearUnlock, 1);
             bot._upgradeCollection.AddUpgradeIfMissing(UpgradeType.EnergyCapacity, 2);
             bot._upgradeCollection.AddUpgradeIfMissing(UpgradeType.Dash, 1);
+            bot._upgradeCollection.AddUpgradeIfMissing(ModUpgradesManager.SCYTHE_UNLOCK_UPGRADE, 1);
             bot.transform.eulerAngles = Vector3.up * 90f;
             if (bot._playerCamera)
                 bot._playerCamera.gameObject.SetActive(false);
 
+            m_bot = bot;
             m_greatSwordPreviewController = bot.gameObject.AddComponent<GreatSwordPreviewController>();
 
             DelegateScheduler.Instance.Schedule(delegate
@@ -441,9 +475,23 @@ namespace OverhaulMod.Content.Personalization
 
         public void SpawnRootObject()
         {
-            PersonalizationEditorObjectInfo rootInfo = currentEditingItemInfo?.RootObject;
-            if (rootInfo == null)
+            var info = currentEditingItemInfo;
+            if (info == null)
                 return;
+
+            PersonalizationEditorObjectInfo rootInfo = info.RootObject;
+            if (rootInfo == null)
+            {
+                rootInfo = new PersonalizationEditorObjectInfo()
+                {
+                    Name = "Root",
+                    Path = "Empty",
+                    IsRoot = true,
+                    Children = new List<PersonalizationEditorObjectInfo>(),
+                    PropertyValues = new Dictionary<string, object>()
+                };
+                currentEditingItemInfo.RootObject = rootInfo;
+            }
 
             PersonalizationController personalizationController = currentPersonalizationController;
             if (!personalizationController)

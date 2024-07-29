@@ -1,9 +1,17 @@
 ManifestFileVersion: 0
+<<<<<<< HEAD
 CRC: 2374715870
 Hashes:
   AssetFileHash:
     serializedVersion: 2
     Hash: 8514091567d00ab216bb498e7fcbd513
+=======
+CRC: 1856363288
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: af536c91e5f1e594a9fe3a8bf43cacc0
+>>>>>>> 0.4.x-development
   TypeTreeHash:
     serializedVersion: 2
     Hash: acf1344b0dbbc80b9165ec9e7dce57f8
@@ -119,6 +127,7 @@ Assets:
 - Assets/Sprites/Glyphs/NA-HQ-128x128.png
 - Assets/UI/UI_LoadingScreen.prefab
 - Assets/UI/UI_Transition.prefab
+- Assets/UI/UI_PersonalizationEditorItemCreationDialog.prefab
 - Assets/UI/UI_PersonalizationEditor.prefab
 - Assets/UI/UI_EndlessModeMenu.prefab
 - Assets/UI/UI_NewsInfoEditor.prefab
@@ -126,6 +135,7 @@ Assets:
 - Assets/UI/UI_LevelDescriptionListEditor.prefab
 - Assets/UI/UI_OtherMods.prefab
 - Assets/UI/UI_AssetBundleAssetsBrowser.prefab
+- Assets/UI/UI_PersonalizationEditorItemCompletionMenu.prefab
 - Assets/UI/UI_AddonsDownloadEditor.prefab
 - Assets/UI/UI_AutoBuildMenu.prefab
 - Assets/UI/UI_TitleScreenCustomizationPanel.prefab
@@ -138,6 +148,7 @@ Assets:
 - Assets/UI/UI_SetKeyBindWindow.prefab
 - Assets/UI/UI_FileExplorer.prefab
 - Assets/UI/UI_CreditsMenu.prefab
+- Assets/Sprites/Glyphs/Tick-16x16.png
 - Assets/UI/UI_InformationSelectWindow.prefab
 - Assets/Sprites/Glyphs/Drive-Mini-16x16.png
 - Assets/UI/UI_PauseMenuRework.prefab

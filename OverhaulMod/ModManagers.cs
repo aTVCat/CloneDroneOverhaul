@@ -60,14 +60,11 @@ namespace OverhaulMod
                     _ = ModUIConstants.ShowTitleScreenRework();
 
                 if (ShowModSetupScreenOnStart)
-                    ModUIConstants.ShowSettingsMenuRework(true);
-                else if (!UIPatchNotes.HasShowedPatchNotes)
-                {
-                    yield return new WaitForSecondsRealtime(2f);
-                    _ = ModUIConstants.ShowPatchNotes();
-                }
+                    _ = ModUIConstants.ShowSettingsMenuRework(true);
+                else
+                    ModUIUtils.ShowChangelogIfRequired(2f);
             }
-            ModUIConstants.ShowCinematicEffects();
+            _ = ModUIConstants.ShowCinematicEffects();
             yield break;
         }
 

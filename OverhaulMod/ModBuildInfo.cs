@@ -64,7 +64,7 @@ namespace OverhaulMod
             {
                 if (s_versionString == null)
                 {
-                    s_versionString = $"{versionMajor}.{versionMinor}.{versionBuild}.{versionRevision}";
+                    s_versionString = $"{versionMajor}.{versionMinor}.{versionBuild}.{versionRevision}a";
                 }
                 return s_versionString;
             }
@@ -162,7 +162,7 @@ namespace OverhaulMod
             string filePath = Path.Combine(ModCore.dataFolder, EXTRA_INFO_FILE_PATH);
             string content = ModJsonUtils.Serialize(new ExtraInfo()
             {
-                CompileTime = DateTime.Now
+                CompileTime = DateTime.UtcNow
             });
             ModIOUtils.WriteText(content, filePath);
         }
