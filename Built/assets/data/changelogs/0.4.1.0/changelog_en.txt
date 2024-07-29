@@ -10,6 +10,7 @@ Updates 4.2, 4.3 and beyond will be eventually released!
 - A few changes to customization editor UI
 - Improved customization editor item selection menu
 - Improved customization editor item creation dialog
+- Improved customization editor item verification menu
 - Improved mod UI configuration menu
 - Improved the "What's new" menu
 - Improved file system path handling

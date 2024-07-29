@@ -45,6 +45,8 @@ namespace OverhaulMod.UI
 
         protected override void OnInitialized()
         {
+            m_descriptionText.fontSize = 10;
+
             string path = Path.Combine(ModCore.dataFolder, "changelogs");
             if (!Directory.Exists(path))
                 return;

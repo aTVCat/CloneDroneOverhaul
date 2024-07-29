@@ -1,4 +1,4 @@
-(Changes between updates 3 and 4)
+(Changes made since update 3)
 
 - Added customization editor. Make and upload stuff almost without limits
 - Added new weapon: Scythe
