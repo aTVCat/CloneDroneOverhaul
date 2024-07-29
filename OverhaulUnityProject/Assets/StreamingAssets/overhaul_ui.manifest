@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 1425990552
+CRC: 1856363288
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 1e50d0c692176ba62393dd357a96b83a
+    Hash: af536c91e5f1e594a9fe3a8bf43cacc0
   TypeTreeHash:
     serializedVersion: 2
     Hash: acf1344b0dbbc80b9165ec9e7dce57f8
@@ -127,6 +127,7 @@ Assets:
 - Assets/UI/UI_LevelDescriptionListEditor.prefab
 - Assets/UI/UI_OtherMods.prefab
 - Assets/UI/UI_AssetBundleAssetsBrowser.prefab
+- Assets/UI/UI_PersonalizationEditorItemCompletionMenu.prefab
 - Assets/UI/UI_AddonsDownloadEditor.prefab
 - Assets/UI/UI_AutoBuildMenu.prefab
 - Assets/UI/UI_TitleScreenCustomizationPanel.prefab

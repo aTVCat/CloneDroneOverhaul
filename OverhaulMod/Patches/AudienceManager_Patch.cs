@@ -26,10 +26,15 @@ namespace OverhaulMod.Patches
             return audiencePlacementLine && audiencePlacementLine.StartPos && audiencePlacementLine.EndPos;
         }
 
-        [HarmonyFinalizer]
+        [HarmonyPrefix]
         [HarmonyPatch(nameof(AudienceManager.PlayAudienceReaction))]
-        private static void PlayAudienceReaction_Finalizer(AudienceManager __instance, AudienceReactionType reactionType)
+        private static bool PlayAudienceReaction_Prefix()
         {
+            LevelManager levelManager = LevelManager.Instance;
+            if (!levelManager || levelManager.IsCurrentLevelHidingTheArena())
+                return false;
+
+            return true;
         }
     }
 }

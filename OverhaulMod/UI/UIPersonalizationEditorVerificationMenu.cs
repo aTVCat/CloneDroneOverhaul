@@ -1,4 +1,5 @@
 ﻿using OverhaulMod.Content.Personalization;
+using OverhaulMod.Engine;
 using OverhaulMod.Utils;
 using UnityEngine;
 using UnityEngine.UI;
@@ -7,6 +8,10 @@ namespace OverhaulMod.UI
 {
     public class UIPersonalizationEditorVerificationMenu : OverhaulUIBehaviour
     {
+        public const string ALL_WEAPON_VARIANTS_PRESENT_COLOR = "#262626";
+        public const string ALL_WEAPON_VARIANTS_NOT_PRESENT_COLOR = "#802020";
+        public const string WEAPON_VARIANT_NOT_PRESENT_COLOR = "#998523";
+
         [UIElementAction(nameof(Hide))]
         [UIElement("CloseButton")]
         private readonly Button m_exitButton;
@@ -24,6 +29,19 @@ namespace OverhaulMod.UI
         [UIElement("LoadingIndicator", false)]
         private readonly GameObject m_loadingIndicator;
 
+        [UIElement("ScrollRect")]
+        private readonly Image m_scrollRectBG;
+
+        [UIElement("WeaponVariantDisplay", false)]
+        private readonly ModdedObject m_weaponVariantDisplay;
+
+        [UIElement("Content")]
+        private readonly Transform m_container;
+
+        private bool m_currentItemIsNotFullyCompleted;
+
+        private bool m_currentItemIsFullyIncomplete;
+
         public override void Show()
         {
             base.Show();
@@ -35,7 +53,52 @@ namespace OverhaulMod.UI
             if (personalizationItemInfo == null)
                 return;
 
+            RefreshItemCompletion(personalizationEditorManager.currentEditingRoot);
             RefreshButtonAndStatusText(personalizationItemInfo);
+        }
+
+        public void RefreshItemCompletion(PersonalizationEditorObjectBehaviour objectBehaviour)
+        {
+            if (m_container.childCount != 0)
+                TransformUtils.DestroyAllChildren(m_container);
+
+            m_currentItemIsFullyIncomplete = true;
+            m_currentItemIsNotFullyCompleted = false;
+            string bgColor = ALL_WEAPON_VARIANTS_PRESENT_COLOR;
+
+            PersonalizationItemVerificationManager personalizationItemVerificationManager = PersonalizationItemVerificationManager.Instance;
+            foreach(WeaponVariant weaponVariant in typeof(WeaponVariant).GetEnumValues())
+            {
+                if (weaponVariant == WeaponVariant.None)
+                    continue;
+
+                bool value = personalizationItemVerificationManager.DoesWeaponSkinSupportWeaponVariant(objectBehaviour, weaponVariant, out bool weaponDoesHaveThisVariant);
+                if (weaponDoesHaveThisVariant)
+                {
+                    ModdedObject moddedObject = Instantiate(m_weaponVariantDisplay, m_container);
+                    moddedObject.gameObject.SetActive(true);
+                    moddedObject.GetObject<Text>(0).text = WeaponVariantManager.GetWeaponVariantString(weaponVariant);
+                    moddedObject.GetObject<GameObject>(1).SetActive(value);
+                    moddedObject.GetObject<GameObject>(2).SetActive(!value);
+                    if (!value)
+                    {
+                        m_currentItemIsNotFullyCompleted = true;
+                        moddedObject.transform.SetAsFirstSibling();
+                        bgColor = WEAPON_VARIANT_NOT_PRESENT_COLOR;
+                    }
+                    else
+                    {
+                        m_currentItemIsFullyIncomplete = false;
+                    }
+                }
+            }
+
+            if (m_currentItemIsFullyIncomplete)
+            {
+                bgColor = ALL_WEAPON_VARIANTS_NOT_PRESENT_COLOR;
+            }
+
+            m_scrollRectBG.color = ModParseUtils.TryParseToColor(bgColor, Color.gray);
         }
 
         public void RefreshButtonAndStatusText(PersonalizationItemInfo personalizationItemInfo)
@@ -66,7 +129,7 @@ namespace OverhaulMod.UI
                 m_sendButtonText.text = "Upload item";
             }
 
-            m_sendButton.interactable = personalizationItemInfo != null && !personalizationItemInfo.IsSentForVerification;
+            m_sendButton.interactable = !m_currentItemIsFullyIncomplete && personalizationItemInfo != null && !personalizationItemInfo.IsSentForVerification;
         }
 
         public bool CanExit()
@@ -75,6 +138,16 @@ namespace OverhaulMod.UI
         }
 
         public void OnSendButtonClicked()
+        {
+            if (m_currentItemIsNotFullyCompleted)
+            {
+                ModUIUtils.MessagePopup(true, "Item not fully completed", "Your weapon skin doesn't support some of possible weapon variants.\nDo you still want to send the item to verification?", 150f, MessageMenu.ButtonLayout.EnableDisableButtons, null, "Yes", "No", null, sendItemToVerification);
+                return;
+            }
+            sendItemToVerification();
+        }
+
+        private void sendItemToVerification()
         {
             PersonalizationEditorManager personalizationEditorManager = PersonalizationEditorManager.Instance;
             if (!personalizationEditorManager)

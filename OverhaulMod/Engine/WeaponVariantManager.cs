@@ -50,5 +50,21 @@ namespace OverhaulMod.Engine
                 showConditions = WeaponVariant.None;
             }
         }
+
+        public static string GetWeaponVariantString(WeaponVariant weaponVariant)
+        {
+            switch (weaponVariant)
+            {
+                case WeaponVariant.Normal:
+                    return "Normal";
+                case WeaponVariant.OnFire:
+                    return "Fire";
+                case WeaponVariant.NormalMultiplayer:
+                    return "Normal (Multiplayer)";
+                case WeaponVariant.OnFireMultiplayer:
+                    return "Fire (Multiplayer)";
+            }
+            return weaponVariant.ToString();
+        }
     }
 }
