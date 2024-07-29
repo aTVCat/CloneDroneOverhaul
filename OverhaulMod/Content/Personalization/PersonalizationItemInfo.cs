@@ -56,6 +56,9 @@ namespace OverhaulMod.Content.Personalization
         [NonSerialized]
         public PersonalizationItemMetaData MetaData;
 
+        [NonSerialized]
+        public bool HideInBrowser;
+
         public void GetImportedFiles()
         {
             List<string> list = new List<string>();

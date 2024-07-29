@@ -31,11 +31,13 @@ namespace OverhaulMod.Content.Personalization
             if (DuplicateItems == null)
                 DuplicateItems = new List<PersonalizationItemInfo>();
 
+            int userItemsStartIndex = -1;
             List<string> directories;
             try
             {
                 directories = new List<string>();
                 directories.AddRange(Directory.GetDirectories(ModCore.customizationFolder));
+                userItemsStartIndex = directories.Count;
                 directories.AddRange(Directory.GetDirectories(ModCore.customizationPersistentFolder));
             }
             catch (Exception exc)
@@ -52,8 +54,11 @@ namespace OverhaulMod.Content.Personalization
             if (directories.IsNullOrEmpty())
                 return;
 
+            int index = -1;
             foreach (string directory in directories)
             {
+                index++;
+
                 string rootDirectory = Directory.GetParent(directory).FullName;
                 string rootDirectoryName = ModIOUtils.GetDirectoryName(rootDirectory);
 
@@ -115,6 +120,7 @@ namespace OverhaulMod.Content.Personalization
                         personalizationItemMetaData.CustomizationSystemVersion = PersonalizationItemMetaData.CurrentCustomizationSystemVersion;
 
                         PersonalizationItemInfo personalizationItemInfo = ModJsonUtils.Deserialize<PersonalizationItemInfo>(rawData);
+                        personalizationItemInfo.HideInBrowser = userItemsStartIndex != -1 && index < userItemsStartIndex && !personalizationItemInfo.IsVerified;
                         personalizationItemInfo.FolderPath = directory;
                         personalizationItemInfo.RootFolderPath = rootDirectory;
                         personalizationItemInfo.RootFolderName = rootDirectoryName;

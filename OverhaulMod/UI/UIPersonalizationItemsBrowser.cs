@@ -450,11 +450,13 @@ namespace OverhaulMod.UI
                     defaultSkinButton.interactable = !PersonalizationController.GetWeaponSkin(weaponType).IsNullOrEmpty();
                     m_defaultSkinButton = defaultSkinButton;
 
+                    bool isDeveloper = ModUserInfo.isDeveloper;
+
                     System.Collections.Generic.List<PersonalizationItemInfo> list = PersonalizationManager.Instance.itemList.GetItems(m_selectedCategory, (PersonalizationItemsSortType)m_sortType);
                     for (int i = 0; i < list.Count; i++)
                     {
                         PersonalizationItemInfo item = list[i];
-                        if (item.Weapon != weaponType)
+                        if (item.Weapon != weaponType || (item.HideInBrowser && !isDeveloper))
                             continue;
 
                         bool isExclusive = item.IsExclusive();
