@@ -14,6 +14,15 @@ namespace OverhaulMod.UI
         [ModSetting(ModSettingsConstants.HAS_EVER_SENT_FEEDBACK, false)]
         public static bool HasEverSentFeedback;
 
+        [ModSetting(ModSettingsConstants.FEEDBACK_MENU_RATE, 0)]
+        public static int SavedRate;
+
+        [ModSetting(ModSettingsConstants.FEEDBACK_MENU_IMPROVE_TEXT, null)]
+        public static string SavedImproveText;
+
+        [ModSetting(ModSettingsConstants.FEEDBACK_MENU_FAVORITE_TEXT, null)]
+        public static string SavedFavoriteText;
+
         public static bool HasSentFeedback, HasLikedTheMod;
 
         [UIElementAction(nameof(Hide))]
@@ -71,6 +80,8 @@ namespace OverhaulMod.UI
 
         public override bool hideTitleScreen => true;
 
+        private bool m_usedSavedSettings;
+
         private bool m_isSendingFeedback;
 
         private string m_charsLeftText;
@@ -81,19 +92,42 @@ namespace OverhaulMod.UI
             private set;
         }
 
+        protected override void OnInitialized()
+        {
+            m_improveField.characterLimit = CHARACTER_LIMIT;
+            m_favoriteField.characterLimit = CHARACTER_LIMIT;
+        }
+
         public override void Show()
         {
             base.Show();
 
             m_charsLeftText = LocalizationManager.Instance.GetTranslatedString("charsleft");
-            m_improveField.characterLimit = CHARACTER_LIMIT;
-            m_favoriteField.characterLimit = CHARACTER_LIMIT;
             m_likeButton.interactable = !ModBotSignInUI._userName.IsNullOrEmpty() && !HasLikedTheMod;
+
+            if (!m_usedSavedSettings)
+            {
+                m_usedSavedSettings = true;
+
+                selectedRank = ModSettingsManager.GetIntValue(ModSettingsConstants.FEEDBACK_MENU_RATE);
+                m_improveField.text = ModSettingsManager.GetStringValue(ModSettingsConstants.FEEDBACK_MENU_IMPROVE_TEXT);
+                m_favoriteField.text = ModSettingsManager.GetStringValue(ModSettingsConstants.FEEDBACK_MENU_FAVORITE_TEXT);
+            }
 
             refreshElements();
 
             m_improveFieldCharsLeftText.text = getCharLeftTextForField(m_improveField);
             m_favoriteFieldCharsLeftText.text = getCharLeftTextForField(m_favoriteField);
+        }
+
+        public override void Hide()
+        {
+            base.Hide();
+
+            ModSettingsManager.SetIntValue(ModSettingsConstants.FEEDBACK_MENU_RATE, selectedRank);
+            ModSettingsManager.SetStringValue(ModSettingsConstants.FEEDBACK_MENU_IMPROVE_TEXT, m_improveField.text);
+            ModSettingsManager.SetStringValue(ModSettingsConstants.FEEDBACK_MENU_FAVORITE_TEXT, m_favoriteField.text);
+            ModSettingsDataManager.Instance.Save();
         }
 
         private void refreshElements()
@@ -134,6 +168,7 @@ namespace OverhaulMod.UI
 
         public void OnExitGameButtonClicked()
         {
+            Hide();
             Application.Quit();
         }
 

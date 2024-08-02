@@ -1,6 +1,7 @@
 ﻿using AmplifyOcclusion;
 using OverhaulMod.Engine;
 using OverhaulMod.Utils;
+using OverhaulMod.Visuals.ImageEffects;
 using UnityEngine;
 using UnityStandardAssets.ImageEffects;
 
@@ -83,6 +84,19 @@ namespace OverhaulMod.Visuals
                 }
                 bloom.enabled = EnableBloom;
             }
+
+            if (!ModFeatures.IsEnabled(ModFeatures.FeatureType.ImageEffects))
+                return;
+
+            OverhaulChromaticAberration chromaticAberration = camera.GetComponent<OverhaulChromaticAberration>();
+            if (!chromaticAberration)
+                chromaticAberration = cameraGameObject.AddComponent<OverhaulChromaticAberration>();
+
+            OverhaulColorBlindness overhaulColorBlindness = camera.GetComponent<OverhaulColorBlindness>();
+            if (!overhaulColorBlindness)
+                overhaulColorBlindness = cameraGameObject.AddComponent<OverhaulColorBlindness>();
+
+            overhaulColorBlindness.type = 0;
         }
 
         public void RemovePostEffectsFromCamera(Camera camera)

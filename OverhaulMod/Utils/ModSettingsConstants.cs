@@ -325,5 +325,20 @@ namespace OverhaulMod.Utils
         /// <see cref="UI.UIPersonalizationItemsBrowser"/>
         /// </summary>
         public const string HAS_EVER_ROTATED_THE_CAMERA = "HasEverRotatedTheCamera";
+
+        /// <summary>
+        /// <see cref="UI.UIFeedbackMenu"/>
+        /// </summary>
+        public const string FEEDBACK_MENU_RATE = "FeedbackMenuRate";
+
+        /// <summary>
+        /// <see cref="UI.UIFeedbackMenu"/>
+        /// </summary>
+        public const string FEEDBACK_MENU_IMPROVE_TEXT = "FeedbackMenuImproveText";
+
+        /// <summary>
+        /// <see cref="UI.UIFeedbackMenu"/>
+        /// </summary>
+        public const string FEEDBACK_MENU_FAVORITE_TEXT = "FeedbackMenuFavoriteText";
     }
 }

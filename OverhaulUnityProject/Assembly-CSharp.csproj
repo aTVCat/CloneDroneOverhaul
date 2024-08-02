@@ -74,6 +74,8 @@
     <Compile Include="Assets\Scripts\SelectOnShow.cs" />
     <Compile Include="Assets\Scripts\ShowIfKeyboardOrController.cs" />
     <Compile Include="Assets\Scripts\UISelectionState.cs" />
+    <Compile Include="Assets\Shaders\ImageEffects\ChromaticAberration\ChromaticAberration.cs" />
+    <Compile Include="Assets\Shaders\ImageEffects\ColorBlind\Colorblind.cs" />
     <Compile Include="Assets\Shaders\ImageEffects\LightLeaks\LightLeaks.cs" />
     <Compile Include="Assets\Shaders\ShaderOnCamera.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01.cs" />
@@ -147,6 +149,7 @@
     <None Include="Assets\Shaders\AmplifyOcclusion\CommonFunctions.cginc" />
     <None Include="Assets\TextMesh Pro\Examples &amp; Extras\Fonts\Bangers - OFL.txt" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_Bitmap-Mobile.shader" />
+    <None Include="Assets\Shaders\ImageEffects\ColorBlind\Colorblind.shader" />
     <None Include="Assets\Shaders\ImageEffects\xRLib.hlsl" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF Overlay.shader" />
     <None Include="Assets\TextMesh Pro\Fonts\LiberationSans - OFL.txt" />
@@ -165,6 +168,7 @@
     <None Include="Assets\Shaders\ImageEffects\Spotlight.shader" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Mobile.shader" />
     <None Include="Assets\Shaders\ImageEffects\ThreeDOutlineShader.shader" />
+    <None Include="Assets\Shaders\ImageEffects\ChromaticAberration\ChromaticAberration.shader" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_Sprite.shader" />
     <None Include="Assets\Shaders\SnapshotShaders\Bloom.shader" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Surface.shader" />
