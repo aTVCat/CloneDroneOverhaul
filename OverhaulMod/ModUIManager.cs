@@ -107,7 +107,7 @@ namespace OverhaulMod
                 _ = m_instantiatedUIs.Remove(key);
 
             _ = ModUIConstants.ShowVersionLabel();
-            _ = ModUIConstants.ShowImageEffects();
+            //_ = ModUIConstants.ShowImageEffects();
             if (ModFeatures.IsEnabled(ModFeatures.FeatureType.Tooltips))
                 _ = ModUIConstants.ShowTooltips();
         }

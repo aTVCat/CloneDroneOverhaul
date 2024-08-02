@@ -41,11 +41,23 @@ namespace OverhaulMod.Visuals
         [ModSetting(ModSettingsConstants.MSAA_PLUS_CUSTOM, false)]
         public static bool MSAAPlusCustom;
 
+        [ModSetting(ModSettingsConstants.ENABLE_DOF, false)]
+        public static bool EnableDoF;
+
         [ModSetting(ModSettingsConstants.ENABLE_BLOOM, true)]
         public static bool EnableBloom;
 
         [ModSetting(ModSettingsConstants.TWEAK_BLOOM, true)]
         public static bool TweakBloom;
+
+        [ModSetting(ModSettingsConstants.ENABLE_VIGNETTE, true)]
+        public static bool EnableVignette;
+
+        [ModSetting(ModSettingsConstants.ENABLE_DITHERING, false)]
+        public static bool EnableDithering;
+
+        [ModSetting(ModSettingsConstants.ENABLE_SUN_SHAFTS, false)]
+        public static bool EnableSunShafts;
 
         public static List<Dropdown.OptionData> ColorBlindnessOptions = new List<Dropdown.OptionData>()
         {
@@ -154,6 +166,97 @@ namespace OverhaulMod.Visuals
                     break;
             }
             antialiasing.enabled = AntialiasingMode != 0 || MSAAPlusCustom;
+
+            DepthOfField depthOfField = camera.GetComponent<DepthOfField>();
+            if (!depthOfField)
+            {
+                depthOfField = cameraGameObject.AddComponent<DepthOfField>();
+                depthOfField.dofHdrShader = ModResources.Shader(AssetBundleConstants.IMAGE_EFFECTS, "DepthOfFieldScatter");
+                depthOfField.dx11BokehShader = ModResources.Shader(AssetBundleConstants.IMAGE_EFFECTS, "DepthOfFieldDX11");
+                depthOfField.focalLength = 9;
+                depthOfField.focalSize = 0.9f;
+                depthOfField.blurSampleCount = DepthOfField.BlurSampleCount.Low;
+                depthOfField.nearBlur = true;
+            }
+            depthOfField.enabled = EnableDoF;
+
+            SunShafts sunShafts = camera.GetComponent<SunShafts>();
+            if (!sunShafts)
+            {
+                sunShafts = cameraGameObject.AddComponent<SunShafts>();
+                sunShafts.simpleClearShader = ModResources.Shader(AssetBundleConstants.IMAGE_EFFECTS, "SimpleClear");
+                sunShafts.sunShaftsShader = ModResources.Shader(AssetBundleConstants.IMAGE_EFFECTS, "SunShaftsComposite");
+                sunShafts.sunThreshold = new Color(0.8f, 0.9f, 0.8f, 1f);
+                sunShafts.resolution = SunShafts.SunShaftsResolution.Low;
+                sunShafts.sunShaftIntensity = 1.2f;
+            }
+            sunShafts.enabled = EnableSunShafts;
+
+            /*
+            BloomAndFlares bloomAndFlares = camera.GetComponent<BloomAndFlares>();
+            if (!bloomAndFlares)
+            {
+                bloomAndFlares = cameraGameObject.AddComponent<BloomAndFlares>();
+                bloomAndFlares.separableBlurShader = ModResources.Shader(AssetBundleConstants.IMAGE_EFFECTS, "SeparableBlurPlus");
+                bloomAndFlares.screenBlendShader = ModResources.Shader(AssetBundleConstants.IMAGE_EFFECTS, "Blend");
+                bloomAndFlares.brightPassFilterShader = ModResources.Shader(AssetBundleConstants.IMAGE_EFFECTS, "BrightPassFilter");
+                bloomAndFlares.addBrightStuffOneOneShader = ModResources.Shader(AssetBundleConstants.IMAGE_EFFECTS, "BlendOneOne");
+                bloomAndFlares.hollywoodFlaresShader = ModResources.Shader(AssetBundleConstants.IMAGE_EFFECTS, "MultiPassHollywoodFlares");
+                bloomAndFlares.lensFlareShader = ModResources.Shader(AssetBundleConstants.IMAGE_EFFECTS, "LensFlareCreate");
+                bloomAndFlares.vignetteShader = ModResources.Shader(AssetBundleConstants.IMAGE_EFFECTS, "VignetteShader");
+                bloomAndFlares.lensFlareVignetteMask = ModResources.Texture2D(AssetBundleConstants.IMAGE_EFFECTS, "VignetteMask");
+                bloomAndFlares.lensflares = true;
+                bloomAndFlares.lensflareMode = LensflareStyle34.Ghosting;   
+                bloomAndFlares.bloomBlurIterations = 4;
+                bloomAndFlares.bloomIntensity = 0.5f;
+                bloomAndFlares.bloomThreshold = 1f;
+            }*/
+
+            NoiseAndGrain noiseAndGrain = camera.GetComponent<NoiseAndGrain>();
+            if (!noiseAndGrain)
+            {
+                noiseAndGrain = cameraGameObject.AddComponent<NoiseAndGrain>();
+                noiseAndGrain.noiseShader = ModResources.Shader(AssetBundleConstants.IMAGE_EFFECTS, "NoiseAndGrain");
+                noiseAndGrain.dx11NoiseShader = ModResources.Shader(AssetBundleConstants.IMAGE_EFFECTS, "NoiseAndGrainDX11");
+                noiseAndGrain.noiseTexture = ModResources.Texture2D(AssetBundleConstants.IMAGE_EFFECTS, "Noise");
+                noiseAndGrain.generalIntensity = 0.15f;
+                noiseAndGrain.intensityMultiplier = 0.2f;
+                noiseAndGrain.whiteIntensity = 0.75f;
+                noiseAndGrain.blackIntensity = 1f;
+                noiseAndGrain.midGrey = 0.4f;
+                noiseAndGrain.softness = 0.15f;
+                noiseAndGrain.midGrey = 0.2f;
+            }
+            noiseAndGrain.enabled = EnableDithering;
+
+            VignetteAndChromaticAberration vignetteAndChromaticAberration = camera.GetComponent<VignetteAndChromaticAberration>();
+            if (!vignetteAndChromaticAberration)
+            {
+                vignetteAndChromaticAberration = cameraGameObject.AddComponent<VignetteAndChromaticAberration>();
+                vignetteAndChromaticAberration.vignetteShader = ModResources.Shader(AssetBundleConstants.IMAGE_EFFECTS, "VignettingShader");
+                vignetteAndChromaticAberration.chromAberrationShader = ModResources.Shader(AssetBundleConstants.IMAGE_EFFECTS, "ChromaticAberrationShader");
+                vignetteAndChromaticAberration.separableBlurShader = ModResources.Shader(AssetBundleConstants.IMAGE_EFFECTS, "SeparableBlur");
+                vignetteAndChromaticAberration.intensity = 0.23f;
+                vignetteAndChromaticAberration.chromaticAberration = 0f;
+            }
+            vignetteAndChromaticAberration.enabled = EnableVignette;
+
+            /*
+            EdgeDetection edgeDetection = camera.GetComponent<EdgeDetection>();
+            if (!edgeDetection)
+            {
+                edgeDetection = cameraGameObject.AddComponent<EdgeDetection>();
+                edgeDetection.edgeDetectShader= ModResources.Shader(AssetBundleConstants.IMAGE_EFFECTS, "EdgeDetectNormals");
+            }*/
+
+            /*
+            ContrastEnhance contrastEnhance = camera.GetComponent<ContrastEnhance>();
+            if (!contrastEnhance)
+            {
+                contrastEnhance = cameraGameObject.AddComponent<ContrastEnhance>();
+                contrastEnhance.contrastCompositeShader = ModResources.Shader(AssetBundleConstants.IMAGE_EFFECTS, "ContrastComposite");
+                contrastEnhance.separableBlurShader = ModResources.Shader(AssetBundleConstants.IMAGE_EFFECTS, "SeparableBlur");
+            }*/
 
             OverhaulChromaticAberration chromaticAberration = camera.GetComponent<OverhaulChromaticAberration>();
             if (!chromaticAberration)

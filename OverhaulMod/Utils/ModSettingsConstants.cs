@@ -385,5 +385,15 @@ namespace OverhaulMod.Utils
         /// <see cref="Visuals.PostEffectsManager"/>
         /// </summary>
         public const string MSAA_PLUS_CUSTOM = "MSAAPlusCustom";
+
+        /// <summary>
+        /// <see cref="Visuals.PostEffectsManager"/>
+        /// </summary>
+        public const string ENABLE_DOF = "EnableDoF";
+
+        /// <summary>
+        /// <see cref="Visuals.PostEffectsManager"/>
+        /// </summary>
+        public const string ENABLE_SUN_SHAFTS = "EnableSunShafts";
     }
 }

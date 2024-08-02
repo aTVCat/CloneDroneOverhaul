@@ -170,8 +170,8 @@ namespace OverhaulMod.Engine
             public static void SetDefaultSettings()
             {
                 VignetteIntensity = 0.5f;
-                EnableVignette = UIImageEffects.EnableVignette;
-                EnableDithering = UIImageEffects.EnableDithering;
+                EnableVignette = PostEffectsManager.EnableVignette;
+                EnableDithering = PostEffectsManager.EnableDithering;
                 EnableSSAO = PostEffectsManager.EnableSSAO;
             }
         }

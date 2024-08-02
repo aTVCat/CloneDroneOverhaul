@@ -446,6 +446,20 @@ namespace OverhaulMod.UI
             {
                 populateCASettingsPage(m_selectedTabId);
             });
+            _ = pageBuilder.ToggleWithOptions(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_DOF), delegate (bool value)
+            {
+                ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_DOF, value, true);
+            }, "Depth of field (DoF)", delegate
+            {
+                populateCASettingsPage(m_selectedTabId);
+            });
+            _ = pageBuilder.ToggleWithOptions(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_SUN_SHAFTS), delegate (bool value)
+            {
+                ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_SUN_SHAFTS, value, true);
+            }, "Sun shafts", delegate
+            {
+                populateSSAOSettingsPage(m_selectedTabId);
+            });
             _ = pageBuilder.ToggleWithOptions(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_DITHERING), delegate (bool value)
             {
                 ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_DITHERING, value, true);
