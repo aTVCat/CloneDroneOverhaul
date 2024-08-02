@@ -179,7 +179,7 @@ namespace OverhaulMod.UI
                 UIPersonalizationEditor.instance.ShowEverything();
                 PersonalizationEditorManager.Instance.EditItem(personalizationItem, personalizationItem.FolderPath);
                 Hide();
-                if(ItemCreatedCallback != null)
+                if (ItemCreatedCallback != null)
                 {
                     ItemCreatedCallback();
                     ItemCreatedCallback = null;

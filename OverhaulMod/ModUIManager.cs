@@ -196,7 +196,7 @@ namespace OverhaulMod
             T result = m_instantiatedUIs[fullName].GetComponent<T>();
             result.Show();
 
-            if(result.closeOnEscapeButtonPress)
+            if (result.closeOnEscapeButtonPress)
                 m_shownUIs.Add(result);
 
             return result;
@@ -240,7 +240,7 @@ namespace OverhaulMod
 
         public void RemoveUIFromLastShown(OverhaulUIBehaviour behaviour)
         {
-            m_shownUIs.Remove(behaviour);
+            _ = m_shownUIs.Remove(behaviour);
         }
 
         public void RefreshUI(bool refreshOnlyCursor)

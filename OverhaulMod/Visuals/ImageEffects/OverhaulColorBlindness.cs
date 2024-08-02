@@ -1,9 +1,4 @@
 ﻿using OverhaulMod.Utils;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace OverhaulMod.Visuals.ImageEffects
@@ -24,88 +19,47 @@ namespace OverhaulMod.Visuals.ImageEffects
             }
             set
             {
-                if(m_colorblindMaterial)
-                    m_colorblindMaterial.SetInt("type", value);
+                if (m_material)
+                    m_material.SetInt("type", value);
 
                 m_type = value;
             }
         }
 
-        public Shader m_colorblindShader;
+        public Shader m_shader;
 
-        private Material m_colorblindMaterial;
+        private Material m_material;
 
         private bool m_supported;
 
         private void Start()
         {
-            if (!m_colorblindShader)
-                m_colorblindShader = ModResources.Shader(AssetBundleConstants.IMAGE_EFFECTS, "Colorblind");
-
-            if (!m_colorblindShader)
-            {
-                m_supported = false;
-                enabled = false;
-                return;
-            }
-
             if (!SystemInfo.supportsImageEffects || SystemInfo.graphicsShaderLevel < 30)
-            {
-                m_supported = false;
-                enabled = false;
                 return;
-            }
 
-            EnsureMaterials();
-
-            if (!m_colorblindMaterial || m_colorblindMaterial.passCount != 1)
-            {
-                m_supported = false;
-                enabled = false;
+            m_shader = ModResources.Shader(AssetBundleConstants.IMAGE_EFFECTS, "Colorblind");
+            if (!m_shader || !m_shader.isSupported)
                 return;
-            }
+
+            m_material = new Material(m_shader);
+            m_material.SetInt("type", type);
+
+            if (!m_material || m_material.passCount != 1)
+                return;
 
             m_supported = true;
         }
 
-        private static Material CreateMaterial(Shader shader)
+        private void OnRenderImage(RenderTexture source, RenderTexture destination)
         {
-            if (!shader)
-                return null;
-
-            Material m = new Material(shader);
-            m.hideFlags = HideFlags.HideAndDontSave;
-            return m;
-        }
-
-        private static void DestroyMaterial(Material mat)
-        {
-            if (mat)
+            if (m_supported)
             {
-                DestroyImmediate(mat);
-                mat = null;
+                Graphics.Blit(source, destination, m_material);
             }
-        }
-
-        private void EnsureMaterials()
-        {
-            if (!m_colorblindMaterial && m_colorblindShader.isSupported)
+            else
             {
-                m_colorblindMaterial = CreateMaterial(m_colorblindShader);
-                m_colorblindMaterial.SetInt("type", type);
+                Graphics.Blit(source, destination);
             }
-        }
-
-        void OnRenderImage(RenderTexture source, RenderTexture destination)
-        {
-            if (!m_supported || !m_colorblindShader.isSupported)
-            {
-                enabled = false;
-                return;
-            }
-
-            EnsureMaterials();
-            Graphics.Blit(source, destination, m_colorblindMaterial, 0);
         }
     }
 }

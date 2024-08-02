@@ -184,25 +184,17 @@ namespace OverhaulMod
         private static void addListeners()
         {
             ModSettingsManager modSettingsManager = ModSettingsManager.Instance;
-            modSettingsManager.AddSettingValueChangedListener(delegate (object obj)
-            {
-                ModSpecialUtils.SetTitleBarStateDependingOnSettings();
-            }, ModSettingsConstants.ENABLE_TITLE_BAR_OVERHAUL);
-
-            modSettingsManager.AddSettingValueChangedListener(delegate (object obj)
-            {
-                PostEffectsManager.Instance.RefreshCameraPostEffects();
-            }, ModSettingsConstants.ENABLE_SSAO);
-
-            modSettingsManager.AddSettingValueChangedListener(delegate (object obj)
-            {
-                PostEffectsManager.Instance.RefreshCameraPostEffects();
-            }, ModSettingsConstants.ENABLE_BLOOM);
-
-            modSettingsManager.AddSettingValueChangedListener(delegate (object obj)
-            {
-                PostEffectsManager.Instance.RefreshCameraPostEffects();
-            }, ModSettingsConstants.TWEAK_BLOOM);
+            modSettingsManager.AddSettingValueChangedListener(refreshCameraPostEffects, ModSettingsConstants.ENABLE_TITLE_BAR_OVERHAUL);
+            modSettingsManager.AddSettingValueChangedListener(refreshCameraPostEffects, ModSettingsConstants.ENABLE_SSAO);
+            modSettingsManager.AddSettingValueChangedListener(refreshCameraPostEffects, ModSettingsConstants.SSAO_INTENSITY);
+            modSettingsManager.AddSettingValueChangedListener(refreshCameraPostEffects, ModSettingsConstants.SSAO_SAMPLE_COUNT);
+            modSettingsManager.AddSettingValueChangedListener(refreshCameraPostEffects, ModSettingsConstants.ENABLE_CHROMATIC_ABERRATION);
+            modSettingsManager.AddSettingValueChangedListener(refreshCameraPostEffects, ModSettingsConstants.CHROMATIC_ABERRATION_INTENSITY);
+            modSettingsManager.AddSettingValueChangedListener(refreshCameraPostEffects, ModSettingsConstants.CHROMATIC_ABERRATION_ON_SCREEN_EDGES);
+            modSettingsManager.AddSettingValueChangedListener(refreshCameraPostEffects, ModSettingsConstants.COLOR_BLINDNESS_MODE);
+            modSettingsManager.AddSettingValueChangedListener(refreshCameraPostEffects, ModSettingsConstants.COLOR_BLINDNESS_AFFECT_UI);
+            modSettingsManager.AddSettingValueChangedListener(refreshCameraPostEffects, ModSettingsConstants.ENABLE_BLOOM);
+            modSettingsManager.AddSettingValueChangedListener(refreshCameraPostEffects, ModSettingsConstants.TWEAK_BLOOM);
 
             modSettingsManager.AddSettingValueChangedListener(delegate (object obj)
             {
@@ -213,6 +205,11 @@ namespace OverhaulMod
                         energyUIPatch.RefreshPatch();
                 });
             }, ModSettingsConstants.ENERGY_UI_REWORK);
+        }
+
+        private static void refreshCameraPostEffects(object obj)
+        {
+            PostEffectsManager.Instance.RefreshCameraPostEffects();
         }
 
         private static void loadGameUIThemeData()

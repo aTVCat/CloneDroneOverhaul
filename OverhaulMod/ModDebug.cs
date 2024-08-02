@@ -54,7 +54,7 @@ namespace OverhaulMod
 
         public static void AddDepthOfFieldEffect(Camera camera)
         {
-            DepthOfField depthOfField = camera.gameObject.AddComponent<DepthOfField>();
+            _ = camera.gameObject.AddComponent<DepthOfField>();
         }
 
         public static void MessagePopupTest()

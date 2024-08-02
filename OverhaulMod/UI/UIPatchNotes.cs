@@ -3,7 +3,6 @@ using OverhaulMod.Utils;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -65,15 +64,14 @@ namespace OverhaulMod.UI
                 return;
 
             Button firstButton = null;
-            string firstButtonVersion = null;
 
             versions.Sort(CompareByVersion);
 
             int minorVersion = ModBuildInfo.versionMinor;
             int buildVersion = ModBuildInfo.versionBuild;
-            foreach (var version in versions)
+            foreach (Version version in versions)
             {
-                if((version.Minor != minorVersion || version.Build != buildVersion) && firstButton)
+                if ((version.Minor != minorVersion || version.Build != buildVersion) && firstButton)
                 {
                     GameObject separator = Instantiate(m_separator, m_container);
                     separator.SetActive(true);
@@ -103,19 +101,20 @@ namespace OverhaulMod.UI
 
                 if (!firstButton)
                 {
-                    firstButtonVersion = verString;
-
                     firstButton = button;
-                    firstButton.onClick.AddListener(delegate
-                    {
-                        ModSettingsManager.SetStringValue(ModSettingsConstants.LAST_BUILD_CHANGELOG_WAS_SHOWN, firstButtonVersion);
-                        ModSettingsDataManager.Instance.Save();
-                    });
                 }
             }
 
-            if(firstButton)
+            if (firstButton)
                 firstButton.Press();
+        }
+
+        public override void Hide()
+        {
+            base.Hide();
+
+            ModSettingsManager.SetStringValue(ModSettingsConstants.LAST_BUILD_CHANGELOG_WAS_SHOWN, ModBuildInfo.versionString);
+            ModSettingsDataManager.Instance.Save();
         }
 
         public override void Update()

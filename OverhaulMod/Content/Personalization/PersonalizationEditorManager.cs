@@ -475,7 +475,7 @@ namespace OverhaulMod.Content.Personalization
 
         public void SpawnRootObject()
         {
-            var info = currentEditingItemInfo;
+            PersonalizationItemInfo info = currentEditingItemInfo;
             if (info == null)
                 return;
 

@@ -701,6 +701,7 @@
     <Compile Include="Visuals\Environment\SeveredBodyPartSparks.cs" />
     <Compile Include="Visuals\Environment\WeatherInfo.cs" />
     <Compile Include="Visuals\Environment\WeatherManager.cs" />
+    <Compile Include="Visuals\ImageEffects\OverhaulAntialiasingMode.cs" />
     <Compile Include="Visuals\ImageEffects\OverhaulChromaticAberration.cs" />
     <Compile Include="Visuals\ImageEffects\OverhaulColorBlindness.cs" />
     <Compile Include="Visuals\ParticleManager.cs" />

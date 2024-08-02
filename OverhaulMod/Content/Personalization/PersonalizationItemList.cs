@@ -30,9 +30,9 @@ namespace OverhaulMod.Content.Personalization
 
             if (DuplicateItems == null)
                 DuplicateItems = new List<PersonalizationItemInfo>();
-
-            int userItemsStartIndex = -1;
             List<string> directories;
+
+            int userItemsStartIndex;
             try
             {
                 directories = new List<string>();

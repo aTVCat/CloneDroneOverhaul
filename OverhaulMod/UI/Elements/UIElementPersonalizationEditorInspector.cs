@@ -206,7 +206,7 @@ namespace OverhaulMod.UI
             personalizationItemInfo.Weapon = weaponType;
 
             FirstPersonMover firstPersonMover = PersonalizationEditorManager.Instance.GetBot();
-            if(firstPersonMover)
+            if (firstPersonMover)
                 firstPersonMover.SetEquippedWeaponType(weaponType, false);
 
             PersonalizationEditorManager manager = PersonalizationEditorManager.Instance;

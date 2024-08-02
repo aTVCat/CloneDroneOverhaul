@@ -228,7 +228,7 @@ namespace OverhaulMod.UI
             if (holder)
             {
                 bool mouseButtonDown = Input.GetMouseButton(1);
-                if(mouseButtonDown && !HasEverRotatedTheCamera)
+                if (mouseButtonDown && !HasEverRotatedTheCamera)
                 {
                     ModSettingsManager.SetBoolValue(ModSettingsConstants.HAS_EVER_ROTATED_THE_CAMERA, true);
                 }
@@ -237,7 +237,7 @@ namespace OverhaulMod.UI
                 m_cameraHolderRotationY = Mathf.Lerp(m_cameraHolderRotationY, mouseButtonDown ? Input.GetAxis("Mouse X") * 1.25f : 0f, d2);
 
                 Vector3 currentEulerAngles = holder.localEulerAngles;
-                currentEulerAngles.y = currentEulerAngles.y + m_cameraHolderRotationY;
+                currentEulerAngles.y += m_cameraHolderRotationY;
                 holder.localEulerAngles = currentEulerAngles;
             }
 

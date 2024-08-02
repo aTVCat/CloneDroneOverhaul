@@ -122,7 +122,7 @@ namespace OverhaulMod.Combat.Weapons
             MeshRenderer meshRenderer = moddedObject.GetObject<MeshRenderer>(3);
             if (meshRenderer)
             {
-                if(!m_hasUpdatedShaderForNormalVariant)
+                if (!m_hasUpdatedShaderForNormalVariant)
                 {
                     meshRenderer.material.shader = Shader.Find("Standard");
                     m_hasUpdatedShaderForNormalVariant = true;

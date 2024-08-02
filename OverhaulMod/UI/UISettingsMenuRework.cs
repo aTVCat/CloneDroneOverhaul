@@ -1,8 +1,10 @@
-﻿using InternalModBot;
+﻿using AmplifyOcclusion;
+using InternalModBot;
 using ModBotWebsiteAPI;
 using OverhaulMod.Engine;
 using OverhaulMod.Patches.Behaviours;
 using OverhaulMod.Utils;
+using OverhaulMod.Visuals;
 using OverhaulMod.Visuals.Environment;
 using System;
 using System.Collections.Generic;
@@ -46,6 +48,8 @@ namespace OverhaulMod.UI
 
         [UIElement("TogglePrefab", false)]
         public ModdedObject TogglePrefab;
+        [UIElement("ToggleWithOptionsPrefab", false)]
+        public ModdedObject ToggleWithOptionsPrefab;
 
         [UIElement("ButtonPrefab", false)]
         public ModdedObject ButtonPrefab;
@@ -258,10 +262,13 @@ namespace OverhaulMod.UI
 
             _ = pageBuilder.Header1("Graphics");
             _ = pageBuilder.Header3("Post effects");
-            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_SSAO), delegate (bool value)
+            _ = pageBuilder.ToggleWithOptions(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_SSAO), delegate (bool value)
             {
                 ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_SSAO, value, true);
-            }, "Ambient occlusion");
+            }, "Ambient occlusion", delegate
+            {
+                populateSSAOSettingsPage(m_selectedTabId);
+            });
             _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_DITHERING), delegate (bool value)
             {
                 ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_DITHERING, value, true);
@@ -425,27 +432,56 @@ namespace OverhaulMod.UI
             _ = pageBuilder.Dropdown(settingsMenu.AntiAliasingDropdown.options, settingsMenu.AntiAliasingDropdown.value, OnAntiAliasingDropdownChanged);
 
             _ = pageBuilder.Header3("Post effects");
-            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_SSAO), delegate (bool value)
+            _ = pageBuilder.ToggleWithOptions(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_SSAO), delegate (bool value)
             {
                 ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_SSAO, value, true);
-            }, "Ambient occlusion");
-            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_DITHERING), delegate (bool value)
+            }, "Ambient occlusion", delegate
+            {
+                populateSSAOSettingsPage(m_selectedTabId);
+            });
+            _ = pageBuilder.ToggleWithOptions(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_CHROMATIC_ABERRATION), delegate (bool value)
+            {
+                ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_CHROMATIC_ABERRATION, value, true);
+            }, "Chromatic aberration", delegate
+            {
+                populateCASettingsPage(m_selectedTabId);
+            });
+            _ = pageBuilder.ToggleWithOptions(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_DITHERING), delegate (bool value)
             {
                 ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_DITHERING, value, true);
-            }, "Dithering");
-            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_VIGNETTE), delegate (bool value)
+            }, "Dithering", delegate
+            {
+                populateSSAOSettingsPage(m_selectedTabId);
+            });
+            _ = pageBuilder.ToggleWithOptions(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_VIGNETTE), delegate (bool value)
             {
                 ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_VIGNETTE, value, true);
-            }, "Vignette");
-            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_BLOOM), delegate (bool value)
+            }, "Vignette", delegate
+            {
+                populateSSAOSettingsPage(m_selectedTabId);
+            });
+            _ = pageBuilder.ToggleWithOptions(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_BLOOM), delegate (bool value)
             {
                 ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_BLOOM, value, true);
-            }, "Bloom");
-            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.TWEAK_BLOOM), delegate (bool value)
+            }, "Bloom", delegate
+            {
+                populateSSAOSettingsPage(m_selectedTabId);
+            });
+            _ = pageBuilder.Header3("Color blindness mode");
+            _ = pageBuilder.Dropdown(PostEffectsManager.ColorBlindnessOptions, ModSettingsManager.GetIntValue(ModSettingsConstants.COLOR_BLINDNESS_MODE), delegate (int value)
+            {
+                ModSettingsManager.SetIntValue(ModSettingsConstants.COLOR_BLINDNESS_MODE, value, true);
+            });
+            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.COLOR_BLINDNESS_AFFECT_UI), delegate (bool value)
+            {
+                ModSettingsManager.SetBoolValue(ModSettingsConstants.COLOR_BLINDNESS_AFFECT_UI, value, true);
+            }, "Affect UI");
+
+            /*_ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.TWEAK_BLOOM), delegate (bool value)
             {
                 ModSettingsManager.SetBoolValue(ModSettingsConstants.TWEAK_BLOOM, value, true);
             }, "Adjust bloom settings");
-            _ = pageBuilder.Header4("Disable this setting to revert the vanilla bloom");
+            _ = pageBuilder.Header4("Disable this setting to revert the vanilla bloom");*/
 
             if (ModFeatures.IsEnabled(ModFeatures.FeatureType.WeaponBag))
             {
@@ -470,7 +506,7 @@ namespace OverhaulMod.UI
 
             if (CameraFOVController.EnableFOVOverride)
             {
-                _ = pageBuilder.Slider(-10f, 40f, false, ModSettingsManager.GetFloatValue(ModSettingsConstants.CAMERA_FOV_OFFSET), delegate (float value)
+                _ = pageBuilder.Slider(-10f, 40f, true, ModSettingsManager.GetFloatValue(ModSettingsConstants.CAMERA_FOV_OFFSET), delegate (float value)
                 {
                     ModSettingsManager.SetFloatValue(ModSettingsConstants.CAMERA_FOV_OFFSET, value, true);
                 }, true, (float val) =>
@@ -836,6 +872,96 @@ namespace OverhaulMod.UI
             pageBuilder.LanguageButton("pt-BR", container);
             pageBuilder.LanguageButton("ja", container);
             pageBuilder.LanguageButton("ko", container);
+        }
+
+        private void populateSSAOSettingsPage(string initialPage)
+        {
+            PageBuilder pageBuilder = new PageBuilder(this);
+            _ = pageBuilder.Button("Go back", delegate
+            {
+                ClearPageContents();
+                PopulatePage(initialPage);
+            });
+
+            _ = pageBuilder.Header1("Ambient occlusion settings");
+            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_SSAO), delegate (bool value)
+            {
+                ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_SSAO, value, true);
+            }, "Ambient occlusion");
+
+            _ = pageBuilder.Header3("Intensity");
+            _ = pageBuilder.Slider(0.4f, 1.2f, false, ModSettingsManager.GetFloatValue(ModSettingsConstants.SSAO_INTENSITY), delegate (float value)
+            {
+                ModSettingsManager.SetFloatValue(ModSettingsConstants.SSAO_INTENSITY, value, true);
+            });
+
+            _ = pageBuilder.Header3("Sample count");
+            _ = pageBuilder.Slider(0f, 3f, true, ModSettingsManager.GetIntValue(ModSettingsConstants.SSAO_SAMPLE_COUNT), delegate (float value)
+            {
+                ModSettingsManager.SetIntValue(ModSettingsConstants.SSAO_SAMPLE_COUNT, Mathf.RoundToInt(value), true);
+            }, true, (float val) =>
+            {
+                SampleCountLevel sampleCountLevel = (SampleCountLevel)Mathf.RoundToInt(val);
+                switch (sampleCountLevel)
+                {
+                    case SampleCountLevel.Low:
+                        return "Low";
+                    case SampleCountLevel.Medium:
+                        return "Medium";
+                    case SampleCountLevel.High:
+                        return "High";
+                    case SampleCountLevel.VeryHigh:
+                        return "Very high";
+                }
+                return sampleCountLevel.ToString();
+            });
+
+            _ = pageBuilder.Button("Reset settings", delegate
+            {
+                ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_SSAO, true, true);
+                ModSettingsManager.SetFloatValue(ModSettingsConstants.SSAO_INTENSITY, 0.8f, true);
+                ModSettingsManager.SetIntValue(ModSettingsConstants.SSAO_SAMPLE_COUNT, 1, true);
+
+                ClearPageContents();
+                populateSSAOSettingsPage(initialPage);
+            });
+        }
+
+        private void populateCASettingsPage(string initialPage)
+        {
+            PageBuilder pageBuilder = new PageBuilder(this);
+            _ = pageBuilder.Button("Go back", delegate
+            {
+                ClearPageContents();
+                PopulatePage(initialPage);
+            });
+
+            _ = pageBuilder.Header1("Chromatic aberration settings");
+            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_CHROMATIC_ABERRATION), delegate (bool value)
+            {
+                ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_CHROMATIC_ABERRATION, value, true);
+            }, "Chromatic aberration");
+
+            _ = pageBuilder.Header3("Intensity");
+            _ = pageBuilder.Slider(0.1f, 1f, false, ModSettingsManager.GetFloatValue(ModSettingsConstants.CHROMATIC_ABERRATION_INTENSITY), delegate (float value)
+            {
+                ModSettingsManager.SetFloatValue(ModSettingsConstants.CHROMATIC_ABERRATION_INTENSITY, value, true);
+            });
+
+            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.CHROMATIC_ABERRATION_ON_SCREEN_EDGES), delegate (bool value)
+            {
+                ModSettingsManager.SetBoolValue(ModSettingsConstants.CHROMATIC_ABERRATION_ON_SCREEN_EDGES, value, true);
+            }, "On screen edges");
+
+            _ = pageBuilder.Button("Reset settings", delegate
+            {
+                ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_CHROMATIC_ABERRATION, true, true);
+                ModSettingsManager.SetFloatValue(ModSettingsConstants.CHROMATIC_ABERRATION_INTENSITY, 0.2f, true);
+                ModSettingsManager.SetBoolValue(ModSettingsConstants.CHROMATIC_ABERRATION_ON_SCREEN_EDGES, true, true);
+
+                ClearPageContents();
+                populateCASettingsPage(initialPage);
+            });
         }
 
         private int getCurrentLanguageIndex()
@@ -1262,6 +1388,35 @@ namespace OverhaulMod.UI
                 toggle.isOn = isOn;
                 if (callback != null)
                     toggle.onValueChanged.AddListener(callback);
+                return toggle;
+            }
+
+            public Toggle ToggleWithOptions(bool isOn, UnityAction<bool> callback, string text, Action populatePageAction, bool localize = true, Transform parentOverride = null)
+            {
+                if (callback == null)
+                    callback = delegate { ModUIUtils.MessagePopupNotImplemented(); };
+
+                ModdedObject moddedObject = Instantiate(SettingsMenu.ToggleWithOptionsPrefab, parentOverride ? parentOverride : SettingsMenu.PageContentsTransform);
+                moddedObject.gameObject.SetActive(true);
+                Text textComponent = moddedObject.GetObject<Text>(2);
+                textComponent.text = text;
+                if (localize)
+                    addLocalizedTextField(textComponent, $"settings_checkbox_{text.ToLower().Replace(' ', '_')}");
+                Toggle toggle = moddedObject.GetObject<Toggle>(0);
+                toggle.isOn = isOn;
+                if (callback != null)
+                    toggle.onValueChanged.AddListener(callback);
+
+                Button button = moddedObject.GetObject<Button>(1);
+                button.onClick.AddListener(delegate
+                {
+                    if (populatePageAction != null)
+                    {
+                        SettingsMenu.ClearPageContents();
+                        populatePageAction();
+                    }
+                });
+
                 return toggle;
             }
 

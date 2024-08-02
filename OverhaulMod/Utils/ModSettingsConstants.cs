@@ -340,5 +340,50 @@ namespace OverhaulMod.Utils
         /// <see cref="UI.UIFeedbackMenu"/>
         /// </summary>
         public const string FEEDBACK_MENU_FAVORITE_TEXT = "FeedbackMenuFavoriteText";
+
+        /// <summary>
+        /// <see cref="Visuals.PostEffectsManager"/>
+        /// </summary>
+        public const string SSAO_SAMPLE_COUNT = "SSAOSampleCount";
+
+        /// <summary>
+        /// <see cref="Visuals.PostEffectsManager"/>
+        /// </summary>
+        public const string SSAO_INTENSITY = "SSAOIntensity";
+
+        /// <summary>
+        /// <see cref="Visuals.PostEffectsManager"/>
+        /// </summary>
+        public const string ENABLE_CHROMATIC_ABERRATION = "EnableCA";
+
+        /// <summary>
+        /// <see cref="Visuals.PostEffectsManager"/>
+        /// </summary>
+        public const string CHROMATIC_ABERRATION_INTENSITY = "CAIntensity";
+
+        /// <summary>
+        /// <see cref="Visuals.PostEffectsManager"/>
+        /// </summary>
+        public const string CHROMATIC_ABERRATION_ON_SCREEN_EDGES = "CAOnScreenEdges";
+
+        /// <summary>
+        /// <see cref="Visuals.PostEffectsManager"/>
+        /// </summary>
+        public const string COLOR_BLINDNESS_MODE = "CBMode";
+
+        /// <summary>
+        /// <see cref="Visuals.PostEffectsManager"/>
+        /// </summary>
+        public const string COLOR_BLINDNESS_AFFECT_UI = "CBAffectUI";
+
+        /// <summary>
+        /// <see cref="Visuals.PostEffectsManager"/>
+        /// </summary>
+        public const string ANTIALIASING_MODE = "AAMode";
+
+        /// <summary>
+        /// <see cref="Visuals.PostEffectsManager"/>
+        /// </summary>
+        public const string MSAA_PLUS_CUSTOM = "MSAAPlusCustom";
     }
 }

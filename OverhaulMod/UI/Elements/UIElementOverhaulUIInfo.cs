@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
@@ -13,13 +8,13 @@ namespace OverhaulMod.UI
     public class UIElementOverhaulUIInfo : OverhaulUIBehaviour
     {
         [UIElement("Name")]
-        private Text m_uiNameText;
+        private readonly Text m_uiNameText;
 
         [UIElement("MissingPreviewText", false)]
-        private Text m_missingPreviewText;
+        private readonly Text m_missingPreviewText;
 
         [UIElement("TextBG")]
-        private RectTransform m_textBG;
+        private readonly RectTransform m_textBG;
 
         private RawImage m_image;
 
@@ -48,7 +43,7 @@ namespace OverhaulMod.UI
             }
 
             UnityWebRequest webRequest = m_webRequest;
-            if(webRequest != null)
+            if (webRequest != null)
             {
                 try
                 {
@@ -60,7 +55,7 @@ namespace OverhaulMod.UI
 
         public void LoadPreview()
         {
-            base.StartCoroutine(loadPreviewCoroutine());
+            _ = base.StartCoroutine(loadPreviewCoroutine());
         }
 
         private IEnumerator loadPreviewCoroutine()
@@ -79,7 +74,7 @@ namespace OverhaulMod.UI
                 if (m_destroyed)
                     yield break;
 
-                if(unityWebRequest.isDone && !unityWebRequest.isHttpError && !unityWebRequest.isNetworkError)
+                if (unityWebRequest.isDone && !unityWebRequest.isHttpError && !unityWebRequest.isNetworkError)
                 {
                     Texture2D texture = (unityWebRequest.downloadHandler as DownloadHandlerTexture).texture;
                     m_loadedImage = texture;

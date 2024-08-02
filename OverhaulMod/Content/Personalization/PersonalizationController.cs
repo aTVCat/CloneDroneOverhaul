@@ -309,7 +309,7 @@ namespace OverhaulMod.Content.Personalization
 
         public void SetWeaponPartsVisible(WeaponType weaponType, bool value, bool hideBowStrings)
         {
-            if(weaponType == ModWeaponsManager.SCYTHE_TYPE)
+            if (weaponType == ModWeaponsManager.SCYTHE_TYPE)
             {
                 WeaponModel weaponModel = ownerModel.GetWeaponModel(ModWeaponsManager.SCYTHE_TYPE);
                 if (weaponModel && weaponModel is ModWeaponModel modWeaponModel)

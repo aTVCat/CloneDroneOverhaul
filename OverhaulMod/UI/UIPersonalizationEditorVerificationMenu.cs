@@ -67,7 +67,7 @@ namespace OverhaulMod.UI
             string bgColor = ALL_WEAPON_VARIANTS_PRESENT_COLOR;
 
             PersonalizationItemVerificationManager personalizationItemVerificationManager = PersonalizationItemVerificationManager.Instance;
-            foreach(WeaponVariant weaponVariant in typeof(WeaponVariant).GetEnumValues())
+            foreach (WeaponVariant weaponVariant in typeof(WeaponVariant).GetEnumValues())
             {
                 if (weaponVariant == WeaponVariant.None)
                     continue;

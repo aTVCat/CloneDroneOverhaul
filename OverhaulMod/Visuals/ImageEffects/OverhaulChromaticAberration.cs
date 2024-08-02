@@ -5,9 +5,35 @@ namespace OverhaulMod.Visuals.ImageEffects
 {
     public class OverhaulChromaticAberration : MonoBehaviour
     {
-        public float Power = 0.25f;
+        private float m_power;
+        public float power
+        {
+            get
+            {
+                return m_power;
+            }
+            set
+            {
+                m_power = value;
+                if (m_supported)
+                    m_material.SetFloat("_ChromaticAberration", 0.01f * value);
+            }
+        }
 
-        public bool OnTheScreenEdges = true;
+        private float m_center;
+        public float center
+        {
+            get
+            {
+                return m_center;
+            }
+            set
+            {
+                m_center = value;
+                if (m_supported)
+                    m_material.SetFloat("_Center", value);
+            }
+        }
 
         private Shader m_shader;
 
@@ -15,42 +41,38 @@ namespace OverhaulMod.Visuals.ImageEffects
 
         private bool m_supported;
 
-        public void Start()
+        private void Start()
         {
-            m_shader = ModResources.Shader(AssetBundleConstants.IMAGE_EFFECTS, "ChromaticAberration");
-            m_material = new Material(m_shader);
-
             if (!SystemInfo.supportsImageEffects)
-            {
-                m_supported = false;
                 return;
-            }
 
-            if (!m_shader && !m_shader.isSupported)
-            {
-                m_supported = false;
+            m_shader = ModResources.Shader(AssetBundleConstants.IMAGE_EFFECTS, "ChromaticAberration");
+            if (!m_shader || !m_shader.isSupported)
                 return;
-            }
+
+            m_material = new Material(m_shader);
             m_supported = true;
         }
 
-        public void OnRenderImage(RenderTexture inTexture, RenderTexture outTexture)
+        private void OnDestroy()
         {
-            if (m_supported && m_shader)
+            if (m_material)
             {
-                m_material.SetFloat("_ChromaticAberration", 0.01f * Power);
+                Destroy(m_material);
+                m_material = null;
+                m_shader = null;
+            }
+        }
 
-                if (OnTheScreenEdges)
-                    m_material.SetFloat("_Center", 0.5f);
-
-                else
-                    m_material.SetFloat("_Center", 0);
-
-                Graphics.Blit(inTexture, outTexture, m_material);
+        private void OnRenderImage(RenderTexture source, RenderTexture destination)
+        {
+            if (m_supported)
+            {
+                Graphics.Blit(source, destination, m_material);
             }
             else
             {
-                Graphics.Blit(inTexture, outTexture);
+                Graphics.Blit(source, destination);
             }
         }
     }
