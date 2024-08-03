@@ -626,6 +626,7 @@
     <Compile Include="UI\UIDownloadPersonalizationAssetsMenu.cs" />
     <Compile Include="UI\UIDiscordServerMenu.cs" />
     <Compile Include="UI\UIAssetBundleAssetsBrowser.cs" />
+    <Compile Include="UI\UISubtitleTextFieldRework.cs" />
     <Compile Include="UI\UIPressActionKeyDescription.cs" />
     <Compile Include="UI\UIPersonalizationEditorItemCreationDialog.cs" />
     <Compile Include="UI\UIPatchNotes.cs" />

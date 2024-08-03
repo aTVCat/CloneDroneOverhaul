@@ -30,12 +30,12 @@ namespace OverhaulMod.UI
 
             RectTransform rt = m_bg;
             Vector2 sd = rt.sizeDelta;
-            sd.x = Mathf.Lerp(0f, Mathf.Clamp(textComponent.preferredWidth + 10f, 100f, 200f), NumberUtils.EaseOutQuad(0f, 1f, m_expandProgress));   
+            sd.x = Mathf.Lerp(0f, Mathf.Clamp(textComponent.preferredWidth + 10f, 100f, 200f), NumberUtils.EaseOutQuad(0f, 1f, m_expandProgress));
             sd.y = Mathf.Lerp(0f, textComponent.preferredHeight + 10f, NumberUtils.EaseOutQuad(0f, 1f, m_expandProgress));
             rt.sizeDelta = sd;
 
             m_bgObject.SetActive(m_expandProgress > 0f);
-            if(!m_show && m_expandProgress == 0f)
+            if (!m_show && m_expandProgress == 0f)
             {
                 if (!textComponent.text.IsNullOrEmpty())
                     textComponent.text = null;
@@ -46,7 +46,7 @@ namespace OverhaulMod.UI
 
         public void ShowText(string text)
         {
-            m_text.text= text;
+            m_text.text = text;
             m_show = true;
         }
 

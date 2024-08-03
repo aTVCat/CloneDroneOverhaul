@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 2158255984
+CRC: 3998155624
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 9fb75e5bfae75f026f568e6482b7bf22
+    Hash: d5f4a88015302557be75855a2114df9b
   TypeTreeHash:
     serializedVersion: 2
     Hash: acf1344b0dbbc80b9165ec9e7dce57f8
@@ -122,6 +122,7 @@ Assets:
 - Assets/UI/UI_PersonalizationEditorItemCreationDialog.prefab
 - Assets/UI/UI_PersonalizationEditor.prefab
 - Assets/UI/UI_EndlessModeMenu.prefab
+- Assets/UI/UI_SubtitleTextFieldRework.prefab
 - Assets/UI/UI_NewsInfoEditor.prefab
 - Assets/UI/UI_ChapterLevelSelectionMenu.prefab
 - Assets/UI/UI_LevelDescriptionListEditor.prefab

@@ -64,6 +64,10 @@ namespace OverhaulMod
                 else
                     ModUIUtils.ShowChangelogIfRequired(2f);
             }
+
+            if (ModFeatures.IsEnabled(ModFeatures.FeatureType.SubtitleTextFieldRework))
+                _ = ModUIConstants.ShowSubtitleTextFieldRework();
+
             _ = ModUIConstants.ShowCinematicEffects();
             yield break;
         }

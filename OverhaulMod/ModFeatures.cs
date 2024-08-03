@@ -104,6 +104,9 @@ namespace OverhaulMod
                 case FeatureType.MoreImageEffects:
                     result = false;
                     break;
+                case FeatureType.SubtitleTextFieldRework:
+                    result = true;
+                    break;
                 default:
                     return false;
             }
@@ -170,6 +173,8 @@ namespace OverhaulMod
             ScytheSkins,
 
             MoreImageEffects,
+
+            SubtitleTextFieldRework,
         }
     }
 }

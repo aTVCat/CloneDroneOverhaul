@@ -83,6 +83,7 @@ namespace OverhaulMod.Utils
         public const string UI_PATCH_NOTES = "UI_PatchNotes";
         public const string UI_PERSONALIZATION_EDITOR_ITEM_CREATION_DIALOG = "UI_PersonalizationEditorItemCreationDialog";
         public const string UI_PRESS_ACTION_KEY_DESCRIPTION = "UI_PressActionKeyDescription";
+        public const string UI_SUBTITLE_TEXT_FIELD_REWORK = "UI_SubtitleTextFieldRework";
 
         public static UIVersionLabel ShowVersionLabel()
         {
@@ -518,6 +519,11 @@ namespace OverhaulMod.Utils
         public static UIPressActionKeyDescription ShowPressActionKeyDescription()
         {
             return ModUIManager.Instance.Show<UIPressActionKeyDescription>(AssetBundleConstants.UI, UI_PRESS_ACTION_KEY_DESCRIPTION, ModUIManager.UILayer.AfterEnergyUI);
+        }
+
+        public static UISubtitleTextFieldRework ShowSubtitleTextFieldRework()
+        {
+            return ModUIManager.Instance.Show<UISubtitleTextFieldRework>(AssetBundleConstants.UI, UI_SUBTITLE_TEXT_FIELD_REWORK, ModUIManager.UILayer.AfterEnergyUI);
         }
     }
 }
