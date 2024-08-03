@@ -1,17 +1,19 @@
 ManifestFileVersion: 0
-CRC: 2441939401
+CRC: 2714380098
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 083adb86a0e624bdb172c6cce80af8dd
+    Hash: 3d9e8e3419c8b409e90fce1f60a3223c
   TypeTreeHash:
     serializedVersion: 2
-    Hash: bef0adbe26fb506447e58b88cd26a519
+    Hash: e3424b4b6ce321ecb03d77de569daf2c
 HashAppended: 0
 ClassTypes:
 - Class: 28
   Script: {instanceID: 0}
 - Class: 48
+  Script: {instanceID: 0}
+- Class: 109
   Script: {instanceID: 0}
 Assets:
 - Assets/Shaders/ImageEffects/Misc/VignetteMask.png
@@ -28,15 +30,20 @@ Assets:
 - Assets/Shaders/ImageEffects/Misc/NoiseAndGrainDX11.shader
 - Assets/Shaders/ImageEffects/Misc/SunShaftsComposite.shader
 - Assets/Shaders/ImageEffects/Misc/SeparableBlurPlus.shader
+- Assets/Shaders/ImageEffects/Misc/frag_ao.cginc
 - Assets/Shaders/ImageEffects/Misc/BlendOneOne.shader
 - Assets/Shaders/ImageEffects/Misc/FisheyeShader.shader
 - Assets/Shaders/ImageEffects/Misc/VignetteShader.shader
 - Assets/Shaders/ImageEffects/Misc/DepthOfField34.shader
+- Assets/Shaders/ImageEffects/Misc/ScreenSpaceRaytrace.cginc
+- Assets/Shaders/ImageEffects/Misc/GlobalFog.shader
+- Assets/Shaders/ImageEffects/Misc/SSAOShader.shader
 - Assets/Shaders/ImageEffects/Misc/DepthOfFieldScatter.shader
 - Assets/Shaders/ImageEffects/Misc/LensFlareCreate.shader
 - Assets/Shaders/ImageEffects/Misc/Bokeh34.shader
 - Assets/Shaders/ImageEffects/Misc/CameraMotionBlurDX11.shader
 - Assets/Shaders/ImageEffects/ColorBlind/Colorblind.shader
+- Assets/Shaders/ImageEffects/Misc/RandomVectors.png
 - Assets/Shaders/ImageEffects/Misc/CameraMotionBlur.shader
 - Assets/Shaders/ImageEffects/Misc/Blend.shader
 - Assets/Shaders/ImageEffects/Misc/BrightPassFilter.shader

@@ -101,8 +101,8 @@ namespace OverhaulMod
                 case FeatureType.ScytheSkins:
                     result = true;
                     break;
-                case FeatureType.ImageEffects:
-                    result = true;
+                case FeatureType.MoreImageEffects:
+                    result = false;
                     break;
                 default:
                     return false;
@@ -169,7 +169,7 @@ namespace OverhaulMod
 
             ScytheSkins,
 
-            ImageEffects,
+            MoreImageEffects,
         }
     }
 }

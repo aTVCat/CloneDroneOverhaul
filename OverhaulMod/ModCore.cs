@@ -273,6 +273,7 @@ namespace OverhaulMod
         public override void OnLevelEditorStarted()
         {
             ArenaRemodelManager.Instance.SetUpperInteriorActive(false);
+            PostEffectsManager.Instance.RefreshCameraPostEffects();
         }
 
         public override void OnMultiplayerEventReceived(GenericStringForModdingEvent moddedEvent)

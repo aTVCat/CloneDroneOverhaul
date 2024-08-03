@@ -352,6 +352,7 @@ namespace OverhaulMod.UI
                 return;
 
             AdvancedPhotoModeManager.Settings.EnableVignette = value;
+            PostEffectsManager.Instance.RefreshCameraPostEffects();
         }
 
         public void OnVignetteIntensityChanged(float value)
@@ -360,6 +361,7 @@ namespace OverhaulMod.UI
                 return;
 
             AdvancedPhotoModeManager.Settings.VignetteIntensity = value;
+            PostEffectsManager.Instance.RefreshCameraPostEffects();
         }
 
         public void OnDitheringToggled(bool value)
@@ -368,6 +370,7 @@ namespace OverhaulMod.UI
                 return;
 
             AdvancedPhotoModeManager.Settings.EnableDithering = value;
+            PostEffectsManager.Instance.RefreshCameraPostEffects();
         }
 
         public void OnFogToggled(bool value)

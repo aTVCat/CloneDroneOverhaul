@@ -6,6 +6,8 @@ namespace OverhaulMod
 {
     public static class ModBuildInfo
     {
+        public const bool ENABLE_V5 = false;
+
         internal const string EXTRA_INFO_FILE_PATH = "buildInfo.json";
 
         private static bool s_loaded;

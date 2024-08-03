@@ -169,7 +169,7 @@ namespace OverhaulMod.Engine
 
             public static void SetDefaultSettings()
             {
-                VignetteIntensity = 0.5f;
+                VignetteIntensity = 0.23f;
                 EnableVignette = PostEffectsManager.EnableVignette;
                 EnableDithering = PostEffectsManager.EnableDithering;
                 EnableSSAO = PostEffectsManager.EnableSSAO;

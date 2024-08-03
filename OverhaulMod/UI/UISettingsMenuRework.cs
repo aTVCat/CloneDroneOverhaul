@@ -3,6 +3,7 @@ using InternalModBot;
 using ModBotWebsiteAPI;
 using OverhaulMod.Engine;
 using OverhaulMod.Patches.Behaviours;
+using OverhaulMod.UI.Elements;
 using OverhaulMod.Utils;
 using OverhaulMod.Visuals;
 using OverhaulMod.Visuals.Environment;
@@ -63,7 +64,7 @@ namespace OverhaulMod.UI
         [UIElement("LanguageButtonPrefab", false)]
         public ModdedObject LanguageButton;
 
-        [TabManager(typeof(UIElementTabWithText), nameof(m_tabPrefab), nameof(m_tabContainer), nameof(OnTabCreated), nameof(OnTabSelected), new string[] { "Home", "Gameplay", "Graphics", "Sounds", "Controls", "Multiplayer", "Languages", "Advanced" })]
+        [TabManager(typeof(UIElementSettingsMenuCategoryTab), nameof(m_tabPrefab), nameof(m_tabContainer), nameof(OnTabCreated), nameof(OnTabSelected), new string[] { "Home", "Gameplay", "Interface", "Graphics", "Sounds", "Controls", "Multiplayer", "Languages", "Advanced" })]
         private readonly TabManager m_tabs;
         [UIElement("TabPrefab", false)]
         private readonly ModdedObject m_tabPrefab;
@@ -171,7 +172,7 @@ namespace OverhaulMod.UI
 
         public void OnTabCreated(UIElementTab elementTab)
         {
-            UIElementTabWithText elementTabWithText = elementTab as UIElementTabWithText;
+            UIElementSettingsMenuCategoryTab elementTabWithText = elementTab as UIElementSettingsMenuCategoryTab;
             elementTabWithText.LocalizationID = $"settings_tab_{elementTab.tabId.ToLower()}";
         }
 
@@ -226,6 +227,9 @@ namespace OverhaulMod.UI
                 case "Gameplay":
                     populateGameplayPage(settingsMenu);
                     break;
+                case "Interface":
+                    populateInterfacePage(settingsMenu);
+                    break;
                 case "Graphics":
                     populateGraphicsPage(settingsMenu);
                     break;
@@ -269,6 +273,19 @@ namespace OverhaulMod.UI
             {
                 populateSSAOSettingsPage(m_selectedTabId);
             });
+
+            bool moreEffectsEnabled = ModFeatures.IsEnabled(ModFeatures.FeatureType.MoreImageEffects);
+            if (moreEffectsEnabled)
+            {
+                _ = pageBuilder.ToggleWithOptions(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_CHROMATIC_ABERRATION), delegate (bool value)
+                {
+                    ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_CHROMATIC_ABERRATION, value, true);
+                }, "Chromatic aberration", delegate
+                {
+                    populateCASettingsPage(m_selectedTabId);
+                });
+            }
+
             _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_DITHERING), delegate (bool value)
             {
                 ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_DITHERING, value, true);
@@ -372,11 +389,11 @@ namespace OverhaulMod.UI
             {
                 _ = ModUIConstants.ShowOverhaulUIManagementPanel(base.transform);
             });
-            _ = pageBuilder.Button("Configure UI enhancements", delegate
+            /*_ = pageBuilder.Button("Configure UI enhancements", delegate
             {
                 ClearPageContents();
                 populateUIPatchesPage(settingsMenu);
-            });
+            });*/
 
             _ = pageBuilder.KeyBind("Camera mode", (KeyCode)ModSettingsManager.GetIntValue(ModSettingsConstants.CAMERA_MODE_TOGGLE_KEYBIND), KeyCode.Y, delegate (KeyCode value)
             {
@@ -408,6 +425,53 @@ namespace OverhaulMod.UI
             });
         }
 
+        private void populateInterfacePage(SettingsMenu settingsMenu)
+        {
+            PageBuilder pageBuilder = new PageBuilder(this);
+            _ = pageBuilder.Header1("Game interface");
+            _ = pageBuilder.Toggle(!settingsMenu.HideGameUIToggle.isOn, OnHideGameUIToggleChanged, "Show game UI");
+            _ = pageBuilder.Toggle(settingsMenu.SubtitlesToggle.isOn, OnSubtitlesToggleChanged, "Show subtitles");
+            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.SHOW_SPEAKER_NAME), delegate (bool value)
+            {
+                ModSettingsManager.SetBoolValue(ModSettingsConstants.SHOW_SPEAKER_NAME, value, true);
+                SpeechAudioManager.Instance.PlaySequence("CloneDroneIntro", false);
+            }, "Display who's speaking");
+            _ = pageBuilder.Button("Configure Overhaul mod UIs", delegate
+            {
+                _ = ModUIConstants.ShowOverhaulUIManagementPanel(base.transform);
+            });
+
+            _ = pageBuilder.Header1("Energy bar enhancements");
+            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENERGY_UI_REWORK), delegate (bool value)
+            {
+                ModSettingsManager.SetBoolValue(ModSettingsConstants.ENERGY_UI_REWORK, value, true);
+            }, "Energy bar redesign");
+            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENERGY_UI_FADE_OUT_IF_FULL), delegate (bool value)
+            {
+                ModSettingsManager.SetBoolValue(ModSettingsConstants.ENERGY_UI_FADE_OUT_IF_FULL, value, true);
+            }, "Fade out energy bar if full");
+            _ = pageBuilder.Header3("Fade out intensity");
+            _ = pageBuilder.Slider(0.1f, 1f, false, ModSettingsManager.GetFloatValue(ModSettingsConstants.ENERGY_UI_FADE_OUT_INTENSITY), delegate (float value)
+            {
+                ModSettingsManager.SetFloatValue(ModSettingsConstants.ENERGY_UI_FADE_OUT_INTENSITY, value, true);
+            }, true);
+            _ = pageBuilder.Button("Reset energy bar settings", delegate
+            {
+                ModSettingsManager.SetBoolValue(ModSettingsConstants.ENERGY_UI_REWORK, true, true);
+                ModSettingsManager.SetBoolValue(ModSettingsConstants.ENERGY_UI_FADE_OUT_IF_FULL, true, true);
+                ModSettingsManager.SetFloatValue(ModSettingsConstants.ENERGY_UI_FADE_OUT_INTENSITY, 0.9f, true);
+
+                ClearPageContents();
+                populateUIPatchesPage(settingsMenu);
+            });
+
+            _ = pageBuilder.Header1("Misc.");
+            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.SHOW_VERSION_LABEL), delegate (bool value)
+            {
+                ModSettingsManager.SetBoolValue(ModSettingsConstants.SHOW_VERSION_LABEL, value, true);
+            }, "Show Overhaul mod version");
+        }
+
         private void populateGraphicsPage(SettingsMenu settingsMenu)
         {
             settingsMenu.refreshResolutionOptions();
@@ -431,6 +495,7 @@ namespace OverhaulMod.UI
             _ = pageBuilder.Dropdown(settingsMenu.QualityDropDown.options, settingsMenu.QualityDropDown.value, OnQualityDropdownChanged);
             _ = pageBuilder.Dropdown(settingsMenu.AntiAliasingDropdown.options, settingsMenu.AntiAliasingDropdown.value, OnAntiAliasingDropdownChanged);
 
+            bool moreEffectsEnabled = ModFeatures.IsEnabled(ModFeatures.FeatureType.MoreImageEffects);
             _ = pageBuilder.Header3("Post effects");
             _ = pageBuilder.ToggleWithOptions(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_SSAO), delegate (bool value)
             {
@@ -439,57 +504,65 @@ namespace OverhaulMod.UI
             {
                 populateSSAOSettingsPage(m_selectedTabId);
             });
-            _ = pageBuilder.ToggleWithOptions(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_CHROMATIC_ABERRATION), delegate (bool value)
+
+            if (moreEffectsEnabled)
             {
-                ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_CHROMATIC_ABERRATION, value, true);
-            }, "Chromatic aberration", delegate
-            {
-                populateCASettingsPage(m_selectedTabId);
-            });
-            _ = pageBuilder.ToggleWithOptions(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_DOF), delegate (bool value)
-            {
-                ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_DOF, value, true);
-            }, "Depth of field (DoF)", delegate
-            {
-                populateCASettingsPage(m_selectedTabId);
-            });
-            _ = pageBuilder.ToggleWithOptions(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_SUN_SHAFTS), delegate (bool value)
-            {
-                ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_SUN_SHAFTS, value, true);
-            }, "Sun shafts", delegate
-            {
-                populateSSAOSettingsPage(m_selectedTabId);
-            });
-            _ = pageBuilder.ToggleWithOptions(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_DITHERING), delegate (bool value)
+                _ = pageBuilder.ToggleWithOptions(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_CHROMATIC_ABERRATION), delegate (bool value)
+                {
+                    ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_CHROMATIC_ABERRATION, value, true);
+                }, "Chromatic aberration", delegate
+                {
+                    populateCASettingsPage(m_selectedTabId);
+                });
+            }
+
+            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_DITHERING), delegate (bool value)
             {
                 ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_DITHERING, value, true);
-            }, "Dithering", delegate
-            {
-                populateSSAOSettingsPage(m_selectedTabId);
-            });
-            _ = pageBuilder.ToggleWithOptions(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_VIGNETTE), delegate (bool value)
+            }, "Dithering");
+            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_VIGNETTE), delegate (bool value)
             {
                 ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_VIGNETTE, value, true);
-            }, "Vignette", delegate
-            {
-                populateSSAOSettingsPage(m_selectedTabId);
-            });
+            }, "Vignette");
             _ = pageBuilder.ToggleWithOptions(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_BLOOM), delegate (bool value)
             {
                 ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_BLOOM, value, true);
             }, "Bloom", delegate
             {
-                populateSSAOSettingsPage(m_selectedTabId);
+                populateBloomSettingsPage(m_selectedTabId);
             });
-            _ = pageBuilder.Header3("Color blindness mode");
-            _ = pageBuilder.Dropdown(PostEffectsManager.ColorBlindnessOptions, ModSettingsManager.GetIntValue(ModSettingsConstants.COLOR_BLINDNESS_MODE), delegate (int value)
+
+            if (moreEffectsEnabled)
             {
-                ModSettingsManager.SetIntValue(ModSettingsConstants.COLOR_BLINDNESS_MODE, value, true);
-            });
-            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.COLOR_BLINDNESS_AFFECT_UI), delegate (bool value)
+                _ = pageBuilder.ToggleWithOptions(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_DOF), delegate (bool value)
+                {
+                    ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_DOF, value, true);
+                }, "Depth of field (DoF)", delegate
+                {
+                    populateCASettingsPage(m_selectedTabId);
+                });
+                _ = pageBuilder.ToggleWithOptions(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_SUN_SHAFTS), delegate (bool value)
+                {
+                    ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_SUN_SHAFTS, value, true);
+                }, "Sun shafts", delegate
+                {
+                    populateSSAOSettingsPage(m_selectedTabId);
+                });
+
+                _ = pageBuilder.Header3("Color blindness mode");
+                _ = pageBuilder.Dropdown(PostEffectsManager.ColorBlindnessOptions, ModSettingsManager.GetIntValue(ModSettingsConstants.COLOR_BLINDNESS_MODE), delegate (int value)
+                {
+                    ModSettingsManager.SetIntValue(ModSettingsConstants.COLOR_BLINDNESS_MODE, value, true);
+                });
+                _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.COLOR_BLINDNESS_AFFECT_UI), delegate (bool value)
+                {
+                    ModSettingsManager.SetBoolValue(ModSettingsConstants.COLOR_BLINDNESS_AFFECT_UI, value, true);
+                }, "Affect UI");
+            }
+            else
             {
-                ModSettingsManager.SetBoolValue(ModSettingsConstants.COLOR_BLINDNESS_AFFECT_UI, value, true);
-            }, "Affect UI");
+                _ = pageBuilder.Header4("New post effects coming in update 4.3!");
+            }
 
             /*_ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.TWEAK_BLOOM), delegate (bool value)
             {
@@ -901,7 +974,7 @@ namespace OverhaulMod.UI
             _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_SSAO), delegate (bool value)
             {
                 ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_SSAO, value, true);
-            }, "Ambient occlusion");
+            }, "Enable");
 
             _ = pageBuilder.Header3("Intensity");
             _ = pageBuilder.Slider(0.4f, 1.2f, false, ModSettingsManager.GetFloatValue(ModSettingsConstants.SSAO_INTENSITY), delegate (float value)
@@ -954,7 +1027,7 @@ namespace OverhaulMod.UI
             _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_CHROMATIC_ABERRATION), delegate (bool value)
             {
                 ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_CHROMATIC_ABERRATION, value, true);
-            }, "Chromatic aberration");
+            }, "Enable");
 
             _ = pageBuilder.Header3("Intensity");
             _ = pageBuilder.Slider(0.1f, 1f, false, ModSettingsManager.GetFloatValue(ModSettingsConstants.CHROMATIC_ABERRATION_INTENSITY), delegate (float value)
@@ -975,6 +1048,36 @@ namespace OverhaulMod.UI
 
                 ClearPageContents();
                 populateCASettingsPage(initialPage);
+            });
+        }
+
+        private void populateBloomSettingsPage(string initialPage)
+        {
+            PageBuilder pageBuilder = new PageBuilder(this);
+            _ = pageBuilder.Button("Go back", delegate
+            {
+                ClearPageContents();
+                PopulatePage(initialPage);
+            });
+
+            _ = pageBuilder.Header1("Bloom settings");
+            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_BLOOM), delegate (bool value)
+            {
+                ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_BLOOM, value, true);
+            }, "Enable");
+
+            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.TWEAK_BLOOM), delegate (bool value)
+            {
+                ModSettingsManager.SetBoolValue(ModSettingsConstants.TWEAK_BLOOM, value, true);
+            }, "Adjust bloom settings");
+
+            _ = pageBuilder.Button("Reset settings", delegate
+            {
+                ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_BLOOM, true, true);
+                ModSettingsManager.SetBoolValue(ModSettingsConstants.TWEAK_BLOOM, true, true);
+
+                ClearPageContents();
+                populateBloomSettingsPage(initialPage);
             });
         }
 

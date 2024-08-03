@@ -588,6 +588,7 @@
     <Compile Include="UI\Elements\UIElementPersonalizationEditorVolumeColorsSettings.cs" />
     <Compile Include="UI\Elements\UIElementPersonalizationItemDescriptionBox.cs" />
     <Compile Include="UI\Elements\UIElementPersonalizationItemDisplay.cs" />
+    <Compile Include="UI\Elements\UIElementSettingsMenuCategoryTab.cs" />
     <Compile Include="UI\Elements\UIElementTabWithText.cs" />
     <Compile Include="UI\Elements\UIElementExpandButton.cs" />
     <Compile Include="UI\Elements\UIElementShowTooltipOnHightLight.cs" />

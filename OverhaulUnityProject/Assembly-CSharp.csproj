@@ -140,6 +140,7 @@
     <None Include="Assets\Shaders\ImageEffects\Misc\SunShaftsComposite.shader" />
     <None Include="Assets\Shaders\ImageEffects\Misc\SeparableBlurPlus.shader" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_Bitmap-Custom-Atlas.shader" />
+    <None Include="Assets\Shaders\ImageEffects\Misc\frag_ao.cginc" />
     <None Include="Assets\Shaders\SnapshotShaders\GaussianBlur.shader" />
     <None Include="Assets\Shaders\AmplifyOcclusion\TemporalFilter.cginc" />
     <None Include="Assets\Shaders\SnapshotShaders\PixelSNES.shader" />
@@ -153,7 +154,10 @@
     <None Include="Assets\Shaders\ImageEffects\Misc\VignetteShader.shader" />
     <None Include="Assets\Shaders\ImageEffects\Misc\DepthOfField34.shader" />
     <None Include="Assets\Shaders\SnapshotShaders\CRTScreen.shader" />
+    <None Include="Assets\Shaders\ImageEffects\Misc\ScreenSpaceRaytrace.cginc" />
+    <None Include="Assets\Shaders\ImageEffects\Misc\GlobalFog.shader" />
     <None Include="Assets\Shaders\SnapshotShaders\Neon.shader" />
+    <None Include="Assets\Shaders\ImageEffects\Misc\SSAOShader.shader" />
     <None Include="Assets\Shaders\ImageEffects\Misc\DepthOfFieldScatter.shader" />
     <None Include="Assets\TextMesh Pro\Examples &amp; Extras\Fonts\Oswald-Bold - OFL.txt" />
     <None Include="Assets\TextMesh Pro\Resources\LineBreaking Following Characters.txt" />

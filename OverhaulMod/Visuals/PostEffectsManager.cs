@@ -95,6 +95,7 @@ namespace OverhaulMod.Visuals
             if (!camera || camera.orthographic)
                 return;
 
+            bool moreEffectsEnabled = ModFeatures.IsEnabled(ModFeatures.FeatureType.MoreImageEffects);
             bool overrideSettings = AdvancedPhotoModeManager.Settings.overrideSettings;
 
             GameObject cameraGameObject = camera.gameObject;
@@ -134,8 +135,73 @@ namespace OverhaulMod.Visuals
                 bloom.enabled = EnableBloom;
             }
 
-            if (!ModFeatures.IsEnabled(ModFeatures.FeatureType.ImageEffects))
+            if (moreEffectsEnabled)
+            {
+                OverhaulChromaticAberration chromaticAberration = camera.GetComponent<OverhaulChromaticAberration>();
+                if (!chromaticAberration)
+                    chromaticAberration = cameraGameObject.AddComponent<OverhaulChromaticAberration>();
+
+                chromaticAberration.power = ChromaticAberrationIntensity;
+                chromaticAberration.center = ChromaticAberrationOnScreenEdges ? 0.5f : 0f;
+                chromaticAberration.enabled = EnableChromaticAberration;
+            }
+
+            NoiseAndGrain noiseAndGrain = camera.GetComponent<NoiseAndGrain>();
+            if (!noiseAndGrain)
+            {
+                noiseAndGrain = cameraGameObject.AddComponent<NoiseAndGrain>();
+                noiseAndGrain.noiseShader = ModResources.Shader(AssetBundleConstants.IMAGE_EFFECTS, "NoiseAndGrain");
+                noiseAndGrain.dx11NoiseShader = ModResources.Shader(AssetBundleConstants.IMAGE_EFFECTS, "NoiseAndGrainDX11");
+                noiseAndGrain.noiseTexture = ModResources.Texture2D(AssetBundleConstants.IMAGE_EFFECTS, "Noise");
+                noiseAndGrain.generalIntensity = 0.15f;
+                noiseAndGrain.intensityMultiplier = 0.2f;
+                noiseAndGrain.whiteIntensity = 0.75f;
+                noiseAndGrain.blackIntensity = 1f;
+                noiseAndGrain.midGrey = 0.4f;
+                noiseAndGrain.softness = 0.15f;
+                noiseAndGrain.midGrey = 0.2f;
+            }
+            noiseAndGrain.enabled = overrideSettings ? AdvancedPhotoModeManager.Settings.EnableDithering : EnableDithering;
+
+            VignetteAndChromaticAberration vignetteAndChromaticAberration = camera.GetComponent<VignetteAndChromaticAberration>();
+            if (!vignetteAndChromaticAberration)
+            {
+                vignetteAndChromaticAberration = cameraGameObject.AddComponent<VignetteAndChromaticAberration>();
+                vignetteAndChromaticAberration.vignetteShader = ModResources.Shader(AssetBundleConstants.IMAGE_EFFECTS, "VignettingShader");
+                vignetteAndChromaticAberration.chromAberrationShader = ModResources.Shader(AssetBundleConstants.IMAGE_EFFECTS, "ChromaticAberrationShader");
+                vignetteAndChromaticAberration.separableBlurShader = ModResources.Shader(AssetBundleConstants.IMAGE_EFFECTS, "SeparableBlur");
+                vignetteAndChromaticAberration.chromaticAberration = 0f;
+            }
+            vignetteAndChromaticAberration.intensity = overrideSettings ? AdvancedPhotoModeManager.Settings.VignetteIntensity : 0.23f;
+            vignetteAndChromaticAberration.enabled = overrideSettings ? AdvancedPhotoModeManager.Settings.EnableVignette : EnableVignette;
+
+            if (!moreEffectsEnabled)
                 return;
+
+            /*
+            ScreenSpaceAmbientOcclusion screenSpaceAmbientOcclusion = camera.GetComponent<ScreenSpaceAmbientOcclusion>();
+            if (!screenSpaceAmbientOcclusion)
+            {
+                screenSpaceAmbientOcclusion = cameraGameObject.AddComponent<ScreenSpaceAmbientOcclusion>();
+                screenSpaceAmbientOcclusion.m_SSAOShader = ModResources.Shader(AssetBundleConstants.IMAGE_EFFECTS, "SSAOShader");
+                screenSpaceAmbientOcclusion.m_RandomTexture = ModResources.Texture2D(AssetBundleConstants.IMAGE_EFFECTS, "RandomVectors");
+            }*/
+            
+            /*
+            GlobalFog globalFog = camera.GetComponent<GlobalFog>();
+            if (!globalFog)
+            {
+                globalFog = cameraGameObject.AddComponent<GlobalFog>();
+                globalFog.fogShader = ModResources.Shader(AssetBundleConstants.IMAGE_EFFECTS, "GlobalFog");
+            }*/
+
+            BlurOptimized blurOptimized = camera.GetComponent<BlurOptimized>();
+            if (!blurOptimized)
+            {
+                blurOptimized = cameraGameObject.AddComponent<BlurOptimized>();
+                blurOptimized.blurShader = ModResources.Shader(AssetBundleConstants.IMAGE_EFFECTS, "MobileBlur");
+                blurOptimized.enabled = false;
+            }
 
             Antialiasing antialiasing = camera.GetComponent<Antialiasing>();
             if (!antialiasing)
@@ -212,35 +278,6 @@ namespace OverhaulMod.Visuals
                 bloomAndFlares.bloomThreshold = 1f;
             }*/
 
-            NoiseAndGrain noiseAndGrain = camera.GetComponent<NoiseAndGrain>();
-            if (!noiseAndGrain)
-            {
-                noiseAndGrain = cameraGameObject.AddComponent<NoiseAndGrain>();
-                noiseAndGrain.noiseShader = ModResources.Shader(AssetBundleConstants.IMAGE_EFFECTS, "NoiseAndGrain");
-                noiseAndGrain.dx11NoiseShader = ModResources.Shader(AssetBundleConstants.IMAGE_EFFECTS, "NoiseAndGrainDX11");
-                noiseAndGrain.noiseTexture = ModResources.Texture2D(AssetBundleConstants.IMAGE_EFFECTS, "Noise");
-                noiseAndGrain.generalIntensity = 0.15f;
-                noiseAndGrain.intensityMultiplier = 0.2f;
-                noiseAndGrain.whiteIntensity = 0.75f;
-                noiseAndGrain.blackIntensity = 1f;
-                noiseAndGrain.midGrey = 0.4f;
-                noiseAndGrain.softness = 0.15f;
-                noiseAndGrain.midGrey = 0.2f;
-            }
-            noiseAndGrain.enabled = EnableDithering;
-
-            VignetteAndChromaticAberration vignetteAndChromaticAberration = camera.GetComponent<VignetteAndChromaticAberration>();
-            if (!vignetteAndChromaticAberration)
-            {
-                vignetteAndChromaticAberration = cameraGameObject.AddComponent<VignetteAndChromaticAberration>();
-                vignetteAndChromaticAberration.vignetteShader = ModResources.Shader(AssetBundleConstants.IMAGE_EFFECTS, "VignettingShader");
-                vignetteAndChromaticAberration.chromAberrationShader = ModResources.Shader(AssetBundleConstants.IMAGE_EFFECTS, "ChromaticAberrationShader");
-                vignetteAndChromaticAberration.separableBlurShader = ModResources.Shader(AssetBundleConstants.IMAGE_EFFECTS, "SeparableBlur");
-                vignetteAndChromaticAberration.intensity = 0.23f;
-                vignetteAndChromaticAberration.chromaticAberration = 0f;
-            }
-            vignetteAndChromaticAberration.enabled = EnableVignette;
-
             /*
             EdgeDetection edgeDetection = camera.GetComponent<EdgeDetection>();
             if (!edgeDetection)
@@ -257,14 +294,6 @@ namespace OverhaulMod.Visuals
                 contrastEnhance.contrastCompositeShader = ModResources.Shader(AssetBundleConstants.IMAGE_EFFECTS, "ContrastComposite");
                 contrastEnhance.separableBlurShader = ModResources.Shader(AssetBundleConstants.IMAGE_EFFECTS, "SeparableBlur");
             }*/
-
-            OverhaulChromaticAberration chromaticAberration = camera.GetComponent<OverhaulChromaticAberration>();
-            if (!chromaticAberration)
-                chromaticAberration = cameraGameObject.AddComponent<OverhaulChromaticAberration>();
-
-            chromaticAberration.power = ChromaticAberrationIntensity;
-            chromaticAberration.center = ChromaticAberrationOnScreenEdges ? 0.5f : 0f;
-            chromaticAberration.enabled = EnableChromaticAberration;
 
             OverhaulColorBlindness overhaulColorBlindness = camera.GetComponent<OverhaulColorBlindness>();
             if (!overhaulColorBlindness)
