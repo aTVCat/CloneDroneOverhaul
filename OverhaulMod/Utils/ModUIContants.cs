@@ -82,6 +82,7 @@ namespace OverhaulMod.Utils
         public const string UI_ASSET_BUNDLE_ASSETS_BROWSER = "UI_AssetBundleAssetsBrowser";
         public const string UI_PATCH_NOTES = "UI_PatchNotes";
         public const string UI_PERSONALIZATION_EDITOR_ITEM_CREATION_DIALOG = "UI_PersonalizationEditorItemCreationDialog";
+        public const string UI_PRESS_ACTION_KEY_DESCRIPTION = "UI_PressActionKeyDescription";
 
         public static UIVersionLabel ShowVersionLabel()
         {
@@ -512,6 +513,11 @@ namespace OverhaulMod.Utils
         public static UIPersonalizationEditorItemCreationDialog ShowPersonalizationEditorItemCreationDialog(Transform transform)
         {
             return ModUIManager.Instance.Show<UIPersonalizationEditorItemCreationDialog>(AssetBundleConstants.UI, UI_PERSONALIZATION_EDITOR_ITEM_CREATION_DIALOG, transform);
+        }
+
+        public static UIPressActionKeyDescription ShowPressActionKeyDescription()
+        {
+            return ModUIManager.Instance.Show<UIPressActionKeyDescription>(AssetBundleConstants.UI, UI_PRESS_ACTION_KEY_DESCRIPTION, ModUIManager.UILayer.AfterEnergyUI);
         }
     }
 }

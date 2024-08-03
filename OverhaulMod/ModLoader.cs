@@ -96,6 +96,7 @@ namespace OverhaulMod
             _ = ModManagers.NewSingleton<FloatingDustManager>();
             _ = ModManagers.NewSingleton<FadingVoxelManager>();
 
+            _ = ModManagers.NewSingleton<PressActionKeyObjectManager>();
             _ = ModManagers.NewSingleton<ArenaRemodelManager>();
             _ = ModManagers.NewSingleton<ArenaAudienceManager>();
             _ = ModManagers.NewSingleton<LightingTransitionManager>();

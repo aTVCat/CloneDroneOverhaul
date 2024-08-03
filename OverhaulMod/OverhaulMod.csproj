@@ -389,6 +389,7 @@
     <Compile Include="Content\Personalization\PersonalizationItemMetaData.cs" />
     <Compile Include="Content\Personalization\PersonalizationMultiplayerManager.cs" />
     <Compile Include="Content\Personalization\PersonalizationMultiplayerPlayerInfo.cs" />
+    <Compile Include="Engine\PressActionKeyObjectManager.cs" />
     <Compile Include="Engine\RealisticLightUserSettings.cs" />
     <Compile Include="Engine\WeaponVariant.cs" />
     <Compile Include="Content\Personalization\PersonalizationEditorObjectVisibilityController.cs" />
@@ -524,6 +525,7 @@
     <Compile Include="Patches\LevelEditorDataManager_Patch.cs" />
     <Compile Include="Patches\LevelEditorLevelObject_Patch.cs" />
     <Compile Include="Patches\LevelEditorLightManager_Patch.cs" />
+    <Compile Include="Patches\GenericKeyboardHint_Patch.cs" />
     <Compile Include="Patches\LevelLightSettings_Patch.cs" />
     <Compile Include="Patches\LevelManager_Patch.cs" />
     <Compile Include="Patches\LoadingScreen_Patch.cs" />
@@ -550,6 +552,7 @@
     <Compile Include="Patches\UpgradeUI_Patch.cs" />
     <Compile Include="Patches\WeaponAITuningManager_Patch.cs" />
     <Compile Include="Patches\WinLoseDialog_Patch.cs" />
+    <Compile Include="Patches\LevelEditorUseButtonTrigger_Patch.cs" />
     <Compile Include="Patches\WorldAudioSource_Patch.cs" />
     <Compile Include="UI\Attributes\KeyBindSetterAttribute.cs" />
     <Compile Include="UI\Attributes\ColorPickerAttribute.cs" />
@@ -623,6 +626,7 @@
     <Compile Include="UI\UIDownloadPersonalizationAssetsMenu.cs" />
     <Compile Include="UI\UIDiscordServerMenu.cs" />
     <Compile Include="UI\UIAssetBundleAssetsBrowser.cs" />
+    <Compile Include="UI\UIPressActionKeyDescription.cs" />
     <Compile Include="UI\UIPersonalizationEditorItemCreationDialog.cs" />
     <Compile Include="UI\UIPatchNotes.cs" />
     <Compile Include="UI\UIPersonalizationEditorAboutDialog.cs" />
