@@ -15,7 +15,7 @@ namespace OverhaulMod.Utils
             string lastBuildChangelogWasShownOn = UIPatchNotes.LastBuildChangelogWasShownOn;
             if (lastBuildChangelogWasShownOn.IsNullOrEmpty())
                 showChangelog = true;
-            else if (Version.TryParse(lastBuildChangelogWasShownOn, out Version newVersion) && newVersion > ModBuildInfo.version)
+            else if (Version.TryParse(lastBuildChangelogWasShownOn, out Version prevVersion) && prevVersion < ModBuildInfo.version)
                 showChangelog = true;
 
             if (showChangelog)

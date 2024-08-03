@@ -14,6 +14,8 @@ namespace OverhaulMod.Combat
 
         public void AddsBots()
         {
+            if (!ModFeatures.IsEnabled(ModFeatures.FeatureType.NewEnemies))
+                return;
 
             // Axe 1
             _ = ModBotAPI.EnemyAPI.DuplicateFirstPersonMoverInternal(EnemyType.Hammer1, EnemyType.Hammer1, 500, out bool hasAdded);

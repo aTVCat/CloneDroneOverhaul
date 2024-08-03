@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 1856363288
+CRC: 4011097338
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: af536c91e5f1e594a9fe3a8bf43cacc0
+    Hash: 627480b0f647510d9c5bc531a020b41e
   TypeTreeHash:
     serializedVersion: 2
     Hash: acf1344b0dbbc80b9165ec9e7dce57f8
@@ -135,6 +135,7 @@ Assets:
 - Assets/UI/Elements/WindowPrefab.prefab
 - Assets/UI/UI_DownloadPersonalizationAssetsMenu.prefab
 - Assets/Sprites/Glyphs/GetUpgradesButton.png
+- Assets/Sprites/Glow-2-256x256.png
 - Assets/UI/UI_RestartRequiredScreen.prefab
 - Assets/UI/UI_OverhaulUIsManagementPanel.prefab
 - Assets/UI/UI_SetKeyBindWindow.prefab

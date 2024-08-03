@@ -104,18 +104,20 @@ namespace OverhaulMod.UI
                 if (!firstButton)
                 {
                     firstButtonVersion = verString;
-
                     firstButton = button;
-                    firstButton.onClick.AddListener(delegate
-                    {
-                        ModSettingsManager.SetStringValue(ModSettingsConstants.LAST_BUILD_CHANGELOG_WAS_SHOWN, firstButtonVersion);
-                        ModSettingsDataManager.Instance.Save();
-                    });
                 }
             }
 
             if(firstButton)
                 firstButton.Press();
+        }
+
+        public override void Hide()
+        {
+            base.Hide();
+
+            ModSettingsManager.SetStringValue(ModSettingsConstants.LAST_BUILD_CHANGELOG_WAS_SHOWN, ModBuildInfo.versionString);
+            ModSettingsDataManager.Instance.Save();
         }
 
         public override void Update()
