@@ -17,10 +17,10 @@ namespace OverhaulMod.UI
         [ModSetting(ModSettingsConstants.SUBTITLE_TEXT_FIELD_BG, false)]
         public static bool EnableBG;
 
-        [ModSetting(ModSettingsConstants.SUBTITLE_TEXT_FIELD_FONT, 0)]
+        [ModSetting(ModSettingsConstants.SUBTITLE_TEXT_FIELD_FONT, 1)]
         public static int FontType;
 
-        [ModSetting(ModSettingsConstants.SUBTITLE_TEXT_FIELD_FONT_SIZE, 13)]
+        [ModSetting(ModSettingsConstants.SUBTITLE_TEXT_FIELD_FONT_SIZE, 11)]
         public static int FontSize;
 
         public static List<Dropdown.OptionData> FontOptions = new List<Dropdown.OptionData>()

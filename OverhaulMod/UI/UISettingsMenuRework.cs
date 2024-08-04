@@ -443,11 +443,6 @@ namespace OverhaulMod.UI
             _ = pageBuilder.Header1("Game interface");
             _ = pageBuilder.Toggle(!settingsMenu.HideGameUIToggle.isOn, OnHideGameUIToggleChanged, "Show game UI");
             _ = pageBuilder.Toggle(settingsMenu.SubtitlesToggle.isOn, OnSubtitlesToggleChanged, "Show subtitles");
-            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.SHOW_SPEAKER_NAME), delegate (bool value)
-            {
-                ModSettingsManager.SetBoolValue(ModSettingsConstants.SHOW_SPEAKER_NAME, value, true);
-                SpeechAudioManager.Instance.PlaySequence("CloneDroneIntro", false);
-            }, "Display who's speaking");
             _ = pageBuilder.Button("Configure Overhaul mod UIs", delegate
             {
                 _ = ModUIConstants.ShowOverhaulUIManagementPanel(base.transform);
@@ -490,6 +485,11 @@ namespace OverhaulMod.UI
             {
                 populateSubtitlesReworkSettingsPage(m_selectedTabId);
             });
+            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.SHOW_SPEAKER_NAME), delegate (bool value)
+            {
+                ModSettingsManager.SetBoolValue(ModSettingsConstants.SHOW_SPEAKER_NAME, value, true);
+                SpeechAudioManager.Instance.PlaySequence("CloneDroneIntro", false);
+            }, "Display who's speaking");
         }
 
         private void populateGraphicsPage(SettingsMenu settingsMenu)
