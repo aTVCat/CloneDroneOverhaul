@@ -395,5 +395,30 @@ namespace OverhaulMod.Utils
         /// <see cref="Visuals.PostEffectsManager"/>
         /// </summary>
         public const string ENABLE_SUN_SHAFTS = "EnableSunShafts";
+
+        /// <summary>
+        /// <see cref="UI.UISubtitleTextFieldRework"/>
+        /// </summary>
+        public const string ENABLE_SUBTITLE_TEXT_FIELD_REWORK = "EnableSubtitleTextFieldRework";
+
+        /// <summary>
+        /// <see cref="UI.UISubtitleTextFieldRework"/>
+        /// </summary>
+        public const string SUBTITLE_TEXT_FIELD_UPPER_POSITION = "SubtitleTextFieldUpperPosition";
+
+        /// <summary>
+        /// <see cref="UI.UISubtitleTextFieldRework"/>
+        /// </summary>
+        public const string SUBTITLE_TEXT_FIELD_BG = "SubtitleTextFieldBG";
+
+        /// <summary>
+        /// <see cref="UI.UISubtitleTextFieldRework"/>
+        /// </summary>
+        public const string SUBTITLE_TEXT_FIELD_FONT = "SubtitleTextFieldFont";
+
+        /// <summary>
+        /// <see cref="UI.UISubtitleTextFieldRework"/>
+        /// </summary>
+        public const string SUBTITLE_TEXT_FIELD_FONT_SIZE = "SubtitleTextFieldFontSize";
     }
 }

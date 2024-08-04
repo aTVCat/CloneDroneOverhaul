@@ -66,6 +66,14 @@ namespace OverhaulMod.Engine
             return result;
         }
 
+        public void ResetSettings()
+        {
+            foreach (var setting in m_settings)
+                setting.SetValue(setting.defaultValue);
+
+            ModSettingsDataManager.Instance.Save();
+        }
+
         public void AddSettingValueChangedListener(Action<object> action, string settingId)
         {
             ModSetting setting = GetSetting(settingId);

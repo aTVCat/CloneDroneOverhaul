@@ -97,6 +97,11 @@ namespace OverhaulMod
             return Load<TextAsset>(bundle, asset, pathPrefix);
         }
 
+        public static Font Font(string bundle, string asset, string pathPrefix = null)
+        {
+            return Load<Font>(bundle, asset, pathPrefix);
+        }
+
         public static AudioClip AudioClip(string bundle, string asset, string pathPrefix = null)
         {
             return Load<AudioClip>(bundle, asset, pathPrefix);

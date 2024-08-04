@@ -1,4 +1,6 @@
-﻿using OverhaulMod.Utils;
+﻿using OverhaulMod.Engine;
+using OverhaulMod.Utils;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -6,6 +8,31 @@ namespace OverhaulMod.UI
 {
     public class UISubtitleTextFieldRework : OverhaulUIBehaviour
     {
+        [ModSetting(ModSettingsConstants.ENABLE_SUBTITLE_TEXT_FIELD_REWORK, true)]
+        public static bool EnableRework;
+
+        [ModSetting(ModSettingsConstants.SUBTITLE_TEXT_FIELD_UPPER_POSITION, true)]
+        public static bool BeOnTop;
+
+        [ModSetting(ModSettingsConstants.SUBTITLE_TEXT_FIELD_BG, false)]
+        public static bool EnableBG;
+
+        [ModSetting(ModSettingsConstants.SUBTITLE_TEXT_FIELD_FONT, 0)]
+        public static int FontType;
+
+        [ModSetting(ModSettingsConstants.SUBTITLE_TEXT_FIELD_FONT_SIZE, 13)]
+        public static int FontSize;
+
+        public static List<Dropdown.OptionData> FontOptions = new List<Dropdown.OptionData>()
+        {      
+            new Dropdown.OptionData("Default"),
+            new Dropdown.OptionData("VCR OSD Mono"),
+            new Dropdown.OptionData("Piksieli Prosto"),
+            new Dropdown.OptionData("Edit Undo BRK"),
+            new Dropdown.OptionData("Open Sans Regular"),
+            new Dropdown.OptionData("Open Sans Extra Bolt"),
+        };
+
         [UIElement("BG")]
         private readonly RectTransform m_bg;
 
@@ -15,8 +42,14 @@ namespace OverhaulMod.UI
         [UIElement("BG")]
         private readonly CanvasGroup m_bgCanvasGroup;
 
+        [UIElement("BG")]
+        private readonly Image m_bgImage;
+
         [UIElement("Text")]
         private readonly Text m_text;
+
+        [UIElement("Text")]
+        private readonly Outline m_textOutline;
 
         public override bool closeOnEscapeButtonPress => false;
 
@@ -24,11 +57,20 @@ namespace OverhaulMod.UI
 
         private bool m_show;
 
+        private int m_siblingIndex;
+
         protected override void OnInitialized()
         {
             GlobalEventManager.Instance.AddEventListener("SpeechSentenceStarted", onSentenceStarted);
             GlobalEventManager.Instance.AddEventListener("SpeechSequenceFinished", onSentenceFinishedOrCancelled);
             GlobalEventManager.Instance.AddEventListener("SpeechSentenceCancelled", onSentenceFinishedOrCancelled);
+
+            ModSettingsManager.Instance.AddSettingValueChangedListener(refreshSettings, ModSettingsConstants.SUBTITLE_TEXT_FIELD_BG);
+            ModSettingsManager.Instance.AddSettingValueChangedListener(refreshSettings, ModSettingsConstants.SUBTITLE_TEXT_FIELD_UPPER_POSITION);
+            ModSettingsManager.Instance.AddSettingValueChangedListener(refreshSettings, ModSettingsConstants.SUBTITLE_TEXT_FIELD_FONT);
+            ModSettingsManager.Instance.AddSettingValueChangedListener(refreshSettings, ModSettingsConstants.SUBTITLE_TEXT_FIELD_FONT_SIZE);
+
+            refreshSettings(null);
         }
 
         public override void OnDestroy()
@@ -38,6 +80,11 @@ namespace OverhaulMod.UI
             GlobalEventManager.Instance.RemoveEventListener("SpeechSentenceStarted", onSentenceStarted);
             GlobalEventManager.Instance.RemoveEventListener("SpeechSequenceFinished", onSentenceFinishedOrCancelled);
             GlobalEventManager.Instance.RemoveEventListener("SpeechSentenceCancelled", onSentenceFinishedOrCancelled);
+
+            ModSettingsManager.Instance.RemoveSettingValueChangedListener(refreshSettings, ModSettingsConstants.SUBTITLE_TEXT_FIELD_BG);
+            ModSettingsManager.Instance.RemoveSettingValueChangedListener(refreshSettings, ModSettingsConstants.SUBTITLE_TEXT_FIELD_UPPER_POSITION);
+            ModSettingsManager.Instance.RemoveSettingValueChangedListener(refreshSettings, ModSettingsConstants.SUBTITLE_TEXT_FIELD_FONT);
+            ModSettingsManager.Instance.RemoveSettingValueChangedListener(refreshSettings, ModSettingsConstants.SUBTITLE_TEXT_FIELD_FONT_SIZE);
         }
 
         public override void Update()
@@ -62,6 +109,30 @@ namespace OverhaulMod.UI
 
         private void onSentenceStarted()
         {
+            if (!EnableRework)
+                return;
+
+            if (BeOnTop)
+            {
+                float y;
+                if (ModCache.gameUIRoot.Multiplayer1v1UI.PlayerStatsPanel.gameObject.activeInHierarchy)
+                    y = -40f;
+                else if (ModCache.gameUIRoot.BattleRoyaleUI.WaitingRoomLabel.gameObject.activeInHierarchy || ModCache.gameUIRoot.CurrentlySpectatingUI.gameObject.activeInHierarchy || ModCache.gameUIRoot.CoopUpgradeTimerUI.gameObject.activeInHierarchy)
+                    y = -60f;
+                else
+                    y = -10f;
+
+                RectTransform rectTransform = m_bg;
+                Vector2 ap = rectTransform.anchoredPosition;
+                ap.y = y;
+                rectTransform.anchoredPosition = ap;
+            }
+
+            if(FontType == 0)
+            {
+                m_text.font = LocalizationManager.Instance.GetCurrentSubtitlesFont();
+            }
+
             SpeechAudioManager speechAudioManager = SpeechAudioManager.Instance;
             SpeechSentence currentSentence = speechAudioManager.GetCurrentSentence();
             if (currentSentence != null)
@@ -82,6 +153,38 @@ namespace OverhaulMod.UI
             HideText();
         }
 
+        private void refreshSettings(object obj)
+        {
+            m_textOutline.enabled = !EnableBG;
+            m_bgImage.enabled = EnableBG;
+
+            RectTransform rectTransform = m_bg;
+            rectTransform.anchorMax = new Vector2(0.5f, BeOnTop ? 1f : 0f);
+            rectTransform.anchorMin = rectTransform.anchorMax;
+            rectTransform.pivot = new Vector2(0.5f, BeOnTop ? 1f : 0f);
+            rectTransform.anchoredPosition = new Vector2(0f, BeOnTop ? -10f : 55f);
+
+            m_text.fontSize = FontSize;
+            switch (FontType)
+            {
+                case 1:
+                    m_text.font = ModResources.Font(AssetBundleConstants.UI, "3117-font");
+                    break;
+                case 2:
+                    m_text.font = ModResources.Font(AssetBundleConstants.UI, "Piksieli-Prosto");
+                    break;
+                case 3:
+                    m_text.font = ModResources.Font(AssetBundleConstants.UI, "Edit-Undo");
+                    break;
+                case 4:
+                    m_text.font = ModResources.Font(AssetBundleConstants.UI, "OpenSans-Regular");
+                    break;
+                case 5:
+                    m_text.font = ModResources.Font(AssetBundleConstants.UI, "OpenSans-ExtraBold");
+                    break;
+            }
+        }
+
         public void ShowText(string text, Color color)
         {
             m_text.color = color;
@@ -93,6 +196,19 @@ namespace OverhaulMod.UI
         public void HideText()
         {
             m_show = false;
+        }
+
+        public void SetSiblingIndex(bool last)
+        {
+            if (last)
+            {
+                m_siblingIndex = base.transform.GetSiblingIndex();
+                base.transform.SetAsLastSibling();
+            }
+            else if (m_siblingIndex != 0)
+            {
+                base.transform.SetSiblingIndex(m_siblingIndex);
+            }
         }
     }
 }

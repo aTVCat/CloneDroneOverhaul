@@ -114,6 +114,12 @@ namespace OverhaulMod.UI
                 subtitleTextFieldPatchBehaviour.SetSiblingIndex(base.transform);
             }
 
+            UISubtitleTextFieldRework subtitleTextFieldRework = ModUIManager.Instance.Get<UISubtitleTextFieldRework>(AssetBundleConstants.UI, ModUIConstants.UI_SUBTITLE_TEXT_FIELD_REWORK);
+            if (subtitleTextFieldRework)
+            {
+                subtitleTextFieldRework.SetSiblingIndex(true);
+            }
+
             if (!m_selectedTabId.IsNullOrEmpty())
                 PopulatePage(m_selectedTabId);
         }
@@ -126,6 +132,12 @@ namespace OverhaulMod.UI
             if (subtitleTextFieldPatchBehaviour)
             {
                 subtitleTextFieldPatchBehaviour.ResetSiblingIndex();
+            }
+
+            UISubtitleTextFieldRework subtitleTextFieldRework = ModUIManager.Instance.Get<UISubtitleTextFieldRework>(AssetBundleConstants.UI, ModUIConstants.UI_SUBTITLE_TEXT_FIELD_REWORK);
+            if (subtitleTextFieldRework)
+            {
+                subtitleTextFieldRework.SetSiblingIndex(false);
             }
 
             ModSettingsDataManager.Instance.Save();
@@ -440,6 +452,10 @@ namespace OverhaulMod.UI
             {
                 _ = ModUIConstants.ShowOverhaulUIManagementPanel(base.transform);
             });
+            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.SHOW_VERSION_LABEL), delegate (bool value)
+            {
+                ModSettingsManager.SetBoolValue(ModSettingsConstants.SHOW_VERSION_LABEL, value, true);
+            }, "Show Overhaul mod version");
 
             _ = pageBuilder.Header1("Energy bar enhancements");
             _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENERGY_UI_REWORK), delegate (bool value)
@@ -465,11 +481,15 @@ namespace OverhaulMod.UI
                 populateUIPatchesPage(settingsMenu);
             });
 
-            _ = pageBuilder.Header1("Misc.");
-            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.SHOW_VERSION_LABEL), delegate (bool value)
+            _ = pageBuilder.Header1("Subtitles");
+            _ = pageBuilder.ToggleWithOptions(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_SUBTITLE_TEXT_FIELD_REWORK), delegate (bool value)
             {
-                ModSettingsManager.SetBoolValue(ModSettingsConstants.SHOW_VERSION_LABEL, value, true);
-            }, "Show Overhaul mod version");
+                ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_SUBTITLE_TEXT_FIELD_REWORK, value, true);
+                SpeechAudioManager.Instance.PlaySequence("CloneDroneIntro", false);
+            }, "Commentator subtitles rework", delegate
+            {
+                populateSubtitlesReworkSettingsPage(m_selectedTabId);
+            });
         }
 
         private void populateGraphicsPage(SettingsMenu settingsMenu)
@@ -893,16 +913,16 @@ namespace OverhaulMod.UI
                 return;
             }
 
-            _ = pageBuilder.Header1("Advanced settings");
-            _ = pageBuilder.Button("Switch save data", null);
+            _ = pageBuilder.Header1("Reset settings");
             _ = pageBuilder.Button("Reset game settings", null);
-            _ = pageBuilder.Button("Reset Overhaul settings", null);
-            _ = pageBuilder.Button("Reset ALL settings", null);
-
-            _ = pageBuilder.Header1("First person mode");
-            _ = pageBuilder.Header3("Shield transparency");
-            _ = pageBuilder.Slider(0f, 1f, false, 1f, null);
-            _ = pageBuilder.Toggle(false, null, "Damage indicator");
+            _ = pageBuilder.Button("Reset Overhaul settings", delegate
+            {
+                ModUIUtils.MessagePopup(true, "Reset Overhaul mod settings?", "placeholder description", 125f, MessageMenu.ButtonLayout.EnableDisableButtons, "Ok", "Yes", "No", null, delegate
+                {
+                    ModSettingsManager.Instance.ResetSettings();
+                    ModUIConstants.ShowRestartRequiredScreen(true);
+                });
+            });
         }
 
         private void populateUIPatchesPage(SettingsMenu settingsMenu)
@@ -959,6 +979,62 @@ namespace OverhaulMod.UI
             pageBuilder.LanguageButton("pt-BR", container);
             pageBuilder.LanguageButton("ja", container);
             pageBuilder.LanguageButton("ko", container);
+        }
+
+        private void populateSubtitlesReworkSettingsPage(string initialPage)
+        {
+            PageBuilder pageBuilder = new PageBuilder(this);
+            _ = pageBuilder.Button("Go back", delegate
+            {
+                ClearPageContents();
+                PopulatePage(initialPage);
+            });
+
+            _ = pageBuilder.Header1("Commentator subtitles settings");
+            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_SUBTITLE_TEXT_FIELD_REWORK), delegate (bool value)
+            {
+                ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_SUBTITLE_TEXT_FIELD_REWORK, value, true);
+                SpeechAudioManager.Instance.PlaySequence("CloneDroneIntro", false);
+            }, "Enable");
+            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.SUBTITLE_TEXT_FIELD_UPPER_POSITION), delegate (bool value)
+            {
+                ModSettingsManager.SetBoolValue(ModSettingsConstants.SUBTITLE_TEXT_FIELD_UPPER_POSITION, value, true);
+                SpeechAudioManager.Instance.PlaySequence("CloneDroneIntro", false);
+            }, "Be on top");
+            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.SUBTITLE_TEXT_FIELD_BG), delegate (bool value)
+            {
+                ModSettingsManager.SetBoolValue(ModSettingsConstants.SUBTITLE_TEXT_FIELD_BG, value, true);
+                SpeechAudioManager.Instance.PlaySequence("CloneDroneIntro", false);
+            }, "Enable background");
+
+            _ = pageBuilder.Header3("Font");
+            _ = pageBuilder.Dropdown(UISubtitleTextFieldRework.FontOptions, ModSettingsManager.GetIntValue(ModSettingsConstants.SUBTITLE_TEXT_FIELD_FONT), delegate (int value)
+            {
+                ModSettingsManager.SetIntValue(ModSettingsConstants.SUBTITLE_TEXT_FIELD_FONT, value, true);
+                SpeechAudioManager.Instance.PlaySequence("CloneDroneIntro", false);
+            });
+            _ = pageBuilder.Header4("Some languages might not be supported by certain fonts");
+            _ = pageBuilder.Header3("Font size");
+            _ = pageBuilder.Slider(8f, 15f, true, ModSettingsManager.GetIntValue(ModSettingsConstants.SUBTITLE_TEXT_FIELD_FONT_SIZE), delegate (float value)
+            {
+                ModSettingsManager.SetIntValue(ModSettingsConstants.SUBTITLE_TEXT_FIELD_FONT_SIZE, Mathf.RoundToInt(value), true);
+                SpeechAudioManager.Instance.PlaySequence("CloneDroneIntro", false);
+            }, true, (float val) =>
+            {
+                return $"{Mathf.RoundToInt(val)}";
+            });
+
+            _ = pageBuilder.Button("Reset settings", delegate
+            {
+                ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_SUBTITLE_TEXT_FIELD_REWORK, true, true);
+                ModSettingsManager.SetBoolValue(ModSettingsConstants.SUBTITLE_TEXT_FIELD_UPPER_POSITION, true, true);
+                ModSettingsManager.SetBoolValue(ModSettingsConstants.SUBTITLE_TEXT_FIELD_BG, false, true);
+                ModSettingsManager.SetIntValue(ModSettingsConstants.SUBTITLE_TEXT_FIELD_FONT, 0, true);
+                ModSettingsManager.SetIntValue(ModSettingsConstants.SUBTITLE_TEXT_FIELD_FONT_SIZE, 13, true);
+
+                ClearPageContents();
+                populateSSAOSettingsPage(initialPage);
+            });
         }
 
         private void populateSSAOSettingsPage(string initialPage)

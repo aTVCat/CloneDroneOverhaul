@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 3998155624
+CRC: 1483963350
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: d5f4a88015302557be75855a2114df9b
+    Hash: 4f2e03b81ac7ab4a3d5af8578de972c7
   TypeTreeHash:
     serializedVersion: 2
     Hash: acf1344b0dbbc80b9165ec9e7dce57f8
@@ -98,6 +98,7 @@ Assets:
 - Assets/UI/UI_CrashScreen.prefab
 - Assets/UI/UI_PersonalizationEditorVerificationMenu.prefab
 - Assets/UI/UI_UpdatesWindow.prefab
+- Assets/Font/OpenSans-Regular.ttf
 - Assets/Sprites/Glyphs/Exit-V2-16x16.png
 - Assets/UI/UI_ConnectScreen.prefab
 - Assets/UI/UI_PersonalizationEditorExclusivityEditMenu.prefab
@@ -105,6 +106,7 @@ Assets:
 - Assets/UI/UI_ImageExplorer.prefab
 - Assets/UI/UI_EndlessGameLossWindow.prefab
 - Assets/UI/UI_ExclusiveContentEditor.prefab
+- Assets/Font/Edit-Undo.ttf
 - Assets/UI/UI_MessagePopupFullScreen.prefab
 - Assets/UI/UI_WorkshopItemPageWindow.prefab
 - Assets/Sprites/Glyphs/RevertUpgradesButton.png
@@ -119,6 +121,7 @@ Assets:
 - Assets/Sprites/Glyphs/NA-HQ-128x128.png
 - Assets/UI/UI_LoadingScreen.prefab
 - Assets/UI/UI_Transition.prefab
+- Assets/Font/dseg7classicbold.ttf
 - Assets/UI/UI_PersonalizationEditorItemCreationDialog.prefab
 - Assets/UI/UI_PersonalizationEditor.prefab
 - Assets/UI/UI_EndlessModeMenu.prefab
@@ -145,14 +148,17 @@ Assets:
 - Assets/Sprites/Glyphs/Tick-16x16.png
 - Assets/UI/UI_InformationSelectWindow.prefab
 - Assets/Sprites/Glyphs/Drive-Mini-16x16.png
+- Assets/Font/Piksieli-Prosto.ttf
 - Assets/UI/UI_PauseMenuRework.prefab
 - Assets/UI/UI_PersonalizationEditorObjectBrowser.prefab
 - Assets/UI/UI_GenericInputWindow.prefab
 - Assets/UI/UI_DiscordServerMenu.prefab
+- Assets/Font/3117-font.ttf
 - Assets/UI/Prefabs/RevertUpgradesButtonPrefab.prefab
 - Assets/UI/UI_NewsPanel.prefab
 - Assets/UI/UI_LocalizationEditor.prefab
 - Assets/UI/UI_ChallengesMenuRework.prefab
+- Assets/Font/Triggering-Fanfares.ttf
 - Assets/UI/UI_PersonalizationEditorAboutDialog.prefab
 - Assets/UI/UI_CinematicEffects.prefab
 - Assets/UI/UI_EndlessModeLeaderboard.prefab
@@ -180,5 +186,7 @@ Assets:
 - Assets/Sprites/Glyphs/Save16x16.png
 - Assets/UI/UI_LevelDescriptionBrowser.prefab
 - Assets/UI/UI_FeedbackUIRework.prefab
+- Assets/Font/OpenSans-ExtraBold.ttf
+- Assets/Font/eternalui_bold.ttf
 - Assets/UI/UI_TitleScreenRework.prefab
 Dependencies: []

@@ -521,6 +521,7 @@
     <Compile Include="Patches\GameModeSelectScreen_Patch.cs" />
     <Compile Include="Patches\GameplayAchievementManager_Patch.cs" />
     <Compile Include="Patches\GameUIRoot_Patch.cs" />
+    <Compile Include="Patches\UpgradeStation_Patch.cs" />
     <Compile Include="Patches\GlobalFireParticleSystem_Patch.cs" />
     <Compile Include="Patches\LevelEditorDataManager_Patch.cs" />
     <Compile Include="Patches\LevelEditorLevelObject_Patch.cs" />

@@ -110,7 +110,7 @@ namespace OverhaulMod
         {
             get
             {
-                return false;
+                return ENABLE_V5;
             }
         }
 

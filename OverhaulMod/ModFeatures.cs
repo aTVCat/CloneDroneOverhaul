@@ -78,7 +78,7 @@ namespace OverhaulMod
                     result = false;
                     break;
                 case FeatureType.AdvancedSettings:
-                    result = false;
+                    result = true;
                     break;
                 case FeatureType.WorkshopBrowserContextMenu:
                     result = false;
