@@ -125,7 +125,7 @@ namespace OverhaulMod.Content.Personalization
         {
             get
             {
-                return ExclusiveContentManager.Instance.IsLocalUserAbleToVerifyItems();
+                return true;
             }
         }
 

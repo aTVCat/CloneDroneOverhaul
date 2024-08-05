@@ -68,7 +68,7 @@ namespace OverhaulMod.UI
             m_viewAllItemsToggle.gameObject.SetActive(PersonalizationEditorManager.Instance.canEditNonOwnItems);
             m_usePersistentDirectoryToggle.gameObject.SetActive(isDev);
             m_usePersistentDirectoryToggle.isOn = true;
-            m_importButton.gameObject.SetActive(isDev);
+            m_importButton.interactable = isDev;
             m_exportAllButton.gameObject.SetActive(isDev);
             m_exportVersionField.gameObject.SetActive(isDev);
             if (isDev)

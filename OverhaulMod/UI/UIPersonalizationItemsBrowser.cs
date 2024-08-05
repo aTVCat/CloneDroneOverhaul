@@ -82,16 +82,13 @@ namespace OverhaulMod.UI
         [UIElement("SettingsButton")]
         private readonly Button m_settingsButton;
 
-        [UIElementAction(nameof(OnUpdateButtonClicked))]
-        [UIElement("UpdateButton")]
-        private readonly Button m_updateButton;
+        [UIElementAction(nameof(OnAllowEnemiesUseWeaponSkinsToggled))]
+        [UIElement("EnemiesUseSkinsToggle")]
+        private readonly Toggle m_allowEnemiesUseWeaponSkinsToggle;
 
         [UIElementAction(nameof(OnClearButtonClicked))]
         [UIElement("ClearButton")]
         private readonly Button m_clearButton;
-
-        [UIElement("UpdateButtonText")]
-        private readonly Text m_updateButtonText;
 
         [UIElement("ScrollRect")]
         private readonly RectTransform m_scrollRectTransform;
@@ -152,6 +149,7 @@ namespace OverhaulMod.UI
 
             m_descriptionBox.SetBrowserUI(this);
             m_sortDropdown.value = 1;
+            m_allowEnemiesUseWeaponSkinsToggle.isOn = PersonalizationController.AllowEnemiesUseSkins;
 
             GlobalEventManager.Instance.AddEventListener(PersonalizationManager.CUSTOMIZATION_ASSETS_FILE_DOWNLOADED_EVENT, onCustomizationAssetsFileDownloaded);
             GlobalEventManager.Instance.AddEventListener(GlobalEvents.PlayerDied, tryHide);
@@ -184,7 +182,6 @@ namespace OverhaulMod.UI
 
             _ = base.StartCoroutine(waitThenRefreshCameraCoroutine());
             ShowDownloadCustomizationAssetsDownloadMenuIfRequired();
-            refreshUpdateButton();
 
             UIVersionLabel.instance.offsetX = 325f;
 
@@ -474,6 +471,18 @@ namespace OverhaulMod.UI
                     defaultSkinButton.interactable = !PersonalizationController.GetWeaponSkin(weaponType).IsNullOrEmpty();
                     m_defaultSkinButton = defaultSkinButton;
 
+                    utilsPanel.GetObject<Button>(1).onClick.AddListener(OnUpdateButtonClicked);
+
+                    PersonalizationManager personalizationManager = PersonalizationManager.Instance;
+                    if (personalizationManager.GetPersonalizationAssetsState() == PersonalizationAssetsState.NotInstalled)
+                    {
+                        utilsPanel.GetObject<Text>(2).text = LocalizationManager.Instance.GetTranslatedString("Download");
+                    }
+                    else
+                    {
+                        utilsPanel.GetObject<Text>(2).text = LocalizationManager.Instance.GetTranslatedString("customization_button_update");
+                    }
+
                     bool isDeveloper = ModUserInfo.isDeveloper;
 
                     System.Collections.Generic.List<PersonalizationItemInfo> list = PersonalizationManager.Instance.itemList.GetItems(m_selectedCategory, (PersonalizationItemsSortType)m_sortType);
@@ -603,20 +612,6 @@ namespace OverhaulMod.UI
         private void onCustomizationAssetsFileDownloaded()
         {
             Populate();
-            refreshUpdateButton();
-        }
-
-        private void refreshUpdateButton()
-        {
-            PersonalizationManager personalizationManager = PersonalizationManager.Instance;
-            if (personalizationManager.GetPersonalizationAssetsState() == PersonalizationAssetsState.NotInstalled)
-            {
-                m_updateButtonText.text = LocalizationManager.Instance.GetTranslatedString("Download");
-            }
-            else
-            {
-                m_updateButtonText.text = LocalizationManager.Instance.GetTranslatedString("customization_button_update");
-            }
         }
 
         private void refreshCameraRect()
@@ -702,6 +697,14 @@ namespace OverhaulMod.UI
         public void OnClearButtonClicked()
         {
             m_searchBox.text = string.Empty;
+        }
+
+        public void OnAllowEnemiesUseWeaponSkinsToggled(bool value)
+        {
+            if (!m_allowUICallbacks)
+                return;
+
+            ModSettingsManager.SetBoolValue(ModSettingsConstants.ALLOW_ENEMIES_USE_WEAPON_SKINS, value, true);
         }
     }
 }
