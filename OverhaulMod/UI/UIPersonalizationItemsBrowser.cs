@@ -194,6 +194,9 @@ namespace OverhaulMod.UI
 
             m_loadingSawblade.color = Color.white;
 
+            if(m_selectedCategory == PersonalizationCategory.WeaponSkins)
+                selectSubcategoryOfCurrentWeapon();
+
             Populate();
         }
 
@@ -326,7 +329,7 @@ namespace OverhaulMod.UI
                 if (ModFeatures.IsEnabled(ModFeatures.FeatureType.ScytheSkins) && BoltNetwork.IsServer)
                     m_subcategoryTabs.AddTab(ModWeaponsManager.SCYTHE_TYPE.ToString());
 
-                m_subcategoryTabs.SelectTab("Sword");
+                selectSubcategoryOfCurrentWeapon();
             }
             else if (newTab.tabId == "accessories")
             {
@@ -356,6 +359,25 @@ namespace OverhaulMod.UI
             elementTabWithText.LocalizationID = $"customization_subtab_{elementTab.tabId.ToLower()}";
         }
 
+        private void selectSubcategoryOfCurrentWeapon()
+        {
+            FirstPersonMover firstPersonMover = CharacterTracker.Instance.GetPlayerRobot();
+            if (firstPersonMover)
+            {
+                WeaponType weaponType = firstPersonMover.GetEquippedWeaponType();
+                string weaponTypeString = weaponType.ToString();
+
+                if (m_subcategoryTabs.HasTab(weaponTypeString))
+                    m_subcategoryTabs.SelectTab(weaponTypeString);
+                else
+                    m_subcategoryTabs.SelectTab("Sword");
+            }
+            else
+            {
+                m_subcategoryTabs.SelectTab("Sword");
+            }
+        }
+
         public void Populate()
         {
             if (m_isPopulating || !base.enabled || !base.gameObject.activeInHierarchy)
@@ -367,6 +389,8 @@ namespace OverhaulMod.UI
 
         private IEnumerator populateCoroutine()
         {
+            yield return null;
+
             m_showContents = false;
             m_categoryTabs.interactable = false;
             m_subcategoryTabs.interactable = false;

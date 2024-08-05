@@ -10,7 +10,7 @@ using UnityEngine.Networking;
 
 namespace OverhaulMod.Content.Personalization
 {
-    public class PersonalizationManager : Singleton<PersonalizationManager>
+    public class PersonalizationManager : Singleton<PersonalizationManager>, IGameLoadListener
     {
         public const string DATA_REFRESH_TIME_PLAYER_PREF_KEY = "CustomizationAssetsInfoRefreshDate";
 
@@ -102,6 +102,16 @@ namespace OverhaulMod.Content.Personalization
         {
             RefreshLocalCustomizationAssetsVersion();
             RefreshRemoteCustomizationAssetsVersion(null);
+        }
+
+        public void OnGameLoaded()
+        {
+            PersonalizationUserInfo userInfo = this.userInfo;
+            if (userInfo != null)
+            {
+                userInfo.RefreshAllItemsVerification();
+                SaveUserInfo();
+            }
         }
 
         public void DownloadCustomizationFile(Action<bool> callback)
