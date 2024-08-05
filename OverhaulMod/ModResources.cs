@@ -132,6 +132,13 @@ namespace OverhaulMod
             return Path.GetFileNameWithoutExtension(fileLocation);
         }
 
+        public enum AssetLoadingState
+        {
+            NotLoaded,
+            Loading,
+            Loaded
+        }
+
         public class AssetBundleInfo
         {
             public readonly string FileLocation;

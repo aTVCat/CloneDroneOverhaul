@@ -47,8 +47,6 @@ namespace OverhaulMod.Patches
                         image.sprite = ModResources.Sprite(AssetBundleConstants.UI, "NA-HQ-128x128");
                     }
                 }
-
-                content.sizeDelta = ModUpgradesManager.Instance.GetOverrideSizeDeltaForUpgrade(upgradeDescription.UpgradeType, upgradeDescription.Level);
             }
         }
 

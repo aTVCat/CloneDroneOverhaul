@@ -72,7 +72,6 @@ namespace OverhaulMod
             _ = ModManagers.NewSingleton<ModLevelManager>();
             _ = ModManagers.NewSingleton<ModWeaponsManager>();
             _ = ModManagers.NewSingleton<ModUpgradesManager>();
-            _ = ModManagers.NewSingleton<ModEnemiesManager>();
             _ = ModManagers.NewSingleton<DifficultyTierManager>();
             _ = ModManagers.NewSingleton<ModGameModifiersManager>();
             _ = ModManagers.NewSingleton<TitleScreenCustomizationManager>();
@@ -118,7 +117,6 @@ namespace OverhaulMod
         private static void loadAssemblies()
         {
             LevelEditorPatch.Patch.Apply();
-            _ = ModBotAPI.ModBotAPI.Initialize();
             ModIntegrationUtils.Load();
         }
 
@@ -128,31 +126,10 @@ namespace OverhaulMod
             {
                 Patch.AddObject("WeatherSettingsOverride", "OverhaulMod", "", GameObject.CreatePrimitive(PrimitiveType.Cylinder).transform, new Type[] { typeof(LevelEditorWeatherSettingsOverride) }, Path.Combine(ModCore.editorTexturesFolder, "WeatherSettingsOverride.png"));
 
+                /*
                 if (ModBuildInfo.debug)
-                    Patch.AddObject("ArenaAudienceLinePoint", "OverhaulMod", "", GameObject.CreatePrimitive(PrimitiveType.Sphere).transform, new Type[] { typeof(ArenaAudienceLinePoint) }, null);
+                    Patch.AddObject("ArenaAudienceLinePoint", "OverhaulMod", "", GameObject.CreatePrimitive(PrimitiveType.Sphere).transform, new Type[] { typeof(ArenaAudienceLinePoint) }, null);*/
 
-                if (ModFeatures.IsEnabled(ModFeatures.FeatureType.NewEnemies))
-                {
-                    Patch.AddObject("Scythe1", "OverhaulMod", "Enemies", ModPrefabUtils.scythe1Spawner, null, Path.Combine(ModCore.editorTexturesFolder, "ScytheBot.png"));
-                    Patch.AddObject("Scythe2", "OverhaulMod", "Enemies", ModPrefabUtils.scythe2Spawner, null, Path.Combine(ModCore.editorTexturesFolder, "ScytheBot.png"));
-                    Patch.AddObject("Scythe3", "OverhaulMod", "Enemies", ModPrefabUtils.scythe3Spawner, null, Path.Combine(ModCore.editorTexturesFolder, "ScytheBot.png"));
-                    Patch.AddObject("Scythe4", "OverhaulMod", "Enemies", ModPrefabUtils.scythe4Spawner, null, Path.Combine(ModCore.editorTexturesFolder, "ScytheBot.png"));
-                    Patch.AddObject("SprinterScythe1", "OverhaulMod", "Enemies", ModPrefabUtils.scytheSprinter1Spawner, null, Path.Combine(ModCore.editorTexturesFolder, "SprinterScytheBot.png"));
-                    Patch.AddObject("SprinterScythe2", "OverhaulMod", "Enemies", ModPrefabUtils.scytheSprinter2Spawner, null, Path.Combine(ModCore.editorTexturesFolder, "SprinterScytheBot.png"));
-
-                    Patch.AddObject("Axe1", "OverhaulMod", "Enemies", ModPrefabUtils.axe1Spawner, null, Path.Combine(ModCore.editorTexturesFolder, "AxeBot.png"));
-                    Patch.AddObject("Axe2", "OverhaulMod", "Enemies", ModPrefabUtils.axe2Spawner, null, Path.Combine(ModCore.editorTexturesFolder, "AxeBot.png"));
-                    Patch.AddObject("Axe3", "OverhaulMod", "Enemies", ModPrefabUtils.axe3Spawner, null, Path.Combine(ModCore.editorTexturesFolder, "AxeBot.png"));
-                    Patch.AddObject("Axe4", "OverhaulMod", "Enemies", ModPrefabUtils.axe4Spawner, null, Path.Combine(ModCore.editorTexturesFolder, "AxeBot.png"));
-
-                    Patch.AddObject("Halberd1", "OverhaulMod", "Enemies", ModPrefabUtils.halberd1Spawner, null, Path.Combine(ModCore.editorTexturesFolder, "HalberdBot.png"));
-                    Patch.AddObject("Halberd2", "OverhaulMod", "Enemies", ModPrefabUtils.halberd2Spawner, null, Path.Combine(ModCore.editorTexturesFolder, "HalberdBot.png"));
-                    Patch.AddObject("Halberd3", "OverhaulMod", "Enemies", ModPrefabUtils.halberd3Spawner, null, Path.Combine(ModCore.editorTexturesFolder, "HalberdBot.png"));
-
-                    Patch.AddObject("GuardBot", "OverhaulMod", "Enemies", ModPrefabUtils.guardBotSpawner, null, null);
-
-                    Patch.AddObject("ChibiSword2", "OverhaulMod", "Enemies", ModPrefabUtils.chibiSword2Spawner, null, null);
-                }
                 s_hasAddedObjects = true;
             }
         }
@@ -165,21 +142,6 @@ namespace OverhaulMod
             _ = ModIOUtils.CreateDirectoryIfNotExists(ModCore.addonsFolder);
             _ = ModIOUtils.CreateDirectoryIfNotExists(ModCore.customizationFolder);
             _ = ModIOUtils.CreateDirectoryIfNotExists(ModCore.customizationPersistentFolder);
-
-            if (!Directory.Exists(ModCore.modDataFolder))
-                _ = Directory.CreateDirectory(ModCore.modDataFolder);
-
-            if (!Directory.Exists(ModCore.contentFolder))
-                _ = Directory.CreateDirectory(ModCore.contentFolder);
-
-            if (!Directory.Exists(ModCore.savesFolder))
-                _ = Directory.CreateDirectory(ModCore.savesFolder);
-
-            if (!Directory.Exists(ModCore.addonsFolder))
-                _ = Directory.CreateDirectory(ModCore.addonsFolder);
-
-            if (!Directory.Exists(ModCore.customizationFolder))
-                _ = Directory.CreateDirectory(ModCore.customizationFolder);
         }
 
         private static void addListeners()
