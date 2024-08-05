@@ -1,4 +1,5 @@
-﻿using OverhaulMod.Utils;
+﻿using OverhaulMod.Engine;
+using OverhaulMod.Utils;
 using Steamworks;
 using System;
 using System.Collections;
@@ -9,8 +10,6 @@ namespace OverhaulMod.Content
 {
     public class ExclusiveContentManager : Singleton<ExclusiveContentManager>
     {
-        public const string DATA_REFRESH_TIME_PLAYER_PREF_KEY = "ExclusiveInfoRefreshDate";
-
         public const string REPOSITORY_FILE = "ExclusiveContentInfoList.json";
 
         public const string CONTENT_REFRESHED_EVENT = "ExclusiveContentRefreshed";
@@ -60,15 +59,16 @@ namespace OverhaulMod.Content
             yield return null;
             RetrieveDataFromRepository(null, null, true); // load local file
 
-            if (DateTime.TryParse(PlayerPrefs.GetString(DATA_REFRESH_TIME_PLAYER_PREF_KEY, "default"), out DateTime timeToRefreshData))
-                if (DateTime.Now < timeToRefreshData)
-                    yield break;
+            ScheduledActionsManager scheduledActionsManager = ScheduledActionsManager.Instance;
+            if (!scheduledActionsManager.ShouldExecuteAction(ScheduledActionType.RefreshExclusivePerks))
+                yield break;
 
-            yield return new WaitUntil(() => MultiplayerLoginManager.Instance.IsLoggedIntoPlayfab());
-            yield return new WaitForSecondsRealtime(2f);
+            while (!MultiplayerLoginManager.Instance.IsLoggedIntoPlayfab())
+                yield return null;
+
             RetrieveDataFromRepository(delegate
             {
-                PlayerPrefs.SetString(DATA_REFRESH_TIME_PLAYER_PREF_KEY, DateTime.Now.AddDays(5).ToString());
+                scheduledActionsManager.SetActionExecuted(ScheduledActionType.RefreshExclusivePerks);
             }, delegate (string error)
             {
                 this.error = error;

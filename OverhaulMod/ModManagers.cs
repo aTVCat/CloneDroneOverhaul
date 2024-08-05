@@ -62,7 +62,7 @@ namespace OverhaulMod
                 if (ShowModSetupScreenOnStart)
                     _ = ModUIConstants.ShowSettingsMenuRework(true);
                 else
-                    ModUIUtils.ShowChangelogIfRequired(2f);
+                    ModUIUtils.ShowNewUpdateMessageOrChangelog(2f);
             }
 
             if (ModFeatures.IsEnabled(ModFeatures.FeatureType.SubtitleTextFieldRework))

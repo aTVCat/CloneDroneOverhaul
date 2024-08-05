@@ -376,6 +376,8 @@
     <Compile Include="Engine\MeshSerializer.cs" />
     <Compile Include="Engine\PressActionKeyObjectManager.cs" />
     <Compile Include="Engine\RealisticLightUserSettings.cs" />
+    <Compile Include="Engine\ScheduledActionsManager.cs" />
+    <Compile Include="Engine\ScheduledActionType.cs" />
     <Compile Include="Engine\WeaponVariant.cs" />
     <Compile Include="Content\Personalization\PersonalizationEditorObjectVisibilityController.cs" />
     <Compile Include="Content\Personalization\PersonalizationEditorObjectSpawnInfo.cs" />

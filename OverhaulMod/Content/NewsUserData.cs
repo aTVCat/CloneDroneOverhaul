@@ -7,8 +7,6 @@ namespace OverhaulMod.Content
     {
         public List<string> AnsweredSurveys;
 
-        public int NumOfNewsSeen;
-
         public void FixValues()
         {
             if (AnsweredSurveys == null)
@@ -18,13 +16,6 @@ namespace OverhaulMod.Content
         public bool HasAnswered(string title)
         {
             return AnsweredSurveys.Contains(title);
-        }
-
-        public bool ShouldHighlightNewsButton(NewsInfoList newsInfoList)
-        {
-            return newsInfoList == null || newsInfoList.News.IsNullOrEmpty()
-                ? NewsManager.downloadedNewsCount > NumOfNewsSeen
-                : newsInfoList.News.Count > NumOfNewsSeen;
         }
     }
 }

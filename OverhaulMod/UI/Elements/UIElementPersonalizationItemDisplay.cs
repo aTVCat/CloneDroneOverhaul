@@ -59,7 +59,7 @@ namespace OverhaulMod.UI
             m_button = base.GetComponent<Button>();
             m_button.onClick.AddListener(onClicked);
 
-            GlobalEventManager.Instance.AddEventListener(PersonalizationManager.ITEM_EQUIPPED_OR_UNEQUIPPED, RefreshDisplays);
+            GlobalEventManager.Instance.AddEventListener(PersonalizationManager.ITEM_EQUIPPED_OR_UNEQUIPPED_EVENT, RefreshDisplays);
             RefreshDisplays();
 
             m_timeForDoubleClick = -1f;
@@ -82,7 +82,7 @@ namespace OverhaulMod.UI
         public override void OnDestroy()
         {
             base.OnDestroy();
-            GlobalEventManager.Instance.RemoveEventListener(PersonalizationManager.ITEM_EQUIPPED_OR_UNEQUIPPED, RefreshDisplays);
+            GlobalEventManager.Instance.RemoveEventListener(PersonalizationManager.ITEM_EQUIPPED_OR_UNEQUIPPED_EVENT, RefreshDisplays);
         }
 
         public bool IsDoubleClicked() => m_timeForDoubleClick != -1f && Time.unscaledTime < m_timeForDoubleClick;

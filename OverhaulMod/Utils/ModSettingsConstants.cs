@@ -419,6 +419,46 @@ namespace OverhaulMod.Utils
         /// <summary>
         /// <see cref="UI.UISubtitleTextFieldRework"/>
         /// </summary>
-        public const string SUBTITLE_TEXT_FIELD_FONT_SIZE = "SubtitleTextFieldFontSize";
+        public const string SUBTITLE_TEXT_FIELD_FONT_SIZE = "SubtitleTextFieldFontSizeV3";
+
+        /// <summary>
+        /// <see cref="Engine.ScheduledActionsManager"/>
+        /// </summary>
+        public const string REFRESH_MOD_UPDATES_DATE_TIME = "RefreshModUpdatesDateTimeV3";
+
+        /// <summary>
+        /// <see cref="Engine.ScheduledActionsManager"/>
+        /// </summary>
+        public const string REFRESH_EXCLUSIVE_PERKS_DATE_TIME = "RefreshExclusivePerksDateTimeV3";
+
+        /// <summary>
+        /// <see cref="Engine.ScheduledActionsManager"/>
+        /// </summary>
+        public const string REFRESH_CUSTOMIZATION_ASSETS_REMOTE_VERSION_DATE_TIME = "RefreshCustomizationAssetsRemoteVersionDateTimeV3";
+
+        /// <summary>
+        /// <see cref="Engine.ScheduledActionsManager"/>
+        /// </summary>
+        public const string REFRESH_NEWS_DATE_TIME = "RefreshNewsDateTimeV2";
+
+        /// <summary>
+        /// <see cref="Content.UpdateManager"/>
+        /// </summary>
+        public const string SAVED_RELEASE_VERSION = "SavedReleaseVersion";
+
+        /// <summary>
+        /// <see cref="Content.UpdateManager"/>
+        /// </summary>
+        public const string SAVED_TESTING_VERSION = "SavedTestingVersion";
+
+        /// <summary>
+        /// <see cref="Content.NewsManager"/>
+        /// </summary>
+        public const string PREV_NEWS_COUNT = "PrevNewsCountV3";
+
+        /// <summary>
+        /// <see cref="Content.NewsManager"/>
+        /// </summary>
+        public const string DOWNLOADED_NEWS_COUNT = "DownloadedNewsCount";
     }
 }

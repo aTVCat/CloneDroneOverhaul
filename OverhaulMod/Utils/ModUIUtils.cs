@@ -1,4 +1,5 @@
-﻿using OverhaulMod.UI;
+﻿using OverhaulMod.Content;
+using OverhaulMod.UI;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -8,7 +9,7 @@ namespace OverhaulMod.Utils
 {
     public static class ModUIUtils
     {
-        public static void ShowChangelogIfRequired(float delay)
+        public static void ShowNewUpdateMessageOrChangelog(float delay, bool dontShowNewUpdateMessage = false, bool dontShowPatchNotes = false)
         {
             bool showChangelog = false;
 
@@ -18,11 +19,33 @@ namespace OverhaulMod.Utils
             else if (Version.TryParse(lastBuildChangelogWasShownOn, out Version prevVersion) && prevVersion < ModBuildInfo.version)
                 showChangelog = true;
 
-            if (showChangelog)
+            if (!dontShowPatchNotes && showChangelog)
             {
                 DelegateScheduler.Instance.Schedule(delegate
                 {
                     _ = ModUIConstants.ShowPatchNotes();
+                }, delay);
+            }
+            else if(!dontShowNewUpdateMessage)
+            {
+                DelegateScheduler.Instance.Schedule(delegate
+                {
+                    bool isTester = ModBuildInfo.isPrereleaseBuild || ExclusiveContentManager.Instance.IsLocalUserTheTester();
+                    string savedVersion = isTester ? UpdateManager.SavedTestingVersion : UpdateManager.SavedReleaseVersion;
+                    if (savedVersion.IsNullOrEmpty())
+                        return;
+
+                    if (!System.Version.TryParse(savedVersion, out System.Version newVersion))
+                        return;
+
+                    if (newVersion > ModBuildInfo.version && GameModeManager.IsOnTitleScreen())
+                    {
+                        MessagePopup(true, LocalizationManager.Instance.GetTranslatedString("update_available_header"), string.Format(LocalizationManager.Instance.GetTranslatedString("update_available_description"), newVersion), 150f, MessageMenu.ButtonLayout.EnableDisableButtons, "ok", "Yes", "No", null, delegate
+                        {
+                            UI.UIUpdatesWindow window = ModUIConstants.ShowUpdatesWindow();
+                            window.SelectBranchAndSearchForUpdates(isTester ? 1 : 0);
+                        });
+                    }
                 }, delay);
             }
         }

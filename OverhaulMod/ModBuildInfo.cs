@@ -153,7 +153,7 @@ namespace OverhaulMod
             {
                 string filePath = Path.Combine(ModCore.dataFolder, EXTRA_INFO_FILE_PATH);
 
-                ExtraInfo loadedExtraInfo = ModJsonUtils.Deserialize<ExtraInfo>(ModIOUtils.ReadText(filePath));
+                ExtraInfo loadedExtraInfo = ModJsonUtils.DeserializeStream<ExtraInfo>(filePath);
                 extraInfo = loadedExtraInfo;
             }
             catch { }

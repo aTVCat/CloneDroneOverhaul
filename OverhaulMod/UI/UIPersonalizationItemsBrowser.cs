@@ -34,6 +34,8 @@ namespace OverhaulMod.UI
 
         public static bool IsPreviewing;
 
+        public static bool HasShownAssetsUpdateMenu;
+
         [UIElementAction(nameof(Hide))]
         [UIElement("CloseButton")]
         private readonly Button m_exitButton;
@@ -286,8 +288,14 @@ namespace OverhaulMod.UI
 
         public void ShowDownloadCustomizationAssetsDownloadMenuIfRequired()
         {
+            if (HasShownAssetsUpdateMenu)
+                return;
+
             if (PersonalizationManager.Instance.GetPersonalizationAssetsState() != PersonalizationAssetsState.Installed)
+            {
                 _ = ModUIConstants.ShowDownloadPersonalizationAssetsMenu(base.transform);
+                HasShownAssetsUpdateMenu = true;
+            }
         }
 
         public void OnCategoryTabSelected(UIElementTab elementTab)
@@ -466,7 +474,7 @@ namespace OverhaulMod.UI
                         defaultSkinButton.interactable = false;
                         PersonalizationController.SetWeaponSkin(weaponType, null);
                         PersonalizationController.DestroyWeaponSkin(weaponType);
-                        GlobalEventManager.Instance.Dispatch(PersonalizationManager.ITEM_EQUIPPED_OR_UNEQUIPPED);
+                        GlobalEventManager.Instance.Dispatch(PersonalizationManager.ITEM_EQUIPPED_OR_UNEQUIPPED_EVENT);
                     });
                     defaultSkinButton.interactable = !PersonalizationController.GetWeaponSkin(weaponType).IsNullOrEmpty();
                     m_defaultSkinButton = defaultSkinButton;

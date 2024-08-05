@@ -64,6 +64,7 @@ namespace OverhaulMod
             _ = ModManagers.NewSingleton<ModDataManager>();
             _ = ModManagers.NewSingleton<RepositoryManager>();
             _ = ModManagers.NewSingleton<GoogleDriveManager>();
+            _ = ModManagers.NewSingleton<ScheduledActionsManager>();
             _ = ModManagers.NewSingleton<ExclusiveContentManager>();
             _ = ModManagers.NewSingleton<ModLocalizationManager>();
             _ = ModManagers.NewSingleton<ModAudioManager>();
