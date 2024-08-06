@@ -57,16 +57,16 @@ namespace OverhaulMod.Content
         private IEnumerator retrieveDataOnStartCoroutine()
         {
             yield return null;
-            RetrieveDataFromRepository(null, null, true); // load local file
+            RetrieveData(null, null, true); // load the local file
+
+            while (!MultiplayerLoginManager.Instance.IsLoggedIntoPlayfab())
+                yield return null;
 
             ScheduledActionsManager scheduledActionsManager = ScheduledActionsManager.Instance;
             if (!scheduledActionsManager.ShouldExecuteAction(ScheduledActionType.RefreshExclusivePerks))
                 yield break;
 
-            while (!MultiplayerLoginManager.Instance.IsLoggedIntoPlayfab())
-                yield return null;
-
-            RetrieveDataFromRepository(delegate
+            RetrieveData(delegate
             {
                 scheduledActionsManager.SetActionExecuted(ScheduledActionType.RefreshExclusivePerks);
             }, delegate (string error)
@@ -76,7 +76,7 @@ namespace OverhaulMod.Content
             yield break;
         }
 
-        public void RetrieveDataFromRepository(Action doneCallback, Action<string> errorCallback, bool getInfoFromFile = false)
+        public void RetrieveData(Action doneCallback, Action<string> errorCallback, bool getInfoFromDisk = false)
         {
             isRetrievingData = true;
             contentInfoList = null;
@@ -84,9 +84,9 @@ namespace OverhaulMod.Content
 
             MultiplayerLoginManager loginManager = MultiplayerLoginManager.Instance;
             if (!loginManager || !loginManager.IsLoggedIntoPlayfab() || loginManager.IsBanned())
-                getInfoFromFile = true;
+                getInfoFromDisk = true;
 
-            if (getInfoFromFile)
+            if (getInfoFromDisk)
             {
                 ModDataManager dataManager = ModDataManager.Instance;
                 if (dataManager.FileExists(REPOSITORY_FILE, false))
@@ -146,11 +146,6 @@ namespace OverhaulMod.Content
                 this.error = error;
                 errorCallback?.Invoke(error);
             }, out _, 20);
-        }
-
-        public bool HasDownloadedContent()
-        {
-            return contentInfoList != null || error != null;
         }
 
         public List<ExclusiveContentInfo> GetAllUnlockedContent()

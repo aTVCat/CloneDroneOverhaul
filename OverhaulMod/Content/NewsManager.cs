@@ -18,8 +18,6 @@ namespace OverhaulMod.Content
         [ModSetting(ModSettingsConstants.DOWNLOADED_NEWS_COUNT, 0)]
         public static int DownloadedNewsCount;
 
-        private NewsInfoList m_downloadedNewsInfoList;
-
         private NewsUserData m_userData;
 
         public static float timeToToClearCache
@@ -43,7 +41,7 @@ namespace OverhaulMod.Content
             DownloadNewsInfoFile(delegate
             {
                 scheduledActionsManager.SetActionExecuted(ScheduledActionType.RefreshNews);
-            }, null, false);
+            }, null);
             yield break;
         }
 
@@ -91,9 +89,6 @@ namespace OverhaulMod.Content
 
         public void SetHasSeenNews()
         {
-            if (m_downloadedNewsInfoList == null || m_downloadedNewsInfoList.News.IsNullOrEmpty())
-                return;
-
             NewsUserData newsUserData = m_userData;
             if (newsUserData == null)
             {
@@ -127,20 +122,8 @@ namespace OverhaulMod.Content
             SaveUserData();
         }
 
-        public void DownloadNewsInfoFile(Action<NewsInfoList> callback, Action<string> errorCallback, bool clearCache = false)
+        public void DownloadNewsInfoFile(Action<NewsInfoList> callback, Action<string> errorCallback)
         {
-            if (clearCache)
-                m_downloadedNewsInfoList = null;
-
-            if (m_downloadedNewsInfoList != null)
-            {
-                DelegateScheduler.Instance.Schedule(delegate
-                {
-                    callback?.Invoke(m_downloadedNewsInfoList);
-                }, 1f);
-                return;
-            }
-
             RepositoryManager.Instance.GetTextFile(REPOSITORY_FILE, delegate (string content)
             {
                 NewsInfoList newsInfoList = null;
@@ -158,7 +141,6 @@ namespace OverhaulMod.Content
                     errorCallback?.Invoke(exc.ToString());
                     return;
                 }
-                m_downloadedNewsInfoList = newsInfoList;
                 callback?.Invoke(newsInfoList);
             }, errorCallback, out _);
         }

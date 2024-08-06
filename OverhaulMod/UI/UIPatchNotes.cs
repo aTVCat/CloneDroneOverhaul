@@ -182,8 +182,10 @@ namespace OverhaulMod.UI
                     return $"{LocalizationManager.Instance.GetTranslatedString("changelog_update")} 4 Test (0.4.0.200)";
                 case "0.4.0.227":
                     return $"{LocalizationManager.Instance.GetTranslatedString("changelog_update")} 4 (0.4.0.227)";
-                case "0.4.1.0":
-                    return $"{LocalizationManager.Instance.GetTranslatedString("changelog_update")} 4.1 (0.4.1.0)";
+                case "0.4.1.13":
+                    return $"{LocalizationManager.Instance.GetTranslatedString("changelog_update")} 4.1 (0.4.1.13)";
+                case "0.4.2.0":
+                    return $"{LocalizationManager.Instance.GetTranslatedString("changelog_update")} 4.2 (0.4.2.0)";
                 default:
                     return folder;
             }

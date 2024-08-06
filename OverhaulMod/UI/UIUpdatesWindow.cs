@@ -9,6 +9,8 @@ namespace OverhaulMod.UI
 {
     public class UIUpdatesWindow : OverhaulUIBehaviour
     {
+        private static UpdateInfoList s_updateInfoList;
+
         [UIElementAction(nameof(Hide))]
         [UIElement("CloseButton")]
         private readonly Button m_exitButton;
@@ -110,7 +112,6 @@ namespace OverhaulMod.UI
         public void SelectBranchAndSearchForUpdates(int value)
         {
             m_branchDropdown.value = value;
-            UpdateManager.timeToToClearCache = 0f;
             OnCheckForUpdatesButtonClicked();
         }
 
@@ -121,8 +122,11 @@ namespace OverhaulMod.UI
             m_loadingIndicator.SetActive(!value);
         }
 
-        private void onCheckedUpdates(UpdateInfoList updateInfoList)
+        private void onCheckedForUpdates(UpdateInfoList updateInfoList)
         {
+            if (s_updateInfoList == null)
+                s_updateInfoList = updateInfoList;
+
             SetUIInteractable(true);
             UpdateInfo updateInfo = null;
             switch (m_branchDropdown.value)
@@ -143,7 +147,7 @@ namespace OverhaulMod.UI
                 m_versionText.text = LocalizationManager.Instance.GetTranslatedString("no updates found");
                 return;
             }
-            m_directoryName = "OverhaulMod_V" + updateInfo.ModVersion;
+            m_directoryName = $"OverhaulMod_{updateInfo.ModVersion}";
             m_downloadSource = updateInfo.DownloadLink;
             m_inGameUpdateButton.interactable = true;
 
@@ -189,12 +193,15 @@ namespace OverhaulMod.UI
             SetUIInteractable(false);
             ClearVersionAndChangelogTexts();
 
-            float time = Time.unscaledTime;
-            bool clearCache = time >= UpdateManager.timeToToClearCache;
-            if (clearCache)
-                UpdateManager.timeToToClearCache = time + 60f;
-
-            UpdateManager.Instance.DownloadUpdateInfoFile(onCheckedUpdates, onFailedToCheckUpdates, clearCache);
+            if(s_updateInfoList != null)
+            {
+                DelegateScheduler.Instance.Schedule(delegate
+                {
+                    onCheckedForUpdates(s_updateInfoList);
+                }, 0.2f);
+                return;
+            }
+            UpdateManager.Instance.DownloadUpdateInfoFile(onCheckedForUpdates, onFailedToCheckUpdates);
         }
 
         public void OnBranchChanged(int index)

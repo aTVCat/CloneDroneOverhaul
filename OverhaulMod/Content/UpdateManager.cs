@@ -38,12 +38,6 @@ namespace OverhaulMod.Content
             new Dropdown.OptionData() { text = "Testing" },
         };
 
-        public static float timeToToClearCache
-        {
-            get;
-            set;
-        }
-
         public static System.Version downloadedVersion
         {
             get;
@@ -74,7 +68,7 @@ namespace OverhaulMod.Content
             DownloadUpdateInfoFile(delegate
             {
                 scheduledActionsManager.SetActionExecuted(ScheduledActionType.RefreshModUpdates);
-            }, null, false);
+            }, null);
             yield break;
         }
 
@@ -83,20 +77,8 @@ namespace OverhaulMod.Content
             return downloadedVersion > ModBuildInfo.version;
         }
 
-        public void DownloadUpdateInfoFile(Action<UpdateInfoList> callback, Action<string> errorCallback, bool clearCache = false)
+        public void DownloadUpdateInfoFile(Action<UpdateInfoList> callback, Action<string> errorCallback)
         {
-            if (clearCache)
-                m_downloadedUpdateInfoList = null;
-
-            if (m_downloadedUpdateInfoList != null)
-            {
-                DelegateScheduler.Instance.Schedule(delegate
-                {
-                    callback?.Invoke(m_downloadedUpdateInfoList);
-                }, 1f);
-                return;
-            }
-
             RepositoryManager.Instance.GetTextFile(REPOSITORY_FILE, delegate (string content)
             {
                 UpdateInfoList updateInfoList = null;
@@ -122,14 +104,13 @@ namespace OverhaulMod.Content
                     return;
                 }
                 callback?.Invoke(updateInfoList);
-                m_downloadedUpdateInfoList = updateInfoList;
             }, errorCallback, out _);
         }
 
         public void DownloadBuildFromSource(string source, string directoryName, Action callback, Action<string> errorCallback, out UnityWebRequest unityWebRequest)
         {
             unityWebRequest = null;
-            string directoryPath = Path.Combine(ModsManager.Instance.ModFolderPath, directoryName.Replace('.', '_'));
+            string directoryPath = Path.Combine(ModsManager.Instance.ModFolderPath, directoryName);
             if (Directory.Exists(directoryPath))
             {
                 try
@@ -198,10 +179,6 @@ namespace OverhaulMod.Content
 
                 File.Move(filePath, backupFilePath);
             }
-
-            /*
-            PlayerPrefs.SetString(PLAYER_PREF_KEY, modFolder);
-            PlayerPrefs.Save();*/
         }
     }
 }
