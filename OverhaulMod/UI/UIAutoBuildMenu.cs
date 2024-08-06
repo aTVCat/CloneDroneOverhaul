@@ -12,13 +12,21 @@ namespace OverhaulMod.UI
         [UIElement("CloseButton")]
         private readonly Button m_exitButton;
 
-        [UIElementAction(nameof(OnConfigureBRUpgradesButtonClicked))]
-        [UIElement("ConfigureBRUpgradesButton")]
-        private readonly Button m_configureBRUpgradesButton;
-
         [UIElementAction(nameof(OnCloseUpgradeUIButtonClicked))]
         [UIElement("CloseUpgradeUIButton", false)]
         private readonly Button m_closeUpgradeUIButton;
+
+        [UIElementAction(nameof(OnResetUpgradesButtonClicked))]
+        [UIElement("ResetUpgradesButton", false)]
+        private readonly Button m_resetUpgradesButton;
+
+        [UIElementAction(nameof(OnClearButtonClicked))]
+        [UIElement("ClearButton")]
+        private readonly Button m_clearButton;
+
+        [UIElementAction(nameof(OnSearchBoxChanged))]
+        [UIElement("SearchBox")]
+        private readonly InputField m_searchBox;
 
         [UIElementAction(nameof(OnAutoActivationToggled))]
         [UIElement("ActivateOnMatchStartToggle")]
@@ -32,12 +40,18 @@ namespace OverhaulMod.UI
         [UIElement("Panel", true)]
         private readonly GameObject m_panel;
 
-        [UIElement("SaveSlotsPanel", false)]
-        private readonly GameObject m_saveSlotsPanel;
+        [UIElement("NewBuildButtonPrefab", false)]
+        private readonly Button m_newBuildButtonPrefab;
+
+        [UIElement("BuildDisplayPrefab", false)]
+        private readonly ModdedObject m_buildDisplayPrefab;
+
+        [UIElement("Content")]
+        private readonly Transform m_buildDisplayContainer;
 
         private int m_upgradeUISiblingIndex;
 
-        private Font m_originalFont;
+        private AutoBuildInfo m_editingBuild;
 
         public override bool refreshOnlyCursor => true;
 
@@ -53,11 +67,20 @@ namespace OverhaulMod.UI
             set;
         }
 
+        protected override void OnInitialized()
+        {
+            m_keyBind.key = AutoBuildManager.AutoBuildKeyBind;
+            m_autoActivationToggle.isOn = ModSettingsManager.GetBoolValue(ModSettingsConstants.AUTO_BUILD_ACTIVATION_ON_MATCH_START);
+        }
+
         public override void Show()
         {
             base.Show();
-            m_keyBind.key = AutoBuildManager.AutoBuildKeyBind;
-            m_autoActivationToggle.isOn = ModSettingsManager.GetBoolValue(ModSettingsConstants.AUTO_BUILD_ACTIVATION_ON_MATCH_START);
+
+            m_clearButton.interactable = false;
+            m_searchBox.text = string.Empty;
+
+            PopulateBuilds();
         }
 
         public override void OnEnable()
@@ -81,6 +104,75 @@ namespace OverhaulMod.UI
             ModSettingsDataManager.Instance.Save();
         }
 
+        public void PopulateBuilds()
+        {
+            if (m_buildDisplayContainer.childCount != 0)
+                TransformUtils.DestroyAllChildren(m_buildDisplayContainer);
+
+            UpgradeManager upgradeManager = UpgradeManager.Instance;
+            AutoBuildManager autoBuildManager = AutoBuildManager.Instance;
+            foreach (var build in autoBuildManager.buildList.Builds)
+            {
+                ModdedObject moddedObject = Instantiate(m_buildDisplayPrefab, m_buildDisplayContainer);
+                moddedObject.gameObject.SetActive(true);
+
+                Text buildNameText = moddedObject.GetObject<Text>(0);
+                buildNameText.text = AutoBuildManager.GetBuildDisplayName(build.Name);
+
+                Image upgradeIconPrefab = moddedObject.GetObject<Image>(1);
+                upgradeIconPrefab.gameObject.SetActive(true);
+                Transform upgradeIconContainer = moddedObject.GetObject<Transform>(2);
+                foreach(var upgrade in build.Upgrades)
+                {
+                    Sprite sprite = null;
+
+                    UpgradeDescription upgradeDescription = upgradeManager.GetUpgrade(upgrade.UpgradeType, upgrade.Level);
+                    if(upgradeDescription && upgradeDescription.Icon)
+                    {
+                        sprite = upgradeDescription.Icon;
+                    }
+                    else
+                    {
+                        sprite = ModResources.Sprite(AssetBundleConstants.UI, "NA-HQ-128x128");
+                    }
+
+                    Image upgradeIcon = Instantiate(upgradeIconPrefab, upgradeIconContainer);
+                    upgradeIcon.sprite = sprite;
+                }
+                upgradeIconPrefab.gameObject.SetActive(false);
+
+                Button editButton = moddedObject.GetObject<Button>(3);
+                editButton.onClick.AddListener(delegate
+                {
+                    ConfigureBuild(build);
+                });
+
+                Button deleteButton = moddedObject.GetObject<Button>(4);
+                deleteButton.onClick.AddListener(delegate
+                {
+                    ModUIUtils.MessagePopup(true, $"Delete {AutoBuildManager.GetBuildDisplayName(build.Name)}?", LocalizationManager.Instance.GetTranslatedString("action_cannot_be_undone"), 125f, MessageMenu.ButtonLayout.EnableDisableButtons, "Ok", "Yes", "No", null, delegate
+                    {
+                        autoBuildManager.buildList.Builds.Remove(build);
+                        Destroy(moddedObject.gameObject);
+                    });
+                });
+
+                Button renameButton = moddedObject.GetObject<Button>(5);
+                renameButton.onClick.AddListener(delegate
+                {
+                    ModUIUtils.InputFieldWindow("Rename a build", $"Rename \"{build.Name}\" to...", build.Name, 125f, delegate (string name)
+                    {
+                        build.Name = name;
+                        buildNameText.text = AutoBuildManager.GetBuildDisplayName(build.Name);
+                    });
+                });
+            }
+
+            Button newBuildButton = Instantiate(m_newBuildButtonPrefab, m_buildDisplayContainer);
+            newBuildButton.gameObject.SetActive(true);
+            newBuildButton.onClick.AddListener(OnNewButtonClicked);
+        }
+
         public void SetUpgradeUISiblingIndex(bool initial)
         {
             if (initial)
@@ -95,48 +187,77 @@ namespace OverhaulMod.UI
             }
         }
 
-        public void OnConfigureBRUpgradesButtonClicked()
+        public void ConfigureBuild(AutoBuildInfo autoBuildInfo)
         {
+            m_editingBuild = autoBuildInfo;
+
             AutoBuildManager autoBuildManager = AutoBuildManager.Instance;
             autoBuildManager.isInAutoBuildConfigurationMode = true;
-            autoBuildManager.ResetUpgrades(autoBuildManager.buildList.Builds[0].GetUpgradesFromData(), autoBuildManager.buildList.Builds[0].SkillPoints);
+            autoBuildManager.ResetUpgrades(autoBuildInfo.GetUpgradesFromData(), autoBuildInfo.SkillPoints);
 
             UpgradePagesManager._currentPageIndex = 0;
             UpgradeUI upgradeUI = ModCache.gameUIRoot.UpgradeUI;
-            upgradeUI.Show(false, true, false);
+            upgradeUI.Show(false, false, false);
             upgradeUI.ExitButton.SetActive(false);
-            upgradeUI.StoryBackButton.SetActive(false);
-            upgradeUI.StoryConfirmButtonLabel.transform.parent.parent.gameObject.SetActive(false);
-            upgradeUI.StoryModeHumanLabel.text = LocalizationManager.Instance.GetTranslatedString("select_upgrades...");
-            if (!m_originalFont)
-                m_originalFont = upgradeUI.StoryModeHumanLabel.font;
-            upgradeUI.StoryModeHumanLabel.font = LocalizationManager.Instance.GetFontForCurrentLanguage();
-            upgradeUI.StoryModeHumanLabel.color = new Color(1f, 0f, 0.5255f, 1f);
 
             isShowingUpgradeUI = true;
 
             m_panel.SetActive(false);
             m_closeUpgradeUIButton.gameObject.SetActive(true);
-            m_saveSlotsPanel.SetActive(true);
+            m_resetUpgradesButton.gameObject.SetActive(true);
         }
 
         public void OnCloseUpgradeUIButtonClicked()
         {
             AutoBuildManager autoBuildManager = AutoBuildManager.Instance;
             autoBuildManager.isInAutoBuildConfigurationMode = false;
-            autoBuildManager.buildList.Builds[0].SetUpgradesFromData(GameDataManager.Instance.GetAvailableSkillPoints());
             autoBuildManager.SaveBuildInfo();
+
+            m_editingBuild.SetUpgradesFromData(GameDataManager.Instance.GetAvailableSkillPoints());
+            m_editingBuild = null;
 
             UpgradeUI upgradeUI = ModCache.gameUIRoot.UpgradeUI;
             upgradeUI.Hide();
-            if (m_originalFont)
-                upgradeUI.StoryModeHumanLabel.font = m_originalFont;
 
             isShowingUpgradeUI = false;
 
             m_panel.SetActive(true);
             m_closeUpgradeUIButton.gameObject.SetActive(false);
-            m_saveSlotsPanel.SetActive(false);
+            m_resetUpgradesButton.gameObject.SetActive(false);
+            PopulateBuilds();
+        }
+
+        public void OnResetUpgradesButtonClicked()
+        {
+            AutoBuildManager autoBuildManager = AutoBuildManager.Instance;
+            autoBuildManager.ResetUpgrades();
+        }
+
+        public void OnNewButtonClicked()
+        {
+            ModUIUtils.InputFieldWindow("Create a build", "Enter new build's name", "Unnamed build", 125f, delegate (string name)
+            {
+                AutoBuildInfo autoBuildInfo = new AutoBuildInfo()
+                {
+                    Name = name,
+                    SkillPoints = 4
+                };
+                autoBuildInfo.FixValues();
+
+                AutoBuildManager autoBuildManager = AutoBuildManager.Instance;
+                autoBuildManager.buildList.Builds.Add(autoBuildInfo);
+                ConfigureBuild(autoBuildInfo);
+            });
+        }
+
+        public void OnClearButtonClicked()
+        {
+            m_searchBox.text = string.Empty;
+        }
+
+        public void OnSearchBoxChanged(string value)
+        {
+            m_clearButton.interactable = !value.IsNullOrEmpty();
         }
 
         public void OnAutoActivationToggled(bool value)

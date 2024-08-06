@@ -187,5 +187,10 @@ namespace OverhaulMod.Engine
             m_isApplyingBuild = false;
             yield break;
         }
+
+        public static string GetBuildDisplayName(string name)
+        {
+            return name.IsNullOrEmpty() ? "[No name]" : name;
+        }
     }
 }

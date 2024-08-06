@@ -215,7 +215,7 @@ namespace OverhaulMod.UI
         {
             ModUIUtils.FileExplorer(base.transform, true, delegate (string path)
             {
-                ModUIUtils.InputFieldWindow("Enter folder name", "bla bla", 125f, delegate (string value)
+                ModUIUtils.InputFieldWindow("Enter folder name", "bla bla", null, 125f, delegate (string value)
                 {
                     string folderName = value.Replace(" ", string.Empty);
                     string folderPath = Path.Combine(ModCore.customizationFolder, folderName);
@@ -226,7 +226,7 @@ namespace OverhaulMod.UI
 
                     PersonalizationManager.Instance.itemList.Load();
                     Populate();
-                });
+                }); ; ;
 
             }, null, "*.zip");
         }

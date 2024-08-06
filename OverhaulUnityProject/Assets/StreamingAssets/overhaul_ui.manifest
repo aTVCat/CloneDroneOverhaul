@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 3939224209
+CRC: 2215976344
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: d0c2d83cf1763435410fa06cb882fcc2
+    Hash: 2891c697c9b09485fa1be18c08e94114
   TypeTreeHash:
     serializedVersion: 2
     Hash: acf1344b0dbbc80b9165ec9e7dce57f8
@@ -143,6 +143,7 @@ Assets:
 - Assets/UI/UI_RestartRequiredScreen.prefab
 - Assets/UI/UI_OverhaulUIsManagementPanel.prefab
 - Assets/UI/UI_SetKeyBindWindow.prefab
+- Assets/UI/UI_AutoBuildSelectionMenu.prefab
 - Assets/UI/UI_FileExplorer.prefab
 - Assets/UI/UI_CreditsMenu.prefab
 - Assets/Sprites/Glyphs/Tick-16x16.png

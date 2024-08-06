@@ -41,8 +41,6 @@ namespace OverhaulMod.UI
         public override void Show()
         {
             base.Show();
-
-            m_inputField.text = string.Empty;
             m_inputField.ActivateInputField();
         }
 
@@ -69,6 +67,11 @@ namespace OverhaulMod.UI
             Vector2 sizeDelta = m_panelTransform.sizeDelta;
             sizeDelta.y = Mathf.Max(100f, height);
             m_panelTransform.sizeDelta = sizeDelta;
+        }
+
+        public void SetInputFieldText(string text)
+        {
+            m_inputField.text = text;
         }
     }
 }

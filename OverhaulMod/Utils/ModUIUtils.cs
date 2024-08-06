@@ -101,11 +101,15 @@ namespace OverhaulMod.Utils
             levelDescriptionBrowser.Populate(levelDescriptions);
         }
 
-        public static void InputFieldWindow(string header, string description, float height = 125f, Action<string> doneAction = null)
+        public static void InputFieldWindow(string header, string description, string initialText = null, float height = 125f, Action<string> doneAction = null)
         {
+            if (initialText == null)
+                initialText = string.Empty;
+
             UIGenericInputFieldWindow genericInputFieldWindow = ModUIConstants.ShowGenericInputFieldWindow();
             genericInputFieldWindow.SetTexts(header, description);
             genericInputFieldWindow.SetHeight(height);
+            genericInputFieldWindow.SetInputFieldText(initialText);
             genericInputFieldWindow.doneAction = doneAction;
         }
 

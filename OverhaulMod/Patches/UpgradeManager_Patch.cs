@@ -7,15 +7,18 @@ using UnityEngine.UI;
 
 namespace OverhaulMod.Patches
 {
-    [HarmonyPatch(typeof(UpgradeUI))]
-    internal static class UpgradeUI_Patch
+    [HarmonyPatch(typeof(UpgradeManager))]
+    internal static class UpgradeManager_Patch
     {
         [HarmonyPrefix]
-        [HarmonyPatch(nameof(UpgradeUI.closeUpgradeUIIfLocalPlayerHasNoSkillPoints))]
-        private static bool closeUpgradeUIIfLocalPlayerHasNoSkillPoints_Prefix(UpgradeUI __instance)
+        [HarmonyPatch(nameof(UpgradeManager.hideUI))]
+        private static bool hideUI_Prefix(UpgradeManager __instance)
         {
             if(AutoBuildManager.Instance && AutoBuildManager.Instance.isInAutoBuildConfigurationMode)
+            {
+                __instance.SetUpgradeButtonsDisabled(false);
                 return false;
+            }
 
             return true;
         }

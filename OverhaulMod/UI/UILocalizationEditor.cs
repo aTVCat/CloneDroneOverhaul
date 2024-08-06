@@ -235,7 +235,7 @@ namespace OverhaulMod.UI
 
         public void OnAddTranslationButtonClicked()
         {
-            ModUIUtils.InputFieldWindow("Add translation", "Enter non-existing translation name", 125f, delegate (string value)
+            ModUIUtils.InputFieldWindow("Add translation", "Enter non-existing translation name", null, 125f, delegate (string value)
             {
                 ModLocalizationManager.Instance.AddTranslation(value);
                 ModdedObject moddedObject = InstantiateTranslationKeyDisplay(value);

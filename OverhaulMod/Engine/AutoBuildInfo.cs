@@ -7,8 +7,6 @@ namespace OverhaulMod.Engine
     {
         public string Name;
 
-        public GameMode Mode;
-
         public List<UpgradeTypeAndLevel> Upgrades;
 
         public int SkillPoints;
