@@ -32,6 +32,9 @@ namespace OverhaulMod.UI
         [UIElement("Panel", true)]
         private readonly GameObject m_panel;
 
+        [UIElement("SaveSlotsPanel", false)]
+        private readonly GameObject m_saveSlotsPanel;
+
         private int m_upgradeUISiblingIndex;
 
         private Font m_originalFont;
@@ -96,7 +99,7 @@ namespace OverhaulMod.UI
         {
             AutoBuildManager autoBuildManager = AutoBuildManager.Instance;
             autoBuildManager.isInAutoBuildConfigurationMode = true;
-            autoBuildManager.ResetUpgrades(autoBuildManager.buildInfo.GetUpgradesFromData(), autoBuildManager.buildInfo.SkillPoints);
+            autoBuildManager.ResetUpgrades(autoBuildManager.buildList.Builds[0].GetUpgradesFromData(), autoBuildManager.buildList.Builds[0].SkillPoints);
 
             UpgradePagesManager._currentPageIndex = 0;
             UpgradeUI upgradeUI = ModCache.gameUIRoot.UpgradeUI;
@@ -108,19 +111,20 @@ namespace OverhaulMod.UI
             if (!m_originalFont)
                 m_originalFont = upgradeUI.StoryModeHumanLabel.font;
             upgradeUI.StoryModeHumanLabel.font = LocalizationManager.Instance.GetFontForCurrentLanguage();
-            upgradeUI.StoryModeHumanLabel.color = new Color(1f, 0f, 0.5255f, 1);
+            upgradeUI.StoryModeHumanLabel.color = new Color(1f, 0f, 0.5255f, 1f);
 
             isShowingUpgradeUI = true;
 
             m_panel.SetActive(false);
             m_closeUpgradeUIButton.gameObject.SetActive(true);
+            m_saveSlotsPanel.SetActive(true);
         }
 
         public void OnCloseUpgradeUIButtonClicked()
         {
             AutoBuildManager autoBuildManager = AutoBuildManager.Instance;
             autoBuildManager.isInAutoBuildConfigurationMode = false;
-            autoBuildManager.buildInfo.SetUpgradesFromData(GameDataManager.Instance.GetAvailableSkillPoints());
+            autoBuildManager.buildList.Builds[0].SetUpgradesFromData(GameDataManager.Instance.GetAvailableSkillPoints());
             autoBuildManager.SaveBuildInfo();
 
             UpgradeUI upgradeUI = ModCache.gameUIRoot.UpgradeUI;
@@ -132,6 +136,7 @@ namespace OverhaulMod.UI
 
             m_panel.SetActive(true);
             m_closeUpgradeUIButton.gameObject.SetActive(false);
+            m_saveSlotsPanel.SetActive(false);
         }
 
         public void OnAutoActivationToggled(bool value)

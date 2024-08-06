@@ -506,7 +506,7 @@ namespace OverhaulMod.Content.Personalization
         public void ExportItem(PersonalizationItemInfo personalizationItemInfo, out string destination, string overrideDirectoryPath = null)
         {
             string fn = $"PersonalizationItem_{personalizationItemInfo.ItemID.ToString().Replace("-", string.Empty)}.zip";
-            string folder = overrideDirectoryPath.IsNullOrEmpty() ? ModDataManager.Instance.savesFolder : overrideDirectoryPath;
+            string folder = overrideDirectoryPath.IsNullOrEmpty() ? ModDataManager.savesFolder : overrideDirectoryPath;
             destination = Path.Combine(folder, fn);
 
             if (File.Exists(destination))

@@ -460,5 +460,10 @@ namespace OverhaulMod.Utils
         /// <see cref="Content.NewsManager"/>
         /// </summary>
         public const string DOWNLOADED_NEWS_COUNT = "DownloadedNewsCount";
+
+        /// <summary>
+        /// <see cref="Engine.AutoBuildManager"/>
+        /// </summary>
+        public const string AUTO_BUILD_INDEX_TO_USE_ON_MATCH_START = "AutoBuildIndexToUseOnMatchStart";
     }
 }

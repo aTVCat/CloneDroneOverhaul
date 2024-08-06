@@ -373,6 +373,7 @@
     <Compile Include="Content\Personalization\PersonalizationItemMetaData.cs" />
     <Compile Include="Content\Personalization\PersonalizationMultiplayerManager.cs" />
     <Compile Include="Content\Personalization\PersonalizationMultiplayerPlayerInfo.cs" />
+    <Compile Include="Engine\AutoBuildListInfo.cs" />
     <Compile Include="Engine\MeshSerializer.cs" />
     <Compile Include="Engine\PressActionKeyObjectManager.cs" />
     <Compile Include="Engine\RealisticLightUserSettings.cs" />
