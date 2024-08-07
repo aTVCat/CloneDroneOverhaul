@@ -25,6 +25,14 @@ namespace OverhaulMod.UI
         [UIElement("ClearButton")]
         private readonly Button m_clearButton;
 
+        [UIElementAction(nameof(OnSelectBuildToUseOnMatchStartButtonClicked))]
+        [UIElement("BuildToUseOnMatchStartButton")]
+        private readonly Button m_selectBuildToUseOnMatchStartButton;
+
+        [UIElementAction(nameof(OnStopSelectingBuildToUseOnMatchStartButtonClicked))]
+        [UIElement("DontSelectBuildToUseOnMatchStartButton", false)]
+        private readonly Button m_stopSelectingBuildToUseOnMatchStartButton;
+
         [UIElementAction(nameof(OnSearchBoxChanged))]
         [UIElement("SearchBox")]
         private readonly InputField m_searchBox;
@@ -50,7 +58,15 @@ namespace OverhaulMod.UI
         [UIElement("Content")]
         private readonly Transform m_buildDisplayContainer;
 
+        [UIElement("BuildToUseOnMatchStartButton")]
+        private readonly Button m_buildToUseOnMatchStartButton;
+
+        [UIElement("BuildToUseOnMatchStartText")]
+        private readonly Text m_buildToUseOnMatchStartText;
+
         private int m_upgradeUISiblingIndex;
+
+        private bool m_selectingBuildToUseOnMatchStart;
 
         private Dictionary<string, GameObject> m_searchEntries;
 
@@ -87,6 +103,7 @@ namespace OverhaulMod.UI
             m_searchBox.text = string.Empty;
 
             PopulateBuilds();
+            OnStopSelectingBuildToUseOnMatchStartButtonClicked();
         }
 
         public override void OnEnable()
@@ -116,10 +133,14 @@ namespace OverhaulMod.UI
             if (m_buildDisplayContainer.childCount != 0)
                 TransformUtils.DestroyAllChildren(m_buildDisplayContainer);
 
+            int i = -1;
             UpgradeManager upgradeManager = UpgradeManager.Instance;
             AutoBuildManager autoBuildManager = AutoBuildManager.Instance;
-            foreach (var build in autoBuildManager.buildList.Builds)
+            foreach (AutoBuildInfo build in autoBuildManager.buildList.Builds)
             {
+                i++;
+                int index = i;
+
                 ModdedObject moddedObject = Instantiate(m_buildDisplayPrefab, m_buildDisplayContainer);
                 moddedObject.gameObject.SetActive(true);
 
@@ -135,12 +156,12 @@ namespace OverhaulMod.UI
                 Image upgradeIconPrefab = moddedObject.GetObject<Image>(1);
                 upgradeIconPrefab.gameObject.SetActive(true);
                 Transform upgradeIconContainer = moddedObject.GetObject<Transform>(2);
-                foreach(var upgrade in build.Upgrades)
+                foreach (UpgradeTypeAndLevel upgrade in build.Upgrades)
                 {
                     Sprite sprite = null;
 
                     UpgradeDescription upgradeDescription = upgradeManager.GetUpgrade(upgrade.UpgradeType, upgrade.Level);
-                    if(upgradeDescription && upgradeDescription.Icon)
+                    if (upgradeDescription && upgradeDescription.Icon)
                     {
                         sprite = upgradeDescription.Icon;
                     }
@@ -157,16 +178,24 @@ namespace OverhaulMod.UI
                 Button editButton = moddedObject.GetObject<Button>(3);
                 editButton.onClick.AddListener(delegate
                 {
+                    if (m_selectingBuildToUseOnMatchStart)
+                    {
+                        ModSettingsManager.SetIntValue(ModSettingsConstants.AUTO_BUILD_INDEX_TO_USE_ON_MATCH_START, index);
+                        RefreshBuildToUseOnStartButton();
+                        OnStopSelectingBuildToUseOnMatchStartButtonClicked();
+                        return;
+                    }
                     ConfigureBuild(build);
                 });
 
                 Button deleteButton = moddedObject.GetObject<Button>(4);
                 deleteButton.onClick.AddListener(delegate
                 {
-                    ModUIUtils.MessagePopup(true, $"Delete {AutoBuildManager.GetBuildDisplayName(build.Name)}?", LocalizationManager.Instance.GetTranslatedString("action_cannot_be_undone"), 125f, MessageMenu.ButtonLayout.EnableDisableButtons, "Ok", "Yes", "No", null, delegate
+                    ModUIUtils.MessagePopup(true, $"Delete \"{AutoBuildManager.GetBuildDisplayName(build.Name)}\"?", LocalizationManager.Instance.GetTranslatedString("action_cannot_be_undone"), 125f, MessageMenu.ButtonLayout.EnableDisableButtons, "Ok", "Yes", "No", null, delegate
                     {
-                        autoBuildManager.buildList.Builds.Remove(build);
+                        _ = autoBuildManager.buildList.Builds.Remove(build);
                         Destroy(moddedObject.gameObject);
+                        RefreshBuildToUseOnStartButton();
                     });
                 });
 
@@ -177,6 +206,7 @@ namespace OverhaulMod.UI
                     {
                         build.Name = name;
                         buildNameText.text = AutoBuildManager.GetBuildDisplayName(build.Name);
+                        RefreshBuildToUseOnStartButton();
                     });
                 });
             }
@@ -185,6 +215,20 @@ namespace OverhaulMod.UI
             newBuildButton.gameObject.SetActive(true);
             newBuildButton.onClick.AddListener(OnNewButtonClicked);
             m_instantiatedNewButton = newBuildButton.gameObject;
+
+            RefreshBuildToUseOnStartButton();
+        }
+
+        public void RefreshBuildToUseOnStartButton()
+        {
+            int index = AutoBuildManager.AutoBuildIndexToUseOnMatchStart;
+
+            AutoBuildManager autoBuildManager = AutoBuildManager.Instance;
+            List<AutoBuildInfo> builds = autoBuildManager.buildList.Builds;
+            if (builds.IsNullOrEmpty() || index < 0 || index >= builds.Count)
+                return;
+
+            m_buildToUseOnMatchStartText.text = AutoBuildManager.GetBuildDisplayName(builds[index].Name);
         }
 
         public void SetUpgradeUISiblingIndex(bool initial)
@@ -225,10 +269,11 @@ namespace OverhaulMod.UI
         {
             AutoBuildManager autoBuildManager = AutoBuildManager.Instance;
             autoBuildManager.isInAutoBuildConfigurationMode = false;
-            autoBuildManager.SaveBuildInfo();
 
             m_editingBuild.SetUpgradesFromData(GameDataManager.Instance.GetAvailableSkillPoints());
             m_editingBuild = null;
+
+            autoBuildManager.SaveBuildInfo();
 
             UpgradeUI upgradeUI = ModCache.gameUIRoot.UpgradeUI;
             upgradeUI.Hide();
@@ -299,6 +344,18 @@ namespace OverhaulMod.UI
         public void OnKeyBindChanged(KeyCode keyCode)
         {
             ModSettingsManager.SetIntValue(ModSettingsConstants.AUTO_BUILD_KEY_BIND, (int)keyCode, true);
+        }
+
+        public void OnSelectBuildToUseOnMatchStartButtonClicked()
+        {
+            m_selectingBuildToUseOnMatchStart = true;
+            m_stopSelectingBuildToUseOnMatchStartButton.gameObject.SetActive(true);
+        }
+
+        public void OnStopSelectingBuildToUseOnMatchStartButtonClicked()
+        {
+            m_selectingBuildToUseOnMatchStart = false;
+            m_stopSelectingBuildToUseOnMatchStartButton.gameObject.SetActive(false);
         }
     }
 }

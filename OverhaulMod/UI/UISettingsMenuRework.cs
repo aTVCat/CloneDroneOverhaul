@@ -914,7 +914,6 @@ namespace OverhaulMod.UI
             }
 
             _ = pageBuilder.Header1("Reset settings");
-            _ = pageBuilder.Button("Reset game settings", null);
             _ = pageBuilder.Button("Reset Overhaul settings", delegate
             {
                 ModUIUtils.MessagePopup(true, "Reset Overhaul mod settings?", "placeholder description", 125f, MessageMenu.ButtonLayout.EnableDisableButtons, "Ok", "Yes", "No", null, delegate

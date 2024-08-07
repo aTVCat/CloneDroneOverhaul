@@ -7,9 +7,6 @@ namespace OverhaulMod.UI
 {
     public class UIAutoBuildSelectionMenu : OverhaulUIBehaviour
     {
-        [UIElement("SelectBuildLabelPrefab", false)]
-        private readonly Text m_selectBuildLabelPrefab;
-
         [UIElement("BuildDisplayPrefab", false)]
         private readonly ModdedObject m_buildDisplayPrefab;
 
@@ -43,6 +40,12 @@ namespace OverhaulMod.UI
             m_canvasGroup.alpha = 0f;
             m_canvasGroup.blocksRaycasts = true;
             m_holder.SetActive(true);
+
+            Cursor.lockState = CursorLockMode.Locked;
+            ModActionUtils.DoInFrame(delegate
+            {
+                Cursor.lockState = CursorLockMode.None;
+            });
         }
 
         public override void Hide()
@@ -52,7 +55,7 @@ namespace OverhaulMod.UI
 
             if (m_currentSelectedEntry)
             {
-                AutoBuildManager.Instance.ApplyBuild(m_currentSelectedEntry.transform.GetSiblingIndex() - 1);
+                AutoBuildManager.Instance.ApplyBuild(m_currentSelectedEntry.transform.GetSiblingIndex());
                 SelectEntry(null);
             }
         }
@@ -73,9 +76,6 @@ namespace OverhaulMod.UI
         {
             if (m_buildDisplayContainer.childCount != 0)
                 TransformUtils.DestroyAllChildren(m_buildDisplayContainer);
-
-            Text label = Instantiate(m_selectBuildLabelPrefab, m_buildDisplayContainer);
-            label.gameObject.SetActive(true);
 
             UpgradeManager upgradeManager = UpgradeManager.Instance;
             AutoBuildManager autoBuildManager = AutoBuildManager.Instance;

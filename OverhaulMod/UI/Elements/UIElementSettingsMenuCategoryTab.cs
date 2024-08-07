@@ -56,6 +56,7 @@ namespace OverhaulMod.UI.Elements
                     InitializeSubcategoryDisplay("Rich presence", false);
                     InitializeSubcategoryDisplay("Multiplayer settings", false);
                     InitializeSubcategoryDisplay("Misc.", false);
+                    InitializeSubcategoryDisplay("Reset settings", false);
                     break;
                 case "Graphics":
                     InitializeSubcategoryDisplay("Window", true);
@@ -70,7 +71,7 @@ namespace OverhaulMod.UI.Elements
                 case "Interface":
                     InitializeSubcategoryDisplay("Game interface", false);
                     InitializeSubcategoryDisplay("Energy bar enhancements", false);
-                    InitializeSubcategoryDisplay("Misc.", false);
+                    InitializeSubcategoryDisplay("Subtitles", false);
                     break;
             }
         }

@@ -1,0 +1,19 @@
+- Added "Import .cvm" button to customization editor's import panel. You can now import models made in Custom robot model editor mod
+- Added item exclusivity settings to customization editor
+- Added Garbage bot skins mod support
+- Added PlayerUseKeyTrigger improved description display
+- Added improved commentator speech subtitles
+- Added suboptions to Ambient occlusion option
+- Added tooltips to every tab in settings menu
+- Added save slots to auto-build
+- Added "Updated" label on the display of customization item which has been updated
+- Added "Verified" labell on the display of a customization item which has been verified
+- Added "Reset Overhaul settings" button to settings menu
+- Moved some user interface options to the new "Interface" tab in settings menu
+- Made minor changes to customization menu & editor designs
+- Made the customization menu select the subcategory of equipped weapon
+- Changed the text of some labels in customization editor
+- Transitions now disappear if the game crashes
+- The text typed in the feedback menu is now saved
+- Reworked the system responsible for scheduled tasks in the mod
+- Removed the content of update 5
