@@ -1,4 +1,5 @@
-﻿using OverhaulMod.Utils;
+﻿using OverhaulMod.UI;
+using OverhaulMod.Utils;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -21,6 +22,19 @@ namespace OverhaulMod.Engine
 
         private float m_timeLeftBeforeAutoActivationReset;
 
+        private UIAutoBuildSelectionMenu m_autoBuildSelectionMenu;
+        public UIAutoBuildSelectionMenu autoBuildSelectionMenu
+        {
+            get 
+            {
+                if (!m_autoBuildSelectionMenu)
+                {
+                    m_autoBuildSelectionMenu = ModUIConstants.ShowAutoBuildSelectionMenu();
+                }
+                return m_autoBuildSelectionMenu;
+            }
+        }
+
         public bool isInAutoBuildConfigurationMode
         {
             get;
@@ -42,11 +56,21 @@ namespace OverhaulMod.Engine
 
         private void Update()
         {
-            if (!GameModeManager.Is(GameMode.BattleRoyale))
+            if (!GameModeManager.Is(GameMode.BattleRoyale) && !GameModeManager.Is(GameMode.MultiplayerDuel))
                 return;
 
             if (Input.GetKeyDown(AutoBuildKeyBind))
-                ApplyBuild(0); // todo: show ui
+            {
+                UpgradeUI upgradeUI = ModCache.gameUIRoot.UpgradeUI;
+                if (upgradeUI.gameObject.activeSelf)
+                {
+                    autoBuildSelectionMenu.Show();
+                }
+            }
+            else if (Input.GetKeyUp(AutoBuildKeyBind))
+            {
+                autoBuildSelectionMenu.Hide();
+            }
 
             if (m_hasSelectedUpgradesForMatch)
             {

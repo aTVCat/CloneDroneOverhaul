@@ -529,7 +529,7 @@ namespace OverhaulMod.Utils
 
         public static UIAutoBuildSelectionMenu ShowAutoBuildSelectionMenu()
         {
-            return ModUIManager.Instance.Show<UIAutoBuildSelectionMenu>(AssetBundleConstants.UI, UI_AUTO_BUILD_SELECTION_MENU, ModUIManager.UILayer.AfterEnergyUI);
+            return ModUIManager.Instance.Show<UIAutoBuildSelectionMenu>(AssetBundleConstants.UI, UI_AUTO_BUILD_SELECTION_MENU, ModUIManager.UILayer.AfterTitleScreen);
         }
     }
 }

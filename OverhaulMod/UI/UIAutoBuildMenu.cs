@@ -1,6 +1,7 @@
 ﻿using InternalModBot;
 using OverhaulMod.Engine;
 using OverhaulMod.Utils;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -51,7 +52,11 @@ namespace OverhaulMod.UI
 
         private int m_upgradeUISiblingIndex;
 
+        private Dictionary<string, GameObject> m_searchEntries;
+
         private AutoBuildInfo m_editingBuild;
+
+        private GameObject m_instantiatedNewButton;
 
         public override bool refreshOnlyCursor => true;
 
@@ -69,6 +74,7 @@ namespace OverhaulMod.UI
 
         protected override void OnInitialized()
         {
+            m_searchEntries = new Dictionary<string, GameObject>();
             m_keyBind.key = AutoBuildManager.AutoBuildKeyBind;
             m_autoActivationToggle.isOn = ModSettingsManager.GetBoolValue(ModSettingsConstants.AUTO_BUILD_ACTIVATION_ON_MATCH_START);
         }
@@ -106,6 +112,7 @@ namespace OverhaulMod.UI
 
         public void PopulateBuilds()
         {
+            m_searchEntries.Clear();
             if (m_buildDisplayContainer.childCount != 0)
                 TransformUtils.DestroyAllChildren(m_buildDisplayContainer);
 
@@ -115,6 +122,12 @@ namespace OverhaulMod.UI
             {
                 ModdedObject moddedObject = Instantiate(m_buildDisplayPrefab, m_buildDisplayContainer);
                 moddedObject.gameObject.SetActive(true);
+
+                string searchEntryKey = build.Name.ToLower();
+                while (m_searchEntries.ContainsKey(searchEntryKey))
+                    searchEntryKey += "_1";
+
+                m_searchEntries.Add(searchEntryKey, moddedObject.gameObject);
 
                 Text buildNameText = moddedObject.GetObject<Text>(0);
                 buildNameText.text = AutoBuildManager.GetBuildDisplayName(build.Name);
@@ -171,6 +184,7 @@ namespace OverhaulMod.UI
             Button newBuildButton = Instantiate(m_newBuildButtonPrefab, m_buildDisplayContainer);
             newBuildButton.gameObject.SetActive(true);
             newBuildButton.onClick.AddListener(OnNewButtonClicked);
+            m_instantiatedNewButton = newBuildButton.gameObject;
         }
 
         public void SetUpgradeUISiblingIndex(bool initial)
@@ -257,7 +271,24 @@ namespace OverhaulMod.UI
 
         public void OnSearchBoxChanged(string value)
         {
-            m_clearButton.interactable = !value.IsNullOrEmpty();
+            string lowerText = value.ToLower();
+            bool forceSetEnabled = value.IsNullOrEmpty();
+
+            m_clearButton.interactable = !forceSetEnabled;
+            if (m_instantiatedNewButton)
+                m_instantiatedNewButton.SetActive(forceSetEnabled);
+
+            foreach (KeyValuePair<string, GameObject> keyValue in m_searchEntries)
+            {
+                if (forceSetEnabled)
+                {
+                    keyValue.Value.SetActive(true);
+                }
+                else
+                {
+                    keyValue.Value.SetActive(keyValue.Key.Contains(lowerText));
+                }
+            }
         }
 
         public void OnAutoActivationToggled(bool value)
