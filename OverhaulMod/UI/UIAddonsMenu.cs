@@ -156,7 +156,7 @@ namespace OverhaulMod.UI
             if (m_container.childCount != 0)
                 TransformUtils.DestroyAllChildren(m_container);
 
-            if(s_contentLiftInfo != null)
+            if (s_contentLiftInfo != null)
             {
                 populate(s_contentLiftInfo);
                 return;

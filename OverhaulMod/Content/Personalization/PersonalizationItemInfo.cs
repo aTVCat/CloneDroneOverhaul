@@ -11,7 +11,7 @@ namespace OverhaulMod.Content.Personalization
     {
         public string Name, Description;
 
-        public bool IsSentForVerification, IsVerified;
+        public bool IsSentForVerification, IsVerified, ReuploadedTheItem;
 
         public string ItemID, EditorID;
 
@@ -58,9 +58,6 @@ namespace OverhaulMod.Content.Personalization
 
         [NonSerialized]
         public bool HideInBrowser;
-
-        [NonSerialized]
-        public bool ReuploadedItemThisSession;
 
         public void GetImportedFiles()
         {

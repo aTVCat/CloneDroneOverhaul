@@ -1,10 +1,6 @@
 ﻿using OverhaulMod.UI;
 using OverhaulMod.Utils;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace OverhaulMod.Engine
@@ -34,7 +30,7 @@ namespace OverhaulMod.Engine
 
         private void Update()
         {
-            if(m_timeToHideText != -1f && Time.unscaledTime >= m_timeToHideText)
+            if (m_timeToHideText != -1f && Time.unscaledTime >= m_timeToHideText)
             {
                 m_timeToHideText = -1f;
                 HideDescription();
@@ -46,20 +42,20 @@ namespace OverhaulMod.Engine
 
                 float dist = float.MaxValue;
                 LevelEditorUseButtonTrigger nearestTrigger = null;
-                foreach (var trigger in m_triggers)
+                foreach (LevelEditorUseButtonTrigger trigger in m_triggers)
                 {
                     if (!trigger || !trigger.CanBeActivated())
                         continue;
 
                     float newDist = characterTracker.GetDistanceToPlayer(trigger.transform.position);
-                    if(newDist < dist)
+                    if (newDist < dist)
                     {
                         dist = newDist;
                         nearestTrigger = trigger;
                     }
                 }
 
-                if(m_prevNearestTrigger != nearestTrigger)
+                if (m_prevNearestTrigger != nearestTrigger)
                 {
                     m_prevNearestTrigger = nearestTrigger;
                     if (nearestTrigger != null)
@@ -86,8 +82,8 @@ namespace OverhaulMod.Engine
 
             if (value && !m_triggers.Contains(trigger))
                 m_triggers.Add(trigger);
-            else if(!value)
-                m_triggers.Remove(trigger);
+            else if (!value)
+                _ = m_triggers.Remove(trigger);
         }
 
         public void ShowThenHideDescription(string description, float time)

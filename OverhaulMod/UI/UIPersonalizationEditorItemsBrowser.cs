@@ -97,12 +97,9 @@ namespace OverhaulMod.UI
 
             List<PersonalizationItemInfo> list = new List<PersonalizationItemInfo>();
             foreach (PersonalizationItemInfo item in itemList.Items)
-            {
                 if (item.CanBeEdited() || getAll)
-                {
                     list.Add(item);
-                }
-            }
+
             populate(list, itemList.ItemLoadErrors);
         }
 
@@ -113,6 +110,7 @@ namespace OverhaulMod.UI
                 TransformUtils.DestroyAllChildren(m_container);
 
             if (list != null)
+            {
                 foreach (PersonalizationItemInfo item in list)
                 {
                     ModdedObject moddedObject = Instantiate(m_itemDisplayPrefab, m_container);
@@ -139,9 +137,10 @@ namespace OverhaulMod.UI
                     m_cachedInstantiatedDisplays.Add(text, moddedObject.gameObject);
                 }
 
-            Text textComponent = Instantiate(m_textPrefab, m_container);
-            textComponent.gameObject.SetActive(true);
-            textComponent.text = $"{m_container.childCount - 1} items";
+                Text textComponent = Instantiate(m_textPrefab, m_container);
+                textComponent.gameObject.SetActive(true);
+                textComponent.text = $"{list.Count} items";
+            }
 
             if (exceptions != null)
                 foreach (KeyValuePair<string, System.Exception> keyValue in exceptions)

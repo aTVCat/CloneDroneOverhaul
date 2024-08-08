@@ -1,7 +1,6 @@
 ﻿using OverhaulMod.Engine;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.UI;
 
 namespace OverhaulMod.UI
 {

@@ -1,6 +1,4 @@
-﻿using ModLibrary;
-using OverhaulMod.Engine;
-using Steamworks;
+﻿using Steamworks;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -30,7 +28,7 @@ namespace OverhaulMod.Utils
 
             private static PropertyInfo s_selectedGarbageBotSkinIndexProperty;
 
-            private static object[] s_getGarbageBotSkinOptionsMethodArgs = { true };
+            private static readonly object[] s_getGarbageBotSkinOptionsMethodArgs = { true };
 
             private static bool s_modMethodsPresent;
 
@@ -67,7 +65,7 @@ namespace OverhaulMod.Utils
                     }
 
                     Type type2 = assembly.GetType("SelectGarbageBotSkins.ModSettings");
-                    if(type2 != null)
+                    if (type2 != null)
                     {
                         s_selectedGarbageBotSkinIndexProperty = type2.GetProperty("selectedGarbageBotSkinIndex", BindingFlags.Static | BindingFlags.Public);
                     }

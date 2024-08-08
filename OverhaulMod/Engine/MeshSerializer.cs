@@ -1,5 +1,10 @@
 // https://pastebin.com/yW91qEQh
 
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using UnityEngine;
+
 #region License and information
 /* * * * *
  * A quick mesh serializer that allows to serialize a Mesh as byte array. It should
@@ -39,18 +44,13 @@
 
 namespace B83.MeshTools
 {
-    using System.IO;
-    using System.Collections.Generic;
-    using UnityEngine;
-    using System.Linq;
-
     [System.Serializable]
     public class MeshData
     {
         [SerializeField, HideInInspector]
         private byte[] m_Data;
         private Mesh m_Mesh;
-        public byte[] Data { get{ return m_Data; } }
+        public byte[] Data { get { return m_Data; } }
         public void SetMesh(Mesh aMesh)
         {
             m_Mesh = aMesh;
@@ -126,11 +126,12 @@ namespace B83.MeshTools
             Bindposes,
             BlendShape,
         }
-        const uint m_Magic = 0x6873654D; // "Mesh"
+
+        private const uint m_Magic = 0x6873654D; // "Mesh"
 
         public static byte[] SerializeMesh(Mesh aMesh)
         {
-            using (var stream = new MemoryStream())
+            using (MemoryStream stream = new MemoryStream())
             {
                 SerializeMesh(stream, aMesh);
                 return stream.ToArray();
@@ -138,18 +139,18 @@ namespace B83.MeshTools
         }
         public static void SerializeMesh(MemoryStream aStream, Mesh aMesh)
         {
-            using (var writer = new BinaryWriter(aStream))
+            using (BinaryWriter writer = new BinaryWriter(aStream))
                 SerializeMesh(writer, aMesh);
         }
         public static void SerializeMesh(BinaryWriter aWriter, Mesh aMesh)
         {
             aWriter.Write(m_Magic);
-            var vertices = aMesh.vertices;
+            Vector3[] vertices = aMesh.vertices;
             int count = vertices.Length;
             int subMeshCount = aMesh.subMeshCount;
             aWriter.Write(count);
             aWriter.Write(subMeshCount);
-            foreach (var v in vertices)
+            foreach (Vector3 v in vertices)
                 aWriter.WriteVector3(v);
 
             // start of tagged chunks
@@ -158,37 +159,33 @@ namespace B83.MeshTools
                 aWriter.Write((byte)EChunkID.Name);
                 aWriter.Write(aMesh.name);
             }
-            var normals = aMesh.normals;
+            Vector3[] normals = aMesh.normals;
             if (normals != null && normals.Length == count)
             {
                 aWriter.Write((byte)EChunkID.Normals);
-                foreach (var v in normals)
+                foreach (Vector3 v in normals)
                     aWriter.WriteVector3(v);
-                normals = null;
             }
-            var tangents = aMesh.tangents;
+            Vector4[] tangents = aMesh.tangents;
             if (tangents != null && tangents.Length == count)
             {
                 aWriter.Write((byte)EChunkID.Tangents);
-                foreach (var v in tangents)
+                foreach (Vector4 v in tangents)
                     aWriter.WriteVector4(v);
-                tangents = null;
             }
-            var colors = aMesh.colors32;
+            Color32[] colors = aMesh.colors32;
             if (colors != null && colors.Length == count)
             {
                 aWriter.Write((byte)EChunkID.Colors);
-                foreach (var c in colors)
+                foreach (Color32 c in colors)
                     aWriter.WriteColor32(c);
-                colors = null;
             }
-            var boneWeights = aMesh.boneWeights;
+            BoneWeight[] boneWeights = aMesh.boneWeights;
             if (boneWeights != null && boneWeights.Length == count)
             {
                 aWriter.Write((byte)EChunkID.BoneWeights);
-                foreach (var w in boneWeights)
+                foreach (BoneWeight w in boneWeights)
                     aWriter.WriteBoneWeight(w);
-                boneWeights = null;
             }
             List<Vector4> uvs = new List<Vector4>();
             for (int i = 0; i < 4; i++)
@@ -199,7 +196,7 @@ namespace B83.MeshTools
                 {
                     aWriter.Write((byte)((byte)EChunkID.UV0 + i));
                     byte channelCount = 2;
-                    foreach (var uv in uvs)
+                    foreach (Vector4 uv in uvs)
                     {
                         if (uv.z != 0f)
                             channelCount = 3;
@@ -211,13 +208,13 @@ namespace B83.MeshTools
                     }
                     aWriter.Write(channelCount);
                     if (channelCount == 2)
-                        foreach (var uv in uvs)
+                        foreach (Vector4 uv in uvs)
                             aWriter.WriteVector2(uv);
                     else if (channelCount == 3)
-                        foreach (var uv in uvs)
+                        foreach (Vector4 uv in uvs)
                             aWriter.WriteVector3(uv);
                     else
-                        foreach (var uv in uvs)
+                        foreach (Vector4 uv in uvs)
                             aWriter.WriteVector4(uv);
                 }
             }
@@ -231,47 +228,46 @@ namespace B83.MeshTools
                     aWriter.Write((byte)EChunkID.Submesh);
                     aWriter.Write((byte)aMesh.GetTopology(i));
                     aWriter.Write(indices.Count);
-                    var max = indices.Max();
+                    int max = indices.Max();
                     if (max < 256)
                     {
                         aWriter.Write((byte)1);
-                        foreach (var index in indices)
+                        foreach (int index in indices)
                             aWriter.Write((byte)index);
                     }
                     else if (max < 65536)
                     {
                         aWriter.Write((byte)2);
-                        foreach (var index in indices)
+                        foreach (int index in indices)
                             aWriter.Write((ushort)index);
                     }
                     else
                     {
                         aWriter.Write((byte)4);
-                        foreach (var index in indices)
+                        foreach (int index in indices)
                             aWriter.Write(index);
                     }
                 }
             }
-            var bindposes = aMesh.bindposes;
+            Matrix4x4[] bindposes = aMesh.bindposes;
             if (bindposes != null && bindposes.Length > 0)
             {
                 aWriter.Write((byte)EChunkID.Bindposes);
                 aWriter.Write(bindposes.Length);
-                foreach (var b in bindposes)
+                foreach (Matrix4x4 b in bindposes)
                     aWriter.WriteMatrix4x4(b);
-                bindposes = null;
             }
             int blendShapeCount = aMesh.blendShapeCount;
             if (blendShapeCount > 0)
             {
-                var blendVerts = new Vector3[count];
-                var blendNormals = new Vector3[count];
-                var blendTangents = new Vector3[count];
+                Vector3[] blendVerts = new Vector3[count];
+                Vector3[] blendNormals = new Vector3[count];
+                Vector3[] blendTangents = new Vector3[count];
                 for (int i = 0; i < blendShapeCount; i++)
                 {
                     aWriter.Write((byte)EChunkID.BlendShape);
                     aWriter.Write(aMesh.GetBlendShapeName(i));
-                    var frameCount = aMesh.GetBlendShapeFrameCount(i);
+                    int frameCount = aMesh.GetBlendShapeFrameCount(i);
                     aWriter.Write(frameCount);
                     for (int n = 0; n < frameCount; n++)
                     {
@@ -292,12 +288,12 @@ namespace B83.MeshTools
 
         public static Mesh DeserializeMesh(byte[] aData, Mesh aTarget = null)
         {
-            using (var stream = new MemoryStream(aData))
+            using (MemoryStream stream = new MemoryStream(aData))
                 return DeserializeMesh(stream, aTarget);
         }
         public static Mesh DeserializeMesh(MemoryStream aStream, Mesh aTarget = null)
         {
-            using (var reader = new BinaryReader(aStream))
+            using (BinaryReader reader = new BinaryReader(aStream))
                 return DeserializeMesh(reader, aTarget);
         }
         public static Mesh DeserializeMesh(BinaryReader aReader, Mesh aTarget = null)
@@ -321,15 +317,15 @@ namespace B83.MeshTools
             aTarget.vertices = vector3Array;
             aTarget.subMeshCount = subMeshCount;
             int subMeshIndex = 0;
-            byte componentCount = 0;
 
             // reading chunks
-            var stream = aReader.BaseStream;
+            Stream stream = aReader.BaseStream;
             while ((stream.CanSeek && stream.Position < stream.Length) || stream.CanRead)
             {
-                var chunkID = (EChunkID)aReader.ReadByte();
+                EChunkID chunkID = (EChunkID)aReader.ReadByte();
                 if (chunkID == EChunkID.End)
                     break;
+                byte componentCount;
                 switch (chunkID)
                 {
                     case EChunkID.Name:
@@ -349,13 +345,13 @@ namespace B83.MeshTools
                         aTarget.SetTangents(vector4List);
                         break;
                     case EChunkID.Colors:
-                        var colors = new Color32[count];
+                        Color32[] colors = new Color32[count];
                         for (int i = 0; i < count; i++)
                             colors[i] = aReader.ReadColor32();
                         aTarget.colors32 = colors;
                         break;
                     case EChunkID.BoneWeights:
-                        var boneWeights = new BoneWeight[count];
+                        BoneWeight[] boneWeights = new BoneWeight[count];
                         for (int i = 0; i < count; i++)
                             boneWeights[i] = aReader.ReadBoneWeight();
                         aTarget.boneWeights = boneWeights;
@@ -388,9 +384,9 @@ namespace B83.MeshTools
                         aTarget.SetUVs(uvChannel, vector4List);
                         break;
                     case EChunkID.Submesh:
-                        var topology = (MeshTopology)aReader.ReadByte();
+                        MeshTopology topology = (MeshTopology)aReader.ReadByte();
                         int indexCount = aReader.ReadInt32();
-                        var indices = new int[indexCount];
+                        int[] indices = new int[indexCount];
                         componentCount = aReader.ReadByte();
                         if (componentCount == 1)
                         {
@@ -411,13 +407,13 @@ namespace B83.MeshTools
                         break;
                     case EChunkID.Bindposes:
                         int bindposesCount = aReader.ReadInt32();
-                        var bindposes = new Matrix4x4[bindposesCount];
+                        Matrix4x4[] bindposes = new Matrix4x4[bindposesCount];
                         for (int i = 0; i < bindposesCount; i++)
                             bindposes[i] = aReader.ReadMatrix4x4();
                         aTarget.bindposes = bindposes;
                         break;
                     case EChunkID.BlendShape:
-                        var blendShapeName = aReader.ReadString();
+                        string blendShapeName = aReader.ReadString();
                         int frameCount = aReader.ReadInt32();
                         if (vector3Array2 == null)
                             vector3Array2 = new Vector3[count];
@@ -487,11 +483,25 @@ namespace B83.MeshTools
         }
         public static Matrix4x4 ReadMatrix4x4(this BinaryReader aReader)
         {
-            var m = new Matrix4x4();
-            m.m00 = aReader.ReadSingle(); m.m01 = aReader.ReadSingle(); m.m02 = aReader.ReadSingle(); m.m03 = aReader.ReadSingle();
-            m.m10 = aReader.ReadSingle(); m.m11 = aReader.ReadSingle(); m.m12 = aReader.ReadSingle(); m.m13 = aReader.ReadSingle();
-            m.m20 = aReader.ReadSingle(); m.m21 = aReader.ReadSingle(); m.m22 = aReader.ReadSingle(); m.m23 = aReader.ReadSingle();
-            m.m30 = aReader.ReadSingle(); m.m31 = aReader.ReadSingle(); m.m32 = aReader.ReadSingle(); m.m33 = aReader.ReadSingle();
+            Matrix4x4 m = new Matrix4x4
+            {
+                m00 = aReader.ReadSingle(),
+                m01 = aReader.ReadSingle(),
+                m02 = aReader.ReadSingle(),
+                m03 = aReader.ReadSingle(),
+                m10 = aReader.ReadSingle(),
+                m11 = aReader.ReadSingle(),
+                m12 = aReader.ReadSingle(),
+                m13 = aReader.ReadSingle(),
+                m20 = aReader.ReadSingle(),
+                m21 = aReader.ReadSingle(),
+                m22 = aReader.ReadSingle(),
+                m23 = aReader.ReadSingle(),
+                m30 = aReader.ReadSingle(),
+                m31 = aReader.ReadSingle(),
+                m32 = aReader.ReadSingle(),
+                m33 = aReader.ReadSingle()
+            };
             return m;
         }
 
@@ -504,11 +514,17 @@ namespace B83.MeshTools
         }
         public static BoneWeight ReadBoneWeight(this BinaryReader aReader)
         {
-            var w = new BoneWeight();
-            w.boneIndex0 = aReader.ReadInt32(); w.weight0 = aReader.ReadSingle();
-            w.boneIndex1 = aReader.ReadInt32(); w.weight1 = aReader.ReadSingle();
-            w.boneIndex2 = aReader.ReadInt32(); w.weight2 = aReader.ReadSingle();
-            w.boneIndex3 = aReader.ReadInt32(); w.weight3 = aReader.ReadSingle();
+            BoneWeight w = new BoneWeight
+            {
+                boneIndex0 = aReader.ReadInt32(),
+                weight0 = aReader.ReadSingle(),
+                boneIndex1 = aReader.ReadInt32(),
+                weight1 = aReader.ReadSingle(),
+                boneIndex2 = aReader.ReadInt32(),
+                weight2 = aReader.ReadSingle(),
+                boneIndex3 = aReader.ReadInt32(),
+                weight3 = aReader.ReadSingle()
+            };
             return w;
         }
     }

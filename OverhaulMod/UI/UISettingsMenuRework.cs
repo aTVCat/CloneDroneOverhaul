@@ -479,9 +479,9 @@ namespace OverhaulMod.UI
             }, true);
             _ = pageBuilder.Button("Reset energy bar settings", delegate
             {
-                ModSettingsManager.SetBoolValue(ModSettingsConstants.ENERGY_UI_REWORK, true, true);
-                ModSettingsManager.SetBoolValue(ModSettingsConstants.ENERGY_UI_FADE_OUT_IF_FULL, true, true);
-                ModSettingsManager.SetFloatValue(ModSettingsConstants.ENERGY_UI_FADE_OUT_INTENSITY, 0.9f, true);
+                ModSettingsManager.ResetValue(ModSettingsConstants.ENERGY_UI_REWORK, true);
+                ModSettingsManager.ResetValue(ModSettingsConstants.ENERGY_UI_FADE_OUT_IF_FULL, true);
+                ModSettingsManager.ResetValue(ModSettingsConstants.ENERGY_UI_FADE_OUT_INTENSITY, true);
 
                 ClearPageContents();
                 populateUIPatchesPage(settingsMenu);
@@ -493,11 +493,11 @@ namespace OverhaulMod.UI
                 ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_PRESS_BUTTON_TRIGGER_DESCRIPTION_REWORK, value, true);
                 if (value)
                 {
-                    PressActionKeyObjectManager.Instance.ShowThenHideDescription(ModCore.LoremIpsumText, 3f);
+                    PressActionKeyObjectManager.Instance.ShowThenHideDescription(ModCore.LoremIpsumText, 2f);
                 }
             }, "Use key trigger description rework", delegate
             {
-                populateSubtitlesReworkSettingsPage(m_selectedTabId);
+                populateUKTDReworkSettingsPage(m_selectedTabId);
             });
             _ = pageBuilder.ToggleWithOptions(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_SUBTITLE_TEXT_FIELD_REWORK), delegate (bool value)
             {
@@ -655,9 +655,9 @@ namespace OverhaulMod.UI
             }, "Camera bobbing");
             _ = pageBuilder.Button("Reset camera settings", delegate
             {
-                ModSettingsManager.SetFloatValue(ModSettingsConstants.CAMERA_FOV_OFFSET, 0f, true);
-                ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_CAMERA_ROLLING, true, true);
-                ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_CAMERA_BOBBING, true, true);
+                ModSettingsManager.ResetValue(ModSettingsConstants.CAMERA_FOV_OFFSET, true);
+                ModSettingsManager.ResetValue(ModSettingsConstants.ENABLE_CAMERA_ROLLING, true);
+                ModSettingsManager.ResetValue(ModSettingsConstants.ENABLE_CAMERA_BOBBING, true);
                 PopulatePage("Graphics");
             });
 
@@ -941,7 +941,7 @@ namespace OverhaulMod.UI
                 ModUIUtils.MessagePopup(true, "Reset Overhaul mod settings?", "placeholder description", 125f, MessageMenu.ButtonLayout.EnableDisableButtons, "Ok", "Yes", "No", null, delegate
                 {
                     ModSettingsManager.Instance.ResetSettings();
-                    ModUIConstants.ShowRestartRequiredScreen(true);
+                    _ = ModUIConstants.ShowRestartRequiredScreen(true);
                 });
             });
         }
@@ -971,9 +971,9 @@ namespace OverhaulMod.UI
             }, true);
             _ = pageBuilder.Button("Reset energy bar settings", delegate
             {
-                ModSettingsManager.SetBoolValue(ModSettingsConstants.ENERGY_UI_REWORK, true, true);
-                ModSettingsManager.SetBoolValue(ModSettingsConstants.ENERGY_UI_FADE_OUT_IF_FULL, true, true);
-                ModSettingsManager.SetFloatValue(ModSettingsConstants.ENERGY_UI_FADE_OUT_INTENSITY, 0.9f, true);
+                ModSettingsManager.ResetValue(ModSettingsConstants.ENERGY_UI_REWORK, true);
+                ModSettingsManager.ResetValue(ModSettingsConstants.ENERGY_UI_FADE_OUT_IF_FULL, true);
+                ModSettingsManager.ResetValue(ModSettingsConstants.ENERGY_UI_FADE_OUT_INTENSITY, true);
 
                 ClearPageContents();
                 populateUIPatchesPage(settingsMenu);
@@ -1011,7 +1011,7 @@ namespace OverhaulMod.UI
                 PopulatePage(initialPage);
             });
 
-            _ = pageBuilder.Header1("Commentator subtitles settings");
+            _ = pageBuilder.Header1("Commentator subtitles rework");
             _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_SUBTITLE_TEXT_FIELD_REWORK), delegate (bool value)
             {
                 ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_SUBTITLE_TEXT_FIELD_REWORK, value, true);
@@ -1047,14 +1047,67 @@ namespace OverhaulMod.UI
 
             _ = pageBuilder.Button("Reset settings", delegate
             {
-                ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_SUBTITLE_TEXT_FIELD_REWORK, true, true);
-                ModSettingsManager.SetBoolValue(ModSettingsConstants.SUBTITLE_TEXT_FIELD_UPPER_POSITION, true, true);
-                ModSettingsManager.SetBoolValue(ModSettingsConstants.SUBTITLE_TEXT_FIELD_BG, false, true);
-                ModSettingsManager.SetIntValue(ModSettingsConstants.SUBTITLE_TEXT_FIELD_FONT, 0, true);
-                ModSettingsManager.SetIntValue(ModSettingsConstants.SUBTITLE_TEXT_FIELD_FONT_SIZE, 13, true);
+                ModSettingsManager.ResetValue(ModSettingsConstants.ENABLE_SUBTITLE_TEXT_FIELD_REWORK, true);
+                ModSettingsManager.ResetValue(ModSettingsConstants.SUBTITLE_TEXT_FIELD_UPPER_POSITION, true);
+                ModSettingsManager.ResetValue(ModSettingsConstants.SUBTITLE_TEXT_FIELD_BG, true);
+                ModSettingsManager.ResetValue(ModSettingsConstants.SUBTITLE_TEXT_FIELD_FONT, true);
+                ModSettingsManager.ResetValue(ModSettingsConstants.SUBTITLE_TEXT_FIELD_FONT_SIZE, true);
 
                 ClearPageContents();
-                populateSSAOSettingsPage(initialPage);
+                populateSubtitlesReworkSettingsPage(initialPage);
+            });
+        }
+
+        private void populateUKTDReworkSettingsPage(string initialPage)
+        {
+            PageBuilder pageBuilder = new PageBuilder(this);
+            _ = pageBuilder.Button("Go back", delegate
+            {
+                ClearPageContents();
+                PopulatePage(initialPage);
+            });
+
+            _ = pageBuilder.Header1("Use key trigger description rework");
+            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_PRESS_BUTTON_TRIGGER_DESCRIPTION_REWORK), delegate (bool value)
+            {
+                ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_PRESS_BUTTON_TRIGGER_DESCRIPTION_REWORK, value, true);
+                if (value)
+                {
+                    PressActionKeyObjectManager.Instance.ShowThenHideDescription(ModCore.LoremIpsumText, 2f);
+                }
+            }, "Enable");
+            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.PAK_DESCRIPTION_BG), delegate (bool value)
+            {
+                ModSettingsManager.SetBoolValue(ModSettingsConstants.PAK_DESCRIPTION_BG, value, true);
+                PressActionKeyObjectManager.Instance.ShowThenHideDescription(ModCore.LoremIpsumText, 2f);
+            }, "Enable background");
+
+            _ = pageBuilder.Header3("Font");
+            _ = pageBuilder.Dropdown(UISubtitleTextFieldRework.FontOptions, ModSettingsManager.GetIntValue(ModSettingsConstants.PAK_DESCRIPTION_FONT), delegate (int value)
+            {
+                ModSettingsManager.SetIntValue(ModSettingsConstants.PAK_DESCRIPTION_FONT, value, true);
+                PressActionKeyObjectManager.Instance.ShowThenHideDescription(ModCore.LoremIpsumText, 2f);
+            });
+            _ = pageBuilder.Header4("Some languages might not be supported by certain fonts");
+            _ = pageBuilder.Header3("Font size");
+            _ = pageBuilder.Slider(8f, 13f, true, ModSettingsManager.GetIntValue(ModSettingsConstants.PAK_DESCRIPTION_FONT_SIZE), delegate (float value)
+            {
+                ModSettingsManager.SetIntValue(ModSettingsConstants.PAK_DESCRIPTION_FONT_SIZE, Mathf.RoundToInt(value), true);
+                PressActionKeyObjectManager.Instance.ShowThenHideDescription(ModCore.LoremIpsumText, 2f);
+            }, true, (float val) =>
+            {
+                return $"{Mathf.RoundToInt(val)}";
+            });
+
+            _ = pageBuilder.Button("Reset settings", delegate
+            {
+                ModSettingsManager.ResetValue(ModSettingsConstants.ENABLE_PRESS_BUTTON_TRIGGER_DESCRIPTION_REWORK, true);
+                ModSettingsManager.ResetValue(ModSettingsConstants.PAK_DESCRIPTION_BG, true);
+                ModSettingsManager.ResetValue(ModSettingsConstants.PAK_DESCRIPTION_FONT, true);
+                ModSettingsManager.ResetValue(ModSettingsConstants.PAK_DESCRIPTION_FONT_SIZE, true);
+
+                ClearPageContents();
+                populateUKTDReworkSettingsPage(initialPage);
             });
         }
 
@@ -1102,9 +1155,9 @@ namespace OverhaulMod.UI
 
             _ = pageBuilder.Button("Reset settings", delegate
             {
-                ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_SSAO, true, true);
-                ModSettingsManager.SetFloatValue(ModSettingsConstants.SSAO_INTENSITY, 0.8f, true);
-                ModSettingsManager.SetIntValue(ModSettingsConstants.SSAO_SAMPLE_COUNT, 1, true);
+                ModSettingsManager.ResetValue(ModSettingsConstants.ENABLE_SSAO, true);
+                ModSettingsManager.ResetValue(ModSettingsConstants.SSAO_INTENSITY, true);
+                ModSettingsManager.ResetValue(ModSettingsConstants.SSAO_SAMPLE_COUNT, true);
 
                 ClearPageContents();
                 populateSSAOSettingsPage(initialPage);
@@ -1139,9 +1192,9 @@ namespace OverhaulMod.UI
 
             _ = pageBuilder.Button("Reset settings", delegate
             {
-                ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_CHROMATIC_ABERRATION, true, true);
-                ModSettingsManager.SetFloatValue(ModSettingsConstants.CHROMATIC_ABERRATION_INTENSITY, 0.2f, true);
-                ModSettingsManager.SetBoolValue(ModSettingsConstants.CHROMATIC_ABERRATION_ON_SCREEN_EDGES, true, true);
+                ModSettingsManager.ResetValue(ModSettingsConstants.ENABLE_CHROMATIC_ABERRATION, true);
+                ModSettingsManager.ResetValue(ModSettingsConstants.CHROMATIC_ABERRATION_INTENSITY, true);
+                ModSettingsManager.ResetValue(ModSettingsConstants.CHROMATIC_ABERRATION_ON_SCREEN_EDGES, true);
 
                 ClearPageContents();
                 populateCASettingsPage(initialPage);
@@ -1170,8 +1223,8 @@ namespace OverhaulMod.UI
 
             _ = pageBuilder.Button("Reset settings", delegate
             {
-                ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_BLOOM, true, true);
-                ModSettingsManager.SetBoolValue(ModSettingsConstants.TWEAK_BLOOM, true, true);
+                ModSettingsManager.ResetValue(ModSettingsConstants.ENABLE_BLOOM, true);
+                ModSettingsManager.ResetValue(ModSettingsConstants.TWEAK_BLOOM, true);
 
                 ClearPageContents();
                 populateBloomSettingsPage(initialPage);

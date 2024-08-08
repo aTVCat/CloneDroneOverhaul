@@ -1,5 +1,4 @@
 ﻿using HarmonyLib;
-using OverhaulMod.Combat;
 using OverhaulMod.Engine;
 using OverhaulMod.Utils;
 using UnityEngine;

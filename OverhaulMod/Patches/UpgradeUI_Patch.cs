@@ -1,9 +1,5 @@
 ﻿using HarmonyLib;
-using OverhaulMod.Combat;
 using OverhaulMod.Engine;
-using OverhaulMod.Utils;
-using UnityEngine;
-using UnityEngine.UI;
 
 namespace OverhaulMod.Patches
 {
@@ -14,7 +10,7 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(UpgradeUI.closeUpgradeUIIfLocalPlayerHasNoSkillPoints))]
         private static bool closeUpgradeUIIfLocalPlayerHasNoSkillPoints_Prefix(UpgradeUI __instance)
         {
-            if(AutoBuildManager.Instance && AutoBuildManager.Instance.isInAutoBuildConfigurationMode)
+            if (AutoBuildManager.Instance && AutoBuildManager.Instance.isInAutoBuildConfigurationMode)
                 return false;
 
             return true;

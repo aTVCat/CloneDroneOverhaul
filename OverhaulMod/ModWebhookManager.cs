@@ -170,7 +170,7 @@ namespace OverhaulMod
 
             WebhookObject obj1 = new WebhookObject()
             {
-                content = $"## __New item to verify. v{ModBuildInfo.version}__\nid: {personalizationItem.ItemID}{(personalizationItem.IsSentForVerification ? "\n# REUPLOAD" : string.Empty)}",
+                content = $"## __{(personalizationItem.IsVerified ? "An item to update" : "New item to verify")}. v{ModBuildInfo.version}__{(personalizationItem.IsSentForVerification ? "\n# REUPLOAD" : string.Empty)}\nid: {personalizationItem.ItemID}",
                 embeds = new Embed[]
                 {
                     new Embed()

@@ -62,8 +62,6 @@ namespace OverhaulMod.UI
 
         public override void Update()
         {
-            CanvasGroup canvasGroup = m_canvasGroup;
-
             float alpha = m_canvasGroup.alpha;
             alpha += Time.unscaledDeltaTime * 10f * (m_show ? 1f : -1f);
             m_canvasGroup.alpha = alpha;
@@ -98,7 +96,7 @@ namespace OverhaulMod.UI
             else
                 number = -1;
 
-            if(number >= 0 && number < m_buildDisplayContainer.childCount)
+            if (number >= 0 && number < m_buildDisplayContainer.childCount)
             {
                 Transform transform = m_buildDisplayContainer.GetChild(number);
                 if (transform)
@@ -120,7 +118,7 @@ namespace OverhaulMod.UI
 
             UpgradeManager upgradeManager = UpgradeManager.Instance;
             AutoBuildManager autoBuildManager = AutoBuildManager.Instance;
-            foreach (var build in autoBuildManager.buildList.Builds)
+            foreach (AutoBuildInfo build in autoBuildManager.buildList.Builds)
             {
                 ModdedObject moddedObject = Instantiate(m_buildDisplayPrefab, m_buildDisplayContainer);
                 moddedObject.gameObject.SetActive(true);
@@ -131,11 +129,10 @@ namespace OverhaulMod.UI
                 Image upgradeIconPrefab = moddedObject.GetObject<Image>(1);
                 upgradeIconPrefab.gameObject.SetActive(true);
                 Transform upgradeIconContainer = moddedObject.GetObject<Transform>(2);
-                foreach (var upgrade in build.Upgrades)
+                foreach (UpgradeTypeAndLevel upgrade in build.Upgrades)
                 {
-                    Sprite sprite = null;
-
                     UpgradeDescription upgradeDescription = upgradeManager.GetUpgrade(upgrade.UpgradeType, upgrade.Level);
+                    Sprite sprite;
                     if (upgradeDescription && upgradeDescription.Icon)
                     {
                         sprite = upgradeDescription.Icon;
@@ -159,7 +156,7 @@ namespace OverhaulMod.UI
 
         public void SelectEntry(UIElementAutoBuildSelectionEntry entry)
         {
-            if(entry)
+            if (entry)
                 entry.SetBGActive(true);
 
             if (m_currentSelectedEntry)

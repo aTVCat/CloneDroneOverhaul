@@ -470,5 +470,20 @@ namespace OverhaulMod.Utils
         /// <see cref="Engine.PressActionKeyObjectManager"/>
         /// </summary>
         public const string ENABLE_PRESS_BUTTON_TRIGGER_DESCRIPTION_REWORK = "EnablePressButtonTriggerDescriptionRework";
+
+        /// <summary>
+        /// <see cref="UI.UIPressActionKeyDescription"/>
+        /// </summary>
+        public const string PAK_DESCRIPTION_BG = "PAKBG";
+
+        /// <summary>
+        /// <see cref="UI.UIPressActionKeyDescription"/>
+        /// </summary>
+        public const string PAK_DESCRIPTION_FONT = "PAKFont";
+
+        /// <summary>
+        /// <see cref="UI.UIPressActionKeyDescription"/>
+        /// </summary>
+        public const string PAK_DESCRIPTION_FONT_SIZE = "PAKFontSize";
     }
 }

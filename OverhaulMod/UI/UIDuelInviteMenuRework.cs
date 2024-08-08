@@ -1,5 +1,4 @@
-﻿using OverhaulMod.Engine;
-using OverhaulMod.Utils;
+﻿using OverhaulMod.Utils;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -144,7 +143,7 @@ namespace OverhaulMod.UI
             m_garbageBotSkinDropdown.gameObject.SetActive(gameMode == GameMode.BattleRoyale && ModIntegrationUtils.SelectGarbageBotSkin.IsModAvailable());
             if (m_garbageBotSkinDropdownObject.activeSelf)
             {
-                base.StartCoroutine(waitThenRefreshGarbageBotSkinDropdownCoroutine());
+                _ = base.StartCoroutine(waitThenRefreshGarbageBotSkinDropdownCoroutine());
             }
 
             switch (gameMode)

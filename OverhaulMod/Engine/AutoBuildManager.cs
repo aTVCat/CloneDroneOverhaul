@@ -25,7 +25,7 @@ namespace OverhaulMod.Engine
         private UIAutoBuildSelectionMenu m_autoBuildSelectionMenu;
         public UIAutoBuildSelectionMenu autoBuildSelectionMenu
         {
-            get 
+            get
             {
                 if (!m_autoBuildSelectionMenu)
                 {
@@ -136,7 +136,7 @@ namespace OverhaulMod.Engine
                 autoBuildListInfo.FixValues();
             }
 
-            if(oldAutoBuildInfo != null)
+            if (oldAutoBuildInfo != null)
             {
                 autoBuildListInfo.Builds.Add(oldAutoBuildInfo);
                 SaveBuildInfo();
@@ -177,7 +177,7 @@ namespace OverhaulMod.Engine
             if (!upgradeUI || !upgradeUI.gameObject.activeInHierarchy)
                 return;
 
-            var builds = buildList.Builds;
+            List<AutoBuildInfo> builds = buildList.Builds;
             if (builds.IsNullOrEmpty() || index < 0 || index >= builds.Count)
                 return;
 

@@ -1,5 +1,4 @@
-﻿using BestHTTP.SocketIO;
-using OverhaulMod.Utils;
+﻿using OverhaulMod.Utils;
 using System;
 using System.Collections.Generic;
 using System.IO;

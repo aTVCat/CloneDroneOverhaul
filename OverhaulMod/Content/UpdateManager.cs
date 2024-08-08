@@ -6,7 +6,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
 
@@ -44,7 +43,7 @@ namespace OverhaulMod.Content
             set;
         }
 
-        private UpdateInfoList m_downloadedUpdateInfoList;
+        private readonly UpdateInfoList m_downloadedUpdateInfoList;
 
         private void Start()
         {

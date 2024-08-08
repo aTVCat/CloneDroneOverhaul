@@ -193,7 +193,7 @@ namespace OverhaulMod.UI
             SetUIInteractable(false);
             ClearVersionAndChangelogTexts();
 
-            if(s_updateInfoList != null)
+            if (s_updateInfoList != null)
             {
                 DelegateScheduler.Instance.Schedule(delegate
                 {

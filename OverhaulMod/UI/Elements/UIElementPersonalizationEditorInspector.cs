@@ -29,6 +29,9 @@ namespace OverhaulMod.UI
         [UIElement("SentToVerificationToggle")]
         private readonly Toggle m_sentToVerificationToggle;
 
+        [UIElement("ReuploadedToggle")]
+        private readonly Toggle m_reuploadedToggle;
+
         [UIElement("TypeDropdown")]
         private readonly Dropdown m_typeDropdown;
 
@@ -152,6 +155,7 @@ namespace OverhaulMod.UI
             m_versionField.text = personalizationItemInfo.Version.ToString();
             m_sentToVerificationToggle.isOn = personalizationItemInfo.IsSentForVerification;
             m_verifiedToggle.isOn = personalizationItemInfo.IsVerified;
+            m_reuploadedToggle.isOn = personalizationItemInfo.ReuploadedTheItem;
 
             for (int i = 0; i < m_weaponDropdown.options.Count; i++)
             {
@@ -187,7 +191,7 @@ namespace OverhaulMod.UI
             m_disallowCallbacks = false;
         }
 
-        public void ApplyValues()
+        public void ApplyValues(bool ignoreDevPanel = false)
         {
             PersonalizationItemInfo personalizationItemInfo = itemInfo;
             if (personalizationItemInfo == null)
@@ -201,13 +205,15 @@ namespace OverhaulMod.UI
             personalizationItemInfo.ItemID = m_itemIdField.text;
             personalizationItemInfo.BodyPartName = m_bodyPartDropdown.options[m_bodyPartDropdown.value].text;
 
-            if (PersonalizationEditorManager.Instance.canVerifyItems)
+            if (PersonalizationEditorManager.Instance.canVerifyItems && !ignoreDevPanel)
             {
                 personalizationItemInfo.IsVerified = m_verifiedToggle.isOn;
                 if (personalizationItemInfo.IsVerified)
                 {
                     personalizationItemInfo.IsSentForVerification = false;
+                    personalizationItemInfo.ReuploadedTheItem = false;
                     m_sentToVerificationToggle.isOn = false;
+                    m_reuploadedToggle.isOn = false;
                 }
 
                 int prevVersion = personalizationItemInfo.Version;

@@ -2,12 +2,10 @@
 using OverhaulMod.Combat;
 using OverhaulMod.Engine;
 using OverhaulMod.Utils;
-using Steamworks;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using UnityEngine;
 using UnityEngine.Networking;
 
 namespace OverhaulMod.Content.Personalization

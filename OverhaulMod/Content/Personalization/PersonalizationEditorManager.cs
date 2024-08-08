@@ -340,7 +340,7 @@ namespace OverhaulMod.Content.Personalization
             UIPersonalizationEditor.instance.ShowNotification("Success", $"Loaded the item ({personalizationItemInfo.Name})", UIElementPersonalizationEditorNotification.SuccessColor);
         }
 
-        public bool SaveItem(out string error)
+        public bool SaveItem(out string error, bool ignoreDevPanel = false)
         {
             if (currentEditingItemInfo == null)
             {
@@ -373,7 +373,7 @@ namespace OverhaulMod.Content.Personalization
                 };
             }
 
-            UIPersonalizationEditor.instance.Inspector.ApplyValues();
+            UIPersonalizationEditor.instance.Inspector.ApplyValues(ignoreDevPanel);
             SerializeRoot();
             try
             {

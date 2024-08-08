@@ -186,7 +186,7 @@ namespace OverhaulMod.Visuals
                 screenSpaceAmbientOcclusion.m_SSAOShader = ModResources.Shader(AssetBundleConstants.IMAGE_EFFECTS, "SSAOShader");
                 screenSpaceAmbientOcclusion.m_RandomTexture = ModResources.Texture2D(AssetBundleConstants.IMAGE_EFFECTS, "RandomVectors");
             }*/
-            
+
             /*
             GlobalFog globalFog = camera.GetComponent<GlobalFog>();
             if (!globalFog)

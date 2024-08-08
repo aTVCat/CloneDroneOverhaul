@@ -59,7 +59,7 @@ namespace OverhaulMod.Engine
                 return;
 
             ErrorManager errorManager = ErrorManager.Instance;
-            if(errorManager && errorManager.HasCrashed())
+            if (errorManager && errorManager.HasCrashed())
             {
                 m_destroyed = true;
                 Destroy(base.gameObject);

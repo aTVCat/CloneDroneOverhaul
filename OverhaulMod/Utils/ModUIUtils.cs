@@ -26,7 +26,7 @@ namespace OverhaulMod.Utils
                     _ = ModUIConstants.ShowPatchNotes();
                 }, delay);
             }
-            else if(!dontShowNewUpdateMessage)
+            else if (!dontShowNewUpdateMessage)
             {
                 DelegateScheduler.Instance.Schedule(delegate
                 {

@@ -96,7 +96,7 @@ namespace OverhaulMod.UI
                 Button button = moddedObject.GetComponent<Button>();
                 button.onClick.AddListener(delegate
                 {
-                    if(NewsManager.PrevNewsCount != newsInfoList.News.Count)
+                    if (NewsManager.PrevNewsCount != newsInfoList.News.Count)
                         ModSettingsManager.SetIntValue(ModSettingsConstants.PREV_NEWS_COUNT, newsInfoList.News.Count);
 
                     ShowNewsDetails(news);

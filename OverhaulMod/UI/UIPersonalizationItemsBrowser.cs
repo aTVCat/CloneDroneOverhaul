@@ -193,7 +193,7 @@ namespace OverhaulMod.UI
 
             m_loadingSawblade.color = Color.white;
 
-            if(m_selectedCategory == PersonalizationCategory.WeaponSkins)
+            if (m_selectedCategory == PersonalizationCategory.WeaponSkins)
                 selectSubcategoryOfCurrentWeapon();
 
             Populate();

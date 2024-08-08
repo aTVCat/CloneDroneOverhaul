@@ -35,7 +35,7 @@ namespace OverhaulMod.Content.Personalization
             if (ItemVersions == null)
                 ItemVersions = new Dictionary<string, int>();
 
-            if(ItemVersions.Count == 0)
+            if (ItemVersions.Count == 0)
                 RefreshAllItemVersions();
         }
 
@@ -117,7 +117,7 @@ namespace OverhaulMod.Content.Personalization
         public void RefreshAllItemsVerification()
         {
             foreach (PersonalizationItemInfo item in PersonalizationManager.Instance.itemList.Items)
-                if(!item.IsVerified)
+                if (!item.IsVerified)
                     SetIsItemUnverified(item, true);
         }
 

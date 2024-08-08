@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace OverhaulMod.Engine
 {
@@ -12,7 +8,7 @@ namespace OverhaulMod.Engine
 
         public void FixValues()
         {
-            if(Builds==null)
+            if (Builds == null)
                 Builds = new List<AutoBuildInfo>();
         }
     }

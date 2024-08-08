@@ -146,7 +146,7 @@ namespace OverhaulMod.UI
                 m_newIndicator.SetActive(false);
             }
 
-            if(userInfo.IsItemUnverified(itemInfo) && itemInfo.IsVerified)
+            if (userInfo.IsItemUnverified(itemInfo) && itemInfo.IsVerified)
             {
                 userInfo.SetIsItemUnverified(itemInfo, false);
                 m_wasVerifiedIndicator.SetActive(false);

@@ -25,7 +25,7 @@ namespace OverhaulMod.UI
         public static int FontSize;
 
         public static List<Dropdown.OptionData> FontOptions = new List<Dropdown.OptionData>()
-        {      
+        {
             new Dropdown.OptionData("Default"),
             new Dropdown.OptionData("VCR OSD Mono"),
             new Dropdown.OptionData("Piksieli Prosto"),
@@ -138,7 +138,7 @@ namespace OverhaulMod.UI
                 rectTransform.anchoredPosition = ap;
             }
 
-            if(FontType == 0)
+            if (FontType == 0)
             {
                 m_text.font = LocalizationManager.Instance.GetCurrentSubtitlesFont();
             }
@@ -153,13 +153,13 @@ namespace OverhaulMod.UI
                 }
                 else
                 {
-                    m_stringBuilder.Clear();
+                    _ = m_stringBuilder.Clear();
                     if (ModCore.ShowSpeakerName)
                     {
-                        m_stringBuilder.Append(ModGameUtils.GetSpeakerNameText(currentSentence.SpeakerName));
-                        m_stringBuilder.Append(' ');
+                        _ = m_stringBuilder.Append(ModGameUtils.GetSpeakerNameText(currentSentence.SpeakerName));
+                        _ = m_stringBuilder.Append(' ');
                     }
-                    m_stringBuilder.Append(currentSentence.SpeechText);
+                    _ = m_stringBuilder.Append(currentSentence.SpeechText);
                     ShowText(m_stringBuilder.ToString(), speechAudioManager.GetSubtitleColorForSpeaker(currentSentence.SpeakerName));
                 }
             }
