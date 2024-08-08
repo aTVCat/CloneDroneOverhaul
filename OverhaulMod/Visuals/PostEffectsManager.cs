@@ -92,7 +92,7 @@ namespace OverhaulMod.Visuals
 
         public void AddPostEffectsToCamera(Camera camera)
         {
-            if (!camera || camera.orthographic)
+            if (!camera || camera.orthographic || GameModeManager.IsInLevelEditor())
                 return;
 
             bool moreEffectsEnabled = ModFeatures.IsEnabled(ModFeatures.FeatureType.MoreImageEffects);

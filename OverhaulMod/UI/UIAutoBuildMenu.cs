@@ -195,6 +195,7 @@ namespace OverhaulMod.UI
                     {
                         _ = autoBuildManager.buildList.Builds.Remove(build);
                         Destroy(moddedObject.gameObject);
+                        RefreshNewBuildButton();
                         RefreshBuildToUseOnStartButton();
                     });
                 });
@@ -202,7 +203,7 @@ namespace OverhaulMod.UI
                 Button renameButton = moddedObject.GetObject<Button>(5);
                 renameButton.onClick.AddListener(delegate
                 {
-                    ModUIUtils.InputFieldWindow("Rename a build", $"Rename \"{build.Name}\" to...", build.Name, 125f, delegate (string name)
+                    ModUIUtils.InputFieldWindow("Rename a build", $"Rename \"{build.Name}\" to...", build.Name, 20, 125f, delegate (string name)
                     {
                         build.Name = name;
                         buildNameText.text = AutoBuildManager.GetBuildDisplayName(build.Name);
@@ -211,15 +212,20 @@ namespace OverhaulMod.UI
                 });
             }
 
-            if (autoBuildManager.buildList.Builds.Count < 10)
+            RefreshNewBuildButton();
+            RefreshBuildToUseOnStartButton();
+        }
+
+        public void RefreshNewBuildButton()
+        {
+            AutoBuildManager autoBuildManager = AutoBuildManager.Instance;
+            if (!m_instantiatedNewButton)
             {
                 Button newBuildButton = Instantiate(m_newBuildButtonPrefab, m_buildDisplayContainer);
-                newBuildButton.gameObject.SetActive(true);
                 newBuildButton.onClick.AddListener(OnNewButtonClicked);
                 m_instantiatedNewButton = newBuildButton.gameObject;
             }
-
-            RefreshBuildToUseOnStartButton();
+            m_instantiatedNewButton.gameObject.SetActive(autoBuildManager.buildList.Builds.Count < 10);
         }
 
         public void RefreshBuildToUseOnStartButton()
@@ -297,7 +303,7 @@ namespace OverhaulMod.UI
 
         public void OnNewButtonClicked()
         {
-            ModUIUtils.InputFieldWindow("Create a build", "Enter new build's name", "Unnamed build", 125f, delegate (string name)
+            ModUIUtils.InputFieldWindow("Create a build", "Enter new build's name", "Unnamed build", 20, 125f, delegate (string name)
             {
                 AutoBuildInfo autoBuildInfo = new AutoBuildInfo()
                 {

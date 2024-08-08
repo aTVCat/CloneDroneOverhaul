@@ -222,7 +222,7 @@ namespace OverhaulMod.UI
         {
             ModUIUtils.FileExplorer(base.transform, true, delegate (string path)
             {
-                ModUIUtils.InputFieldWindow("Enter folder name", "hmm", null, 125f, delegate (string directoryName)
+                ModUIUtils.InputFieldWindow("Enter folder name", "hmm", null, 30, 125f, delegate (string directoryName)
                 {
                     string folderName = $"{Path.GetFileName(path).Replace("PersonalizationItem_", string.Empty).Remove(8)}_{directoryName.Replace(" ", string.Empty)}";
                     string folderPath = Path.Combine(ModCore.customizationFolder, folderName);

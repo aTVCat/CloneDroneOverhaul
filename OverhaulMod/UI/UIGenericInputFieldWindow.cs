@@ -69,9 +69,10 @@ namespace OverhaulMod.UI
             m_panelTransform.sizeDelta = sizeDelta;
         }
 
-        public void SetInputFieldText(string text)
+        public void SetInputFieldText(string text, int limit)
         {
             m_inputField.text = text;
+            m_inputField.characterLimit = Mathf.Max(0, limit);
         }
     }
 }

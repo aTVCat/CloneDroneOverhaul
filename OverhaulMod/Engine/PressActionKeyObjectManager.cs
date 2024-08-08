@@ -86,6 +86,11 @@ namespace OverhaulMod.Engine
                 _ = m_triggers.Remove(trigger);
         }
 
+        public void SetNearestTriggerNull()
+        {
+            m_prevNearestTrigger = null;
+        }
+
         public void ShowThenHideDescription(string description, float time)
         {
             m_timeToHideText = Time.unscaledTime + time;

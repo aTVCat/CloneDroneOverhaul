@@ -166,8 +166,26 @@ namespace OverhaulMod
             modSettingsManager.AddSettingValueChangedListener(delegate (object obj)
             {
                 PressActionKeyObjectManager manager = PressActionKeyObjectManager.Instance;
-                if (manager && obj is bool boolVal && !boolVal)
-                    manager.HideDescription();
+                if (manager && obj is bool boolVal)
+                {
+                    if (!boolVal)
+                        manager.HideDescription();
+
+                    foreach (LevelEditorUseButtonTrigger trigger in Resources.FindObjectsOfTypeAll<LevelEditorUseButtonTrigger>())
+                    {
+                        if (boolVal)
+                        {
+                            if (trigger._keyboardHint)
+                                trigger._keyboardHint.Show(string.Empty);
+
+                            PressActionKeyObjectManager.Instance.SetNearestTriggerNull();
+                        }
+                        else
+                        {
+                            trigger.destroyKeyboardHint();
+                        }
+                    }
+                }
             }, ModSettingsConstants.ENABLE_PRESS_BUTTON_TRIGGER_DESCRIPTION_REWORK);
 
             modSettingsManager.AddSettingValueChangedListener(delegate (object obj)

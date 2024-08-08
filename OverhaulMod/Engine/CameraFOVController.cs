@@ -62,7 +62,7 @@ namespace OverhaulMod.Engine
         {
             bool fovOverrideEnabled = EnableFOVOverride;
             CameraManager cameraManager = m_cameraManager;
-            return cameraManager.enableForceFOVOffset ? cameraManager.forceFOVOffset : (CameraManager.EnableFirstPersonMode ? Mathf.Min(fovOverrideEnabled ? FOVOffset + 15f : 15f, 25f) : (fovOverrideEnabled ? FOVOffset : 0));
+            return cameraManager.enableForceFOVOffset ? cameraManager.forceFOVOffset : (CameraManager.EnableFirstPersonMode ? Mathf.Min(fovOverrideEnabled ? FOVOffset + 15f : 15f, 40f) : (fovOverrideEnabled ? FOVOffset : 0));
         }
     }
 }

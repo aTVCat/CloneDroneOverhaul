@@ -54,6 +54,7 @@ namespace OverhaulMod
         {
             yield return null;
             yield return null;
+            yield return null;
             if (GameModeManager.IsOnTitleScreen() && !BoltNetwork.IsRunning)
             {
                 if (ModFeatures.IsEnabled(ModFeatures.FeatureType.TitleScreenRework))
