@@ -419,27 +419,27 @@ namespace OverhaulMod.Utils
         /// <summary>
         /// <see cref="UI.UISubtitleTextFieldRework"/>
         /// </summary>
-        public const string SUBTITLE_TEXT_FIELD_FONT_SIZE = "SubtitleTextFieldFontSizeV3";
+        public const string SUBTITLE_TEXT_FIELD_FONT_SIZE = "SubtitleTextFieldFontSize";
 
         /// <summary>
         /// <see cref="Engine.ScheduledActionsManager"/>
         /// </summary>
-        public const string REFRESH_MOD_UPDATES_DATE_TIME = "RefreshModUpdatesDateTimeV3";
+        public const string REFRESH_MOD_UPDATES_DATE_TIME = "RefreshModUpdatesDateTime";
 
         /// <summary>
         /// <see cref="Engine.ScheduledActionsManager"/>
         /// </summary>
-        public const string REFRESH_EXCLUSIVE_PERKS_DATE_TIME = "RefreshExclusivePerksDateTimeV3";
+        public const string REFRESH_EXCLUSIVE_PERKS_DATE_TIME = "RefreshExclusivePerksDateTime";
 
         /// <summary>
         /// <see cref="Engine.ScheduledActionsManager"/>
         /// </summary>
-        public const string REFRESH_CUSTOMIZATION_ASSETS_REMOTE_VERSION_DATE_TIME = "RefreshCustomizationAssetsRemoteVersionDateTimeV3";
+        public const string REFRESH_CUSTOMIZATION_ASSETS_REMOTE_VERSION_DATE_TIME = "RefreshCustomizationAssetsRemoteVersionDateTime";
 
         /// <summary>
         /// <see cref="Engine.ScheduledActionsManager"/>
         /// </summary>
-        public const string REFRESH_NEWS_DATE_TIME = "RefreshNewsDateTimeV2";
+        public const string REFRESH_NEWS_DATE_TIME = "RefreshNewsDateTime";
 
         /// <summary>
         /// <see cref="Content.UpdateManager"/>
@@ -465,5 +465,10 @@ namespace OverhaulMod.Utils
         /// <see cref="Engine.AutoBuildManager"/>
         /// </summary>
         public const string AUTO_BUILD_INDEX_TO_USE_ON_MATCH_START = "AutoBuildIndexToUseOnMatchStart";
+
+        /// <summary>
+        /// <see cref="Engine.PressActionKeyObjectManager"/>
+        /// </summary>
+        public const string ENABLE_PRESS_BUTTON_TRIGGER_DESCRIPTION_REWORK = "EnablePressButtonTriggerDescriptionRework";
     }
 }

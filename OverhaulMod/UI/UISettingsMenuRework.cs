@@ -120,6 +120,11 @@ namespace OverhaulMod.UI
                 subtitleTextFieldRework.SetSiblingIndex(true);
             }
 
+            UIPressActionKeyDescription pressActionKeyDescription = ModUIManager.Instance.Get<UIPressActionKeyDescription>(AssetBundleConstants.UI, ModUIConstants.UI_PRESS_ACTION_KEY_DESCRIPTION);
+            if (!pressActionKeyDescription)
+                pressActionKeyDescription = ModUIConstants.ShowPressActionKeyDescription();
+            pressActionKeyDescription.SetSiblingIndex(true);
+
             if (!m_selectedTabId.IsNullOrEmpty())
                 PopulatePage(m_selectedTabId);
         }
@@ -138,6 +143,12 @@ namespace OverhaulMod.UI
             if (subtitleTextFieldRework)
             {
                 subtitleTextFieldRework.SetSiblingIndex(false);
+            }
+
+            UIPressActionKeyDescription pressActionKeyDescription = ModUIManager.Instance.Get<UIPressActionKeyDescription>(AssetBundleConstants.UI, ModUIConstants.UI_PRESS_ACTION_KEY_DESCRIPTION);
+            if (pressActionKeyDescription)
+            {
+                pressActionKeyDescription.SetSiblingIndex(false);
             }
 
             ModSettingsDataManager.Instance.Save();
@@ -476,7 +487,18 @@ namespace OverhaulMod.UI
                 populateUIPatchesPage(settingsMenu);
             });
 
-            _ = pageBuilder.Header1("Subtitles");
+            _ = pageBuilder.Header1("Labels");
+            _ = pageBuilder.ToggleWithOptions(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_PRESS_BUTTON_TRIGGER_DESCRIPTION_REWORK), delegate (bool value)
+            {
+                ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_PRESS_BUTTON_TRIGGER_DESCRIPTION_REWORK, value, true);
+                if (value)
+                {
+                    PressActionKeyObjectManager.Instance.ShowThenHideDescription(ModCore.LoremIpsumText, 3f);
+                }
+            }, "Use key trigger description rework", delegate
+            {
+                populateSubtitlesReworkSettingsPage(m_selectedTabId);
+            });
             _ = pageBuilder.ToggleWithOptions(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_SUBTITLE_TEXT_FIELD_REWORK), delegate (bool value)
             {
                 ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_SUBTITLE_TEXT_FIELD_REWORK, value, true);

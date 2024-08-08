@@ -1,6 +1,7 @@
 ﻿using OverhaulMod.Engine;
 using OverhaulMod.Utils;
 using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -48,10 +49,11 @@ namespace OverhaulMod.UI
         [UIElement("Text")]
         private readonly Text m_text;
 
-        [UIElement("Text")]
-        private readonly Outline m_textOutline;
+        private BetterOutline m_textOutline;
 
         public override bool closeOnEscapeButtonPress => false;
+
+        private StringBuilder m_stringBuilder;
 
         private float m_expandProgress;
 
@@ -61,6 +63,14 @@ namespace OverhaulMod.UI
 
         protected override void OnInitialized()
         {
+            m_stringBuilder = new StringBuilder();
+
+            Destroy(m_text.GetComponent<Outline>());
+            BetterOutline betterOutline = m_text.gameObject.AddComponent<BetterOutline>();
+            betterOutline.effectColor = Color.black;
+            betterOutline.effectDistance = Vector2.one * 1.25f;
+            m_textOutline = betterOutline;
+
             GlobalEventManager.Instance.AddEventListener("SpeechSentenceStarted", onSentenceStarted);
             GlobalEventManager.Instance.AddEventListener("SpeechSequenceFinished", onSentenceFinishedOrCancelled);
             GlobalEventManager.Instance.AddEventListener("SpeechSentenceCancelled", onSentenceFinishedOrCancelled);
@@ -143,7 +153,14 @@ namespace OverhaulMod.UI
                 }
                 else
                 {
-                    ShowText($"{ModGameUtils.GetSpeakerNameText(currentSentence.SpeakerName)} {currentSentence.SpeechText}", speechAudioManager.GetSubtitleColorForSpeaker(currentSentence.SpeakerName));
+                    m_stringBuilder.Clear();
+                    if (ModCore.ShowSpeakerName)
+                    {
+                        m_stringBuilder.Append(ModGameUtils.GetSpeakerNameText(currentSentence.SpeakerName));
+                        m_stringBuilder.Append(' ');
+                    }
+                    m_stringBuilder.Append(currentSentence.SpeechText);
+                    ShowText(m_stringBuilder.ToString(), speechAudioManager.GetSubtitleColorForSpeaker(currentSentence.SpeakerName));
                 }
             }
         }

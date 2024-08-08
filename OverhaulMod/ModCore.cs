@@ -29,6 +29,8 @@ namespace OverhaulMod
         [ModSetting(ModSettingsConstants.STREAMER_MODE, true)]
         public static bool StreamerMode;
 
+        public static readonly string LoremIpsumText = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ut viverra diam, nec rhoncus dui. Suspendisse quis rutrum dolor.";
+
         public static bool EnterCustomizationEditor;
 
         public static event Action GameInitialized;

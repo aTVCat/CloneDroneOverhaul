@@ -163,6 +163,12 @@ namespace OverhaulMod
             modSettingsManager.AddSettingValueChangedListener(refreshCameraPostEffects, ModSettingsConstants.ENABLE_DITHERING);
             modSettingsManager.AddSettingValueChangedListener(refreshCameraPostEffects, ModSettingsConstants.ENABLE_VIGNETTE);
             modSettingsManager.AddSettingValueChangedListener(refreshCameraPostEffects, ModSettingsConstants.ENABLE_SUN_SHAFTS);
+            modSettingsManager.AddSettingValueChangedListener(delegate (object obj)
+            {
+                PressActionKeyObjectManager manager = PressActionKeyObjectManager.Instance;
+                if (manager && obj is bool boolVal && !boolVal)
+                    manager.HideDescription();
+            }, ModSettingsConstants.ENABLE_PRESS_BUTTON_TRIGGER_DESCRIPTION_REWORK);
 
             modSettingsManager.AddSettingValueChangedListener(delegate (object obj)
             {

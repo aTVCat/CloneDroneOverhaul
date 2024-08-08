@@ -11,6 +11,9 @@ namespace OverhaulMod.Engine
 {
     public class PressActionKeyObjectManager : Singleton<PressActionKeyObjectManager>
     {
+        [ModSetting(ModSettingsConstants.ENABLE_PRESS_BUTTON_TRIGGER_DESCRIPTION_REWORK, true)]
+        public static bool EnablePressButtonTriggerDescriptionRework;
+
         public static readonly Color BGGlowColor = new Color(0.65f, 0.75f, 1f, 0.3f);
 
         private List<LevelEditorUseButtonTrigger> m_triggers;
@@ -19,16 +22,25 @@ namespace OverhaulMod.Engine
 
         private LevelEditorUseButtonTrigger m_prevNearestTrigger;
 
+        private float m_timeToHideText;
+
         public override void Awake()
         {
             base.Awake();
 
             m_triggers = new List<LevelEditorUseButtonTrigger>();
+            m_timeToHideText = -1f;
         }
 
         private void Update()
         {
-            if (ModTime.hasFixedUpdated)
+            if(m_timeToHideText != -1f && Time.unscaledTime >= m_timeToHideText)
+            {
+                m_timeToHideText = -1f;
+                HideDescription();
+            }
+
+            if (EnablePressButtonTriggerDescriptionRework && ModTime.hasFixedUpdated)
             {
                 CharacterTracker characterTracker = CharacterTracker.Instance;
 
@@ -52,7 +64,12 @@ namespace OverhaulMod.Engine
                     m_prevNearestTrigger = nearestTrigger;
                     if (nearestTrigger != null)
                     {
-                        ShowDescription(nearestTrigger.Description);
+                        string description = nearestTrigger.Description;
+                        LocalizationManager localizationManager = LocalizationManager.Instance;
+                        if (localizationManager && localizationManager.HasTranslatedString(description))
+                            description = localizationManager.GetTranslatedString(description);
+
+                        ShowDescription(description);
                     }
                     else
                     {
@@ -71,6 +88,12 @@ namespace OverhaulMod.Engine
                 m_triggers.Add(trigger);
             else if(!value)
                 m_triggers.Remove(trigger);
+        }
+
+        public void ShowThenHideDescription(string description, float time)
+        {
+            m_timeToHideText = Time.unscaledTime + time;
+            ShowDescription(description);
         }
 
         public void ShowDescription(string description)

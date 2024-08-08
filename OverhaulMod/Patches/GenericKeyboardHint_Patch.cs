@@ -13,9 +13,13 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(GenericKeyboardHint.Show))]
         private static bool Show_Prefix(GenericKeyboardHint __instance)
         {
-            Text t = __instance.DescriptionLabel;
-            if (t && !t.text.IsNullOrEmpty())
-                t.text = null;
+            bool hideText = PressActionKeyObjectManager.EnablePressButtonTriggerDescriptionRework;
+            if (hideText)
+            {
+                Text t = __instance.DescriptionLabel;
+                if (t && !t.text.IsNullOrEmpty())
+                    t.text = null;
+            }
 
             RectTransform bgGlow = TransformUtils.FindChildRecursive(__instance.transform, "BGGlow") as RectTransform;
             if (bgGlow)
@@ -31,7 +35,7 @@ namespace OverhaulMod.Patches
                 }
             }
 
-            return false;
+            return !hideText;
         }
     }
 }

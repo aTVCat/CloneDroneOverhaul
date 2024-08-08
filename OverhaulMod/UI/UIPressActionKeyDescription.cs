@@ -24,6 +24,8 @@ namespace OverhaulMod.UI
 
         private bool m_show;
 
+        private int m_siblingIndex;
+
         public override void Update()
         {
             Text textComponent = m_text;
@@ -53,6 +55,19 @@ namespace OverhaulMod.UI
         public void HideText()
         {
             m_show = false;
+        }
+
+        public void SetSiblingIndex(bool last)
+        {
+            if (last)
+            {
+                m_siblingIndex = base.transform.GetSiblingIndex();
+                base.transform.SetAsLastSibling();
+            }
+            else if (m_siblingIndex != 0)
+            {
+                base.transform.SetSiblingIndex(m_siblingIndex);
+            }
         }
     }
 }

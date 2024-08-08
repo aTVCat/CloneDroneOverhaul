@@ -211,10 +211,13 @@ namespace OverhaulMod.UI
                 });
             }
 
-            Button newBuildButton = Instantiate(m_newBuildButtonPrefab, m_buildDisplayContainer);
-            newBuildButton.gameObject.SetActive(true);
-            newBuildButton.onClick.AddListener(OnNewButtonClicked);
-            m_instantiatedNewButton = newBuildButton.gameObject;
+            if (autoBuildManager.buildList.Builds.Count < 10)
+            {
+                Button newBuildButton = Instantiate(m_newBuildButtonPrefab, m_buildDisplayContainer);
+                newBuildButton.gameObject.SetActive(true);
+                newBuildButton.onClick.AddListener(OnNewButtonClicked);
+                m_instantiatedNewButton = newBuildButton.gameObject;
+            }
 
             RefreshBuildToUseOnStartButton();
         }
