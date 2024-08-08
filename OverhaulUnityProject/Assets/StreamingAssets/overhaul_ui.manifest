@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 3528199439
+CRC: 1968659233
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: b24b2e19939ed4cc289864aca739d3fd
+    Hash: 4d90d7f86782c49099f2894e74a46036
   TypeTreeHash:
     serializedVersion: 2
     Hash: acf1344b0dbbc80b9165ec9e7dce57f8
@@ -166,6 +166,7 @@ Assets:
 - Assets/UI/UI_AdvancementsMenuRework.prefab
 - Assets/UI/UI_PersonalizationEditorAuthorsEditMenu.prefab
 - Assets/UI/UI_DebugMenu.prefab
+- Assets/UI/UI_PersonalizationEditorPlaytestHUD.prefab
 - Assets/UI/UI_ContentDownloadWindow.prefab
 - Assets/UI/UI_CommunityHub.prefab
 - Assets/UI/UI_PersonalizationEditorItemDialog.prefab

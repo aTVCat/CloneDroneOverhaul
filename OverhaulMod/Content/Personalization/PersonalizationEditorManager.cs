@@ -35,6 +35,8 @@ namespace OverhaulMod.Content.Personalization
 
         private FirstPersonMover m_bot;
 
+        private PersonalizationEditorCamera m_camera;
+
         public PersonalizationController currentPersonalizationController
         {
             get;
@@ -461,7 +463,7 @@ namespace OverhaulMod.Content.Personalization
             cameraObject.tag = "MainCamera";
             cameraObject.transform.position = new Vector3(-2.5f, 3f, 3f);
             cameraObject.transform.eulerAngles = new Vector3(5f, 120f, 0f);
-            _ = cameraObject.AddComponent<PersonalizationEditorCamera>();
+            m_camera = cameraObject.AddComponent<PersonalizationEditorCamera>();
 
             if (useTransitionManager)
             {
@@ -503,9 +505,48 @@ namespace OverhaulMod.Content.Personalization
             PersonalizationEditorObjectManager.Instance.SetCurrentRootNextUniqueIndex(rootInfo.NextUniqueIndex);
         }
 
-        public void ExportItem(PersonalizationItemInfo personalizationItemInfo, out string destination, string overrideDirectoryPath = null)
+        public void EnterPlaytestMode()
         {
-            string fn = $"PersonalizationItem_{personalizationItemInfo.ItemID.ToString().Replace("-", string.Empty)}.zip";
+            FirstPersonMover firstPersonMover = m_bot;
+            if (firstPersonMover)
+            {
+                firstPersonMover.GetComponent<BoltEntity>().TakeControl();
+
+                firstPersonMover.SetCameraHolderEnabled(true);
+                firstPersonMover.SetPlayerCameraEnabled(true);
+
+                m_camera.gameObject.SetActive(false);
+
+                UIPersonalizationEditor.instance.Hide();
+                ModUIConstants.ShowPersonalizationEditorPlaytestHUD();
+            }
+        }
+
+        public void ExitPlaytestMode()
+        {
+            FirstPersonMover firstPersonMover = m_bot;
+            if (firstPersonMover)
+            {
+                firstPersonMover.GetComponent<BoltEntity>().ReleaseControl();
+
+                firstPersonMover.SetCameraHolderEnabled(true);
+                firstPersonMover.SetPlayerCameraEnabled(true);
+
+                firstPersonMover.transform.position = Vector3.zero;
+                firstPersonMover.transform.eulerAngles = Vector3.up * 90f;
+
+                PersonalizationEditorCamera camera = m_camera;
+                camera.transform.position = new Vector3(-2.5f, 3f, 3f);
+                camera.transform.eulerAngles = new Vector3(5f, 120f, 0f);
+                camera.gameObject.SetActive(true);
+
+                UIPersonalizationEditor.instance.Show();
+            }
+        }
+
+        public void ExportItem(PersonalizationItemInfo personalizationItemInfo, out string destination, string overrideDirectoryPath = null, string overrideFn = null)
+        {
+            string fn = overrideFn.IsNullOrEmpty() ? $"PersonalizationItem_{personalizationItemInfo.ItemID.ToString().Replace("-", string.Empty)}.zip" : overrideFn;
             string folder = overrideDirectoryPath.IsNullOrEmpty() ? ModDataManager.savesFolder : overrideDirectoryPath;
             destination = Path.Combine(folder, fn);
 

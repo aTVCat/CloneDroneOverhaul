@@ -85,6 +85,7 @@ namespace OverhaulMod.Utils
         public const string UI_PRESS_ACTION_KEY_DESCRIPTION = "UI_PressActionKeyDescription";
         public const string UI_SUBTITLE_TEXT_FIELD_REWORK = "UI_SubtitleTextFieldRework";
         public const string UI_AUTO_BUILD_SELECTION_MENU = "UI_AutoBuildSelectionMenu";
+        public const string UI_PERSONALIZATION_EDITOR_PLAYTEST_HUD = "UI_PersonalizationEditorPlaytestHUD";
 
         public static UIVersionLabel ShowVersionLabel()
         {
@@ -530,6 +531,11 @@ namespace OverhaulMod.Utils
         public static UIAutoBuildSelectionMenu ShowAutoBuildSelectionMenu()
         {
             return ModUIManager.Instance.Show<UIAutoBuildSelectionMenu>(AssetBundleConstants.UI, UI_AUTO_BUILD_SELECTION_MENU, ModUIManager.UILayer.AfterTitleScreen);
+        }
+
+        public static UIPersonalizationEditorPlaytestHUD ShowPersonalizationEditorPlaytestHUD()
+        {
+            return ModUIManager.Instance.Show<UIPersonalizationEditorPlaytestHUD>(AssetBundleConstants.UI, UI_PERSONALIZATION_EDITOR_PLAYTEST_HUD, ModUIManager.UILayer.AfterEnergyUI);
         }
     }
 }

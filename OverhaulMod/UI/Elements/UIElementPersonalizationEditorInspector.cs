@@ -1,5 +1,6 @@
 ﻿using OverhaulMod.Combat;
 using OverhaulMod.Content.Personalization;
+using OverhaulMod.Utils;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -31,6 +32,21 @@ namespace OverhaulMod.UI
 
         [UIElement("ReuploadedToggle")]
         private readonly Toggle m_reuploadedToggle;
+
+        [UIElement("ExportedFileNameText")]
+        private readonly Text m_exportedFileNameText;
+
+        [UIElementAction(nameof(OnExportButtonClicked))]
+        [UIElement("ExportButton")]
+        private readonly Button m_exportButton;
+
+        [UIElementAction(nameof(OnSavesFolderButtonClicked))]
+        [UIElement("SavesFolderButton")]
+        private readonly Button m_savesFolderButton;
+
+        [UIElementAction(nameof(OnRevealEditorIDButtonClicked))]
+        [UIElement("RevealEditorIDButton")]
+        private readonly Button m_revealEditorIDButton;
 
         [UIElement("TypeDropdown")]
         private readonly Dropdown m_typeDropdown;
@@ -156,6 +172,10 @@ namespace OverhaulMod.UI
             m_sentToVerificationToggle.isOn = personalizationItemInfo.IsSentForVerification;
             m_verifiedToggle.isOn = personalizationItemInfo.IsVerified;
             m_reuploadedToggle.isOn = personalizationItemInfo.ReuploadedTheItem;
+            m_exportedFileNameText.text = $"Will be exported as:\n{getExportedItemFileName()}";
+
+            m_editorIdField.interactable = false;
+            m_revealEditorIDButton.gameObject.SetActive(true);
 
             for (int i = 0; i < m_weaponDropdown.options.Count; i++)
             {
@@ -222,6 +242,16 @@ namespace OverhaulMod.UI
 
                 personalizationItemInfo.Version = version;
             }
+        }
+
+        public void RefreshHierarchyPanel()
+        {
+            m_hierarchyPanel.Populate();
+        }
+
+        private string getExportedItemFileName()
+        {
+            return $"{ModIOUtils.GetDirectoryName(itemInfo.FolderPath)}.zip";
         }
 
         public void OnEditedWeaponTypeDropdown(int value)
@@ -318,6 +348,30 @@ namespace OverhaulMod.UI
         public void OnVerifyButtonClicked()
         {
             m_verifyButton.interactable = false;
+        }
+
+        public void OnExportButtonClicked()
+        {
+            if (PersonalizationEditorManager.Instance.SaveItem(out string error))
+            {
+                PersonalizationEditorManager.Instance.ExportItem(PersonalizationEditorManager.Instance.currentEditingItemInfo, out _, ModCore.savesFolder, getExportedItemFileName());
+                ModUIUtils.MessagePopupOK("Exported the item", "for real", false);
+            }
+            else
+            {
+                ModUIUtils.MessagePopupOK("Error", error, true);
+            }
+        }
+
+        public void OnSavesFolderButtonClicked()
+        {
+            ModIOUtils.OpenFileExplorer(ModCore.savesFolder);
+        }
+
+        public void OnRevealEditorIDButtonClicked()
+        {
+            m_editorIdField.interactable = true;
+            m_revealEditorIDButton.gameObject.SetActive(false);
         }
     }
 }

@@ -617,6 +617,7 @@
     <Compile Include="UI\UIDiscordServerMenu.cs" />
     <Compile Include="UI\UIAssetBundleAssetsBrowser.cs" />
     <Compile Include="UI\UIAutoBuildSelectionMenu.cs" />
+    <Compile Include="UI\UIPersonalizationEditorPlaytestHUD.cs" />
     <Compile Include="UI\UISubtitleTextFieldRework.cs" />
     <Compile Include="UI\UIPressActionKeyDescription.cs" />
     <Compile Include="UI\UIPersonalizationEditorItemCreationDialog.cs" />

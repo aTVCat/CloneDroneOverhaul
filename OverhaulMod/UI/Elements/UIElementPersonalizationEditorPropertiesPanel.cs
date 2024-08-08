@@ -47,6 +47,11 @@ namespace OverhaulMod.UI
         [UIElement("NothingToEditOverlay", true)]
         private readonly GameObject m_nothingToEditOverlay;
 
+        [UIElementCallback(true)]
+        [UIElementAction(nameof(OnObjectNameChanged))]
+        [UIElement("ObjectNameField")]
+        private readonly InputField m_objectNameField;
+
         private UIElementMouseEventsComponent m_mousePositionChecker;
 
         private int m_objectId;
@@ -94,6 +99,14 @@ namespace OverhaulMod.UI
             EditObject(m_object);
         }
 
+        public int GetEditingObjectUniqueIndex()
+        {
+            if (m_object)
+                return m_object.UniqueIndex;
+
+            return -1;
+        }
+
         public void EditObjectAgain()
         {
             if (m_objectId == -1)
@@ -113,14 +126,18 @@ namespace OverhaulMod.UI
             {
                 m_objectId = -1;
                 m_object = null;
+                m_objectNameField.text = string.Empty;
+                GlobalEventManager.Instance.Dispatch(PersonalizationEditorObjectManager.OBJECT_SELECTION_CHANGED_EVENT);
                 return;
             }
             m_objectId = objectBehaviour.UniqueIndex;
             m_object = objectBehaviour;
+            GlobalEventManager.Instance.Dispatch(PersonalizationEditorObjectManager.OBJECT_SELECTION_CHANGED_EVENT);
 
             Clear();
 
             m_disableCallbacks = true;
+            m_objectNameField.text = objectBehaviour.Name;
             m_positionField.vector = objectBehaviour.transform.localPosition;
             m_rotationField.vector = objectBehaviour.transform.localEulerAngles;
             m_scaleField.vector = objectBehaviour.transform.localScale;
@@ -204,6 +221,16 @@ namespace OverhaulMod.UI
 
             objectBehaviour.transform.localScale = value;
             objectBehaviour.SerializedScale = value;
+        }
+
+        public void OnObjectNameChanged(string str)
+        {
+            if (!m_disableCallbacks && m_object)
+            {
+                m_object.Name = str;
+                PersonalizationEditorManager.Instance.SerializeRoot();
+                UIPersonalizationEditor.instance.Inspector.RefreshHierarchyPanel();
+            }
         }
 
         public class ObjectPropertiesController

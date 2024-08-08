@@ -9,6 +9,8 @@ namespace OverhaulMod.Content.Personalization
 {
     public class PersonalizationEditorObjectManager : Singleton<PersonalizationEditorObjectManager>
     {
+        public const string OBJECT_SELECTION_CHANGED_EVENT = "PersonalizationEditorObjectSelectionChanged";
+
         private List<PersonalizationEditorObjectSpawnInfo> m_objectInfos;
 
         private Material m_volumeMaterial;
