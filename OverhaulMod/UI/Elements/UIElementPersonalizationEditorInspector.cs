@@ -14,11 +14,20 @@ namespace OverhaulMod.UI
         [UIElement("DescriptionField")]
         private readonly InputField m_descriptionField;
 
-        [UIElement("EditorIdField")]
+        [UIElement("NewEditorIdField")]
         private readonly InputField m_editorIdField;
 
-        [UIElement("ItemIdField")]
+        [UIElement("NewItemIdField")]
         private readonly InputField m_itemIdField;
+
+        [UIElement("VersionField")]
+        private readonly InputField m_versionField;
+
+        [UIElement("VerifiedToggle")]
+        private readonly Toggle m_verifiedToggle;
+
+        [UIElement("SentToVerificationToggle")]
+        private readonly Toggle m_sentToVerificationToggle;
 
         [UIElement("TypeDropdown")]
         private readonly Dropdown m_typeDropdown;
@@ -126,12 +135,10 @@ namespace OverhaulMod.UI
             personalizationItemInfo.FixValues();
             m_nameField.text = personalizationItemInfo.Name;
             m_descriptionField.text = personalizationItemInfo.Description;
-            m_editorIdField.text = personalizationItemInfo.EditorID;
             m_authorField.referenceList = personalizationItemInfo.Authors;
             m_exclusiveForField.referenceList = personalizationItemInfo.ExclusiveFor_V2;
             m_typeDropdown.value = (int)personalizationItemInfo.Category - 1;
             m_verifyButton.interactable = !personalizationItemInfo.IsVerified;
-            m_itemIdField.text = personalizationItemInfo.ItemID;
             m_hierarchyPanel.itemInfo = personalizationItemInfo;
             m_filesPanel.itemInfo = personalizationItemInfo;
             m_hideBowStrings.isOn = personalizationItemInfo.HideBowStrings;
@@ -139,6 +146,12 @@ namespace OverhaulMod.UI
             m_overrideParentDropdown.interactable = personalizationItemInfo.Category == PersonalizationCategory.WeaponSkins && personalizationItemInfo.Weapon == WeaponType.Bow;
             m_bowStringsWidth.value = personalizationItemInfo.BowStringsWidth;
             m_bowStringsWidth.interactable = personalizationItemInfo.Category == PersonalizationCategory.WeaponSkins && personalizationItemInfo.Weapon == WeaponType.Bow;
+
+            m_editorIdField.text = personalizationItemInfo.EditorID;
+            m_itemIdField.text = personalizationItemInfo.ItemID;
+            m_versionField.text = personalizationItemInfo.Version.ToString();
+            m_sentToVerificationToggle.isOn = personalizationItemInfo.IsSentForVerification;
+            m_verifiedToggle.isOn = personalizationItemInfo.IsVerified;
 
             for (int i = 0; i < m_weaponDropdown.options.Count; i++)
             {
@@ -185,12 +198,24 @@ namespace OverhaulMod.UI
             personalizationItemInfo.Description = m_descriptionField.text;
             personalizationItemInfo.EditorID = m_editorIdField.text;
             personalizationItemInfo.Category = (PersonalizationCategory)(m_typeDropdown.value + 1);
-            personalizationItemInfo.IsVerified = !m_verifyButton.interactable;
-            if (personalizationItemInfo.IsVerified && PersonalizationEditorManager.Instance.canVerifyItems)
-                personalizationItemInfo.IsSentForVerification = false;
-
             personalizationItemInfo.ItemID = m_itemIdField.text;
             personalizationItemInfo.BodyPartName = m_bodyPartDropdown.options[m_bodyPartDropdown.value].text;
+
+            if (PersonalizationEditorManager.Instance.canVerifyItems)
+            {
+                personalizationItemInfo.IsVerified = m_verifiedToggle.isOn;
+                if (personalizationItemInfo.IsVerified)
+                {
+                    personalizationItemInfo.IsSentForVerification = false;
+                    m_sentToVerificationToggle.isOn = false;
+                }
+
+                int prevVersion = personalizationItemInfo.Version;
+                if (!int.TryParse(m_versionField.text, out int version))
+                    version = prevVersion;
+
+                personalizationItemInfo.Version = version;
+            }
         }
 
         public void OnEditedWeaponTypeDropdown(int value)

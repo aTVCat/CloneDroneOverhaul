@@ -124,12 +124,16 @@ namespace OverhaulMod.UI
             {
                 m_sendButtonText.text = "Update item";
             }
+            else if (personalizationItemInfo.IsSentForVerification)
+            {
+                m_sendButtonText.text = "Reupload item";
+            }
             else
             {
                 m_sendButtonText.text = "Upload item";
             }
 
-            m_sendButton.interactable = !m_currentItemIsFullyIncomplete && personalizationItemInfo != null && !personalizationItemInfo.IsSentForVerification;
+            m_sendButton.interactable = !m_currentItemIsFullyIncomplete && personalizationItemInfo != null && !personalizationItemInfo.ReuploadedItemThisSession;
         }
 
         public bool CanExit()
@@ -170,6 +174,9 @@ namespace OverhaulMod.UI
 
             PersonalizationItemVerificationManager.Instance.SendItemToVerification(personalizationItemInfo, delegate
             {
+                if(personalizationItemInfo.IsSentForVerification)
+                    personalizationItemInfo.ReuploadedItemThisSession = true;
+
                 personalizationItemInfo.IsSentForVerification = true;
                 _ = personalizationEditorManager.SaveItem(out _);
 
@@ -177,13 +184,13 @@ namespace OverhaulMod.UI
                 m_loadingIndicator.SetActive(false);
 
                 RefreshButtonAndStatusText(personalizationItemInfo);
-                ModUIUtils.MessagePopupOK("Success", "", true);
+                ModUIUtils.MessagePopupOK("Success", "It usually takes few hours or days to verify items.\nI'm not a robot :D", true);
             }, delegate (string error)
             {
                 m_exitButton.interactable = true;
                 m_sendButton.interactable = true;
                 m_loadingIndicator.SetActive(true);
-                ModUIUtils.MessagePopupOK("Could not send item to verification", error, true);
+                ModUIUtils.MessagePopupOK("Could not send item to verification", $"If the error doesn't get fixed, it'll probably get fixed in the next mod update.\n\nError details:\n{error}", 200f, true);
             });
         }
     }

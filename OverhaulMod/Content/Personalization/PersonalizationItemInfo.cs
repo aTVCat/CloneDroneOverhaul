@@ -59,6 +59,9 @@ namespace OverhaulMod.Content.Personalization
         [NonSerialized]
         public bool HideInBrowser;
 
+        [NonSerialized]
+        public bool ReuploadedItemThisSession;
+
         public void GetImportedFiles()
         {
             List<string> list = new List<string>();

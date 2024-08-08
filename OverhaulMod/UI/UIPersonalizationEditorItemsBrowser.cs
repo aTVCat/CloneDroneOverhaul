@@ -1,5 +1,6 @@
 ﻿using ICSharpCode.SharpZipLib.Zip;
 using OverhaulMod.Content.Personalization;
+using OverhaulMod.Engine;
 using OverhaulMod.Utils;
 using System;
 using System.Collections.Generic;
@@ -43,6 +44,9 @@ namespace OverhaulMod.UI
 
         [UIElement("LoadErrorDisplayPrefab", false)]
         private readonly ModdedObject m_itemLoadErrorDisplayPrefab;
+
+        [UIElement("TextPrefab", false)]
+        private readonly Text m_textPrefab;
 
         [UIElement("Content")]
         private readonly Transform m_container;
@@ -135,6 +139,10 @@ namespace OverhaulMod.UI
                     m_cachedInstantiatedDisplays.Add(text, moddedObject.gameObject);
                 }
 
+            Text textComponent = Instantiate(m_textPrefab, m_container);
+            textComponent.gameObject.SetActive(true);
+            textComponent.text = $"{m_container.childCount - 1} items";
+
             if (exceptions != null)
                 foreach (KeyValuePair<string, System.Exception> keyValue in exceptions)
                 {
@@ -215,19 +223,50 @@ namespace OverhaulMod.UI
         {
             ModUIUtils.FileExplorer(base.transform, true, delegate (string path)
             {
-                ModUIUtils.InputFieldWindow("Enter folder name", "bla bla", null, 125f, delegate (string value)
+                ModUIUtils.InputFieldWindow("Enter folder name", "hmm", null, 125f, delegate (string directoryName)
                 {
-                    string folderName = value.Replace(" ", string.Empty);
+                    string folderName = $"{Path.GetFileName(path).Replace("PersonalizationItem_", string.Empty).Remove(8)}_{directoryName.Replace(" ", string.Empty)}";
                     string folderPath = Path.Combine(ModCore.customizationFolder, folderName);
                     _ = Directory.CreateDirectory(folderPath);
 
                     FastZip fastZip = new FastZip();
                     fastZip.ExtractZip(path, folderPath, null);
 
-                    PersonalizationManager.Instance.itemList.Load();
-                    Populate();
-                }); ; ;
+                    PersonalizationItemList itemList = PersonalizationManager.Instance.itemList;
+                    PersonalizationItemInfo info;
+                    try
+                    {
+                        info = itemList.LoadItemInfo(folderPath);
+                    }
+                    catch (Exception exc)
+                    {
+                        ModUIUtils.MessagePopupOK("Import error", exc.ToString(), true);
+                        return;
+                    }
 
+                    foreach (PersonalizationEditorObjectInfo child in info.RootObject.Children)
+                    {
+                        if (child.Path == "Volume")
+                        {
+                            if (child.PropertyValues.TryGetValue(nameof(PersonalizationEditorObjectVolume.volumeSettingPresets), out object obj) && obj is Dictionary<WeaponVariant, VolumeSettingsPreset> dictionary && !dictionary.IsNullOrEmpty())
+                            {
+                                foreach (VolumeSettingsPreset value in dictionary.Values)
+                                {
+                                    string voxFilePath = value.VoxFilePath;
+                                    if (!voxFilePath.IsNullOrEmpty() && !voxFilePath.StartsWith(folderName))
+                                    {
+                                        string sub = voxFilePath.Substring(voxFilePath.IndexOf(Path.DirectorySeparatorChar) + 1);
+                                        voxFilePath = $"{folderName}{Path.DirectorySeparatorChar}{sub}";
+                                        value.VoxFilePath = voxFilePath;
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    itemList.Items.Add(info);
+                    Populate();
+                });
             }, null, "*.zip");
         }
 

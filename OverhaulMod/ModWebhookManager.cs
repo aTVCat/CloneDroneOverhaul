@@ -166,11 +166,11 @@ namespace OverhaulMod
         {
             int color = int.Parse("32a852", System.Globalization.NumberStyles.HexNumber);
             string userInfo = $"- **User:** {SteamFriends.GetPersonaName()} [[Profile]](<https://steamcommunity.com/profiles/{ModUserInfo.localPlayerSteamID}>)\n- **PlayFab ID:** {ModUserInfo.localPlayerPlayFabID}";
-            string itemInfo = $"- **Name:** {personalizationItem.Name}\n- **Author:** {personalizationItem.GetAuthorsString()}\n- **Type:** {personalizationItem.Category}\n- **Weapon:** {personalizationItem.Weapon}\n- **Description:** ```{personalizationItem.Description}```\n- **Version:** {personalizationItem.Version}";
+            string itemInfo = $"- **Name:** {personalizationItem.Name}\n- **Author:** {personalizationItem.GetAuthorsString()}\n- **Category:** {personalizationItem.Category}\n- **Weapon:** {personalizationItem.Weapon}\n- **Version:** {personalizationItem.Version}";
 
             WebhookObject obj1 = new WebhookObject()
             {
-                content = $"## __New item to verify. v{ModBuildInfo.version}__\nid: {personalizationItem.ItemID}",
+                content = $"## __New item to verify. v{ModBuildInfo.version}__\nid: {personalizationItem.ItemID}{(personalizationItem.IsSentForVerification ? "\n# REUPLOAD" : string.Empty)}",
                 embeds = new Embed[]
                 {
                     new Embed()
