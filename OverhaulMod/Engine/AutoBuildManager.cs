@@ -12,10 +12,10 @@ namespace OverhaulMod.Engine
         [ModSetting(ModSettingsConstants.AUTO_BUILD_KEY_BIND, KeyCode.U)]
         public static KeyCode AutoBuildKeyBind;
 
-        [ModSetting(ModSettingsConstants.AUTO_BUILD_ACTIVATION_ON_MATCH_START, false)]
-        public static bool AutoBuildActivationOnMatchStart;
+        /*[ModSetting(ModSettingsConstants.AUTO_BUILD_ACTIVATION_ON_MATCH_START, false)]
+        public static bool AutoBuildActivationOnMatchStart;*/
 
-        [ModSetting(ModSettingsConstants.AUTO_BUILD_INDEX_TO_USE_ON_MATCH_START, 0)]
+        [ModSetting(ModSettingsConstants.AUTO_BUILD_INDEX_TO_USE_ON_MATCH_START, -1)]
         public static int AutoBuildIndexToUseOnMatchStart;
 
         private bool m_hasSelectedUpgradesForMatch;
@@ -81,7 +81,7 @@ namespace OverhaulMod.Engine
                     return;
             }
 
-            if (!AutoBuildActivationOnMatchStart)
+            if (AutoBuildIndexToUseOnMatchStart <= -1)
                 return;
 
             BattleRoyaleManager battleRoyaleManager = BattleRoyaleManager.Instance;
@@ -139,12 +139,12 @@ namespace OverhaulMod.Engine
             if (oldAutoBuildInfo != null)
             {
                 autoBuildListInfo.Builds.Add(oldAutoBuildInfo);
-                SaveBuildInfo();
+                SaveBuildsInfo();
             }
             buildList = autoBuildListInfo;
         }
 
-        public void SaveBuildInfo()
+        public void SaveBuildsInfo()
         {
             ModDataManager.Instance.SerializeToFile("AutoBuilds.json", buildList, false);
         }

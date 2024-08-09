@@ -4,6 +4,7 @@ using OverhaulMod.Utils;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using static System.Runtime.CompilerServices.RuntimeHelpers;
 
 namespace OverhaulMod.UI
 {
@@ -33,13 +34,13 @@ namespace OverhaulMod.UI
         [UIElement("DontSelectBuildToUseOnMatchStartButton", false)]
         private readonly Button m_stopSelectingBuildToUseOnMatchStartButton;
 
+        [UIElementAction(nameof(OnSelectNothingToUseOnMatchStartButtonClicked))]
+        [UIElement("SelectNothingToUseOnMatchStartButton", false)]
+        private readonly Button m_selectNothingToUseOnMatchStartButton;
+
         [UIElementAction(nameof(OnSearchBoxChanged))]
         [UIElement("SearchBox")]
         private readonly InputField m_searchBox;
-
-        [UIElementAction(nameof(OnAutoActivationToggled))]
-        [UIElement("ActivateOnMatchStartToggle")]
-        private readonly Toggle m_autoActivationToggle;
 
         [KeyBindSetter(KeyCode.U)]
         [UIElementAction(nameof(OnKeyBindChanged))]
@@ -92,18 +93,17 @@ namespace OverhaulMod.UI
         {
             m_searchEntries = new Dictionary<string, GameObject>();
             m_keyBind.key = AutoBuildManager.AutoBuildKeyBind;
-            m_autoActivationToggle.isOn = ModSettingsManager.GetBoolValue(ModSettingsConstants.AUTO_BUILD_ACTIVATION_ON_MATCH_START);
         }
 
         public override void Show()
         {
             base.Show();
 
-            m_clearButton.interactable = false;
-            m_searchBox.text = string.Empty;
-
             PopulateBuilds();
             OnStopSelectingBuildToUseOnMatchStartButtonClicked();
+
+            m_clearButton.interactable = false;
+            m_searchBox.text = string.Empty;
         }
 
         public override void OnEnable()
@@ -116,6 +116,7 @@ namespace OverhaulMod.UI
             AutoBuildManager autoBuildManager = AutoBuildManager.Instance;
             autoBuildManager.isInAutoBuildConfigurationMode = false;
             autoBuildManager.ResetUpgrades();
+            autoBuildManager.SaveBuildsInfo();
 
             GameObject gameObject = objectToShow;
             if (gameObject)
@@ -130,13 +131,15 @@ namespace OverhaulMod.UI
         public void PopulateBuilds()
         {
             m_searchEntries.Clear();
+            m_instantiatedNewButton = null;
             if (m_buildDisplayContainer.childCount != 0)
                 TransformUtils.DestroyAllChildren(m_buildDisplayContainer);
 
             int i = -1;
             UpgradeManager upgradeManager = UpgradeManager.Instance;
             AutoBuildManager autoBuildManager = AutoBuildManager.Instance;
-            foreach (AutoBuildInfo build in autoBuildManager.buildList.Builds)
+            var builds = autoBuildManager.buildList.Builds;
+            foreach (AutoBuildInfo build in builds)
             {
                 i++;
                 int index = i;
@@ -180,7 +183,7 @@ namespace OverhaulMod.UI
                 {
                     if (m_selectingBuildToUseOnMatchStart)
                     {
-                        ModSettingsManager.SetIntValue(ModSettingsConstants.AUTO_BUILD_INDEX_TO_USE_ON_MATCH_START, index);
+                        ModSettingsManager.SetIntValue(ModSettingsConstants.AUTO_BUILD_INDEX_TO_USE_ON_MATCH_START, builds.IndexOf(build));
                         RefreshBuildToUseOnStartButton();
                         OnStopSelectingBuildToUseOnMatchStartButtonClicked();
                         return;
@@ -193,10 +196,26 @@ namespace OverhaulMod.UI
                 {
                     ModUIUtils.MessagePopup(true, $"Delete \"{AutoBuildManager.GetBuildDisplayName(build.Name)}\"?", LocalizationManager.Instance.GetTranslatedString("action_cannot_be_undone"), 125f, MessageMenu.ButtonLayout.EnableDisableButtons, "Ok", "Yes", "No", null, delegate
                     {
+                        AutoBuildInfo autoBuildInfo;
+                        int oldIndex = AutoBuildManager.AutoBuildIndexToUseOnMatchStart;
+                        if (oldIndex >= 0 && builds.Count > oldIndex)
+                        {
+                            autoBuildInfo = builds[AutoBuildManager.AutoBuildIndexToUseOnMatchStart];
+                        }
+                        else
+                        {
+                            autoBuildInfo = null;
+                        }
+
                         _ = autoBuildManager.buildList.Builds.Remove(build);
+                        if(autoBuildInfo != null)
+                        {
+                            ModSettingsManager.SetIntValue(ModSettingsConstants.AUTO_BUILD_INDEX_TO_USE_ON_MATCH_START, builds.IndexOf(autoBuildInfo));
+                        }
+
                         Destroy(moddedObject.gameObject);
-                        RefreshNewBuildButton();
                         RefreshBuildToUseOnStartButton();
+                        RefreshNewBuildButton();
                     });
                 });
 
@@ -212,20 +231,18 @@ namespace OverhaulMod.UI
                 });
             }
 
-            RefreshNewBuildButton();
             RefreshBuildToUseOnStartButton();
         }
 
         public void RefreshNewBuildButton()
         {
-            AutoBuildManager autoBuildManager = AutoBuildManager.Instance;
             if (!m_instantiatedNewButton)
             {
                 Button newBuildButton = Instantiate(m_newBuildButtonPrefab, m_buildDisplayContainer);
                 newBuildButton.onClick.AddListener(OnNewButtonClicked);
                 m_instantiatedNewButton = newBuildButton.gameObject;
             }
-            m_instantiatedNewButton.gameObject.SetActive(autoBuildManager.buildList.Builds.Count < 10);
+            m_instantiatedNewButton.gameObject.SetActive(m_searchBox.text.IsNullOrEmpty() && AutoBuildManager.Instance.buildList.Builds.Count < 10);
         }
 
         public void RefreshBuildToUseOnStartButton()
@@ -235,8 +252,10 @@ namespace OverhaulMod.UI
             AutoBuildManager autoBuildManager = AutoBuildManager.Instance;
             List<AutoBuildInfo> builds = autoBuildManager.buildList.Builds;
             if (builds.IsNullOrEmpty() || index < 0 || index >= builds.Count)
+            {
+                m_buildToUseOnMatchStartText.text = "-";
                 return;
-
+            }
             m_buildToUseOnMatchStartText.text = AutoBuildManager.GetBuildDisplayName(builds[index].Name);
         }
 
@@ -282,7 +301,7 @@ namespace OverhaulMod.UI
             m_editingBuild.SetUpgradesFromData(GameDataManager.Instance.GetAvailableSkillPoints());
             m_editingBuild = null;
 
-            autoBuildManager.SaveBuildInfo();
+            autoBuildManager.SaveBuildsInfo();
 
             UpgradeUI upgradeUI = ModCache.gameUIRoot.UpgradeUI;
             upgradeUI.Hide();
@@ -303,7 +322,7 @@ namespace OverhaulMod.UI
 
         public void OnNewButtonClicked()
         {
-            ModUIUtils.InputFieldWindow("Create a build", "Enter new build's name", "Unnamed build", 20, 125f, delegate (string name)
+            ModUIUtils.InputFieldWindow("Create a build", "Enter new build's name", m_searchBox.text.IsNullOrEmpty() ? "Unnamed build" : m_searchBox.text, 20, 125f, delegate (string name)
             {
                 AutoBuildInfo autoBuildInfo = new AutoBuildInfo()
                 {
@@ -329,8 +348,6 @@ namespace OverhaulMod.UI
             bool forceSetEnabled = value.IsNullOrEmpty();
 
             m_clearButton.interactable = !forceSetEnabled;
-            if (m_instantiatedNewButton)
-                m_instantiatedNewButton.SetActive(forceSetEnabled);
 
             foreach (KeyValuePair<string, GameObject> keyValue in m_searchEntries)
             {
@@ -359,12 +376,31 @@ namespace OverhaulMod.UI
         {
             m_selectingBuildToUseOnMatchStart = true;
             m_stopSelectingBuildToUseOnMatchStartButton.gameObject.SetActive(true);
+            m_selectNothingToUseOnMatchStartButton.gameObject.SetActive(true);
+
+            if (m_instantiatedNewButton)
+                m_instantiatedNewButton.SetActive(false);
         }
 
         public void OnStopSelectingBuildToUseOnMatchStartButtonClicked()
         {
             m_selectingBuildToUseOnMatchStart = false;
             m_stopSelectingBuildToUseOnMatchStartButton.gameObject.SetActive(false);
+            m_selectNothingToUseOnMatchStartButton.gameObject.SetActive(false);
+
+            RefreshNewBuildButton();
+        }
+
+        public void OnSelectNothingToUseOnMatchStartButtonClicked()
+        {
+            ModSettingsManager.SetIntValue(ModSettingsConstants.AUTO_BUILD_INDEX_TO_USE_ON_MATCH_START, -1, true);
+
+            m_selectingBuildToUseOnMatchStart = false;
+            m_stopSelectingBuildToUseOnMatchStartButton.gameObject.SetActive(false);
+            m_selectNothingToUseOnMatchStartButton.gameObject.SetActive(false);
+
+            RefreshBuildToUseOnStartButton();
+            RefreshNewBuildButton();
         }
     }
 }

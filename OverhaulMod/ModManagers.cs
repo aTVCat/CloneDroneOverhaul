@@ -42,35 +42,6 @@ namespace OverhaulMod
         private void onGameInitialized()
         {
             TriggerGameLoadedEvent();
-            ShowUI();
-        }
-
-        public void ShowUI()
-        {
-            _ = ModActionUtils.RunCoroutine(showUICoroutine());
-        }
-
-        private IEnumerator showUICoroutine()
-        {
-            yield return null;
-            yield return null;
-            yield return null;
-            if (GameModeManager.IsOnTitleScreen() && !BoltNetwork.IsRunning)
-            {
-                if (ModFeatures.IsEnabled(ModFeatures.FeatureType.TitleScreenRework))
-                    _ = ModUIConstants.ShowTitleScreenRework();
-
-                if (ShowModSetupScreenOnStart)
-                    _ = ModUIConstants.ShowSettingsMenuRework(true);
-                else
-                    ModUIUtils.ShowNewUpdateMessageOrChangelog(2f);
-            }
-
-            if (ModFeatures.IsEnabled(ModFeatures.FeatureType.SubtitleTextFieldRework))
-                _ = ModUIConstants.ShowSubtitleTextFieldRework();
-
-            _ = ModUIConstants.ShowCinematicEffects();
-            yield break;
         }
 
         public void TriggerModLoadedEvent()

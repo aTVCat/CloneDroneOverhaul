@@ -349,6 +349,7 @@
     <Compile Include="Content\MagicaVoxelImporter.cs" />
     <Compile Include="Content\NewsUserData.cs" />
     <Compile Include="Content\Personalization\BowPartType.cs" />
+    <Compile Include="Content\Personalization\CVMImporter.cs" />
     <Compile Include="Content\Personalization\FavoriteColorSettings.cs" />
     <Compile Include="Content\Personalization\GreatSwordPreviewController.cs" />
     <Compile Include="Content\Personalization\PersonalizationAssetsInfo.cs" />
@@ -492,6 +493,7 @@
     <Compile Include="Patches\CacheManager_Patch.cs" />
     <Compile Include="Patches\CameraShaker_Patch.cs" />
     <Compile Include="Patches\ChapterLoadingScreen_Patch.cs" />
+    <Compile Include="Patches\CreditsCrawlAnimation_Patch.cs" />
     <Compile Include="Patches\CharacterModel_Patch.cs" />
     <Compile Include="Patches\CustomUpgradeManager_Patch.cs" />
     <Compile Include="Patches\EndlessModeManager_Patch.cs" />

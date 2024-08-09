@@ -107,9 +107,13 @@ namespace OverhaulMod
                 _ = m_instantiatedUIs.Remove(key);
 
             _ = ModUIConstants.ShowVersionLabel();
+            _ = ModUIConstants.ShowCinematicEffects();
             //_ = ModUIConstants.ShowImageEffects();
+
             if (ModFeatures.IsEnabled(ModFeatures.FeatureType.Tooltips))
                 _ = ModUIConstants.ShowTooltips();
+            if (ModFeatures.IsEnabled(ModFeatures.FeatureType.SubtitleTextFieldRework))
+                _ = ModUIConstants.ShowSubtitleTextFieldRework();
         }
 
         public bool HasInstantiatedUI(string assetKey)

@@ -11,6 +11,7 @@ using OverhaulMod.Visuals.Environment;
 using System;
 using System.IO;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace OverhaulMod
 {
@@ -211,8 +212,11 @@ namespace OverhaulMod
 
             GameUIThemeData gameUIThemeData = null;
             foreach (SelectableUI selectableUi in Resources.FindObjectsOfTypeAll<SelectableUI>())
-                if (selectableUi.GameThemeData)
+                if (selectableUi.GameThemeData && selectableUi.GameThemeData.SelectionCornerPrefab)
                 {
+                    foreach (var graphic in selectableUi.GameThemeData.SelectionCornerPrefab.GetComponentsInChildren<Graphic>(true))
+                        graphic.raycastTarget = false;
+
                     gameUIThemeData = selectableUi.GameThemeData;
                     break;
                 }

@@ -15,7 +15,7 @@ namespace OverhaulMod.UI
         public static bool HasEverSentFeedback;
 
         [ModSetting(ModSettingsConstants.FEEDBACK_MENU_RATE, 0)]
-        public static int SavedRate;
+        public static int SavedRating;
 
         [ModSetting(ModSettingsConstants.FEEDBACK_MENU_IMPROVE_TEXT, null)]
         public static string SavedImproveText;
@@ -80,6 +80,8 @@ namespace OverhaulMod.UI
 
         public override bool hideTitleScreen => true;
 
+        private bool m_refreshElementsNextFrame;
+
         private bool m_usedSavedSettings;
 
         private bool m_isSendingFeedback;
@@ -98,6 +100,15 @@ namespace OverhaulMod.UI
             m_favoriteField.characterLimit = CHARACTER_LIMIT;
         }
 
+        public override void Update()
+        {
+            if (m_refreshElementsNextFrame)
+            {
+                m_refreshElementsNextFrame = false;
+                refreshElements();
+            }
+        }
+
         public override void Show()
         {
             base.Show();
@@ -109,12 +120,12 @@ namespace OverhaulMod.UI
             {
                 m_usedSavedSettings = true;
 
-                selectedRank = ModSettingsManager.GetIntValue(ModSettingsConstants.FEEDBACK_MENU_RATE);
-                m_improveField.text = ModSettingsManager.GetStringValue(ModSettingsConstants.FEEDBACK_MENU_IMPROVE_TEXT);
-                m_favoriteField.text = ModSettingsManager.GetStringValue(ModSettingsConstants.FEEDBACK_MENU_FAVORITE_TEXT);
+                selectedRank = SavedRating;
+                m_improveField.text = SavedImproveText;
+                m_favoriteField.text = SavedFavoriteText;
             }
 
-            refreshElements();
+            refreshElementsNextFrame();
 
             m_improveFieldCharsLeftText.text = getCharLeftTextForField(m_improveField);
             m_favoriteFieldCharsLeftText.text = getCharLeftTextForField(m_favoriteField);
@@ -128,6 +139,11 @@ namespace OverhaulMod.UI
             ModSettingsManager.SetStringValue(ModSettingsConstants.FEEDBACK_MENU_IMPROVE_TEXT, m_improveField.text);
             ModSettingsManager.SetStringValue(ModSettingsConstants.FEEDBACK_MENU_FAVORITE_TEXT, m_favoriteField.text);
             ModSettingsDataManager.Instance.Save();
+        }
+
+        private void refreshElementsNextFrame()
+        {
+            m_refreshElementsNextFrame = true;
         }
 
         private void refreshElements()
@@ -174,13 +190,13 @@ namespace OverhaulMod.UI
 
         public void OnImproveFieldChanged(string text)
         {
-            refreshElements();
+            refreshElementsNextFrame();
             m_improveFieldCharsLeftText.text = getCharLeftTextForField(m_improveField);
         }
 
         public void OnFavoriteFieldChanged(string text)
         {
-            refreshElements();
+            refreshElementsNextFrame();
             m_favoriteFieldCharsLeftText.text = getCharLeftTextForField(m_favoriteField);
         }
 
@@ -188,11 +204,11 @@ namespace OverhaulMod.UI
         {
             HasSentFeedback = true;
             m_isSendingFeedback = true;
-            refreshElements();
+            refreshElementsNextFrame();
             ModWebhookManager.Instance.ExecuteFeedbacksWebhook(selectedRank, m_improveField.text, m_favoriteField.text, delegate
             {
                 m_isSendingFeedback = false;
-                refreshElements();
+                refreshElementsNextFrame();
                 ModUIUtils.MessagePopupOK(LocalizationManager.Instance.GetTranslatedString("feedback_success_header"), LocalizationManager.Instance.GetTranslatedString("feedback_success_text"), true);
 
                 if (!HasEverSentFeedback)
@@ -202,7 +218,7 @@ namespace OverhaulMod.UI
             }, delegate (string error)
             {
                 m_isSendingFeedback = false;
-                refreshElements();
+                refreshElementsNextFrame();
                 ModUIUtils.MessagePopupOK("Could not send the feedback", $"Error details:\n{error}\n\nTry again later", true);
             });
         }
@@ -215,31 +231,31 @@ namespace OverhaulMod.UI
         public void On1RankClicked()
         {
             selectedRank = 1;
-            refreshElements();
+            refreshElementsNextFrame();
         }
 
         public void On2RankClicked()
         {
             selectedRank = 2;
-            refreshElements();
+            refreshElementsNextFrame();
         }
 
         public void On3RankClicked()
         {
             selectedRank = 3;
-            refreshElements();
+            refreshElementsNextFrame();
         }
 
         public void On4RankClicked()
         {
             selectedRank = 4;
-            refreshElements();
+            refreshElementsNextFrame();
         }
 
         public void On5RankClicked()
         {
             selectedRank = 5;
-            refreshElements();
+            refreshElementsNextFrame();
         }
     }
 }
