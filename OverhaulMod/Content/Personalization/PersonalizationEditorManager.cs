@@ -514,6 +514,7 @@ namespace OverhaulMod.Content.Personalization
 
                 firstPersonMover.SetCameraHolderEnabled(true);
                 firstPersonMover.SetPlayerCameraEnabled(true);
+                firstPersonMover.SetCameraAnimatorEnabled(true);
 
                 m_camera.gameObject.SetActive(false);
 
@@ -527,13 +528,13 @@ namespace OverhaulMod.Content.Personalization
             FirstPersonMover firstPersonMover = m_bot;
             if (firstPersonMover)
             {
-                firstPersonMover.GetComponent<BoltEntity>().ReleaseControl();
-
-                firstPersonMover.SetCameraHolderEnabled(true);
+                firstPersonMover.SetCameraAnimatorEnabled(false);
                 firstPersonMover.SetPlayerCameraEnabled(true);
-
-                firstPersonMover.transform.position = Vector3.zero;
-                firstPersonMover.transform.eulerAngles = Vector3.up * 90f;
+                firstPersonMover.SetCameraHolderEnabled(true);
+                firstPersonMover.ResetInputKeys();
+                firstPersonMover.InstantlySetTorsoTiltX(0f);
+                firstPersonMover.SetIsJumpingBools(false);
+                firstPersonMover.SetIsMovingBools(false);
 
                 PersonalizationEditorCamera camera = m_camera;
                 camera.transform.position = new Vector3(-2.5f, 3f, 3f);
@@ -541,7 +542,27 @@ namespace OverhaulMod.Content.Personalization
                 camera.gameObject.SetActive(true);
 
                 UIPersonalizationEditor.instance.Show();
+
+                base.StartCoroutine(exitPlaytestModeCoroutine(firstPersonMover));
             }
+        }
+
+        private IEnumerator exitPlaytestModeCoroutine(FirstPersonMover firstPersonMover)
+        {
+            int ffc = ModTime.fixedFrameCount;
+            while (ModTime.fixedFrameCount < ffc + 2)
+                yield return null;
+
+            if (firstPersonMover)
+            {
+                firstPersonMover.SetEquippedWeaponType(currentEditingItemInfo.Weapon, false);
+                firstPersonMover.GetComponent<BoltEntity>().ReleaseControl();
+                firstPersonMover.transform.position = Vector3.zero;
+                firstPersonMover.transform.eulerAngles = Vector3.up * 90f;
+                firstPersonMover.stopAirCleavingIfActive();
+            }
+
+            yield break;
         }
 
         public void ExportItem(PersonalizationItemInfo personalizationItemInfo, out string destination, string overrideDirectoryPath = null, string overrideFn = null)
