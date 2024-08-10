@@ -1,13 +1,107 @@
-﻿using PicaVoxel;
+﻿using Bolt;
+using OverhaulMod.Engine;
+using PicaVoxel;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 namespace OverhaulMod.Content.Personalization
 {
-    public class CVMImporter
+    // most of the code is from Custom robot model editor mod by X606
+    public static class CVMImporter
     {
-        // code by X606
+        public static bool InstantiateModel(SaveClass saveClass, WeaponType type, WeaponVariant variant, Transform parent, out string error)
+        {
+            FirstPersonMover firstPersonMover = null;
+            if (saveClass.Base == EnemyType.None)
+            {
+                firstPersonMover = PrefabDatabase.Find(new PrefabId() { Value = 59 }).GetComponent<FirstPersonMover>();
+            }
+            else
+            {
+                EnemyConfiguration configuration = EnemyFactory.Instance.GetEnemyConfiguration(saveClass.Base);
+                if (configuration != null && configuration.EnemyPrefab)
+                {
+                    firstPersonMover = configuration.EnemyPrefab.GetComponent<FirstPersonMover>();
+                }
+            }
+
+            if (!firstPersonMover)
+            {
+                error = $"Could not find base enemy {saveClass.Base}";
+                ModDebug.Log(error);
+                return false;
+            }
+
+            if (!firstPersonMover.CharacterModelPrefab)
+            {
+                error = $"The base enemy {saveClass.Base} doesn't have a model prefab";
+                ModDebug.Log(error);
+                return false;
+            }
+
+            GameObject gameObject = firstPersonMover.CharacterModelPrefab.gameObject;
+            Volume[] componentsInChildren = gameObject.GetComponentsInChildren<Volume>(true);
+            if (componentsInChildren.Length != saveClass.ModifiedVoxels.Length)
+            {
+                error = $"The model is corrupted";
+                ModDebug.Log(error);
+                return false;
+            }
+
+            int i = -1;
+            foreach (Volume component in componentsInChildren)
+            {
+                i++;
+
+                WeaponModel weaponModel = component.transform.GetComponentInParents<WeaponModel>();
+                if (weaponModel && weaponModel.WeaponType == type)
+                {
+                    Volume volume = UnityEngine.Object.Instantiate(component, parent);
+                    volume.gameObject.SetActive(true);
+                    foreach (KeyValuePair<PicaVoxelPoint, Voxel> kv in saveClass.ModifiedVoxels[i])
+                    {
+                        volume.GetCurrentFrame().SetVoxelAtArrayPosition(kv.Key, kv.Value);
+                    }                    
+                    foreach(var replaceColor in volume.GetComponents<ReplaceVoxelColor>())
+                    {
+                        ReplaceVoxelColor.ReplaceColors(volume, replaceColor.Old, replaceColor.New);
+                    }
+                    volume.UpdateAllChunks();
+
+                    error = null;
+                    return true;
+                }
+            }
+
+            error = $"The base enemy {saveClass.Base} model doesn't have required weapon {type}";
+            ModDebug.Log(error);
+            return false;
+        }
+
+        public static SaveClass LoadModel(string path)
+        {
+            if (!File.Exists(path))
+                return null;
+
+            SaveClass saveClass = new SaveClass();
+            saveClass.LoadData(Utils.ModIOUtils.ReadBytes(path));
+            return saveClass;
+        }
+
+        public static T GetComponentInParents<T>(this Transform transform) where T : Component
+        {
+            T t = default;
+            Transform transform2 = transform;
+            while (!t && transform2)
+            {
+                t = transform2.GetComponent<T>();
+                transform2 = transform2.parent;
+            }
+            return t;
+        }
+
         public enum WeaponSpecialType
         {
             EMPHammer,
@@ -17,7 +111,6 @@ namespace OverhaulMod.Content.Personalization
             GreatFireSword
         }
 
-        // code by X606
         public class SaveClass
         {
             public EnemyType Base;

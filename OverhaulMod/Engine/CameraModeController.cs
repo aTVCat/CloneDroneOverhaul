@@ -188,7 +188,7 @@ namespace OverhaulMod.Engine
             if (IsMindTransferInProgress() || !firstPersonMover || !firstPersonMover.IsAlive())
                 return;
 
-            m_lerp = Mathf.Clamp01(m_lerp + ((CameraManager.EnableFirstPersonMode && !m_cameraManager.enableThirdPerson && firstPersonMover.HasConstructionFinished() && !firstPersonMover._isGrabbedForUpgrade ? -Time.unscaledDeltaTime : Time.unscaledDeltaTime) * 3f));
+            m_lerp = Mathf.Clamp01(m_lerp + ((CameraManager.EnableFirstPersonMode && !m_cameraManager.enableThirdPerson && (!GameModeManager.UsesMultiplayerSpawnPoints() || firstPersonMover.HasConstructionFinished()) && !firstPersonMover._isGrabbedForUpgrade ? -Time.unscaledDeltaTime : Time.unscaledDeltaTime) * 3f));
 
             if (refresh)
                 RefreshHeadVisibility(m_lerp);

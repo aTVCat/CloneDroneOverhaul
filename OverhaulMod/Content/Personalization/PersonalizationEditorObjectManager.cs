@@ -30,6 +30,7 @@ namespace OverhaulMod.Content.Personalization
             m_objectInfos = new List<PersonalizationEditorObjectSpawnInfo>();
             addObjectInfo("Empty object", "Empty", instantiateEmpty);
             addObjectInfo("Model Renderer (.vox)", "Volume", instantiateVolume);
+            addObjectInfo("Model Renderer (.cvm)", "CvmModel", instantiateCvmModel);
             addObjectInfo("Fire particles (Sword)", "FireParticles_Sword", instantiateSwordFireParticles);
             addObjectInfo("Fire particles (Hammer)", "FireParticles_Hammer", instantiateHammerFireParticles);
             addObjectInfo("Fire particles (Spear)", "FireParticles_Spear", instantiateSpearFireParticles);
@@ -154,6 +155,14 @@ namespace OverhaulMod.Content.Personalization
             volume.Material = getVolumeMaterial();
             Destroy(bodyPart);
             return gameObject;
+        }
+
+        private GameObject instantiateCvmModel(Transform parent)
+        {
+            GameObject obj = new GameObject();
+            obj.transform.SetParent(parent);
+            obj.AddComponent<PersonalizationEditorObjectCVMModel>();
+            return obj;
         }
 
         private GameObject instantiateSwordFireParticles(Transform parent)

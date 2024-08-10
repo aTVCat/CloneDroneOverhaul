@@ -49,7 +49,7 @@ namespace OverhaulMod.Engine
             if (!camera)
                 return;
 
-            m_lerpedOffset = Mathf.Lerp(m_lerpedOffset, owner.HasConstructionFinished() ? getFovOffset() : 0f, Time.unscaledDeltaTime * 9f);
+            m_lerpedOffset = Mathf.Lerp(m_lerpedOffset, !GameModeManager.UsesMultiplayerSpawnPoints() || owner.HasConstructionFinished() ? getFovOffset() : 0f, Time.unscaledDeltaTime * 9f);
             camera.fieldOfView = Mathf.Min(camera.fieldOfView + m_lerpedOffset, Time.time < m_timeToAllowUnclampedFovUntil ? 165f : 110f);
         }
 

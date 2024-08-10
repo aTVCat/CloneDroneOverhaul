@@ -136,20 +136,6 @@ namespace OverhaulMod.Content.Personalization
             return showConditions;
         }
 
-        public List<Dropdown.OptionData> GetUnusedConditionOptions()
-        {
-            List<Dropdown.OptionData> list = new List<Dropdown.OptionData>();
-            if (!volumeSettingPresets.ContainsKey(WeaponVariant.Normal))
-                list.Add(new DropdownWeaponVariantOptionData(WeaponVariant.Normal));
-            if (!volumeSettingPresets.ContainsKey(WeaponVariant.NormalMultiplayer))
-                list.Add(new DropdownWeaponVariantOptionData(WeaponVariant.NormalMultiplayer));
-            if (!volumeSettingPresets.ContainsKey(WeaponVariant.OnFire))
-                list.Add(new DropdownWeaponVariantOptionData(WeaponVariant.OnFire));
-            if (!volumeSettingPresets.ContainsKey(WeaponVariant.OnFireMultiplayer))
-                list.Add(new DropdownWeaponVariantOptionData(WeaponVariant.OnFireMultiplayer));
-            return list;
-        }
-
         public VolumeSettingsPreset GetCurrentPreset()
         {
             WeaponVariant condition = GetCurrentShowCondition();

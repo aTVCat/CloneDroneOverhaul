@@ -350,6 +350,7 @@
     <Compile Include="Content\NewsUserData.cs" />
     <Compile Include="Content\Personalization\BowPartType.cs" />
     <Compile Include="Content\Personalization\CVMImporter.cs" />
+    <Compile Include="Content\Personalization\CVMModelPreset.cs" />
     <Compile Include="Content\Personalization\FavoriteColorSettings.cs" />
     <Compile Include="Content\Personalization\GreatSwordPreviewController.cs" />
     <Compile Include="Content\Personalization\PersonalizationAssetsInfo.cs" />
@@ -366,6 +367,7 @@
     <Compile Include="Content\Personalization\PersonalizationEditorManager.cs" />
     <Compile Include="Content\Personalization\PersonalizationEditorObjectBehaviour.cs" />
     <Compile Include="Content\Personalization\PersonalizationEditorObjectComponentBase.cs" />
+    <Compile Include="Content\Personalization\PersonalizationEditorObjectCVMModel.cs" />
     <Compile Include="Content\Personalization\PersonalizationEditorObjectInfo.cs" />
     <Compile Include="Content\Personalization\PersonalizationEditorObjectPropertyAttribute.cs" />
     <Compile Include="Content\Personalization\PersonalizationEditorObjectPropertyValueInfo.cs" />
