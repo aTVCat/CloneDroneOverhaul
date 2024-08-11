@@ -268,17 +268,6 @@ namespace OverhaulMod.UI
             {
                 PersonalizationEditorObjectFireParticles fireParticles = objectBehaviour.GetComponent<PersonalizationEditorObjectFireParticles>();
 
-                ModdedObject enableSmokeToggleModdedObject = Instantiate(propertiesPanel.m_togglePrefab, container);
-                enableSmokeToggleModdedObject.gameObject.SetActive(true);
-                Toggle enableSmokeToggle = enableSmokeToggleModdedObject.GetComponent<Toggle>();
-                enableSmokeToggle.isOn = fireParticles.enableSmoke;
-                enableSmokeToggle.onValueChanged.AddListener(delegate (bool value)
-                {
-                    fireParticles.enableSmoke = value;
-                    fireParticles.RefreshColor();
-                });
-                enableSmokeToggleModdedObject.GetObject<Text>(0).text = "Enable smoke";
-
                 ModdedObject colorPickButton = Instantiate(propertiesPanel.m_colorPickButton, container);
                 colorPickButton.gameObject.SetActive(true);
                 colorPickButton.GetObject<Text>(2).text = "Fire color";
@@ -346,6 +335,17 @@ namespace OverhaulMod.UI
                     fireParticles.favoriteColorSaturation = value / 100f;
                     fireParticles.RefreshColor();
                 });
+
+                ModdedObject enableSmokeToggleModdedObject = Instantiate(propertiesPanel.m_togglePrefab, container);
+                enableSmokeToggleModdedObject.gameObject.SetActive(true);
+                Toggle enableSmokeToggle = enableSmokeToggleModdedObject.GetComponent<Toggle>();
+                enableSmokeToggle.isOn = fireParticles.enableSmoke;
+                enableSmokeToggle.onValueChanged.AddListener(delegate (bool value)
+                {
+                    fireParticles.enableSmoke = value;
+                    fireParticles.RefreshColor();
+                });
+                enableSmokeToggleModdedObject.GetObject<Text>(0).text = "Enable smoke";
             }
         }
 
