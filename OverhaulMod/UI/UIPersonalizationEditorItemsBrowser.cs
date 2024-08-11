@@ -66,7 +66,7 @@ namespace OverhaulMod.UI
 
         protected override void OnInitialized()
         {
-            bool isDev = ModUserInfo.isDeveloper;
+            bool isDev = PersonalizationEditorManager.Instance.canVerifyItems;
 
             m_cachedInstantiatedDisplays = new Dictionary<string, GameObject>();
             m_viewAllItemsToggle.gameObject.SetActive(PersonalizationEditorManager.Instance.canEditNonOwnItems);

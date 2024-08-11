@@ -368,6 +368,7 @@
     <Compile Include="Content\Personalization\PersonalizationEditorObjectBehaviour.cs" />
     <Compile Include="Content\Personalization\PersonalizationEditorObjectComponentBase.cs" />
     <Compile Include="Content\Personalization\PersonalizationEditorObjectCVMModel.cs" />
+    <Compile Include="Content\Personalization\PersonalizationEditorObjectFireParticles.cs" />
     <Compile Include="Content\Personalization\PersonalizationEditorObjectInfo.cs" />
     <Compile Include="Content\Personalization\PersonalizationEditorObjectPropertyAttribute.cs" />
     <Compile Include="Content\Personalization\PersonalizationEditorObjectPropertyValueInfo.cs" />

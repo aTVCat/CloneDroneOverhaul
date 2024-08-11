@@ -181,6 +181,7 @@ namespace OverhaulMod.Content.Personalization
             t.localEulerAngles = Vector3.zero;
             t.localScale = Vector3.one * 0.01f;
             _ = fireParticles.gameObject.AddComponent<PersonalizationEditorObjectVisibilityController>();
+            _ = fireParticles.gameObject.AddComponent<PersonalizationEditorObjectFireParticles>();
             return fireParticles.gameObject;
         }
 
@@ -192,6 +193,7 @@ namespace OverhaulMod.Content.Personalization
             t.localEulerAngles = Vector3.zero;
             t.localScale = Vector3.one * 0.01f;
             _ = fireParticles.gameObject.AddComponent<PersonalizationEditorObjectVisibilityController>();
+            _ = fireParticles.gameObject.AddComponent<PersonalizationEditorObjectFireParticles>();
             return fireParticles.gameObject;
         }
 
@@ -203,6 +205,7 @@ namespace OverhaulMod.Content.Personalization
             t.localEulerAngles = Vector3.zero;
             t.localScale = Vector3.one * 0.01f;
             _ = fireParticles.gameObject.AddComponent<PersonalizationEditorObjectVisibilityController>();
+            _ = fireParticles.gameObject.AddComponent<PersonalizationEditorObjectFireParticles>();
             return fireParticles.gameObject;
         }
 

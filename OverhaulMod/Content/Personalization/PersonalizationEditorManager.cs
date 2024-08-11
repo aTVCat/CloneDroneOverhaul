@@ -396,12 +396,19 @@ namespace OverhaulMod.Content.Personalization
             currentEditingItemInfo.RootObject = currentEditingRoot.Serialize();
         }
 
-        public void SpawnBot()
+        public void SerializeRotAndRespawnBot()
         {
-            _ = base.StartCoroutine(spawnBotCoroutine());
+            SerializeRoot();
+            BoltNetwork.Destroy(m_bot.gameObject);
+            SpawnBot(true);
         }
 
-        private IEnumerator spawnBotCoroutine()
+        public void SpawnBot(bool spawnEditingItem)
+        {
+            _ = base.StartCoroutine(spawnBotCoroutine(spawnEditingItem));
+        }
+
+        private IEnumerator spawnBotCoroutine(bool spawnEditingItem)
         {
             PersonalizationController personalizationController = currentPersonalizationController;
             if (personalizationController)
@@ -410,8 +417,14 @@ namespace OverhaulMod.Content.Personalization
             }
 
             GameObject spawnPoint = new GameObject();
+            spawnPoint.transform.position = Vector3.zero;
 
-            FirstPersonMover bot = GameFlowManager.Instance.SpawnPlayer(spawnPoint.transform, true, false);
+            CloneSpawningData cloneSpawningData = new CloneSpawningData(spawnPoint.transform, true, false, UIPersonalizationEditor.instance.Utilities.GetFavoriteColor(), null);
+
+            var cloneSpawner = GameFlowManager.Instance._cloneSpawner;
+            cloneSpawner.UseSkinInSingleplayer = false;
+
+            FirstPersonMover bot = cloneSpawner.SpawnClone(cloneSpawningData);
             bot._upgradeCollection._upgradeLevels = new Dictionary<UpgradeType, int>();
             bot._upgradeCollection.AddUpgradeIfMissing(UpgradeType.SwordUnlock, 1);
             bot._upgradeCollection.AddUpgradeIfMissing(UpgradeType.BowUnlock, 1);
@@ -436,6 +449,13 @@ namespace OverhaulMod.Content.Personalization
                     bot._hasLocalControl = false;
                     boltEntity.ReleaseControl();
                 }
+
+                if (spawnEditingItem)
+                {
+                    bot.SetEquippedWeaponType(currentEditingItemInfo.Weapon, false);
+                    SpawnRootObject();
+                }
+
             }, 0.2f);
 
             Destroy(spawnPoint);
@@ -444,6 +464,8 @@ namespace OverhaulMod.Content.Personalization
 
         private IEnumerator spawnLevelCoroutine(bool useTransitionManager, LevelEditorLevelData levelEditorLevelData)
         {
+            yield return null;
+
             if (levelEditorLevelData != null)
             {
                 GameObject level = new GameObject();
@@ -456,7 +478,7 @@ namespace OverhaulMod.Content.Personalization
             }
             ArenaLiftManager.Instance.SetToArena();
             GlobalEventManager.Instance.Dispatch(GlobalEvents.LevelSpawned);
-            SpawnBot();
+            SpawnBot(false);
             GlobalEventManager.Instance.Dispatch(EDITOR_STARTED_EVENT);
 
             GameObject cameraObject = Instantiate(PlayerCameraManager.Instance.DefaultGameCameraPrefab.gameObject);

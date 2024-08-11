@@ -6,6 +6,7 @@ using System.Globalization;
 using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
+using static OverhaulMod.UI.UIElementPersonalizationEditorPropertiesPanel;
 
 namespace OverhaulMod.UI
 {
@@ -38,6 +39,18 @@ namespace OverhaulMod.UI
         [UIElement("VolumeExtraSettings", false)]
         private readonly ModdedObject m_volumeExtraSettings;
 
+        [UIElement("ColorPickButton", false)]
+        private readonly ModdedObject m_colorPickButton;
+
+        [UIElement("BoolFieldDisplay", false)]
+        private readonly ModdedObject m_togglePrefab;
+
+        [UIElement("IntFloatSlider", false)]
+        private readonly ModdedObject m_intFloatSliderPrefab;
+
+        [UIElement("CvmModelPresetDisplay", false)]
+        private readonly ModdedObject m_cvmModelPresetDisplay;
+
         [UIElement("AddVolumeSettingsPresetButton", false)]
         private readonly Button m_addVolumeSettingsPresetButton;
 
@@ -62,6 +75,8 @@ namespace OverhaulMod.UI
 
         private VisibilityPropertiesController m_visibilityPropertiesController;
 
+        private FireParticlesPropertiesController m_fireParticlesPropertiesController;
+
         private bool m_disableCallbacks;
 
         private bool m_prevObjectState;
@@ -71,6 +86,7 @@ namespace OverhaulMod.UI
             m_objectId = -1;
             m_volumePropertiesController = new VolumePropertiesController();
             m_visibilityPropertiesController = new VisibilityPropertiesController();
+            m_fireParticlesPropertiesController = new FireParticlesPropertiesController();
 
             m_mousePositionChecker = base.gameObject.AddComponent<UIElementMouseEventsComponent>();
             m_volumeColorsSettings.onColorChanged = OnVolumeColorReplacementsChanged;
@@ -150,6 +166,11 @@ namespace OverhaulMod.UI
             if (objectBehaviour.GetComponent<PersonalizationEditorObjectVolume>())
             {
                 m_volumePropertiesController.PopulateFields(this, m_container, objectBehaviour);
+            }
+
+            if (objectBehaviour.GetComponent<PersonalizationEditorObjectFireParticles>())
+            {
+                m_fireParticlesPropertiesController.PopulateFields(this, m_container, objectBehaviour);
             }
 
             /*
@@ -238,6 +259,93 @@ namespace OverhaulMod.UI
             public virtual void PopulateFields(UIElementPersonalizationEditorPropertiesPanel propertiesPanel, Transform container, PersonalizationEditorObjectBehaviour objectBehaviour)
             {
 
+            }
+        }
+
+        public class FireParticlesPropertiesController : ObjectPropertiesController
+        {
+            public override void PopulateFields(UIElementPersonalizationEditorPropertiesPanel propertiesPanel, Transform container, PersonalizationEditorObjectBehaviour objectBehaviour)
+            {
+                PersonalizationEditorObjectFireParticles fireParticles = objectBehaviour.GetComponent<PersonalizationEditorObjectFireParticles>();
+
+                ModdedObject enableSmokeToggleModdedObject = Instantiate(propertiesPanel.m_togglePrefab, container);
+                enableSmokeToggleModdedObject.gameObject.SetActive(true);
+                Toggle enableSmokeToggle = enableSmokeToggleModdedObject.GetComponent<Toggle>();
+                enableSmokeToggle.isOn = fireParticles.enableSmoke;
+                enableSmokeToggle.onValueChanged.AddListener(delegate (bool value)
+                {
+                    fireParticles.enableSmoke = value;
+                    fireParticles.RefreshColor();
+                });
+                enableSmokeToggleModdedObject.GetObject<Text>(0).text = "Enable smoke";
+
+                ModdedObject colorPickButton = Instantiate(propertiesPanel.m_colorPickButton, container);
+                colorPickButton.gameObject.SetActive(true);
+                colorPickButton.GetObject<Text>(2).text = "Fire color";
+                UIElementColorPickerButton colorPickerButtonComponent = colorPickButton.gameObject.AddComponent<UIElementColorPickerButton>();
+                colorPickerButtonComponent.InitializeElement();
+                colorPickerButtonComponent.colorPickerParent = UIPersonalizationEditor.instance.transform;
+                colorPickerButtonComponent.useAlpha = true;
+                colorPickerButtonComponent.color = fireParticles.color;
+                colorPickerButtonComponent.onValueChanged.AddListener(delegate (Color color)
+                {
+                    fireParticles.color = color;
+                    fireParticles.RefreshColor();
+                });
+
+                ModdedObject applyFavoriteColorToggleModdedObject = Instantiate(propertiesPanel.m_togglePrefab, container);
+                applyFavoriteColorToggleModdedObject.gameObject.SetActive(true);
+                Toggle applyFavoriteColorToggle = applyFavoriteColorToggleModdedObject.GetComponent<Toggle>();
+                applyFavoriteColorToggle.isOn = fireParticles.applyFavoriteColor;
+                applyFavoriteColorToggle.onValueChanged.AddListener(delegate (bool value)
+                {
+                    fireParticles.applyFavoriteColor = value;
+                    fireParticles.RefreshColor();
+                });
+                applyFavoriteColorToggleModdedObject.GetObject<Text>(0).text = "Apply favorite color";
+
+                ModdedObject hueOffsetSliderModdedObject = Instantiate(propertiesPanel.m_intFloatSliderPrefab, container);
+                hueOffsetSliderModdedObject.gameObject.SetActive(true);
+                hueOffsetSliderModdedObject.GetObject<Text>(1).text = "Fav. color hue offset";
+                Slider hueOffsetSlider = hueOffsetSliderModdedObject.GetObject<Slider>(0);
+                hueOffsetSlider.minValue = -0.1f;
+                hueOffsetSlider.maxValue = 0.1f;
+                hueOffsetSlider.value = fireParticles.favoriteColorHueOffset;
+                hueOffsetSlider.onValueChanged.AddListener(delegate (float value)
+                {
+                    float ho = Mathf.Round(value * 100f) / 100f;
+                    ModUIUtils.Tooltip($"{ho}");
+                    fireParticles.favoriteColorHueOffset = ho;
+                    fireParticles.RefreshColor();
+                });
+
+                ModdedObject brightnessSliderModdedObject = Instantiate(propertiesPanel.m_intFloatSliderPrefab, container);
+                brightnessSliderModdedObject.gameObject.SetActive(true);
+                brightnessSliderModdedObject.GetObject<Text>(1).text = "Fav. color brightness";
+                Slider brightnessSlider = brightnessSliderModdedObject.GetObject<Slider>(0);
+                brightnessSlider.minValue = 0f;
+                brightnessSlider.maxValue = 100f;
+                brightnessSlider.value = Mathf.Round(fireParticles.favoriteColorBrightness * 100f);
+                brightnessSlider.onValueChanged.AddListener(delegate (float value)
+                {
+                    ModUIUtils.Tooltip($"{value}%");
+                    fireParticles.favoriteColorBrightness = value / 100f;
+                    fireParticles.RefreshColor();
+                });
+
+                ModdedObject saturationSliderModdedObject = Instantiate(propertiesPanel.m_intFloatSliderPrefab, container);
+                saturationSliderModdedObject.gameObject.SetActive(true);
+                saturationSliderModdedObject.GetObject<Text>(1).text = "Fav. color saturation";
+                Slider saturationSlider = saturationSliderModdedObject.GetObject<Slider>(0);
+                saturationSlider.minValue = 0f;
+                saturationSlider.maxValue = 100f;
+                saturationSlider.value = Mathf.Round(fireParticles.favoriteColorSaturation * 100f);
+                saturationSlider.onValueChanged.AddListener(delegate (float value)
+                {
+                    ModUIUtils.Tooltip($"{value}%");
+                    fireParticles.favoriteColorSaturation = value / 100f;
+                    fireParticles.RefreshColor();
+                });
             }
         }
 

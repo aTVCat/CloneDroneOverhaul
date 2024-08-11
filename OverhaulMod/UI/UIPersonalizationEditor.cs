@@ -261,6 +261,7 @@ namespace OverhaulMod.UI
 
         public void OnPlaytestButtonClicked()
         {
+            Utilities.SetAnimationToggleOn();
             PersonalizationEditorManager.Instance.EnterPlaytestMode();
         }
 
