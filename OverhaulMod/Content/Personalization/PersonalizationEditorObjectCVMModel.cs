@@ -1,6 +1,8 @@
 ﻿using OverhaulMod.Engine;
+using OverhaulMod.Utils;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,17 +26,17 @@ namespace OverhaulMod.Content.Personalization
         }
 
         [PersonalizationEditorObjectProperty]
-        public Dictionary<WeaponVariant, CVMModelPreset> volumeSettingPresets
+        public Dictionary<WeaponVariant, CVMModelPreset> presets
         {
             get
             {
                 PersonalizationEditorObjectBehaviour ob = objectBehaviour;
-                return ob.GetPropertyValue<Dictionary<WeaponVariant, CVMModelPreset>>(nameof(volumeSettingPresets), null);
+                return ob.GetPropertyValue<Dictionary<WeaponVariant, CVMModelPreset>>(nameof(presets), null);
             }
             set
             {
                 PersonalizationEditorObjectBehaviour ob = objectBehaviour;
-                ob.SetPropertyValue(nameof(volumeSettingPresets), value);
+                ob.SetPropertyValue(nameof(presets), value);
             }
         }
 
@@ -53,22 +55,71 @@ namespace OverhaulMod.Content.Personalization
             }
         }
 
+        [PersonalizationEditorObjectProperty]
+        public WeaponType weapon
+        {
+            get
+            {
+                PersonalizationEditorObjectBehaviour ob = objectBehaviour;
+                return (WeaponType)ob.GetPropertyValue(nameof(weapon), (int)WeaponType.Sword);
+            }
+            set
+            {
+                PersonalizationEditorObjectBehaviour ob = objectBehaviour;
+                ob.SetPropertyValue(nameof(weapon), (int)value);
+            }
+        }
+
+        [PersonalizationEditorObjectProperty]
+        public WeaponVariant variant
+        {
+            get
+            {
+                PersonalizationEditorObjectBehaviour ob = objectBehaviour;
+                return (WeaponVariant)ob.GetPropertyValue(nameof(variant), (int)WeaponVariant.Normal);
+            }
+            set
+            {
+                PersonalizationEditorObjectBehaviour ob = objectBehaviour;
+                ob.SetPropertyValue(nameof(variant), (int)value);
+            }
+        }
+
+        private CVMImporter.SaveClass m_loadedModel;
+
+        private bool m_hasAddedEvent;
+
         private void Start()
         {
-            if (volumeSettingPresets == null)
-                volumeSettingPresets = new Dictionary<WeaponVariant, CVMModelPreset>();
+            if (presets == null)
+                presets = new Dictionary<WeaponVariant, CVMModelPreset>();
+
+            if (PersonalizationEditorManager.IsInEditor())
+            {
+                GlobalEventManager.Instance.AddEventListener(PersonalizationEditorManager.OBJECT_EDITED_EVENT, RefreshModel);
+                m_hasAddedEvent = true;
+            }
+        }
+
+        private void OnDestroy()
+        {
+            if (m_hasAddedEvent)
+            {
+                GlobalEventManager.Instance.RemoveEventListener(PersonalizationEditorManager.OBJECT_EDITED_EVENT, RefreshModel);
+                m_hasAddedEvent = false;
+            }
         }
 
         public WeaponVariant GetUnusedShowCondition()
         {
             WeaponType weaponType = objectBehaviour.ControllerInfo.ItemInfo.Weapon;
-            if (!volumeSettingPresets.ContainsKey(WeaponVariant.Normal))
+            if (!presets.ContainsKey(WeaponVariant.Normal))
                 return WeaponVariant.Normal;
-            else if (!volumeSettingPresets.ContainsKey(WeaponVariant.OnFire) && weaponType != WeaponType.Bow)
+            else if (!presets.ContainsKey(WeaponVariant.OnFire) && weaponType != WeaponType.Bow)
                 return WeaponVariant.OnFire;
-            else if (!volumeSettingPresets.ContainsKey(WeaponVariant.NormalMultiplayer) && weaponType == WeaponType.Sword)
+            else if (!presets.ContainsKey(WeaponVariant.NormalMultiplayer) && weaponType == WeaponType.Sword)
                 return WeaponVariant.NormalMultiplayer;
-            else if (!volumeSettingPresets.ContainsKey(WeaponVariant.OnFireMultiplayer) && weaponType == WeaponType.Sword)
+            else if (!presets.ContainsKey(WeaponVariant.OnFireMultiplayer) && weaponType == WeaponType.Sword)
                 return WeaponVariant.OnFireMultiplayer;
 
             return WeaponVariant.None;
@@ -87,7 +138,7 @@ namespace OverhaulMod.Content.Personalization
         public CVMModelPreset GetCurrentPreset()
         {
             WeaponVariant condition = GetCurrentShowCondition();
-            Dictionary<WeaponVariant, CVMModelPreset> d = volumeSettingPresets;
+            Dictionary<WeaponVariant, CVMModelPreset> d = presets;
             if (d == null || d.Count == 0)
                 return null;
 
@@ -120,7 +171,19 @@ namespace OverhaulMod.Content.Personalization
             if (t.childCount != 0)
                 TransformUtils.DestroyAllChildren(t);
 
+            CVMModelPreset preset = GetCurrentPreset();
+            if (preset == null || preset.CvmFilePath.IsNullOrEmpty())
+                return;
 
+            string path = Path.Combine(objectBehaviour.ControllerInfo.ItemInfo.RootFolderPath, preset.CvmFilePath);
+            if (m_loadedModel == null)
+            {
+                m_loadedModel = CVMImporter.LoadModel(path);
+                if (m_loadedModel == null)
+                    return;
+            }
+
+            CVMImporter.InstantiateModel(m_loadedModel, weapon, variant, t, out _);
         }
     }
 }

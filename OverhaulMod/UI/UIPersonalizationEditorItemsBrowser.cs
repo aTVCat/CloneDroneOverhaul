@@ -224,7 +224,7 @@ namespace OverhaulMod.UI
             {
                 ModUIUtils.InputFieldWindow("Enter folder name", "hmm", null, 30, 125f, delegate (string directoryName)
                 {
-                    string folderName = $"{Path.GetFileName(path).Replace("PersonalizationItem_", string.Empty).Remove(8)}_{directoryName.Replace(" ", string.Empty)}";
+                    string folderName = directoryName.StartsWith("n_") ? directoryName.Substring(2) : $"{Path.GetFileName(path).Replace("PersonalizationItem_", string.Empty).Remove(8)}_{directoryName.Replace(" ", string.Empty)}";
                     string folderPath = Path.Combine(ModCore.customizationFolder, folderName);
                     _ = Directory.CreateDirectory(folderPath);
 
