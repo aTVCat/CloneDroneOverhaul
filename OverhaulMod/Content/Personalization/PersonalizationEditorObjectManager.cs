@@ -149,6 +149,10 @@ namespace OverhaulMod.Content.Personalization
             MechBodyPart bodyPart = Instantiate(prefab, parent);
             prefab.enabled = true;
             GameObject gameObject = bodyPart.gameObject;
+            Transform t = gameObject.transform;
+            t.localPosition = Vector3.zero;
+            t.localEulerAngles = Vector3.zero;
+            t.localScale = Vector3.one;
             _ = gameObject.AddComponent<PersonalizationEditorObjectVolume>();
             _ = gameObject.AddComponent<PersonalizationEditorObjectVisibilityController>();
             Volume volume = gameObject.GetComponent<Volume>();
@@ -160,7 +164,11 @@ namespace OverhaulMod.Content.Personalization
         private GameObject instantiateCvmModel(Transform parent)
         {
             GameObject obj = new GameObject();
-            obj.transform.SetParent(parent);
+            Transform t = obj.transform;
+            t.SetParent(parent);
+            t.localPosition = Vector3.zero;
+            t.localEulerAngles = Vector3.zero;
+            t.localScale = Vector3.one;
             obj.AddComponent<PersonalizationEditorObjectCVMModel>();
             return obj;
         }
@@ -168,6 +176,10 @@ namespace OverhaulMod.Content.Personalization
         private GameObject instantiateSwordFireParticles(Transform parent)
         {
             Transform fireParticles = Instantiate(TransformUtils.FindChildRecursive(WeaponManager.Instance.FireSwordModelPrefab, "SwordFireVFX"), parent);
+            Transform t = fireParticles.transform;
+            t.localPosition = Vector3.zero;
+            t.localEulerAngles = Vector3.zero;
+            t.localScale = Vector3.one * 0.01f;
             _ = fireParticles.gameObject.AddComponent<PersonalizationEditorObjectVisibilityController>();
             return fireParticles.gameObject;
         }
@@ -175,6 +187,10 @@ namespace OverhaulMod.Content.Personalization
         private GameObject instantiateSpearFireParticles(Transform parent)
         {
             Transform fireParticles = Instantiate(TransformUtils.FindChildRecursive(WeaponManager.Instance.FireSpearModelPrefab, "SwordFireVFX (1)"), parent);
+            Transform t = fireParticles.transform;
+            t.localPosition = Vector3.zero;
+            t.localEulerAngles = Vector3.zero;
+            t.localScale = Vector3.one * 0.01f;
             _ = fireParticles.gameObject.AddComponent<PersonalizationEditorObjectVisibilityController>();
             return fireParticles.gameObject;
         }
@@ -182,6 +198,10 @@ namespace OverhaulMod.Content.Personalization
         private GameObject instantiateHammerFireParticles(Transform parent)
         {
             Transform fireParticles = Instantiate(TransformUtils.FindChildRecursive(WeaponManager.Instance.FireHammerModelPrefab, "FireVFX (1)"), parent);
+            Transform t = fireParticles.transform;
+            t.localPosition = Vector3.zero;
+            t.localEulerAngles = Vector3.zero;
+            t.localScale = Vector3.one * 0.01f;
             _ = fireParticles.gameObject.AddComponent<PersonalizationEditorObjectVisibilityController>();
             return fireParticles.gameObject;
         }
@@ -189,7 +209,11 @@ namespace OverhaulMod.Content.Personalization
         private GameObject instantiateEmpty(Transform parent)
         {
             GameObject obj = new GameObject();
-            obj.transform.SetParent(parent);
+            Transform t = obj.transform;
+            t.SetParent(parent);
+            t.localPosition = Vector3.zero;
+            t.localEulerAngles = Vector3.zero;
+            t.localScale = Vector3.one;
             return obj;
         }
 
