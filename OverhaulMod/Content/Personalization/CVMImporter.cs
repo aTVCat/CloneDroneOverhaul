@@ -13,6 +13,64 @@ namespace OverhaulMod.Content.Personalization
     {
         public static bool InstantiateModel(SaveClass saveClass, WeaponType type, WeaponVariant variant, Transform parent, out string error)
         {
+            WeaponSpecialType weaponSpecialType = GetWeaponSpecialType(type, variant);
+            if(weaponSpecialType != (WeaponSpecialType)(-1))
+            {
+                if (!saveClass.CustomSpecialWeaponModels.ContainsKey(weaponSpecialType))
+                {
+                    error = $"The model doesn't have the edited model of {weaponSpecialType}";
+                    return false;
+                }
+
+                Transform t;
+                switch (weaponSpecialType)
+                {
+                    case WeaponSpecialType.FireHammer:
+                        t = WeaponManager.Instance.FireHammerModelPrefab;
+                        break;
+                    case WeaponSpecialType.FireSword:
+                        t = WeaponManager.Instance.FireSwordModelPrefab;
+                        break;
+                    case WeaponSpecialType.GreatSword:
+                        t = WeaponManager.Instance.GreatSwordModelPrefab;
+                        break;
+                    case WeaponSpecialType.GreatFireSword:
+                        t = WeaponManager.Instance.FireGreatSwordModelPrefab;
+                        break;
+                    default:
+                        t = null;
+                        break;
+                }
+
+                if (!t)
+                {
+                    error = $"Could not find the base model for {weaponSpecialType}";
+                    return false;
+                }
+
+                Volume componentInChildren = t.GetComponentInChildren<Volume>(true);
+                if (!componentInChildren)
+                {
+                    error = $"Could not find the base model's Volume for {weaponSpecialType}";
+                    return false;
+                }
+
+                Volume volume1 = UnityEngine.Object.Instantiate(componentInChildren, parent);
+                volume1.gameObject.SetActive(true);
+                foreach (KeyValuePair<PicaVoxelPoint, Voxel> kv in saveClass.CustomSpecialWeaponModels[weaponSpecialType])
+                {
+                    volume1.GetCurrentFrame().SetVoxelAtArrayPosition(kv.Key, kv.Value);
+                }
+                foreach (var replaceColor in volume1.GetComponents<ReplaceVoxelColor>())
+                {
+                    ReplaceVoxelColor.ReplaceColors(volume1, replaceColor.Old, replaceColor.New);
+                }
+                volume1.UpdateAllChunks();
+
+                error = null;
+                return true;
+            }
+
             FirstPersonMover firstPersonMover = null;
             if (saveClass.Base == EnemyType.None)
             {
@@ -100,6 +158,25 @@ namespace OverhaulMod.Content.Personalization
                 transform2 = transform2.parent;
             }
             return t;
+        }
+
+        public static WeaponSpecialType GetWeaponSpecialType(WeaponType weaponType, WeaponVariant weaponVariant)
+        {
+            if(weaponType == WeaponType.Sword)
+            {
+                if (weaponVariant == WeaponVariant.NormalMultiplayer)
+                    return WeaponSpecialType.GreatSword;
+                else if (weaponVariant == WeaponVariant.OnFireMultiplayer)
+                    return WeaponSpecialType.GreatFireSword;
+                else if (weaponVariant == WeaponVariant.OnFire)
+                    return WeaponSpecialType.FireSword;
+            }
+            else if (weaponType == WeaponType.Hammer)
+            {
+                if (weaponVariant == WeaponVariant.OnFire)
+                    return WeaponSpecialType.FireHammer;
+            }
+            return (WeaponSpecialType)(-1);
         }
 
         public enum WeaponSpecialType

@@ -42,7 +42,7 @@ namespace OverhaulMod.UI
 
         private Image m_bg;
 
-        private UIPersonalizationItemsBrowser m_browser;
+        private UIPersonalizationItemBrowser m_browser;
 
         private RectTransform m_rectTransform;
 
@@ -87,7 +87,7 @@ namespace OverhaulMod.UI
 
         public bool IsDoubleClicked() => m_timeForDoubleClick != -1f && Time.unscaledTime < m_timeForDoubleClick;
 
-        public void SetBrowserUI(UIPersonalizationItemsBrowser itemsBrowser)
+        public void SetBrowserUI(UIPersonalizationItemBrowser itemsBrowser)
         {
             m_browser = itemsBrowser;
         }

@@ -1,4 +1,5 @@
 ﻿using OverhaulMod.Engine;
+using OverhaulMod.UI;
 using OverhaulMod.Utils;
 using System;
 using System.Collections.Generic;
@@ -55,36 +56,6 @@ namespace OverhaulMod.Content.Personalization
             }
         }
 
-        [PersonalizationEditorObjectProperty]
-        public WeaponType weapon
-        {
-            get
-            {
-                PersonalizationEditorObjectBehaviour ob = objectBehaviour;
-                return (WeaponType)ob.GetPropertyValue(nameof(weapon), (int)WeaponType.Sword);
-            }
-            set
-            {
-                PersonalizationEditorObjectBehaviour ob = objectBehaviour;
-                ob.SetPropertyValue(nameof(weapon), (int)value);
-            }
-        }
-
-        [PersonalizationEditorObjectProperty]
-        public WeaponVariant variant
-        {
-            get
-            {
-                PersonalizationEditorObjectBehaviour ob = objectBehaviour;
-                return (WeaponVariant)ob.GetPropertyValue(nameof(variant), (int)WeaponVariant.Normal);
-            }
-            set
-            {
-                PersonalizationEditorObjectBehaviour ob = objectBehaviour;
-                ob.SetPropertyValue(nameof(variant), (int)value);
-            }
-        }
-
         private CVMImporter.SaveClass m_loadedModel;
 
         private bool m_hasAddedEvent;
@@ -96,15 +67,18 @@ namespace OverhaulMod.Content.Personalization
 
             if (PersonalizationEditorManager.IsInEditor())
             {
+                GlobalEventManager.Instance.AddEventListener(PersonalizationEditorManager.PRESET_PREVIEW_CHANGED_EVENT, RefreshModel);
                 GlobalEventManager.Instance.AddEventListener(PersonalizationEditorManager.OBJECT_EDITED_EVENT, RefreshModel);
                 m_hasAddedEvent = true;
             }
+            RefreshModel();
         }
 
         private void OnDestroy()
         {
             if (m_hasAddedEvent)
             {
+                GlobalEventManager.Instance.RemoveEventListener(PersonalizationEditorManager.PRESET_PREVIEW_CHANGED_EVENT, RefreshModel);
                 GlobalEventManager.Instance.RemoveEventListener(PersonalizationEditorManager.OBJECT_EDITED_EVENT, RefreshModel);
                 m_hasAddedEvent = false;
             }
@@ -183,7 +157,11 @@ namespace OverhaulMod.Content.Personalization
                     return;
             }
 
-            CVMImporter.InstantiateModel(m_loadedModel, weapon, variant, t, out _);
+            CVMImporter.InstantiateModel(m_loadedModel, preset.Weapon, preset.Variant, t, out string error);
+            if (PersonalizationEditorManager.IsInEditor() && !error.IsNullOrEmpty())
+            {
+                UIPersonalizationEditor.instance.ShowErrorNotification("CVM Error", error, 15f);
+            }
         }
     }
 }

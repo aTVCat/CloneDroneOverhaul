@@ -497,7 +497,7 @@ namespace OverhaulMod.UI
                     newPresetButton.gameObject.SetActive(true);
                     newPresetButton.onClick.AddListener(delegate
                     {
-                        model.presets.Add(model.GetUnusedShowCondition(), new CVMModelPreset());
+                        model.presets.Add(model.GetUnusedShowCondition(), new CVMModelPreset(true));
                         populateFieldsAction();
                     });
                 }

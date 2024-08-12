@@ -14,5 +14,19 @@ namespace OverhaulMod.Content.Personalization
         public WeaponType Weapon;
 
         public WeaponVariant Variant;
+
+        public CVMModelPreset()
+        {
+
+        }
+
+        public CVMModelPreset(bool defaultValues)
+        {
+            if (defaultValues)
+            {
+                Weapon = WeaponType.Sword;
+                Variant = WeaponVariant.Normal;
+            }
+        }
     }
 }

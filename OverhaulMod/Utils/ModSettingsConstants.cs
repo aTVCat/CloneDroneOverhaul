@@ -322,7 +322,7 @@ namespace OverhaulMod.Utils
         public const string STREAMER_MODE = "StreamerMode";
 
         /// <summary>
-        /// <see cref="UI.UIPersonalizationItemsBrowser"/>
+        /// <see cref="UI.UIPersonalizationItemBrowser"/>
         /// </summary>
         public const string HAS_EVER_ROTATED_THE_CAMERA = "HasEverRotatedTheCamera";
 

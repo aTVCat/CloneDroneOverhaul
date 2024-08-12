@@ -2,11 +2,11 @@
 - Added item exclusivity settings to customization editor
 - Added playtest mode to customization editor
 - Added ability to re-send the item to verification
-- Added favorite color preview dropdown to customization editor
+- Added color preview dropdown to customization editor
 - Added fire particles settings to customization editor
 - Added Garbage bot skins mod support. Added the dropdown with skins to redesigned "Last Bot Standing" menu
 - Added PlayerUseKeyTrigger improved description display
-- Added improved commentator speech subtitles
+- Added improved subtitles
 - Added suboptions to ambient occlusion option
 - Added tooltips to every tab in settings menu. They display all sections of the highlighted tab
 - Added save slots to auto-build. You can make up to 10 builds
@@ -26,10 +26,10 @@ FIXES:
 - Fixed a crash occuring when entering level editor with disabled reworked arena model
 - Fixed UI elements flickering when the mouse is on their edge
 - Fixed title screen menu appearing during gameplay in rare cases
-- Fixed title screen menu music not resuming after watching Clone drone credits
+- Fixed title screen menu music not resuming after watching credits
 - Fixed Overhaul settings not saving when restarting the game via "Restart required" screen
 - Fixed some customization editor objects not spawning at 0 0 0 position when placed
 - Fixed post effects applying to the level editor camera if free camera mode is enabled with Level editor improvements mod
-- Fixed camera offset when selecting upgrades in Last bot standing or duels
+- Fixed camera offset when selecting upgrades in Last bot standing and duels
 - Fixed camera FoV being limited in first person mode
 - Fixed camera Fov breaking player spawn camera animation

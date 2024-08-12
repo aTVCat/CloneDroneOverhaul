@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 1031495414
+CRC: 2059467762
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 523e26dd1ec784d83e18331e83a551bd
+    Hash: 12f44197c58d764fd5c6c8ae709e128c
   TypeTreeHash:
     serializedVersion: 2
     Hash: acf1344b0dbbc80b9165ec9e7dce57f8
@@ -158,6 +158,7 @@ Assets:
 - Assets/UI/Prefabs/RevertUpgradesButtonPrefab.prefab
 - Assets/UI/UI_NewsPanel.prefab
 - Assets/UI/UI_LocalizationEditor.prefab
+- Assets/UI/UI_PersonalizationEditorItemImportDialog.prefab
 - Assets/UI/UI_ChallengesMenuRework.prefab
 - Assets/Font/Triggering-Fanfares.ttf
 - Assets/UI/UI_PersonalizationEditorAboutDialog.prefab

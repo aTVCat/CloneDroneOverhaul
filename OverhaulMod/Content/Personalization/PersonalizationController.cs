@@ -564,7 +564,7 @@ namespace OverhaulMod.Content.Personalization
             if (!m_hasInitialized || PersonalizationEditorManager.IsInEditor())
                 return string.Empty;
 
-            if (m_isMainPlayer && UIPersonalizationItemsBrowser.IsPreviewing)
+            if (m_isMainPlayer && UIPersonalizationItemBrowser.IsPreviewing)
                 return GetWeaponSkin(weaponType);
 
             if ((m_isEnemy && AllowEnemiesUseSkins) || (m_isPlayer && !m_isMultiplayer))

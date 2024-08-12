@@ -237,7 +237,7 @@ namespace OverhaulMod.Content.Personalization
                         {
                             Frame frame = volumeComponent.GetCurrentFrame();
                             int allDimensions = frame.XSize + frame.YSize + frame.ZSize;
-                            if (allDimensions > 145)
+                            if (allDimensions > 150)
                             {
                                 UIPersonalizationEditor.instance.ShowNotification("Performance warning", "The size of this model is very huge which can cause lags. Simplify your model.", ModParseUtils.TryParseToColor("#444D00", Color.yellow), 30f);
                             }
