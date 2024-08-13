@@ -10,6 +10,8 @@
 - Added suboptions to ambient occlusion option
 - Added tooltips to every tab in settings menu. They display all sections of the highlighted tab
 - Added save slots to auto-build. You can make up to 10 builds
+- Added "Search levels" button to workshop browser when browsing subscriptions or user's levels
+- Added "Reconnect" button to pause menu when playing Last bot standing
 - Added "Updated" label to recently updated customization item button in the player customization menu
 - Added "Verified" label to recently verified customization item button in the player customization menu. Only the author of the item can see this label
 - Added "Reset Overhaul settings" button to "Advanced" tab in settings menu
@@ -25,6 +27,7 @@
 FIXES:
 - Fixed a crash occuring when entering level editor with disabled reworked arena model
 - Fixed UI elements flickering when the mouse is on their edge
+- Fixed missing translation in some places
 - Fixed title screen menu appearing during gameplay in rare cases
 - Fixed title screen menu music not resuming after watching credits
 - Fixed Overhaul settings not saving when restarting the game via "Restart required" screen
@@ -33,3 +36,4 @@ FIXES:
 - Fixed camera offset when selecting upgrades in Last bot standing and duels
 - Fixed camera FoV being limited in first person mode
 - Fixed camera Fov breaking player spawn camera animation
+- Fixed "More info" button in "Last bot standing" menu openning incorrect website if using other languages than english

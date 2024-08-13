@@ -194,7 +194,7 @@ namespace OverhaulMod.UI
                 Button deleteButton = moddedObject.GetObject<Button>(4);
                 deleteButton.onClick.AddListener(delegate
                 {
-                    ModUIUtils.MessagePopup(true, $"Delete \"{AutoBuildManager.GetBuildDisplayName(build.Name)}\"?", LocalizationManager.Instance.GetTranslatedString("action_cannot_be_undone"), 125f, MessageMenu.ButtonLayout.EnableDisableButtons, "Ok", "Yes", "No", null, delegate
+                    ModUIUtils.MessagePopup(true, $"{LocalizationManager.Instance.GetTranslatedString("auto_build_delete")} \"{AutoBuildManager.GetBuildDisplayName(build.Name)}\"?", LocalizationManager.Instance.GetTranslatedString("action_cannot_be_undone"), 125f, MessageMenu.ButtonLayout.EnableDisableButtons, "Ok", "Yes", "No", null, delegate
                     {
                         AutoBuildInfo autoBuildInfo;
                         int oldIndex = AutoBuildManager.AutoBuildIndexToUseOnMatchStart;
@@ -222,7 +222,7 @@ namespace OverhaulMod.UI
                 Button renameButton = moddedObject.GetObject<Button>(5);
                 renameButton.onClick.AddListener(delegate
                 {
-                    ModUIUtils.InputFieldWindow("Rename a build", $"Rename \"{build.Name}\" to...", build.Name, 20, 125f, delegate (string name)
+                    ModUIUtils.InputFieldWindow($"{LocalizationManager.Instance.GetTranslatedString("auto_build_rename")} \"{build.Name}\"?", string.Empty, build.Name, 20, 125f, delegate (string name)
                     {
                         build.Name = name;
                         buildNameText.text = AutoBuildManager.GetBuildDisplayName(build.Name);
@@ -269,7 +269,7 @@ namespace OverhaulMod.UI
             {
                 Transform transform = ModCache.gameUIRoot.UpgradeUI.transform;
                 m_upgradeUISiblingIndex = transform.GetSiblingIndex();
-                transform.SetSiblingIndex(ModUIManager.Instance.GetSiblingIndex(ModUIManager.UILayer.AfterTitleScreen) + 1);
+                transform.SetSiblingIndex(ModUIManager.Instance.GetSiblingIndex(ModUIManager.UILayer.AfterTitleScreen) + 3);
             }
         }
 
@@ -322,7 +322,7 @@ namespace OverhaulMod.UI
 
         public void OnNewButtonClicked()
         {
-            ModUIUtils.InputFieldWindow("Create a build", "Enter new build's name", m_searchBox.text.IsNullOrEmpty() ? "Unnamed build" : m_searchBox.text, 20, 125f, delegate (string name)
+            ModUIUtils.InputFieldWindow(LocalizationManager.Instance.GetTranslatedString("auto_build_create"), LocalizationManager.Instance.GetTranslatedString("auto_build_create_desc"), m_searchBox.text.IsNullOrEmpty() ? "Unnamed build" : m_searchBox.text, 20, 125f, delegate (string name)
             {
                 AutoBuildInfo autoBuildInfo = new AutoBuildInfo()
                 {

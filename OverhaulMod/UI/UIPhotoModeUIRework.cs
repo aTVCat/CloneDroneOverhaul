@@ -145,7 +145,7 @@ namespace OverhaulMod.UI
             expandButton.collapsedSize = lightingPanel.sizeDelta;
             expandButton.expandedSize = new Vector2(375f, 300f);
 
-            m_saveRLightInfoButton.gameObject.SetActive(ModBuildInfo.debug);
+            m_saveRLightInfoButton.gameObject.SetActive(ModUserInfo.isDeveloper);
         }
 
         public override void Show()

@@ -6953,6 +6953,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: SortDropdown
       objectReference: {fileID: 0}
+    - target: {fileID: 7290446583408787204, guid: 4e2c8cfbaa96890489bf7b3abe77d484,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8065122747796991923, guid: 4e2c8cfbaa96890489bf7b3abe77d484,
         type: 3}
       propertyPath: m_Text
@@ -7657,7 +7662,7 @@ PrefabInstance:
     - target: {fileID: 3502820390249098804, guid: 25080a0391008fa43a40cd47017bff47,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: -140
+      value: -85
       objectReference: {fileID: 0}
     - target: {fileID: 3502820390249098804, guid: 25080a0391008fa43a40cd47017bff47,
         type: 3}

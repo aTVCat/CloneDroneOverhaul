@@ -938,7 +938,7 @@ namespace OverhaulMod.UI
             _ = pageBuilder.Header1("Reset settings");
             _ = pageBuilder.Button("Reset Overhaul settings", delegate
             {
-                ModUIUtils.MessagePopup(true, "Reset Overhaul mod settings?", "placeholder description", 125f, MessageMenu.ButtonLayout.EnableDisableButtons, "Ok", "Yes", "No", null, delegate
+                ModUIUtils.MessagePopup(true, LocalizationManager.Instance.GetTranslatedString("settings_reset_settings_header"), LocalizationManager.Instance.GetTranslatedString("settings_reset_settings_description"), 125f, MessageMenu.ButtonLayout.EnableDisableButtons, "Ok", "Yes", "No", null, delegate
                 {
                     ModSettingsManager.Instance.ResetSettings();
                     _ = ModUIConstants.ShowRestartRequiredScreen(true);

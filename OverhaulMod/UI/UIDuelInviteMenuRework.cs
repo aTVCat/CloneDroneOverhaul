@@ -331,7 +331,7 @@ namespace OverhaulMod.UI
 
         public void OnRulesButtonClicked()
         {
-            Application.OpenURL("https://clonedroneinthedangerzone.com/lbsrules");
+            Application.OpenURL("https://support.doborog.com/l/en/clone-drone/last-bot-standing");
         }
     }
 }
