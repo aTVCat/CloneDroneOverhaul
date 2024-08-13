@@ -33,7 +33,12 @@ namespace OverhaulMod.Patches
                 _ = ModUIConstants.ShowTitleScreenRework();
 
             if (ModManagers.ShowModSetupScreenOnStart)
-                _ = ModUIConstants.ShowSettingsMenuRework(true);
+            {
+                ModActionUtils.DoInFrames(delegate
+                {
+                    _ = ModUIConstants.ShowSettingsMenuRework(true);
+                }, 10);
+            }
             else
                 ModUIUtils.ShowNewUpdateMessageOrChangelog(2f);
         }
