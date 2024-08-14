@@ -165,6 +165,7 @@ namespace OverhaulMod.Content.Personalization
                     { UpgradeType.SpearUnlock, 1 },
                     { UpgradeType.Dash, 1 },
                     { UpgradeType.EnergyCapacity, 2 },
+                    { UpgradeType.EnergyRecharge, 2 },
                 };
                 m_hasConfiguredGameData = true;
             }

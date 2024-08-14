@@ -30,7 +30,7 @@ namespace OverhaulMod.Content.Personalization
             m_objectInfos = new List<PersonalizationEditorObjectSpawnInfo>();
             addObjectInfo("Empty object", "Empty", instantiateEmpty);
             addObjectInfo("Model Renderer (.vox)", "Volume", instantiateVolume);
-            addObjectInfo("Model Renderer (.cvm)", "CvmModel", instantiateCvmModel);
+            addObjectInfo("Model Renderer (.cvm) [BETA]", "CvmModel", instantiateCvmModel);
             addObjectInfo("Fire particles (Sword)", "FireParticles_Sword", instantiateSwordFireParticles);
             addObjectInfo("Fire particles (Hammer)", "FireParticles_Hammer", instantiateHammerFireParticles);
             addObjectInfo("Fire particles (Spear)", "FireParticles_Spear", instantiateSpearFireParticles);

@@ -48,7 +48,7 @@ namespace OverhaulMod.Engine
 
         private void Update()
         {
-            if(m_timeToRefreshMusicTrack != -1f && Time.unscaledTime >= m_timeToRefreshMusicTrack)
+            if (m_timeToRefreshMusicTrack != -1f && Time.unscaledTime >= m_timeToRefreshMusicTrack)
             {
                 m_timeToRefreshMusicTrack = -1f;
                 RefreshMusicTrack();
@@ -146,7 +146,10 @@ namespace OverhaulMod.Engine
 
         public List<Dropdown.OptionData> GetMusicTracks()
         {
-            List<Dropdown.OptionData> list = DropdownStringOptionData.GetOptionsData(AudioLibrary.Instance.GetMusicClipNames());
+            List<string> stringList = new List<string>(AudioLibrary.Instance.GetMusicClipNames());
+            _ = stringList.Remove("Chapter4TravelInTubesMusic");
+
+            List<Dropdown.OptionData> list = DropdownStringOptionData.GetOptionsData(stringList);
             list[0].text = "None";
             foreach (Dropdown.OptionData od in list)
             {

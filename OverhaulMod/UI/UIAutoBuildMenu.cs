@@ -312,6 +312,7 @@ namespace OverhaulMod.UI
             m_closeUpgradeUIButton.gameObject.SetActive(false);
             m_resetUpgradesButton.gameObject.SetActive(false);
             PopulateBuilds();
+            RefreshNewBuildButton();
         }
 
         public void OnResetUpgradesButtonClicked()
