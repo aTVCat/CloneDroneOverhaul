@@ -13,19 +13,7 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(UpgradeStation.Start))]
         private static void Start_Prefix(UpgradeStation __instance)
         {
-            RectTransform bgGlow = TransformUtils.FindChildRecursive(__instance.UpgradePressEPrefab.transform, "BGGlow") as RectTransform;
-            if (bgGlow)
-            {
-                bgGlow.localPosition = Vector3.zero;
-                bgGlow.sizeDelta = Vector3.one * 250f;
-
-                Image image = bgGlow.GetComponent<Image>();
-                if (image)
-                {
-                    image.sprite = ModResources.Sprite(AssetBundleConstants.UI, "Glow-2-256x256");
-                    image.color = PressActionKeyObjectManager.BGGlowColor;
-                }
-            }
+            PressActionKeyObjectManager.PatchKeyboardHint(__instance.UpgradePressEPrefab.transform);
         }
     }
 }

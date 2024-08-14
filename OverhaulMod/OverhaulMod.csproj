@@ -544,7 +544,6 @@
     <Compile Include="Patches\UpgradeManager_Patch.cs" />
     <Compile Include="Patches\UpgradeUI_Patch.cs" />
     <Compile Include="Patches\UpgradeUIIcon_Patch.cs" />
-    <Compile Include="Patches\WeaponAITuningManager_Patch.cs" />
     <Compile Include="Patches\WinLoseDialog_Patch.cs" />
     <Compile Include="Patches\LevelEditorUseButtonTrigger_Patch.cs" />
     <Compile Include="Patches\WorldAudioSource_Patch.cs" />

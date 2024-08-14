@@ -2,6 +2,7 @@
 using OverhaulMod.Utils;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace OverhaulMod.Engine
 {
@@ -115,6 +116,23 @@ namespace OverhaulMod.Engine
             UIPressActionKeyDescription actionDescription = m_pressActionKeyDescription;
             if (actionDescription)
                 actionDescription.HideText();
+        }
+
+        public static void PatchKeyboardHint(Transform transform)
+        {
+            RectTransform bgGlow = TransformUtils.FindChildRecursive(transform, "BGGlow") as RectTransform;
+            if (bgGlow)
+            {
+                bgGlow.localPosition = Vector3.zero;
+                bgGlow.sizeDelta = Vector3.one * 250f;
+
+                Image image = bgGlow.GetComponent<Image>();
+                if (image)
+                {
+                    image.sprite = ModResources.Sprite(AssetBundleConstants.UI, "Glow-2-256x256");
+                    image.color = PressActionKeyObjectManager.BGGlowColor;
+                }
+            }
         }
     }
 }
