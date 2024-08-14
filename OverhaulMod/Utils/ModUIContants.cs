@@ -82,6 +82,11 @@ namespace OverhaulMod.Utils
         public const string UI_ASSET_BUNDLE_ASSETS_BROWSER = "UI_AssetBundleAssetsBrowser";
         public const string UI_PATCH_NOTES = "UI_PatchNotes";
         public const string UI_PERSONALIZATION_EDITOR_ITEM_CREATION_DIALOG = "UI_PersonalizationEditorItemCreationDialog";
+        public const string UI_PRESS_ACTION_KEY_DESCRIPTION = "UI_PressActionKeyDescription";
+        public const string UI_SUBTITLE_TEXT_FIELD_REWORK = "UI_SubtitleTextFieldRework";
+        public const string UI_AUTO_BUILD_SELECTION_MENU = "UI_AutoBuildSelectionMenu";
+        public const string UI_PERSONALIZATION_EDITOR_PLAYTEST_HUD = "UI_PersonalizationEditorPlaytestHUD";
+        public const string UI_PERSONALIZATION_EDITOR_ITEM_IMPORT_DIALOG = "UI_PersonalizationEditorItemImportDialog";
 
         public static UIVersionLabel ShowVersionLabel()
         {
@@ -224,9 +229,9 @@ namespace OverhaulMod.Utils
             return ModUIManager.Instance.Show<UIUpdatesWindow>(AssetBundleConstants.UI, UI_UPDATES_WINDOW, ModUIManager.UILayer.AfterTitleScreen);
         }
 
-        public static UIPersonalizationItemsBrowser ShowPersonalizationItemsBrowser()
+        public static UIPersonalizationItemBrowser ShowPersonalizationItemsBrowser()
         {
-            return ModUIManager.Instance.Show<UIPersonalizationItemsBrowser>(AssetBundleConstants.UI, UI_PERSONALIZATION_ITEMS_BROWSER, ModUIManager.UILayer.BeforeEscMenu);
+            return ModUIManager.Instance.Show<UIPersonalizationItemBrowser>(AssetBundleConstants.UI, UI_PERSONALIZATION_ITEMS_BROWSER, ModUIManager.UILayer.BeforeEscMenu);
         }
 
         public static UIUpdateInfoEditor ShowUpdateInfoEditor(Transform parent)
@@ -365,9 +370,9 @@ namespace OverhaulMod.Utils
             return ModUIManager.Instance.Show<UISetKeyBindWindow>(AssetBundleConstants.UI, UI_SET_KEY_BIND_WINDOW, parent);
         }
 
-        public static UIPersonalizationEditorItemsBrowser ShowPersonalizationEditorItemsBrowser(Transform parent)
+        public static UIPersonalizationEditorItemBrowser ShowPersonalizationEditorItemsBrowser(Transform parent)
         {
-            return ModUIManager.Instance.Show<UIPersonalizationEditorItemsBrowser>(AssetBundleConstants.UI, UI_PERSONALIZATION_EDITOR_ITEMS_BROWSER, parent);
+            return ModUIManager.Instance.Show<UIPersonalizationEditorItemBrowser>(AssetBundleConstants.UI, UI_PERSONALIZATION_EDITOR_ITEMS_BROWSER, parent);
         }
 
         public static UIPersonalizationEditorVerificationMenu ShowPersonalizationEditorVerificationMenu(Transform parent)
@@ -512,6 +517,31 @@ namespace OverhaulMod.Utils
         public static UIPersonalizationEditorItemCreationDialog ShowPersonalizationEditorItemCreationDialog(Transform transform)
         {
             return ModUIManager.Instance.Show<UIPersonalizationEditorItemCreationDialog>(AssetBundleConstants.UI, UI_PERSONALIZATION_EDITOR_ITEM_CREATION_DIALOG, transform);
+        }
+
+        public static UIPressActionKeyDescription ShowPressActionKeyDescription()
+        {
+            return ModUIManager.Instance.Show<UIPressActionKeyDescription>(AssetBundleConstants.UI, UI_PRESS_ACTION_KEY_DESCRIPTION, ModUIManager.UILayer.AfterEnergyUI);
+        }
+
+        public static UISubtitleTextFieldRework ShowSubtitleTextFieldRework()
+        {
+            return ModUIManager.Instance.Show<UISubtitleTextFieldRework>(AssetBundleConstants.UI, UI_SUBTITLE_TEXT_FIELD_REWORK, ModUIManager.UILayer.AfterEnergyUI);
+        }
+
+        public static UIAutoBuildSelectionMenu ShowAutoBuildSelectionMenu()
+        {
+            return ModUIManager.Instance.Show<UIAutoBuildSelectionMenu>(AssetBundleConstants.UI, UI_AUTO_BUILD_SELECTION_MENU, ModUIManager.UILayer.AfterTitleScreen);
+        }
+
+        public static UIPersonalizationEditorPlaytestHUD ShowPersonalizationEditorPlaytestHUD()
+        {
+            return ModUIManager.Instance.Show<UIPersonalizationEditorPlaytestHUD>(AssetBundleConstants.UI, UI_PERSONALIZATION_EDITOR_PLAYTEST_HUD, ModUIManager.UILayer.AfterEnergyUI);
+        }
+
+        public static UIPersonalizationEditorItemImportDialog ShowPersonalizationEditorItemImportDialog(Transform transform)
+        {
+            return ModUIManager.Instance.Show<UIPersonalizationEditorItemImportDialog>(AssetBundleConstants.UI, UI_PERSONALIZATION_EDITOR_ITEM_IMPORT_DIALOG, transform);
         }
     }
 }

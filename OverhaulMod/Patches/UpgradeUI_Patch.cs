@@ -7,15 +7,12 @@ namespace OverhaulMod.Patches
     internal static class UpgradeUI_Patch
     {
         [HarmonyPrefix]
-        [HarmonyPatch(nameof(UpgradeUI.OnResetButtonClicked))]
-        private static bool OnResetButtonClicked_Prefix(UpgradeUI __instance)
+        [HarmonyPatch(nameof(UpgradeUI.closeUpgradeUIIfLocalPlayerHasNoSkillPoints))]
+        private static bool closeUpgradeUIIfLocalPlayerHasNoSkillPoints_Prefix(UpgradeUI __instance)
         {
-            AutoBuildManager autoBuildManager = AutoBuildManager.Instance;
-            if (autoBuildManager && autoBuildManager.isInAutoBuildConfigurationMode)
-            {
-                autoBuildManager.ResetUpgrades();
+            if (AutoBuildManager.Instance && AutoBuildManager.Instance.isInAutoBuildConfigurationMode)
                 return false;
-            }
+
             return true;
         }
     }

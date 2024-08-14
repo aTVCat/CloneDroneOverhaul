@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using OverhaulMod.Combat.Weapons;
+﻿using OverhaulMod.Combat.Weapons;
 using OverhaulMod.Engine;
 using System.Collections;
 using System.Collections.Generic;

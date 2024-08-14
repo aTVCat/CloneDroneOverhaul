@@ -67,7 +67,7 @@ namespace OverhaulMod.UI
             string bgColor = ALL_WEAPON_VARIANTS_PRESENT_COLOR;
 
             PersonalizationItemVerificationManager personalizationItemVerificationManager = PersonalizationItemVerificationManager.Instance;
-            foreach(WeaponVariant weaponVariant in typeof(WeaponVariant).GetEnumValues())
+            foreach (WeaponVariant weaponVariant in typeof(WeaponVariant).GetEnumValues())
             {
                 if (weaponVariant == WeaponVariant.None)
                     continue;
@@ -122,14 +122,25 @@ namespace OverhaulMod.UI
 
             if (personalizationItemInfo.IsVerified)
             {
-                m_sendButtonText.text = "Update item";
+                if (personalizationItemInfo.IsSentForVerification)
+                {
+                    m_sendButtonText.text = "Reupload update";
+                }
+                else
+                {
+                    m_sendButtonText.text = "Update item";
+                }
+            }
+            else if (personalizationItemInfo.IsSentForVerification)
+            {
+                m_sendButtonText.text = "Reupload item";
             }
             else
             {
                 m_sendButtonText.text = "Upload item";
             }
 
-            m_sendButton.interactable = !m_currentItemIsFullyIncomplete && personalizationItemInfo != null && !personalizationItemInfo.IsSentForVerification;
+            m_sendButton.interactable = !m_currentItemIsFullyIncomplete && personalizationItemInfo != null && !personalizationItemInfo.ReuploadedTheItem;
         }
 
         public bool CanExit()
@@ -157,8 +168,10 @@ namespace OverhaulMod.UI
             if (personalizationItemInfo == null)
                 return;
 
-            personalizationItemInfo.Version++;
-            if (!personalizationEditorManager.SaveItem(out string error2))
+            if (personalizationItemInfo.IsVerified)
+                personalizationItemInfo.Version++;
+
+            if (!personalizationEditorManager.SaveItem(out string error2, true))
             {
                 UIPersonalizationEditor.instance.ShowSaveErrorMessage(error2);
                 return;
@@ -170,20 +183,23 @@ namespace OverhaulMod.UI
 
             PersonalizationItemVerificationManager.Instance.SendItemToVerification(personalizationItemInfo, delegate
             {
+                if (personalizationItemInfo.IsSentForVerification)
+                    personalizationItemInfo.ReuploadedTheItem = true;
+
                 personalizationItemInfo.IsSentForVerification = true;
-                _ = personalizationEditorManager.SaveItem(out _);
+                _ = personalizationEditorManager.SaveItem(out _, true);
 
                 m_exitButton.interactable = true;
                 m_loadingIndicator.SetActive(false);
 
                 RefreshButtonAndStatusText(personalizationItemInfo);
-                ModUIUtils.MessagePopupOK("Success", "", true);
+                ModUIUtils.MessagePopupOK("Success", "It usually takes few hours or days to verify items.\nI'm not a robot :D", true);
             }, delegate (string error)
             {
                 m_exitButton.interactable = true;
                 m_sendButton.interactable = true;
                 m_loadingIndicator.SetActive(true);
-                ModUIUtils.MessagePopupOK("Could not send item to verification", error, true);
+                ModUIUtils.MessagePopupOK("Could not send item to verification", $"If the error doesn't get fixed, it'll probably get fixed in the next mod update.\n\nError details:\n{error}", 200f, true);
             });
         }
     }

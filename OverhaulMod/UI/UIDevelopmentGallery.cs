@@ -36,7 +36,7 @@ namespace OverhaulMod.UI
 
         public void Populate()
         {
-            base.StartCoroutine(populateCoroutine());
+            _ = base.StartCoroutine(populateCoroutine());
         }
 
         private IEnumerator populateCoroutine()

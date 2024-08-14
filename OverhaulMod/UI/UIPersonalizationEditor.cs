@@ -1,4 +1,4 @@
-﻿using OverhaulMod.Content.Personalization;
+﻿ using OverhaulMod.Content.Personalization;
 using OverhaulMod.UI.Elements;
 using OverhaulMod.Utils;
 using System.Collections.Generic;
@@ -26,6 +26,10 @@ namespace OverhaulMod.UI
         [UIElementAction(nameof(OnSendToVerificationButtonClicked))]
         [UIElement("SendToVerificationButton")]
         private readonly Button m_sendToVerificationButton;
+
+        [UIElementAction(nameof(OnPlaytestButtonClicked))]
+        [UIElement("PlaytestButton")]
+        private readonly Button m_playtestButton;
 
         [UIElement("DeveloperPanel", false)]
         private readonly RectTransform m_developerPanel;
@@ -253,6 +257,12 @@ namespace OverhaulMod.UI
                 ShowSaveErrorMessage(error);
             else
                 ShowNotification("Success", $"Saved the item ({PersonalizationEditorManager.Instance.currentEditingItemInfo.Name})", UIElementPersonalizationEditorNotification.SuccessColor);
+        }
+
+        public void OnPlaytestButtonClicked()
+        {
+            Utilities.SetAnimationToggleOn();
+            PersonalizationEditorManager.Instance.EnterPlaytestMode();
         }
 
         public void OnSendToVerificationButtonClicked()

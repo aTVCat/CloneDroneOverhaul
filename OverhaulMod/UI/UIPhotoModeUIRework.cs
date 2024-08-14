@@ -145,7 +145,7 @@ namespace OverhaulMod.UI
             expandButton.collapsedSize = lightingPanel.sizeDelta;
             expandButton.expandedSize = new Vector2(375f, 300f);
 
-            m_saveRLightInfoButton.gameObject.SetActive(ModBuildInfo.debug);
+            m_saveRLightInfoButton.gameObject.SetActive(ModUserInfo.isDeveloper);
         }
 
         public override void Show()
@@ -352,6 +352,7 @@ namespace OverhaulMod.UI
                 return;
 
             AdvancedPhotoModeManager.Settings.EnableVignette = value;
+            PostEffectsManager.Instance.RefreshCameraPostEffects();
         }
 
         public void OnVignetteIntensityChanged(float value)
@@ -360,6 +361,7 @@ namespace OverhaulMod.UI
                 return;
 
             AdvancedPhotoModeManager.Settings.VignetteIntensity = value;
+            PostEffectsManager.Instance.RefreshCameraPostEffects();
         }
 
         public void OnDitheringToggled(bool value)
@@ -368,6 +370,7 @@ namespace OverhaulMod.UI
                 return;
 
             AdvancedPhotoModeManager.Settings.EnableDithering = value;
+            PostEffectsManager.Instance.RefreshCameraPostEffects();
         }
 
         public void OnFogToggled(bool value)

@@ -10,21 +10,23 @@ namespace OverhaulMod.Patches
     [HarmonyPatch(typeof(FirstPersonMover))]
     internal static class FirstPersonMover_Patch
     {
+        /*
         [HarmonyPrefix]
         [HarmonyPatch(nameof(FirstPersonMover.tryKick))]
         private static bool tryKick_Prefix(FirstPersonMover __instance, FPMoveCommand moveCommand, bool isFirstExecution, bool isOwner)
         {
             CharacterModel characterModel = __instance._characterModel;
             return !characterModel || !characterModel.IsWeaponModelVisibleAndNotDropped((WeaponType)52);
-        }
+        }*/
 
+        /*
         [HarmonyPrefix]
         [HarmonyPatch(nameof(FirstPersonMover.PushDownIfAboveGround))]
         private static bool PushDownIfAboveGround_Prefix(FirstPersonMover __instance)
         {
             _ = ModActionUtils.RunCoroutine(ModCore.PushDownIfAboveGroundCoroutine_Patch(__instance));
             return false;
-        }
+        }*/
 
         [HarmonyPrefix]
         [HarmonyPatch(nameof(FirstPersonMover.tryRenderAttack))]

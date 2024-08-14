@@ -85,7 +85,7 @@ namespace OverhaulMod.Patches
                     return true;
                 }
 
-                if(lastShownUi is UIAutoBuildMenu autoBuildMenu)
+                if (lastShownUi is UIAutoBuildMenu autoBuildMenu)
                 {
                     if (autoBuildMenu.isShowingUpgradeUI)
                     {

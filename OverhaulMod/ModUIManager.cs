@@ -107,9 +107,13 @@ namespace OverhaulMod
                 _ = m_instantiatedUIs.Remove(key);
 
             _ = ModUIConstants.ShowVersionLabel();
-            _ = ModUIConstants.ShowImageEffects();
+            _ = ModUIConstants.ShowCinematicEffects();
+            //_ = ModUIConstants.ShowImageEffects();
+
             if (ModFeatures.IsEnabled(ModFeatures.FeatureType.Tooltips))
                 _ = ModUIConstants.ShowTooltips();
+            if (ModFeatures.IsEnabled(ModFeatures.FeatureType.SubtitleTextFieldRework))
+                _ = ModUIConstants.ShowSubtitleTextFieldRework();
         }
 
         public bool HasInstantiatedUI(string assetKey)
@@ -196,7 +200,7 @@ namespace OverhaulMod
             T result = m_instantiatedUIs[fullName].GetComponent<T>();
             result.Show();
 
-            if(result.closeOnEscapeButtonPress)
+            if (result.closeOnEscapeButtonPress)
                 m_shownUIs.Add(result);
 
             return result;
@@ -240,7 +244,7 @@ namespace OverhaulMod
 
         public void RemoveUIFromLastShown(OverhaulUIBehaviour behaviour)
         {
-            m_shownUIs.Remove(behaviour);
+            _ = m_shownUIs.Remove(behaviour);
         }
 
         public void RefreshUI(bool refreshOnlyCursor)
@@ -511,7 +515,7 @@ namespace OverhaulMod
             private void setMinimized(bool value)
             {
                 Vector2 size = m_rectTransform.sizeDelta;
-                size.y = value ? 34f : m_height;
+                size.y = value ? 34f : m_height + 45f;
                 m_rectTransform.sizeDelta = size;
                 m_titleBarFrame.SetActive(!value);
                 m_content.gameObject.SetActive(!value);
@@ -526,13 +530,13 @@ namespace OverhaulMod
             {
                 Vector2 sizeToSet;
                 if (content && content is RectTransform rectTransform)
-                    sizeToSet = new Vector2(rectTransform.sizeDelta.x + 30f, rectTransform.sizeDelta.y + 15f);
+                    sizeToSet = new Vector2(rectTransform.sizeDelta.x, rectTransform.sizeDelta.y);
                 else
-                    sizeToSet = new Vector2(size.x + 30f, size.y + 34f);
+                    sizeToSet = new Vector2(size.x, size.y);
 
                 m_width = sizeToSet.x;
                 m_height = sizeToSet.y;
-                m_rectTransform.sizeDelta = sizeToSet;
+                m_rectTransform.sizeDelta = new Vector2(size.x + 30f, size.y + 45f);
             }
 
             public void SetContents(Transform transform)

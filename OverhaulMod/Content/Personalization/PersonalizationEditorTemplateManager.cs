@@ -1,10 +1,5 @@
 ﻿using OverhaulMod.Utils;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace OverhaulMod.Content.Personalization
 {
@@ -50,7 +45,7 @@ namespace OverhaulMod.Content.Personalization
             PersonalizationItemInfo[] array = new PersonalizationItemInfo[files.Length];
 
             int i = 0;
-            foreach(string file in files)
+            foreach (string file in files)
             {
                 PersonalizationItemInfo itemInfo;
                 try

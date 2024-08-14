@@ -213,7 +213,8 @@ namespace OverhaulMod.Engine
 
         public void SetUpperInteriorActive(bool value)
         {
-            m_arenaUpperInteriorTransform.gameObject.SetActive(value);
+            if(m_arenaUpperInteriorTransform)
+                m_arenaUpperInteriorTransform.gameObject.SetActive(value);
         }
 
         private void setUpBattleCruiser()
@@ -222,7 +223,7 @@ namespace OverhaulMod.Engine
             if (!m_battleCruiserTransform)
                 return;
 
-            Transform transformBC = Instantiate<Transform>(EnemyFactory.Instance.Enemies[56].EnemyPrefab.GetComponent<BattleCruiserController>().CharacterModelPrefab.transform);
+            Transform transformBC = Instantiate(EnemyFactory.Instance.Enemies[56].EnemyPrefab.GetComponent<BattleCruiserController>().CharacterModelPrefab.transform);
             foreach (MonoBehaviour behaviour in transformBC.GetComponentsInChildren<MonoBehaviour>())
                 Destroy(behaviour);
 

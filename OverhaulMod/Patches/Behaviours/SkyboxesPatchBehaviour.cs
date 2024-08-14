@@ -3,7 +3,6 @@ using OverhaulMod.Utils;
 using System.Collections;
 using System.IO;
 using UnityEngine;
-using static Pathfinding.Funnel;
 
 namespace OverhaulMod.Patches.Behaviours
 {

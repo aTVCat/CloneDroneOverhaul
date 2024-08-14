@@ -115,6 +115,19 @@ namespace OverhaulMod.Utils
             }
         }
 
+        private static Camera s_gameUIRootCamera;
+        public static Camera gameUIRootCamera
+        {
+            get
+            {
+                if (!s_gameUIRootCamera)
+                {
+                    s_gameUIRootCamera = gameUIRoot.GetComponent<Canvas>().worldCamera;
+                }
+                return s_gameUIRootCamera;
+            }
+        }
+
         private static TitleScreenUI s_titleScreenUI;
         public static TitleScreenUI titleScreenUI
         {

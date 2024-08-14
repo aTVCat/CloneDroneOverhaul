@@ -97,6 +97,11 @@ namespace OverhaulMod
             return Load<TextAsset>(bundle, asset, pathPrefix);
         }
 
+        public static Font Font(string bundle, string asset, string pathPrefix = null)
+        {
+            return Load<Font>(bundle, asset, pathPrefix);
+        }
+
         public static AudioClip AudioClip(string bundle, string asset, string pathPrefix = null)
         {
             return Load<AudioClip>(bundle, asset, pathPrefix);
@@ -125,6 +130,13 @@ namespace OverhaulMod
         public static string GetBundleName(string fileLocation)
         {
             return Path.GetFileNameWithoutExtension(fileLocation);
+        }
+
+        public enum AssetLoadingState
+        {
+            NotLoaded,
+            Loading,
+            Loaded
         }
 
         public class AssetBundleInfo
@@ -236,7 +248,7 @@ namespace OverhaulMod
                 while (m_assetsBeingLoaded.ContainsKey(name))
                     yield return null;
 
-                if(m_cachedAssets.TryGetValue(name, out UnityEngine.Object obj))
+                if (m_cachedAssets.TryGetValue(name, out UnityEngine.Object obj))
                 {
                     callback?.Invoke((T)obj);
                 }
@@ -263,7 +275,7 @@ namespace OverhaulMod
 
             public void LoadAsync(Action<bool> callback)
             {
-                switch(LoadingState)
+                switch (LoadingState)
                 {
                     case AssetLoadingState.NotLoaded:
                         if (!File.Exists(FileLocation))
@@ -275,7 +287,7 @@ namespace OverhaulMod
                         _ = loadAsyncCoroutine(callback).Run(true);
                         return;
                     case AssetLoadingState.Loading:
-                        waitForLoadCoroutine(callback).Run(true);
+                        _ = waitForLoadCoroutine(callback).Run(true);
                         return;
                     case AssetLoadingState.Loaded:
                         callback?.Invoke(true);

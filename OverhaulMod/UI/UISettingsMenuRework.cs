@@ -1,8 +1,11 @@
-﻿using InternalModBot;
+﻿using AmplifyOcclusion;
+using InternalModBot;
 using ModBotWebsiteAPI;
 using OverhaulMod.Engine;
 using OverhaulMod.Patches.Behaviours;
+using OverhaulMod.UI.Elements;
 using OverhaulMod.Utils;
+using OverhaulMod.Visuals;
 using OverhaulMod.Visuals.Environment;
 using System;
 using System.Collections.Generic;
@@ -46,6 +49,8 @@ namespace OverhaulMod.UI
 
         [UIElement("TogglePrefab", false)]
         public ModdedObject TogglePrefab;
+        [UIElement("ToggleWithOptionsPrefab", false)]
+        public ModdedObject ToggleWithOptionsPrefab;
 
         [UIElement("ButtonPrefab", false)]
         public ModdedObject ButtonPrefab;
@@ -59,7 +64,7 @@ namespace OverhaulMod.UI
         [UIElement("LanguageButtonPrefab", false)]
         public ModdedObject LanguageButton;
 
-        [TabManager(typeof(UIElementTabWithText), nameof(m_tabPrefab), nameof(m_tabContainer), nameof(OnTabCreated), nameof(OnTabSelected), new string[] { "Home", "Gameplay", "Graphics", "Sounds", "Controls", "Multiplayer", "Languages", "Advanced" })]
+        [TabManager(typeof(UIElementSettingsMenuCategoryTab), nameof(m_tabPrefab), nameof(m_tabContainer), nameof(OnTabCreated), nameof(OnTabSelected), new string[] { "Home", "Gameplay", "Interface", "Graphics", "Sounds", "Controls", "Multiplayer", "Languages", "Advanced" })]
         private readonly TabManager m_tabs;
         [UIElement("TabPrefab", false)]
         private readonly ModdedObject m_tabPrefab;
@@ -109,6 +114,17 @@ namespace OverhaulMod.UI
                 subtitleTextFieldPatchBehaviour.SetSiblingIndex(base.transform);
             }
 
+            UISubtitleTextFieldRework subtitleTextFieldRework = ModUIManager.Instance.Get<UISubtitleTextFieldRework>(AssetBundleConstants.UI, ModUIConstants.UI_SUBTITLE_TEXT_FIELD_REWORK);
+            if (subtitleTextFieldRework)
+            {
+                subtitleTextFieldRework.SetSiblingIndex(true);
+            }
+
+            UIPressActionKeyDescription pressActionKeyDescription = ModUIManager.Instance.Get<UIPressActionKeyDescription>(AssetBundleConstants.UI, ModUIConstants.UI_PRESS_ACTION_KEY_DESCRIPTION);
+            if (!pressActionKeyDescription)
+                pressActionKeyDescription = ModUIConstants.ShowPressActionKeyDescription();
+            pressActionKeyDescription.SetSiblingIndex(true);
+
             if (!m_selectedTabId.IsNullOrEmpty())
                 PopulatePage(m_selectedTabId);
         }
@@ -121,6 +137,18 @@ namespace OverhaulMod.UI
             if (subtitleTextFieldPatchBehaviour)
             {
                 subtitleTextFieldPatchBehaviour.ResetSiblingIndex();
+            }
+
+            UISubtitleTextFieldRework subtitleTextFieldRework = ModUIManager.Instance.Get<UISubtitleTextFieldRework>(AssetBundleConstants.UI, ModUIConstants.UI_SUBTITLE_TEXT_FIELD_REWORK);
+            if (subtitleTextFieldRework)
+            {
+                subtitleTextFieldRework.SetSiblingIndex(false);
+            }
+
+            UIPressActionKeyDescription pressActionKeyDescription = ModUIManager.Instance.Get<UIPressActionKeyDescription>(AssetBundleConstants.UI, ModUIConstants.UI_PRESS_ACTION_KEY_DESCRIPTION);
+            if (pressActionKeyDescription)
+            {
+                pressActionKeyDescription.SetSiblingIndex(false);
             }
 
             ModSettingsDataManager.Instance.Save();
@@ -167,7 +195,7 @@ namespace OverhaulMod.UI
 
         public void OnTabCreated(UIElementTab elementTab)
         {
-            UIElementTabWithText elementTabWithText = elementTab as UIElementTabWithText;
+            UIElementSettingsMenuCategoryTab elementTabWithText = elementTab as UIElementSettingsMenuCategoryTab;
             elementTabWithText.LocalizationID = $"settings_tab_{elementTab.tabId.ToLower()}";
         }
 
@@ -222,6 +250,9 @@ namespace OverhaulMod.UI
                 case "Gameplay":
                     populateGameplayPage(settingsMenu);
                     break;
+                case "Interface":
+                    populateInterfacePage(settingsMenu);
+                    break;
                 case "Graphics":
                     populateGraphicsPage(settingsMenu);
                     break;
@@ -258,10 +289,26 @@ namespace OverhaulMod.UI
 
             _ = pageBuilder.Header1("Graphics");
             _ = pageBuilder.Header3("Post effects");
-            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_SSAO), delegate (bool value)
+            _ = pageBuilder.ToggleWithOptions(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_SSAO), delegate (bool value)
             {
                 ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_SSAO, value, true);
-            }, "Ambient occlusion");
+            }, "Ambient occlusion", delegate
+            {
+                populateSSAOSettingsPage(m_selectedTabId);
+            });
+
+            bool moreEffectsEnabled = ModFeatures.IsEnabled(ModFeatures.FeatureType.MoreImageEffects);
+            if (moreEffectsEnabled)
+            {
+                _ = pageBuilder.ToggleWithOptions(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_CHROMATIC_ABERRATION), delegate (bool value)
+                {
+                    ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_CHROMATIC_ABERRATION, value, true);
+                }, "Chromatic aberration", delegate
+                {
+                    populateCASettingsPage(m_selectedTabId);
+                });
+            }
+
             _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_DITHERING), delegate (bool value)
             {
                 ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_DITHERING, value, true);
@@ -338,7 +385,7 @@ namespace OverhaulMod.UI
                     titleScreenCustomizationPanel.enableRework = ModUIManager.ShowTitleScreenRework;
                 }
 
-                ModUIUtils.ShowChangelogIfRequired(1f);
+                ModUIUtils.ShowNewUpdateMessageOrChangelog(1f, true, false);
 
                 Hide();
             });
@@ -365,11 +412,11 @@ namespace OverhaulMod.UI
             {
                 _ = ModUIConstants.ShowOverhaulUIManagementPanel(base.transform);
             });
-            _ = pageBuilder.Button("Configure UI enhancements", delegate
+            /*_ = pageBuilder.Button("Configure UI enhancements", delegate
             {
                 ClearPageContents();
                 populateUIPatchesPage(settingsMenu);
-            });
+            });*/
 
             _ = pageBuilder.KeyBind("Camera mode", (KeyCode)ModSettingsManager.GetIntValue(ModSettingsConstants.CAMERA_MODE_TOGGLE_KEYBIND), KeyCode.Y, delegate (KeyCode value)
             {
@@ -401,6 +448,72 @@ namespace OverhaulMod.UI
             });
         }
 
+        private void populateInterfacePage(SettingsMenu settingsMenu)
+        {
+            PageBuilder pageBuilder = new PageBuilder(this);
+            _ = pageBuilder.Header1("Game interface");
+            _ = pageBuilder.Toggle(!settingsMenu.HideGameUIToggle.isOn, OnHideGameUIToggleChanged, "Show game UI");
+            _ = pageBuilder.Toggle(settingsMenu.SubtitlesToggle.isOn, OnSubtitlesToggleChanged, "Show subtitles");
+            _ = pageBuilder.Button("Configure Overhaul mod UIs", delegate
+            {
+                _ = ModUIConstants.ShowOverhaulUIManagementPanel(base.transform);
+            });
+            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.SHOW_VERSION_LABEL), delegate (bool value)
+            {
+                ModSettingsManager.SetBoolValue(ModSettingsConstants.SHOW_VERSION_LABEL, value, true);
+            }, "Show Overhaul mod version");
+
+            _ = pageBuilder.Header1("Energy bar enhancements");
+            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENERGY_UI_REWORK), delegate (bool value)
+            {
+                ModSettingsManager.SetBoolValue(ModSettingsConstants.ENERGY_UI_REWORK, value, true);
+            }, "Energy bar redesign");
+            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENERGY_UI_FADE_OUT_IF_FULL), delegate (bool value)
+            {
+                ModSettingsManager.SetBoolValue(ModSettingsConstants.ENERGY_UI_FADE_OUT_IF_FULL, value, true);
+            }, "Fade out energy bar if full");
+            _ = pageBuilder.Header3("Fade out intensity");
+            _ = pageBuilder.Slider(0.1f, 1f, false, ModSettingsManager.GetFloatValue(ModSettingsConstants.ENERGY_UI_FADE_OUT_INTENSITY), delegate (float value)
+            {
+                ModSettingsManager.SetFloatValue(ModSettingsConstants.ENERGY_UI_FADE_OUT_INTENSITY, value, true);
+            }, true);
+            _ = pageBuilder.Button("Reset energy bar settings", delegate
+            {
+                ModSettingsManager.ResetValue(ModSettingsConstants.ENERGY_UI_REWORK, true);
+                ModSettingsManager.ResetValue(ModSettingsConstants.ENERGY_UI_FADE_OUT_IF_FULL, true);
+                ModSettingsManager.ResetValue(ModSettingsConstants.ENERGY_UI_FADE_OUT_INTENSITY, true);
+
+                ClearPageContents();
+                populateUIPatchesPage(settingsMenu);
+            });
+
+            _ = pageBuilder.Header1("Labels");
+            _ = pageBuilder.ToggleWithOptions(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_PRESS_BUTTON_TRIGGER_DESCRIPTION_REWORK), delegate (bool value)
+            {
+                ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_PRESS_BUTTON_TRIGGER_DESCRIPTION_REWORK, value, true);
+                if (value)
+                {
+                    PressActionKeyObjectManager.Instance.ShowThenHideDescription(ModCore.LoremIpsumText, 2f);
+                }
+            }, "Use key trigger description rework", delegate
+            {
+                populateUKTDReworkSettingsPage(m_selectedTabId);
+            });
+            _ = pageBuilder.ToggleWithOptions(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_SUBTITLE_TEXT_FIELD_REWORK), delegate (bool value)
+            {
+                ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_SUBTITLE_TEXT_FIELD_REWORK, value, true);
+                SpeechAudioManager.Instance.PlaySequence("CloneDroneIntro", false);
+            }, "Commentator subtitles rework", delegate
+            {
+                populateSubtitlesReworkSettingsPage(m_selectedTabId);
+            });
+            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.SHOW_SPEAKER_NAME), delegate (bool value)
+            {
+                ModSettingsManager.SetBoolValue(ModSettingsConstants.SHOW_SPEAKER_NAME, value, true);
+                SpeechAudioManager.Instance.PlaySequence("CloneDroneIntro", false);
+            }, "Display who's speaking");
+        }
+
         private void populateGraphicsPage(SettingsMenu settingsMenu)
         {
             settingsMenu.refreshResolutionOptions();
@@ -424,11 +537,27 @@ namespace OverhaulMod.UI
             _ = pageBuilder.Dropdown(settingsMenu.QualityDropDown.options, settingsMenu.QualityDropDown.value, OnQualityDropdownChanged);
             _ = pageBuilder.Dropdown(settingsMenu.AntiAliasingDropdown.options, settingsMenu.AntiAliasingDropdown.value, OnAntiAliasingDropdownChanged);
 
+            bool moreEffectsEnabled = ModFeatures.IsEnabled(ModFeatures.FeatureType.MoreImageEffects);
             _ = pageBuilder.Header3("Post effects");
-            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_SSAO), delegate (bool value)
+            _ = pageBuilder.ToggleWithOptions(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_SSAO), delegate (bool value)
             {
                 ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_SSAO, value, true);
-            }, "Ambient occlusion");
+            }, "Ambient occlusion", delegate
+            {
+                populateSSAOSettingsPage(m_selectedTabId);
+            });
+
+            if (moreEffectsEnabled)
+            {
+                _ = pageBuilder.ToggleWithOptions(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_CHROMATIC_ABERRATION), delegate (bool value)
+                {
+                    ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_CHROMATIC_ABERRATION, value, true);
+                }, "Chromatic aberration", delegate
+                {
+                    populateCASettingsPage(m_selectedTabId);
+                });
+            }
+
             _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_DITHERING), delegate (bool value)
             {
                 ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_DITHERING, value, true);
@@ -437,15 +566,51 @@ namespace OverhaulMod.UI
             {
                 ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_VIGNETTE, value, true);
             }, "Vignette");
-            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_BLOOM), delegate (bool value)
+            _ = pageBuilder.ToggleWithOptions(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_BLOOM), delegate (bool value)
             {
                 ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_BLOOM, value, true);
-            }, "Bloom");
-            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.TWEAK_BLOOM), delegate (bool value)
+            }, "Bloom", delegate
+            {
+                populateBloomSettingsPage(m_selectedTabId);
+            });
+
+            if (moreEffectsEnabled)
+            {
+                _ = pageBuilder.ToggleWithOptions(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_DOF), delegate (bool value)
+                {
+                    ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_DOF, value, true);
+                }, "Depth of field (DoF)", delegate
+                {
+                    populateCASettingsPage(m_selectedTabId);
+                });
+                _ = pageBuilder.ToggleWithOptions(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_SUN_SHAFTS), delegate (bool value)
+                {
+                    ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_SUN_SHAFTS, value, true);
+                }, "Sun shafts", delegate
+                {
+                    populateSSAOSettingsPage(m_selectedTabId);
+                });
+
+                _ = pageBuilder.Header3("Color blindness mode");
+                _ = pageBuilder.Dropdown(PostEffectsManager.ColorBlindnessOptions, ModSettingsManager.GetIntValue(ModSettingsConstants.COLOR_BLINDNESS_MODE), delegate (int value)
+                {
+                    ModSettingsManager.SetIntValue(ModSettingsConstants.COLOR_BLINDNESS_MODE, value, true);
+                });
+                _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.COLOR_BLINDNESS_AFFECT_UI), delegate (bool value)
+                {
+                    ModSettingsManager.SetBoolValue(ModSettingsConstants.COLOR_BLINDNESS_AFFECT_UI, value, true);
+                }, "Affect UI");
+            }
+            else
+            {
+                _ = pageBuilder.Header4("New post effects coming in update 4.3!");
+            }
+
+            /*_ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.TWEAK_BLOOM), delegate (bool value)
             {
                 ModSettingsManager.SetBoolValue(ModSettingsConstants.TWEAK_BLOOM, value, true);
             }, "Adjust bloom settings");
-            _ = pageBuilder.Header4("Disable this setting to revert the vanilla bloom");
+            _ = pageBuilder.Header4("Disable this setting to revert the vanilla bloom");*/
 
             if (ModFeatures.IsEnabled(ModFeatures.FeatureType.WeaponBag))
             {
@@ -470,7 +635,7 @@ namespace OverhaulMod.UI
 
             if (CameraFOVController.EnableFOVOverride)
             {
-                _ = pageBuilder.Slider(-10f, 40f, false, ModSettingsManager.GetFloatValue(ModSettingsConstants.CAMERA_FOV_OFFSET), delegate (float value)
+                _ = pageBuilder.Slider(-10f, 40f, true, ModSettingsManager.GetFloatValue(ModSettingsConstants.CAMERA_FOV_OFFSET), delegate (float value)
                 {
                     ModSettingsManager.SetFloatValue(ModSettingsConstants.CAMERA_FOV_OFFSET, value, true);
                 }, true, (float val) =>
@@ -490,9 +655,9 @@ namespace OverhaulMod.UI
             }, "Camera bobbing");
             _ = pageBuilder.Button("Reset camera settings", delegate
             {
-                ModSettingsManager.SetFloatValue(ModSettingsConstants.CAMERA_FOV_OFFSET, 0f, true);
-                ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_CAMERA_ROLLING, true, true);
-                ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_CAMERA_BOBBING, true, true);
+                ModSettingsManager.ResetValue(ModSettingsConstants.CAMERA_FOV_OFFSET, true);
+                ModSettingsManager.ResetValue(ModSettingsConstants.ENABLE_CAMERA_ROLLING, true);
+                ModSettingsManager.ResetValue(ModSettingsConstants.ENABLE_CAMERA_BOBBING, true);
                 PopulatePage("Graphics");
             });
 
@@ -770,16 +935,15 @@ namespace OverhaulMod.UI
                 return;
             }
 
-            _ = pageBuilder.Header1("Advanced settings");
-            _ = pageBuilder.Button("Switch save data", null);
-            _ = pageBuilder.Button("Reset game settings", null);
-            _ = pageBuilder.Button("Reset Overhaul settings", null);
-            _ = pageBuilder.Button("Reset ALL settings", null);
-
-            _ = pageBuilder.Header1("First person mode");
-            _ = pageBuilder.Header3("Shield transparency");
-            _ = pageBuilder.Slider(0f, 1f, false, 1f, null);
-            _ = pageBuilder.Toggle(false, null, "Damage indicator");
+            _ = pageBuilder.Header1("Reset settings");
+            _ = pageBuilder.Button("Reset Overhaul settings", delegate
+            {
+                ModUIUtils.MessagePopup(true, LocalizationManager.Instance.GetTranslatedString("settings_reset_settings_header"), LocalizationManager.Instance.GetTranslatedString("settings_reset_settings_description"), 125f, MessageMenu.ButtonLayout.EnableDisableButtons, "Ok", "Yes", "No", null, delegate
+                {
+                    ModSettingsManager.Instance.ResetSettings();
+                    _ = ModUIConstants.ShowRestartRequiredScreen(true);
+                });
+            });
         }
 
         private void populateUIPatchesPage(SettingsMenu settingsMenu)
@@ -807,9 +971,9 @@ namespace OverhaulMod.UI
             }, true);
             _ = pageBuilder.Button("Reset energy bar settings", delegate
             {
-                ModSettingsManager.SetBoolValue(ModSettingsConstants.ENERGY_UI_REWORK, true, true);
-                ModSettingsManager.SetBoolValue(ModSettingsConstants.ENERGY_UI_FADE_OUT_IF_FULL, true, true);
-                ModSettingsManager.SetFloatValue(ModSettingsConstants.ENERGY_UI_FADE_OUT_INTENSITY, 0.9f, true);
+                ModSettingsManager.ResetValue(ModSettingsConstants.ENERGY_UI_REWORK, true);
+                ModSettingsManager.ResetValue(ModSettingsConstants.ENERGY_UI_FADE_OUT_IF_FULL, true);
+                ModSettingsManager.ResetValue(ModSettingsConstants.ENERGY_UI_FADE_OUT_INTENSITY, true);
 
                 ClearPageContents();
                 populateUIPatchesPage(settingsMenu);
@@ -836,6 +1000,235 @@ namespace OverhaulMod.UI
             pageBuilder.LanguageButton("pt-BR", container);
             pageBuilder.LanguageButton("ja", container);
             pageBuilder.LanguageButton("ko", container);
+        }
+
+        private void populateSubtitlesReworkSettingsPage(string initialPage)
+        {
+            PageBuilder pageBuilder = new PageBuilder(this);
+            _ = pageBuilder.Button("Go back", delegate
+            {
+                ClearPageContents();
+                PopulatePage(initialPage);
+            });
+
+            _ = pageBuilder.Header1("Commentator subtitles rework");
+            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_SUBTITLE_TEXT_FIELD_REWORK), delegate (bool value)
+            {
+                ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_SUBTITLE_TEXT_FIELD_REWORK, value, true);
+                SpeechAudioManager.Instance.PlaySequence("CloneDroneIntro", false);
+            }, "Enable");
+            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.SUBTITLE_TEXT_FIELD_UPPER_POSITION), delegate (bool value)
+            {
+                ModSettingsManager.SetBoolValue(ModSettingsConstants.SUBTITLE_TEXT_FIELD_UPPER_POSITION, value, true);
+                SpeechAudioManager.Instance.PlaySequence("CloneDroneIntro", false);
+            }, "Be on top");
+            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.SUBTITLE_TEXT_FIELD_BG), delegate (bool value)
+            {
+                ModSettingsManager.SetBoolValue(ModSettingsConstants.SUBTITLE_TEXT_FIELD_BG, value, true);
+                SpeechAudioManager.Instance.PlaySequence("CloneDroneIntro", false);
+            }, "Enable background");
+
+            _ = pageBuilder.Header3("Font");
+            _ = pageBuilder.Dropdown(UISubtitleTextFieldRework.FontOptions, ModSettingsManager.GetIntValue(ModSettingsConstants.SUBTITLE_TEXT_FIELD_FONT), delegate (int value)
+            {
+                ModSettingsManager.SetIntValue(ModSettingsConstants.SUBTITLE_TEXT_FIELD_FONT, value, true);
+                SpeechAudioManager.Instance.PlaySequence("CloneDroneIntro", false);
+            });
+            _ = pageBuilder.Header4("Some languages might not be supported by certain fonts");
+            _ = pageBuilder.Header3("Font size");
+            _ = pageBuilder.Slider(8f, 15f, true, ModSettingsManager.GetIntValue(ModSettingsConstants.SUBTITLE_TEXT_FIELD_FONT_SIZE), delegate (float value)
+            {
+                ModSettingsManager.SetIntValue(ModSettingsConstants.SUBTITLE_TEXT_FIELD_FONT_SIZE, Mathf.RoundToInt(value), true);
+                SpeechAudioManager.Instance.PlaySequence("CloneDroneIntro", false);
+            }, true, (float val) =>
+            {
+                return $"{Mathf.RoundToInt(val)}";
+            });
+
+            _ = pageBuilder.Button("Reset settings", delegate
+            {
+                ModSettingsManager.ResetValue(ModSettingsConstants.ENABLE_SUBTITLE_TEXT_FIELD_REWORK, true);
+                ModSettingsManager.ResetValue(ModSettingsConstants.SUBTITLE_TEXT_FIELD_UPPER_POSITION, true);
+                ModSettingsManager.ResetValue(ModSettingsConstants.SUBTITLE_TEXT_FIELD_BG, true);
+                ModSettingsManager.ResetValue(ModSettingsConstants.SUBTITLE_TEXT_FIELD_FONT, true);
+                ModSettingsManager.ResetValue(ModSettingsConstants.SUBTITLE_TEXT_FIELD_FONT_SIZE, true);
+
+                ClearPageContents();
+                populateSubtitlesReworkSettingsPage(initialPage);
+            });
+        }
+
+        private void populateUKTDReworkSettingsPage(string initialPage)
+        {
+            PageBuilder pageBuilder = new PageBuilder(this);
+            _ = pageBuilder.Button("Go back", delegate
+            {
+                ClearPageContents();
+                PopulatePage(initialPage);
+            });
+
+            _ = pageBuilder.Header1("Use key trigger description rework");
+            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_PRESS_BUTTON_TRIGGER_DESCRIPTION_REWORK), delegate (bool value)
+            {
+                ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_PRESS_BUTTON_TRIGGER_DESCRIPTION_REWORK, value, true);
+                if (value)
+                {
+                    PressActionKeyObjectManager.Instance.ShowThenHideDescription(ModCore.LoremIpsumText, 2f);
+                }
+            }, "Enable");
+            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.PAK_DESCRIPTION_BG), delegate (bool value)
+            {
+                ModSettingsManager.SetBoolValue(ModSettingsConstants.PAK_DESCRIPTION_BG, value, true);
+                PressActionKeyObjectManager.Instance.ShowThenHideDescription(ModCore.LoremIpsumText, 2f);
+            }, "Enable background");
+
+            _ = pageBuilder.Header3("Font");
+            _ = pageBuilder.Dropdown(UISubtitleTextFieldRework.FontOptions, ModSettingsManager.GetIntValue(ModSettingsConstants.PAK_DESCRIPTION_FONT), delegate (int value)
+            {
+                ModSettingsManager.SetIntValue(ModSettingsConstants.PAK_DESCRIPTION_FONT, value, true);
+                PressActionKeyObjectManager.Instance.ShowThenHideDescription(ModCore.LoremIpsumText, 2f);
+            });
+            _ = pageBuilder.Header4("Some languages might not be supported by certain fonts");
+            _ = pageBuilder.Header3("Font size");
+            _ = pageBuilder.Slider(8f, 13f, true, ModSettingsManager.GetIntValue(ModSettingsConstants.PAK_DESCRIPTION_FONT_SIZE), delegate (float value)
+            {
+                ModSettingsManager.SetIntValue(ModSettingsConstants.PAK_DESCRIPTION_FONT_SIZE, Mathf.RoundToInt(value), true);
+                PressActionKeyObjectManager.Instance.ShowThenHideDescription(ModCore.LoremIpsumText, 2f);
+            }, true, (float val) =>
+            {
+                return $"{Mathf.RoundToInt(val)}";
+            });
+
+            _ = pageBuilder.Button("Reset settings", delegate
+            {
+                ModSettingsManager.ResetValue(ModSettingsConstants.ENABLE_PRESS_BUTTON_TRIGGER_DESCRIPTION_REWORK, true);
+                ModSettingsManager.ResetValue(ModSettingsConstants.PAK_DESCRIPTION_BG, true);
+                ModSettingsManager.ResetValue(ModSettingsConstants.PAK_DESCRIPTION_FONT, true);
+                ModSettingsManager.ResetValue(ModSettingsConstants.PAK_DESCRIPTION_FONT_SIZE, true);
+
+                ClearPageContents();
+                populateUKTDReworkSettingsPage(initialPage);
+            });
+        }
+
+        private void populateSSAOSettingsPage(string initialPage)
+        {
+            PageBuilder pageBuilder = new PageBuilder(this);
+            _ = pageBuilder.Button("Go back", delegate
+            {
+                ClearPageContents();
+                PopulatePage(initialPage);
+            });
+
+            _ = pageBuilder.Header1("Ambient occlusion settings");
+            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_SSAO), delegate (bool value)
+            {
+                ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_SSAO, value, true);
+            }, "Enable");
+
+            _ = pageBuilder.Header3("Intensity");
+            _ = pageBuilder.Slider(0.4f, 1.2f, false, ModSettingsManager.GetFloatValue(ModSettingsConstants.SSAO_INTENSITY), delegate (float value)
+            {
+                ModSettingsManager.SetFloatValue(ModSettingsConstants.SSAO_INTENSITY, value, true);
+            });
+
+            _ = pageBuilder.Header3("Sample count");
+            _ = pageBuilder.Slider(0f, 3f, true, ModSettingsManager.GetIntValue(ModSettingsConstants.SSAO_SAMPLE_COUNT), delegate (float value)
+            {
+                ModSettingsManager.SetIntValue(ModSettingsConstants.SSAO_SAMPLE_COUNT, Mathf.RoundToInt(value), true);
+            }, true, (float val) =>
+            {
+                SampleCountLevel sampleCountLevel = (SampleCountLevel)Mathf.RoundToInt(val);
+                switch (sampleCountLevel)
+                {
+                    case SampleCountLevel.Low:
+                        return "Low";
+                    case SampleCountLevel.Medium:
+                        return "Medium";
+                    case SampleCountLevel.High:
+                        return "High";
+                    case SampleCountLevel.VeryHigh:
+                        return "Very high";
+                }
+                return sampleCountLevel.ToString();
+            });
+
+            _ = pageBuilder.Button("Reset settings", delegate
+            {
+                ModSettingsManager.ResetValue(ModSettingsConstants.ENABLE_SSAO, true);
+                ModSettingsManager.ResetValue(ModSettingsConstants.SSAO_INTENSITY, true);
+                ModSettingsManager.ResetValue(ModSettingsConstants.SSAO_SAMPLE_COUNT, true);
+
+                ClearPageContents();
+                populateSSAOSettingsPage(initialPage);
+            });
+        }
+
+        private void populateCASettingsPage(string initialPage)
+        {
+            PageBuilder pageBuilder = new PageBuilder(this);
+            _ = pageBuilder.Button("Go back", delegate
+            {
+                ClearPageContents();
+                PopulatePage(initialPage);
+            });
+
+            _ = pageBuilder.Header1("Chromatic aberration settings");
+            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_CHROMATIC_ABERRATION), delegate (bool value)
+            {
+                ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_CHROMATIC_ABERRATION, value, true);
+            }, "Enable");
+
+            _ = pageBuilder.Header3("Intensity");
+            _ = pageBuilder.Slider(0.1f, 1f, false, ModSettingsManager.GetFloatValue(ModSettingsConstants.CHROMATIC_ABERRATION_INTENSITY), delegate (float value)
+            {
+                ModSettingsManager.SetFloatValue(ModSettingsConstants.CHROMATIC_ABERRATION_INTENSITY, value, true);
+            });
+
+            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.CHROMATIC_ABERRATION_ON_SCREEN_EDGES), delegate (bool value)
+            {
+                ModSettingsManager.SetBoolValue(ModSettingsConstants.CHROMATIC_ABERRATION_ON_SCREEN_EDGES, value, true);
+            }, "On screen edges");
+
+            _ = pageBuilder.Button("Reset settings", delegate
+            {
+                ModSettingsManager.ResetValue(ModSettingsConstants.ENABLE_CHROMATIC_ABERRATION, true);
+                ModSettingsManager.ResetValue(ModSettingsConstants.CHROMATIC_ABERRATION_INTENSITY, true);
+                ModSettingsManager.ResetValue(ModSettingsConstants.CHROMATIC_ABERRATION_ON_SCREEN_EDGES, true);
+
+                ClearPageContents();
+                populateCASettingsPage(initialPage);
+            });
+        }
+
+        private void populateBloomSettingsPage(string initialPage)
+        {
+            PageBuilder pageBuilder = new PageBuilder(this);
+            _ = pageBuilder.Button("Go back", delegate
+            {
+                ClearPageContents();
+                PopulatePage(initialPage);
+            });
+
+            _ = pageBuilder.Header1("Bloom settings");
+            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_BLOOM), delegate (bool value)
+            {
+                ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_BLOOM, value, true);
+            }, "Enable");
+
+            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.TWEAK_BLOOM), delegate (bool value)
+            {
+                ModSettingsManager.SetBoolValue(ModSettingsConstants.TWEAK_BLOOM, value, true);
+            }, "Adjust bloom settings");
+
+            _ = pageBuilder.Button("Reset settings", delegate
+            {
+                ModSettingsManager.ResetValue(ModSettingsConstants.ENABLE_BLOOM, true);
+                ModSettingsManager.ResetValue(ModSettingsConstants.TWEAK_BLOOM, true);
+
+                ClearPageContents();
+                populateBloomSettingsPage(initialPage);
+            });
         }
 
         private int getCurrentLanguageIndex()
@@ -1262,6 +1655,35 @@ namespace OverhaulMod.UI
                 toggle.isOn = isOn;
                 if (callback != null)
                     toggle.onValueChanged.AddListener(callback);
+                return toggle;
+            }
+
+            public Toggle ToggleWithOptions(bool isOn, UnityAction<bool> callback, string text, Action populatePageAction, bool localize = true, Transform parentOverride = null)
+            {
+                if (callback == null)
+                    callback = delegate { ModUIUtils.MessagePopupNotImplemented(); };
+
+                ModdedObject moddedObject = Instantiate(SettingsMenu.ToggleWithOptionsPrefab, parentOverride ? parentOverride : SettingsMenu.PageContentsTransform);
+                moddedObject.gameObject.SetActive(true);
+                Text textComponent = moddedObject.GetObject<Text>(2);
+                textComponent.text = text;
+                if (localize)
+                    addLocalizedTextField(textComponent, $"settings_checkbox_{text.ToLower().Replace(' ', '_')}");
+                Toggle toggle = moddedObject.GetObject<Toggle>(0);
+                toggle.isOn = isOn;
+                if (callback != null)
+                    toggle.onValueChanged.AddListener(callback);
+
+                Button button = moddedObject.GetObject<Button>(1);
+                button.onClick.AddListener(delegate
+                {
+                    if (populatePageAction != null)
+                    {
+                        SettingsMenu.ClearPageContents();
+                        populatePageAction();
+                    }
+                });
+
                 return toggle;
             }
 

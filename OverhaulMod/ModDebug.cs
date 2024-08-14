@@ -1,6 +1,7 @@
 ﻿using OverhaulMod.Utils;
 using System;
 using UnityEngine;
+using UnityStandardAssets.ImageEffects;
 
 namespace OverhaulMod
 {
@@ -36,6 +37,24 @@ namespace OverhaulMod
         {
             if (ModBuildInfo.debug || logInReleaseBuilds)
                 Debug.LogException(obj);
+        }
+
+        public static void AddAntialiasingEffect(Camera camera)
+        {
+            Antialiasing antialiasing = camera.gameObject.AddComponent<Antialiasing>();
+            antialiasing.dlaaShader = Shader.Find("Hidden/DLAA");
+            antialiasing.nfaaShader = Shader.Find("Hidden/NFAA");
+            antialiasing.ssaaShader = Shader.Find("Hidden/SSAA");
+            antialiasing.shaderFXAAII = Shader.Find("Hidden/FXAA II");
+            antialiasing.shaderFXAAIII = Shader.Find("Hidden/FXAA III (Console)");
+            antialiasing.shaderFXAAPreset2 = Shader.Find("Hidden/FXAA Preset 2");
+            antialiasing.shaderFXAAPreset3 = Shader.Find("Hidden/FXAA Preset 3");
+            antialiasing.mode = AAMode.FXAA2;
+        }
+
+        public static void AddDepthOfFieldEffect(Camera camera)
+        {
+            _ = camera.gameObject.AddComponent<DepthOfField>();
         }
 
         public static void MessagePopupTest()

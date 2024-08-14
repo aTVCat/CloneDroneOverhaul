@@ -1,5 +1,4 @@
 ﻿using HarmonyLib;
-using OverhaulMod.Combat;
 using OverhaulMod.Engine;
 using OverhaulMod.Utils;
 using UnityEngine;
@@ -47,8 +46,6 @@ namespace OverhaulMod.Patches
                         image.sprite = ModResources.Sprite(AssetBundleConstants.UI, "NA-HQ-128x128");
                     }
                 }
-
-                content.sizeDelta = ModUpgradesManager.Instance.GetOverrideSizeDeltaForUpgrade(upgradeDescription.UpgradeType, upgradeDescription.Level);
             }
         }
 

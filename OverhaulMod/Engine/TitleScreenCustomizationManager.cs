@@ -23,6 +23,8 @@ namespace OverhaulMod.Engine
 
         private GameObject m_levelIsLoadingBg;
 
+        private float m_timeToRefreshMusicTrack;
+
         public LevelDescription overrideLevelDescription
         {
             get;
@@ -38,7 +40,19 @@ namespace OverhaulMod.Engine
         public override void Awake()
         {
             base.Awake();
+
+            m_timeToRefreshMusicTrack = -1f;
+
             LoadCustomizationInfo();
+        }
+
+        private void Update()
+        {
+            if (m_timeToRefreshMusicTrack != -1f && Time.unscaledTime >= m_timeToRefreshMusicTrack)
+            {
+                m_timeToRefreshMusicTrack = -1f;
+                RefreshMusicTrack();
+            }
         }
 
         public void OnGameLoaded()
@@ -132,7 +146,10 @@ namespace OverhaulMod.Engine
 
         public List<Dropdown.OptionData> GetMusicTracks()
         {
-            List<Dropdown.OptionData> list = DropdownStringOptionData.GetOptionsData(AudioLibrary.Instance.GetMusicClipNames());
+            List<string> stringList = new List<string>(AudioLibrary.Instance.GetMusicClipNames());
+            _ = stringList.Remove("Chapter4TravelInTubesMusic");
+
+            List<Dropdown.OptionData> list = DropdownStringOptionData.GetOptionsData(stringList);
             list[0].text = "None";
             foreach (Dropdown.OptionData od in list)
             {
@@ -161,9 +178,18 @@ namespace OverhaulMod.Engine
             return list;
         }
 
+        public void RefreshMusicTrackDelayed(float time)
+        {
+            m_timeToRefreshMusicTrack = Time.unscaledTime + time;
+        }
+
         public void RefreshMusicTrack()
         {
             if (!GameModeManager.IsOnTitleScreen())
+                return;
+
+            CreditsCrawlAnimation creditsCrawlAnimation = ModCache.gameUIRoot.CreditsCrawl;
+            if (creditsCrawlAnimation && creditsCrawlAnimation._isShowing)
                 return;
 
             List<Dropdown.OptionData> list = GetMusicTracks();

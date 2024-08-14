@@ -1,8 +1,12 @@
 ManifestFileVersion: 0
 <<<<<<< HEAD
+<<<<<<< HEAD
 CRC: 3076249099
 =======
 CRC: 253251127
+>>>>>>> 0.4.x-development
+=======
+CRC: 715654934
 >>>>>>> 0.4.x-development
 AssetBundleManifest:
   AssetBundleInfos:
@@ -35,4 +39,7 @@ AssetBundleManifest:
       Dependencies: {}
     Info_9:
       Name: overhaul_models
+      Dependencies: {}
+    Info_10:
+      Name: overhaul_imageeffects
       Dependencies: {}

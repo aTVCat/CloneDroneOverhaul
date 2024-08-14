@@ -29,6 +29,8 @@ namespace OverhaulMod
         [ModSetting(ModSettingsConstants.STREAMER_MODE, true)]
         public static bool StreamerMode;
 
+        public static readonly string LoremIpsumText = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ut viverra diam, nec rhoncus dui. Suspendisse quis rutrum dolor.";
+
         public static bool EnterCustomizationEditor;
 
         public static event Action GameInitialized;
@@ -213,7 +215,7 @@ namespace OverhaulMod
             ModLoader.Load();
             GamePatchBehaviour.Load();
 
-            TriggerGameInitializedEvent();
+            //TriggerGameInitializedEvent();
             TriggerModStateChangedEvent(true);
 
             ModSpecialUtils.SetTitleBarStateDependingOnSettings();
@@ -229,7 +231,7 @@ namespace OverhaulMod
         public override void OnModLoaded()
         {
             instance = this;
-
+            GlobalEventManager.Instance.AddEventListenerOnce(GlobalEvents.GameInitializtionCompleted, TriggerGameInitializedEvent);
             ModLoader.Load();
         }
 
@@ -273,6 +275,7 @@ namespace OverhaulMod
         public override void OnLevelEditorStarted()
         {
             ArenaRemodelManager.Instance.SetUpperInteriorActive(false);
+            PostEffectsManager.Instance.RefreshCameraPostEffects();
         }
 
         public override void OnMultiplayerEventReceived(GenericStringForModdingEvent moddedEvent)
@@ -293,13 +296,6 @@ namespace OverhaulMod
         public override void OnUpgradesRefreshed(FirstPersonMover owner, UpgradeCollection upgrades)
         {
             owner.addWeaponToEquipppedIfHasUpgradeAndModelPresent(ModUpgradesManager.SCYTHE_UNLOCK_UPGRADE, ModWeaponsManager.SCYTHE_TYPE);
-            owner.addWeaponToEquipppedIfHasUpgradeAndModelPresent(ModUpgradesManager.AXE_UNLOCK_UPGRADE, ModWeaponsManager.BATTLE_AXE_TYPE);
-            owner.addWeaponToEquipppedIfHasUpgradeAndModelPresent(ModUpgradesManager.HALBERD_UNLOCK_UPGRADE, ModWeaponsManager.HALBERD_TYPE);
-            owner.addWeaponToEquipppedIfHasUpgradeAndModelPresent(ModUpgradesManager.DUAL_KNIVES_UNLOCK_UPGRADE, ModWeaponsManager.DUAL_KNIVES_TYPE);
-            owner.addWeaponToEquipppedIfHasUpgradeAndModelPresent(ModUpgradesManager.HANDS_UNLOCK_UPGRADE, ModWeaponsManager.HANDS_TYPE);
-            owner.addWeaponToEquipppedIfHasUpgradeAndModelPresent(ModUpgradesManager.CLAWS_UNLOCK_UPGRADE, ModWeaponsManager.CLAWS_TYPE);
-            owner.addWeaponToEquipppedIfHasUpgradeAndModelPresent(ModUpgradesManager.LASER_BLASTER_UPGRADE, ModWeaponsManager.PRIM_LASER_BLASTER_TYPE);
-            owner.addWeaponToEquipppedIfHasUpgradeAndModelPresent(ModUpgradesManager.BOOMERANG_FIRE_UPGRADE, ModWeaponsManager.BOOMERANG_TYPE);
             owner.RefreshModWeaponModels();
 
             RobotInventory robotInventory = ModComponentCache.GetRobotInventory(owner.transform);

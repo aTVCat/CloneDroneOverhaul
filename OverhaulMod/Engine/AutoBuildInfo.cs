@@ -5,6 +5,8 @@ namespace OverhaulMod.Engine
 {
     public class AutoBuildInfo
     {
+        public string Name;
+
         public List<UpgradeTypeAndLevel> Upgrades;
 
         public int SkillPoints;
@@ -13,6 +15,9 @@ namespace OverhaulMod.Engine
         {
             if (Upgrades == null)
                 Upgrades = new List<UpgradeTypeAndLevel>();
+
+            if (Name.IsNullOrEmpty())
+                Name = "Unnamed build";
         }
 
         public void SetUpgradesFromData(int skillPoints)
