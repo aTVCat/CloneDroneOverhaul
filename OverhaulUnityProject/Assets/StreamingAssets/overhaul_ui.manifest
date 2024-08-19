@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 4152140112
+CRC: 2326654995
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 38c2a9e323aaedc49f84cfe2c40071ee
+    Hash: 8784d987c954ef4d0c9dcf03080f87e8
   TypeTreeHash:
     serializedVersion: 2
     Hash: acf1344b0dbbc80b9165ec9e7dce57f8
@@ -181,6 +181,7 @@ Assets:
 - Assets/Sprites/Glyphs/SysDrive-Mini-16x16.png
 - Assets/UI/UI_OverhaulModInfoWindow.prefab
 - Assets/UI/UI_Tooltips.prefab
+- Assets/UI/UI_UpdatesWindowRework.prefab
 - Assets/UI/UI_UpdateInfoEditor.prefab
 - Assets/UI/UI_MPSelectScreen.prefab
 - Assets/UI/UI_PersonalizationEditorItemsBrowser.prefab

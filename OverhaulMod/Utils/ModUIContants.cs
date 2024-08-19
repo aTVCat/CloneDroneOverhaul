@@ -87,6 +87,7 @@ namespace OverhaulMod.Utils
         public const string UI_AUTO_BUILD_SELECTION_MENU = "UI_AutoBuildSelectionMenu";
         public const string UI_PERSONALIZATION_EDITOR_PLAYTEST_HUD = "UI_PersonalizationEditorPlaytestHUD";
         public const string UI_PERSONALIZATION_EDITOR_ITEM_IMPORT_DIALOG = "UI_PersonalizationEditorItemImportDialog";
+        public const string UI_UPDATES_WINDOW_REWORK = "UI_UpdatesWindowRework";
 
         public static UIVersionLabel ShowVersionLabel()
         {
@@ -542,6 +543,11 @@ namespace OverhaulMod.Utils
         public static UIPersonalizationEditorItemImportDialog ShowPersonalizationEditorItemImportDialog(Transform transform)
         {
             return ModUIManager.Instance.Show<UIPersonalizationEditorItemImportDialog>(AssetBundleConstants.UI, UI_PERSONALIZATION_EDITOR_ITEM_IMPORT_DIALOG, transform);
+        }
+
+        public static UIUpdatesWindowRework ShowUpdatesWindowRework()
+        {
+            return ModUIManager.Instance.Show<UIUpdatesWindowRework>(AssetBundleConstants.UI, UI_UPDATES_WINDOW_REWORK, ModUIManager.UILayer.AfterTitleScreen);
         }
     }
 }

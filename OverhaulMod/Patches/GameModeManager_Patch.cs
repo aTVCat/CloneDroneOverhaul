@@ -10,7 +10,7 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(GameModeManager.UsesMultiplayerSpeedMultiplier))]
         private static void UsesMultiplayerSpeedMultiplier_Postfix(ref bool __result)
         {
-            if (!ModBuildInfo.ENABLE_V5)
+            if (!ModBuildInfo.VERSION_5)
                 return;
 
             if (ModFeatures.IsEnabled(ModFeatures.FeatureType.StoryModeModifiers) && GameModeManager.Is(GameMode.Story))

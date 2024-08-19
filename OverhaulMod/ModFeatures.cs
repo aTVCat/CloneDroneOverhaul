@@ -102,10 +102,13 @@ namespace OverhaulMod
                     result = true;
                     break;
                 case FeatureType.MoreImageEffects:
-                    result = false;
+                    result = ModBuildInfo.VERSION_4_3;
                     break;
                 case FeatureType.SubtitleTextFieldRework:
                     result = true;
+                    break;
+                case FeatureType.UpdatesMenuRework:
+                    result = ModBuildInfo.VERSION_4_3;
                     break;
                 default:
                     return false;
@@ -175,6 +178,8 @@ namespace OverhaulMod
             MoreImageEffects,
 
             SubtitleTextFieldRework,
+
+            UpdatesMenuRework
         }
     }
 }

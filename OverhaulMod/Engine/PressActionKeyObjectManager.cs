@@ -1,5 +1,6 @@
 ﻿using OverhaulMod.UI;
 using OverhaulMod.Utils;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -13,11 +14,17 @@ namespace OverhaulMod.Engine
 
         public static readonly Color BGGlowColor = new Color(0.65f, 0.75f, 1f, 0.3f);
 
+        public static readonly Color FramingBoxSelectedColor = new Color(0f, 0.42f, 0.72f, 0.63f);
+
+        public static readonly Color FramingBoxDeselectedColor = new Color(0.4f, 0.4f, 0.4f, 0.3f);
+
         private List<LevelEditorUseButtonTrigger> m_triggers;
 
         private UIPressActionKeyDescription m_pressActionKeyDescription;
 
         private LevelEditorUseButtonTrigger m_prevNearestTrigger;
+
+        private Coroutine m_coroutine;
 
         private float m_timeToHideText;
 
@@ -37,49 +44,82 @@ namespace OverhaulMod.Engine
                 HideDescription();
             }
 
-            if (EnablePressButtonTriggerDescriptionRework && ModTime.hasFixedUpdated)
+            if (!EnablePressButtonTriggerDescriptionRework || !ModTime.hasFixedUpdated)
+                return;
+
+            CharacterTracker characterTracker = CharacterTracker.Instance;
+
+            float dist = float.MaxValue;
+            LevelEditorUseButtonTrigger nearestTrigger = null;
+            foreach (LevelEditorUseButtonTrigger trigger in m_triggers)
             {
-                CharacterTracker characterTracker = CharacterTracker.Instance;
+                if (!trigger || !trigger.CanBeActivated())
+                    continue;
 
-                float dist = float.MaxValue;
-                LevelEditorUseButtonTrigger nearestTrigger = null;
-                foreach (LevelEditorUseButtonTrigger trigger in m_triggers)
+                float newDist = characterTracker.GetDistanceToPlayer(trigger.transform.position);
+                if (newDist < dist)
                 {
-                    if (!trigger || !trigger.CanBeActivated())
-                        continue;
-
-                    float newDist = characterTracker.GetDistanceToPlayer(trigger.transform.position);
-                    if (newDist < dist)
-                    {
-                        dist = newDist;
-                        nearestTrigger = trigger;
-                    }
-                }
-
-                if (m_prevNearestTrigger != nearestTrigger)
-                {
-                    m_prevNearestTrigger = nearestTrigger;
-                    if (nearestTrigger != null)
-                    {
-                        string description = nearestTrigger.Description;
-                        LocalizationManager localizationManager = LocalizationManager.Instance;
-                        if (localizationManager && localizationManager.HasTranslatedString(description))
-                            description = localizationManager.GetTranslatedString(description);
-
-                        ShowDescription(description);
-                    }
-                    else
-                    {
-                        HideDescription();
-                    }
+                    dist = newDist;
+                    nearestTrigger = trigger;
                 }
             }
+
+            if (m_prevNearestTrigger != nearestTrigger)
+            {
+                if(m_coroutine != null)
+                {
+                    StopCoroutine(m_coroutine);
+                    m_coroutine = null;
+                }
+
+                if(nearestTrigger == null)
+                {
+                    HideDescription();
+                    m_prevNearestTrigger = null;
+                }
+                else
+                {
+                    m_coroutine = StartCoroutine(processTriggerCoroutine(nearestTrigger, m_prevNearestTrigger));
+                    m_prevNearestTrigger = nearestTrigger;
+                }
+            }
+        }
+
+        private IEnumerator processTriggerCoroutine(LevelEditorUseButtonTrigger t, LevelEditorUseButtonTrigger prevNearestTrigger)
+        {
+            float timeout = Time.unscaledTime + 2f;
+            while (Time.unscaledTime < timeout && t && !t._keyboardHint)
+                yield return null;
+
+            if (Time.unscaledTime > timeout && !t || !t._keyboardHint)
+                yield break;
+
+            SetFramingBoxSelectedColor(t._keyboardHint.transform, true);
+            if (prevNearestTrigger && prevNearestTrigger._keyboardHint)
+                SetFramingBoxSelectedColor(prevNearestTrigger._keyboardHint.transform, false);
+
+            string description = t.Description;
+            if (description.IsNullOrEmpty() || description.IsNullOrWhiteSpace())
+            {
+                HideDescription();
+                yield break;
+            }
+
+            LocalizationManager localizationManager = LocalizationManager.Instance;
+            if (localizationManager && localizationManager.HasTranslatedString(description))
+                description = localizationManager.GetTranslatedString(description);
+
+            ShowDescription(description);
+            yield break;
         }
 
         public void SetTriggerRegistered(LevelEditorUseButtonTrigger trigger, bool value)
         {
             if (trigger == null)
                 return;
+
+            if (value && trigger.KeyboardHintPrefab)
+                SetFramingBoxSelectedColor(trigger.KeyboardHintPrefab.transform, false);
 
             if (value && !m_triggers.Contains(trigger))
                 m_triggers.Add(trigger);
@@ -131,6 +171,22 @@ namespace OverhaulMod.Engine
                 {
                     image.sprite = ModResources.Sprite(AssetBundleConstants.UI, "Glow-2-256x256");
                     image.color = PressActionKeyObjectManager.BGGlowColor;
+                }
+            }
+        }
+
+        public static void SetFramingBoxSelectedColor(Transform keyboardHintTransform, bool value)
+        {
+            if (!keyboardHintTransform)
+                return;
+
+            Transform framingBox = TransformUtils.FindChildRecursive(keyboardHintTransform, "FramingBox");
+            if (framingBox)
+            {
+                Image image = framingBox.GetComponent<Image>();
+                if (image)
+                {
+                    image.color = value ? FramingBoxSelectedColor : FramingBoxDeselectedColor;
                 }
             }
         }
