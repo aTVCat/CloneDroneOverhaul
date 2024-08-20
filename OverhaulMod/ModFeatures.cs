@@ -113,6 +113,9 @@ namespace OverhaulMod
                 case FeatureType.RequireNormalAndFireVariantsForSwordAndSpearSkins:
                     result = false;
                     break;
+                case FeatureType.DisplayDisconnectedPlayers:
+                    result = true;
+                    break;
                 default:
                     return false;
             }
@@ -184,7 +187,9 @@ namespace OverhaulMod
 
             UpdatesMenuRework,
 
-            RequireNormalAndFireVariantsForSwordAndSpearSkins
+            RequireNormalAndFireVariantsForSwordAndSpearSkins,
+
+            DisplayDisconnectedPlayers
         }
     }
 }

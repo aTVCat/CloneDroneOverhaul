@@ -298,7 +298,7 @@ namespace OverhaulMod.UI
                     continue;
                 }
 
-                if (playerInfoState.IsDisconnected)
+                if (playerInfoState.IsDisconnected && !ModFeatures.IsEnabled(ModFeatures.FeatureType.DisplayDisconnectedPlayers))
                     continue;
 
                 ModdedObject playerDisplay = Instantiate(m_playerInfoDisplayPrefab, m_playerInfoDisplayContainer);
@@ -318,6 +318,7 @@ namespace OverhaulMod.UI
                 countLabel.enabled = GameModeManager.IsBattleRoyale() || GameModeManager.IsMultiplayerDuel();
                 playerDisplay.GetObject<Text>(2).text = GetPlatformString((PlayFab.ClientModels.LoginIdentityProvider)playerInfoState.PlatformID);
                 playerDisplay.GetObject<RawImage>(3).enabled = canShowIcons;
+                playerDisplay.GetObject<GameObject>(4).SetActive(playerInfoState.IsDisconnected);
                 playerDisplay.GetObject<GameObject>(6).SetActive(canShowIcons);
                 playerDisplay.GetObject<GameObject>(7).SetActive(!canShowIcons);
 
