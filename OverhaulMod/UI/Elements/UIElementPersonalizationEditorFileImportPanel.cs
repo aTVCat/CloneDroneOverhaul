@@ -8,6 +8,8 @@ namespace OverhaulMod.UI
 {
     public class UIElementPersonalizationEditorFileImportPanel : OverhaulUIBehaviour
     {
+        public static bool HasShownMagicaVoxelTip;
+
         [UIElementAction(nameof(OnHelpButtonClicked))]
         [UIElement("HelpButton")]
         private readonly Button m_helpButton;
@@ -19,6 +21,10 @@ namespace OverhaulMod.UI
         [UIElementAction(nameof(OnImportCvmButtonClicked))]
         [UIElement("ImportCvmButton")]
         private readonly Button m_importCvmButton;
+
+        [UIElementAction(nameof(OnMagicaVoxelTipButtonClicked))]
+        [UIElement("MagicaVoxelTipButton")]
+        private readonly Button m_magicaVoxelTipButton;
 
         [UIElement("FileDisplayPrefab", false)]
         private readonly ModdedObject m_fileDisplayPrefab;
@@ -105,6 +111,11 @@ namespace OverhaulMod.UI
             }, initialFolder, pattern);
         }
 
+        private void voxFileImportDialog()
+        {
+            importFileDialog(InternalModBot.ModsManager.Instance.ModFolderPath, "*.vox");
+        }
+
         public void OnHelpButtonClicked()
         {
             _ = ModUIConstants.ShowPersonalizationEditorHelpMenu(UIPersonalizationEditor.instance.transform);
@@ -112,12 +123,24 @@ namespace OverhaulMod.UI
 
         public void OnImportVoxButtonClicked()
         {
-            importFileDialog(InternalModBot.ModsManager.Instance.ModFolderPath, "*.vox");
+            if (!HasShownMagicaVoxelTip)
+            {
+                UIPersonalizationEditorMagicaVoxelTip tip = ModUIConstants.ShowPersonalizationEditorMagicaVoxelTip(UIPersonalizationEditor.instance.transform);
+                tip.Callback = voxFileImportDialog;
+                return;
+            }
+            voxFileImportDialog();
         }
 
         public void OnImportCvmButtonClicked()
         {
             importFileDialog(Path.Combine(Application.persistentDataPath, "CustomModels"), "*.cvm");
+        }
+
+        public void OnMagicaVoxelTipButtonClicked()
+        {
+            UIPersonalizationEditorMagicaVoxelTip tip = ModUIConstants.ShowPersonalizationEditorMagicaVoxelTip(UIPersonalizationEditor.instance.transform);
+            tip.Callback = null;
         }
     }
 }

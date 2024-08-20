@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 2326654995
+CRC: 2227138580
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 8784d987c954ef4d0c9dcf03080f87e8
+    Hash: bc1fbd8ae0e024a348a374db13fa2ce2
   TypeTreeHash:
     serializedVersion: 2
     Hash: acf1344b0dbbc80b9165ec9e7dce57f8
@@ -106,6 +106,7 @@ Assets:
 - Assets/UI/UI_ImageExplorer.prefab
 - Assets/UI/UI_EndlessGameLossWindow.prefab
 - Assets/UI/UI_ExclusiveContentEditor.prefab
+- Assets/UI/UI_PersonalizationEditorMagicaVoxelTip.prefab
 - Assets/Font/Edit-Undo.ttf
 - Assets/UI/UI_MessagePopupFullScreen.prefab
 - Assets/UI/UI_WorkshopItemPageWindow.prefab

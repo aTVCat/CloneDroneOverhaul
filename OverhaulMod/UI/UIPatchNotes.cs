@@ -3,6 +3,7 @@ using OverhaulMod.Utils;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -54,6 +55,10 @@ namespace OverhaulMod.UI
             foreach (string directory in Directory.GetDirectories(path))
             {
                 string dirName = ModIOUtils.GetDirectoryName(directory);
+
+                if (dirName.Contains("4.3") && !ModBuildInfo.VERSION_4_3)
+                    continue;
+
                 if (!Version.TryParse(dirName, out Version version))
                     version = new Version(0, 0, 0, 0);
 

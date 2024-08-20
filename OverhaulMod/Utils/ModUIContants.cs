@@ -88,6 +88,7 @@ namespace OverhaulMod.Utils
         public const string UI_PERSONALIZATION_EDITOR_PLAYTEST_HUD = "UI_PersonalizationEditorPlaytestHUD";
         public const string UI_PERSONALIZATION_EDITOR_ITEM_IMPORT_DIALOG = "UI_PersonalizationEditorItemImportDialog";
         public const string UI_UPDATES_WINDOW_REWORK = "UI_UpdatesWindowRework";
+        public const string UI_PERSONALIZATION_EDITOR_MAGICA_VOXEL_TIP = "UI_PersonalizationEditorMagicaVoxelTip";
 
         public static UIVersionLabel ShowVersionLabel()
         {
@@ -548,6 +549,11 @@ namespace OverhaulMod.Utils
         public static UIUpdatesWindowRework ShowUpdatesWindowRework()
         {
             return ModUIManager.Instance.Show<UIUpdatesWindowRework>(AssetBundleConstants.UI, UI_UPDATES_WINDOW_REWORK, ModUIManager.UILayer.AfterTitleScreen);
+        }
+
+        public static UIPersonalizationEditorMagicaVoxelTip ShowPersonalizationEditorMagicaVoxelTip(Transform transform)
+        {
+            return ModUIManager.Instance.Show<UIPersonalizationEditorMagicaVoxelTip>(AssetBundleConstants.UI, UI_PERSONALIZATION_EDITOR_MAGICA_VOXEL_TIP, transform);
         }
     }
 }
