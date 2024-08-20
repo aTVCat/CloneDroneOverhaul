@@ -29,6 +29,23 @@ namespace OverhaulMod.Content.Personalization
                     break;
             }
 
+            PersonalizationEditorObjectCVMModel[] cvmModels = root.GetComponentsInChildren<PersonalizationEditorObjectCVMModel>(true);
+            foreach (PersonalizationEditorObjectCVMModel cvmModel in cvmModels)
+            {
+                System.Collections.Generic.Dictionary<WeaponVariant, CVMModelPreset> d = cvmModel.presets;
+                if (d.IsNullOrEmpty())
+                    continue;
+
+                if (d.ContainsKey(weaponVariant))
+                {
+                    CVMModelPreset cvmModelPreset = d[weaponVariant];
+                    if (cvmModelPreset != null && !cvmModelPreset.CvmFilePath.IsNullOrEmpty() && File.Exists(Path.Combine(root.ControllerInfo.ItemInfo.RootFolderPath, cvmModelPreset.CvmFilePath)))
+                    {
+                        return true;
+                    }
+                }
+            }
+
             PersonalizationEditorObjectVolume[] volumes = root.GetComponentsInChildren<PersonalizationEditorObjectVolume>(true);
             foreach (PersonalizationEditorObjectVolume volume in volumes)
             {

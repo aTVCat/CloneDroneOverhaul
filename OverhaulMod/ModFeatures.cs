@@ -110,6 +110,9 @@ namespace OverhaulMod
                 case FeatureType.UpdatesMenuRework:
                     result = ModBuildInfo.VERSION_4_3;
                     break;
+                case FeatureType.RequireNormalAndFireVariantsForSwordAndSpearSkins:
+                    result = false;
+                    break;
                 default:
                     return false;
             }
@@ -179,7 +182,9 @@ namespace OverhaulMod
 
             SubtitleTextFieldRework,
 
-            UpdatesMenuRework
+            UpdatesMenuRework,
+
+            RequireNormalAndFireVariantsForSwordAndSpearSkins
         }
     }
 }
