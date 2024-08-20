@@ -485,5 +485,10 @@ namespace OverhaulMod.Utils
         /// <see cref="UI.UIPressActionKeyDescription"/>
         /// </summary>
         public const string PAK_DESCRIPTION_FONT_SIZE = "PAKFontSize";
+
+        /// <summary>
+        /// <see cref="Visuals.FPSManager"/>
+        /// </summary>
+        public const string FPS_CAP = "FPSCap";
     }
 }

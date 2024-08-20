@@ -33,11 +33,6 @@ namespace OverhaulMod
             ModBuildInfo.Load();
             ModFeatures.CacheValues();
 
-            QualitySettings.asyncUploadTimeSlice = 4;
-            QualitySettings.asyncUploadBufferSize = 16;
-            QualitySettings.asyncUploadPersistentBuffer = true;
-            QualitySettings.softParticles = true;
-
             GameObject gameObject = new GameObject("OverhaulManagers", new Type[] { typeof(ModManagers) });
             UnityEngine.Object.DontDestroyOnLoad(gameObject);
 
@@ -47,6 +42,12 @@ namespace OverhaulMod
 
             addLevelEditorObjects();
             addListeners();
+
+            QualitySettings.asyncUploadTimeSlice = 4;
+            QualitySettings.asyncUploadBufferSize = 16;
+            QualitySettings.asyncUploadPersistentBuffer = true;
+            QualitySettings.softParticles = true;
+            FPSManager.RefreshFPSCap();
         }
 
         public static void Unload()
@@ -110,6 +111,7 @@ namespace OverhaulMod
             _ = ModManagers.NewSingleton<RealisticLightingManager>();
             _ = ModManagers.NewSingleton<ParticleManager>();
             _ = ModManagers.NewSingleton<PostEffectsManager>();
+            _ = ModManagers.NewSingleton<FPSManager>();
             if (ModFeatures.IsEnabled(ModFeatures.FeatureType.QuickReset)) _ = ModManagers.NewSingleton<QuickResetManager>();
             _ = ModManagers.NewSingleton<AutoBuildManager>();
 
@@ -164,6 +166,7 @@ namespace OverhaulMod
             modSettingsManager.AddSettingValueChangedListener(refreshCameraPostEffects, ModSettingsConstants.ENABLE_DITHERING);
             modSettingsManager.AddSettingValueChangedListener(refreshCameraPostEffects, ModSettingsConstants.ENABLE_VIGNETTE);
             modSettingsManager.AddSettingValueChangedListener(refreshCameraPostEffects, ModSettingsConstants.ENABLE_SUN_SHAFTS);
+            modSettingsManager.AddSettingValueChangedListener(refreshFPSCap, ModSettingsConstants.FPS_CAP);
             modSettingsManager.AddSettingValueChangedListener(delegate (object obj)
             {
                 PressActionKeyObjectManager manager = PressActionKeyObjectManager.Instance;
@@ -203,6 +206,11 @@ namespace OverhaulMod
         private static void refreshCameraPostEffects(object obj)
         {
             PostEffectsManager.Instance.RefreshCameraPostEffects();
+        }
+
+        private static void refreshFPSCap(object obj)
+        {
+            FPSManager.RefreshFPSCap();
         }
 
         private static void loadGameUIThemeData()

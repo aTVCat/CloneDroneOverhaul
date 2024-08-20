@@ -60,6 +60,7 @@ namespace OverhaulMod.UI.Elements
                     break;
                 case "Graphics":
                     InitializeSubcategoryDisplay("Window", true);
+                    InitializeSubcategoryDisplay("FPS settings", true);
                     InitializeSubcategoryDisplay("Render", true);
                     InitializeSubcategoryDisplay("Post effects", true);
                     if (ModFeatures.IsEnabled(ModFeatures.FeatureType.MoreImageEffects)) InitializeSubcategoryDisplay("Color blindness mode", true);

@@ -493,7 +493,7 @@ namespace OverhaulMod.UI
                 ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_PRESS_BUTTON_TRIGGER_DESCRIPTION_REWORK, value, true);
                 if (value)
                 {
-                    PressActionKeyObjectManager.Instance.ShowThenHideDescription(ModCore.LoremIpsumText, 2f);
+                    PressActionKeyObjectManager.Instance.ShowThenHideDescription(ModConstants.LoremIpsumText, 2f);
                 }
             }, "Use key trigger description rework", delegate
             {
@@ -523,7 +523,6 @@ namespace OverhaulMod.UI
             _ = pageBuilder.Header3("Window");
             _ = pageBuilder.Dropdown(settingsMenu.ScreenResolutionDropDown.options, settingsMenu.ScreenResolutionDropDown.value, OnScreenResolutionChanged);
             _ = pageBuilder.Toggle(settingsMenu.FullScreenToggle.isOn, OnFullScreenChanged, "Fullscreen");
-            _ = pageBuilder.Toggle(settingsMenu.VsyncOnToggle.isOn, OnVSyncChanged, "V-Sync");
 
             if (ModSpecialUtils.SupportsTitleBarOverhaul())
             {
@@ -531,6 +530,42 @@ namespace OverhaulMod.UI
                 {
                     ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_TITLE_BAR_OVERHAUL, value, true);
                 }, "Enable title bar changes");
+            }
+
+            bool vsyncToggleValue = settingsMenu.VsyncOnToggle.isOn;
+            _ = pageBuilder.Header3("FPS settings");
+            _ = pageBuilder.Toggle(vsyncToggleValue, delegate (bool value)
+            {
+                OnVSyncChanged(value);
+                PopulatePage("Graphics");
+            }, "V-Sync");
+
+            int fpsCapValue = FPSManager.Instance.GetFPSCapDropdownValue();
+            Dropdown fpsCapDropdown = pageBuilder.Dropdown(FPSManager.FPSCapOptions, fpsCapValue, delegate (int value)
+            {
+                FPSManager.Instance.SetFPSCapDropdownValue(value);
+                PopulatePage("Graphics");
+            });
+            fpsCapDropdown.interactable = !vsyncToggleValue;
+
+            if (vsyncToggleValue)
+            {
+                _ = pageBuilder.Header4("Turn off V-Sync to customize FPS");
+            }
+
+            if (!vsyncToggleValue && fpsCapValue == 0)
+            {
+                Slider fpsCapSlider = pageBuilder.Slider(2, 100, true, Mathf.RoundToInt(ModSettingsManager.GetIntValue(ModSettingsConstants.FPS_CAP) / 5f), delegate (float value)
+                {
+                    ModSettingsManager.SetIntValue(ModSettingsConstants.FPS_CAP, Mathf.RoundToInt(value * 5f), true);
+                }, true, (float val) =>
+                {
+                    return $"{Mathf.RoundToInt(val * 5f)} FPS";
+                });
+                RectTransform fpsCapSliderRectTransform = fpsCapSlider.transform as RectTransform;
+                Vector2 fpsCapSliderRectTransformSizeDelta = fpsCapSliderRectTransform.sizeDelta;
+                fpsCapSliderRectTransformSizeDelta.x = 325f;
+                fpsCapSliderRectTransform.sizeDelta = fpsCapSliderRectTransformSizeDelta;
             }
 
             _ = pageBuilder.Header3("Render");
@@ -1073,27 +1108,27 @@ namespace OverhaulMod.UI
                 ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_PRESS_BUTTON_TRIGGER_DESCRIPTION_REWORK, value, true);
                 if (value)
                 {
-                    PressActionKeyObjectManager.Instance.ShowThenHideDescription(ModCore.LoremIpsumText, 2f);
+                    PressActionKeyObjectManager.Instance.ShowThenHideDescription(ModConstants.LoremIpsumText, 2f);
                 }
             }, "Enable");
             _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.PAK_DESCRIPTION_BG), delegate (bool value)
             {
                 ModSettingsManager.SetBoolValue(ModSettingsConstants.PAK_DESCRIPTION_BG, value, true);
-                PressActionKeyObjectManager.Instance.ShowThenHideDescription(ModCore.LoremIpsumText, 2f);
+                PressActionKeyObjectManager.Instance.ShowThenHideDescription(ModConstants.LoremIpsumText, 2f);
             }, "Enable background");
 
             _ = pageBuilder.Header3("Font");
             _ = pageBuilder.Dropdown(UISubtitleTextFieldRework.FontOptions, ModSettingsManager.GetIntValue(ModSettingsConstants.PAK_DESCRIPTION_FONT), delegate (int value)
             {
                 ModSettingsManager.SetIntValue(ModSettingsConstants.PAK_DESCRIPTION_FONT, value, true);
-                PressActionKeyObjectManager.Instance.ShowThenHideDescription(ModCore.LoremIpsumText, 2f);
+                PressActionKeyObjectManager.Instance.ShowThenHideDescription(ModConstants.LoremIpsumText, 2f);
             });
             _ = pageBuilder.Header4("Some languages might not be supported by certain fonts");
             _ = pageBuilder.Header3("Font size");
             _ = pageBuilder.Slider(8f, 13f, true, ModSettingsManager.GetIntValue(ModSettingsConstants.PAK_DESCRIPTION_FONT_SIZE), delegate (float value)
             {
                 ModSettingsManager.SetIntValue(ModSettingsConstants.PAK_DESCRIPTION_FONT_SIZE, Mathf.RoundToInt(value), true);
-                PressActionKeyObjectManager.Instance.ShowThenHideDescription(ModCore.LoremIpsumText, 2f);
+                PressActionKeyObjectManager.Instance.ShowThenHideDescription(ModConstants.LoremIpsumText, 2f);
             }, true, (float val) =>
             {
                 return $"{Mathf.RoundToInt(val)}";
