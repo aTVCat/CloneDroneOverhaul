@@ -394,6 +394,14 @@ namespace OverhaulMod.UI
         private void populateHomePage(SettingsMenu settingsMenu)
         {
             PageBuilder pageBuilder = new PageBuilder(this);
+            if (ModBuildInfo.debug)
+            {
+                _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_DEBUG_MENU), delegate (bool value)
+                {
+                    ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_DEBUG_MENU, value, true);
+                }, "Debug menu");
+            }
+
             _ = pageBuilder.Header1("Game interface");
             //_ = pageBuilder.Header3("Language");
             //_ = pageBuilder.Dropdown(ModLocalizationManager.Instance.GetLanguageOptions(false), getCurrentLanguageIndex(), OnLanguageDropdownChanged);
@@ -550,7 +558,7 @@ namespace OverhaulMod.UI
 
             if (vsyncToggleValue)
             {
-                _ = pageBuilder.Header4("Turn off V-Sync to customize FPS");
+                _ = pageBuilder.Header4("Turn V-Sync off to customize FPS");
             }
 
             if (!vsyncToggleValue && fpsCapValue == 0)
@@ -1314,15 +1322,20 @@ namespace OverhaulMod.UI
                 _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.MUTE_MASTER_VOLUME_WHEN_UNFOCUSED), delegate (bool value)
                 {
                     ModSettingsManager.SetBoolValue(ModSettingsConstants.MUTE_MASTER_VOLUME_WHEN_UNFOCUSED, value, true);
+                    ClearPageContents();
+                    populateMuteSoundPage(initialPage);
                 }, "Mute all sounds");
-                _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.MUTE_MUSIC_WHEN_UNFOCUSED), delegate (bool value)
+                if (!ModSettingsManager.GetBoolValue(ModSettingsConstants.MUTE_MASTER_VOLUME_WHEN_UNFOCUSED))
                 {
-                    ModSettingsManager.SetBoolValue(ModSettingsConstants.MUTE_MUSIC_WHEN_UNFOCUSED, value, true);
-                }, "Mute music");
-                _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.MUTE_COMMENTATORS_WHEN_UNFOCUSED), delegate (bool value)
-                {
-                    ModSettingsManager.SetBoolValue(ModSettingsConstants.MUTE_COMMENTATORS_WHEN_UNFOCUSED, value, true);
-                }, "Mute commentators");
+                    _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.MUTE_MUSIC_WHEN_UNFOCUSED), delegate (bool value)
+                    {
+                        ModSettingsManager.SetBoolValue(ModSettingsConstants.MUTE_MUSIC_WHEN_UNFOCUSED, value, true);
+                    }, "Mute music");
+                    _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.MUTE_COMMENTATORS_WHEN_UNFOCUSED), delegate (bool value)
+                    {
+                        ModSettingsManager.SetBoolValue(ModSettingsConstants.MUTE_COMMENTATORS_WHEN_UNFOCUSED, value, true);
+                    }, "Mute commentators");
+                }
             }
         }
 

@@ -520,5 +520,10 @@ namespace OverhaulMod.Utils
         /// <see cref="Engine.ModAudioManager"/>
         /// </summary>
         public const string MUTE_SPEED_MULTIPLIER= "MuteSpeedMultiplier";
+
+        /// <summary>
+        /// <see cref="UI.UIDeveloperMenu"/>
+        /// </summary>
+        public const string ENABLE_DEBUG_MENU = "EnableDebugMenu";
     }
 }
