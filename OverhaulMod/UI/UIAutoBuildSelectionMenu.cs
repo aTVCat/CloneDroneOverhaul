@@ -131,7 +131,7 @@ namespace OverhaulMod.UI
                 Transform upgradeIconContainer = moddedObject.GetObject<Transform>(2);
                 foreach (UpgradeTypeAndLevel upgrade in build.Upgrades)
                 {
-                    UpgradeDescription upgradeDescription = upgradeManager.GetUpgrade(upgrade.UpgradeType, upgrade.Level);
+                    UpgradeDescription upgradeDescription = upgradeManager.GetUpgrade(upgrade.UpgradeType, upgrade.UpgradeType == UpgradeType.Armor ? 0 : upgrade.Level);
                     Sprite sprite;
                     if (upgradeDescription && upgradeDescription.Icon)
                     {

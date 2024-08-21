@@ -98,7 +98,7 @@ namespace OverhaulMod
             _ = ModManagers.NewSingleton<FloatingDustManager>();
             _ = ModManagers.NewSingleton<FadingVoxelManager>();
 
-            _ = ModManagers.NewSingleton<PressActionKeyObjectManager>();
+            _ = ModManagers.NewSingleton<UseKeyTriggerManager>();
             _ = ModManagers.NewSingleton<ArenaRemodelManager>();
             _ = ModManagers.NewSingleton<ArenaAudienceManager>();
             _ = ModManagers.NewSingleton<LightingTransitionManager>();
@@ -169,7 +169,7 @@ namespace OverhaulMod
             modSettingsManager.AddSettingValueChangedListener(refreshFPSCap, ModSettingsConstants.FPS_CAP);
             modSettingsManager.AddSettingValueChangedListener(delegate (object obj)
             {
-                PressActionKeyObjectManager manager = PressActionKeyObjectManager.Instance;
+                UseKeyTriggerManager manager = UseKeyTriggerManager.Instance;
                 if (manager && obj is bool boolVal)
                 {
                     if (!boolVal)
@@ -180,12 +180,18 @@ namespace OverhaulMod
                         if (boolVal)
                         {
                             if (trigger._keyboardHint)
+                            {
                                 trigger._keyboardHint.Show(string.Empty);
+                                UseKeyTriggerManager.SetFramingBoxSelectedColor(trigger._keyboardHint.transform, false);
+                            }
 
-                            PressActionKeyObjectManager.Instance.SetNearestTriggerNull();
+                            UseKeyTriggerManager.Instance.SetNearestTriggerNull();
                         }
                         else
                         {
+                            if (trigger._keyboardHint)
+                                UseKeyTriggerManager.SetFramingBoxSelectedColor(trigger._keyboardHint.transform, true);
+
                             trigger.destroyKeyboardHint();
                         }
                     }

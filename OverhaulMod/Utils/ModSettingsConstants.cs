@@ -467,7 +467,7 @@ namespace OverhaulMod.Utils
         public const string AUTO_BUILD_INDEX_TO_USE_ON_MATCH_START = "AutoBuildIndexToUseOnMatchStart";
 
         /// <summary>
-        /// <see cref="Engine.PressActionKeyObjectManager"/>
+        /// <see cref="Engine.UseKeyTriggerManager"/>
         /// </summary>
         public const string ENABLE_PRESS_BUTTON_TRIGGER_DESCRIPTION_REWORK = "EnablePressButtonTriggerDescriptionRework";
 

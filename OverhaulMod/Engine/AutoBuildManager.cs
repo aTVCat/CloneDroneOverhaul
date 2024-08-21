@@ -198,7 +198,7 @@ namespace OverhaulMod.Engine
             for (int i = 0; i < list.Count; i++)
             {
                 UpgradeTypeAndLevel ul = list[i];
-                UpgradeUIIcon icon = upgradeUI.GetUpgradeUIIcon(ul.UpgradeType, ul.Level);
+                UpgradeUIIcon icon = upgradeUI.GetUpgradeUIIcon(ul.UpgradeType, ul.UpgradeType == UpgradeType.Armor ? 0 : ul.Level);
                 if (icon && icon.GetCanUpgradeRightNow(playFabId))
                 {
                     icon.OnButtonClicked();

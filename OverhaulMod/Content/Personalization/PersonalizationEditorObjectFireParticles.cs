@@ -6,6 +6,8 @@ namespace OverhaulMod.Content.Personalization
     {
         private ParticleSystem m_particleSystem;
 
+        private bool m_refreshColorOnEnable;
+
         [PersonalizationEditorObjectProperty]
         public Color color
         {
@@ -102,8 +104,22 @@ namespace OverhaulMod.Content.Personalization
             RefreshColor();
         }
 
+        private void OnEnable()
+        {
+            if (m_refreshColorOnEnable)
+            {
+                m_refreshColorOnEnable = false;
+                refreshColor();
+            }
+        }
+
         public void RefreshColor()
         {
+            if(!base.enabled || !base.gameObject.activeInHierarchy)
+            {
+                m_refreshColorOnEnable = true;
+                return;
+            }
             refreshColor();
         }
 

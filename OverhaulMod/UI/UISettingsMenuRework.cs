@@ -501,7 +501,7 @@ namespace OverhaulMod.UI
                 ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_PRESS_BUTTON_TRIGGER_DESCRIPTION_REWORK, value, true);
                 if (value)
                 {
-                    PressActionKeyObjectManager.Instance.ShowThenHideDescription(ModConstants.LoremIpsumText, 2f);
+                    UseKeyTriggerManager.Instance.ShowThenHideDescription(ModConstants.LoremIpsumText, 2f);
                 }
             }, "Use key trigger description rework", delegate
             {
@@ -1125,27 +1125,27 @@ namespace OverhaulMod.UI
                 ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_PRESS_BUTTON_TRIGGER_DESCRIPTION_REWORK, value, true);
                 if (value)
                 {
-                    PressActionKeyObjectManager.Instance.ShowThenHideDescription(ModConstants.LoremIpsumText, 2f);
+                    UseKeyTriggerManager.Instance.ShowThenHideDescription(ModConstants.LoremIpsumText, 2f);
                 }
             }, "Enable");
             _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.PAK_DESCRIPTION_BG), delegate (bool value)
             {
                 ModSettingsManager.SetBoolValue(ModSettingsConstants.PAK_DESCRIPTION_BG, value, true);
-                PressActionKeyObjectManager.Instance.ShowThenHideDescription(ModConstants.LoremIpsumText, 2f);
+                UseKeyTriggerManager.Instance.ShowThenHideDescription(ModConstants.LoremIpsumText, 2f);
             }, "Enable background");
 
             _ = pageBuilder.Header3("Font");
             _ = pageBuilder.Dropdown(UISubtitleTextFieldRework.FontOptions, ModSettingsManager.GetIntValue(ModSettingsConstants.PAK_DESCRIPTION_FONT), delegate (int value)
             {
                 ModSettingsManager.SetIntValue(ModSettingsConstants.PAK_DESCRIPTION_FONT, value, true);
-                PressActionKeyObjectManager.Instance.ShowThenHideDescription(ModConstants.LoremIpsumText, 2f);
+                UseKeyTriggerManager.Instance.ShowThenHideDescription(ModConstants.LoremIpsumText, 2f);
             });
             _ = pageBuilder.Header4("Some languages might not be supported by certain fonts");
             _ = pageBuilder.Header3("Font size");
             _ = pageBuilder.Slider(8f, 13f, true, ModSettingsManager.GetIntValue(ModSettingsConstants.PAK_DESCRIPTION_FONT_SIZE), delegate (float value)
             {
                 ModSettingsManager.SetIntValue(ModSettingsConstants.PAK_DESCRIPTION_FONT_SIZE, Mathf.RoundToInt(value), true);
-                PressActionKeyObjectManager.Instance.ShowThenHideDescription(ModConstants.LoremIpsumText, 2f);
+                UseKeyTriggerManager.Instance.ShowThenHideDescription(ModConstants.LoremIpsumText, 2f);
             }, true, (float val) =>
             {
                 return $"{Mathf.RoundToInt(val)}";

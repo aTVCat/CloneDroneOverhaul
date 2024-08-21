@@ -13,7 +13,7 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(UpgradeStation.Start))]
         private static void Start_Prefix(UpgradeStation __instance)
         {
-            PressActionKeyObjectManager.PatchKeyboardHint(__instance.UpgradePressEPrefab.transform);
+            UseKeyTriggerManager.PatchKeyboardHint(__instance.UpgradePressEPrefab.transform);
         }
     }
 }

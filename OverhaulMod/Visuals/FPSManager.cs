@@ -24,6 +24,7 @@ namespace OverhaulMod.Visuals
             new DropdownIntOptionData() { IntValue = 90, text = "90 FPS" },
             new DropdownIntOptionData() { IntValue = 120, text = "120 FPS" },
             new DropdownIntOptionData() { IntValue = 144, text = "144 FPS" },
+            new DropdownIntOptionData() { IntValue = 165, text = "165 FPS" },
             new DropdownIntOptionData() { IntValue = 240, text = "240 FPS" },
             new DropdownIntOptionData() { IntValue = 300, text = "300 FPS" },
             new DropdownIntOptionData() { IntValue = 360, text = "360 FPS" },
