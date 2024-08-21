@@ -485,6 +485,7 @@
     <Compile Include="Content\NewsInfoList.cs" />
     <Compile Include="ModUserInfo.cs" />
     <Compile Include="Patches\AttackManager_Patch.cs" />
+    <Compile Include="Patches\AudioManager_Patch.cs" />
     <Compile Include="Patches\AudienceManager_Patch.cs" />
     <Compile Include="Patches\Behaviours\EnergyUIPatchBehaviour.cs" />
     <Compile Include="Patches\Behaviours\LocalizationManagerPatchBehaviour.cs" />

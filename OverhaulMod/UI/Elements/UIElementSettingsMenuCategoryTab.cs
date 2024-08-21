@@ -45,6 +45,7 @@ namespace OverhaulMod.UI.Elements
                 case "Sounds":
                     InitializeSubcategoryDisplay("Volume", false);
                     InitializeSubcategoryDisplay("Filters", false);
+                    InitializeSubcategoryDisplay("Misc.", false);
                     break;
                 case "Multiplayer":
                     InitializeSubcategoryDisplay("Multiplayer settings", false);

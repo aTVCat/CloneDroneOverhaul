@@ -490,5 +490,35 @@ namespace OverhaulMod.Utils
         /// <see cref="Visuals.FPSManager"/>
         /// </summary>
         public const string FPS_CAP = "FPSCap";
+
+        /// <summary>
+        /// <see cref="Engine.ModAudioManager"/>
+        /// </summary>
+        public const string MUTE_SOUND_WHEN_UNFOCUSED = "MuteSoundWhenUnfocused";
+
+        /// <summary>
+        /// <see cref="Engine.ModAudioManager"/>
+        /// </summary>
+        public const string MUTE_MASTER_VOLUME_WHEN_UNFOCUSED = "MuteMasterVolumeWhenUnfocused";
+
+        /// <summary>
+        /// <see cref="Engine.ModAudioManager"/>
+        /// </summary>
+        public const string MUTE_MUSIC_WHEN_UNFOCUSED = "MuteMusicWhenUnfocused";
+
+        /// <summary>
+        /// <see cref="Engine.ModAudioManager"/>
+        /// </summary>
+        public const string MUTE_COMMENTATORS_WHEN_UNFOCUSED = "MuteCommentatorsWhenUnfocused";
+
+        /// <summary>
+        /// <see cref="Engine.ModAudioManager"/>
+        /// </summary>
+        public const string MUTE_SOUND_INSTANTLY_WHEN_UNFOCUSED = "MuteSoundInstantlyWhenUnfocused";
+
+        /// <summary>
+        /// <see cref="Engine.ModAudioManager"/>
+        /// </summary>
+        public const string MUTE_SPEED_MULTIPLIER= "MuteSpeedMultiplier";
     }
 }

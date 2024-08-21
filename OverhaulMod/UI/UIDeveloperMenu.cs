@@ -62,6 +62,9 @@ namespace OverhaulMod.UI
 
         public static void SetKeyValue(string key, string value)
         {
+            if (!ModBuildInfo.debug)
+                return;
+
             if (!s_debugValues.ContainsKey(key))
             {
                 s_debugValues.Add(key, value);
