@@ -17,6 +17,8 @@ namespace OverhaulMod.Content.Personalization
 
         public bool ReplaceColors = true;
 
+        public bool ShowFireParticles = true;
+
         public CVMModelPreset()
         {
 

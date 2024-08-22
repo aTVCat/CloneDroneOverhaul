@@ -1194,13 +1194,13 @@ namespace OverhaulMod.UI
                 switch (sampleCountLevel)
                 {
                     case SampleCountLevel.Low:
-                        return "Low";
+                        return LocalizationManager.Instance.GetTranslatedString("settings_option_low");
                     case SampleCountLevel.Medium:
-                        return "Medium";
+                        return LocalizationManager.Instance.GetTranslatedString("settings_option_medium");
                     case SampleCountLevel.High:
-                        return "High";
+                        return LocalizationManager.Instance.GetTranslatedString("settings_option_high");
                     case SampleCountLevel.VeryHigh:
-                        return "Very high";
+                        return LocalizationManager.Instance.GetTranslatedString("settings_option_very_high");
                 }
                 return sampleCountLevel.ToString();
             });

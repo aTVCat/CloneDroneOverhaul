@@ -11,7 +11,7 @@ namespace OverhaulMod.Content.Personalization
     // most of the code is from Custom robot model editor mod by X606
     public static class CVMImporter
     {
-        public static bool InstantiateModel(SaveClass saveClass, WeaponType type, WeaponVariant variant, bool replaceColors, Transform parent, out string error)
+        public static bool InstantiateModel(SaveClass saveClass, WeaponType type, WeaponVariant variant, bool replaceColors, bool showFireParticles, Transform parent, out string error)
         {
             WeaponSpecialType weaponSpecialType = GetWeaponSpecialType(type, variant);
             if (weaponSpecialType != (WeaponSpecialType)(-1))
@@ -69,6 +69,26 @@ namespace OverhaulMod.Content.Personalization
                     }
                 }
                 volume1.UpdateAllChunks();
+
+                if (!showFireParticles)
+                {
+                    Transform fireParticlesTransform = TransformUtils.FindChildRecursive(volume1.transform, "SwordFireVFX");
+                    if(!fireParticlesTransform)
+                    {
+                        fireParticlesTransform = TransformUtils.FindChildRecursive(volume1.transform, "SwordFireVFX (1)");
+                        if (!fireParticlesTransform)
+                        {
+                            fireParticlesTransform = TransformUtils.FindChildRecursive(volume1.transform, "FireVFX (1)");
+                            if (!fireParticlesTransform)
+                            {
+                                fireParticlesTransform = TransformUtils.FindChildRecursive(volume1.transform, "FireVFX (1)");
+                            }
+                        }
+                    }
+
+                    if (fireParticlesTransform)
+                        fireParticlesTransform.gameObject.SetActive(false);
+                }
 
                 error = null;
                 return true;

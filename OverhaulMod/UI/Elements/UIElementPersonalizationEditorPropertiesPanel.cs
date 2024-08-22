@@ -499,6 +499,15 @@ namespace OverhaulMod.UI
                             preset.ReplaceColors = value;
                             GlobalEventManager.Instance.Dispatch(PersonalizationEditorManager.OBJECT_EDITED_EVENT);
                         });
+
+                        // fire particles toggle
+                        Toggle fireParticlesToggle = display.GetObject<Toggle>(7);
+                        fireParticlesToggle.isOn = preset.ShowFireParticles;
+                        fireParticlesToggle.onValueChanged.AddListener(delegate (bool value)
+                        {
+                            preset.ShowFireParticles = value;
+                            GlobalEventManager.Instance.Dispatch(PersonalizationEditorManager.OBJECT_EDITED_EVENT);
+                        });
                     }
                 }
 
