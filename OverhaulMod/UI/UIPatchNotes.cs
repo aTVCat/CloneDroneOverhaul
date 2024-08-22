@@ -56,7 +56,7 @@ namespace OverhaulMod.UI
             {
                 string dirName = ModIOUtils.GetDirectoryName(directory);
 
-                if (dirName.Contains("4.3") && !ModBuildInfo.VERSION_4_3)
+                if (dirName.StartsWith("0.4.3") && !ModBuildInfo.VERSION_4_3)
                     continue;
 
                 if (!Version.TryParse(dirName, out Version version))
@@ -174,7 +174,7 @@ namespace OverhaulMod.UI
                 case "0.2.0.13":
                     return $"{LocalizationManager.Instance.GetTranslatedString("changelog_update")} 2 (0.2.0.13)";
                 case "0.2.0.22":
-                    return $"{LocalizationManager.Instance.GetTranslatedString("changelog_update")} 2 Patch (0.2.0.22)";
+                    return $"{LocalizationManager.Instance.GetTranslatedString("changelog_update")} 2 {LocalizationManager.Instance.GetTranslatedString("word_patch")} (0.2.0.22)";
                 case "0.2.10.22":
                     return $"{LocalizationManager.Instance.GetTranslatedString("changelog_update")} 2 HotFix (0.2.10.22)";
                 case "0.3.0.345":
@@ -191,6 +191,8 @@ namespace OverhaulMod.UI
                     return $"{LocalizationManager.Instance.GetTranslatedString("changelog_update")} 4.1 (0.4.1.13)";
                 case "0.4.2.32":
                     return $"{LocalizationManager.Instance.GetTranslatedString("changelog_update")} 4.2 (0.4.2.32)";
+                case "0.4.2.46":
+                    return $"{LocalizationManager.Instance.GetTranslatedString("changelog_update")} 4.2 {LocalizationManager.Instance.GetTranslatedString("word_patch")} (0.4.2.46)";
                 case "0.4.3.0":
                     return $"{LocalizationManager.Instance.GetTranslatedString("changelog_update")} 4.3 (0.4.3.0)";
                 default:
