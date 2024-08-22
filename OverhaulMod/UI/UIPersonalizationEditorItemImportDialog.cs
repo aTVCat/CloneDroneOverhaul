@@ -99,6 +99,22 @@ namespace OverhaulMod.UI
                         }
                     }
                 }
+                else if (child.Path == "CvmModel")
+                {
+                    if (child.PropertyValues.TryGetValue(nameof(PersonalizationEditorObjectCVMModel.presets), out object obj) && obj is Dictionary<WeaponVariant, CVMModelPreset> dictionary && !dictionary.IsNullOrEmpty())
+                    {
+                        foreach (CVMModelPreset value in dictionary.Values)
+                        {
+                            string cvmFilePath = value.CvmFilePath;
+                            if (!cvmFilePath.IsNullOrEmpty() && !cvmFilePath.StartsWith(folderName))
+                            {
+                                string sub = cvmFilePath.Substring(cvmFilePath.IndexOf(Path.DirectorySeparatorChar) + 1);
+                                cvmFilePath = $"{folderName}{Path.DirectorySeparatorChar}{sub}";
+                                value.CvmFilePath = cvmFilePath;
+                            }
+                        }
+                    }
+                }
             }
 
             void finalAction()

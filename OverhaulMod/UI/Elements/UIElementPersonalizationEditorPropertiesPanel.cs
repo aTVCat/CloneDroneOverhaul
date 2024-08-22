@@ -415,6 +415,7 @@ namespace OverhaulMod.UI
                             populateFieldsAction();
                         });
 
+                        // weapon dropdown
                         Dropdown weaponDropdown = display.GetObject<Dropdown>(4);
                         weaponDropdown.options = s_weapons;
                         switch (preset.Weapon)
@@ -452,6 +453,7 @@ namespace OverhaulMod.UI
                             GlobalEventManager.Instance.Dispatch(PersonalizationEditorManager.OBJECT_EDITED_EVENT);
                         });
 
+                        // variant dropdown
                         Dropdown variantDropdown = display.GetObject<Dropdown>(5);
                         variantDropdown.options = s_variants;
                         switch (preset.Variant)
@@ -486,6 +488,15 @@ namespace OverhaulMod.UI
                                     preset.Variant = WeaponVariant.OnFireMultiplayer;
                                     break;
                             }
+                            GlobalEventManager.Instance.Dispatch(PersonalizationEditorManager.OBJECT_EDITED_EVENT);
+                        });
+
+                        // replace colors toggle
+                        Toggle replaceColorsToggle = display.GetObject<Toggle>(6);
+                        replaceColorsToggle.isOn = preset.ReplaceColors;
+                        replaceColorsToggle.onValueChanged.AddListener(delegate (bool value)
+                        {
+                            preset.ReplaceColors = value;
                             GlobalEventManager.Instance.Dispatch(PersonalizationEditorManager.OBJECT_EDITED_EVENT);
                         });
                     }

@@ -322,6 +322,12 @@ namespace OverhaulMod
             {
                 manager.PopulateTranslationDictionary(ref localizationDictionary, newLanguageID);
             }
+
+            FPSManager fpsManager = FPSManager.Instance;
+            if (fpsManager)
+            {
+                fpsManager.RefreshDropdownOptionTranslation();
+            }
         }
 
         private IEnumerator waitUntilCharacterModelInitialization(FirstPersonMover firstPersonMover)

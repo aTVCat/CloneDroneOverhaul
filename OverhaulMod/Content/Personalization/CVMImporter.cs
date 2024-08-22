@@ -11,10 +11,10 @@ namespace OverhaulMod.Content.Personalization
     // most of the code is from Custom robot model editor mod by X606
     public static class CVMImporter
     {
-        public static bool InstantiateModel(SaveClass saveClass, WeaponType type, WeaponVariant variant, Transform parent, out string error)
+        public static bool InstantiateModel(SaveClass saveClass, WeaponType type, WeaponVariant variant, bool replaceColors, Transform parent, out string error)
         {
             WeaponSpecialType weaponSpecialType = GetWeaponSpecialType(type, variant);
-            if(weaponSpecialType != (WeaponSpecialType)(-1))
+            if (weaponSpecialType != (WeaponSpecialType)(-1))
             {
                 if (!saveClass.CustomSpecialWeaponModels.ContainsKey(weaponSpecialType))
                 {
@@ -61,9 +61,12 @@ namespace OverhaulMod.Content.Personalization
                 {
                     volume1.GetCurrentFrame().SetVoxelAtArrayPosition(kv.Key, kv.Value);
                 }
-                foreach (var replaceColor in volume1.GetComponents<ReplaceVoxelColor>())
+                if (replaceColors)
                 {
-                    ReplaceVoxelColor.ReplaceColors(volume1, replaceColor.Old, replaceColor.New);
+                    foreach (ReplaceVoxelColor replaceColor in volume1.GetComponents<ReplaceVoxelColor>())
+                    {
+                        ReplaceVoxelColor.ReplaceColors(volume1, replaceColor.Old, replaceColor.New);
+                    }
                 }
                 volume1.UpdateAllChunks();
 
@@ -121,10 +124,13 @@ namespace OverhaulMod.Content.Personalization
                     foreach (KeyValuePair<PicaVoxelPoint, Voxel> kv in saveClass.ModifiedVoxels[i])
                     {
                         volume.GetCurrentFrame().SetVoxelAtArrayPosition(kv.Key, kv.Value);
-                    }                    
-                    foreach(var replaceColor in volume.GetComponents<ReplaceVoxelColor>())
+                    }
+                    if (replaceColors)
                     {
-                        ReplaceVoxelColor.ReplaceColors(volume, replaceColor.Old, replaceColor.New);
+                        foreach (ReplaceVoxelColor replaceColor in volume.GetComponents<ReplaceVoxelColor>())
+                        {
+                            ReplaceVoxelColor.ReplaceColors(volume, replaceColor.Old, replaceColor.New);
+                        }
                     }
                     volume.UpdateAllChunks();
 
@@ -162,7 +168,7 @@ namespace OverhaulMod.Content.Personalization
 
         public static WeaponSpecialType GetWeaponSpecialType(WeaponType weaponType, WeaponVariant weaponVariant)
         {
-            if(weaponType == WeaponType.Sword)
+            if (weaponType == WeaponType.Sword)
             {
                 if (weaponVariant == WeaponVariant.NormalMultiplayer)
                     return WeaponSpecialType.GreatSword;

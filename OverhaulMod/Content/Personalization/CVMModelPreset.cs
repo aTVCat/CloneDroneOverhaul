@@ -15,6 +15,8 @@ namespace OverhaulMod.Content.Personalization
 
         public WeaponVariant Variant;
 
+        public bool ReplaceColors = true;
+
         public CVMModelPreset()
         {
 

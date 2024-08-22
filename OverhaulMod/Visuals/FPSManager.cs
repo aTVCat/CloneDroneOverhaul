@@ -30,6 +30,11 @@ namespace OverhaulMod.Visuals
             new DropdownIntOptionData() { IntValue = 360, text = "360 FPS" },
         };
 
+        private void Start()
+        {
+            RefreshDropdownOptionTranslation();
+        }
+
         public int GetFPSCapDropdownValue()
         {
             int settingValue = FPSCap;
@@ -60,6 +65,12 @@ namespace OverhaulMod.Visuals
         public void SetFPSCap(int value)
         {
             ModSettingsManager.SetIntValue(ModSettingsConstants.FPS_CAP, value);
+        }
+
+        public void RefreshDropdownOptionTranslation()
+        {
+            FPSCapOptions[0].text = LocalizationManager.Instance.GetTranslatedString("settings_option_custom_fps");
+            FPSCapOptions[1].text = LocalizationManager.Instance.GetTranslatedString("settings_option_unlimited_fps");
         }
 
         public static void RefreshFPSCap()
