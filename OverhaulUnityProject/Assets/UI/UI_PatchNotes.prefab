@@ -637,7 +637,7 @@ MonoBehaviour:
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
-    m_VerticalOverflow: 0
+    m_VerticalOverflow: 1
     m_LineSpacing: 1
   m_Text: Update 4.0
 --- !u!114 &2706072373768517959
@@ -667,7 +667,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 696dd5c32d8af1146b8ca675c8cb77ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LocalizationID: 
+  LocalizationID: done
   DontTranslateText: 1
   DontTranslateOnStart: 0
   DisableWrappingForLogographicLanguages: 1
