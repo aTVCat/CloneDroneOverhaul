@@ -1,4 +1,6 @@
-﻿using OverhaulMod.Utils;
+﻿#define OVERRIDE_VER
+
+using OverhaulMod.Utils;
 using System;
 using System.IO;
 
@@ -6,9 +8,15 @@ namespace OverhaulMod
 {
     public static class ModBuildInfo
     {
-        public const bool ENABLE_V5 = false;
+        public const bool VERSION_4_3 = false;
 
-        internal const string EXTRA_INFO_FILE_PATH = "buildInfo.json";
+        public const bool VERSION_5 = false;
+
+        public const string EXTRA_INFO_FILE_PATH = "buildInfo.json";
+
+#if OVERRIDE_VER
+        public const string OVERRIDE_VERSION = "0.4.2.46";
+#endif
 
         private static bool s_loaded;
 
@@ -110,7 +118,7 @@ namespace OverhaulMod
         {
             get
             {
-                return ENABLE_V5;
+                return VERSION_5;
             }
         }
 
@@ -134,7 +142,16 @@ namespace OverhaulMod
 
         private static void loadVersion()
         {
+#if OVERRIDE_VER
+            Version version;
+            string verString = OVERRIDE_VERSION;
+            if(!verString.IsNullOrEmpty() && !verString.IsNullOrWhiteSpace() && Version.TryParse(verString, out Version result))
+                version = result;
+            else
+                version = ModCache.modAssemblyName.Version;
+#else
             Version version = ModCache.modAssemblyName.Version;
+#endif
             int major = version.Major;
             int minor = version.Minor;
             int build = version.Build;

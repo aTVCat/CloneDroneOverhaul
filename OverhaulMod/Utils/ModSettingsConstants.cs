@@ -467,7 +467,7 @@ namespace OverhaulMod.Utils
         public const string AUTO_BUILD_INDEX_TO_USE_ON_MATCH_START = "AutoBuildIndexToUseOnMatchStart";
 
         /// <summary>
-        /// <see cref="Engine.PressActionKeyObjectManager"/>
+        /// <see cref="Engine.UseKeyTriggerManager"/>
         /// </summary>
         public const string ENABLE_PRESS_BUTTON_TRIGGER_DESCRIPTION_REWORK = "EnablePressButtonTriggerDescriptionRework";
 
@@ -485,5 +485,45 @@ namespace OverhaulMod.Utils
         /// <see cref="UI.UIPressActionKeyDescription"/>
         /// </summary>
         public const string PAK_DESCRIPTION_FONT_SIZE = "PAKFontSize";
+
+        /// <summary>
+        /// <see cref="Visuals.FPSManager"/>
+        /// </summary>
+        public const string FPS_CAP = "FPSCap";
+
+        /// <summary>
+        /// <see cref="Engine.ModAudioManager"/>
+        /// </summary>
+        public const string MUTE_SOUND_WHEN_UNFOCUSED = "MuteSoundWhenUnfocused";
+
+        /// <summary>
+        /// <see cref="Engine.ModAudioManager"/>
+        /// </summary>
+        public const string MUTE_MASTER_VOLUME_WHEN_UNFOCUSED = "MuteMasterVolumeWhenUnfocused";
+
+        /// <summary>
+        /// <see cref="Engine.ModAudioManager"/>
+        /// </summary>
+        public const string MUTE_MUSIC_WHEN_UNFOCUSED = "MuteMusicWhenUnfocused";
+
+        /// <summary>
+        /// <see cref="Engine.ModAudioManager"/>
+        /// </summary>
+        public const string MUTE_COMMENTATORS_WHEN_UNFOCUSED = "MuteCommentatorsWhenUnfocused";
+
+        /// <summary>
+        /// <see cref="Engine.ModAudioManager"/>
+        /// </summary>
+        public const string MUTE_SOUND_INSTANTLY_WHEN_UNFOCUSED = "MuteSoundInstantlyWhenUnfocused";
+
+        /// <summary>
+        /// <see cref="Engine.ModAudioManager"/>
+        /// </summary>
+        public const string MUTE_SPEED_MULTIPLIER= "MuteSpeedMultiplier";
+
+        /// <summary>
+        /// <see cref="UI.UIDeveloperMenu"/>
+        /// </summary>
+        public const string ENABLE_DEBUG_MENU = "EnableDebugMenu";
     }
 }

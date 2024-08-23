@@ -151,7 +151,7 @@ namespace OverhaulMod.UI
             m_downloadSource = updateInfo.DownloadLink;
             m_inGameUpdateButton.interactable = true;
 
-            SetVersionAndChangelogTexts($"<color=#5f9ded>></color>  {LocalizationManager.Instance.GetTranslatedString("update available:")} {updateInfo.ModVersion} ({updateInfo.ModBotVersion})", $"Changelog:\n{updateInfo.Changelog}");
+            SetVersionAndChangelogTexts($"<color=#5f9ded>></color>  {LocalizationManager.Instance.GetTranslatedString("update available:")} {updateInfo.ModVersion}", $"Changelog:\n{updateInfo.Changelog}");
         }
 
         private void onFailedToCheckUpdates(string error)

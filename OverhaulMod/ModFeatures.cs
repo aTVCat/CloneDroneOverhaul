@@ -102,9 +102,18 @@ namespace OverhaulMod
                     result = true;
                     break;
                 case FeatureType.MoreImageEffects:
-                    result = false;
+                    result = ModBuildInfo.VERSION_4_3;
                     break;
                 case FeatureType.SubtitleTextFieldRework:
+                    result = true;
+                    break;
+                case FeatureType.UpdatesMenuRework:
+                    result = ModBuildInfo.VERSION_4_3;
+                    break;
+                case FeatureType.RequireNormalAndFireVariantsForSwordAndSpearSkins:
+                    result = false;
+                    break;
+                case FeatureType.DisplayDisconnectedPlayers:
                     result = true;
                     break;
                 default:
@@ -175,6 +184,12 @@ namespace OverhaulMod
             MoreImageEffects,
 
             SubtitleTextFieldRework,
+
+            UpdatesMenuRework,
+
+            RequireNormalAndFireVariantsForSwordAndSpearSkins,
+
+            DisplayDisconnectedPlayers
         }
     }
 }

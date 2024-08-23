@@ -1,6 +1,7 @@
 ﻿using OverhaulMod.Content.Personalization;
 using OverhaulMod.Engine;
 using OverhaulMod.Utils;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -66,6 +67,8 @@ namespace OverhaulMod.UI
             m_currentItemIsNotFullyCompleted = false;
             string bgColor = ALL_WEAPON_VARIANTS_PRESENT_COLOR;
 
+            Dictionary<WeaponVariant, bool> supportedVariants = new Dictionary<WeaponVariant, bool>();
+
             PersonalizationItemVerificationManager personalizationItemVerificationManager = PersonalizationItemVerificationManager.Instance;
             foreach (WeaponVariant weaponVariant in typeof(WeaponVariant).GetEnumValues())
             {
@@ -75,6 +78,8 @@ namespace OverhaulMod.UI
                 bool value = personalizationItemVerificationManager.DoesWeaponSkinSupportWeaponVariant(objectBehaviour, weaponVariant, out bool weaponDoesHaveThisVariant);
                 if (weaponDoesHaveThisVariant)
                 {
+                    supportedVariants.Add(weaponVariant, value);
+
                     ModdedObject moddedObject = Instantiate(m_weaponVariantDisplay, m_container);
                     moddedObject.gameObject.SetActive(true);
                     moddedObject.GetObject<Text>(0).text = WeaponVariantManager.GetWeaponVariantString(weaponVariant);
@@ -90,6 +95,15 @@ namespace OverhaulMod.UI
                     {
                         m_currentItemIsFullyIncomplete = false;
                     }
+                }
+            }
+
+            if (ModFeatures.IsEnabled(ModFeatures.FeatureType.RequireNormalAndFireVariantsForSwordAndSpearSkins))
+            {
+                WeaponType weaponType = objectBehaviour.ControllerInfo.ItemInfo.Weapon;
+                if (((weaponType == WeaponType.Sword || weaponType == WeaponType.Spear) && !supportedVariants[WeaponVariant.Normal]) || !supportedVariants[WeaponVariant.OnFire])
+                {
+                    m_currentItemIsFullyIncomplete = true;
                 }
             }
 

@@ -10,14 +10,14 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(LevelEditorUseButtonTrigger.Start))]
         private static void Start_Postfix(LevelEditorUseButtonTrigger __instance)
         {
-            PressActionKeyObjectManager.Instance.SetTriggerRegistered(__instance, true);
+            UseKeyTriggerManager.Instance.SetTriggerRegistered(__instance, true);
         }
 
         [HarmonyPostfix]
         [HarmonyPatch(nameof(LevelEditorUseButtonTrigger.OnDestroy))]
         private static void OnDestroy_Postfix(LevelEditorUseButtonTrigger __instance)
         {
-            PressActionKeyObjectManager.Instance.SetTriggerRegistered(__instance, false);
+            UseKeyTriggerManager.Instance.SetTriggerRegistered(__instance, false);
         }
     }
 }

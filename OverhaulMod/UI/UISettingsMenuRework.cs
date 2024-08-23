@@ -394,6 +394,14 @@ namespace OverhaulMod.UI
         private void populateHomePage(SettingsMenu settingsMenu)
         {
             PageBuilder pageBuilder = new PageBuilder(this);
+            if (ModBuildInfo.debug)
+            {
+                _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_DEBUG_MENU), delegate (bool value)
+                {
+                    ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_DEBUG_MENU, value, true);
+                }, "Debug menu");
+            }
+
             _ = pageBuilder.Header1("Game interface");
             //_ = pageBuilder.Header3("Language");
             //_ = pageBuilder.Dropdown(ModLocalizationManager.Instance.GetLanguageOptions(false), getCurrentLanguageIndex(), OnLanguageDropdownChanged);
@@ -493,7 +501,7 @@ namespace OverhaulMod.UI
                 ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_PRESS_BUTTON_TRIGGER_DESCRIPTION_REWORK, value, true);
                 if (value)
                 {
-                    PressActionKeyObjectManager.Instance.ShowThenHideDescription(ModCore.LoremIpsumText, 2f);
+                    UseKeyTriggerManager.Instance.ShowThenHideDescription(ModConstants.LoremIpsumText, 2f);
                 }
             }, "Use key trigger description rework", delegate
             {
@@ -523,7 +531,6 @@ namespace OverhaulMod.UI
             _ = pageBuilder.Header3("Window");
             _ = pageBuilder.Dropdown(settingsMenu.ScreenResolutionDropDown.options, settingsMenu.ScreenResolutionDropDown.value, OnScreenResolutionChanged);
             _ = pageBuilder.Toggle(settingsMenu.FullScreenToggle.isOn, OnFullScreenChanged, "Fullscreen");
-            _ = pageBuilder.Toggle(settingsMenu.VsyncOnToggle.isOn, OnVSyncChanged, "V-Sync");
 
             if (ModSpecialUtils.SupportsTitleBarOverhaul())
             {
@@ -531,6 +538,42 @@ namespace OverhaulMod.UI
                 {
                     ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_TITLE_BAR_OVERHAUL, value, true);
                 }, "Enable title bar changes");
+            }
+
+            bool vsyncToggleValue = settingsMenu.VsyncOnToggle.isOn;
+            _ = pageBuilder.Header3("FPS settings");
+            _ = pageBuilder.Toggle(vsyncToggleValue, delegate (bool value)
+            {
+                OnVSyncChanged(value);
+                PopulatePage("Graphics");
+            }, "V-Sync");
+
+            int fpsCapValue = FPSManager.Instance.GetFPSCapDropdownValue();
+            Dropdown fpsCapDropdown = pageBuilder.Dropdown(FPSManager.FPSCapOptions, fpsCapValue, delegate (int value)
+            {
+                FPSManager.Instance.SetFPSCapDropdownValue(value);
+                PopulatePage("Graphics");
+            });
+            fpsCapDropdown.interactable = !vsyncToggleValue;
+
+            if (vsyncToggleValue)
+            {
+                _ = pageBuilder.Header4("Turn V-Sync off to customize FPS");
+            }
+
+            if (!vsyncToggleValue && fpsCapValue == 0)
+            {
+                Slider fpsCapSlider = pageBuilder.Slider(2, 100, true, Mathf.RoundToInt(ModSettingsManager.GetIntValue(ModSettingsConstants.FPS_CAP) / 5f), delegate (float value)
+                {
+                    ModSettingsManager.SetIntValue(ModSettingsConstants.FPS_CAP, Mathf.RoundToInt(value * 5f), true);
+                }, true, (float val) =>
+                {
+                    return $"{Mathf.RoundToInt(val * 5f)} FPS";
+                });
+                RectTransform fpsCapSliderRectTransform = fpsCapSlider.transform as RectTransform;
+                Vector2 fpsCapSliderRectTransformSizeDelta = fpsCapSliderRectTransform.sizeDelta;
+                fpsCapSliderRectTransformSizeDelta.x = 325f;
+                fpsCapSliderRectTransform.sizeDelta = fpsCapSliderRectTransformSizeDelta;
             }
 
             _ = pageBuilder.Header3("Render");
@@ -663,16 +706,16 @@ namespace OverhaulMod.UI
 
 
             _ = pageBuilder.Header1("Environment");
-            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_LIGHTING_TRANSITION), delegate (bool value)
-            {
-                ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_LIGHTING_TRANSITION, value, true);
-            }, "Lighting transitions");
-            _ = pageBuilder.Header4("The lighting changes smoothly as level switches");
             _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_ARENA_REMODEL), delegate (bool value)
             {
                 ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_ARENA_REMODEL, value, true);
             }, "Arena remodel");
             _ = pageBuilder.Header4("Made by @water2977");
+            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_LIGHTING_TRANSITION), delegate (bool value)
+            {
+                ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_LIGHTING_TRANSITION, value, true);
+            }, "Lighting transitions");
+            _ = pageBuilder.Header4("The lighting changes smoothly as level switches");
             _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_FLOATING_DUST), delegate (bool value)
             {
                 ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_FLOATING_DUST, value, true);
@@ -780,6 +823,15 @@ namespace OverhaulMod.UI
             _ = pageBuilder.Slider(0.1f, 1.5f, false, ModSettingsManager.GetFloatValue(ModSettingsConstants.REVERB_FILTER_INTENSITY), delegate (float value)
             {
                 ModSettingsManager.SetFloatValue(ModSettingsConstants.REVERB_FILTER_INTENSITY, value, true);
+            });
+
+            _ = pageBuilder.Header1("Misc.");
+            _ = pageBuilder.ToggleWithOptions(ModSettingsManager.GetBoolValue(ModSettingsConstants.MUTE_SOUND_WHEN_UNFOCUSED), delegate (bool value)
+            {
+                ModSettingsManager.SetBoolValue(ModSettingsConstants.MUTE_SOUND_WHEN_UNFOCUSED, value, true);
+            }, "Mute sounds when unfocused", delegate
+            {
+                populateMuteSoundPage(m_selectedTabId);
             });
         }
 
@@ -1073,27 +1125,27 @@ namespace OverhaulMod.UI
                 ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_PRESS_BUTTON_TRIGGER_DESCRIPTION_REWORK, value, true);
                 if (value)
                 {
-                    PressActionKeyObjectManager.Instance.ShowThenHideDescription(ModCore.LoremIpsumText, 2f);
+                    UseKeyTriggerManager.Instance.ShowThenHideDescription(ModConstants.LoremIpsumText, 2f);
                 }
             }, "Enable");
             _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.PAK_DESCRIPTION_BG), delegate (bool value)
             {
                 ModSettingsManager.SetBoolValue(ModSettingsConstants.PAK_DESCRIPTION_BG, value, true);
-                PressActionKeyObjectManager.Instance.ShowThenHideDescription(ModCore.LoremIpsumText, 2f);
+                UseKeyTriggerManager.Instance.ShowThenHideDescription(ModConstants.LoremIpsumText, 2f);
             }, "Enable background");
 
             _ = pageBuilder.Header3("Font");
             _ = pageBuilder.Dropdown(UISubtitleTextFieldRework.FontOptions, ModSettingsManager.GetIntValue(ModSettingsConstants.PAK_DESCRIPTION_FONT), delegate (int value)
             {
                 ModSettingsManager.SetIntValue(ModSettingsConstants.PAK_DESCRIPTION_FONT, value, true);
-                PressActionKeyObjectManager.Instance.ShowThenHideDescription(ModCore.LoremIpsumText, 2f);
+                UseKeyTriggerManager.Instance.ShowThenHideDescription(ModConstants.LoremIpsumText, 2f);
             });
             _ = pageBuilder.Header4("Some languages might not be supported by certain fonts");
             _ = pageBuilder.Header3("Font size");
             _ = pageBuilder.Slider(8f, 13f, true, ModSettingsManager.GetIntValue(ModSettingsConstants.PAK_DESCRIPTION_FONT_SIZE), delegate (float value)
             {
                 ModSettingsManager.SetIntValue(ModSettingsConstants.PAK_DESCRIPTION_FONT_SIZE, Mathf.RoundToInt(value), true);
-                PressActionKeyObjectManager.Instance.ShowThenHideDescription(ModCore.LoremIpsumText, 2f);
+                UseKeyTriggerManager.Instance.ShowThenHideDescription(ModConstants.LoremIpsumText, 2f);
             }, true, (float val) =>
             {
                 return $"{Mathf.RoundToInt(val)}";
@@ -1142,13 +1194,13 @@ namespace OverhaulMod.UI
                 switch (sampleCountLevel)
                 {
                     case SampleCountLevel.Low:
-                        return "Low";
+                        return LocalizationManager.Instance.GetTranslatedString("settings_option_low");
                     case SampleCountLevel.Medium:
-                        return "Medium";
+                        return LocalizationManager.Instance.GetTranslatedString("settings_option_medium");
                     case SampleCountLevel.High:
-                        return "High";
+                        return LocalizationManager.Instance.GetTranslatedString("settings_option_high");
                     case SampleCountLevel.VeryHigh:
-                        return "Very high";
+                        return LocalizationManager.Instance.GetTranslatedString("settings_option_very_high");
                 }
                 return sampleCountLevel.ToString();
             });
@@ -1229,6 +1281,62 @@ namespace OverhaulMod.UI
                 ClearPageContents();
                 populateBloomSettingsPage(initialPage);
             });
+        }
+
+        private void populateMuteSoundPage(string initialPage)
+        {
+            PageBuilder pageBuilder = new PageBuilder(this);
+            _ = pageBuilder.Button("Go back", delegate
+            {
+                ClearPageContents();
+                PopulatePage(initialPage);
+            });
+
+            _ = pageBuilder.Header1("Mute sounds when unfocused");
+            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.MUTE_SOUND_WHEN_UNFOCUSED), delegate (bool value)
+            {
+                ModSettingsManager.SetBoolValue(ModSettingsConstants.MUTE_SOUND_WHEN_UNFOCUSED, value, true);
+                ClearPageContents();
+                populateMuteSoundPage(initialPage);
+            }, "Enable");
+
+            if (ModSettingsManager.GetBoolValue(ModSettingsConstants.MUTE_SOUND_WHEN_UNFOCUSED))
+            {
+                _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.MUTE_SOUND_INSTANTLY_WHEN_UNFOCUSED), delegate (bool value)
+                {
+                    ModSettingsManager.SetBoolValue(ModSettingsConstants.MUTE_SOUND_INSTANTLY_WHEN_UNFOCUSED, value, true);
+                    ClearPageContents();
+                    populateMuteSoundPage(initialPage);
+                }, "Mute instantly");
+                if (!ModSettingsManager.GetBoolValue(ModSettingsConstants.MUTE_SOUND_INSTANTLY_WHEN_UNFOCUSED))
+                {
+                    _ = pageBuilder.Header3("Speed multiplier");
+                    _ = pageBuilder.Slider(2f, 30f, true, ModSettingsManager.GetFloatValue(ModSettingsConstants.MUTE_SPEED_MULTIPLIER) * 10f, delegate (float value)
+                    {
+                        ModSettingsManager.SetFloatValue(ModSettingsConstants.MUTE_SPEED_MULTIPLIER, value / 10f, true);
+                    }, true, (float val) =>
+                    {
+                        return $"{val / 10f}";
+                    });
+                }
+                _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.MUTE_MASTER_VOLUME_WHEN_UNFOCUSED), delegate (bool value)
+                {
+                    ModSettingsManager.SetBoolValue(ModSettingsConstants.MUTE_MASTER_VOLUME_WHEN_UNFOCUSED, value, true);
+                    ClearPageContents();
+                    populateMuteSoundPage(initialPage);
+                }, "Mute all sounds");
+                if (!ModSettingsManager.GetBoolValue(ModSettingsConstants.MUTE_MASTER_VOLUME_WHEN_UNFOCUSED))
+                {
+                    _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.MUTE_MUSIC_WHEN_UNFOCUSED), delegate (bool value)
+                    {
+                        ModSettingsManager.SetBoolValue(ModSettingsConstants.MUTE_MUSIC_WHEN_UNFOCUSED, value, true);
+                    }, "Mute music");
+                    _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.MUTE_COMMENTATORS_WHEN_UNFOCUSED), delegate (bool value)
+                    {
+                        ModSettingsManager.SetBoolValue(ModSettingsConstants.MUTE_COMMENTATORS_WHEN_UNFOCUSED, value, true);
+                    }, "Mute commentators");
+                }
+            }
         }
 
         private int getCurrentLanguageIndex()

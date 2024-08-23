@@ -239,7 +239,7 @@ namespace OverhaulMod.Content.Personalization
                             int allDimensions = frame.XSize + frame.YSize + frame.ZSize;
                             if (allDimensions > 150)
                             {
-                                UIPersonalizationEditor.instance.ShowNotification("Performance warning", "The size of this model is very huge which can cause lags. Simplify your model.", ModParseUtils.TryParseToColor("#444D00", Color.yellow), 30f);
+                                UIPersonalizationEditor.instance.ShowNotification("Performance warning", "This model is very huge and it can cause lags.\nIt's recommended to simplify this model.", ModParseUtils.TryParseToColor("#4C3D00", Color.yellow), 30f);
                             }
                         }
                     }

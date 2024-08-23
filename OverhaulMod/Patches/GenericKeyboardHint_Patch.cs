@@ -13,7 +13,7 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(GenericKeyboardHint.Show))]
         private static bool Show_Prefix(GenericKeyboardHint __instance)
         {
-            bool hideText = PressActionKeyObjectManager.EnablePressButtonTriggerDescriptionRework;
+            bool hideText = UseKeyTriggerManager.EnablePressButtonTriggerDescriptionRework;
             if (hideText)
             {
                 Text t = __instance.DescriptionLabel;
@@ -21,20 +21,7 @@ namespace OverhaulMod.Patches
                     t.text = null;
             }
 
-            RectTransform bgGlow = TransformUtils.FindChildRecursive(__instance.transform, "BGGlow") as RectTransform;
-            if (bgGlow)
-            {
-                bgGlow.localPosition = Vector3.zero;
-                bgGlow.sizeDelta = Vector3.one * 250f;
-
-                Image image = bgGlow.GetComponent<Image>();
-                if (image)
-                {
-                    image.sprite = ModResources.Sprite(AssetBundleConstants.UI, "Glow-2-256x256");
-                    image.color = PressActionKeyObjectManager.BGGlowColor;
-                }
-            }
-
+            UseKeyTriggerManager.PatchKeyboardHint(__instance.transform);
             return !hideText;
         }
     }

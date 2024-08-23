@@ -1,4 +1,5 @@
-﻿using OverhaulMod.Utils;
+﻿using OverhaulMod.Engine;
+using OverhaulMod.Utils;
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
@@ -7,6 +8,9 @@ namespace OverhaulMod.UI
 {
     public class UIDeveloperMenu : ModBehaviour
     {
+        [ModSetting(ModSettingsConstants.ENABLE_DEBUG_MENU, true)]
+        public static bool EnableDebugMenu;
+
         private static readonly Dictionary<string, string> s_debugValues = new Dictionary<string, string>();
         private StringBuilder m_stringBuilder;
 
@@ -19,6 +23,9 @@ namespace OverhaulMod.UI
 
         public void OnGUI()
         {
+            if (!EnableDebugMenu)
+                return;
+
             GUILayout.BeginArea(new Rect(10f, 100f, 200f, 200f));
             if (s_debugValues == null || s_debugValues.Count == 0)
             {
@@ -44,7 +51,7 @@ namespace OverhaulMod.UI
 
         public override void Update()
         {
-            if (ModBuildInfo.debug && Input.GetKeyDown(KeyCode.Alpha7) && InputManager.Instance.GetKeyMode() != KeyMode.EditingInputField)
+            if (Input.GetKeyDown(KeyCode.Alpha7) && InputManager.Instance.GetKeyMode() != KeyMode.EditingInputField)
             {
                 bool value = !Enabled;
                 Enabled = value;
@@ -62,6 +69,9 @@ namespace OverhaulMod.UI
 
         public static void SetKeyValue(string key, string value)
         {
+            if (!ModBuildInfo.debug)
+                return;
+
             if (!s_debugValues.ContainsKey(key))
             {
                 s_debugValues.Add(key, value);

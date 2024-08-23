@@ -157,7 +157,7 @@ namespace OverhaulMod.Content.Personalization
                     return;
             }
 
-            CVMImporter.InstantiateModel(m_loadedModel, preset.Weapon, preset.Variant, t, out string error);
+            CVMImporter.InstantiateModel(m_loadedModel, preset.Weapon, preset.Variant, preset.ReplaceColors, preset.ShowFireParticles, t, out string error);
             if (PersonalizationEditorManager.IsInEditor() && !error.IsNullOrEmpty())
             {
                 UIPersonalizationEditor.instance.ShowErrorNotification("CVM Error", error, 15f);

@@ -99,15 +99,56 @@ namespace OverhaulMod.UI
                         }
                     }
                 }
+                else if (child.Path == "CvmModel")
+                {
+                    if (child.PropertyValues.TryGetValue(nameof(PersonalizationEditorObjectCVMModel.presets), out object obj) && obj is Dictionary<WeaponVariant, CVMModelPreset> dictionary && !dictionary.IsNullOrEmpty())
+                    {
+                        foreach (CVMModelPreset value in dictionary.Values)
+                        {
+                            string cvmFilePath = value.CvmFilePath;
+                            if (!cvmFilePath.IsNullOrEmpty() && !cvmFilePath.StartsWith(folderName))
+                            {
+                                string sub = cvmFilePath.Substring(cvmFilePath.IndexOf(Path.DirectorySeparatorChar) + 1);
+                                cvmFilePath = $"{folderName}{Path.DirectorySeparatorChar}{sub}";
+                                value.CvmFilePath = cvmFilePath;
+                            }
+                        }
+                    }
+                }
             }
 
-            itemList.Items.Add(info);
+            void finalAction()
+            {
+                itemList.Items.Add(info);
 
-            UIPersonalizationEditor.instance.ShowEverything();
-            PersonalizationEditorManager.Instance.EditItem(info, info.FolderPath);
+                UIPersonalizationEditor.instance.ShowEverything();
+                PersonalizationEditorManager.Instance.EditItem(info, info.FolderPath);
 
-            Hide();
-            ItemBrowser.Hide();
+                Hide();
+                ItemBrowser.Hide();
+            }
+
+            PersonalizationItemInfo existingItem = itemList.GetItem(info.ItemID);
+            if (existingItem != null)
+            {
+                ModUIUtils.MessagePopup(true, "An item with the same ID has been already imported!", "Do you want to replace the old version with the new one?", 150f, MessageMenu.ButtonLayout.EnableDisableButtons, "Ok", "Yes", "No", null, delegate
+                {
+                    if (Path.GetFullPath(existingItem.FolderPath) == Path.GetFullPath(info.FolderPath))
+                    {
+                        ModUIUtils.MessagePopupOK("Both items have been in the same folder", "Just a notification");
+                    }
+                    else
+                    {
+                        Directory.Delete(existingItem.FolderPath, true);
+                    }
+                    _ = itemList.Items.Remove(existingItem);
+                    finalAction();
+                });
+            }
+            else
+            {
+                finalAction();
+            }
         }
     }
 }

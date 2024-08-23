@@ -1,6 +1,7 @@
 ManifestFileVersion: 0
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 CRC: 2374715870
 Hashes:
   AssetFileHash:
@@ -19,6 +20,13 @@ Hashes:
   AssetFileHash:
     serializedVersion: 2
     Hash: 38c2a9e323aaedc49f84cfe2c40071ee
+>>>>>>> 0.4.x-development
+=======
+CRC: 3936876200
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: f79837193722ae4ad08504246bbf2daa
 >>>>>>> 0.4.x-development
   TypeTreeHash:
     serializedVersion: 2
@@ -122,6 +130,7 @@ Assets:
 - Assets/UI/UI_ImageExplorer.prefab
 - Assets/UI/UI_EndlessGameLossWindow.prefab
 - Assets/UI/UI_ExclusiveContentEditor.prefab
+- Assets/UI/UI_PersonalizationEditorMagicaVoxelTip.prefab
 - Assets/Font/Edit-Undo.ttf
 - Assets/UI/UI_MessagePopupFullScreen.prefab
 - Assets/UI/UI_WorkshopItemPageWindow.prefab
@@ -197,6 +206,7 @@ Assets:
 - Assets/Sprites/Glyphs/SysDrive-Mini-16x16.png
 - Assets/UI/UI_OverhaulModInfoWindow.prefab
 - Assets/UI/UI_Tooltips.prefab
+- Assets/UI/UI_UpdatesWindowRework.prefab
 - Assets/UI/UI_UpdateInfoEditor.prefab
 - Assets/UI/UI_MPSelectScreen.prefab
 - Assets/UI/UI_PersonalizationEditorItemsBrowser.prefab

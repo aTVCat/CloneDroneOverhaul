@@ -163,7 +163,7 @@ namespace OverhaulMod.UI
                 {
                     Sprite sprite = null;
 
-                    UpgradeDescription upgradeDescription = upgradeManager.GetUpgrade(upgrade.UpgradeType, upgrade.Level);
+                    UpgradeDescription upgradeDescription = upgradeManager.GetUpgrade(upgrade.UpgradeType, upgrade.UpgradeType == UpgradeType.Armor ? 0 : upgrade.Level);
                     if (upgradeDescription && upgradeDescription.Icon)
                     {
                         sprite = upgradeDescription.Icon;

@@ -6,6 +6,8 @@ namespace OverhaulMod.Content.Personalization
     {
         private ParticleSystem m_particleSystem;
 
+        private bool m_hasStarted;
+
         [PersonalizationEditorObjectProperty]
         public Color color
         {
@@ -99,11 +101,23 @@ namespace OverhaulMod.Content.Personalization
         private void Start()
         {
             m_particleSystem = GetComponent<ParticleSystem>();
+            m_hasStarted = true;
             RefreshColor();
+        }
+
+        private void OnEnable()
+        {
+            if (!m_hasStarted)
+                return;
+
+            refreshColor();
         }
 
         public void RefreshColor()
         {
+            if(!base.enabled || !base.gameObject.activeInHierarchy)
+                return;
+
             refreshColor();
         }
 

@@ -379,7 +379,7 @@
     <Compile Include="Content\Personalization\PersonalizationMultiplayerPlayerInfo.cs" />
     <Compile Include="Engine\AutoBuildListInfo.cs" />
     <Compile Include="Engine\MeshSerializer.cs" />
-    <Compile Include="Engine\PressActionKeyObjectManager.cs" />
+    <Compile Include="Engine\UseKeyTriggerManager.cs" />
     <Compile Include="Engine\RealisticLightUserSettings.cs" />
     <Compile Include="Engine\ScheduledActionsManager.cs" />
     <Compile Include="Engine\ScheduledActionType.cs" />
@@ -485,6 +485,7 @@
     <Compile Include="Content\NewsInfoList.cs" />
     <Compile Include="ModUserInfo.cs" />
     <Compile Include="Patches\AttackManager_Patch.cs" />
+    <Compile Include="Patches\AudioManager_Patch.cs" />
     <Compile Include="Patches\AudienceManager_Patch.cs" />
     <Compile Include="Patches\Behaviours\EnergyUIPatchBehaviour.cs" />
     <Compile Include="Patches\Behaviours\LocalizationManagerPatchBehaviour.cs" />
@@ -544,7 +545,6 @@
     <Compile Include="Patches\UpgradeManager_Patch.cs" />
     <Compile Include="Patches\UpgradeUI_Patch.cs" />
     <Compile Include="Patches\UpgradeUIIcon_Patch.cs" />
-    <Compile Include="Patches\WeaponAITuningManager_Patch.cs" />
     <Compile Include="Patches\WinLoseDialog_Patch.cs" />
     <Compile Include="Patches\LevelEditorUseButtonTrigger_Patch.cs" />
     <Compile Include="Patches\WorldAudioSource_Patch.cs" />
@@ -622,6 +622,8 @@
     <Compile Include="UI\UIDiscordServerMenu.cs" />
     <Compile Include="UI\UIAssetBundleAssetsBrowser.cs" />
     <Compile Include="UI\UIAutoBuildSelectionMenu.cs" />
+    <Compile Include="UI\UIPersonalizationEditorMagicaVoxelTip.cs" />
+    <Compile Include="UI\UIUpdatesWindowRework.cs" />
     <Compile Include="UI\UIPersonalizationEditorItemImportDialog.cs" />
     <Compile Include="UI\UIPersonalizationEditorPlaytestHUD.cs" />
     <Compile Include="UI\UISubtitleTextFieldRework.cs" />
@@ -690,6 +692,7 @@
     <Compile Include="UI\UIMessagePopup.cs" />
     <Compile Include="UI\UIWorkshopBrowser.cs" />
     <Compile Include="Utils\ModComponentCache.cs" />
+    <Compile Include="Utils\ModConstants.cs" />
     <Compile Include="Utils\ModGameUtils.cs" />
     <Compile Include="Utils\ModIntegrationUtils.cs" />
     <Compile Include="Utils\ModParseUtils.cs" />
@@ -705,6 +708,7 @@
     <Compile Include="Visuals\Environment\SeveredBodyPartSparks.cs" />
     <Compile Include="Visuals\Environment\WeatherInfo.cs" />
     <Compile Include="Visuals\Environment\WeatherManager.cs" />
+    <Compile Include="Visuals\FPSManager.cs" />
     <Compile Include="Visuals\ImageEffects\OverhaulAntialiasingMode.cs" />
     <Compile Include="Visuals\ImageEffects\OverhaulChromaticAberration.cs" />
     <Compile Include="Visuals\ImageEffects\OverhaulColorBlindness.cs" />
