@@ -525,5 +525,11 @@ namespace OverhaulMod.Utils
         /// <see cref="UI.UIDeveloperMenu"/>
         /// </summary>
         public const string ENABLE_DEBUG_MENU = "EnableDebugMenu";
+
+
+        /// <summary>
+        /// <see cref="UI.UIVersionLabel"/>
+        /// </summary>
+        public const string SHOW_DEVELOPER_BUILD_LABEL = "ShowDeveloperBuildLabel";
     }
 }

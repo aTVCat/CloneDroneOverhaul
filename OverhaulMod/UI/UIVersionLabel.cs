@@ -10,6 +10,9 @@ namespace OverhaulMod.UI
         [ModSetting(ModSettingsConstants.SHOW_VERSION_LABEL, true)]
         public static bool ShowLabel;
 
+        [ModSetting(ModSettingsConstants.SHOW_DEVELOPER_BUILD_LABEL, true)]
+        public static bool ShowDeveloperBuildLabel;
+
         [UIElement("NewVersionLabel_TitleScreen")]
         private readonly GameObject m_watermark;
 
@@ -30,6 +33,9 @@ namespace OverhaulMod.UI
 
         [UIElement("Watermark_Gameplay")]
         private readonly Text m_gameplayVersionText;
+
+        [UIElement("DeveloperBuildLabel", false)]
+        private readonly GameObject m_devBuildLabelObject;
 
         public bool ForceHide;
 
@@ -79,14 +85,10 @@ namespace OverhaulMod.UI
         {
             instance = this;
 
-            bool debug = ModBuildInfo.debug;
-            _ = ModBuildInfo.fullVersionString;
+            RefreshLabels();
 
-            m_versionText.text = $"Overhaul {ModBuildInfo.fullVersionString}\nClone Drone {VersionNumberManager.Instance.GetVersionString()}";
-            m_debugIcon.SetActive(debug);
-            m_gameplayVersionText.text = $"overhaul {ModBuildInfo.versionString}";
-            m_gameplayDebugIcon.SetActive(debug);
-            m_refreshWidth = true;
+            ModSettingsManager.Instance.AddSettingValueChangedListener(onDevBuildLabelSettingChanged, ModSettingsConstants.SHOW_DEVELOPER_BUILD_LABEL);
+            onDevBuildLabelSettingChanged(ShowDeveloperBuildLabel);
 
             ModCache.titleScreenUI.VersionLabel.gameObject.SetActive(false);
         }
@@ -95,6 +97,8 @@ namespace OverhaulMod.UI
         {
             base.OnDestroy();
             instance = null;
+
+            ModSettingsManager.Instance.RemoveSettingValueChangedListener(onDevBuildLabelSettingChanged, ModSettingsConstants.SHOW_DEVELOPER_BUILD_LABEL);
         }
 
         public override void Update()
@@ -115,6 +119,21 @@ namespace OverhaulMod.UI
             bool titleScreen = showFullWatermark;
             m_watermark.SetActive(show && ModCache.titleScreenUI.RootButtonsContainerBG.activeInHierarchy && titleScreen);
             m_gameplayWatermark.SetActive(show && !titleScreen);
+        }
+
+        public void RefreshLabels()
+        {
+            bool debug = ModBuildInfo.debug;
+            m_versionText.text = $"OVERHAUL {ModBuildInfo.fullVersionString.ToUpper()}\nCLONE DRONE {VersionNumberManager.Instance.GetVersionString()}";
+            m_debugIcon.SetActive(debug);
+            m_gameplayVersionText.text = $"OVERHAUL {ModBuildInfo.versionString.ToUpper()}";
+            m_gameplayDebugIcon.SetActive(debug);
+            m_refreshWidth = true;
+        }
+
+        private void onDevBuildLabelSettingChanged(object obj)
+        {
+            m_devBuildLabelObject.SetActive((obj is bool b && ModBuildInfo.isDeveloperBuild && ModBuildInfo.debug) ? b : false);
         }
 
         public void OnOtherModsButtonClicked()

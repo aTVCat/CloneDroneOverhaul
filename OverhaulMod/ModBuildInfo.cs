@@ -1,4 +1,5 @@
-﻿#define OVERRIDE_VER
+﻿//#define OVERRIDE_VER
+#define DEVELOPER_BUILD
 
 using OverhaulMod.Utils;
 using System;
@@ -8,14 +9,14 @@ namespace OverhaulMod
 {
     public static class ModBuildInfo
     {
-        public const bool VERSION_4_3 = false;
+        public const bool VERSION_4_3 = true;
 
         public const bool VERSION_5 = false;
 
         public const string EXTRA_INFO_FILE_PATH = "buildInfo.json";
 
 #if OVERRIDE_VER
-        public const string OVERRIDE_VERSION = "0.4.2.46";
+        public const string OVERRIDE_VERSION = "0.4.2.47";
 #endif
 
         private static bool s_loaded;
@@ -130,6 +131,18 @@ namespace OverhaulMod
             }
         }
 
+        public static bool isDeveloperBuild
+        {
+            get
+            {
+#if DEVELOPER_BUILD
+                return true;
+#else
+                return false;
+#endif
+            }
+        }
+
         internal static void Load()
         {
             if (s_loaded)
@@ -178,11 +191,14 @@ namespace OverhaulMod
 
         public static void GenerateExtraInfo()
         {
-            string filePath = Path.Combine(ModCore.dataFolder, EXTRA_INFO_FILE_PATH);
-            string content = ModJsonUtils.Serialize(new ExtraInfo()
+            ExtraInfo ei = new ExtraInfo()
             {
                 CompileTime = DateTime.UtcNow
-            });
+            };
+            extraInfo = ei;
+
+            string filePath = Path.Combine(ModCore.dataFolder, EXTRA_INFO_FILE_PATH);
+            string content = ModJsonUtils.Serialize(ei);
             ModIOUtils.WriteText(content, filePath);
         }
 

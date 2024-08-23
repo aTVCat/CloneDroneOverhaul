@@ -747,6 +747,7 @@
     <Compile Include="Combat\Weapons\ScytheWeaponModel.cs" />
     <Compile Include="Combat\Weapons\ModWeaponModel.cs" />
     <Compile Include="ModWebhookManager.cs" />
+    <Compile Include="Visuals\QualityManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

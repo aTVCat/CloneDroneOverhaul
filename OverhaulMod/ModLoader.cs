@@ -111,6 +111,7 @@ namespace OverhaulMod
             _ = ModManagers.NewSingleton<RealisticLightingManager>();
             _ = ModManagers.NewSingleton<ParticleManager>();
             _ = ModManagers.NewSingleton<PostEffectsManager>();
+            _ = ModManagers.NewSingleton<QualityManager>();
             _ = ModManagers.NewSingleton<FPSManager>();
             if (ModFeatures.IsEnabled(ModFeatures.FeatureType.QuickReset)) _ = ModManagers.NewSingleton<QuickResetManager>();
             _ = ModManagers.NewSingleton<AutoBuildManager>();

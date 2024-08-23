@@ -12,7 +12,7 @@ namespace OverhaulMod.Engine
         [ModSetting(ModSettingsConstants.REVERB_FILTER_INTENSITY, 0.6f)]
         public static float ReverbIntensity;
 
-        [ModSetting(ModSettingsConstants.MUTE_SOUND_WHEN_UNFOCUSED, true)]
+        [ModSetting(ModSettingsConstants.MUTE_SOUND_WHEN_UNFOCUSED, false)]
         public static bool MuteSoundWhenUnfocused;
 
         [ModSetting(ModSettingsConstants.MUTE_MASTER_VOLUME_WHEN_UNFOCUSED, true)]

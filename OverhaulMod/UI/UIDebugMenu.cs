@@ -1,4 +1,5 @@
-﻿using OverhaulMod.Utils;
+﻿using OverhaulMod.Engine;
+using OverhaulMod.Utils;
 using System.Linq;
 using System.Text;
 using UnityEngine.UI;
@@ -27,6 +28,21 @@ namespace OverhaulMod.UI
         [UIElement("ExportAllUpgradesButton")]
         private readonly Button m_exportAllUpgradesButton;
 
+        [UIElementAction(nameof(OnWipLabelToggleChanged))]
+        [UIElement("ShowWipLabelToggle")]
+        private readonly Toggle m_wipLabelToggle;
+
+        protected override void OnInitialized()
+        {
+            m_wipLabelToggle.isOn = ModSettingsManager.GetBoolValue(ModSettingsConstants.SHOW_DEVELOPER_BUILD_LABEL);
+        }
+
+        public override void Hide()
+        {
+            base.Hide();
+            ModSettingsDataManager.Instance.Save();
+        }
+
         public void OnSkillPointsButtonClicked()
         {
             GameDataManager.Instance.SetAvailableSkillPoints(1000);
@@ -36,7 +52,7 @@ namespace OverhaulMod.UI
         {
             if (!GameModeManager.Is(GameMode.Endless))
             {
-                ModUIUtils.MessagePopupOK("This button only works in endless mode.", "This button only works in endless mode.");
+                ModUIUtils.MessagePopupOK("This button only works in endless mode.", "It really does");
                 return;
             }
 
@@ -59,6 +75,12 @@ namespace OverhaulMod.UI
         {
             ModBuildInfo.GenerateExtraInfo();
             ModUIUtils.MessagePopupOK("Successfully saved compilation date.", "Successfully saved compilation date.");
+
+            UIVersionLabel versionLabel = ModUIManager.Instance.Get<UIVersionLabel>(AssetBundleConstants.UI, ModUIConstants.UI_VERSION_LABEL);
+            if (versionLabel)
+            {
+                versionLabel.RefreshLabels();
+            }
         }
 
         public void OnExportAllUpgradesButtonClicked()
@@ -81,6 +103,11 @@ namespace OverhaulMod.UI
 
             ModDataManager.Instance.WriteFile("AllUpgradesExport.txt", stringBuilder.ToString(), true);
             _ = ModIOUtils.OpenFileExplorer(ModCore.savesFolder);
+        }
+
+        public void OnWipLabelToggleChanged(bool value)
+        {
+            ModSettingsManager.SetBoolValue(ModSettingsConstants.SHOW_DEVELOPER_BUILD_LABEL, value);
         }
     }
 }
