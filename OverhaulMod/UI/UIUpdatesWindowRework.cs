@@ -8,6 +8,14 @@ namespace OverhaulMod.UI
         [UIElement("CloseButton")]
         private readonly Button m_exitButton;
 
+        [UIElement("InstalledVersionText")]
+        private readonly Text m_installedVersionText;
+
         public override bool hideTitleScreen => true;
+
+        protected override void OnInitialized()
+        {
+            m_installedVersionText.text = ModBuildInfo.versionString;
+        }
     }
 }

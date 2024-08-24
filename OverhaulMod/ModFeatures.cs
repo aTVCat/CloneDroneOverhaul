@@ -116,6 +116,12 @@ namespace OverhaulMod
                 case FeatureType.DisplayDisconnectedPlayers:
                     result = true;
                     break;
+                case FeatureType.Intro:
+                    result = ModBuildInfo.VERSION_4_3;
+                    break;
+                case FeatureType.VersionLabelUpdates:
+                    result = true;
+                    break;
                 default:
                     return false;
             }
@@ -189,7 +195,11 @@ namespace OverhaulMod
 
             RequireNormalAndFireVariantsForSwordAndSpearSkins,
 
-            DisplayDisconnectedPlayers
+            DisplayDisconnectedPlayers,
+
+            Intro,
+
+            VersionLabelUpdates
         }
     }
 }

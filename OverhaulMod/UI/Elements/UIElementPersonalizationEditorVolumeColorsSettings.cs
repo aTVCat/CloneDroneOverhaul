@@ -42,7 +42,6 @@ namespace OverhaulMod.UI
 
         protected override void OnInitialized()
         {
-            base.OnInitialized();
             m_colorPairs = new List<ColorPairFloat>();
             m_pasteColorsButton.interactable = false;
         }

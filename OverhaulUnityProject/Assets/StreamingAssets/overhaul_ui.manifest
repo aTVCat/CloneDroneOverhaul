@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 3637140179
+CRC: 1202036003
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: b17f89cd796563be7a0e42beb5b81e53
+    Hash: aa8460fe86a33a302bc42130878feab9
   TypeTreeHash:
     serializedVersion: 2
     Hash: acf1344b0dbbc80b9165ec9e7dce57f8
@@ -107,9 +107,10 @@ Assets:
 - Assets/UI/UI_EndlessGameLossWindow.prefab
 - Assets/UI/UI_ExclusiveContentEditor.prefab
 - Assets/UI/UI_PersonalizationEditorMagicaVoxelTip.prefab
-- Assets/Font/Edit-Undo.ttf
+- Assets/Font/Edit-Undo-BRK.ttf
 - Assets/UI/UI_MessagePopupFullScreen.prefab
 - Assets/UI/UI_WorkshopItemPageWindow.prefab
+- Assets/UI/UI_Intro.prefab
 - Assets/Sprites/Glyphs/RevertUpgradesButton.png
 - Assets/UI/UI_PhotoModeUIRework.prefab
 - Assets/UI/UI_ScreenTooltips.prefab
@@ -122,7 +123,7 @@ Assets:
 - Assets/Sprites/Glyphs/NA-HQ-128x128.png
 - Assets/UI/UI_LoadingScreen.prefab
 - Assets/UI/UI_Transition.prefab
-- Assets/Font/dseg7classicbold.ttf
+- Assets/Font/DSEG7-Classic-Bold.ttf
 - Assets/UI/UI_PersonalizationEditorItemCreationDialog.prefab
 - Assets/UI/UI_PersonalizationEditor.prefab
 - Assets/UI/UI_EndlessModeMenu.prefab
@@ -155,7 +156,7 @@ Assets:
 - Assets/UI/UI_PersonalizationEditorObjectBrowser.prefab
 - Assets/UI/UI_GenericInputWindow.prefab
 - Assets/UI/UI_DiscordServerMenu.prefab
-- Assets/Font/3117-font.ttf
+- Assets/Font/VCR-OSD-Mono.ttf
 - Assets/UI/Prefabs/RevertUpgradesButtonPrefab.prefab
 - Assets/UI/UI_NewsPanel.prefab
 - Assets/UI/UI_LocalizationEditor.prefab
@@ -192,6 +193,6 @@ Assets:
 - Assets/UI/UI_LevelDescriptionBrowser.prefab
 - Assets/UI/UI_FeedbackUIRework.prefab
 - Assets/Font/OpenSans-ExtraBold.ttf
-- Assets/Font/eternalui_bold.ttf
+- Assets/Font/Eternal-UI.ttf
 - Assets/UI/UI_TitleScreenRework.prefab
 Dependencies: []

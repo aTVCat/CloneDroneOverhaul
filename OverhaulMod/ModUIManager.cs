@@ -76,6 +76,9 @@ namespace OverhaulMod
             windowManager = base.gameObject.AddComponent<WindowManager>();
             m_instantiatedUIs = new Dictionary<string, GameObject>();
             m_shownUIs = new List<OverhaulUIBehaviour>();
+
+            if(ModFeatures.IsEnabled(ModFeatures.FeatureType.Intro))
+                ModUIConstants.ShowIntro();
         }
 
         private void OnDestroy()
@@ -491,8 +494,6 @@ namespace OverhaulMod
 
             protected override void OnInitialized()
             {
-                base.OnInitialized();
-
                 RectTransform rectTransform = base.transform as RectTransform;
                 m_rectTransform = rectTransform;
 

@@ -1,5 +1,7 @@
 ﻿using HarmonyLib;
 using OverhaulMod.Engine;
+using OverhaulMod.UI;
+using OverhaulMod.Utils;
 using UnityEngine;
 
 namespace OverhaulMod.Patches
@@ -9,7 +11,7 @@ namespace OverhaulMod.Patches
     {
         [HarmonyPrefix]
         [HarmonyPatch(nameof(TitleScreenUI.OnCloneDroneLogoClicked))]
-        private static bool OnCloneDroneLogoClicked_Prefix(ChapterLoadingScreen __instance)
+        private static bool OnCloneDroneLogoClicked_Prefix(TitleScreenUI __instance)
         {
             TitleScreenCustomizationManager titleScreenCustomizationManager = TitleScreenCustomizationManager.Instance;
             if (titleScreenCustomizationManager && titleScreenCustomizationManager.overrideLevelDescription != null)
@@ -29,6 +31,17 @@ namespace OverhaulMod.Patches
                 return false;
             }
             return true;
+        }
+
+        [HarmonyPostfix]
+        [HarmonyPatch(nameof(TitleScreenUI.PlayExplosionAudio))]
+        private static void PlayExplosionAudio_Prefix(TitleScreenUI __instance)
+        {
+            UIIntro intro = ModUIManager.Instance.Get<UIIntro>(AssetBundleConstants.UI, ModUIConstants.UI_INTRO);
+            if (intro)
+            {
+                intro.StartFadingOut();
+            }
         }
     }
 }

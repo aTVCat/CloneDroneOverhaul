@@ -56,11 +56,11 @@ namespace OverhaulMod.UI
             {
                 string dirName = ModIOUtils.GetDirectoryName(directory);
 
-                if (dirName.StartsWith("0.4.3") && !ModBuildInfo.VERSION_4_3)
-                    continue;
-
                 if (!Version.TryParse(dirName, out Version version))
                     version = new Version(0, 0, 0, 0);
+
+                if (ModBuildInfo.version < version)
+                    continue;
 
                 versions.Add(version);
             }

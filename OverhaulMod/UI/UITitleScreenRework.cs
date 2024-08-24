@@ -211,8 +211,6 @@ namespace OverhaulMod.UI
 
         protected override void OnInitialized()
         {
-            base.OnInitialized();
-
             m_modBotLogonText.text = "Not logged in";
             NewsButtonWarnController.isNewsButton = true;
             UpdatesButtonWarnController.isUpdatesButton = true;

@@ -76,7 +76,7 @@ namespace OverhaulMod.UI
             ModBuildInfo.GenerateExtraInfo();
             ModUIUtils.MessagePopupOK("Successfully saved compilation date.", "Successfully saved compilation date.");
 
-            UIVersionLabel versionLabel = ModUIManager.Instance.Get<UIVersionLabel>(AssetBundleConstants.UI, ModUIConstants.UI_VERSION_LABEL);
+            UIVersionLabel versionLabel = UIVersionLabel.instance;
             if (versionLabel)
             {
                 versionLabel.RefreshLabels();

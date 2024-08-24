@@ -127,6 +127,21 @@ namespace OverhaulMod
             return Instance.getOrCreateAssetBundleInfo(GetBundlePath(bundle, pathPrefix), bundle, true).GetBundle();
         }
 
+        public static Font EditUndoFont()
+        {
+            return Load<Font>(AssetBundleConstants.UI, "Edit-Undo-BRK");
+        }
+
+        public static Font PiksieliProstoFont()
+        {
+            return Load<Font>(AssetBundleConstants.UI, "Piksieli-Prosto");
+        }
+
+        public static Font VSROSDMonoFont()
+        {
+            return Load<Font>(AssetBundleConstants.UI, "VCR-OSD-Mono");
+        }
+
         public static string GetBundleName(string fileLocation)
         {
             return Path.GetFileNameWithoutExtension(fileLocation);

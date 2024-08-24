@@ -16,6 +16,9 @@ namespace OverhaulMod.UI
         [UIElement("NewVersionLabel_TitleScreen")]
         private readonly GameObject m_watermark;
 
+        [UIElement("NewVersionLabel_TitleScreen")]
+        private readonly CanvasGroup m_watermarkCanvasGroup;
+
         [UIElement("DebugLabel_TitleScreen")]
         private readonly GameObject m_debugIcon;
 
@@ -40,6 +43,8 @@ namespace OverhaulMod.UI
         public bool ForceHide;
 
         private bool m_refreshWidth;
+
+        private bool m_fadeInLabel;
 
         public override bool closeOnEscapeButtonPress => false;
 
@@ -85,12 +90,25 @@ namespace OverhaulMod.UI
         {
             instance = this;
 
+            bool update = ModFeatures.IsEnabled(ModFeatures.FeatureType.VersionLabelUpdates);
+            m_gameplayVersionText.font = update ? ModResources.EditUndoFont() : ModResources.PiksieliProstoFont();
+            m_gameplayVersionText.fontSize = update ? 10 : 6;
+            m_gameplayWatermarkTransform.localScale = update ? Vector3.one * 0.9f : Vector3.one;
             RefreshLabels();
 
             ModSettingsManager.Instance.AddSettingValueChangedListener(onDevBuildLabelSettingChanged, ModSettingsConstants.SHOW_DEVELOPER_BUILD_LABEL);
             onDevBuildLabelSettingChanged(ShowDeveloperBuildLabel);
 
             ModCache.titleScreenUI.VersionLabel.gameObject.SetActive(false);
+
+            if (ModFeatures.IsEnabled(ModFeatures.FeatureType.Intro))
+            {
+                m_watermarkCanvasGroup.alpha = 0f;
+                ModActionUtils.DoInFrames(delegate
+                {
+                    m_fadeInLabel = GameModeManager.IsOnTitleScreen() && !ModUIManager.Instance.HasInstantiatedUI($"{AssetBundleConstants.UI}.{ModUIConstants.UI_INTRO}");
+                }, 10);
+            }
         }
 
         public override void OnDestroy()
@@ -112,6 +130,15 @@ namespace OverhaulMod.UI
                 rectTransform.sizeDelta = sideDelta;
             }
 
+            if (m_fadeInLabel)
+            {
+                m_watermarkCanvasGroup.alpha += Time.unscaledDeltaTime;
+                if (m_watermarkCanvasGroup.alpha >= 1f)
+                {
+                    m_fadeInLabel = false;
+                }
+            }
+
             if (Time.frameCount % 10 != 0)
                 return;
 
@@ -131,9 +158,14 @@ namespace OverhaulMod.UI
             m_refreshWidth = true;
         }
 
+        public void ShowTitleScreenLabel()
+        {
+            m_fadeInLabel = true;
+        }
+
         private void onDevBuildLabelSettingChanged(object obj)
         {
-            m_devBuildLabelObject.SetActive((obj is bool b && ModBuildInfo.isDeveloperBuild && ModBuildInfo.debug) ? b : false);
+            m_devBuildLabelObject.SetActive((obj is bool b && ModBuildInfo.isDeveloperBuild && ModBuildInfo.debug) && b);
         }
 
         public void OnOtherModsButtonClicked()

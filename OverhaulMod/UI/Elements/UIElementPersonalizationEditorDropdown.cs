@@ -20,7 +20,6 @@ namespace OverhaulMod.UI
 
         protected override void OnInitialized()
         {
-            base.OnInitialized();
             m_mouseChecker = base.gameObject.AddComponent<UIElementMouseEventsComponent>();
             m_spawnedEntries = new List<GameObject>();
         }

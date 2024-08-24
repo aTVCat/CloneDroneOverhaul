@@ -64,15 +64,6 @@ namespace OverhaulMod.UI
             set;
         }
 
-        /*
-        protected override void OnInitialized()
-        {
-            base.OnInitialized();
-
-            Button button = base.GetComponent<Button>();
-            button.onClick.AddListener(onClicked);
-        }*/
-
         public override void OnDestroy()
         {
             WorkshopItem item = workshopItem;

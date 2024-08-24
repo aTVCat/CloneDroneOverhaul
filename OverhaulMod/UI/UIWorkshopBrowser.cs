@@ -251,7 +251,6 @@ namespace OverhaulMod.UI
 
         protected override void OnInitialized()
         {
-            base.OnInitialized();
             page = 1;
             m_timeLeftToPopulate = -1f;
             m_selectedItemDisplays = new List<UIElementWorkshopItemDisplay>();

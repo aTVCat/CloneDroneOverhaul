@@ -89,6 +89,7 @@ namespace OverhaulMod.Utils
         public const string UI_PERSONALIZATION_EDITOR_ITEM_IMPORT_DIALOG = "UI_PersonalizationEditorItemImportDialog";
         public const string UI_UPDATES_WINDOW_REWORK = "UI_UpdatesWindowRework";
         public const string UI_PERSONALIZATION_EDITOR_MAGICA_VOXEL_TIP = "UI_PersonalizationEditorMagicaVoxelTip";
+        public const string UI_INTRO = "UI_Intro";
 
         public static UIVersionLabel ShowVersionLabel()
         {
@@ -554,6 +555,11 @@ namespace OverhaulMod.Utils
         public static UIPersonalizationEditorMagicaVoxelTip ShowPersonalizationEditorMagicaVoxelTip(Transform transform)
         {
             return ModUIManager.Instance.Show<UIPersonalizationEditorMagicaVoxelTip>(AssetBundleConstants.UI, UI_PERSONALIZATION_EDITOR_MAGICA_VOXEL_TIP, transform);
+        }
+
+        public static UIIntro ShowIntro()
+        {
+            return ModUIManager.Instance.Show<UIIntro>(AssetBundleConstants.UI, UI_INTRO, ModUIManager.UILayer.Last);
         }
     }
 }

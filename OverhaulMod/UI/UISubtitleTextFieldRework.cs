@@ -185,13 +185,13 @@ namespace OverhaulMod.UI
             switch (FontType)
             {
                 case 1:
-                    m_text.font = ModResources.Font(AssetBundleConstants.UI, "3117-font");
+                    m_text.font = ModResources.VSROSDMonoFont();
                     break;
                 case 2:
-                    m_text.font = ModResources.Font(AssetBundleConstants.UI, "Piksieli-Prosto");
+                    m_text.font = ModResources.PiksieliProstoFont();
                     break;
                 case 3:
-                    m_text.font = ModResources.Font(AssetBundleConstants.UI, "Edit-Undo");
+                    m_text.font = ModResources.EditUndoFont();
                     break;
                 case 4:
                     m_text.font = ModResources.Font(AssetBundleConstants.UI, "OpenSans-Regular");

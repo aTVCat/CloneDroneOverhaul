@@ -40,7 +40,6 @@ namespace OverhaulMod.UI
 
         protected override void OnInitialized()
         {
-            base.OnInitialized();
             m_personalizationManager = PersonalizationManager.Instance;
             s_dontActuallyRefreshRemoteVersionUntilTime = 0f;
         }
