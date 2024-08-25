@@ -10,7 +10,7 @@ namespace OverhaulMod.UI
         [ModSetting(ModSettingsConstants.SHOW_VERSION_LABEL, true)]
         public static bool ShowLabel;
 
-        [ModSetting(ModSettingsConstants.SHOW_DEVELOPER_BUILD_LABEL, true)]
+        [ModSetting(ModSettingsConstants.SHOW_DEVELOPER_BUILD_LABEL, false)]
         public static bool ShowDeveloperBuildLabel;
 
         [UIElement("NewVersionLabel_TitleScreen")]
