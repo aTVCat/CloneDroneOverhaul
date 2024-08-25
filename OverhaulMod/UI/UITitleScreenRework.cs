@@ -44,13 +44,35 @@ namespace OverhaulMod.UI
         [UIElement("FeedbackButton")]
         private readonly Button m_feedbackButton;
 
-        [UIElementAction(nameof(OnNewsButtonClicked))]
-        [UIElement("NewsButton")]
-        private readonly Button m_newsButton;
+        [UIElement("BottomSection", true)]
+        private readonly GameObject m_bottomSection;
 
         [UIElementAction(nameof(OnExcContentMenuButtonClicked))]
         [UIElement("ExclusiveContentMenuButton")]
         private readonly Button m_excContentMenuButton;
+
+        [UIElementAction(nameof(OnUpdatesButtonClicked))]
+        [UIElement("UpdatesButton")]
+        private readonly Button m_updatesButton;
+
+        [UIElementAction(nameof(OnNewsButtonClicked))]
+        [UIElement("NewsButton")]
+        private readonly Button m_newsButton;
+
+        [UIElement("NewBottomSection", false)]
+        private readonly GameObject m_newBottomSection;
+
+        [UIElementAction(nameof(OnExcContentMenuButtonClicked))]
+        [UIElement("NewExclusiveContentMenuButton")]
+        private readonly Button m_newExcContentMenuButton;
+
+        [UIElementAction(nameof(OnUpdatesButtonClicked))]
+        [UIElement("NewUpdatesButton")]
+        private readonly Button m_newUpdatesButton;
+
+        [UIElementAction(nameof(OnNewsButtonClicked))]
+        [UIElement("NewNewsButton")]
+        private readonly Button m_newNewsButton;
 
         [UIElementAction(nameof(OnOptionsButtonClicked))]
         [UIElement("OptionsButton")]
@@ -87,10 +109,6 @@ namespace OverhaulMod.UI
         [UIElementAction(nameof(OnContentButtonClicked))]
         [UIElement("ContentButton")]
         private readonly Button m_contentButton;
-
-        [UIElementAction(nameof(OnUpdatesButtonClicked))]
-        [UIElement("UpdatesButton")]
-        private readonly Button m_updatesButton;
 
         [UIElementAction(nameof(OnLevelEditorButtonClicked))]
         [UIElement("LevelEditorButton")]
@@ -215,6 +233,10 @@ namespace OverhaulMod.UI
             NewsButtonWarnController.isNewsButton = true;
             UpdatesButtonWarnController.isUpdatesButton = true;
             m_debugButtonsObject.SetActive(ModBuildInfo.debug);
+
+            bool updateBottomSection = ModFeatures.IsEnabled(ModFeatures.FeatureType.TitleScreenModdedSectionRework);
+            m_bottomSection.SetActive(!updateBottomSection);
+            m_newBottomSection.SetActive(updateBottomSection);
 
             TitleScreenUI titleScreenUI = ModCache.titleScreenUI;
             if (titleScreenUI)

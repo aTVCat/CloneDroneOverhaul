@@ -4,7 +4,7 @@ namespace OverhaulMod
 {
     public static class ModUserInfo
     {
-        public static readonly Steamworks.CSteamID DeveloperSteamID = new Steamworks.CSteamID(76561199028311109);
+        public static readonly CSteamID DeveloperSteamID = new CSteamID(76561199028311109);
         public static readonly string DeveloperPlayFabID = "883CC7F4CA3155A3";
 
         private static CSteamID s_localPlayerSteamID;

@@ -189,7 +189,6 @@ namespace OverhaulMod.Content.Personalization
 
         public List<PersonalizationItemInfo> GetItems(PersonalizationCategory personalizationCategory, PersonalizationItemsSortType sort)
         {
-            // todo: cache this using versions
             List<PersonalizationItemInfo> result;
             List<PersonalizationItemInfo> list = GetItems(personalizationCategory);
             switch (sort)

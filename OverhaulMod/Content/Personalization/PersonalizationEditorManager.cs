@@ -616,7 +616,7 @@ namespace OverhaulMod.Content.Personalization
         public void TutorialVideo()
         {
             UIPersonalizationEditor.instance.Dropdown.Hide();
-            Application.OpenURL("https://youtu.be/xdbdb-WizSo"); // todo: make tutorial video and add it here
+            Application.OpenURL("https://youtu.be/xdbdb-WizSo");
         }
 
         public List<ColorPairFloat> GetColorPairsFromString(string dataString)

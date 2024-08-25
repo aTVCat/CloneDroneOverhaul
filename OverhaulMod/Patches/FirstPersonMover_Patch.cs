@@ -46,7 +46,7 @@ namespace OverhaulMod.Patches
             if (GameModeManager.IsMultiplayer() || !__instance.IsMainPlayer())
                 return;
 
-            RobotInventory robotInventory = ModComponentCache.GetRobotInventory(__instance.transform);
+            CharacterInventory robotInventory = ModComponentCache.GetRobotInventory(__instance.transform);
             if (robotInventory)
             {
                 if (__instance._isOnGroundServer)

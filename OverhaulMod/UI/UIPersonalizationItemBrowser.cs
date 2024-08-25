@@ -493,7 +493,7 @@ namespace OverhaulMod.UI
 
                     bool isDeveloper = ModUserInfo.isDeveloper;
 
-                    System.Collections.Generic.List<PersonalizationItemInfo> list = PersonalizationManager.Instance.itemList.GetItems(m_selectedCategory, (PersonalizationItemsSortType)m_sortType);
+                    List<PersonalizationItemInfo> list = PersonalizationManager.Instance.itemList.GetItems(m_selectedCategory, PersonalizationItemsSortType.Alphabet);
                     for (int i = 0; i < list.Count; i++)
                     {
                         PersonalizationItemInfo item = list[i];

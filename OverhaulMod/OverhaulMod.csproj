@@ -337,7 +337,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Combat\RobotInventory.cs" />
+    <Compile Include="Combat\CharacterInventory.cs" />
     <Compile Include="Combat\Weapons\ModSwordBlockArea.cs" />
     <Compile Include="Content\ContentDownloadInfo.cs" />
     <Compile Include="Content\ContentInfo.cs" />

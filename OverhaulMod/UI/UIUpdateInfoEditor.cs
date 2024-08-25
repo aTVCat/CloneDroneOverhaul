@@ -58,7 +58,6 @@ namespace OverhaulMod.UI
                 return;
 
             m_modVersionField.text = m_editingInfo.ModVersion?.ToString();
-            m_modBotVersionField.text = m_editingInfo.ModBotVersion.ToString();
             m_downloadLinkField.text = m_editingInfo.DownloadLink;
             m_changelogField.text = m_editingInfo.Changelog;
         }
@@ -101,7 +100,6 @@ namespace OverhaulMod.UI
             string downloadLink = m_downloadLinkField.text;
             string changelog = m_changelogField.text;
             m_editingInfo.ModVersion = parsedModVersion;
-            m_editingInfo.ModBotVersion = parsedModBotVersion;
             m_editingInfo.DownloadLink = downloadLink;
             m_editingInfo.Changelog = changelog;
             switch (m_branchDropdown.value)

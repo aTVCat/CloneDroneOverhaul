@@ -5,6 +5,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static OverhaulMod.ModFeatures;
 
 namespace OverhaulMod.Content
 {
@@ -215,6 +216,15 @@ namespace OverhaulMod.Content
         public bool IsLocalUserAbleToVerifyItems()
         {
             return !GetAllUnlockedContentOfType<ExclusiveContentItemsVerifierRole>().IsNullOrEmpty();
+        }
+
+        public bool HasUnlockedPerk(ExclusiveContentType perkType)
+        {
+            foreach (ExclusiveContentInfo content in GetAllUnlockedContent())
+                if (content.ContentType == perkType)
+                    return true;
+
+            return false;
         }
     }
 }

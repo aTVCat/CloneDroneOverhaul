@@ -526,10 +526,24 @@ namespace OverhaulMod.Utils
         /// </summary>
         public const string ENABLE_DEBUG_MENU = "EnableDebugMenu";
 
-
         /// <summary>
         /// <see cref="UI.UIVersionLabel"/>
         /// </summary>
         public const string SHOW_DEVELOPER_BUILD_LABEL = "ShowDeveloperBuildLabel";
+
+        /// <summary>
+        /// <see cref="Visuals.QualityManager"/>
+        /// </summary>
+        public const string SHADOW_RESOLUTION = "ShadowResolution";
+
+        /// <summary>
+        /// <see cref="Visuals.QualityManager"/>
+        /// </summary>
+        public const string SHADOW_DISTANCE = "ShadowDistance";
+
+        /// <summary>
+        /// <see cref="Visuals.QualityManager"/>
+        /// </summary>
+        public const string MAX_LIGHT_COUNT = "MaxLightCount";
     }
 }

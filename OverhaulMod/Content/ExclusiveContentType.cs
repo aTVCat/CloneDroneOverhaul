@@ -2,6 +2,7 @@
 {
     public enum ExclusiveContentType
     {
+        None = 0,
         ColorOverride = 1,
         PersonalizationItem = 2,
         FeatureUnlock = 3,

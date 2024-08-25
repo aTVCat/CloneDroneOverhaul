@@ -1,18 +1,42 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Runtime.InteropServices.WindowsRuntime;
 
 namespace OverhaulMod.Content
 {
     public class UpdateInfo
     {
-        public int ModBotVersion;
         public Version ModVersion;
-
-        public string DownloadLink; // only for public releases
         public string Changelog;
+
+        public bool IsGoogleDriveLink;
+        public string DownloadLink;
+
+        public List<string> AllowedUsers;
+        public ExclusiveContentType RequireExclusivePerk;
+
+        public void FixValues()
+        {
+            if(AllowedUsers == null)
+                AllowedUsers = new List<string>();
+
+            if(ModVersion == null)
+                ModVersion = new Version(ModBuildInfo.versionMajor, ModBuildInfo.versionMinor, ModBuildInfo.versionBuild, ModBuildInfo.versionRevision);
+        }
 
         public override string ToString()
         {
-            return $"Overhaul Mod V{ModVersion} ({ModBotVersion})";
+            return $"Overhaul mod {ModVersion}";
+        }
+
+        public bool CanBeInstalledByLocalUser()
+        {
+            if(RequireExclusivePerk != ExclusiveContentType.None)
+            {
+                if(ExclusiveContentManager.Instance.HasUnlockedPerk(RequireExclusivePerk))
+                    return true;
+            }
+            return AllowedUsers == null || AllowedUsers.Contains(ModUserInfo.localPlayerPlayFabID) || AllowedUsers.Contains(ModUserInfo.localPlayerSteamID.ToString());
         }
 
         public bool IsCurrentBuild()
@@ -20,12 +44,12 @@ namespace OverhaulMod.Content
             return ModBuildInfo.version == ModVersion;
         }
 
-        public bool IsNewBuild()
+        public bool IsNewerBuild()
         {
             return ModBuildInfo.version < ModVersion;
         }
 
-        public bool IsOldBuild()
+        public bool IsOlderBuild()
         {
             return ModBuildInfo.version > ModVersion;
         }

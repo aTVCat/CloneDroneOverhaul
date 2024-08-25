@@ -120,7 +120,10 @@ namespace OverhaulMod
                     result = ModBuildInfo.VERSION_4_3;
                     break;
                 case FeatureType.VersionLabelUpdates:
-                    result = true;
+                    result = ModBuildInfo.VERSION_4_3;
+                    break;
+                case FeatureType.TitleScreenModdedSectionRework:
+                    result = ModBuildInfo.VERSION_4_3;
                     break;
                 default:
                     return false;
@@ -199,7 +202,9 @@ namespace OverhaulMod
 
             Intro,
 
-            VersionLabelUpdates
+            VersionLabelUpdates,
+
+            TitleScreenModdedSectionRework
         }
     }
 }

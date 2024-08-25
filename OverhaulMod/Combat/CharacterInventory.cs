@@ -2,7 +2,7 @@
 
 namespace OverhaulMod.Combat
 {
-    public class RobotInventory : MonoBehaviour
+    public class CharacterInventory : MonoBehaviour
     {
         public bool IsNotAbleToDoubleJump;
 
@@ -28,6 +28,26 @@ namespace OverhaulMod.Combat
         private void Start()
         {
             OnUpgradesRefreshed(owner._upgradeCollection);
+        }
+
+        private void Update()
+        {
+            FirstPersonMover firstPersonMover = owner;
+            if (!firstPersonMover || !firstPersonMover.IsMainPlayer())
+                return;
+
+            float scroll = Input.mouseScrollDelta.y;
+            if(scroll != 0f)
+            {
+                if(scroll > 0f)
+                {
+                    // todo: scroll to switch weapons
+                }
+                else
+                {
+
+                }
+            }
         }
 
         public void OnUpgradesRefreshed(UpgradeCollection upgrades)

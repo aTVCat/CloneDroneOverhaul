@@ -142,7 +142,7 @@ namespace OverhaulMod.UI
                     break;
             }
 
-            if (updateInfo == null || !updateInfo.IsNewBuild())
+            if (updateInfo == null || !updateInfo.IsNewerBuild())
             {
                 m_versionText.text = LocalizationManager.Instance.GetTranslatedString("no updates found");
                 return;
