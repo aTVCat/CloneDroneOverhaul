@@ -195,6 +195,14 @@ namespace OverhaulMod.Visuals
                 globalFog.fogShader = ModResources.Shader(AssetBundleConstants.IMAGE_EFFECTS, "GlobalFog");
             }*/
 
+            SEGICascaded segiCascaded = camera.GetComponent<SEGICascaded>();
+            if (!segiCascaded)
+            {
+                segiCascaded = cameraGameObject.AddComponent<SEGICascaded>();
+                segiCascaded.sun = DirectionalLightManager.Instance.DirectionalLight;
+                segiCascaded.ApplyPreset(new SEGICascadedPreset());
+            }
+
             BlurOptimized blurOptimized = camera.GetComponent<BlurOptimized>();
             if (!blurOptimized)
             {

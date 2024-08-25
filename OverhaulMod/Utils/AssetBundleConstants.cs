@@ -9,5 +9,6 @@
         public const string UPGRADES = "overhaul_upgrades";
         public const string AMPLIFY_OCCLUSION = "effect_amplifyocclusion";
         public const string IMAGE_EFFECTS = "overhaul_imageeffects";
+        public const string GLOBAL_ILLUMINATION = "overhaul_globalillumination";
     }
 }

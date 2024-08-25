@@ -1,0 +1,123 @@
+ManifestFileVersion: 0
+CRC: 1291396936
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 95e0b58526ca21013ef83a3fce4ceb8c
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: e585896c8483042bdb6db047e1039def
+HashAppended: 0
+ClassTypes:
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 72
+  Script: {instanceID: 0}
+- Class: 109
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 11500000, guid: c7780f824b3fbed498c366c0f53ccef9, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 195d4ee8e5f057f4590c043b132f9c86, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+Assets:
+- Assets/SEGI/Resources/Noise Textures/LDR_RGBA_28.png
+- Assets/SEGI/Resources/Noise Textures/LDR_RGBA_58.png
+- Assets/SEGI/Resources/Noise Textures/LDR_RGBA_61.png
+- Assets/SEGI/Resources/SEGI_C.cginc
+- Assets/SEGI/Resources/Noise Textures/LDR_RGBA_15.png
+- Assets/SEGI/Resources/Noise Textures/LDR_RGBA_32.png
+- Assets/SEGI/Resources/Noise Textures/LDR_RGBA_27.png
+- Assets/SEGI/Resources/Noise Textures/LDR_RGBA_42.png
+- Assets/SEGI/Resources/Noise Textures/LDR_RGBA_0.png
+- Assets/SEGI/Resources/Noise Textures/LDR_RGBA_16.png
+- Assets/SEGI/Resources/Noise Textures/LDR_RGBA_34.png
+- Assets/SEGI/Resources/Noise Textures/LDR_RGBA_50.png
+- Assets/SEGI/Resources/Noise Textures/LDR_RGBA_51.png
+- Assets/SEGI/Resources/Presets/High.asset
+- Assets/SEGI/Resources/Cascaded Presets/Standard.asset
+- Assets/SEGI/Resources/Noise Textures/LDR_RGBA_43.png
+- Assets/SEGI/Resources/Noise Textures/LDR_RGBA_12.png
+- Assets/SEGI/Resources/Noise Textures/LDR_RGBA_36.png
+- Assets/SEGI/Resources/SEGIVoxelizeScene.shader
+- Assets/SEGI/Resources/SEGIMipFilter.compute
+- Assets/SEGI/Resources/SEGITraceScene.shader
+- Assets/SEGI/Resources/Noise Textures/LDR_RGBA_56.png
+- Assets/SEGI/Resources/Noise Textures/LDR_RGBA_8.png
+- Assets/SEGI/Resources/Presets/Bright.asset
+- Assets/SEGI/Resources/SEGIMipFilter_C.compute
+- Assets/SEGI/Resources/Noise Textures/LDR_RGBA_19.png
+- Assets/SEGI/Resources/SEGITransferInts_C.compute
+- Assets/SEGI/Resources/Noise Textures/LDR_RGBA_49.png
+- Assets/SEGI/Resources/Noise Textures/LDR_RGBA_21.png
+- Assets/SEGI/Resources/Noise Textures/LDR_RGBA_52.png
+- Assets/SEGI/Resources/Noise Textures/LDR_RGBA_25.png
+- Assets/SEGI/Resources/Presets/Low.asset
+- Assets/SEGI/Resources/Noise Textures/LDR_RGBA_20.png
+- Assets/SEGI/Resources/Noise Textures/LDR_RGBA_44.png
+- Assets/SEGI/Resources/Noise Textures/LDR_RGBA_59.png
+- Assets/SEGI/Resources/Noise Textures/LDR_RGBA_53.png
+- Assets/SEGI/Resources/Noise Textures/LDR_RGBA_5.png
+- Assets/SEGI/Resources/Noise Textures/LDR_RGBA_39.png
+- Assets/SEGI/Resources/Noise Textures/LDR_RGBA_1.png
+- Assets/SEGI/Resources/Noise Textures/LDR_RGBA_30.png
+- Assets/SEGI/Resources/Noise Textures/LDR_RGBA_57.png
+- Assets/SEGI/Resources/Noise Textures/LDR_RGBA_33.png
+- Assets/SEGI/Resources/Noise Textures/LDR_RGBA_63.png
+- Assets/SEGI/Resources/Noise Textures/LDR_RGBA_38.png
+- Assets/SEGI/Resources/Noise Textures/LDR_RGBA_6.png
+- Assets/SEGI/Resources/Noise Textures/LDR_RGBA_60.png
+- Assets/SEGI/Resources/Noise Textures/LDR_RGBA_23.png
+- Assets/SEGI/Resources/Noise Textures/LDR_RGBA_3.png
+- Assets/SEGI/Resources/Noise Textures/LDR_RGBA_41.png
+- Assets/SEGI/Resources/Noise Textures/LDR_RGBA_54.png
+- Assets/SEGI/Resources/Noise Textures/LDR_RGBA_46.png
+- Assets/SEGI/Resources/Presets/Sponza High.asset
+- Assets/SEGI/Resources/Noise Textures/LDR_RGBA_26.png
+- Assets/SEGI/Resources/Noise Textures/LDR_RGBA_29.png
+- Assets/SEGI/Resources/Noise Textures/LDR_RGBA_35.png
+- Assets/SEGI/Resources/SEGIClear.compute
+- Assets/SEGI/Resources/Noise Textures/LDR_RGBA_40.png
+- Assets/SEGI/Resources/SEGIRenderSunDepth_C.shader
+- Assets/SEGI/Resources/Cascaded Presets/Accurate 2.asset
+- Assets/SEGI/Resources/Noise Textures/LDR_RGBA_45.png
+- Assets/SEGI/Resources/SEGI_C.shader
+- Assets/SEGI/Resources/SEGI.cginc
+- Assets/SEGI/Resources/Presets/Medium.asset
+- Assets/SEGI/Resources/Noise Textures/LDR_RGBA_9.png
+- Assets/SEGI/Resources/Noise Textures/LDR_RGBA_31.png
+- Assets/SEGI/Resources/Noise Textures/LDR_RGBA_4.png
+- Assets/SEGI/Resources/Presets/Ultra Clean.asset
+- Assets/SEGI/Resources/Noise Textures/LDR_RGBA_18.png
+- Assets/SEGI/Resources/Noise Textures/LDR_RGBA_24.png
+- Assets/SEGI/Resources/Noise Textures/LDR_RGBA_11.png
+- Assets/SEGI/Resources/Noise Textures/LDR_RGBA_55.png
+- Assets/SEGI/Resources/Noise Textures/LDR_RGBA_22.png
+- Assets/SEGI/Resources/Cascaded Presets/Lite.asset
+- Assets/SEGI/Resources/Noise Textures/LDR_RGBA_17.png
+- Assets/SEGI/Resources/SEGIRenderSunDepth.shader
+- Assets/SEGI/Resources/Presets/Insane.asset
+- Assets/SEGI/Resources/SEGI.shader
+- Assets/SEGI/Resources/Presets/Sponza Medium.asset
+- Assets/SEGI/Resources/Presets/Sponza Ultra.asset
+- Assets/SEGI/Resources/Noise Textures/LDR_RGBA_47.png
+- Assets/SEGI/Resources/Noise Textures/LDR_RGBA_14.png
+- Assets/SEGI/Resources/Noise Textures/LDR_RGBA_13.png
+- Assets/SEGI/Resources/Presets/Sponza Low.asset
+- Assets/SEGI/Resources/SEGIBlocker.shader
+- Assets/SEGI/Resources/SEGITraceScene_C.shader
+- Assets/SEGI/Resources/SEGIClear_C.compute
+- Assets/SEGI/Resources/Noise Textures/LDR_RGBA_2.png
+- Assets/SEGI/Resources/Cascaded Presets/Accurate.asset
+- Assets/SEGI/Resources/Noise Textures/LDR_RGBA_10.png
+- Assets/SEGI/Resources/Noise Textures/LDR_RGBA_62.png
+- Assets/SEGI/Resources/Noise Textures/LDR_RGBA_37.png
+- Assets/SEGI/Resources/Noise Textures/LDR_RGBA_48.png
+- Assets/SEGI/Resources/SEGIVoxelizeScene_C.shader
+- Assets/SEGI/Resources/Presets/Ultra.asset
+- Assets/SEGI/Resources/SEGITransferInts.compute
+- Assets/SEGI/Resources/Noise Textures/LDR_RGBA_7.png
+Dependencies: []
