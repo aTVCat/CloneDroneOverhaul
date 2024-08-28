@@ -170,7 +170,7 @@ namespace OverhaulMod.Content.Personalization
                 return null;
 
             SaveClass saveClass = new SaveClass();
-            saveClass.LoadData(Utils.ModIOUtils.ReadBytes(path));
+            saveClass.LoadData(Utils.ModFileUtils.ReadBytes(path));
             return saveClass;
         }
 

@@ -169,7 +169,7 @@ namespace OverhaulMod.UI
 
         public void OnDataFolderButtonClicked()
         {
-            _ = ModIOUtils.OpenFileExplorer(ModCache.dataRepository.GetRootDataPath(false));
+            _ = ModFileUtils.OpenFileExplorer(ModCache.dataRepository.GetRootDataPath(false));
         }
 
         public void OnSaveButtonClicked()

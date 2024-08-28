@@ -14,7 +14,13 @@ namespace OverhaulMod.UI
             private set;
         }
 
-        public UnityAction doubleClickAction
+        public UnityAction<bool> pointerEnterStateCallback
+        {
+            get;
+            set;
+        }
+
+        public UnityAction doubleClickCallback
         {
             get;
             set;
@@ -24,7 +30,7 @@ namespace OverhaulMod.UI
         {
             if (Time.unscaledTime < m_timeForDoubleClick)
             {
-                doubleClickAction?.Invoke();
+                doubleClickCallback?.Invoke();
                 return;
             }
             m_timeForDoubleClick = Time.unscaledTime + 0.25f;
@@ -33,16 +39,19 @@ namespace OverhaulMod.UI
         public void OnPointerEnter(PointerEventData eventData)
         {
             isMouseOverElement = true;
+            pointerEnterStateCallback?.Invoke(true);
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
             isMouseOverElement = false;
+            pointerEnterStateCallback?.Invoke(false);
         }
 
         public void OnPointerUp(PointerEventData eventData)
         {
-            //isMouseOverElement = false;
+            isMouseOverElement = false;
+            pointerEnterStateCallback?.Invoke(false);
         }
     }
 }

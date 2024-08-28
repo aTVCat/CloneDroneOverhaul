@@ -379,6 +379,7 @@
     <Compile Include="Content\Personalization\PersonalizationMultiplayerPlayerInfo.cs" />
     <Compile Include="Engine\AutoBuildListInfo.cs" />
     <Compile Include="Engine\MeshSerializer.cs" />
+    <Compile Include="Engine\ModSettingSubDescription.cs" />
     <Compile Include="Engine\UseKeyTriggerManager.cs" />
     <Compile Include="Engine\RealisticLightUserSettings.cs" />
     <Compile Include="Engine\ScheduledActionsManager.cs" />
@@ -591,6 +592,7 @@
     <Compile Include="UI\Elements\UIElementPersonalizationItemDisplay.cs" />
     <Compile Include="UI\Elements\UIElementSettingsMenuCategoryTab.cs" />
     <Compile Include="UI\Elements\UIElementAutoBuildSelectionEntry.cs" />
+    <Compile Include="UI\Elements\UIElementSettingsMenuSettingDescriptionBox.cs" />
     <Compile Include="UI\Elements\UIElementTabWithText.cs" />
     <Compile Include="UI\Elements\UIElementExpandButton.cs" />
     <Compile Include="UI\Elements\UIElementShowTooltipOnHightLight.cs" />
@@ -745,7 +747,7 @@
     <Compile Include="UI\UIVersionLabel.cs" />
     <Compile Include="Utils\ModActionUtils.cs" />
     <Compile Include="Utils\ModExtensions.cs" />
-    <Compile Include="Utils\ModIOUtils.cs" />
+    <Compile Include="Utils\ModFileUtils.cs" />
     <Compile Include="Utils\ModJsonUtils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utils\ModUnityUtils.cs" />

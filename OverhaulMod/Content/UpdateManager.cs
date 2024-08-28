@@ -126,7 +126,7 @@ namespace OverhaulMod.Content
             RepositoryManager.Instance.GetCustomFile(source, delegate (byte[] bytes)
             {
                 string tempFile = Path.GetTempFileName();
-                ModIOUtils.WriteBytes(bytes, tempFile);
+                ModFileUtils.WriteBytes(bytes, tempFile);
 
                 FastZip fastZip = new FastZip();
                 fastZip.ExtractZip(tempFile, directoryPath, null);

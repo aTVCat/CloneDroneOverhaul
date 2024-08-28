@@ -102,7 +102,7 @@ namespace OverhaulMod.UI
             }
 
             ModDataManager.Instance.WriteFile("AllUpgradesExport.txt", stringBuilder.ToString(), true);
-            _ = ModIOUtils.OpenFileExplorer(ModCore.savesFolder);
+            _ = ModFileUtils.OpenFileExplorer(ModCore.savesFolder);
         }
 
         public void OnWipLabelToggleChanged(bool value)

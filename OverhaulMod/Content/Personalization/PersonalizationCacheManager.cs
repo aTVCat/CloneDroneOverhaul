@@ -67,7 +67,7 @@ namespace OverhaulMod.Content.Personalization
                         {
                             try
                             {
-                                byte[] array = ModIOUtils.ReadBytes(path);
+                                byte[] array = ModFileUtils.ReadBytes(path);
                                 d.Add(path.Replace("/", "\\"), array);
                             }
                             catch

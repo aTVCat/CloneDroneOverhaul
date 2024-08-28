@@ -165,7 +165,7 @@ namespace OverhaulMod.UI
 
         public void OnFolderButtonClicked()
         {
-            _ = ModIOUtils.OpenFileExplorer(m_usePersistentDirectoryToggle.isOn ? ModCore.customizationPersistentFolder : ModCore.customizationFolder);
+            _ = ModFileUtils.OpenFileExplorer(m_usePersistentDirectoryToggle.isOn ? ModCore.customizationPersistentFolder : ModCore.customizationFolder);
         }
 
         public void OnCreateNewButtonClicked()
@@ -246,7 +246,7 @@ namespace OverhaulMod.UI
             _ = PersonalizationManager.Instance.SetLocalAssetsVersion(version);
             ModJsonUtils.WriteStream(Path.Combine(ModCore.savesFolder, PersonalizationManager.ASSETS_VERSION_FILE), personalizationAssetsInfo);
 
-            _ = ModIOUtils.OpenFileExplorer(ModCore.savesFolder);
+            _ = ModFileUtils.OpenFileExplorer(ModCore.savesFolder);
         }
     }
 }

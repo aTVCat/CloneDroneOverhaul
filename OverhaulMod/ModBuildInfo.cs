@@ -199,7 +199,7 @@ namespace OverhaulMod
 
             string filePath = Path.Combine(ModCore.dataFolder, EXTRA_INFO_FILE_PATH);
             string content = ModJsonUtils.Serialize(ei);
-            ModIOUtils.WriteText(content, filePath);
+            ModFileUtils.WriteText(content, filePath);
         }
 
         public class ExtraInfo

@@ -83,7 +83,7 @@ namespace OverhaulMod.Content.Personalization
         public PersonalizationItemInfo LoadItemInfo(string directory)
         {
             string rootDirectory = Directory.GetParent(directory).FullName;
-            string rootDirectoryName = ModIOUtils.GetDirectoryName(rootDirectory);
+            string rootDirectoryName = ModFileUtils.GetDirectoryName(rootDirectory);
 
             string infoFilePath = Path.Combine(directory, PersonalizationEditorManager.ITEM_INFO_FILE);
             string metaDataFilePath = Path.Combine(directory, PersonalizationEditorManager.ITEM_META_DATA_FILE);
@@ -112,7 +112,7 @@ namespace OverhaulMod.Content.Personalization
                 if (!Directory.Exists(filesDirectory))
                     _ = Directory.CreateDirectory(filesDirectory);
 
-                string rawData = ModIOUtils.ReadText(infoFilePath);
+                string rawData = ModFileUtils.ReadText(infoFilePath);
                 if (personalizationItemMetaData.CustomizationSystemVersion < 1) // meta data files update, renamed OverhaulMod.Content.Personalization.PersonalizationEditorObjectShowConditions to OverhaulMod.Engine.WeaponVariant
                 {
                     updateMetaDataFile = true;
@@ -141,7 +141,7 @@ namespace OverhaulMod.Content.Personalization
                 personalizationItemInfo.FixValues();
 
                 if (updateInfoFile)
-                    ModIOUtils.WriteText(rawData, infoFilePath);
+                    ModFileUtils.WriteText(rawData, infoFilePath);
             }
             else
             {

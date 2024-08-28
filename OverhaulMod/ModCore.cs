@@ -213,7 +213,7 @@ namespace OverhaulMod
             ModLoader.Load();
             GamePatchBehaviour.Load();
 
-            //TriggerGameInitializedEvent();
+            // TriggerGameInitializedEvent();
             TriggerModStateChangedEvent(true);
 
             ModSpecialUtils.SetTitleBarStateDependingOnSettings();

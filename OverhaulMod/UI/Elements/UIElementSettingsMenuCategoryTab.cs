@@ -78,6 +78,12 @@ namespace OverhaulMod.UI.Elements
             }
         }
 
+        public override void OnDisable()
+        {
+            m_mouseIn = false;
+            m_expandProgress = 0f;
+        }
+
         public override void Update()
         {
             RectTransform rt = m_subcategoriesContainer;

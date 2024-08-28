@@ -64,7 +64,7 @@ namespace OverhaulMod.UI
 
         public void OnDataFolderButtonClicked()
         {
-            _ = ModIOUtils.OpenFileExplorer(ModCore.savesFolder);
+            _ = ModFileUtils.OpenFileExplorer(ModCore.savesFolder);
         }
 
         public void OnSaveButtonClicked()

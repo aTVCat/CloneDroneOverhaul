@@ -133,7 +133,7 @@ namespace OverhaulMod.UI
             byte[] bytes;
             try
             {
-                bytes = ModIOUtils.ReadBytes(filePath);
+                bytes = ModFileUtils.ReadBytes(filePath);
             }
             catch
             {

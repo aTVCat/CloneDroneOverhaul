@@ -132,7 +132,7 @@ namespace OverhaulMod.UI
 
             if (m_fadeInLabel)
             {
-                m_watermarkCanvasGroup.alpha += Time.unscaledDeltaTime;
+                m_watermarkCanvasGroup.alpha += Mathf.Min(Time.unscaledDeltaTime, 0.025f);
                 if (m_watermarkCanvasGroup.alpha >= 1f)
                 {
                     m_fadeInLabel = false;

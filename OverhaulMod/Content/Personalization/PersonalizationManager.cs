@@ -150,7 +150,7 @@ namespace OverhaulMod.Content.Personalization
                     }*/
 
                     string tempFile = Path.GetTempFileName();
-                    ModIOUtils.WriteBytes(bytes, tempFile);
+                    ModFileUtils.WriteBytes(bytes, tempFile);
 
                     FastZip fastZip = new FastZip();
                     fastZip.ExtractZip(tempFile, ModCore.customizationFolder, null);

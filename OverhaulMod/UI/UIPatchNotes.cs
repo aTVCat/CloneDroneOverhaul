@@ -54,7 +54,7 @@ namespace OverhaulMod.UI
             List<Version> versions = new List<Version>();
             foreach (string directory in Directory.GetDirectories(path))
             {
-                string dirName = ModIOUtils.GetDirectoryName(directory);
+                string dirName = ModFileUtils.GetDirectoryName(directory);
 
                 if (!Version.TryParse(dirName, out Version version))
                     version = new Version(0, 0, 0, 0);
@@ -145,14 +145,14 @@ namespace OverhaulMod.UI
             string file = Path.Combine(path, $"changelog_{langCode}.txt");
             string text;
             if (File.Exists(file))
-                text = ModIOUtils.ReadText(file);
+                text = ModFileUtils.ReadText(file);
             else
             {
                 if (langCode != "en")
                 {
                     file = Path.Combine(path, $"changelog_en.txt");
                     if (File.Exists(file))
-                        text = ModIOUtils.ReadText(file);
+                        text = ModFileUtils.ReadText(file);
                     else
                         text = "Changelog file read error.";
                 }

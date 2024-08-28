@@ -503,7 +503,7 @@ namespace OverhaulMod
                 m_draggablePanel = draggablePanel;
 
                 UIElementMouseEventsComponent mouseEventsComponent = m_titleBar.AddComponent<UIElementMouseEventsComponent>();
-                mouseEventsComponent.doubleClickAction = ToggleMinimized;
+                mouseEventsComponent.doubleClickCallback = ToggleMinimized;
                 m_mouseEvents = mouseEventsComponent;
             }
 

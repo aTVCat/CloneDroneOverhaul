@@ -242,7 +242,7 @@ public class SEGICascaded : MonoBehaviour
     /// <summary>
     /// Estimates the VRAM usage of all the render textures used to render GI.
     /// </summary>
-    public float vramUsage  //TODO: Update vram usage calculation
+    public float vramUsage
     {
         get
         {

@@ -35,12 +35,6 @@ namespace OverhaulMod.Visuals
         [ModSetting(ModSettingsConstants.COLOR_BLINDNESS_AFFECT_UI, true)]
         public static bool ColorBlindnessAffectUI;
 
-        [ModSetting(ModSettingsConstants.ANTIALIASING_MODE, 0)]
-        public static int AntialiasingMode;
-
-        [ModSetting(ModSettingsConstants.MSAA_PLUS_CUSTOM, false)]
-        public static bool MSAAPlusCustom;
-
         [ModSetting(ModSettingsConstants.ENABLE_DOF, false)]
         public static bool EnableDoF;
 
@@ -59,6 +53,20 @@ namespace OverhaulMod.Visuals
         [ModSetting(ModSettingsConstants.ENABLE_SUN_SHAFTS, false)]
         public static bool EnableSunShafts;
 
+        [ModSetting(ModSettingsConstants.ENABLE_GLOBAL_ILLUMINATION, false)]
+        public static bool EnableGlobalIllumination;
+
+        [ModSetting(ModSettingsConstants.ENABLE_REFLECTION_PROBE, false)]
+        public static bool EnableReflectionProbe;
+
+        private CameraManager m_cameraManager;
+
+        private float m_timeLeftToRefreshReflectionProbe;
+
+        private ReflectionProbe m_reflectionProbe;
+
+        private Transform m_reflectionProbeTransform;
+
         public static List<Dropdown.OptionData> ColorBlindnessOptions = new List<Dropdown.OptionData>()
         {
             new Dropdown.OptionData("Normal vision"),
@@ -67,16 +75,80 @@ namespace OverhaulMod.Visuals
             new Dropdown.OptionData("Tritanopia"),
         };
 
+        public static List<Dropdown.OptionData> PresetOptions = new List<Dropdown.OptionData>()
+        {
+            new Dropdown.OptionData("Select preset..."),
+            new Dropdown.OptionData("Very low"),
+            new Dropdown.OptionData("Low"),
+            new Dropdown.OptionData("Standard (Vanilla)"),
+            new Dropdown.OptionData("Standard (Overhaul)"),
+            new Dropdown.OptionData("High"),
+            new Dropdown.OptionData("Very high"),
+            new Dropdown.OptionData("Extreme"),
+        };
+
         public override void Awake()
         {
             base.Awake();
             ModCore.OnCameraSwitched += onCameraSwitched;
         }
 
+        private void Start()
+        {
+            m_cameraManager = CameraManager.Instance;
+
+            if (!ModFeatures.IsEnabled(ModFeatures.FeatureType.MoreImageEffects))
+                return;
+
+            createReflectionProbe();
+        }
+
+        private void Update()
+        {
+            m_timeLeftToRefreshReflectionProbe -= Time.unscaledDeltaTime;
+            if (m_timeLeftToRefreshReflectionProbe > 0f)
+                return;
+
+            m_timeLeftToRefreshReflectionProbe = 1f;
+
+            Transform rp = m_reflectionProbeTransform;
+            if (rp)
+            {
+                Camera camera = m_cameraManager.mainCamera;
+                if (camera)
+                {
+                    rp.position = camera.transform.position;
+                }
+            }
+
+            ReflectionProbe reflectionProbe = m_reflectionProbe;
+            if (reflectionProbe)
+            {
+                reflectionProbe.enabled = EnableReflectionProbe;
+            }
+        }
+
         private void OnDestroy()
         {
             ModCore.OnCameraSwitched -= onCameraSwitched;
             RemovePostEffectsFromCamera(Camera.main);
+        }
+
+        public void RefreshReflectionProbeNextFrame()
+        {
+            m_timeLeftToRefreshReflectionProbe = 0f;
+        }
+
+        private void createReflectionProbe()
+        {
+            GameObject reflectionProbe = new GameObject("Reflection Probe");
+            reflectionProbe.transform.SetParent(base.transform);
+            m_reflectionProbe = reflectionProbe.AddComponent<ReflectionProbe>();
+            m_reflectionProbe.size = Vector3.one * 500f;
+            m_reflectionProbe.mode = UnityEngine.Rendering.ReflectionProbeMode.Realtime;
+            m_reflectionProbe.refreshMode = UnityEngine.Rendering.ReflectionProbeRefreshMode.EveryFrame;
+            m_reflectionProbe.enabled = false;
+            m_reflectionProbeTransform = reflectionProbe.transform;
         }
 
         private void onCameraSwitched(Camera a, Camera b)
@@ -202,6 +274,7 @@ namespace OverhaulMod.Visuals
                 segiCascaded.sun = DirectionalLightManager.Instance.DirectionalLight;
                 segiCascaded.ApplyPreset(new SEGICascadedPreset());
             }
+            segiCascaded.enabled = EnableGlobalIllumination;
 
             BlurOptimized blurOptimized = camera.GetComponent<BlurOptimized>();
             if (!blurOptimized)
@@ -211,6 +284,7 @@ namespace OverhaulMod.Visuals
                 blurOptimized.enabled = false;
             }
 
+            /*
             Antialiasing antialiasing = camera.GetComponent<Antialiasing>();
             if (!antialiasing)
             {
@@ -239,7 +313,7 @@ namespace OverhaulMod.Visuals
                     antialiasing.mode = AAMode.SSAA;
                     break;
             }
-            antialiasing.enabled = AntialiasingMode != 0 || MSAAPlusCustom;
+            antialiasing.enabled = AntialiasingMode != 0 || MSAAPlusCustom;*/
 
             DepthOfField depthOfField = camera.GetComponent<DepthOfField>();
             if (!depthOfField)

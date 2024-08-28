@@ -101,7 +101,7 @@ namespace OverhaulMod.UI
 
         public void OnDataFolderButtonClicked()
         {
-            _ = ModIOUtils.OpenFileExplorer(ModLevelManager.Instance.levelsFolder);
+            _ = ModFileUtils.OpenFileExplorer(ModLevelManager.Instance.levelsFolder);
         }
 
         public void OnSaveButtonClicked()
@@ -118,7 +118,7 @@ namespace OverhaulMod.UI
             levelDescription.DifficultyTier = (DifficultyTier)m_difficultyDropdown.value;
             levelDescription.LevelEditorDifficultyIndex = ModParseUtils.TryParseToInt(m_difficultyIndexInputField.text, 0);
 
-            ModIOUtils.WriteText(ModJsonUtils.Serialize(ModLevelManager.Instance.modLevelDescriptions), Path.Combine(ModLevelManager.Instance.levelsFolder, ModLevelManager.LEVEL_DESCRIPTIONS_FILE));
+            ModFileUtils.WriteText(ModJsonUtils.Serialize(ModLevelManager.Instance.modLevelDescriptions), Path.Combine(ModLevelManager.Instance.levelsFolder, ModLevelManager.LEVEL_DESCRIPTIONS_FILE));
             RefreshDisplays();
         }
 

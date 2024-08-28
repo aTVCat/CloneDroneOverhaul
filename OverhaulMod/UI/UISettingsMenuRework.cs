@@ -83,6 +83,9 @@ namespace OverhaulMod.UI
         [UIElement("BGSetup")]
         private readonly GameObject m_setupBgObject;
 
+        [UIElement("SettingDescriptionBox", typeof(UIElementSettingsMenuSettingDescriptionBox))]
+        private readonly UIElementSettingsMenuSettingDescriptionBox m_descriptionBox;
+
         private bool m_hasSelectedTab;
 
         private bool m_hasMultiplayerCustomizationChanges;
@@ -102,6 +105,8 @@ namespace OverhaulMod.UI
             SettingsMenu settingsMenu = ModCache.settingsMenu;
             if (settingsMenu)
                 settingsMenu.populateSettings();
+
+            m_descriptionBox.Hide();
         }
 
         public override void Show()
@@ -157,6 +162,20 @@ namespace OverhaulMod.UI
                 MultiplayerMatchManager.Instance.SendClientCharacterCustomizationEvent();
                 m_hasMultiplayerCustomizationChanges = false;
             }
+        }
+
+        public void ShowDescriptionBox(string settingIdOfDescription, RectTransform element)
+        {
+            string settingId = StringUtils.AddSpacesToCamelCasedString(settingIdOfDescription).ToLower().Replace(" ", "_");
+
+            m_descriptionBox.SetYPosition(element.position.y);
+            m_descriptionBox.SetText(LocalizationManager.Instance.GetTranslatedString($"sd_{settingId}"), ModSettingsManager.Instance.GetSubDescription(settingId));
+            m_descriptionBox.Show();
+        }
+
+        public void HideDescription()
+        {
+            m_descriptionBox.Hide();
         }
 
         public void ShowRegularElements()
@@ -582,6 +601,14 @@ namespace OverhaulMod.UI
 
             bool moreEffectsEnabled = ModFeatures.IsEnabled(ModFeatures.FeatureType.MoreImageEffects);
             _ = pageBuilder.Header3("Post effects");
+            if (moreEffectsEnabled)
+            {
+                //_ = pageBuilder.Header3("Preset");
+                _ = pageBuilder.Dropdown(PostEffectsManager.PresetOptions, 0, delegate (int value)
+                {
+
+                });
+            }
             _ = pageBuilder.ToggleWithOptions(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_SSAO), delegate (bool value)
             {
                 ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_SSAO, value, true);
@@ -592,6 +619,14 @@ namespace OverhaulMod.UI
 
             if (moreEffectsEnabled)
             {
+                _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_GLOBAL_ILLUMINATION), delegate (bool value)
+                {
+                    ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_GLOBAL_ILLUMINATION, value, true);
+                }, "Global Illumination");
+                _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_REFLECTION_PROBE), delegate (bool value)
+                {
+                    ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_REFLECTION_PROBE, value, true);
+                }, "Reflection Probe");
                 _ = pageBuilder.ToggleWithOptions(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_CHROMATIC_ABERRATION), delegate (bool value)
                 {
                     ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_CHROMATIC_ABERRATION, value, true);
@@ -605,10 +640,12 @@ namespace OverhaulMod.UI
             {
                 ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_DITHERING, value, true);
             }, "Dithering");
+            pageBuilder.AddDescriptionBoxToRecentElement(ModSettingsConstants.ENABLE_DITHERING);
             _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_VIGNETTE), delegate (bool value)
             {
                 ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_VIGNETTE, value, true);
             }, "Vignette");
+            pageBuilder.AddDescriptionBoxToRecentElement(ModSettingsConstants.ENABLE_VIGNETTE);
             _ = pageBuilder.ToggleWithOptions(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_BLOOM), delegate (bool value)
             {
                 ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_BLOOM, value, true);
@@ -1763,6 +1800,7 @@ namespace OverhaulMod.UI
                 toggle.isOn = isOn;
                 if (callback != null)
                     toggle.onValueChanged.AddListener(callback);
+
                 return toggle;
             }
 
@@ -1920,6 +1958,21 @@ namespace OverhaulMod.UI
                     SettingsMenu.m_tabs.ReinstantiatePreconfiguredTabs();
                     SettingsMenu.m_tabs.SelectTab("Languages");
                 });
+            }
+
+            public void AddDescriptionBoxToRecentElement(string settingId)
+            {
+                Transform transform = SettingsMenu.PageContentsTransform.GetChild(SettingsMenu.PageContentsTransform.childCount - 1);
+
+                UIElementMouseEventsComponent mouseEventsComponent = transform.gameObject.AddComponent<UIElementMouseEventsComponent>();
+                mouseEventsComponent.InitializeElement();
+                mouseEventsComponent.pointerEnterStateCallback = delegate (bool value)
+                {
+                    if (value)
+                        SettingsMenu.ShowDescriptionBox(settingId, transform.transform as RectTransform);
+                    else
+                        SettingsMenu.HideDescription();
+                };
             }
 
             public void Dispose()

@@ -545,5 +545,15 @@ namespace OverhaulMod.Utils
         /// <see cref="Visuals.QualityManager"/>
         /// </summary>
         public const string MAX_LIGHT_COUNT = "MaxLightCount";
+
+        /// <summary>
+        /// <see cref="Visuals.PostEffectsManager"/>
+        /// </summary>
+        public const string ENABLE_GLOBAL_ILLUMINATION = "EnableGlobalIllumination";
+
+        /// <summary>
+        /// <see cref="Visuals.PostEffectsManager"/>
+        /// </summary>
+        public const string ENABLE_REFLECTION_PROBE = "EnableReflectionProbe";
     }
 }

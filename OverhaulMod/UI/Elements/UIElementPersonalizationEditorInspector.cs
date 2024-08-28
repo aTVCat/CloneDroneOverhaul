@@ -251,7 +251,7 @@ namespace OverhaulMod.UI
 
         private string getExportedItemFileName()
         {
-            return $"{ModIOUtils.GetDirectoryName(itemInfo.FolderPath)}.zip";
+            return $"{ModFileUtils.GetDirectoryName(itemInfo.FolderPath)}.zip";
         }
 
         public void OnEditedWeaponTypeDropdown(int value)
@@ -365,7 +365,7 @@ namespace OverhaulMod.UI
 
         public void OnSavesFolderButtonClicked()
         {
-            ModIOUtils.OpenFileExplorer(ModCore.savesFolder);
+            ModFileUtils.OpenFileExplorer(ModCore.savesFolder);
         }
 
         public void OnRevealEditorIDButtonClicked()

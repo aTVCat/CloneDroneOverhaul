@@ -141,12 +141,12 @@ namespace OverhaulMod
 
         private static void createDirectories()
         {
-            _ = ModIOUtils.CreateDirectoryIfNotExists(ModCore.modDataFolder);
-            _ = ModIOUtils.CreateDirectoryIfNotExists(ModCore.contentFolder);
-            _ = ModIOUtils.CreateDirectoryIfNotExists(ModCore.savesFolder);
-            _ = ModIOUtils.CreateDirectoryIfNotExists(ModCore.addonsFolder);
-            _ = ModIOUtils.CreateDirectoryIfNotExists(ModCore.customizationFolder);
-            _ = ModIOUtils.CreateDirectoryIfNotExists(ModCore.customizationPersistentFolder);
+            _ = ModFileUtils.CreateDirectoryIfNotExists(ModCore.modDataFolder);
+            _ = ModFileUtils.CreateDirectoryIfNotExists(ModCore.contentFolder);
+            _ = ModFileUtils.CreateDirectoryIfNotExists(ModCore.savesFolder);
+            _ = ModFileUtils.CreateDirectoryIfNotExists(ModCore.addonsFolder);
+            _ = ModFileUtils.CreateDirectoryIfNotExists(ModCore.customizationFolder);
+            _ = ModFileUtils.CreateDirectoryIfNotExists(ModCore.customizationPersistentFolder);
         }
 
         private static void addListeners()
@@ -167,6 +167,8 @@ namespace OverhaulMod
             modSettingsManager.AddSettingValueChangedListener(refreshCameraPostEffects, ModSettingsConstants.ENABLE_DITHERING);
             modSettingsManager.AddSettingValueChangedListener(refreshCameraPostEffects, ModSettingsConstants.ENABLE_VIGNETTE);
             modSettingsManager.AddSettingValueChangedListener(refreshCameraPostEffects, ModSettingsConstants.ENABLE_SUN_SHAFTS);
+            modSettingsManager.AddSettingValueChangedListener(refreshCameraPostEffects, ModSettingsConstants.ENABLE_GLOBAL_ILLUMINATION);
+            modSettingsManager.AddSettingValueChangedListener(refreshReflectionProbe, ModSettingsConstants.ENABLE_REFLECTION_PROBE);
             modSettingsManager.AddSettingValueChangedListener(refreshFPSCap, ModSettingsConstants.FPS_CAP);
             modSettingsManager.AddSettingValueChangedListener(delegate (object obj)
             {
@@ -208,6 +210,11 @@ namespace OverhaulMod
                         energyUIPatch.RefreshPatch();
                 });
             }, ModSettingsConstants.ENERGY_UI_REWORK);
+        }
+
+        private static void refreshReflectionProbe(object obj)
+        {
+            PostEffectsManager.Instance.RefreshReflectionProbeNextFrame();
         }
 
         private static void refreshCameraPostEffects(object obj)

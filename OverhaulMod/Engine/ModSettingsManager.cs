@@ -1,7 +1,9 @@
 ﻿using OverhaulMod.Utils;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Reflection;
+using UnityEngine;
 
 namespace OverhaulMod.Engine
 {
@@ -13,6 +15,7 @@ namespace OverhaulMod.Engine
 
         private List<ModSetting> m_settings;
         private Dictionary<string, ModSetting> m_nameToSetting;
+        private Dictionary<string, ModSettingSubDescription> m_idToSubDescription;
 
         public override void Awake()
         {
@@ -20,8 +23,55 @@ namespace OverhaulMod.Engine
 
             m_settings = new List<ModSetting>();
             m_nameToSetting = new Dictionary<string, ModSetting>();
+            m_idToSubDescription = new Dictionary<string, ModSettingSubDescription>();
 
             loadSettings();
+            loadSubDescriptions();
+        }
+
+        private void loadSubDescriptions()
+        {
+            m_idToSubDescription.Clear();
+
+            string fn = Path.Combine(ModCore.dataFolder, "settingSubDescriptions.txt");
+            if (File.Exists(fn))
+            {
+                string content;
+                try
+                {
+                    content = ModFileUtils.ReadText(fn);
+                }
+                catch
+                {
+                    return;
+                }
+
+                string[] idWithValues = content.Split(Environment.NewLine.ToCharArray());
+                foreach(var entry in idWithValues)
+                {
+                    string[] split = entry.Split(' ');
+                    if(split.Length == 2)
+                    {
+                        string settingId = split[0];
+                        string sub = split[1];
+
+                        if (!sub.IsNullOrEmpty())
+                        {
+                            string[] subSplit = sub.Split(',');
+                            if(subSplit.Length == 2)
+                            {
+                                string typeText = subSplit[0];
+                                string valueText = subSplit[1];
+
+                                if(int.TryParse(typeText, out int type) && int.TryParse(valueText, out int value))
+                                {
+                                    m_idToSubDescription.Add(settingId, new ModSettingSubDescription(type, value));
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         private void loadSettings()
@@ -38,6 +88,38 @@ namespace OverhaulMod.Engine
                     m_nameToSetting.Add(modSetting.name, modSetting);
                 }
             }
+        }
+
+        public string GetSubDescription(string settingId)
+        {
+            if (m_idToSubDescription.ContainsKey(settingId))
+            {
+                ModSettingSubDescription modSettingSubDescription = m_idToSubDescription[settingId];
+                if(modSettingSubDescription.Type == 0)
+                {
+                    string postfix;
+                    switch (modSettingSubDescription.Value)
+                    {
+                        case 1:
+                            postfix = "Low".AddColor(Color.green);
+                            break;
+                        case 2:
+                            postfix = "Medium".AddColor(Color.yellow);
+                            break;
+                        case 3:
+                            postfix = "High".AddColor(Color.yellow);
+                            break;
+                        case 4:
+                            postfix = "Very high".AddColor(Color.red);
+                            break;
+                        default:
+                            postfix = "N/A".AddColor(Color.white);
+                            break;
+                    }
+                    return $"Performance impact: {postfix}";
+                }
+            }
+            return null;
         }
 
         public bool HasSetting(string name)

@@ -98,13 +98,13 @@ namespace OverhaulMod.UI
             }
 
             string file = ModCore.savesFolder + "LeaderboardExport.txt";
-            ModIOUtils.WriteText(stringBuilder.ToString(), file);
-            _ = ModIOUtils.OpenFile(file);
+            ModFileUtils.WriteText(stringBuilder.ToString(), file);
+            _ = ModFileUtils.OpenFile(file);
         }
 
         public void OnSavesFolderButtonClicked()
         {
-            _ = ModIOUtils.OpenFileExplorer(ModCore.savesFolder);
+            _ = ModFileUtils.OpenFileExplorer(ModCore.savesFolder);
         }
 
         public void OnClearButtonClicked()

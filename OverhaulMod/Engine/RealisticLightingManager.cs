@@ -50,7 +50,7 @@ namespace OverhaulMod.Engine
                     string oldPath = Path.Combine(ModCore.addonsFolder, ContentManager.REALISTIC_SKYBOXES_CONTENT_FOLDER_NAME, OLD_LIGHTING_INFO_LIST_FILE);
                     if (File.Exists(oldPath))
                     {
-                        ModIOUtils.WriteText(ModIOUtils.ReadText(oldPath).Replace("Lightning", "Lighting"), oldPath);
+                        ModFileUtils.WriteText(ModFileUtils.ReadText(oldPath).Replace("Lightning", "Lighting"), oldPath);
                         File.Move(oldPath, path);
                     }
                     else

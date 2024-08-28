@@ -1,0 +1,2 @@
+enable_vignette 0,1
+enable_dithering 0,2

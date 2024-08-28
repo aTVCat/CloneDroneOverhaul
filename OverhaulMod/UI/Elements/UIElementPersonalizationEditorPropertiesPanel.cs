@@ -331,7 +331,7 @@ namespace OverhaulMod.UI
                                 }
                                 else
                                 {
-                                    string directoryName = ModIOUtils.GetDirectoryName(PersonalizationEditorManager.Instance.currentEditingItemInfo.FolderPath);
+                                    string directoryName = ModFileUtils.GetDirectoryName(PersonalizationEditorManager.Instance.currentEditingItemInfo.FolderPath);
                                     string fileName = Path.GetFileName(filePath);
                                     string path = Path.Combine(directoryName, "files", fileName);
 
@@ -695,7 +695,7 @@ namespace OverhaulMod.UI
                                 }
                                 else
                                 {
-                                    string directoryName = ModIOUtils.GetDirectoryName(PersonalizationEditorManager.Instance.currentEditingItemInfo.FolderPath);
+                                    string directoryName = ModFileUtils.GetDirectoryName(PersonalizationEditorManager.Instance.currentEditingItemInfo.FolderPath);
                                     string fileName = Path.GetFileName(filePath);
                                     string path = Path.Combine(directoryName, "files", fileName);
 
@@ -888,7 +888,7 @@ namespace OverhaulMod.UI
             {
                 ModUIUtils.FileExplorer(UIPersonalizationEditor.instance.transform, true, delegate (string filePath)
                 {
-                    string directoryName = ModIOUtils.GetDirectoryName(PersonalizationEditorManager.Instance.currentEditingItemInfo.FolderPath);
+                    string directoryName = ModFileUtils.GetDirectoryName(PersonalizationEditorManager.Instance.currentEditingItemInfo.FolderPath);
                     string fileName = Path.GetFileName(filePath);
                     string path = $"{directoryName}/files/{fileName}";
 

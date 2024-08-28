@@ -29,7 +29,7 @@ namespace OverhaulMod
 
         public void WriteFile(string name, string content, bool useSavesFolder)
         {
-            ModIOUtils.WriteText(content, Path.Combine(useSavesFolder ? savesFolder : userDataFolder, name));
+            ModFileUtils.WriteText(content, Path.Combine(useSavesFolder ? savesFolder : userDataFolder, name));
         }
 
         public void SerializeToFile(string name, object obj, bool useSavesFolder)
@@ -39,7 +39,7 @@ namespace OverhaulMod
 
         public string ReadFile(string name, bool useSavesFolder)
         {
-            return ModIOUtils.ReadText(Path.Combine(useSavesFolder ? savesFolder : userDataFolder, name));
+            return ModFileUtils.ReadText(Path.Combine(useSavesFolder ? savesFolder : userDataFolder, name));
         }
 
         public T DeserializeFile<T>(string name, bool useSavesFolder)

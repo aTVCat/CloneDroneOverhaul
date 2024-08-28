@@ -187,7 +187,7 @@ namespace OverhaulMod.Content.Personalization
 
         public static string GetFolderName(PersonalizationItemInfo personalizationItemInfo)
         {
-            return ModIOUtils.GetDirectoryName(personalizationItemInfo.FolderPath);
+            return ModFileUtils.GetDirectoryName(personalizationItemInfo.FolderPath);
         }
 
         public static string GetImportedFilesFolder(PersonalizationItemInfo personalizationItemInfo)

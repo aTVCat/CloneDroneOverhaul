@@ -62,7 +62,7 @@ namespace OverhaulMod.Engine
                     byte[] array = new byte[fileStream.Length];
                     _ = fileStream.Read(array, 0, array.Length);
 
-                    modSettingsDataContainer = ModJsonUtils.Deserialize<ModSettingsDataContainer>(ModIOUtils.GetString(array));
+                    modSettingsDataContainer = ModJsonUtils.Deserialize<ModSettingsDataContainer>(ModFileUtils.GetString(array));
                     modSettingsDataContainer.FixValues();
                 }
                 catch
@@ -110,7 +110,7 @@ namespace OverhaulMod.Engine
 
         private void writeToFile(FileStream fileStream, ModSettingsDataContainer modSettingsDataContainer)
         {
-            byte[] bytes = ModIOUtils.GetBytes(ModJsonUtils.Serialize(modSettingsDataContainer));
+            byte[] bytes = ModFileUtils.GetBytes(ModJsonUtils.Serialize(modSettingsDataContainer));
             fileStream.Write(bytes, 0, bytes.Length);
         }
 
