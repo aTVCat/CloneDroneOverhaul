@@ -48,6 +48,8 @@ namespace OverhaulMod
             QualitySettings.asyncUploadPersistentBuffer = true;
             QualitySettings.softParticles = true;
             FPSManager.RefreshFPSCap();
+
+            ModCore.RefreshCursor();
         }
 
         public static void Unload()
@@ -170,6 +172,7 @@ namespace OverhaulMod
             modSettingsManager.AddSettingValueChangedListener(refreshCameraPostEffects, ModSettingsConstants.ENABLE_GLOBAL_ILLUMINATION);
             modSettingsManager.AddSettingValueChangedListener(refreshReflectionProbe, ModSettingsConstants.ENABLE_REFLECTION_PROBE);
             modSettingsManager.AddSettingValueChangedListener(refreshFPSCap, ModSettingsConstants.FPS_CAP);
+            modSettingsManager.AddSettingValueChangedListener(ModCore.RefreshCursor, ModSettingsConstants.CHANGE_CURSOR);
             modSettingsManager.AddSettingValueChangedListener(delegate (object obj)
             {
                 UseKeyTriggerManager manager = UseKeyTriggerManager.Instance;

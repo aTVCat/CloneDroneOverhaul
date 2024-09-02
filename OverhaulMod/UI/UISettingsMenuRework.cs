@@ -164,6 +164,11 @@ namespace OverhaulMod.UI
             }
         }
 
+        public string GetSelectedTabID()
+        {
+            return m_selectedTabId;
+        }
+
         public void ShowDescriptionBox(string settingIdOfDescription, RectTransform element)
         {
             string settingId = StringUtils.AddSpacesToCamelCasedString(settingIdOfDescription).ToLower().Replace(" ", "_");
@@ -200,7 +205,7 @@ namespace OverhaulMod.UI
             disallowUsingKey = true;
             m_panelTransform.anchorMax = new Vector2(0.5f, 0.5f);
             m_panelTransform.anchorMin = new Vector2(0.5f, 0.5f);
-            m_panelTransform.sizeDelta = new Vector2(325f, 450f);
+            m_panelTransform.sizeDelta = new Vector2(360f, 500f);
             m_shadingObject.SetActive(false);
             m_normalBgObject.SetActive(false);
             m_setupBgObject.SetActive(true);
@@ -341,16 +346,6 @@ namespace OverhaulMod.UI
                 ModSettingsManager.SetBoolValue(ModSettingsConstants.TWEAK_BLOOM, value, true);
             }, "Adjust bloom settings");
 
-            _ = pageBuilder.Header3("Camera effects");
-            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_CAMERA_ROLLING), delegate (bool value)
-            {
-                ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_CAMERA_ROLLING, value, true);
-            }, "Camera rolling");
-            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_CAMERA_BOBBING), delegate (bool value)
-            {
-                ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_CAMERA_BOBBING, value, true);
-            }, "Camera bobbing");
-
             _ = pageBuilder.Header3("Particle effects");
             _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_NEW_PARTICLES), delegate (bool value)
             {
@@ -375,7 +370,7 @@ namespace OverhaulMod.UI
                 ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_VOXEL_BURNING, value, true);
             }, "Always burn voxels");
 
-            _ = pageBuilder.Header1("Gameplay");
+            _ = pageBuilder.Header3("Camera");
             _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_FIRST_PERSON_MODE), delegate (bool value)
             {
                 ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_FIRST_PERSON_MODE, value, true);
@@ -384,8 +379,20 @@ namespace OverhaulMod.UI
             {
                 ModSettingsManager.SetIntValue(ModSettingsConstants.CAMERA_MODE_TOGGLE_KEYBIND, (int)value, true);
             });
+            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_CAMERA_BOBBING), delegate (bool value)
+            {
+                ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_CAMERA_BOBBING, value, true);
+            }, "Camera bobbing");
+            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_CAMERA_ROLLING), delegate (bool value)
+            {
+                ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_CAMERA_ROLLING, value, true);
+            }, "Camera rolling");
 
             _ = pageBuilder.Header1("Game interface");
+            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.CHANGE_CURSOR), delegate (bool value)
+            {
+                ModSettingsManager.SetBoolValue(ModSettingsConstants.CHANGE_CURSOR, value, true);
+            }, "Change cursor");
             _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.SHOW_VERSION_LABEL), delegate (bool value)
             {
                 ModSettingsManager.SetBoolValue(ModSettingsConstants.SHOW_VERSION_LABEL, value, true);
@@ -445,6 +452,7 @@ namespace OverhaulMod.UI
                 populateUIPatchesPage(settingsMenu);
             });*/
 
+            _ = pageBuilder.Header1("Camera");
             _ = pageBuilder.KeyBind("Camera mode", (KeyCode)ModSettingsManager.GetIntValue(ModSettingsConstants.CAMERA_MODE_TOGGLE_KEYBIND), KeyCode.Y, delegate (KeyCode value)
             {
                 ModSettingsManager.SetIntValue(ModSettingsConstants.CAMERA_MODE_TOGGLE_KEYBIND, (int)value, true);
@@ -457,6 +465,10 @@ namespace OverhaulMod.UI
             {
                 ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_CAMERA_BOBBING, value, true);
             }, "Camera bobbing");
+            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_CAMERA_ROLLING), delegate (bool value)
+            {
+                ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_CAMERA_ROLLING, value, true);
+            }, "Camera rolling");
 
             _ = pageBuilder.Header1("Multiplayer settings");
             _ = pageBuilder.Header3("Preferred region");
@@ -539,6 +551,12 @@ namespace OverhaulMod.UI
                 ModSettingsManager.SetBoolValue(ModSettingsConstants.SHOW_SPEAKER_NAME, value, true);
                 SpeechAudioManager.Instance.PlaySequence("CloneDroneIntro", false);
             }, "Display who's speaking");
+
+            _ = pageBuilder.Header1("Misc.");
+            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.CHANGE_CURSOR), delegate (bool value)
+            {
+                ModSettingsManager.SetBoolValue(ModSettingsConstants.CHANGE_CURSOR, value, true);
+            }, "Change cursor");
         }
 
         private void populateGraphicsPage(SettingsMenu settingsMenu)
@@ -616,6 +634,7 @@ namespace OverhaulMod.UI
             {
                 populateSSAOSettingsPage(m_selectedTabId);
             });
+            pageBuilder.AddDescriptionBoxToRecentElement(ModSettingsConstants.ENABLE_SSAO);
 
             if (moreEffectsEnabled)
             {
@@ -623,10 +642,12 @@ namespace OverhaulMod.UI
                 {
                     ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_GLOBAL_ILLUMINATION, value, true);
                 }, "Global Illumination");
+                pageBuilder.AddDescriptionBoxToRecentElement(ModSettingsConstants.ENABLE_GLOBAL_ILLUMINATION);
                 _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_REFLECTION_PROBE), delegate (bool value)
                 {
                     ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_REFLECTION_PROBE, value, true);
                 }, "Reflection Probe");
+                pageBuilder.AddDescriptionBoxToRecentElement(ModSettingsConstants.ENABLE_REFLECTION_PROBE);
                 _ = pageBuilder.ToggleWithOptions(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_CHROMATIC_ABERRATION), delegate (bool value)
                 {
                     ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_CHROMATIC_ABERRATION, value, true);
@@ -634,6 +655,7 @@ namespace OverhaulMod.UI
                 {
                     populateCASettingsPage(m_selectedTabId);
                 });
+                pageBuilder.AddDescriptionBoxToRecentElement(ModSettingsConstants.ENABLE_CHROMATIC_ABERRATION);
             }
 
             _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_DITHERING), delegate (bool value)
@@ -653,6 +675,7 @@ namespace OverhaulMod.UI
             {
                 populateBloomSettingsPage(m_selectedTabId);
             });
+            pageBuilder.AddDescriptionBoxToRecentElement(ModSettingsConstants.ENABLE_BLOOM);
 
             if (moreEffectsEnabled)
             {
@@ -663,6 +686,7 @@ namespace OverhaulMod.UI
                 {
                     populateCASettingsPage(m_selectedTabId);
                 });
+                pageBuilder.AddDescriptionBoxToRecentElement(ModSettingsConstants.ENABLE_DOF);
                 _ = pageBuilder.ToggleWithOptions(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_SUN_SHAFTS), delegate (bool value)
                 {
                     ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_SUN_SHAFTS, value, true);
@@ -670,7 +694,15 @@ namespace OverhaulMod.UI
                 {
                     populateSSAOSettingsPage(m_selectedTabId);
                 });
+                pageBuilder.AddDescriptionBoxToRecentElement(ModSettingsConstants.ENABLE_SUN_SHAFTS);
+            }
+            else
+            {
+                _ = pageBuilder.Header4("New post effects coming in update 4.3!");
+            }
 
+            if (ModFeatures.IsEnabled(ModFeatures.FeatureType.ColorBlindnessOptions))
+            {
                 _ = pageBuilder.Header3("Color blindness mode");
                 _ = pageBuilder.Dropdown(PostEffectsManager.ColorBlindnessOptions, ModSettingsManager.GetIntValue(ModSettingsConstants.COLOR_BLINDNESS_MODE), delegate (int value)
                 {
@@ -680,10 +712,6 @@ namespace OverhaulMod.UI
                 {
                     ModSettingsManager.SetBoolValue(ModSettingsConstants.COLOR_BLINDNESS_AFFECT_UI, value, true);
                 }, "Affect UI");
-            }
-            else
-            {
-                _ = pageBuilder.Header4("New post effects coming in update 4.3!");
             }
 
             /*_ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.TWEAK_BLOOM), delegate (bool value)
@@ -725,14 +753,14 @@ namespace OverhaulMod.UI
                 });
             }
 
+            /*_ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_CAMERA_BOBBING), delegate (bool value)
+            {
+                ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_CAMERA_BOBBING, value, true);
+            }, "Camera bobbing");*/
             _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_CAMERA_ROLLING), delegate (bool value)
             {
                 ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_CAMERA_ROLLING, value, true);
             }, "Camera rolling");
-            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_CAMERA_BOBBING), delegate (bool value)
-            {
-                ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_CAMERA_BOBBING, value, true);
-            }, "Camera bobbing");
             _ = pageBuilder.Button("Reset camera settings", delegate
             {
                 ModSettingsManager.ResetValue(ModSettingsConstants.CAMERA_FOV_OFFSET, true);
@@ -802,6 +830,7 @@ namespace OverhaulMod.UI
             _ = pageBuilder.Dropdown(settingsMenu.StoryModeDifficultyDropDown.options, settingsMenu.StoryModeDifficultyDropDown.value, OnStoryDifficultyIndexChanged);
             _ = pageBuilder.Header4("Change what enemies spawn");
 
+            _ = pageBuilder.Header1("Camera");
             _ = pageBuilder.KeyBind("Camera mode", (KeyCode)ModSettingsManager.GetIntValue(ModSettingsConstants.CAMERA_MODE_TOGGLE_KEYBIND), KeyCode.Y, delegate (KeyCode value)
             {
                 ModSettingsManager.SetIntValue(ModSettingsConstants.CAMERA_MODE_TOGGLE_KEYBIND, (int)value, true);
@@ -814,6 +843,10 @@ namespace OverhaulMod.UI
             {
                 ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_CAMERA_BOBBING, value, true);
             }, "Camera bobbing");
+            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_CAMERA_ROLLING), delegate (bool value)
+            {
+                ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_CAMERA_ROLLING, value, true);
+            }, "Camera rolling");
 
             _ = pageBuilder.Header3("Endless levels");
             _ = pageBuilder.Dropdown(settingsMenu.WorkshopLevelPolicyDropdown.options, settingsMenu.WorkshopLevelPolicyDropdown.value, OnWorkshopEndlessLevelPolicyIndexChanged);
@@ -1672,7 +1705,7 @@ namespace OverhaulMod.UI
 
             UISettingsMenuRework settingsMenuRework = ModUIManager.Instance.Get<UISettingsMenuRework>(AssetBundleConstants.UI, ModUIConstants.UI_SETTINGS_MENU);
             if (settingsMenuRework)
-                settingsMenuRework.PopulatePage("Mod-Bot");
+                settingsMenuRework.PopulatePage("Advanced");
         }
 
         public class PageBuilder
@@ -1962,6 +1995,9 @@ namespace OverhaulMod.UI
 
             public void AddDescriptionBoxToRecentElement(string settingId)
             {
+                if (!ModFeatures.IsEnabled(ModFeatures.FeatureType.SettingDescriptionBox))
+                    return;
+
                 Transform transform = SettingsMenu.PageContentsTransform.GetChild(SettingsMenu.PageContentsTransform.childCount - 1);
 
                 UIElementMouseEventsComponent mouseEventsComponent = transform.gameObject.AddComponent<UIElementMouseEventsComponent>();

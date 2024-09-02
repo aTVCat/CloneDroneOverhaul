@@ -549,11 +549,16 @@ namespace OverhaulMod.Utils
         /// <summary>
         /// <see cref="Visuals.PostEffectsManager"/>
         /// </summary>
-        public const string ENABLE_GLOBAL_ILLUMINATION = "EnableGlobalIllumination";
+        public const string ENABLE_GLOBAL_ILLUMINATION = "EnableGI";
 
         /// <summary>
         /// <see cref="Visuals.PostEffectsManager"/>
         /// </summary>
         public const string ENABLE_REFLECTION_PROBE = "EnableReflectionProbe";
+
+        /// <summary>
+        /// <see cref="ModCore"/>
+        /// </summary>
+        public const string CHANGE_CURSOR = "ChangeCursor";
     }
 }

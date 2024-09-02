@@ -125,6 +125,15 @@ namespace OverhaulMod
                 case FeatureType.TitleScreenModdedSectionRework:
                     result = ModBuildInfo.VERSION_4_3;
                     break;
+                case FeatureType.SettingDescriptionBox:
+                    result = ModBuildInfo.VERSION_4_3;
+                    break;
+                case FeatureType.ColorBlindnessOptions:
+                    result = true;
+                    break;
+                case FeatureType.MoreSettingsMod_ColorBlindnessOptions:
+                    result = false;
+                    break;
                 default:
                     return false;
             }
@@ -204,7 +213,13 @@ namespace OverhaulMod
 
             VersionLabelUpdates,
 
-            TitleScreenModdedSectionRework
+            TitleScreenModdedSectionRework,
+
+            SettingDescriptionBox,
+
+            ColorBlindnessOptions,
+
+            MoreSettingsMod_ColorBlindnessOptions
         }
     }
 }

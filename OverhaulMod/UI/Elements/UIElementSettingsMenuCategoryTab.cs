@@ -36,10 +36,12 @@ namespace OverhaulMod.UI.Elements
             {
                 case "Home":
                     InitializeSubcategoryDisplay("Game interface", false);
+                    InitializeSubcategoryDisplay("Camera", false);
                     InitializeSubcategoryDisplay("Multiplayer settings", false);
                     break;
                 case "Gameplay":
                     InitializeSubcategoryDisplay("Gameplay settings", false);
+                    InitializeSubcategoryDisplay("Camera", false);
                     InitializeSubcategoryDisplay("Twitch", false);
                     break;
                 case "Sounds":
@@ -74,6 +76,7 @@ namespace OverhaulMod.UI.Elements
                     InitializeSubcategoryDisplay("Game interface", false);
                     InitializeSubcategoryDisplay("Energy bar enhancements", false);
                     InitializeSubcategoryDisplay("Labels", false);
+                    InitializeSubcategoryDisplay("Misc.", false);
                     break;
             }
         }

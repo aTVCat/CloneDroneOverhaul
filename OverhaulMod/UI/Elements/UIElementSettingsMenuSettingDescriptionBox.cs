@@ -36,9 +36,9 @@ namespace OverhaulMod.UI.Elements
                 description = "No description provided.";
 
             bool subDescriptionIsEmpty = subDescription.IsNullOrEmpty();
-            m_layoutGroup.padding.bottom = subDescriptionIsEmpty ? 5 : 30;
+            m_layoutGroup.padding.bottom = subDescriptionIsEmpty ? 10 : 30;
             m_subDescriptionTextObject.SetActive(!subDescriptionIsEmpty);
-            m_separatorObject.SetActive(!subDescriptionIsEmpty);
+            //m_separatorObject.SetActive(!subDescriptionIsEmpty);
 
             m_descriptionText.text = description;
             m_subDescriptionText.text = subDescription;

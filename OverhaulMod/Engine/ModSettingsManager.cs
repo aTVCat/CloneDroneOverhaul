@@ -26,7 +26,9 @@ namespace OverhaulMod.Engine
             m_idToSubDescription = new Dictionary<string, ModSettingSubDescription>();
 
             loadSettings();
-            loadSubDescriptions();
+
+            if (ModFeatures.IsEnabled(ModFeatures.FeatureType.SettingDescriptionBox))
+                loadSubDescriptions();
         }
 
         private void loadSubDescriptions()
@@ -47,10 +49,10 @@ namespace OverhaulMod.Engine
                 }
 
                 string[] idWithValues = content.Split(Environment.NewLine.ToCharArray());
-                foreach(var entry in idWithValues)
+                foreach (string entry in idWithValues)
                 {
                     string[] split = entry.Split(' ');
-                    if(split.Length == 2)
+                    if (split.Length == 2)
                     {
                         string settingId = split[0];
                         string sub = split[1];
@@ -58,12 +60,12 @@ namespace OverhaulMod.Engine
                         if (!sub.IsNullOrEmpty())
                         {
                             string[] subSplit = sub.Split(',');
-                            if(subSplit.Length == 2)
+                            if (subSplit.Length == 2)
                             {
                                 string typeText = subSplit[0];
                                 string valueText = subSplit[1];
 
-                                if(int.TryParse(typeText, out int type) && int.TryParse(valueText, out int value))
+                                if (int.TryParse(typeText, out int type) && int.TryParse(valueText, out int value))
                                 {
                                     m_idToSubDescription.Add(settingId, new ModSettingSubDescription(type, value));
                                 }
@@ -95,7 +97,7 @@ namespace OverhaulMod.Engine
             if (m_idToSubDescription.ContainsKey(settingId))
             {
                 ModSettingSubDescription modSettingSubDescription = m_idToSubDescription[settingId];
-                if(modSettingSubDescription.Type == 0)
+                if (modSettingSubDescription.Type == 0)
                 {
                     string postfix;
                     switch (modSettingSubDescription.Value)

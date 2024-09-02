@@ -29,6 +29,9 @@ namespace OverhaulMod
         [ModSetting(ModSettingsConstants.STREAMER_MODE, true)]
         public static bool StreamerMode;
 
+        [ModSetting(ModSettingsConstants.CHANGE_CURSOR, true)]
+        public static bool ChangeCursor;
+
         public static bool EnterCustomizationEditor;
 
         public static event Action GameInitialized;
@@ -328,6 +331,16 @@ namespace OverhaulMod
             {
                 fpsManager.RefreshDropdownOptionTranslation();
             }
+        }
+
+        public static void RefreshCursor(object obj)
+        {
+            RefreshCursor();
+        }
+
+        public static void RefreshCursor()
+        {
+            Cursor.SetCursor(ChangeCursor ? ModResources.Texture2D(AssetBundleConstants.UI, "Cursor") : null, Vector2.zero, CursorMode.Auto);
         }
 
         private IEnumerator waitUntilCharacterModelInitialization(FirstPersonMover firstPersonMover)

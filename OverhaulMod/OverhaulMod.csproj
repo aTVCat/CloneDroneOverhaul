@@ -548,6 +548,7 @@
     <Compile Include="Patches\UpgradeUIIcon_Patch.cs" />
     <Compile Include="Patches\WinLoseDialog_Patch.cs" />
     <Compile Include="Patches\LevelEditorUseButtonTrigger_Patch.cs" />
+    <Compile Include="Patches\ModBotSignInUI_Patch.cs" />
     <Compile Include="Patches\WorldAudioSource_Patch.cs" />
     <Compile Include="SEGI\SEGI.cs" />
     <Compile Include="SEGI\SEGICascaded.cs" />

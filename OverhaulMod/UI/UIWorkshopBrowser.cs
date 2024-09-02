@@ -459,7 +459,7 @@ namespace OverhaulMod.UI
                     success = ModSteamUGCUtils.GetWorkshopItems(new PublishedFileId_t[]
                     {
                         (PublishedFileId_t)3045196841, // Imagine Chapter 6 Competition Winners
-                        //(PublishedFileId_t)2783921326, // Beginners Welcome Comp Entries - Clone Drone
+                        (PublishedFileId_t)2783921326, // Beginners Welcome Comp Entries - Clone Drone
                         (PublishedFileId_t)2669983696, // Zombie Adventure Competition Winners 2021
                         (PublishedFileId_t)2670197366, // LAUNCH Level Competition Winners
                         (PublishedFileId_t)2369933278, // Winter Level Editor Competition 2020
