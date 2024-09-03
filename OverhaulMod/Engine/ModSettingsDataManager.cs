@@ -81,6 +81,36 @@ namespace OverhaulMod.Engine
             Save();
         }
 
+        public ModSettingsDataContainer CreateDataContainerForExport()
+        {
+            ModSettingsDataContainer modSettingsDataContainer = new ModSettingsDataContainer();
+            modSettingsDataContainer.FixValues();
+
+            foreach (ModSetting setting in ModSettingsManager.Instance.GetSettings())
+            {
+                if (setting.tag.HasFlag(ModSetting.Tag.IgnoreExport))
+                    continue;
+
+                switch (setting.valueType)
+                {
+                    case ModSetting.ValueType.Bool:
+                        modSettingsDataContainer.IntValues.Add(setting.GetPlayerPrefKey(), ((bool)setting.GetValue()) ? 1 : 0);
+                        break;
+                    case ModSetting.ValueType.Int:
+                        modSettingsDataContainer.IntValues.Add(setting.GetPlayerPrefKey(), (int)setting.GetValue());
+                        break;
+                    case ModSetting.ValueType.Float:
+                        modSettingsDataContainer.FloatValues.Add(setting.GetPlayerPrefKey(), (float)setting.GetValue());
+                        break;
+                    case ModSetting.ValueType.String:
+                        modSettingsDataContainer.StringValues.Add(setting.GetPlayerPrefKey(), (string)setting.GetValue());
+                        break;
+                }
+            }
+
+            return modSettingsDataContainer;
+        }
+
         private ModSettingsDataContainer createDefaultDataContainer()
         {
             ModSettingsDataContainer modSettingsDataContainer = new ModSettingsDataContainer();

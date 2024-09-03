@@ -90,6 +90,7 @@ namespace OverhaulMod.Utils
         public const string UI_UPDATES_WINDOW_REWORK = "UI_UpdatesWindowRework";
         public const string UI_PERSONALIZATION_EDITOR_MAGICA_VOXEL_TIP = "UI_PersonalizationEditorMagicaVoxelTip";
         public const string UI_INTRO = "UI_Intro";
+        public const string UI_SETTINGS_IMPORT_EXPORT_MENU = "UI_SettingsImportExportMenu";
 
         public static UIVersionLabel ShowVersionLabel()
         {
@@ -560,6 +561,11 @@ namespace OverhaulMod.Utils
         public static UIIntro ShowIntro()
         {
             return ModUIManager.Instance.Show<UIIntro>(AssetBundleConstants.UI, UI_INTRO, ModUIManager.UILayer.Last);
+        }
+
+        public static UISettingsImportExportMenu ShowSettingsImportExportMenu(Transform transform)
+        {
+            return ModUIManager.Instance.Show<UISettingsImportExportMenu>(AssetBundleConstants.UI, UI_SETTINGS_IMPORT_EXPORT_MENU, transform);
         }
     }
 }

@@ -5,16 +5,16 @@ namespace OverhaulMod.Engine
 {
     public class ScheduledActionsManager : Singleton<ScheduledActionsManager>
     {
-        [ModSetting(ModSettingsConstants.REFRESH_MOD_UPDATES_DATE_TIME, null)]
+        [ModSetting(ModSettingsConstants.REFRESH_MOD_UPDATES_DATE_TIME, null, ModSetting.Tag.IgnoreExport)]
         public static string RefreshModUpdatesDateTime;
 
-        [ModSetting(ModSettingsConstants.REFRESH_EXCLUSIVE_PERKS_DATE_TIME, null)]
+        [ModSetting(ModSettingsConstants.REFRESH_EXCLUSIVE_PERKS_DATE_TIME, null, ModSetting.Tag.IgnoreExport)]
         public static string RefreshExclusivePerksDateTime;
 
-        [ModSetting(ModSettingsConstants.REFRESH_CUSTOMIZATION_ASSETS_REMOTE_VERSION_DATE_TIME, null)]
+        [ModSetting(ModSettingsConstants.REFRESH_CUSTOMIZATION_ASSETS_REMOTE_VERSION_DATE_TIME, null, ModSetting.Tag.IgnoreExport)]
         public static string RefreshCustomizationAssetsRemoteVersionDateTime;
 
-        [ModSetting(ModSettingsConstants.REFRESH_NEWS_DATE_TIME, null)]
+        [ModSetting(ModSettingsConstants.REFRESH_NEWS_DATE_TIME, null, ModSetting.Tag.IgnoreExport)]
         public static string RefreshNewsDateTime;
 
         public void SetActionExecuted(ScheduledActionType scheduledAction)

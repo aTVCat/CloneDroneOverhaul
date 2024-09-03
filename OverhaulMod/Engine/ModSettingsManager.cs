@@ -124,13 +124,19 @@ namespace OverhaulMod.Engine
             return null;
         }
 
-        public bool HasSetting(string name)
+        public bool HasSettingWithName(string name)
         {
+            if (name.StartsWith("OverhaulMod."))
+                name = name.Substring("OverhaulMod.".Length);
+
             return m_nameToSetting.ContainsKey(name);
         }
 
         public ModSetting GetSetting(string name)
         {
+            if (name.StartsWith("OverhaulMod."))
+                name = name.Substring("OverhaulMod.".Length);
+
             return m_nameToSetting.TryGetValue(name, out ModSetting modSetting) ? modSetting : null;
         }
 
@@ -177,7 +183,7 @@ namespace OverhaulMod.Engine
                 return null;
 
             ModSettingAttribute modSettingAttribute = field.GetCustomAttribute<ModSettingAttribute>();
-            if (modSettingAttribute == null || modSettingAttribute.Name.IsNullOrEmpty() || HasSetting(modSettingAttribute.Name))
+            if (modSettingAttribute == null || modSettingAttribute.Name.IsNullOrEmpty() || HasSettingWithName(modSettingAttribute.Name))
                 return null;
 
             ModSetting.ValueType valueType;

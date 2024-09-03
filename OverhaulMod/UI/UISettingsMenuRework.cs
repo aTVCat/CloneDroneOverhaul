@@ -9,6 +9,7 @@ using OverhaulMod.Visuals;
 using OverhaulMod.Visuals.Environment;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -24,6 +25,14 @@ namespace OverhaulMod.UI
         [UIElementAction(nameof(OnLegacyUIButtonClicked))]
         [UIElement("OldUIButton")]
         public Button LegacyUIButton;
+
+        [UIElementAction(nameof(OnImportSettingsButtonClicked))]
+        [UIElement("ImportSettingsButton")]
+        private Button m_importSettingsButton;
+
+        [UIElementAction(nameof(OnExportSettingsButtonClicked))]
+        [UIElement("ExportSettingsButton")]
+        private Button m_exportSettingsButton;
 
         [UIElement("Content")]
         public Transform PageContentsTransform;
@@ -491,6 +500,10 @@ namespace OverhaulMod.UI
         {
             PageBuilder pageBuilder = new PageBuilder(this);
             _ = pageBuilder.Header1("Game interface");
+            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.CHANGE_CURSOR), delegate (bool value)
+            {
+                ModSettingsManager.SetBoolValue(ModSettingsConstants.CHANGE_CURSOR, value, true);
+            }, "Cursor overhaul");
             _ = pageBuilder.Toggle(!settingsMenu.HideGameUIToggle.isOn, OnHideGameUIToggleChanged, "Show game UI");
             _ = pageBuilder.Toggle(settingsMenu.SubtitlesToggle.isOn, OnSubtitlesToggleChanged, "Show subtitles");
             _ = pageBuilder.Button("Configure Overhaul mod UIs", delegate
@@ -551,12 +564,6 @@ namespace OverhaulMod.UI
                 ModSettingsManager.SetBoolValue(ModSettingsConstants.SHOW_SPEAKER_NAME, value, true);
                 SpeechAudioManager.Instance.PlaySequence("CloneDroneIntro", false);
             }, "Display who's speaking");
-
-            _ = pageBuilder.Header1("Misc.");
-            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.CHANGE_CURSOR), delegate (bool value)
-            {
-                ModSettingsManager.SetBoolValue(ModSettingsConstants.CHANGE_CURSOR, value, true);
-            }, "Change cursor");
         }
 
         private void populateGraphicsPage(SettingsMenu settingsMenu)
@@ -1448,6 +1455,36 @@ namespace OverhaulMod.UI
                     settingsMenu.Show();
                 });
             }
+        }
+
+        public void OnImportSettingsButtonClicked()
+        {
+            ModUIUtils.FileExplorer(base.transform, true, delegate (string path)
+            {
+                if (path.IsNullOrEmpty())
+                    return;
+
+                ModSettingsDataContainer modSettingsDataContainer;
+                try
+                {
+                    modSettingsDataContainer = ModJsonUtils.DeserializeStream<ModSettingsDataContainer>(path);
+                    modSettingsDataContainer.FixValues();
+                }
+                catch
+                {
+                    ModUIUtils.MessagePopupOK("Import error", "The file is corrupted.", true);
+                    return;
+                };
+
+                ModSettingsDataManager.Instance.dataContainer.SetValues(modSettingsDataContainer, true);
+                ModUIUtils.MessagePopupOK("Import successful", $"Imported the file \"{Path.GetFileNameWithoutExtension(path)}\".", true);
+                PopulatePage(m_selectedTabId);
+            }, ModCore.savesFolder, "*.json");
+        }
+
+        public void OnExportSettingsButtonClicked()
+        {
+            ModUIConstants.ShowSettingsImportExportMenu(base.transform);
         }
 
         public void OnQualityDropdownChanged(int value)

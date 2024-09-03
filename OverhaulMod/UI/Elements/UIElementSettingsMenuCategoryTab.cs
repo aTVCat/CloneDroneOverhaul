@@ -76,7 +76,6 @@ namespace OverhaulMod.UI.Elements
                     InitializeSubcategoryDisplay("Game interface", false);
                     InitializeSubcategoryDisplay("Energy bar enhancements", false);
                     InitializeSubcategoryDisplay("Labels", false);
-                    InitializeSubcategoryDisplay("Misc.", false);
                     break;
             }
         }

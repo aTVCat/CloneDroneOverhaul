@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 1620046054
+CRC: 1145678237
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: f7b7e175a33e749e669dfcefd5c2c191
+    Hash: 93fe436d808d1bef2d751dc6ce7a8342
   TypeTreeHash:
     serializedVersion: 2
     Hash: acf1344b0dbbc80b9165ec9e7dce57f8
@@ -138,6 +138,7 @@ Assets:
 - Assets/UI/UI_AutoBuildMenu.prefab
 - Assets/UI/UI_TitleScreenCustomizationPanel.prefab
 - Assets/UI/UI_GenericColorPicker.prefab
+- Assets/UI/UI_SettingsImportExportMenu.prefab
 - Assets/UI/Elements/WindowPrefab.prefab
 - Assets/UI/UI_DownloadPersonalizationAssetsMenu.prefab
 - Assets/Sprites/Glyphs/GetUpgradesButton.png

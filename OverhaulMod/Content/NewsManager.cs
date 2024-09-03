@@ -11,10 +11,10 @@ namespace OverhaulMod.Content
 
         public const string DATA_FILE = "NewsUserData.json";
 
-        [ModSetting(ModSettingsConstants.PREV_NEWS_COUNT, 0)]
+        [ModSetting(ModSettingsConstants.PREV_NEWS_COUNT, 0, ModSetting.Tag.IgnoreExport)]
         public static int PrevNewsCount;
 
-        [ModSetting(ModSettingsConstants.DOWNLOADED_NEWS_COUNT, 0)]
+        [ModSetting(ModSettingsConstants.DOWNLOADED_NEWS_COUNT, 0, ModSetting.Tag.IgnoreExport)]
         public static int DownloadedNewsCount;
 
         private NewsUserData m_userData;

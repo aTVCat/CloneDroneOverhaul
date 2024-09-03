@@ -22,6 +22,49 @@ namespace OverhaulMod.Engine
                 StringValues = new Dictionary<string, string>();
         }
 
+        public void SetValues(ModSettingsDataContainer otherContainer, bool fromUI = false)
+        {
+            if (otherContainer == null)
+                return;
+
+            ModSettingsManager modSettingsManager = ModSettingsManager.Instance;
+            if (otherContainer.IntValues != null)
+            {
+                foreach (KeyValuePair<string, int> keyValue in otherContainer.IntValues)
+                {
+                    if (modSettingsManager.HasSettingWithName(keyValue.Key))
+                    {
+                        if(modSettingsManager.GetSetting(keyValue.Key).valueType == ModSetting.ValueType.Bool)
+                        {
+                            if (ModSettingsManager.GetBoolValue(keyValue.Key) != (keyValue.Value == 0 ? false : true))
+                                ModSettingsManager.SetBoolValue(keyValue.Key, keyValue.Value == 0 ? false : true, fromUI);
+                        }
+                        else
+                        {
+                            if (ModSettingsManager.GetIntValue(keyValue.Key) != keyValue.Value)
+                                ModSettingsManager.SetIntValue(keyValue.Key, keyValue.Value);
+                        }
+                    }
+                }
+            }
+            if (otherContainer.FloatValues != null)
+            {
+                foreach (KeyValuePair<string, float> keyValue in otherContainer.FloatValues)
+                {
+                    if (modSettingsManager.HasSettingWithName(keyValue.Key) && ModSettingsManager.GetFloatValue(keyValue.Key) != keyValue.Value)
+                        ModSettingsManager.SetFloatValue(keyValue.Key, keyValue.Value, fromUI);
+                }
+            }
+            if (otherContainer.StringValues != null)
+            {
+                foreach (KeyValuePair<string, string> keyValue in otherContainer.StringValues)
+                {
+                    if (modSettingsManager.HasSettingWithName(keyValue.Key) && ModSettingsManager.GetStringValue(keyValue.Key) != keyValue.Value)
+                        ModSettingsManager.SetStringValue(keyValue.Key, keyValue.Value, fromUI);
+                }
+            }
+        }
+
         public void SetInt(string key, int value)
         {
             Dictionary<string, int> dictionary = IntValues;

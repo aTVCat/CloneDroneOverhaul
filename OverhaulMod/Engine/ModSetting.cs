@@ -181,7 +181,8 @@ namespace OverhaulMod.Engine
         public enum Tag
         {
             None,
-            UISetting
+            UISetting,
+            IgnoreExport,
         }
 
         public enum ValueType

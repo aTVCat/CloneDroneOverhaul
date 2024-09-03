@@ -107,7 +107,7 @@ namespace OverhaulMod.UI
 
             if (m_itemNameField.text.IsNullOrWhiteSpace())
             {
-                SetStatusText("Folder name is a whitespace.", Color.red);
+                SetStatusText("Folder name is whitespace.", Color.red);
                 m_doneButton.interactable = false;
                 return;
             }

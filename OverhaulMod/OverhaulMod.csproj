@@ -630,6 +630,7 @@
     <Compile Include="UI\UIAssetBundleAssetsBrowser.cs" />
     <Compile Include="UI\UIAutoBuildSelectionMenu.cs" />
     <Compile Include="UI\UIIntro.cs" />
+    <Compile Include="UI\UISettingsImportExportMenu.cs" />
     <Compile Include="UI\UIPersonalizationEditorMagicaVoxelTip.cs" />
     <Compile Include="UI\UIUpdatesWindowRework.cs" />
     <Compile Include="UI\UIPersonalizationEditorItemImportDialog.cs" />

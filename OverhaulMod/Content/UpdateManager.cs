@@ -18,10 +18,10 @@ namespace OverhaulMod.Content
         [ModSetting(ModSettingsConstants.CHECK_FOR_UPDATES_ON_STARTUP, true)]
         public static bool CheckForUpdatesOnStartup;
 
-        [ModSetting(ModSettingsConstants.SAVED_RELEASE_VERSION, null)]
+        [ModSetting(ModSettingsConstants.SAVED_RELEASE_VERSION, null, ModSetting.Tag.IgnoreExport)]
         public static string SavedReleaseVersion;
 
-        [ModSetting(ModSettingsConstants.SAVED_TESTING_VERSION, null)]
+        [ModSetting(ModSettingsConstants.SAVED_TESTING_VERSION, null, ModSetting.Tag.IgnoreExport)]
         public static string SavedTestingVersion;
 
         public static readonly List<Dropdown.OptionData> BranchesForTestersDropdownOptions = new List<Dropdown.OptionData>()
