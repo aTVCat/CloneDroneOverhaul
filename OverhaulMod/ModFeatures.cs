@@ -108,7 +108,7 @@ namespace OverhaulMod
                     result = true;
                     break;
                 case FeatureType.UpdatesMenuRework:
-                    result = ModBuildInfo.VERSION_4_3;
+                    result = false; //ModBuildInfo.VERSION_4_3;
                     break;
                 case FeatureType.RequireNormalAndFireVariantsForSwordAndSpearSkins:
                     result = false;
@@ -123,7 +123,7 @@ namespace OverhaulMod
                     result = ModBuildInfo.VERSION_4_3;
                     break;
                 case FeatureType.TitleScreenModdedSectionRework:
-                    result = ModBuildInfo.VERSION_4_3;
+                    result = false; //ModBuildInfo.VERSION_4_3;
                     break;
                 case FeatureType.SettingDescriptionBox:
                     result = ModBuildInfo.VERSION_4_3;
