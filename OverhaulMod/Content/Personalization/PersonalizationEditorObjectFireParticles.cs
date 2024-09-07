@@ -8,7 +8,6 @@ namespace OverhaulMod.Content.Personalization
 
         private bool m_hasStarted;
 
-        [PersonalizationEditorObjectProperty]
         public Color color
         {
             get
@@ -23,7 +22,6 @@ namespace OverhaulMod.Content.Personalization
             }
         }
 
-        [PersonalizationEditorObjectProperty]
         public bool enableSmoke
         {
             get
@@ -38,7 +36,6 @@ namespace OverhaulMod.Content.Personalization
             }
         }
 
-        [PersonalizationEditorObjectProperty]
         public bool applyFavoriteColor
         {
             get
@@ -53,7 +50,6 @@ namespace OverhaulMod.Content.Personalization
             }
         }
 
-        [PersonalizationEditorObjectProperty]
         public float favoriteColorHueOffset
         {
             get
@@ -68,7 +64,6 @@ namespace OverhaulMod.Content.Personalization
             }
         }
 
-        [PersonalizationEditorObjectProperty]
         public float favoriteColorBrightness
         {
             get
@@ -83,7 +78,6 @@ namespace OverhaulMod.Content.Personalization
             }
         }
 
-        [PersonalizationEditorObjectProperty]
         public float favoriteColorSaturation
         {
             get

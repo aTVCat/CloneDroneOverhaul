@@ -109,7 +109,6 @@ namespace OverhaulMod.Content
                     this.contentInfoList = contentInfoList;
                     doneCallback?.Invoke();
                     GlobalEventManager.Instance.Dispatch(CONTENT_REFRESHED_EVENT);
-                    ModFeatures.CacheValues();
                 }
                 isRetrievingData = false;
                 return;
@@ -140,7 +139,6 @@ namespace OverhaulMod.Content
                 isRetrievingData = false;
                 this.contentInfoList = contentInfoList;
                 doneCallback?.Invoke();
-                ModFeatures.CacheValues();
             }, delegate (string error)
             {
                 isRetrievingData = false;

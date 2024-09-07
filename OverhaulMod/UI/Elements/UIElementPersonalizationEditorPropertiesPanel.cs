@@ -855,50 +855,5 @@ namespace OverhaulMod.UI
                 }
             }
         }
-
-        public class FieldDisplay : OverhaulUIBehaviour
-        {
-            protected PersonalizationEditorObjectPropertyAttribute m_attribute;
-
-            protected PersonalizationEditorObjectComponentBase m_componentBaseObject;
-
-            public virtual void Set(PersonalizationEditorObjectPropertyAttribute attribute, PersonalizationEditorObjectComponentBase componentBaseObject, object value)
-            {
-                m_attribute = attribute;
-                m_componentBaseObject = componentBaseObject;
-            }
-        }
-
-        public class FileLocationField : FieldDisplay
-        {
-            [UIElement("InputField")]
-            private readonly InputField m_field;
-
-            [UIElementAction(nameof(OnEditButtonClicked))]
-            [UIElement("EditButton")]
-            private readonly Button m_editButton;
-
-            public override void Set(PersonalizationEditorObjectPropertyAttribute attribute, PersonalizationEditorObjectComponentBase componentBaseObject, object value)
-            {
-                base.Set(attribute, componentBaseObject, value);
-                m_field.text = value?.ToString();
-            }
-
-            public void OnEditButtonClicked()
-            {
-                ModUIUtils.FileExplorer(UIPersonalizationEditor.instance.transform, true, delegate (string filePath)
-                {
-                    string directoryName = ModFileUtils.GetDirectoryName(PersonalizationEditorManager.Instance.currentEditingItemInfo.FolderPath);
-                    string fileName = Path.GetFileName(filePath);
-                    string path = $"{directoryName}/files/{fileName}";
-
-                    if ((string)m_attribute.propertyInfo.GetValue(m_componentBaseObject) == path)
-                        return;
-
-                    m_field.text = path;
-                    m_attribute.propertyInfo.SetValue(m_componentBaseObject, path);
-                }, PersonalizationItemInfo.GetImportedFilesFolder(PersonalizationEditorManager.Instance.currentEditingItemInfo), m_attribute.FileLocationSearchPattern);
-            }
-        }
     }
 }

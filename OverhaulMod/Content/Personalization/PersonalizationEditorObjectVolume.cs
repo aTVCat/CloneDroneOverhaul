@@ -42,7 +42,6 @@ namespace OverhaulMod.Content.Personalization
             }
         }
 
-        [PersonalizationEditorObjectProperty]
         public Dictionary<WeaponVariant, VolumeSettingsPreset> volumeSettingPresets
         {
             get
@@ -57,7 +56,6 @@ namespace OverhaulMod.Content.Personalization
             }
         }
 
-        [PersonalizationEditorObjectProperty]
         public bool hideIfNoPreset
         {
             get

@@ -370,8 +370,6 @@
     <Compile Include="Content\Personalization\PersonalizationEditorObjectCVMModel.cs" />
     <Compile Include="Content\Personalization\PersonalizationEditorObjectFireParticles.cs" />
     <Compile Include="Content\Personalization\PersonalizationEditorObjectInfo.cs" />
-    <Compile Include="Content\Personalization\PersonalizationEditorObjectPropertyAttribute.cs" />
-    <Compile Include="Content\Personalization\PersonalizationEditorObjectPropertyValueInfo.cs" />
     <Compile Include="Content\Personalization\PersonalizationEditorTemplateManager.cs" />
     <Compile Include="Content\Personalization\PersonalizationItemLockInfo.cs" />
     <Compile Include="Content\Personalization\PersonalizationItemMetaData.cs" />
@@ -480,6 +478,7 @@
     <Compile Include="Content\ExclusiveContentManager.cs" />
     <Compile Include="Engine\ModLevelManager.cs" />
     <Compile Include="Content\NewsManager.cs" />
+    <Compile Include="ModFeaturesData.cs" />
     <Compile Include="ModLoader.cs" />
     <Compile Include="ModTime.cs" />
     <Compile Include="ModDataManager.cs" />
@@ -630,6 +629,7 @@
     <Compile Include="UI\UIAssetBundleAssetsBrowser.cs" />
     <Compile Include="UI\UIAutoBuildSelectionMenu.cs" />
     <Compile Include="UI\UIIntro.cs" />
+    <Compile Include="UI\UIFeaturesMenu.cs" />
     <Compile Include="UI\UISettingsImportExportMenu.cs" />
     <Compile Include="UI\UIPersonalizationEditorMagicaVoxelTip.cs" />
     <Compile Include="UI\UIUpdatesWindowRework.cs" />

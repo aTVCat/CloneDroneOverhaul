@@ -162,6 +162,10 @@ namespace OverhaulMod.UI
         [UIElement("PatchNotesButton")]
         private readonly Button m_patchNotesButton;
 
+        [UIElementAction(nameof(OnFeaturesButtonClicked))]
+        [UIElement("FeaturesButton")]
+        private readonly Button m_featuresButton;
+
         [UIElement("OtherLayers")]
         private readonly GameObject m_otherLayersObject;
 
@@ -229,10 +233,13 @@ namespace OverhaulMod.UI
 
         protected override void OnInitialized()
         {
+            bool debug = ModBuildInfo.debug;
+
             m_modBotLogonText.text = "Not logged in";
             NewsButtonWarnController.isNewsButton = true;
             UpdatesButtonWarnController.isUpdatesButton = true;
-            m_debugButtonsObject.SetActive(ModBuildInfo.debug);
+            m_debugButtonsObject.SetActive(debug);
+            m_featuresButton.gameObject.SetActive(debug);
 
             bool updateBottomSection = ModFeatures.IsEnabled(ModFeatures.FeatureType.TitleScreenModdedSectionRework);
             m_bottomSection.SetActive(!updateBottomSection);
@@ -532,6 +539,11 @@ namespace OverhaulMod.UI
         public void OnPatchNotesButtonClicked()
         {
             _ = ModUIConstants.ShowPatchNotes();
+        }
+
+        public void OnFeaturesButtonClicked()
+        {
+            _ = ModUIConstants.ShowFeaturesMenu(base.transform);
         }
     }
 }

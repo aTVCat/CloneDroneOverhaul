@@ -1,27 +1,98 @@
 ﻿using OverhaulMod.Content;
+using OverhaulMod.Utils;
 using System.Collections.Generic;
+using System.IO;
 
 namespace OverhaulMod
 {
     public static class ModFeatures
     {
-        private static readonly Dictionary<FeatureType, bool> s_cachedValues = new Dictionary<FeatureType, bool>();
+        public const string FEATURES_DATA_FILE_NAME = "featureStates.json";
 
-        public static void CacheValues()
+        private static ModFeaturesData s_data;
+
+        public static void Load()
         {
-            Dictionary<FeatureType, bool> dictionary = s_cachedValues;
-            dictionary.Clear();
+            string path = Path.Combine(ModCore.dataFolder, FEATURES_DATA_FILE_NAME);
+
+            ModFeaturesData data;
+            try
+            {
+                data = ModJsonUtils.DeserializeStream<ModFeaturesData>(path);
+            }
+            catch
+            {
+                data = new ModFeaturesData();
+            }
+            data.FixValues();
+
+            bool anyChanges = false;
             foreach (object enumName in typeof(FeatureType).GetEnumValues())
             {
                 FeatureType featureType = (FeatureType)enumName;
-                dictionary.Add(featureType, IsEnabled(featureType, false));
+                if (!data.FeatureStates.ContainsKey(featureType))
+                {
+                    data.FeatureStates.Add(featureType, IsEnabled(featureType, false));
+                    anyChanges = true;
+                }
             }
+
+            s_data = data;
+
+            if (anyChanges)
+                Save();
+        }
+
+        public static void Save()
+        {
+            if (s_data == null)
+                return;
+
+            ModJsonUtils.WriteStream(Path.Combine(ModCore.dataFolder, FEATURES_DATA_FILE_NAME), s_data);
+        }
+
+        /// <summary>
+        /// Reset feature states
+        /// </summary>
+        /// <returns>False if feature states already were default</returns>
+        public static bool Default()
+        {
+            bool anyChanges = false;
+
+            Dictionary<FeatureType, bool> d = s_data.FeatureStates;
+            foreach (object enumName in typeof(FeatureType).GetEnumValues())
+            {
+                FeatureType featureType = (FeatureType)enumName;
+                bool state = IsEnabled(featureType, false);
+
+                if (!d.ContainsKey(featureType))
+                {
+                    d.Add(featureType, state);
+                    anyChanges = true;
+                }
+                else if (d[featureType] != state)
+                {
+                    d[featureType] = state;
+                    anyChanges = true;
+                }
+            }
+
+            return anyChanges;
+        }
+
+        public static ModFeaturesData GetData()
+        {
+            return s_data;
         }
 
         public static bool IsEnabled(FeatureType feature, bool useCaching = true)
         {
-            if (useCaching && s_cachedValues.ContainsKey(feature))
-                return s_cachedValues[feature];
+            if (useCaching)
+            {
+                Dictionary<FeatureType, bool> d = s_data?.FeatureStates;
+                if (d != null && d.ContainsKey(feature))
+                    return d[feature];
+            }
 
             bool result;
             switch (feature)
@@ -108,7 +179,7 @@ namespace OverhaulMod
                     result = true;
                     break;
                 case FeatureType.UpdatesMenuRework:
-                    result = false; //ModBuildInfo.VERSION_4_3;
+                    result = ModBuildInfo.VERSION_4_3;
                     break;
                 case FeatureType.RequireNormalAndFireVariantsForSwordAndSpearSkins:
                     result = false;
@@ -123,7 +194,7 @@ namespace OverhaulMod
                     result = ModBuildInfo.VERSION_4_3;
                     break;
                 case FeatureType.TitleScreenModdedSectionRework:
-                    result = false; //ModBuildInfo.VERSION_4_3;
+                    result = ModBuildInfo.VERSION_4_3;
                     break;
                 case FeatureType.SettingDescriptionBox:
                     result = ModBuildInfo.VERSION_4_3;

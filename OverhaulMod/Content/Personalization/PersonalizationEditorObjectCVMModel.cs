@@ -26,7 +26,6 @@ namespace OverhaulMod.Content.Personalization
             }
         }
 
-        [PersonalizationEditorObjectProperty]
         public Dictionary<WeaponVariant, CVMModelPreset> presets
         {
             get
@@ -41,7 +40,6 @@ namespace OverhaulMod.Content.Personalization
             }
         }
 
-        [PersonalizationEditorObjectProperty]
         public bool hideIfNoPreset
         {
             get

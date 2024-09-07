@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 340089234
+CRC: 4286672849
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 802f06859bffea3b40c8da6068c74c77
+    Hash: 227d23320c3b8bcc970051633f8d3c71
   TypeTreeHash:
     serializedVersion: 2
     Hash: acf1344b0dbbc80b9165ec9e7dce57f8
@@ -169,6 +169,7 @@ Assets:
 - Assets/UI/UI_EndlessModeLeaderboard.prefab
 - Assets/UI/UI_AdvancementsMenuRework.prefab
 - Assets/UI/UI_PersonalizationEditorAuthorsEditMenu.prefab
+- Assets/UI/UI_FeaturesMenu.prefab
 - Assets/UI/UI_DebugMenu.prefab
 - Assets/UI/UI_PersonalizationEditorPlaytestHUD.prefab
 - Assets/UI/UI_ContentDownloadWindow.prefab

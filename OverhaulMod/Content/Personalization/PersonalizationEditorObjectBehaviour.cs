@@ -127,11 +127,6 @@ namespace OverhaulMod.Content.Personalization
             }
         }
 
-        public List<PersonalizationEditorObjectPropertyAttribute> GetProperties()
-        {
-            return PersonalizationEditorObjectManager.Instance.GetProperties(this);
-        }
-
         public PersonalizationEditorObjectInfo Serialize()
         {
             if (!this || !gameObject)

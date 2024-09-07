@@ -4,7 +4,6 @@ namespace OverhaulMod.Content.Personalization
 {
     public class PersonalizationEditorObjectVisibilityController : PersonalizationEditorObjectComponentBase
     {
-        [PersonalizationEditorObjectProperty]
         public WeaponVariant enableIfWeaponVariant
         {
             get

@@ -91,6 +91,7 @@ namespace OverhaulMod.Utils
         public const string UI_PERSONALIZATION_EDITOR_MAGICA_VOXEL_TIP = "UI_PersonalizationEditorMagicaVoxelTip";
         public const string UI_INTRO = "UI_Intro";
         public const string UI_SETTINGS_IMPORT_EXPORT_MENU = "UI_SettingsImportExportMenu";
+        public const string UI_FEATURES_MENU = "UI_FeaturesMenu";
 
         public static UIVersionLabel ShowVersionLabel()
         {
@@ -566,6 +567,11 @@ namespace OverhaulMod.Utils
         public static UISettingsImportExportMenu ShowSettingsImportExportMenu(Transform transform)
         {
             return ModUIManager.Instance.Show<UISettingsImportExportMenu>(AssetBundleConstants.UI, UI_SETTINGS_IMPORT_EXPORT_MENU, transform);
+        }
+
+        public static UIFeaturesMenu ShowFeaturesMenu(Transform transform)
+        {
+            return ModUIManager.Instance.Show<UIFeaturesMenu>(AssetBundleConstants.UI, UI_FEATURES_MENU, transform);
         }
     }
 }

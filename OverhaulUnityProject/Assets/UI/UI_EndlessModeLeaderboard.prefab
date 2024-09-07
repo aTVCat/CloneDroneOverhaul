@@ -1705,7 +1705,7 @@ PrefabInstance:
     - target: {fileID: 53442557987225143, guid: 339cbba86aa04d441bcc6969fbf247f2,
         type: 3}
       propertyPath: m_Padding.m_Left
-      value: 0
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2460295540619242411, guid: 339cbba86aa04d441bcc6969fbf247f2,
         type: 3}
@@ -1816,6 +1816,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_SizeDelta.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4976722326959811986, guid: 339cbba86aa04d441bcc6969fbf247f2,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: -15
       objectReference: {fileID: 0}
     - target: {fileID: 7157080510426004752, guid: 339cbba86aa04d441bcc6969fbf247f2,
         type: 3}
