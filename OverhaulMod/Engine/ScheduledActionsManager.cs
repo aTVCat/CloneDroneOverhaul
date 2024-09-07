@@ -23,13 +23,13 @@ namespace OverhaulMod.Engine
             switch (scheduledAction)
             {
                 case ScheduledActionType.RefreshModUpdates:
-                    ModSettingsManager.SetStringValue(ModSettingsConstants.REFRESH_MOD_UPDATES_DATE_TIME, dateTime.AddDays(1).ToString());
+                    ModSettingsManager.SetStringValue(ModSettingsConstants.REFRESH_MOD_UPDATES_DATE_TIME, dateTime.AddDays(2).ToString());
                     break;
                 case ScheduledActionType.RefreshExclusivePerks:
                     ModSettingsManager.SetStringValue(ModSettingsConstants.REFRESH_EXCLUSIVE_PERKS_DATE_TIME, dateTime.AddDays(5).ToString());
                     break;
                 case ScheduledActionType.RefreshCustomizationAssetsRemoteVersion:
-                    ModSettingsManager.SetStringValue(ModSettingsConstants.REFRESH_CUSTOMIZATION_ASSETS_REMOTE_VERSION_DATE_TIME, dateTime.AddDays(1).ToString());
+                    ModSettingsManager.SetStringValue(ModSettingsConstants.REFRESH_CUSTOMIZATION_ASSETS_REMOTE_VERSION_DATE_TIME, dateTime.AddDays(2).ToString());
                     break;
                 case ScheduledActionType.RefreshNews:
                     ModSettingsManager.SetStringValue(ModSettingsConstants.REFRESH_NEWS_DATE_TIME, dateTime.AddDays(3).ToString());

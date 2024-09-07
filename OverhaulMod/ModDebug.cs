@@ -79,7 +79,7 @@ namespace OverhaulMod
 
         public static void FileDownloadTest()
         {
-            FileDownloader fileDownloader = new FileDownloader();
+            GoogleDriveFileDownloader fileDownloader = new GoogleDriveFileDownloader();
             fileDownloader.DownloadProgressChanged += onDownloadProgress;
             fileDownloader.DownloadFileCompleted += (sender, e) =>
             {
@@ -93,7 +93,7 @@ namespace OverhaulMod
             fileDownloader.DownloadFileAsync("https://drive.google.com/file/d/1T_sWBJdpXe74dZrtN7pPZXjT4sVgq7-o/view?usp=drive_link", "D:\\CloneDroneBeta.zip");
         }
 
-        private static void onDownloadProgress(object sender, FileDownloader.DownloadProgress e)
+        private static void onDownloadProgress(object sender, GoogleDriveFileDownloader.DownloadProgress e)
         {
             if (s_lastFrameDownloadProgressWasDisplayed == Time.frameCount)
                 return;

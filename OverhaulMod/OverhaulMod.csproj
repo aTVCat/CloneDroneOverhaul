@@ -464,7 +464,7 @@
     <Compile Include="Engine\UpgradeModesManager.cs" />
     <Compile Include="Content\WorkshopItem.cs" />
     <Compile Include="Engine\WeaponVariantManager.cs" />
-    <Compile Include="FileDownloader.cs" />
+    <Compile Include="Content\GoogleDriveFileDownloader.cs" />
     <Compile Include="IGameLoadListener.cs" />
     <Compile Include="IModLoadListener.cs" />
     <Compile Include="Content\UpdateManager.cs" />

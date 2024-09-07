@@ -12,7 +12,7 @@ namespace OverhaulMod.Content
         {
             int lastFrameDownloadProgressWasDisplayed = 0;
 
-            FileDownloader fileDownloader = new FileDownloader();
+            GoogleDriveFileDownloader fileDownloader = new GoogleDriveFileDownloader();
             fileDownloader.DownloadFileCompleted += (sender, e) =>
             {
                 if (e.Cancelled)

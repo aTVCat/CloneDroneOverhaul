@@ -4,7 +4,7 @@ namespace OverhaulMod.Content
 {
     public class UpdateInfoList
     {
-        public const string PUBLIC_BRANCH = "release";
+        public const string RELEASE_BRANCH = "release";
 
         public const string PREVIEW_BRANCH = "preview";
 
@@ -18,6 +18,15 @@ namespace OverhaulMod.Content
         {
             if(Branches == null)
                 Branches = new Dictionary<string, UpdateInfo>();
+        }
+
+        public bool HasAnyNewBuildAvailable()
+        {
+            foreach (var item in Branches.Values)
+                if (item.CanBeInstalledByLocalUser() && item.IsNewerBuild())
+                    return true;
+
+            return false;
         }
     }
 }

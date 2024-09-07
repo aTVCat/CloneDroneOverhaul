@@ -30,8 +30,7 @@ namespace OverhaulMod.Utils
             {
                 DelegateScheduler.Instance.Schedule(delegate
                 {
-                    bool isTester = ModBuildInfo.isPrereleaseBuild || ExclusivePerkManager.Instance.IsLocalUserTheTester();
-                    string savedVersion = isTester ? UpdateManager.SavedTestingVersion : UpdateManager.SavedReleaseVersion;
+                    string savedVersion = UpdateManager.SavedNewVersion;
                     if (savedVersion.IsNullOrEmpty())
                         return;
 
@@ -43,7 +42,7 @@ namespace OverhaulMod.Utils
                         MessagePopup(true, LocalizationManager.Instance.GetTranslatedString("update_available_header"), string.Format(LocalizationManager.Instance.GetTranslatedString("update_available_description"), newVersion), 150f, MessageMenu.ButtonLayout.EnableDisableButtons, "ok", "Yes", "No", null, delegate
                         {
                             UI.UIUpdatesWindow window = ModUIConstants.ShowUpdatesWindow();
-                            window.SelectBranchAndSearchForUpdates(isTester ? 1 : 0);
+                            window.SelectBranchAndSearchForUpdates(0);
                         });
                     }
                 }, delay);

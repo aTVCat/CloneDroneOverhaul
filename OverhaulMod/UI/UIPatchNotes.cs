@@ -43,6 +43,8 @@ namespace OverhaulMod.UI
 
         private Button m_previousButtonClicked;
 
+        private Button m_firstButton;
+
         protected override void OnInitialized()
         {
             m_descriptionText.fontSize = 10;
@@ -107,6 +109,7 @@ namespace OverhaulMod.UI
                 if (!firstButton)
                 {
                     firstButton = button;
+                    m_firstButton = firstButton;
                 }
             }
 
@@ -133,6 +136,12 @@ namespace OverhaulMod.UI
                 sizeDelta.y = m_descriptionText.preferredHeight + 30f;
                 m_descriptionText.rectTransform.sizeDelta = sizeDelta;
             }
+        }
+
+        public void ClickOnFirstButton()
+        {
+            if (m_firstButton)
+                m_firstButton.Press();
         }
 
         public void PopulateChangelog(string header, string folderName)

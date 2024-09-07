@@ -18,11 +18,17 @@ namespace OverhaulMod.Content
         [ModSetting(ModSettingsConstants.CHECK_FOR_UPDATES_ON_STARTUP, true)]
         public static bool CheckForUpdatesOnStartup;
 
-        [ModSetting(ModSettingsConstants.SAVED_RELEASE_VERSION, null, ModSetting.Tag.IgnoreExport)]
-        public static string SavedReleaseVersion;
+        [ModSetting(ModSettingsConstants.NOTIFY_ABOUT_NEW_VERSION_FROM_BRANCH, UpdateInfoList.RELEASE_BRANCH)]
+        public static string NotifyAboutNewVersionFromBranch;
 
-        [ModSetting(ModSettingsConstants.SAVED_TESTING_VERSION, null, ModSetting.Tag.IgnoreExport)]
-        public static string SavedTestingVersion;
+        [ModSetting(ModSettingsConstants.SAVED_NEW_VERSION, null, ModSetting.Tag.IgnoreExport)]
+        public static string SavedNewVersion;
+
+        [ModSetting(ModSettingsConstants.SAVED_NEW_VERSION_BRANCH, null, ModSetting.Tag.IgnoreExport)]
+        public static string SavedNewVersionBranch;
+
+        [ModSetting(ModSettingsConstants.UPDATES_LAST_CHECKED_DATE, null, ModSetting.Tag.IgnoreExport)]
+        public static string UpdatesLastCheckedDate;
 
         public static readonly List<Dropdown.OptionData> BranchesForTestersDropdownOptions = new List<Dropdown.OptionData>()
         {
@@ -47,26 +53,24 @@ namespace OverhaulMod.Content
 
         private void Start()
         {
+            if (!CheckForUpdatesOnStartup)
+            {
+                downloadedVersion = ModBuildInfo.version;
+                return;
+            }
+
+            ScheduledActionsManager scheduledActionsManager = ScheduledActionsManager.Instance;
+            if (!scheduledActionsManager.ShouldExecuteAction(ScheduledActionType.RefreshModUpdates))
+                return;
+
             _ = ModActionUtils.RunCoroutine(retrieveDataOnStartCoroutine());
         }
 
         private IEnumerator retrieveDataOnStartCoroutine()
         {
-            yield return null;
-
-            if (!CheckForUpdatesOnStartup)
-            {
-                downloadedVersion = ModBuildInfo.version;
-                yield break;
-            }
-
-            ScheduledActionsManager scheduledActionsManager = ScheduledActionsManager.Instance;
-            if (!scheduledActionsManager.ShouldExecuteAction(ScheduledActionType.RefreshModUpdates))
-                yield break;
-
             DownloadUpdateInfoFile(delegate
             {
-                scheduledActionsManager.SetActionExecuted(ScheduledActionType.RefreshModUpdates);
+                ScheduledActionsManager.Instance.SetActionExecuted(ScheduledActionType.RefreshModUpdates);
             }, null);
             yield break;
         }
@@ -84,17 +88,22 @@ namespace OverhaulMod.Content
                 try
                 {
                     updateInfoList = ModJsonUtils.Deserialize<UpdateInfoList>(content);
+                    updateInfoList.FixValues();
 
-                    if (ModBuildInfo.isPrereleaseBuild || ExclusivePerkManager.Instance.IsLocalUserTheTester())
+                    string n = NotifyAboutNewVersionFromBranch;
+                    if (!n.IsNullOrEmpty())
                     {
-                        if (updateInfoList.InternalRelease != null && updateInfoList.InternalRelease.ModVersion != null)
-                            ModSettingsManager.SetStringValue(ModSettingsConstants.SAVED_TESTING_VERSION, updateInfoList.InternalRelease.ModVersion.ToString());
+                        if (updateInfoList.Branches.ContainsKey(n))
+                        {
+                            UpdateInfo updateInfo = updateInfoList.Branches[n];
+                            if (updateInfo.CanBeInstalledByLocalUser() && updateInfo.IsNewerBuild())
+                            {
+                                ModSettingsManager.SetStringValue(ModSettingsConstants.SAVED_NEW_VERSION, updateInfo.ModVersion.ToString());
+                                ModSettingsManager.SetStringValue(ModSettingsConstants.SAVED_NEW_VERSION_BRANCH, n);
+                            }
+                        }
                     }
-                    else
-                    {
-                        if (updateInfoList.ModBotRelease != null && updateInfoList.ModBotRelease.ModVersion != null)
-                            ModSettingsManager.SetStringValue(ModSettingsConstants.SAVED_RELEASE_VERSION, updateInfoList.ModBotRelease.ModVersion.ToString());
-                    }
+                    ModSettingsManager.SetStringValue(ModSettingsConstants.UPDATES_LAST_CHECKED_DATE, DateTime.Now.ToString());
                     ModSettingsDataManager.Instance.Save();
                 }
                 catch (Exception exc)

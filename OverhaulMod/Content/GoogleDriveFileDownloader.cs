@@ -7,25 +7,7 @@ using System.Text;
 
 // taken from here https://gist.github.com/yasirkula/d0ec0c07b138748e5feaecbd93b6223c
 
-/* EXAMPLE USAGE
-	FileDownloader fileDownloader = new FileDownloader();
-
-	// This callback is triggered for DownloadFileAsync only
-	fileDownloader.DownloadProgressChanged += ( sender, e ) => Console.WriteLine( "Progress changed " + e.BytesReceived + " " + e.TotalBytesToReceive );
-	// This callback is triggered for both DownloadFile and DownloadFileAsync
-	fileDownloader.DownloadFileCompleted += ( sender, e ) => 
-	{
-		if( e.Cancelled )
-			Console.WriteLine( "Download cancelled" );
-		else if( e.Error != null )
-			Console.WriteLine( "Download failed: " + e.Error );
-		else
-			Console.WriteLine( "Download completed" );
-	};
-
-	fileDownloader.DownloadFileAsync( "https://INSERT_DOWNLOAD_LINK_HERE", @"C:\downloadedFile.txt" );
-*/
-public class FileDownloader : IDisposable
+public class GoogleDriveFileDownloader : IDisposable
 {
     private const string GOOGLE_DRIVE_DOMAIN = "drive.google.com";
     private const string GOOGLE_DRIVE_DOMAIN2 = "https://drive.google.com";
@@ -157,7 +139,7 @@ public class FileDownloader : IDisposable
     public event DownloadProgressChangedEventHandler DownloadProgressChanged;
     public event AsyncCompletedEventHandler DownloadFileCompleted;
 
-    public FileDownloader()
+    public GoogleDriveFileDownloader()
     {
         webClient = new CookieAwareWebClient();
         webClient.DownloadProgressChanged += DownloadProgressChangedCallback;

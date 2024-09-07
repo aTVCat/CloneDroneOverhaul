@@ -560,5 +560,25 @@ namespace OverhaulMod.Utils
         /// <see cref="ModCore"/>
         /// </summary>
         public const string CHANGE_CURSOR = "ChangeCursor";
+
+        /// <summary>
+        /// <see cref="Content.UpdateManager"/>
+        /// </summary>
+        public const string SAVED_NEW_VERSION = "SavedNewVersion";
+
+        /// <summary>
+        /// <see cref="Content.UpdateManager"/>
+        /// </summary>
+        public const string SAVED_NEW_VERSION_BRANCH = "SavedNewVersionBranch";
+
+        /// <summary>
+        /// <see cref="Content.UpdateManager"/>
+        /// </summary>
+        public const string NOTIFY_ABOUT_NEW_VERSION_FROM_BRANCH = "NotifyAboutNewVersionFromBranch";
+
+        /// <summary>
+        /// <see cref="Content.UpdateManager"/>
+        /// </summary>
+        public const string UPDATES_LAST_CHECKED_DATE = "UpdatesLastCheckedDate";
     }
 }
