@@ -72,6 +72,10 @@ namespace OverhaulMod.UI
         [UIElement("PlayButton")]
         private readonly Button m_playButton;
 
+        [UIElementAction(nameof(OnPlayButtonClicked))]
+        [UIElement("AdvancedPlayOptionsButton")]
+        private readonly Button m_advancedPlayOptionsButton;
+
         [ShowTooltipOnHighLight("erase progress", 1.5f, true)]
         [UIElementAction(nameof(OnEraseProgressButtonClicked))]
         [UIElement("DeleteProgressButton")]
@@ -461,6 +465,7 @@ namespace OverhaulMod.UI
             m_subscribeButton.gameObject.SetActive(!subscribed && !downloading);
             m_unsubscribeButton.gameObject.SetActive(subscribed);
             m_playButton.gameObject.SetActive(allowPlayingFromThere && installed && subscribed && !downloading);
+            m_advancedPlayOptionsButton.gameObject.SetActive(allowPlayingFromThere && installed && subscribed && !downloading);
             m_updateButton.gameObject.SetActive(installed && subscribed && !downloading && needsUpdate);
 
             m_loadingIndicatorObject.SetActive(downloading || needsUpdate);

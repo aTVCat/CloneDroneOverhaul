@@ -4,7 +4,7 @@ namespace OverhaulMod.Combat
 {
     public class CharacterInventory : MonoBehaviour
     {
-        public bool IsNotAbleToDoubleJump;
+        public int LastServerFrameDoubleJumped;
 
         private FirstPersonMover m_owner;
         public FirstPersonMover owner

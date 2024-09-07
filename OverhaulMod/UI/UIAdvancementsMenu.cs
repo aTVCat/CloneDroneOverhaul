@@ -44,6 +44,8 @@ namespace OverhaulMod.UI
         private readonly ModdedObject m_globalDisplayPrefab;
         [UIElement("GlobalAdvancementsTable", false)]
         private readonly ModdedObject m_tablePrefab;
+        [UIElement("AllAchievementsUnlockedLabel", false)]
+        private readonly ModdedObject m_allAchievementsUnlockedLabelPrefab;
 
         [UIElement("MyAchTabButton")]
         private readonly ModdedObject m_localAdvancementsTab;
@@ -55,14 +57,15 @@ namespace OverhaulMod.UI
 
         public override bool hideTitleScreen => true;
 
+        private bool m_hasUpdatedLabels;
+
         protected override void OnInitialized()
         {
+            ClearPageContents();
+
             m_tabs.AddTab(m_localAdvancementsTab.gameObject, "local advancements");
             m_tabs.AddTab(m_globalAdvancementsTab.gameObject, "global advancements");
             m_tabs.SelectTab("local advancements");
-
-            ClearPageContents();
-            PopulateLocalAchievements();
         }
 
         public void OnTabSelected(UIElementTab elementTab)
@@ -114,9 +117,30 @@ namespace OverhaulMod.UI
                 return;
             }
 
-            float fractionOfAchievementsCompleted = manager.GetFractionOfAchievementsCompleted();
-            m_progressBarFill.fillAmount = fractionOfAchievementsCompleted;
-            m_progressText.text = Mathf.FloorToInt(fractionOfAchievementsCompleted * 100f) + "%";
+            float fraction = GameplayAchievementManager.Instance.GetFractionOfAchievementsCompleted();
+            int percentage = Mathf.FloorToInt(fraction * 100f);
+
+            if(!m_hasUpdatedLabels)
+            {
+                m_hasUpdatedLabels = true;
+                m_progressBarFill.fillAmount = fraction;
+                m_progressText.text = $"{ModGameUtils.GetNumOfAchievementsCompleted()}/{ModGameUtils.GetNumOfAchievements()} ({percentage}%)";
+            }
+
+            GridLayoutGroup gridLayoutGroup = m_pageGridContentsTransform.GetComponent<GridLayoutGroup>();
+            if(percentage >= 100f)
+            {
+                ModdedObject moddedObject1 = Instantiate(m_allAchievementsUnlockedLabelPrefab, m_pageGridContentsTransform);
+                moddedObject1.gameObject.SetActive(true);
+
+                RectTransform rectTransform = moddedObject1.transform as RectTransform;
+                rectTransform.anchoredPosition = Vector2.zero;
+
+                if (gridLayoutGroup)
+                    gridLayoutGroup.padding.top = 50;
+            }
+            else if (gridLayoutGroup)
+                gridLayoutGroup.padding.top = 8;
 
             foreach (GameplayAchievement achievement in manager.Achievements)
             {

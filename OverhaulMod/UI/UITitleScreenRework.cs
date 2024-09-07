@@ -190,6 +190,15 @@ namespace OverhaulMod.UI
         [UIElement("UpdatesButton", typeof(UIElementTitleScreenButtonWithWarn))]
         public UIElementTitleScreenButtonWithWarn UpdatesButtonWarnController;
 
+        [UIElement("AdvancementsProgressImage")]
+        private readonly Image m_advancementsProgressImage;
+
+        [UIElement("AdvancementsProgressText")]
+        private readonly Text m_advancementsProgressText;
+
+        [UIElement("AdvancementsProgressPercentageText")]
+        private readonly Text m_advancementsProgressPercentageText;
+
         public override bool closeOnEscapeButtonPress => false;
 
         private TitleScreenUI m_titleScreenUI;
@@ -240,6 +249,11 @@ namespace OverhaulMod.UI
             UpdatesButtonWarnController.isUpdatesButton = true;
             m_debugButtonsObject.SetActive(debug);
             m_featuresButton.gameObject.SetActive(debug);
+
+            float fraction = GameplayAchievementManager.Instance.GetFractionOfAchievementsCompleted();
+            m_advancementsProgressImage.fillAmount = fraction;
+            m_advancementsProgressText.text = $"{ModGameUtils.GetNumOfAchievementsCompleted()}/{ModGameUtils.GetNumOfAchievements()}";
+            m_advancementsProgressPercentageText.text = $"({Mathf.FloorToInt(fraction * 100f)}%)";
 
             bool updateBottomSection = ModFeatures.IsEnabled(ModFeatures.FeatureType.TitleScreenModdedSectionRework);
             m_bottomSection.SetActive(!updateBottomSection);

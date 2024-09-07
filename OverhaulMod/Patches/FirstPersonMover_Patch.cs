@@ -1,5 +1,4 @@
 ﻿using HarmonyLib;
-using ModLibrary;
 using OverhaulMod.Combat;
 using OverhaulMod.Combat.Weapons;
 using OverhaulMod.Utils;
@@ -10,29 +9,12 @@ namespace OverhaulMod.Patches
     [HarmonyPatch(typeof(FirstPersonMover))]
     internal static class FirstPersonMover_Patch
     {
-        /*
-        [HarmonyPrefix]
-        [HarmonyPatch(nameof(FirstPersonMover.tryKick))]
-        private static bool tryKick_Prefix(FirstPersonMover __instance, FPMoveCommand moveCommand, bool isFirstExecution, bool isOwner)
-        {
-            CharacterModel characterModel = __instance._characterModel;
-            return !characterModel || !characterModel.IsWeaponModelVisibleAndNotDropped((WeaponType)52);
-        }*/
-
-        /*
-        [HarmonyPrefix]
-        [HarmonyPatch(nameof(FirstPersonMover.PushDownIfAboveGround))]
-        private static bool PushDownIfAboveGround_Prefix(FirstPersonMover __instance)
-        {
-            _ = ModActionUtils.RunCoroutine(ModCore.PushDownIfAboveGroundCoroutine_Patch(__instance));
-            return false;
-        }*/
-
         [HarmonyPrefix]
         [HarmonyPatch(nameof(FirstPersonMover.tryRenderAttack))]
         private static void tryRenderAttack_Prefix(FirstPersonMover __instance, int attackServerFrame, ref AttackDirection attackDirection)
         {
-            if (__instance.GetEquippedWeaponModel() is ModWeaponModel modWeaponModel)
+            WeaponModel wm = __instance._currentWeaponModel;
+            if (wm && wm.WeaponType == ModWeaponsManager.SCYTHE_TYPE && wm is ModWeaponModel modWeaponModel) // temporary made it work for scythe only
             {
                 if (!modWeaponModel.attackDirections.HasFlag(attackDirection))
                     attackDirection = modWeaponModel.defaultAttackDirection;
@@ -43,31 +25,23 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(FirstPersonMover.tryEnableJump))]
         private static void tryEnableJump_Prefix(FirstPersonMover __instance, FPMoveCommand moveCommand, Vector3 platformVelocity, float boltFrameDeltaTime, bool isImmobile, bool isFirstExecution)
         {
-            if (GameModeManager.IsMultiplayer() || !__instance.IsMainPlayer())
+            if (GameModeManager.IsMultiplayer() || !__instance.IsMainPlayer() || !__instance._isJumping || !moveCommand.Input.Jump)
                 return;
 
-            CharacterInventory robotInventory = ModComponentCache.GetRobotInventory(__instance.transform);
-            if (robotInventory)
+            CharacterInventory characterInventory = ModComponentCache.GetRobotInventory(__instance.transform);
+            if (characterInventory && characterInventory.LastServerFrameDoubleJumped < __instance._lastServerFrameTouchedGround && characterInventory.hasDoubleJumpAbility)
             {
-                if (__instance._isOnGroundServer)
+                EnergySource energySource = __instance._energySource;
+                if (!energySource || !energySource.CanConsume(0.5f))
                 {
-                    robotInventory.IsNotAbleToDoubleJump = false;
+                    ModCache.gameUIRoot.EnergyUI.onInsufficientEnergyAttempt(0.5f);
+                    return;
                 }
+                energySource.Consume(0.5f);
 
-                if (!robotInventory.IsNotAbleToDoubleJump && robotInventory.hasDoubleJumpAbility && __instance._isJumping && moveCommand.Input.Jump)
-                {
-                    EnergySource energySource = __instance._energySource;
-                    if (!energySource || !energySource.CanConsume(0.5f))
-                    {
-                        ModCache.gameUIRoot.EnergyUI.onInsufficientEnergyAttempt(0.5f);
-                        return;
-                    }
-                    energySource.Consume(0.5f);
-
-                    __instance.AddVelocity(__instance.JumpVelocity);
-                    robotInventory.IsNotAbleToDoubleJump = true;
-                    AttackManager.Instance.CreateBattleCruiserGatlingImpactVFX(__instance.transform.position + Vector3.up);
-                }
+                __instance.AddVelocity(__instance.JumpVelocity);
+                AttackManager.Instance.CreateBattleCruiserGatlingImpactVFX(__instance.transform.position + Vector3.up);
+                characterInventory.LastServerFrameDoubleJumped = moveCommand.ServerFrame;
             }
         }
 
@@ -85,7 +59,8 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(FirstPersonMover.executeAttackCommands))]
         private static void executeAttackCommands_Postfix(FirstPersonMover __instance, FPMoveCommand moveCommand, bool isImmobile, bool isFirstExecution, bool isOwner)
         {
-            if (__instance.GetEquippedWeaponModel() is ModWeaponModel modWeaponModel)
+            WeaponModel wm = __instance._currentWeaponModel;
+            if (wm && wm.WeaponType == ModWeaponsManager.SCYTHE_TYPE && wm is ModWeaponModel modWeaponModel)
             {
                 modWeaponModel.OnExecuteAttackCommands(__instance, moveCommand.Input);
             }
@@ -103,7 +78,8 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(FirstPersonMover.getWeaponDisabledTimeAfterCut))]
         private static void getWeaponDisabledTimeAfterCut_Postfix(FirstPersonMover __instance, ref float __result)
         {
-            if (__instance.GetEquippedWeaponModel() is ModWeaponModel modWeaponModel)
+            WeaponModel wm = __instance._currentWeaponModel;
+            if (wm && wm.WeaponType == ModWeaponsManager.SCYTHE_TYPE && wm is ModWeaponModel modWeaponModel)
             {
                 __result = modWeaponModel.disableAttacksForSeconds;
             }
@@ -113,7 +89,8 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(FirstPersonMover.RefreshWeaponAnimatorProperties))]
         private static void RefreshWeaponAnimatorProperties_Postfix(FirstPersonMover __instance)
         {
-            if (__instance.GetEquippedWeaponModel() is ModWeaponModel modWeaponModel)
+            WeaponModel wm = __instance._currentWeaponModel;
+            if (wm && wm.WeaponType == ModWeaponsManager.SCYTHE_TYPE && wm is ModWeaponModel modWeaponModel)
             {
                 if (modWeaponModel.animatorControllerOverride)
                 {
@@ -134,7 +111,8 @@ namespace OverhaulMod.Patches
             if (GameModeManager.UsesMultiplayerSpeedMultiplier())
                 return;
 
-            if (__instance.GetEquippedWeaponModel() is ModWeaponModel modWeaponModel)
+            WeaponModel wm = __instance._currentWeaponModel;
+            if (wm && wm.WeaponType == ModWeaponsManager.SCYTHE_TYPE && wm is ModWeaponModel modWeaponModel)
             {
                 __result = modWeaponModel.attackSpeed;
             }

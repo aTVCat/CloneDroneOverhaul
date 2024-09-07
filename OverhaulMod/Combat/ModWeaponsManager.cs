@@ -12,14 +12,14 @@ namespace OverhaulMod.Combat
         public const WeaponType SCYTHE_TYPE = (WeaponType)51;
 
         private Dictionary<WeaponType, (GameObject, Type)> m_Weapons;
-        private List<WeaponType> m_MeleeWeapons;
+        private List<WeaponType> m_meleeWeapons;
 
         public override void Awake()
         {
             base.Awake();
 
             m_Weapons = new Dictionary<WeaponType, (GameObject, Type)>();
-            m_MeleeWeapons = new List<WeaponType>();
+            m_meleeWeapons = new List<WeaponType>();
 
             AddWeapon<ScytheWeaponModel>(SCYTHE_TYPE, true, AssetBundleConstants.WEAPONS, "OverhaulScythe");
         }
@@ -36,12 +36,12 @@ namespace OverhaulMod.Combat
             m_Weapons.Add(weaponType, (model, typeof(T)));
 
             if (melee)
-                m_MeleeWeapons.Add(weaponType);
+                m_meleeWeapons.Add(weaponType);
         }
 
         public bool IsMeleeWeapon(WeaponType weaponType)
         {
-            return m_MeleeWeapons.Contains(weaponType);
+            return m_meleeWeapons.Contains(weaponType);
         }
 
         public void AddWeaponsToRobot(FirstPersonMover firstPersonMover)

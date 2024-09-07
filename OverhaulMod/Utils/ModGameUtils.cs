@@ -41,6 +41,35 @@ namespace OverhaulMod.Utils
         }
 
         private static readonly List<Action<IFPMoveCommandInput>> m_playerInputUpdateActions = new List<Action<IFPMoveCommandInput>>();
+
+        public static Dictionary<string, string> currentLevelMetaData { get; set; }
+
+        public static int GetNumOfAchievements()
+        {
+            GameplayAchievementManager gameplayAchievementManager = GameplayAchievementManager.Instance;
+            GameplayAchievement[] achievements = gameplayAchievementManager.Achievements;
+
+            int result = achievements.Length;
+            for (int i = 0; i < achievements.Length; i++)
+                if ((!ExperimentalBranchManager.Instance.ShowChapter5 && achievements[i].IsHiddenUntilChapter5Released) || (GameVersionManager.IsConsoleBuild() && !achievements[i].IsAvailableOnConsoles))
+                    result--;
+
+            return result;
+        }
+
+        public static int GetNumOfAchievementsCompleted()
+        {
+            GameplayAchievementManager gameplayAchievementManager = GameplayAchievementManager.Instance;
+            GameplayAchievement[] achievements = gameplayAchievementManager.Achievements;
+
+            int num = 0;
+            for (int i = 0; i < achievements.Length; i++)
+                if (!((!ExperimentalBranchManager.Instance.ShowChapter5 && achievements[i].IsHiddenUntilChapter5Released) || (GameVersionManager.IsConsoleBuild() && !achievements[i].IsAvailableOnConsoles)) && achievements[i].IsComplete())
+                    num++;
+
+            return num;
+        }
+
         public static void InvokePlayerInputUpdateAction(IFPMoveCommandInput fpmoveCommand)
         {
             List<Action<IFPMoveCommandInput>> list = m_playerInputUpdateActions;
@@ -57,8 +86,6 @@ namespace OverhaulMod.Utils
             }
             list.Clear();
         }
-
-        public static Dictionary<string, string> currentLevelMetaData { get; set; }
 
         public static bool SyncSteamAchievements()
         {

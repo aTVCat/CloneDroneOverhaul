@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 1566720274
+CRC: 2655066024
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: afc0c5cd72b0dfbc1fdb25ca79552090
+    Hash: 5f1e3fce9b933727142ab6d372330df4
   TypeTreeHash:
     serializedVersion: 2
     Hash: acf1344b0dbbc80b9165ec9e7dce57f8
@@ -145,6 +145,7 @@ Assets:
 - Assets/Sprites/Glow-2-256x256.png
 - Assets/UI/UI_RestartRequiredScreen.prefab
 - Assets/UI/UI_OverhaulUIsManagementPanel.prefab
+- Assets/UI/UI_WorkshopBrowserAdvancedPlayOptions.prefab
 - Assets/UI/UI_SetKeyBindWindow.prefab
 - Assets/UI/UI_AutoBuildSelectionMenu.prefab
 - Assets/UI/UI_FileExplorer.prefab
