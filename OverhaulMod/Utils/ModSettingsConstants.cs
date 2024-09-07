@@ -559,7 +559,7 @@ namespace OverhaulMod.Utils
         /// <summary>
         /// <see cref="ModCore"/>
         /// </summary>
-        public const string CHANGE_CURSOR = "ChangeCursor";
+        public const string CURSOR_SKIN = "CursorSkin";
 
         /// <summary>
         /// <see cref="Content.UpdateManager"/>

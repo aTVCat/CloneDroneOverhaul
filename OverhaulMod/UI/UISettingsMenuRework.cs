@@ -398,10 +398,11 @@ namespace OverhaulMod.UI
             }, "Camera rolling");
 
             _ = pageBuilder.Header1("Game interface");
-            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.CHANGE_CURSOR), delegate (bool value)
+            _ = pageBuilder.Header3("Cursor skin");
+            _ = pageBuilder.DropdownWithImage(ModConstants.CursorSkinOptions, ModSettingsManager.GetIntValue(ModSettingsConstants.CURSOR_SKIN), delegate (int value)
             {
-                ModSettingsManager.SetBoolValue(ModSettingsConstants.CHANGE_CURSOR, value, true);
-            }, "Change cursor");
+                ModSettingsManager.SetIntValue(ModSettingsConstants.CURSOR_SKIN, value, true);
+            });
             _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.SHOW_VERSION_LABEL), delegate (bool value)
             {
                 ModSettingsManager.SetBoolValue(ModSettingsConstants.SHOW_VERSION_LABEL, value, true);
@@ -500,16 +501,18 @@ namespace OverhaulMod.UI
         {
             PageBuilder pageBuilder = new PageBuilder(this);
             _ = pageBuilder.Header1("Game interface");
-            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.CHANGE_CURSOR), delegate (bool value)
+            _ = pageBuilder.Header3("Cursor skin");
+            _ = pageBuilder.DropdownWithImage(ModConstants.CursorSkinOptions, ModSettingsManager.GetIntValue(ModSettingsConstants.CURSOR_SKIN), delegate (int value)
             {
-                ModSettingsManager.SetBoolValue(ModSettingsConstants.CHANGE_CURSOR, value, true);
-            }, "Cursor overhaul");
+                ModSettingsManager.SetIntValue(ModSettingsConstants.CURSOR_SKIN, value, true);
+            });
             _ = pageBuilder.Toggle(!settingsMenu.HideGameUIToggle.isOn, OnHideGameUIToggleChanged, "Show game UI");
             _ = pageBuilder.Toggle(settingsMenu.SubtitlesToggle.isOn, OnSubtitlesToggleChanged, "Show subtitles");
             _ = pageBuilder.Button("Configure Overhaul mod UIs", delegate
             {
                 _ = ModUIConstants.ShowOverhaulUIManagementPanel(base.transform);
             });
+
             _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.SHOW_VERSION_LABEL), delegate (bool value)
             {
                 ModSettingsManager.SetBoolValue(ModSettingsConstants.SHOW_VERSION_LABEL, value, true);

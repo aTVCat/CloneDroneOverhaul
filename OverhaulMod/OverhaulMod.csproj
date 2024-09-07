@@ -479,6 +479,7 @@
     <Compile Include="ModDataManager.cs" />
     <Compile Include="Content\NewsInfoList.cs" />
     <Compile Include="ModUserInfo.cs" />
+    <Compile Include="Patches\ExplodeWhenCut_Patch.cs" />
     <Compile Include="Patches\AttackManager_Patch.cs" />
     <Compile Include="Patches\AudioManager_Patch.cs" />
     <Compile Include="Patches\AudienceManager_Patch.cs" />

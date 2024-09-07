@@ -29,8 +29,8 @@ namespace OverhaulMod
         [ModSetting(ModSettingsConstants.STREAMER_MODE, true)]
         public static bool StreamerMode;
 
-        [ModSetting(ModSettingsConstants.CHANGE_CURSOR, true)]
-        public static bool ChangeCursor;
+        [ModSetting(ModSettingsConstants.CURSOR_SKIN, 1)]
+        public static int CursorSkin;
 
         public static bool EnterCustomizationEditor;
 
@@ -327,7 +327,18 @@ namespace OverhaulMod
 
         public static void RefreshCursor()
         {
-            Cursor.SetCursor(ChangeCursor ? ModResources.Texture2D(AssetBundleConstants.UI, "Cursor") : null, Vector2.zero, CursorMode.Auto);
+            switch (CursorSkin)
+            {
+                case 1:
+                    Cursor.SetCursor(ModResources.Texture2D(AssetBundleConstants.UI, "Cursor"), Vector2.zero, CursorMode.Auto);
+                    break;
+                case 2:
+                    Cursor.SetCursor(ModResources.Texture2D(AssetBundleConstants.UI, "Cursor2"), Vector2.zero, CursorMode.Auto);
+                    break;
+                default:
+                    Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
+                    break;
+            }
         }
 
         private IEnumerator waitUntilCharacterModelInitialization(FirstPersonMover firstPersonMover)

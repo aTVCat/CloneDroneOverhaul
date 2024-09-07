@@ -40,6 +40,7 @@ namespace OverhaulMod
             addManagers();
             ModManagers.Instance.TriggerModLoadedEvent();
 
+            loadMiscellaneousAssets();
             addLevelEditorObjects();
             addListeners();
 
@@ -126,6 +127,12 @@ namespace OverhaulMod
             ModIntegrationUtils.Load();
         }
 
+        private static void loadMiscellaneousAssets()
+        {
+            ModConstants.CursorSkinOptions[1].image = ModUnityUtils.ToSprite(ModResources.Texture2D(AssetBundleConstants.UI, "Cursor"));
+            ModConstants.CursorSkinOptions[2].image = ModUnityUtils.ToSprite(ModResources.Texture2D(AssetBundleConstants.UI, "Cursor2"));
+        }
+
         private static void addLevelEditorObjects()
         {
             if (!s_hasAddedObjects)
@@ -171,7 +178,7 @@ namespace OverhaulMod
             modSettingsManager.AddSettingValueChangedListener(refreshCameraPostEffects, ModSettingsConstants.ENABLE_GLOBAL_ILLUMINATION);
             modSettingsManager.AddSettingValueChangedListener(refreshReflectionProbe, ModSettingsConstants.ENABLE_REFLECTION_PROBE);
             modSettingsManager.AddSettingValueChangedListener(refreshFPSCap, ModSettingsConstants.FPS_CAP);
-            modSettingsManager.AddSettingValueChangedListener(ModCore.RefreshCursor, ModSettingsConstants.CHANGE_CURSOR);
+            modSettingsManager.AddSettingValueChangedListener(ModCore.RefreshCursor, ModSettingsConstants.CURSOR_SKIN);
             modSettingsManager.AddSettingValueChangedListener(delegate (object obj)
             {
                 UseKeyTriggerManager manager = UseKeyTriggerManager.Instance;

@@ -17,5 +17,15 @@ namespace OverhaulMod.Patches
             ParticleManager.Instance.SpawnSparksParticles(position);
             return false;
         }
+
+        [HarmonyPostfix]
+        [HarmonyPatch(nameof(AttackManager.CreateEmperorHeadExplosionVFX))]
+        private static void CreateEmperorHeadExplosionVFX_Prefix(Vector3 position)
+        {
+            if (!ParticleManager.EnableParticles)
+                return;
+
+            ParticleManager.Instance.SpawnLogoExplosionParticles(position);
+        }
     }
 }
