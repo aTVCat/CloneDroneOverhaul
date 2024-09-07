@@ -69,7 +69,7 @@ namespace OverhaulMod
             _ = ModManagers.NewSingleton<RepositoryManager>();
             _ = ModManagers.NewSingleton<GoogleDriveManager>();
             _ = ModManagers.NewSingleton<ScheduledActionsManager>();
-            _ = ModManagers.NewSingleton<ExclusiveContentManager>();
+            _ = ModManagers.NewSingleton<ExclusivePerkManager>();
             _ = ModManagers.NewSingleton<ModLocalizationManager>();
             _ = ModManagers.NewSingleton<ModAudioManager>();
             _ = ModManagers.NewSingleton<ModResources>();
@@ -82,7 +82,6 @@ namespace OverhaulMod
             _ = ModManagers.NewSingleton<TitleScreenCustomizationManager>();
 
             _ = ModManagers.NewSingleton<ModWebhookManager>();
-            _ = ModManagers.NewSingleton<ExclusiveContentManager>();
             _ = ModManagers.NewSingleton<ContentManager>();
             _ = ModManagers.NewSingleton<UpdateManager>();
             _ = ModManagers.NewSingleton<NewsManager>();
@@ -143,7 +142,7 @@ namespace OverhaulMod
 
         private static void createDirectories()
         {
-            _ = ModFileUtils.CreateDirectoryIfNotExists(ModCore.modDataFolder);
+            _ = ModFileUtils.CreateDirectoryIfNotExists(ModCore.modUserDataFolder);
             _ = ModFileUtils.CreateDirectoryIfNotExists(ModCore.contentFolder);
             _ = ModFileUtils.CreateDirectoryIfNotExists(ModCore.savesFolder);
             _ = ModFileUtils.CreateDirectoryIfNotExists(ModCore.addonsFolder);

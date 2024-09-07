@@ -79,13 +79,12 @@ namespace OverhaulMod.Engine
             try
             {
                 arenaAudienceLinePointInfoList = ModJsonUtils.DeserializeStream<ArenaAudienceLinePointInfoList>(path);
-                arenaAudienceLinePointInfoList.FixValues();
             }
             catch
             {
                 arenaAudienceLinePointInfoList = new ArenaAudienceLinePointInfoList();
-                arenaAudienceLinePointInfoList.FixValues();
             }
+            arenaAudienceLinePointInfoList.FixValues();
             m_infoList = arenaAudienceLinePointInfoList;
         }
 

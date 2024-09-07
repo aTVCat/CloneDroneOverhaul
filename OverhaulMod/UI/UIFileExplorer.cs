@@ -31,6 +31,10 @@ namespace OverhaulMod.UI
         [UIElement("DownloadsFolderButton")]
         private readonly Button m_downloadsFolderButton;
 
+        [UIElementAction(nameof(OnSearchBoxChanged))]
+        [UIElement("SearchBox")]
+        private readonly InputField m_searchBox;
+
         [UIElement("ItemDisplayPrefab", false)]
         private readonly ModdedObject m_itemDisplayPrefab;
 
@@ -64,6 +68,8 @@ namespace OverhaulMod.UI
         private string m_selectedFile;
 
         private GameObject m_prevSelectedIndicator;
+
+        private Dictionary<string, GameObject> m_cachedInstantiatedDisplays;
 
         public override bool enableCursor => true;
 
@@ -131,7 +137,10 @@ namespace OverhaulMod.UI
 
         protected override void OnInitialized()
         {
+            m_cachedInstantiatedDisplays = new Dictionary<string, GameObject>();
+
             m_doneButton.interactable = false;
+            m_searchBox.text = string.Empty;
 
             m_driveDropdown.options.Clear();
             foreach (DriveInfo d in DriveInfo.GetDrives())
@@ -173,6 +182,7 @@ namespace OverhaulMod.UI
         {
             m_errorWindow.SetActive(false);
 
+            m_cachedInstantiatedDisplays.Clear();
             if (m_itemDisplayContainer.childCount != 0)
                 TransformUtils.DestroyAllChildren(m_itemDisplayContainer);
 
@@ -206,6 +216,7 @@ namespace OverhaulMod.UI
             {
                 spawnItem(info);
             }
+            OnSearchBoxChanged(m_searchBox.text);
         }
 
         private void spawnItem(FileSystemInfo fileSystemInfo)
@@ -232,6 +243,12 @@ namespace OverhaulMod.UI
             itemDisplay.displayName = fileSystemInfo.Name;
             itemDisplay.clickAction = onItemClicked;
             itemDisplay.doubleClickAction = onItemDoubleClicked;
+
+            string text = fileSystemInfo.Name.ToLower();
+            while (m_cachedInstantiatedDisplays.ContainsKey(text))
+                text += "_1";
+
+            m_cachedInstantiatedDisplays.Add(text, moddedObject.gameObject);
         }
 
         public void ShowError(Exception exception)
@@ -330,6 +347,24 @@ namespace OverhaulMod.UI
             callback?.Invoke(null);
             callback = null;
             Hide();
+        }
+
+        public void OnSearchBoxChanged(string text)
+        {
+            string lowerText = text.ToLower();
+            bool forceSetEnabled = text.IsNullOrEmpty();
+
+            foreach (KeyValuePair<string, GameObject> keyValue in m_cachedInstantiatedDisplays)
+            {
+                if (forceSetEnabled)
+                {
+                    keyValue.Value.SetActive(true);
+                }
+                else
+                {
+                    keyValue.Value.SetActive(keyValue.Key.Contains(lowerText));
+                }
+            }
         }
     }
 }

@@ -211,7 +211,7 @@ namespace OverhaulMod
 
             if (!result)
             {
-                ExclusiveContentManager modExclusiveContentManager = ExclusiveContentManager.Instance;
+                ExclusivePerkManager modExclusiveContentManager = ExclusivePerkManager.Instance;
                 if (modExclusiveContentManager && modExclusiveContentManager.IsFeatureUnlocked(feature))
                     result = true;
             }

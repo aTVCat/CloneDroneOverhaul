@@ -85,7 +85,7 @@ namespace OverhaulMod.Content
                 {
                     updateInfoList = ModJsonUtils.Deserialize<UpdateInfoList>(content);
 
-                    if (ModBuildInfo.isPrereleaseBuild || ExclusiveContentManager.Instance.IsLocalUserTheTester())
+                    if (ModBuildInfo.isPrereleaseBuild || ExclusivePerkManager.Instance.IsLocalUserTheTester())
                     {
                         if (updateInfoList.InternalRelease != null && updateInfoList.InternalRelease.ModVersion != null)
                             ModSettingsManager.SetStringValue(ModSettingsConstants.SAVED_TESTING_VERSION, updateInfoList.InternalRelease.ModVersion.ToString());
@@ -163,7 +163,7 @@ namespace OverhaulMod.Content
 
         public List<Dropdown.OptionData> GetAvailableBranches()
         {
-            return ExclusiveContentManager.Instance.IsLocalUserTheTester() ? BranchesForTestersDropdownOptions : BranchesDropdownOptions;
+            return ExclusivePerkManager.Instance.IsLocalUserTheTester() ? BranchesForTestersDropdownOptions : BranchesDropdownOptions;
         }
 
         private void prepareCurrentBuildForAnUpdate()

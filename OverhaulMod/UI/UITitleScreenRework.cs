@@ -407,7 +407,7 @@ namespace OverhaulMod.UI
 
         public void OnExcContentMenuButtonClicked()
         {
-            _ = ModUIConstants.ShowExclusiveContentMenu();
+            _ = ModUIConstants.ShowExclusivePerksMenu();
         }
 
         public void OnContentButtonClicked()

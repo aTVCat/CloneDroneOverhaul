@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 4286672849
+CRC: 3863896699
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 227d23320c3b8bcc970051633f8d3c71
+    Hash: 4f89cd1867337b91b494ad5cf347830d
   TypeTreeHash:
     serializedVersion: 2
     Hash: acf1344b0dbbc80b9165ec9e7dce57f8
@@ -105,7 +105,7 @@ Assets:
 - Assets/UI/UI_GameLossWindow.prefab
 - Assets/UI/UI_ImageExplorer.prefab
 - Assets/UI/UI_EndlessGameLossWindow.prefab
-- Assets/UI/UI_ExclusiveContentEditor.prefab
+- Assets/UI/UI_ExclusivePerksEditor.prefab
 - Assets/UI/UI_PersonalizationEditorMagicaVoxelTip.prefab
 - Assets/Font/Edit-Undo-BRK.ttf
 - Assets/UI/UI_MessagePopupFullScreen.prefab
@@ -168,6 +168,7 @@ Assets:
 - Assets/UI/UI_CinematicEffects.prefab
 - Assets/UI/UI_EndlessModeLeaderboard.prefab
 - Assets/UI/UI_AdvancementsMenuRework.prefab
+- Assets/Sprites/Glyphs/Cursor2.png
 - Assets/UI/UI_PersonalizationEditorAuthorsEditMenu.prefab
 - Assets/UI/UI_FeaturesMenu.prefab
 - Assets/UI/UI_DebugMenu.prefab
@@ -181,7 +182,7 @@ Assets:
 - Assets/UI/UI_AddonsEditor.prefab
 - Assets/UI/UI_ChapterSelectionMenu.prefab
 - Assets/UI/UI_MessagePopup.prefab
-- Assets/UI/UI_ExclusiveContentMenu.prefab
+- Assets/UI/UI_ExclusivePerksMenu.prefab
 - Assets/UI/UI_AdvancementProgress.prefab
 - Assets/Sprites/Glyphs/SysDrive-Mini-16x16.png
 - Assets/UI/UI_OverhaulModInfoWindow.prefab

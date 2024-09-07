@@ -30,7 +30,7 @@ namespace OverhaulMod.Utils
             {
                 DelegateScheduler.Instance.Schedule(delegate
                 {
-                    bool isTester = ModBuildInfo.isPrereleaseBuild || ExclusiveContentManager.Instance.IsLocalUserTheTester();
+                    bool isTester = ModBuildInfo.isPrereleaseBuild || ExclusivePerkManager.Instance.IsLocalUserTheTester();
                     string savedVersion = isTester ? UpdateManager.SavedTestingVersion : UpdateManager.SavedReleaseVersion;
                     if (savedVersion.IsNullOrEmpty())
                         return;

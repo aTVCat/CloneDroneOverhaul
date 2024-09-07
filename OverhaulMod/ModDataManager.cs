@@ -12,7 +12,7 @@ namespace OverhaulMod
         {
             get
             {
-                return ModCore.modDataFolder;
+                return ModCore.modUserDataFolder;
             }
         }
 

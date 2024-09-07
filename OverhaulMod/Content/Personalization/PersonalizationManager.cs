@@ -217,13 +217,12 @@ namespace OverhaulMod.Content.Personalization
                 try
                 {
                     personalizationAssetsInfo = ModJsonUtils.DeserializeStream<PersonalizationAssetsInfo>(path);
-                    personalizationAssetsInfo.FixValues();
                 }
                 catch
                 {
                     personalizationAssetsInfo = new PersonalizationAssetsInfo();
-                    personalizationAssetsInfo.FixValues();
                 }
+                personalizationAssetsInfo.FixValues();
                 localAssetsInfo = personalizationAssetsInfo;
             }
         }
@@ -239,13 +238,12 @@ namespace OverhaulMod.Content.Personalization
                 try
                 {
                     personalizationAssetsInfo = ModJsonUtils.DeserializeStream<PersonalizationAssetsInfo>(path);
-                    personalizationAssetsInfo.FixValues();
                 }
                 catch
                 {
                     personalizationAssetsInfo = new PersonalizationAssetsInfo();
-                    personalizationAssetsInfo.FixValues();
                 }
+                personalizationAssetsInfo.FixValues();
 
                 remoteAssetsInfo = personalizationAssetsInfo;
             }

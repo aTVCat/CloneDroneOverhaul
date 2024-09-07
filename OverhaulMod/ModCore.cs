@@ -72,7 +72,7 @@ namespace OverhaulMod
             {
                 if (s_savesFolder == null)
                 {
-                    s_savesFolder = $"{Path.Combine(modDataFolder, "saves")}/";
+                    s_savesFolder = $"{Path.Combine(modUserDataFolder, "saves")}/";
                 }
                 return s_savesFolder;
             }
@@ -91,19 +91,6 @@ namespace OverhaulMod
             }
         }
 
-        private static string s_examplesFolder;
-        public static string examplesFolder
-        {
-            get
-            {
-                if (s_examplesFolder == null)
-                {
-                    s_examplesFolder = $"{Path.Combine(folder, "examples")}/";
-                }
-                return s_examplesFolder;
-            }
-        }
-
         private static string s_dataFolder;
         public static string dataFolder
         {
@@ -117,16 +104,16 @@ namespace OverhaulMod
             }
         }
 
-        private static string s_modFolder;
-        public static string modDataFolder
+        private static string s_modUserDataFolder;
+        public static string modUserDataFolder
         {
             get
             {
-                if (s_modFolder == null)
+                if (s_modUserDataFolder == null)
                 {
-                    s_modFolder = $"{Path.Combine(Application.persistentDataPath, "OverhaulMod")}/";
+                    s_modUserDataFolder = $"{Path.Combine(Application.persistentDataPath, "OverhaulMod")}/";
                 }
-                return s_modFolder;
+                return s_modUserDataFolder;
             }
         }
 
@@ -137,7 +124,7 @@ namespace OverhaulMod
             {
                 if (s_contentFolder == null)
                 {
-                    s_contentFolder = $"{Path.Combine(modDataFolder, "content")}/";
+                    s_contentFolder = $"{Path.Combine(modUserDataFolder, "content")}/";
                 }
                 return s_contentFolder;
             }

@@ -111,7 +111,7 @@ namespace OverhaulMod.Content.Personalization
         {
             get
             {
-                return ExclusiveContentManager.Instance.IsLocalUserAbleToVerifyItems();
+                return ExclusivePerkManager.Instance.IsLocalUserAbleToVerifyItems();
             }
         }
 
@@ -119,7 +119,7 @@ namespace OverhaulMod.Content.Personalization
         {
             get
             {
-                return ExclusiveContentManager.Instance.IsLocalUserAbleToVerifyItems();
+                return ExclusivePerkManager.Instance.IsLocalUserAbleToVerifyItems();
             }
         }
 

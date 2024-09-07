@@ -13,7 +13,7 @@ namespace OverhaulMod.Content
         public string DownloadLink;
 
         public List<string> AllowedUsers;
-        public ExclusiveContentType RequireExclusivePerk;
+        public ExclusivePerkType RequireExclusivePerk;
 
         public void FixValues()
         {
@@ -31,9 +31,9 @@ namespace OverhaulMod.Content
 
         public bool CanBeInstalledByLocalUser()
         {
-            if(RequireExclusivePerk != ExclusiveContentType.None)
+            if(RequireExclusivePerk != ExclusivePerkType.None)
             {
-                if(ExclusiveContentManager.Instance.HasUnlockedPerk(RequireExclusivePerk))
+                if(ExclusivePerkManager.Instance.HasUnlockedPerk(RequireExclusivePerk))
                     return true;
             }
             return AllowedUsers == null || AllowedUsers.Contains(ModUserInfo.localPlayerPlayFabID) || AllowedUsers.Contains(ModUserInfo.localPlayerSteamID.ToString());

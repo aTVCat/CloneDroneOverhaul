@@ -23,8 +23,8 @@ namespace OverhaulMod.Utils
         public const string UI_CHAPTER_SELECT_MENU = "UI_ChapterSelectionMenu";
         public const string UI_CHAPTER_LEVEL_SELECT_MENU = "UI_ChapterLevelSelectionMenu";
         public const string UI_LOADING_SCREEN = "UI_LoadingScreen";
-        public const string UI_EXCLUSIVE_CONTENT_MENU = "UI_ExclusiveContentMenu";
-        public const string UI_EXCLUSIVE_CONTENT_EDITOR = "UI_ExclusiveContentEditor";
+        public const string UI_EXCLUSIVE_PERKS_MENU = "UI_ExclusivePerksMenu";
+        public const string UI_EXCLUSIVE_PERKS_EDITOR = "UI_ExclusivePerksEditor";
         public const string UI_CONNECT_SCREEN = "UI_ConnectScreen";
         public const string UI_NEWS_PANEL = "UI_NewsPanel";
         public const string UI_CONTENT_DOWNLOAD_WINDOW = "UI_ContentDownloadWindow";
@@ -204,14 +204,14 @@ namespace OverhaulMod.Utils
             _ = ModUIManager.Instance.Hide(AssetBundleConstants.UI, UI_LOADING_SCREEN);
         }
 
-        public static UIExclusiveContentMenu ShowExclusiveContentMenu()
+        public static UIExclusivePerkMenu ShowExclusivePerksMenu()
         {
-            return ModUIManager.Instance.Show<UIExclusiveContentMenu>(AssetBundleConstants.UI, UI_EXCLUSIVE_CONTENT_MENU, ModUIManager.UILayer.AfterTitleScreen);
+            return ModUIManager.Instance.Show<UIExclusivePerkMenu>(AssetBundleConstants.UI, UI_EXCLUSIVE_PERKS_MENU, ModUIManager.UILayer.AfterTitleScreen);
         }
 
-        public static void ShowExclusiveContentEditor(Transform parent)
+        public static void ShowExclusivePerksEditor(Transform parent)
         {
-            _ = ModUIManager.Instance.Show<UIExclusiveContentEditor>(AssetBundleConstants.UI, UI_EXCLUSIVE_CONTENT_EDITOR, parent);
+            _ = ModUIManager.Instance.Show<UIExclusivePerkEditor>(AssetBundleConstants.UI, UI_EXCLUSIVE_PERKS_EDITOR, parent);
         }
 
         public static UIMultiplayerConnectScreen ShowMultiplayerConnectScreen()

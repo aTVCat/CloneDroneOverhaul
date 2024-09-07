@@ -15,7 +15,7 @@ namespace OverhaulMod.Engine
             {
                 if (m_settingsFilePathOld == null)
                 {
-                    m_settingsFilePathOld = Path.Combine(ModCore.modDataFolder, SETTINGS_FILE_NAME_OLD);
+                    m_settingsFilePathOld = Path.Combine(ModCore.modUserDataFolder, SETTINGS_FILE_NAME_OLD);
                 }
                 return m_settingsFilePathOld;
             }
@@ -28,7 +28,7 @@ namespace OverhaulMod.Engine
             {
                 if (m_settingsFilePath == null)
                 {
-                    m_settingsFilePath = Path.Combine(ModCore.modDataFolder, SETTINGS_FILE_NAME);
+                    m_settingsFilePath = Path.Combine(ModCore.modUserDataFolder, SETTINGS_FILE_NAME);
                 }
                 return m_settingsFilePath;
             }

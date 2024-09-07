@@ -213,7 +213,7 @@ namespace OverhaulMod.UI
                 }
                 else
                 {
-                    keyValue.Value.SetActive(keyValue.Key.ToLower().Contains(lowerText));
+                    keyValue.Value.SetActive(keyValue.Key.Contains(lowerText));
                 }
             }
         }

@@ -32,13 +32,12 @@ namespace OverhaulMod.Engine
             try
             {
                 info = ModJsonUtils.DeserializeStream<ModLocalizationInfo>(Path.Combine(ModCore.dataFolder, FILE_NAME));
-                info.FixValues();
             }
             catch
             {
                 info = new ModLocalizationInfo();
-                info.FixValues();
             }
+            info.FixValues();
 
             m_localizationInfo = info;
             string currentLangId;

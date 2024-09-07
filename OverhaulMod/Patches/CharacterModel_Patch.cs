@@ -15,7 +15,7 @@ namespace OverhaulMod.Patches
             if (!firstPersonMover)
                 return;
 
-            ExclusiveContentManager.Instance.GetOverrideRobotColor(firstPersonMover, newColor, out Color toReplace);
+            ExclusivePerkManager.Instance.GetOverrideRobotColor(firstPersonMover, newColor, out Color toReplace);
             newColor = toReplace;
         }
     }
