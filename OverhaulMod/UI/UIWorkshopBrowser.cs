@@ -28,6 +28,10 @@ namespace OverhaulMod.UI
         [UIElement("OldUIButton")]
         private readonly Button m_legacyUIButton;
 
+        [UIElementAction(nameof(OnHistoryButtonClicked))]
+        [UIElement("HistoryButton")]
+        private readonly Button m_historyButton;
+
         [TabManager(typeof(UIElementTab), null, null, null, nameof(OnSourceTabSelected))]
         private readonly TabManager m_sourceTabs;
 
@@ -818,6 +822,11 @@ namespace OverhaulMod.UI
                 Hide();
                 titleScreenUI.OnWorkshopBrowserButtonClicked();
             }
+        }
+
+        public void OnHistoryButtonClicked()
+        {
+            ModUIConstants.ShowWorkshopBrowserHistoryPanel(base.transform);
         }
     }
 }

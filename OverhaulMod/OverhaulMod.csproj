@@ -626,6 +626,8 @@
     <Compile Include="UI\UIAutoBuildSelectionMenu.cs" />
     <Compile Include="UI\UIIntro.cs" />
     <Compile Include="UI\UIFeaturesMenu.cs" />
+    <Compile Include="UI\UIWorkshopBrowserHistoryPanel.cs" />
+    <Compile Include="UI\UIWorkshopItemPagePlayOptions.cs" />
     <Compile Include="UI\UISettingsImportExportMenu.cs" />
     <Compile Include="UI\UIPersonalizationEditorMagicaVoxelTip.cs" />
     <Compile Include="UI\UIUpdatesWindowRework.cs" />

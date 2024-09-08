@@ -92,6 +92,8 @@ namespace OverhaulMod.Utils
         public const string UI_INTRO = "UI_Intro";
         public const string UI_SETTINGS_IMPORT_EXPORT_MENU = "UI_SettingsImportExportMenu";
         public const string UI_FEATURES_MENU = "UI_FeaturesMenu";
+        public const string UI_WORKSHOP_ITEM_PAGE_PLAY_OPTIONS = "UI_WorkshopItemPagePlayOptions";
+        public const string UI_WORKSHOP_BROWSER_HISTORY_PANEL = "UI_WorkshopBrowserHistoryPanel";
 
         public static UIVersionLabel ShowVersionLabel()
         {
@@ -572,6 +574,16 @@ namespace OverhaulMod.Utils
         public static UIFeaturesMenu ShowFeaturesMenu(Transform transform)
         {
             return ModUIManager.Instance.Show<UIFeaturesMenu>(AssetBundleConstants.UI, UI_FEATURES_MENU, transform);
+        }
+
+        public static UIWorkshopItemPagePlayOptions ShowWorkshopItemPagePlayOptions(Transform transform)
+        {
+            return ModUIManager.Instance.Show<UIWorkshopItemPagePlayOptions>(AssetBundleConstants.UI, UI_WORKSHOP_ITEM_PAGE_PLAY_OPTIONS, transform);
+        }
+
+        public static UIWorkshopBrowserHistoryPanel ShowWorkshopBrowserHistoryPanel(Transform transform)
+        {
+            return ModUIManager.Instance.Show<UIWorkshopBrowserHistoryPanel>(AssetBundleConstants.UI, UI_WORKSHOP_BROWSER_HISTORY_PANEL, transform);
         }
     }
 }

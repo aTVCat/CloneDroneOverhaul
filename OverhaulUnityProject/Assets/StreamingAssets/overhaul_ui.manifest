@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 1056938977
+CRC: 508944288
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 0903a341928a69379c76c04ede3981e8
+    Hash: a5e694359a1f4b444e96edb07d04eec7
   TypeTreeHash:
     serializedVersion: 2
     Hash: acf1344b0dbbc80b9165ec9e7dce57f8
@@ -124,6 +124,7 @@ Assets:
 - Assets/UI/UI_LoadingScreen.prefab
 - Assets/UI/UI_Transition.prefab
 - Assets/Font/DSEG7-Classic-Bold.ttf
+- Assets/UI/UI_WorkshopBrowserHistoryPanel.prefab
 - Assets/UI/UI_PersonalizationEditorItemCreationDialog.prefab
 - Assets/UI/UI_PersonalizationEditor.prefab
 - Assets/UI/UI_EndlessModeMenu.prefab
@@ -145,7 +146,7 @@ Assets:
 - Assets/Sprites/Glow-2-256x256.png
 - Assets/UI/UI_RestartRequiredScreen.prefab
 - Assets/UI/UI_OverhaulUIsManagementPanel.prefab
-- Assets/UI/UI_WorkshopBrowserAdvancedPlayOptions.prefab
+- Assets/UI/UI_WorkshopItemPagePlayOptions.prefab
 - Assets/UI/UI_SetKeyBindWindow.prefab
 - Assets/UI/UI_AutoBuildSelectionMenu.prefab
 - Assets/UI/UI_FileExplorer.prefab

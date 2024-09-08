@@ -16,6 +16,10 @@ namespace OverhaulMod.UI
         [UIElement("CloseButton")]
         private readonly Button m_exitButton;
 
+        [UIElementAction(nameof(OnRefreshButtonClicked))]
+        [UIElement("RefreshPageButton")]
+        private readonly Button m_refreshButton;
+
         [UIElementAction(nameof(OnAuthorProfileButtonClicked))]
         [UIElement("AuthorProfileButton")]
         private readonly Button m_authorProfileButton;
@@ -72,9 +76,9 @@ namespace OverhaulMod.UI
         [UIElement("PlayButton")]
         private readonly Button m_playButton;
 
-        [UIElementAction(nameof(OnPlayButtonClicked))]
+        [UIElementAction(nameof(OnPlayOptionsClicked))]
         [UIElement("AdvancedPlayOptionsButton")]
-        private readonly Button m_advancedPlayOptionsButton;
+        private readonly Button m_playOptionsButton;
 
         [ShowTooltipOnHighLight("erase progress", 1.5f, true)]
         [UIElementAction(nameof(OnEraseProgressButtonClicked))]
@@ -144,6 +148,15 @@ namespace OverhaulMod.UI
 
         [UIElement("Name")]
         private readonly RectTransform m_nameHolder;
+
+        [UIElement("PlaceholderVoteButtons")]
+        private readonly GameObject m_placeholderVoteButtons;
+
+        [UIElement("DetailsPanel")]
+        private readonly LayoutElement m_detailsPanel;
+
+        [UIElement("AdditionalPreviewsScrollRect")]
+        private readonly GameObject m_additionalPreviewsScrollRectObject;
 
         /*
         [UIElement("Panel", typeof(UIElementMouseEventsComponent))]
@@ -408,8 +421,8 @@ namespace OverhaulMod.UI
                 tagsText = stringBuilder.ToString();
             }
 
-            string postTimeText = $"{workshopItem.PostDate.ToShortDateString()}, {workshopItem.PostDate.ToShortTimeString()}";
-            string updateTimeText = $"{workshopItem.UpdateDate.ToShortDateString()}, {workshopItem.UpdateDate.ToShortTimeString()}";
+            string postTimeText = $"{workshopItem.PostDate.AddHours(-12).ToShortDateString()}, {workshopItem.PostDate.AddHours(-12).ToShortTimeString()}";
+            string updateTimeText = $"{workshopItem.UpdateDate.AddHours(-12).ToShortDateString()}, {workshopItem.UpdateDate.AddHours(-12).ToShortTimeString()}";
             string sizeText = $"{Mathf.Round(workshopItem.Size * 100f) / 100f} MBs";
 
             float rating = Mathf.Ceil(workshopItem.Rating * 5f);
@@ -431,9 +444,14 @@ namespace OverhaulMod.UI
             if (m_additionalPreviewDisplayContainer.childCount != 0)
                 TransformUtils.DestroyAllChildren(m_additionalPreviewDisplayContainer);
 
+            m_additionalPreviewsScrollRectObject.SetActive(false);
+            m_detailsPanel.preferredHeight = 175f;
+
             if (workshopItem.AdditionalPreviews.IsNullOrEmpty())
                 return;
 
+            m_additionalPreviewsScrollRectObject.SetActive(true);
+            m_detailsPanel.preferredHeight = 250f;
             foreach (WorkshopItemPreview preview in workshopItem.AdditionalPreviews.OrderBy(f => f.PreviewType != EItemPreviewType.k_EItemPreviewType_YouTubeVideo))
             {
                 if (preview.URL.IsNullOrEmpty())
@@ -465,7 +483,7 @@ namespace OverhaulMod.UI
             m_subscribeButton.gameObject.SetActive(!subscribed && !downloading);
             m_unsubscribeButton.gameObject.SetActive(subscribed);
             m_playButton.gameObject.SetActive(allowPlayingFromThere && installed && subscribed && !downloading);
-            m_advancedPlayOptionsButton.gameObject.SetActive(allowPlayingFromThere && installed && subscribed && !downloading);
+            m_playOptionsButton.gameObject.SetActive(allowPlayingFromThere && installed && subscribed && !downloading);
             m_updateButton.gameObject.SetActive(installed && subscribed && !downloading && needsUpdate);
 
             m_loadingIndicatorObject.SetActive(downloading || needsUpdate);
@@ -479,6 +497,7 @@ namespace OverhaulMod.UI
             if (item == null || item.IsDisposed())
                 return;
 
+            m_placeholderVoteButtons.SetActive(true);
             m_voteUpButton.gameObject.SetActive(false);
             m_voteDownButton.gameObject.SetActive(false);
             SetFavoriteButtonInteractable(true);
@@ -491,6 +510,7 @@ namespace OverhaulMod.UI
 
                 m_voteUpButton.gameObject.SetActive(true);
                 m_voteDownButton.gameObject.SetActive(true);
+                m_placeholderVoteButtons.SetActive(false);
 
                 if (!workshopItemVote.HasVoted)
                 {
@@ -696,6 +716,11 @@ namespace OverhaulMod.UI
             }
         }
 
+        public void OnPlayOptionsClicked()
+        {
+            ModUIConstants.ShowWorkshopItemPagePlayOptions(base.transform);
+        }
+
         public void OnEraseProgressButtonClicked()
         {
             WorkshopItem item = m_workshopItem;
@@ -788,6 +813,17 @@ namespace OverhaulMod.UI
             bui.browseChildrenOfCollection = default;
             bui.Populate();
             Hide();
+        }
+
+        public void OnRefreshButtonClicked()
+        {
+            m_refreshButton.interactable = false;
+            Populate(m_workshopItem);
+            DelegateScheduler.Instance.Schedule(delegate
+            {
+                if (m_refreshButton)
+                    m_refreshButton.interactable = true;
+            }, 1f);
         }
     }
 }
