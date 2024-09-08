@@ -205,6 +205,9 @@ namespace OverhaulMod
                 case FeatureType.MoreSettingsMod_ColorBlindnessOptions:
                     result = false;
                     break;
+                case FeatureType.ReflectionProbe:
+                    result = false;
+                    break;
                 default:
                     return false;
             }
@@ -290,7 +293,9 @@ namespace OverhaulMod
 
             ColorBlindnessOptions,
 
-            MoreSettingsMod_ColorBlindnessOptions
+            MoreSettingsMod_ColorBlindnessOptions,
+
+            ReflectionProbe
         }
     }
 }

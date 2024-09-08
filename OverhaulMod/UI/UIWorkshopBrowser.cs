@@ -189,13 +189,16 @@ namespace OverhaulMod.UI
         [UIElement("ContentCategoryContainer")]
         public GameObject m_tagsContainerObject;
 
+        [UIElement("ViewFavoritesToggle", false)]
+        public Toggle m_viewFavoritesToggle;
+
         private List<UIElementWorkshopItemDisplay> m_selectedItemDisplays;
 
         private Transform m_container;
 
         public override bool hideTitleScreen => true;
 
-        private bool m_initializedTabs, m_getWorkshopItemsNextFrame, m_isLoading;
+        private bool m_steamInitialized, m_initializedTabs, m_getWorkshopItemsNextFrame, m_isLoading;
 
         private float m_timeLeftToPopulate;
 
@@ -261,6 +264,12 @@ namespace OverhaulMod.UI
 
             m_controlsButton.gameObject.SetActive(ModFeatures.IsEnabled(ModFeatures.FeatureType.WorkshopBrowserContextMenu));
             browseChildrenOfCollection = default;
+
+            m_viewFavoritesToggle.isOn = false;
+            m_viewFavoritesToggle.onValueChanged.AddListener(delegate (bool b)
+            {
+                Populate();
+            });
         }
 
         public override void Show()
@@ -269,9 +278,10 @@ namespace OverhaulMod.UI
 
             if (!SteamManager.Instance || !SteamManager.Instance.Initialized)
             {
-                ModUIUtils.MessagePopupOK("Steam not initialized", "To browse Steam workshop you must have Steam connection established.", true);
+                ModUIUtils.MessagePopupOK("Steam not initialized", "To browse Steam workshop you must have Steam connection established.", "Ok", Hide, 125f, true);
                 return;
             }
+            m_steamInitialized = true;
 
             if (!m_initializedTabs)
             {
@@ -397,6 +407,7 @@ namespace OverhaulMod.UI
 
                 m_tabsCanvasGroup.alpha = 0.25f;
                 m_tabsCanvasGroup.interactable = false;
+                m_viewFavoritesToggle.isOn = false;
 
                 setBrowseItemType(false);
             }
@@ -408,6 +419,7 @@ namespace OverhaulMod.UI
 
                 m_tabsCanvasGroup.alpha = 0.25f;
                 m_tabsCanvasGroup.interactable = false;
+                m_viewFavoritesToggle.isOn = false;
 
                 setBrowseItemType(false);
             }
@@ -424,6 +436,9 @@ namespace OverhaulMod.UI
 
         public void Populate()
         {
+            if (!m_steamInitialized)
+                return;
+
             m_timeLeftToPopulate = -1f;
             m_getWorkshopItemsNextFrame = !m_isLoading;
         }
@@ -477,7 +492,7 @@ namespace OverhaulMod.UI
                     }
                     else
                     {
-                        success = sourceType == 0 ? ModSteamUGCUtils.GetAllWorkshopItems(searchQuery, page, requestParameters, onGotItems, onError, null) : ModSteamUGCUtils.GetWorkshopUserItemList(searchLevelsByUser, page, searchUserList, EUserUGCListSortOrder.k_EUserUGCListSortOrder_SubscriptionDateDesc, requestParameters, onGotItems, onError, null);
+                        success = sourceType == 0 ? ModSteamUGCUtils.GetAllWorkshopItems(searchQuery, page, requestParameters, onGotItems, onError, null) : ModSteamUGCUtils.GetWorkshopUserItemList(searchLevelsByUser, page, searchLevelsByUser == SteamUser.GetSteamID() ? (m_viewFavoritesToggle.isOn ? EUserUGCList.k_EUserUGCList_Favorited : searchUserList) : searchUserList, EUserUGCListSortOrder.k_EUserUGCListSortOrder_SubscriptionDateDesc, requestParameters, onGotItems, onError, null);
                     }
                 }
 
@@ -568,6 +583,9 @@ namespace OverhaulMod.UI
                 m_browseCollectionsSelectedIndicatorObject.SetActive(false);
                 m_browseLevelsSelectedIndicatorObject.SetActive(false);
             }
+
+            m_viewFavoritesToggle.gameObject.SetActive(sourceType == 1 && searchLevelsByUser == SteamUser.GetSteamID());
+            m_viewFavoritesToggle.interactable = !value;
 
             m_backButton.interactable = !value;
             m_reloadButton.interactable = !value;

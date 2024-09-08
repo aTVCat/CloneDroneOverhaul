@@ -14,7 +14,7 @@ namespace OverhaulMod.Patches
             if (!ParticleManager.EnableParticles || __instance._hasExploded)
                 return;
 
-            ParticleManager.Instance.SpawnLogoExplosionParticles(__instance.transform.position);
+            ParticleManager.Instance.SpawnLogoExplosionParticles(__instance.transform.position, Vector3.one * 0.7f);
         }
     }
 }

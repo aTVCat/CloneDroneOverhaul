@@ -63,6 +63,8 @@ namespace OverhaulMod.Visuals
 
         private float m_timeLeftToRefreshReflectionProbe;
 
+        private bool m_reflectionProbeEnabled;
+
         private ReflectionProbe m_reflectionProbe;
 
         private Transform m_reflectionProbeTransform;
@@ -97,14 +99,18 @@ namespace OverhaulMod.Visuals
         {
             m_cameraManager = CameraManager.Instance;
 
-            if (!ModFeatures.IsEnabled(ModFeatures.FeatureType.MoreImageEffects))
+            if (!ModFeatures.IsEnabled(ModFeatures.FeatureType.ReflectionProbe) || !ModFeatures.IsEnabled(ModFeatures.FeatureType.MoreImageEffects))
                 return;
 
             createReflectionProbe();
+            m_reflectionProbeEnabled = true;
         }
 
         private void Update()
         {
+            if (!m_reflectionProbeEnabled)
+                return;
+
             m_timeLeftToRefreshReflectionProbe -= Time.unscaledDeltaTime;
             if (m_timeLeftToRefreshReflectionProbe > 0f)
                 return;

@@ -14,6 +14,9 @@ namespace OverhaulMod.Patches
             if (SeveredBodyPartSparks.EnableGarbageParticles && Random.value <= 0.7f)
                 _ = __result.gameObject.AddComponent<SeveredBodyPartSparks>();
 
+            if (!GameModeManager.TimeScaleChangesAllowed())
+                return;
+
             Rigidbody rigidBody = __result.gameObject.GetComponent<Rigidbody>();
             if (rigidBody)
             {

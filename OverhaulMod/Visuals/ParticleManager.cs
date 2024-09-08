@@ -41,7 +41,7 @@ namespace OverhaulMod.Visuals
         {
             var main = particleSystem.main;
             main.scalingMode = ParticleSystemScalingMode.Hierarchy;
-            main.simulationSpeed *= 0.8f;
+            main.simulationSpeed *= 0.75f;
         }
 
         public GameObject GetCloneDroneLogoExplosionParticles()
@@ -91,6 +91,11 @@ namespace OverhaulMod.Visuals
         public void SpawnLogoExplosionParticles(Vector3 position)
         {
             PooledPrefabManager.Instance.SpawnObject(LOGO_EXPLOSION_PARTICLES_ID, position, Vector3.zero, Vector3.one * 0.55f);
+        }
+
+        public void SpawnLogoExplosionParticles(Vector3 position, Vector3 scale)
+        {
+            PooledPrefabManager.Instance.SpawnObject(LOGO_EXPLOSION_PARTICLES_ID, position, Vector3.zero, scale);
         }
     }
 }

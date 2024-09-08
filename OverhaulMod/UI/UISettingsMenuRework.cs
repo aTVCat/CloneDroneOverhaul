@@ -114,8 +114,6 @@ namespace OverhaulMod.UI
             SettingsMenu settingsMenu = ModCache.settingsMenu;
             if (settingsMenu)
                 settingsMenu.populateSettings();
-
-            m_descriptionBox.Hide();
         }
 
         public override void Show()
@@ -141,6 +139,8 @@ namespace OverhaulMod.UI
 
             if (!m_selectedTabId.IsNullOrEmpty())
                 PopulatePage(m_selectedTabId);
+
+            m_descriptionBox.Hide();
         }
 
         public override void Hide()
@@ -329,6 +329,7 @@ namespace OverhaulMod.UI
             {
                 populateSSAOSettingsPage(m_selectedTabId);
             });
+            pageBuilder.AddDescriptionBoxToRecentElement(ModSettingsConstants.ENABLE_SSAO);
 
             bool moreEffectsEnabled = ModFeatures.IsEnabled(ModFeatures.FeatureType.MoreImageEffects);
             if (moreEffectsEnabled)
@@ -340,16 +341,19 @@ namespace OverhaulMod.UI
                 {
                     populateCASettingsPage(m_selectedTabId);
                 });
+                pageBuilder.AddDescriptionBoxToRecentElement(ModSettingsConstants.ENABLE_CHROMATIC_ABERRATION);
             }
 
             _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_DITHERING), delegate (bool value)
             {
                 ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_DITHERING, value, true);
             }, "Dithering");
-            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_VIGNETTE), delegate (bool value)
+            pageBuilder.AddDescriptionBoxToRecentElement(ModSettingsConstants.ENABLE_DITHERING);
+            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_DITHERING), delegate (bool value)
             {
                 ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_VIGNETTE, value, true);
             }, "Vignette");
+            pageBuilder.AddDescriptionBoxToRecentElement(ModSettingsConstants.ENABLE_VIGNETTE);
             _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.TWEAK_BLOOM), delegate (bool value)
             {
                 ModSettingsManager.SetBoolValue(ModSettingsConstants.TWEAK_BLOOM, value, true);
@@ -653,11 +657,16 @@ namespace OverhaulMod.UI
                     ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_GLOBAL_ILLUMINATION, value, true);
                 }, "Global Illumination");
                 pageBuilder.AddDescriptionBoxToRecentElement(ModSettingsConstants.ENABLE_GLOBAL_ILLUMINATION);
-                _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_REFLECTION_PROBE), delegate (bool value)
+
+                if (ModFeatures.IsEnabled(ModFeatures.FeatureType.ReflectionProbe))
                 {
-                    ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_REFLECTION_PROBE, value, true);
-                }, "Reflection Probe");
-                pageBuilder.AddDescriptionBoxToRecentElement(ModSettingsConstants.ENABLE_REFLECTION_PROBE);
+                    _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_REFLECTION_PROBE), delegate (bool value)
+                    {
+                        ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_REFLECTION_PROBE, value, true);
+                    }, "Reflection Probe");
+                    pageBuilder.AddDescriptionBoxToRecentElement(ModSettingsConstants.ENABLE_REFLECTION_PROBE);
+                }
+
                 _ = pageBuilder.ToggleWithOptions(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_CHROMATIC_ABERRATION), delegate (bool value)
                 {
                     ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_CHROMATIC_ABERRATION, value, true);
