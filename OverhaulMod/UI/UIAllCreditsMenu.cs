@@ -22,8 +22,6 @@ namespace OverhaulMod.UI
         [UIElement("Content")]
         private readonly Transform m_content;
 
-        private int m_spawnedUserDisplaysCount;
-
         protected override void OnInitialized()
         {
             AddSection(LocalizationManager.Instance.GetTranslatedString("credits_header_author"), "FFFFFF");
@@ -41,11 +39,17 @@ namespace OverhaulMod.UI
             AddUser("Pharawill-MK2 (Water)", LocalizationManager.Instance.GetTranslatedString("credits_tooltip_special_thanks_water"), "https://steamcommunity.com/profiles/76561198995153570");
         }
 
-        public void AddUser(string displayName, string description, string steamLink)
+        public void AddUser(string username, string description, string steamLink, bool isLibrary = false)
         {
+            bool descriptionIsEmpty = description.IsNullOrEmpty();
+
             ModdedObject moddedObject = Instantiate(m_userDisplayPrefab, m_content);
-            moddedObject.GetObject<Text>(0).text = displayName;
+            moddedObject.GetObject<Text>(0).text = username;
+            moddedObject.GetObject<GameObject>(0).SetActive(!descriptionIsEmpty);
+            moddedObject.GetObject<Text>(4).text = username;
+            moddedObject.GetObject<GameObject>(4).SetActive(descriptionIsEmpty);
             moddedObject.GetObject<Text>(1).text = description;
+            moddedObject.GetObject<GameObject>(1).SetActive(!descriptionIsEmpty);
             moddedObject.GetObject<GameObject>(2).gameObject.SetActive(!steamLink.IsNullOrEmpty());
             moddedObject.GetObject<Button>(2).onClick.AddListener(delegate
             {
@@ -55,16 +59,19 @@ namespace OverhaulMod.UI
                     Application.OpenURL(steamLink);
             });
             moddedObject.GetObject<GameObject>(2).SetActive(false);
-            moddedObject.GetObject<GameObject>(3).SetActive(true/*m_spawnedUserDisplaysCount % 2 == 0*/);
             moddedObject.gameObject.SetActive(true);
-            m_spawnedUserDisplaysCount++;
         }
 
         public void AddSection(string name, string hexColor)
         {
+            Color color1 = ModParseUtils.TryParseToColor(hexColor, Color.white);
+            Color color2 = color1;
+            color2.a = 0.25f;
+
             ModdedObject moddedObject = Instantiate(m_sectionPrefab, m_content);
             moddedObject.GetObject<Text>(0).text = name;
-            moddedObject.GetObject<Text>(0).color = ModParseUtils.TryParseToColor(hexColor, Color.white);
+            moddedObject.GetObject<Text>(0).color = color1;
+            moddedObject.GetObject<Image>(1).color = color2;
             moddedObject.gameObject.SetActive(true);
         }
     }
