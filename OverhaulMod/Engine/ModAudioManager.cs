@@ -46,6 +46,7 @@ namespace OverhaulMod.Engine
         {
             m_focused = !MuteSoundWhenUnfocused || Application.isFocused;
             m_volumeMultiplier = m_focused ? 1f : 0f;
+            RefreshVolume();
         }
 
         private void Update()

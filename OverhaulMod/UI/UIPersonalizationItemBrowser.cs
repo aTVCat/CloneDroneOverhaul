@@ -573,7 +573,11 @@ namespace OverhaulMod.UI
                         personalizationItemDisplay.SetBrowserUI(this);
                         personalizationItemDisplay.InitializeElement();
 
-                        m_cachedDisplays.Add(item.Name.ToLower(), moddedObject.gameObject);
+                        string text = item.Name.ToLower();
+                        while (m_cachedDisplays.ContainsKey(text))
+                            text += "_1";
+
+                        m_cachedDisplays.Add(text, moddedObject.gameObject);
                     }
 
                     ModdedObject bottomPanel = Instantiate(m_bottomPanel, m_container);
