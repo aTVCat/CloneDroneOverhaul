@@ -302,6 +302,18 @@
       <HintPath>C:/Program Files (x86)/Microsoft Visual Studio Tools for Unity/16.0/Editor/SyntaxTree.VisualStudio.Unity.Bridge.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.Advertisements">
+<<<<<<< HEAD:OverhaulUnityProjectNormal/Whinarn.UnityMeshSimplifier.Editor.csproj
+      <HintPath>U:/OverhaulSource/Update3Support/OverhaulUnityProjectNormal/Library/PackageCache/com.unity.ads@2.0.8/Editor/UnityEditor.Advertisements.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Analytics.StandardEvents">
+      <HintPath>U:/OverhaulSource/Update3Support/OverhaulUnityProjectNormal/Library/PackageCache/com.unity.analytics@3.2.3/AnalyticsStandardEvents/Unity.Analytics.StandardEvents.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Analytics.Editor">
+      <HintPath>U:/OverhaulSource/Update3Support/OverhaulUnityProjectNormal/Library/PackageCache/com.unity.analytics@3.2.3/Editor/Unity.Analytics.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Analytics.Tracker">
+      <HintPath>U:/OverhaulSource/Update3Support/OverhaulUnityProjectNormal/Library/PackageCache/com.unity.analytics@3.2.3/Editor/Unity.Analytics.Tracker.dll</HintPath>
+=======
       <HintPath>U:/OverhaulSource/CloneDroneOverhaul/OverhaulUnityProjectNormal/Library/PackageCache/com.unity.ads@2.0.8/Editor/UnityEditor.Advertisements.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Analytics.StandardEvents">
@@ -312,6 +324,7 @@
     </Reference>
     <Reference Include="Unity.Analytics.Tracker">
       <HintPath>U:/OverhaulSource/CloneDroneOverhaul/OverhaulUnityProjectNormal/Library/PackageCache/com.unity.analytics@3.2.3/Editor/Unity.Analytics.Tracker.dll</HintPath>
+>>>>>>> 0.4.x-development:OverhaulUnityProject/Whinarn.UnityMeshSimplifier.Editor.csproj
     </Reference>
     <Reference Include="mscorlib">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2018.4.36f1/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/mscorlib.dll</HintPath>

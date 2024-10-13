@@ -4,7 +4,6 @@ using OverhaulMod.Utils;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using static System.Runtime.CompilerServices.RuntimeHelpers;
 
 namespace OverhaulMod.UI
 {
@@ -138,7 +137,7 @@ namespace OverhaulMod.UI
             int i = -1;
             UpgradeManager upgradeManager = UpgradeManager.Instance;
             AutoBuildManager autoBuildManager = AutoBuildManager.Instance;
-            var builds = autoBuildManager.buildList.Builds;
+            List<AutoBuildInfo> builds = autoBuildManager.buildList.Builds;
             foreach (AutoBuildInfo build in builds)
             {
                 i++;
@@ -208,7 +207,7 @@ namespace OverhaulMod.UI
                         }
 
                         _ = autoBuildManager.buildList.Builds.Remove(build);
-                        if(autoBuildInfo != null)
+                        if (autoBuildInfo != null)
                         {
                             ModSettingsManager.SetIntValue(ModSettingsConstants.AUTO_BUILD_INDEX_TO_USE_ON_MATCH_START, builds.IndexOf(autoBuildInfo));
                         }

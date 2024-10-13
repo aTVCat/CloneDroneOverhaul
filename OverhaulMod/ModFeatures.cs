@@ -202,6 +202,9 @@ namespace OverhaulMod
                 case FeatureType.ColorBlindnessOptions:
                     result = true;
                     break;
+                case FeatureType.ShowUpgradeUIExitButtonInLBS:
+                    result = false;
+                    break;
                 case FeatureType.MoreSettingsMod_ColorBlindnessOptions:
                     result = false;
                     break;
@@ -282,6 +285,7 @@ namespace OverhaulMod
             RequireNormalAndFireVariantsForSwordAndSpearSkins,
 
             DisplayDisconnectedPlayers,
+            ShowUpgradeUIExitButtonInLBS,
 
             Intro,
 

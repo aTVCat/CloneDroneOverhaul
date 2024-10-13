@@ -1,0 +1,23 @@
+fileFormatVersion: 2
+guid: 477a989ae8371c84eab1a5d3e2de38fa
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Piksieli Prosto
+  fontNames:
+  - Piksieli Prosto
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: f9d35e28ad1910e4193b83beb1f1c41a, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: overhaul_ui
+  assetBundleVariant: 

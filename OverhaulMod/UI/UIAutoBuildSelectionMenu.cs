@@ -111,6 +111,14 @@ namespace OverhaulMod.UI
             }
         }
 
+        private void OnApplicationFocus(bool focused)
+        {
+            if (!focused)
+            {
+                Hide();
+            }
+        }
+
         public void PopulateBuilds()
         {
             if (m_buildDisplayContainer.childCount != 0)

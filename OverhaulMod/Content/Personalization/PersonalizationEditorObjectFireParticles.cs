@@ -109,7 +109,7 @@ namespace OverhaulMod.Content.Personalization
 
         public void RefreshColor()
         {
-            if(!base.enabled || !base.gameObject.activeInHierarchy)
+            if (!base.enabled || !base.gameObject.activeInHierarchy)
                 return;
 
             refreshColor();
@@ -122,7 +122,7 @@ namespace OverhaulMod.Content.Personalization
             Color colorToApply;
             if (applyFavoriteColor)
             {
-                var hsb = new HSBColor(objectBehaviour.ControllerInfo.Reference.owner.GetCharacterModel().GetFavouriteColor())
+                HSBColor hsb = new HSBColor(objectBehaviour.ControllerInfo.Reference.owner.GetCharacterModel().GetFavouriteColor())
                 {
                     s = favoriteColorSaturation,
                     b = favoriteColorBrightness

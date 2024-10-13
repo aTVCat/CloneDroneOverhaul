@@ -141,7 +141,7 @@ namespace OverhaulMod.Content.Personalization
             t.localPosition = Vector3.zero;
             t.localEulerAngles = Vector3.zero;
             t.localScale = Vector3.one;
-            obj.AddComponent<PersonalizationEditorObjectCVMModel>();
+            _ = obj.AddComponent<PersonalizationEditorObjectCVMModel>();
             _ = obj.AddComponent<PersonalizationEditorObjectVisibilityController>();
             return obj;
         }

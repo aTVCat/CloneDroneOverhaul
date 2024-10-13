@@ -157,6 +157,8 @@ namespace OverhaulMod.UI
 
         private ulong m_refreshedWorkshopPanelForItem;
 
+        private float m_refreshPlayerListTime;
+
         public override bool enableCursor
         {
             get
@@ -169,9 +171,19 @@ namespace OverhaulMod.UI
 
         protected override void OnInitialized()
         {
+            m_refreshPlayerListTime = -1f;
+
             m_extrasAddonEmbed.addonId = ContentManager.EXTRAS_CONTENT_FOLDER_NAME;
             m_extrasAddonEmbed.RefreshDisplays();
             m_extrasAddonEmbed.onContentDownloaded.AddListener(refreshPlayers);
+
+            GlobalEventManager.Instance.AddEventListener(GlobalEvents.NumMultiplayerPlayersChanged, refreshPlayersIfActive);
+        }
+
+        public override void OnDestroy()
+        {
+            base.OnDestroy();
+            GlobalEventManager.Instance.RemoveEventListener(GlobalEvents.NumMultiplayerPlayersChanged, refreshPlayersIfActive);
         }
 
         public override void Show()
@@ -192,6 +204,24 @@ namespace OverhaulMod.UI
             base.Hide();
             TimeManager.Instance.OnGameUnPaused();
             _ = AudioManager.Instance.PlayClipGlobal(AudioLibrary.Instance.UISelectionBack, 0f, 1f, 0f);
+        }
+
+        public override void Update()
+        {
+            base.Update();
+            if (m_refreshPlayerListTime != -1f && Time.unscaledTime >= m_refreshPlayerListTime)
+            {
+                m_refreshPlayerListTime = -1f;
+                refreshPlayers();
+            }
+        }
+
+        private void refreshPlayersIfActive()
+        {
+            if (visible)
+            {
+                m_refreshPlayerListTime = Time.unscaledTime + 1f;
+            }
         }
 
         private void refreshLogo()

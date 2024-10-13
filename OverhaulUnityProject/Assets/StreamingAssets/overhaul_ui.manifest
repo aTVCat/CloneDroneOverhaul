@@ -1,9 +1,17 @@
 ManifestFileVersion: 0
+<<<<<<< HEAD
 CRC: 1781724234
 Hashes:
   AssetFileHash:
     serializedVersion: 2
     Hash: d9fcb2b5ff132250f9f34b64c4768f1c
+=======
+CRC: 418026426
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 276383d13e1706b4153a0358726fb263
+>>>>>>> 0.4.2-patch
   TypeTreeHash:
     serializedVersion: 2
     Hash: acf1344b0dbbc80b9165ec9e7dce57f8
@@ -105,9 +113,13 @@ Assets:
 - Assets/UI/UI_GameLossWindow.prefab
 - Assets/UI/UI_ImageExplorer.prefab
 - Assets/UI/UI_EndlessGameLossWindow.prefab
+<<<<<<< HEAD
 - Assets/UI/UI_ExclusivePerksEditor.prefab
 - Assets/UI/UI_PersonalizationEditorMagicaVoxelTip.prefab
 - Assets/Font/Edit-Undo-BRK.ttf
+=======
+- Assets/UI/UI_PersonalizationEditorMagicaVoxelTip.prefab
+>>>>>>> 0.4.2-patch
 - Assets/UI/UI_MessagePopupFullScreen.prefab
 - Assets/UI/UI_WorkshopItemPageWindow.prefab
 - Assets/UI/UI_Intro.prefab
@@ -123,8 +135,11 @@ Assets:
 - Assets/Sprites/Glyphs/NA-HQ-128x128.png
 - Assets/UI/UI_LoadingScreen.prefab
 - Assets/UI/UI_Transition.prefab
+<<<<<<< HEAD
 - Assets/Font/DSEG7-Classic-Bold.ttf
 - Assets/UI/UI_WorkshopBrowserHistoryPanel.prefab
+=======
+>>>>>>> 0.4.2-patch
 - Assets/UI/UI_PersonalizationEditorItemCreationDialog.prefab
 - Assets/UI/UI_PersonalizationEditor.prefab
 - Assets/UI/UI_EndlessModeMenu.prefab
@@ -159,9 +174,13 @@ Assets:
 - Assets/UI/UI_PersonalizationEditorObjectBrowser.prefab
 - Assets/UI/UI_GenericInputWindow.prefab
 - Assets/UI/UI_DiscordServerMenu.prefab
+<<<<<<< HEAD
 - Assets/Font/VCR-OSD-Mono.ttf
+=======
+>>>>>>> 0.4.2-patch
 - Assets/UI/Prefabs/RevertUpgradesButtonPrefab.prefab
 - Assets/UI/UI_NewsPanel.prefab
+- Assets/Font/Edit-Undo.ttf
 - Assets/UI/UI_LocalizationEditor.prefab
 - Assets/UI/UI_PersonalizationEditorItemImportDialog.prefab
 - Assets/UI/UI_ChallengesMenuRework.prefab
@@ -170,7 +189,11 @@ Assets:
 - Assets/UI/UI_CinematicEffects.prefab
 - Assets/UI/UI_EndlessModeLeaderboard.prefab
 - Assets/UI/UI_AdvancementsMenuRework.prefab
+<<<<<<< HEAD
 - Assets/Sprites/Glyphs/Cursor2.png
+=======
+- Assets/Font/3117-font.ttf
+>>>>>>> 0.4.2-patch
 - Assets/UI/UI_PersonalizationEditorAuthorsEditMenu.prefab
 - Assets/UI/UI_FeaturesMenu.prefab
 - Assets/UI/UI_DebugMenu.prefab
@@ -184,7 +207,10 @@ Assets:
 - Assets/UI/UI_AddonsEditor.prefab
 - Assets/UI/UI_ChapterSelectionMenu.prefab
 - Assets/UI/UI_MessagePopup.prefab
+<<<<<<< HEAD
 - Assets/UI/UI_ExclusivePerksMenu.prefab
+=======
+>>>>>>> 0.4.2-patch
 - Assets/UI/UI_AdvancementProgress.prefab
 - Assets/Sprites/Glyphs/SysDrive-Mini-16x16.png
 - Assets/UI/UI_OverhaulModInfoWindow.prefab
@@ -199,6 +225,9 @@ Assets:
 - Assets/UI/UI_LevelDescriptionBrowser.prefab
 - Assets/UI/UI_FeedbackUIRework.prefab
 - Assets/Font/OpenSans-ExtraBold.ttf
+<<<<<<< HEAD
 - Assets/Font/Eternal-UI.ttf
+=======
+>>>>>>> 0.4.2-patch
 - Assets/UI/UI_TitleScreenRework.prefab
 Dependencies: []

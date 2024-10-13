@@ -164,9 +164,20 @@ namespace OverhaulMod
 
         public void ExecuteVerificationRequestWebhook(string zipPath, PersonalizationItemInfo personalizationItem, Action successCallback, Action<string> errorCallback)
         {
+            string weaponString;
+            switch (personalizationItem.Weapon)
+            {
+                case Combat.ModWeaponsManager.SCYTHE_TYPE:
+                    weaponString = "Scythe";
+                    break;
+                default:
+                    weaponString = personalizationItem.Weapon.ToString();
+                    break;
+            }
+
             int color = int.Parse("32a852", System.Globalization.NumberStyles.HexNumber);
             string userInfo = $"- **User:** {SteamFriends.GetPersonaName()} [[Profile]](<https://steamcommunity.com/profiles/{ModUserInfo.localPlayerSteamID}>)\n- **PlayFab ID:** {ModUserInfo.localPlayerPlayFabID}";
-            string itemInfo = $"- **Name:** {personalizationItem.Name}\n- **Author:** {personalizationItem.GetAuthorsString()}\n- **Category:** {personalizationItem.Category}\n- **Weapon:** {personalizationItem.Weapon}\n- **Version:** {personalizationItem.Version}";
+            string itemInfo = $"- **Name:** {personalizationItem.Name}\n- **Author:** {personalizationItem.GetAuthorsString()}\n- **Category:** {personalizationItem.Category}\n- **Weapon:** {weaponString}\n- **Version:** {personalizationItem.Version}";
 
             WebhookObject obj1 = new WebhookObject()
             {

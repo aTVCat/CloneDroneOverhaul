@@ -193,7 +193,6 @@ namespace OverhaulMod.Engine
         {
             string playFabId = MultiplayerLoginManager.Instance.GetLocalPlayFabID();
             UpgradeUI upgradeUI = ModCache.gameUIRoot.UpgradeUI;
-
             List<UpgradeTypeAndLevel> list = autoBuildInfo.Upgrades;
             for (int i = 0; i < list.Count; i++)
             {
@@ -204,10 +203,20 @@ namespace OverhaulMod.Engine
                     icon.OnButtonClicked();
 
                     float timeOut = Time.unscaledTime + 2f;
-                    while (icon.GetCanUpgradeRightNow(playFabId) && Time.unscaledTime < timeOut)
+                    while (ul.UpgradeType == UpgradeType.Armor ? icon.GetCanUpgradeRightNow(playFabId) : UpgradeManager.Instance.GetPlayerUpgradeLevel(ul.UpgradeType, playFabId) == 0 && Time.unscaledTime < timeOut)
+                        yield return null;
+
+                    timeOut = Time.unscaledTime + 0.1f;
+                    while (Time.unscaledTime < timeOut)
                         yield return null;
                 }
             }
+
+            if (UpgradeManager.Instance.GetAvailableSkillPoints(playFabId) != 0)
+            {
+                upgradeUI.OnExitButtonClicked();
+            }
+
             m_isApplyingBuild = false;
             yield break;
         }

@@ -245,7 +245,7 @@ namespace OverhaulMod
             foreach (SelectableUI selectableUi in Resources.FindObjectsOfTypeAll<SelectableUI>())
                 if (selectableUi.GameThemeData && selectableUi.GameThemeData.SelectionCornerPrefab)
                 {
-                    foreach (var graphic in selectableUi.GameThemeData.SelectionCornerPrefab.GetComponentsInChildren<Graphic>(true))
+                    foreach (Graphic graphic in selectableUi.GameThemeData.SelectionCornerPrefab.GetComponentsInChildren<Graphic>(true))
                         graphic.raycastTarget = false;
 
                     gameUIThemeData = selectableUi.GameThemeData;

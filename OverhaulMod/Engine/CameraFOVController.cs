@@ -23,13 +23,24 @@ namespace OverhaulMod.Engine
 
         private float m_lerpedOffset;
 
+        private bool m_hasAddedEventListeners;
+
         private void Start()
         {
-            m_cameraManager = CameraManager.Instance;
-            m_camera = base.GetComponent<Camera>();
-            m_cameraAnimator = base.GetComponentInParent<Animator>();
+            refreshReferences();
             m_timeToAllowUnclampedFovUntil = Time.time + 1f;
             m_lerpedOffset = getFovOffset();
+
+            GlobalEventManager.Instance.AddEventListener(CameraManager.CINEMATIC_CAMERA_TURNED_OFF_EVENT, refreshReferences);
+            m_hasAddedEventListeners = true;
+        }
+
+        private void OnDestroy()
+        {
+            if (m_hasAddedEventListeners)
+            {
+                GlobalEventManager.Instance.RemoveEventListener(CameraManager.CINEMATIC_CAMERA_TURNED_OFF_EVENT, refreshReferences);
+            }
         }
 
         private void LateUpdate()
@@ -51,6 +62,18 @@ namespace OverhaulMod.Engine
 
             m_lerpedOffset = Mathf.Lerp(m_lerpedOffset, !GameModeManager.UsesMultiplayerSpawnPoints() || owner.HasConstructionFinished() ? getFovOffset() : 0f, Time.unscaledDeltaTime * 9f);
             camera.fieldOfView = Mathf.Min(camera.fieldOfView + m_lerpedOffset, Time.time < m_timeToAllowUnclampedFovUntil ? 165f : 110f);
+        }
+
+        private void refreshReferences()
+        {
+            if (!m_cameraManager)
+                m_cameraManager = CameraManager.Instance;
+
+            if (!m_camera)
+                m_camera = base.GetComponent<Camera>();
+
+            if (!m_cameraAnimator)
+                m_cameraAnimator = base.GetComponentInParent<Animator>();
         }
 
         public void SetOwner(FirstPersonMover firstPersonMover)

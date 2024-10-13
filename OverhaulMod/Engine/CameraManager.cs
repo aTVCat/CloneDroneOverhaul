@@ -5,6 +5,8 @@ namespace OverhaulMod.Engine
 {
     public class CameraManager : Singleton<CameraManager>
     {
+        public const string CINEMATIC_CAMERA_TURNED_OFF_EVENT = "CinematicCameraTurnedOff";
+
         [ModSetting(ModSettingsConstants.ENABLE_FIRST_PERSON_MODE, false)]
         public static bool EnableFirstPersonMode;
 

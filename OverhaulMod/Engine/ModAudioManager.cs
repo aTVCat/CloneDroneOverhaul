@@ -46,11 +46,7 @@ namespace OverhaulMod.Engine
         {
             m_focused = !MuteSoundWhenUnfocused || Application.isFocused;
             m_volumeMultiplier = m_focused ? 1f : 0f;
-        }
-
-        private void OnDestroy()
-        {
-
+            RefreshVolume();
         }
 
         private void Update()
@@ -70,7 +66,7 @@ namespace OverhaulMod.Engine
             m_volumeMultiplier = MuteSoundInstantlyWhenUnfocused ? (m_focused ? 1f : 0f) : Mathf.Clamp01(m_volumeMultiplier + (Time.unscaledDeltaTime * (5f * MuteSpeedMultiplier) * (m_focused ? 1f : -1f)));
 
             m_prevVolumeMultiplier = m_volumeMultiplier;
-            SetVolume(m_masterVolume * (MuteMasterVolumeWhenUnfocused ? m_volumeMultiplier : 1f), m_musicVolume * (MuteMusicWhenUnfocused && !MuteMasterVolumeWhenUnfocused ? m_volumeMultiplier : 1f), m_commentatorsVolume * (MuteCommentatorsWhenUnfocused && !MuteMasterVolumeWhenUnfocused ? m_volumeMultiplier : 1f));
+            RefreshVolume();
         }
 
         private void OnApplicationFocus(bool focused)
@@ -85,12 +81,17 @@ namespace OverhaulMod.Engine
             refreshAudioSources();
         }
 
+        public void RefreshVolume()
+        {
+            SetVolume(m_masterVolume * (MuteMasterVolumeWhenUnfocused ? m_volumeMultiplier : 1f), m_musicVolume * (MuteMusicWhenUnfocused && !MuteMasterVolumeWhenUnfocused ? m_volumeMultiplier : 1f), m_commentatorsVolume * (MuteCommentatorsWhenUnfocused && !MuteMasterVolumeWhenUnfocused ? m_volumeMultiplier : 1f));
+        }
+
         public void StopChangingVolume(bool updateVolume = true)
         {
             m_updateVolumeUntilTime = -1f;
             refreshVolumeSettings();
 
-            if(updateVolume)
+            if (updateVolume)
                 SetVolume(m_masterVolume, m_musicVolume, m_commentatorsVolume);
         }
 

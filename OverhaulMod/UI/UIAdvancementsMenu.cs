@@ -215,12 +215,18 @@ namespace OverhaulMod.UI
 
         public void OnLegacyUIButtonClicked()
         {
-            TitleScreenUI titleScreenUI = ModCache.titleScreenUI;
-            if (titleScreenUI)
+            Hide();
+            if (GameModeManager.IsOnTitleScreen())
             {
-                Hide();
-                titleScreenUI.OnAchievementsButtonClicked();
+                TitleScreenUI titleScreenUI = ModCache.titleScreenUI;
+                if (titleScreenUI)
+                {
+                    titleScreenUI.OnAchievementsButtonClicked();
+                }
+                return;
             }
+
+            GameUIRoot.Instance.AchievementProgressUI.Show();
         }
 
         public void OnSyncWthSteamButtonClicked()

@@ -112,7 +112,7 @@ namespace OverhaulMod.Content.Personalization
             if (PropertyValues == null)
                 PropertyValues = new Dictionary<string, object>();
 
-            if(value is Color color)
+            if (value is Color color)
             {
                 value = ColorUtility.ToHtmlStringRGBA(color);
             }

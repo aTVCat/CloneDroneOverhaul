@@ -16,7 +16,7 @@ namespace OverhaulMod
         public const string EXTRA_INFO_FILE_PATH = "buildInfo.json";
 
 #if OVERRIDE_VER
-        public const string OVERRIDE_VERSION = "0.4.2.47";
+        public const string OVERRIDE_VERSION = "0.4.2.51";
 #endif
 
         private static bool s_loaded;
@@ -158,7 +158,7 @@ namespace OverhaulMod
 #if OVERRIDE_VER
             Version version;
             string verString = OVERRIDE_VERSION;
-            if(!verString.IsNullOrEmpty() && !verString.IsNullOrWhiteSpace() && Version.TryParse(verString, out Version result))
+            if (!verString.IsNullOrEmpty() && !verString.IsNullOrWhiteSpace() && Version.TryParse(verString, out Version result))
                 version = result;
             else
                 version = ModCache.modAssemblyName.Version;

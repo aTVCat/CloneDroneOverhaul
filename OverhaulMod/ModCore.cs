@@ -208,18 +208,20 @@ namespace OverhaulMod
 
             ModSpecialUtils.SetTitleBarStateDependingOnSettings();
 
-            if (EnterCustomizationEditor)
+            if (ModFeatures.IsEnabled(ModFeatures.FeatureType.TitleScreenRework))
             {
-                EnterCustomizationEditor = false;
-                if (PersonalizationEditorManager.Instance)
-                    PersonalizationEditorManager.Instance.StartEditorGameMode(true);
+                ModActionUtils.DoInFrames(delegate
+                {
+                    if (GameModeManager.IsOnTitleScreen())
+                        _ = ModUIConstants.ShowTitleScreenRework();
+                }, 60);
             }
         }
 
         public override void OnModLoaded()
         {
             instance = this;
-            GlobalEventManager.Instance.AddEventListenerOnce(GlobalEvents.GameInitializtionCompleted, TriggerGameInitializedEvent);
+            GlobalEventManager.Instance.AddEventListenerOnce(GlobalEvents.GameInitializtionCompleted, onGameInitialized);
             ModLoader.Load();
         }
 
@@ -358,6 +360,12 @@ namespace OverhaulMod
                     _ = firstPersonMover.gameObject.AddComponent<RobotWeaponBag>();
 
                 CharacterInventory robotInventory = firstPersonMover.gameObject.AddComponent<CharacterInventory>();
+
+                if (GameModeManager.IsCoop())
+                {
+                    WeaponInvisibilityFixer weaponInvisibilityFixer = firstPersonMover.gameObject.AddComponent<WeaponInvisibilityFixer>();
+                    weaponInvisibilityFixer.Owner = firstPersonMover;
+                }
             }
 
             yield return new WaitUntil(() => !firstPersonMover || firstPersonMover._playerCamera);
@@ -391,6 +399,17 @@ namespace OverhaulMod
                 }
             }
             yield break;
+        }
+
+        private void onGameInitialized()
+        {
+            if (EnterCustomizationEditor)
+            {
+                EnterCustomizationEditor = false;
+                if (PersonalizationEditorManager.Instance)
+                    PersonalizationEditorManager.Instance.StartEditorGameMode(true);
+            }
+            TriggerGameInitializedEvent();
         }
 
         public static void TriggerGameInitializedEvent()

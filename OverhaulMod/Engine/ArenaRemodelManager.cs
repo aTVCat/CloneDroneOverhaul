@@ -213,7 +213,7 @@ namespace OverhaulMod.Engine
 
         public void SetUpperInteriorActive(bool value)
         {
-            if(m_arenaUpperInteriorTransform)
+            if (m_arenaUpperInteriorTransform)
                 m_arenaUpperInteriorTransform.gameObject.SetActive(value);
         }
 

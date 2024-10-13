@@ -425,11 +425,12 @@ namespace OverhaulMod.UI
             string updateTimeText = $"{workshopItem.UpdateDate.AddHours(-12).ToShortDateString()}, {workshopItem.UpdateDate.AddHours(-12).ToShortTimeString()}";
             string sizeText = $"{Mathf.Round(workshopItem.Size * 100f) / 100f} MBs";
 
+            int votes = workshopItem.Votes;
             float rating = Mathf.Ceil(workshopItem.Rating * 5f);
 
             m_ratingFillImage.fillAmount = rating / 5f;
-            m_notEnoughRatingsTextObject.SetActive(rating < 1f);
-            m_starsObject.SetActive(rating >= 1f);
+            m_notEnoughRatingsTextObject.SetActive(votes < 25);
+            m_starsObject.SetActive(!m_notEnoughRatingsTextObject.activeSelf);
             m_visitorsText.text = workshopItem.Views.ToString();
             m_subscribersText.text = workshopItem.Subscribers.ToString();
             m_favoritesText.text = workshopItem.Favorites.ToString();

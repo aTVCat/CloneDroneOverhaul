@@ -1,6 +1,5 @@
 ﻿using ICSharpCode.SharpZipLib.Zip;
 using OverhaulMod.Content.Personalization;
-using OverhaulMod.Engine;
 using OverhaulMod.Utils;
 using System;
 using System.Collections.Generic;
@@ -222,7 +221,7 @@ namespace OverhaulMod.UI
         {
             ModUIUtils.FileExplorer(base.transform, true, delegate (string path)
             {
-                var dialog = ModUIConstants.ShowPersonalizationEditorItemImportDialog(base.transform);
+                UIPersonalizationEditorItemImportDialog dialog = ModUIConstants.ShowPersonalizationEditorItemImportDialog(base.transform);
                 dialog.ItemBrowser = this;
                 dialog.FilePath = path;
             }, null, "*.zip");

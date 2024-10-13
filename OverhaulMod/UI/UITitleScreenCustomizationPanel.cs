@@ -44,7 +44,6 @@ namespace OverhaulMod.UI
             m_musicDropdown.onValueChanged.AddListener(onMusicTrackDropdownChanged);
 
             m_staticBgConfig.refreshWhenEdited = true;
-            m_staticBgConfig.backgroundInfo = TitleScreenCustomizationManager.Instance.GetStaticBackgroundInfo();
             m_staticBgConfig.levelIsLoadingBG = m_loadingLevelBg;
 
             if (TitleScreenCustomizationManager.IntroduceCustomization)

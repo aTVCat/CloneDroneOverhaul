@@ -1,7 +1,5 @@
 ﻿using HarmonyLib;
 using OverhaulMod.Engine;
-using System.Collections.Generic;
-using UnityEngine;
 
 namespace OverhaulMod.Patches
 {
@@ -13,6 +11,7 @@ namespace OverhaulMod.Patches
         private static void refreshVolume_Postfix()
         {
             ModAudioManager.Instance.StopChangingVolume(false);
+            ModAudioManager.Instance.RefreshVolume();
         }
     }
 }
