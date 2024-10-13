@@ -209,7 +209,7 @@ namespace OverhaulMod.UI
         public override void Update()
         {
             base.Update();
-            if(m_refreshPlayerListTime != -1f && Time.unscaledTime >= m_refreshPlayerListTime)
+            if (m_refreshPlayerListTime != -1f && Time.unscaledTime >= m_refreshPlayerListTime)
             {
                 m_refreshPlayerListTime = -1f;
                 refreshPlayers();

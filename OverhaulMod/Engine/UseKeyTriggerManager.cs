@@ -66,13 +66,13 @@ namespace OverhaulMod.Engine
 
             if (m_prevNearestTrigger != nearestTrigger)
             {
-                if(m_coroutine != null)
+                if (m_coroutine != null)
                 {
                     StopCoroutine(m_coroutine);
                     m_coroutine = null;
                 }
 
-                if(nearestTrigger == null)
+                if (nearestTrigger == null)
                 {
                     HideDescription();
                     m_prevNearestTrigger = null;
@@ -91,7 +91,7 @@ namespace OverhaulMod.Engine
             while (Time.unscaledTime < timeout && t && !t._keyboardHint)
                 yield return null;
 
-            if (!EnablePressButtonTriggerDescriptionRework || Time.unscaledTime > timeout && !t || !t._keyboardHint)
+            if (!EnablePressButtonTriggerDescriptionRework || (Time.unscaledTime > timeout && !t) || !t._keyboardHint)
                 yield break;
 
             SetFramingBoxSelectedColor(t._keyboardHint.transform, true);

@@ -390,9 +390,9 @@ namespace OverhaulMod.UI
 
         public void OnUpdatesButtonClicked()
         {
-            if(ModFeatures.IsEnabled(ModFeatures.FeatureType.UpdatesMenuRework))
+            if (ModFeatures.IsEnabled(ModFeatures.FeatureType.UpdatesMenuRework))
             {
-                ModUIConstants.ShowUpdatesWindowRework();
+                _ = ModUIConstants.ShowUpdatesWindowRework();
                 return;
             }
             _ = ModUIConstants.ShowUpdatesWindow();

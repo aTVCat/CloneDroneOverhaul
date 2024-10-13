@@ -1,12 +1,8 @@
 ﻿using OverhaulMod.Engine;
 using OverhaulMod.UI;
 using OverhaulMod.Utils;
-using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace OverhaulMod.Content.Personalization
@@ -157,7 +153,7 @@ namespace OverhaulMod.Content.Personalization
                     return;
             }
 
-            CVMImporter.InstantiateModel(m_loadedModel, preset.Weapon, preset.Variant, preset.ReplaceColors, preset.ShowFireParticles, t, out string error);
+            _ = CVMImporter.InstantiateModel(m_loadedModel, preset.Weapon, preset.Variant, preset.ReplaceColors, preset.ShowFireParticles, t, out string error);
             if (PersonalizationEditorManager.IsInEditor() && !error.IsNullOrEmpty())
             {
                 UIPersonalizationEditor.instance.ShowErrorNotification("CVM Error", error, 15f);

@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using UnityEngine.UI;
-
-namespace OverhaulMod.Utils
+﻿namespace OverhaulMod.Utils
 {
     public static class ModConstants
     {

@@ -34,7 +34,7 @@ namespace OverhaulMod.Patches
         {
             if (GameModeManager.IsBattleRoyale())
             {
-                if(__instance.GetEquippedWeaponType() == WeaponType.None)
+                if (__instance.GetEquippedWeaponType() == WeaponType.None)
                 {
                     ModGameUtils.WaitForPlayerInputUpdate(delegate (IFPMoveCommandInput commandInput)
                     {

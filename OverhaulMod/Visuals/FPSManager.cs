@@ -1,10 +1,6 @@
 ﻿using OverhaulMod.Engine;
 using OverhaulMod.Utils;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -38,12 +34,12 @@ namespace OverhaulMod.Visuals
         public int GetFPSCapDropdownValue()
         {
             int settingValue = FPSCap;
-            var options = FPSCapOptions;
+            List<Dropdown.OptionData> options = FPSCapOptions;
 
-            for(int i = 0; i < options.Count; i++)
+            for (int i = 0; i < options.Count; i++)
             {
-                var option = options[i];
-                if(option is DropdownIntOptionData intOption && intOption.IntValue == settingValue)
+                Dropdown.OptionData option = options[i];
+                if (option is DropdownIntOptionData intOption && intOption.IntValue == settingValue)
                 {
                     return i;
                 }

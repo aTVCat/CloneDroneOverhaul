@@ -91,7 +91,7 @@ namespace OverhaulMod.Engine
             m_updateVolumeUntilTime = -1f;
             refreshVolumeSettings();
 
-            if(updateVolume)
+            if (updateVolume)
                 SetVolume(m_masterVolume, m_musicVolume, m_commentatorsVolume);
         }
 

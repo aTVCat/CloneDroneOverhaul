@@ -24,22 +24,6 @@ namespace OverhaulMod.UI
         [UIElement("SetCustomLevelButton")]
         private readonly Button m_setCustomLevelButton;
 
-        private TitleScreenBackgroundInfo m_backgroundInfo;
-        public TitleScreenBackgroundInfo backgroundInfo
-        {
-            get
-            {
-                return m_backgroundInfo;
-            }
-            set
-            {
-                m_backgroundInfo = value;
-
-                if (m_backgroundInfo != null && m_label)
-                    m_label.text = m_backgroundInfo.Level == null ? "None" : m_backgroundInfo.Level.LevelID;
-            }
-        }
-
         public GameObject levelIsLoadingBG
         {
             get;
@@ -92,8 +76,6 @@ namespace OverhaulMod.UI
 
         private void onSetLevel(LevelDescription level)
         {
-            backgroundInfo.Level = level;
-
             TitleScreenCustomizationManager titleScreenCustomizationManager = TitleScreenCustomizationManager.Instance;
             titleScreenCustomizationManager.SetLevelIsLoadingBG(levelIsLoadingBG);
             titleScreenCustomizationManager.SetStaticLevel(level, refreshWhenEdited);

@@ -422,7 +422,7 @@ namespace OverhaulMod.Content.Personalization
 
             CloneSpawningData cloneSpawningData = new CloneSpawningData(spawnPoint.transform, true, false, UIPersonalizationEditor.instance.Utilities.GetFavoriteColor(), null);
 
-            var cloneSpawner = GameFlowManager.Instance._cloneSpawner;
+            CloneSpawner cloneSpawner = GameFlowManager.Instance._cloneSpawner;
             cloneSpawner.UseSkinInSingleplayer = false;
 
             FirstPersonMover bot = cloneSpawner.SpawnClone(cloneSpawningData);
@@ -545,7 +545,7 @@ namespace OverhaulMod.Content.Personalization
                 m_camera.gameObject.SetActive(false);
 
                 UIPersonalizationEditor.instance.Hide();
-                ModUIConstants.ShowPersonalizationEditorPlaytestHUD();
+                _ = ModUIConstants.ShowPersonalizationEditorPlaytestHUD();
             }
         }
 
@@ -569,7 +569,7 @@ namespace OverhaulMod.Content.Personalization
 
                 UIPersonalizationEditor.instance.Show();
 
-                base.StartCoroutine(exitPlaytestModeCoroutine(firstPersonMover));
+                _ = base.StartCoroutine(exitPlaytestModeCoroutine(firstPersonMover));
             }
         }
 

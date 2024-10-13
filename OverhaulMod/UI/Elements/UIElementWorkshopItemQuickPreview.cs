@@ -16,11 +16,21 @@ namespace OverhaulMod.UI
         [UIElement("StarsFill")]
         public Image m_starsFill;
 
+        [UIElement("Stars")]
+        public GameObject m_starsObject;
+
+        [UIElement("NotEnoughRatingsText")]
+        public GameObject m_notEnoughRatingsTextObject;
+
         public void Populate(WorkshopItem workshopItem)
         {
             string description = workshopItem.Description;
             if (description.Length > 400)
                 description = $"{description.Remove(400)}{"...".AddColor(Color.white)}";
+
+            int votes = workshopItem.Votes;
+            m_notEnoughRatingsTextObject.SetActive(votes < 25);
+            m_starsObject.SetActive(!m_notEnoughRatingsTextObject.activeSelf);
 
             m_description.text = description;
 

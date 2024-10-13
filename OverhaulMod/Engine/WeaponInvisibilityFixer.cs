@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace OverhaulMod.Engine
 {
@@ -30,10 +25,10 @@ namespace OverhaulMod.Engine
                 state = null;
             }
 
-            if(state != null)
+            if (state != null)
             {
                 WeaponType stateEquippedWeapon = (WeaponType)state.EquippedWeaponType;
-                if(firstPersonMover.GetEquippedWeaponType() != stateEquippedWeapon)
+                if (firstPersonMover.GetEquippedWeaponType() != stateEquippedWeapon)
                 {
                     firstPersonMover.SetEquippedWeaponType(stateEquippedWeapon, false);
                 }

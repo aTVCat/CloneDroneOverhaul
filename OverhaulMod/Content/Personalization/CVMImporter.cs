@@ -73,7 +73,7 @@ namespace OverhaulMod.Content.Personalization
                 if (!showFireParticles)
                 {
                     Transform fireParticlesTransform = TransformUtils.FindChildRecursive(volume1.transform, "SwordFireVFX");
-                    if(!fireParticlesTransform)
+                    if (!fireParticlesTransform)
                     {
                         fireParticlesTransform = TransformUtils.FindChildRecursive(volume1.transform, "SwordFireVFX (1)");
                         if (!fireParticlesTransform)

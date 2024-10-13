@@ -365,7 +365,7 @@ namespace OverhaulMod.UI
 
         public void OnSavesFolderButtonClicked()
         {
-            ModIOUtils.OpenFileExplorer(ModCore.savesFolder);
+            _ = ModIOUtils.OpenFileExplorer(ModCore.savesFolder);
         }
 
         public void OnRevealEditorIDButtonClicked()

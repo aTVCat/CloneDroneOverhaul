@@ -66,13 +66,13 @@ namespace OverhaulMod.Engine
 
         private void refreshReferences()
         {
-            if(!m_cameraManager)
+            if (!m_cameraManager)
                 m_cameraManager = CameraManager.Instance;
 
-            if(!m_camera)
+            if (!m_camera)
                 m_camera = base.GetComponent<Camera>();
 
-            if(!m_cameraAnimator)
+            if (!m_cameraAnimator)
                 m_cameraAnimator = base.GetComponentInParent<Animator>();
         }
 

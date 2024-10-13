@@ -1,6 +1,5 @@
 ﻿using OverhaulMod.Content.Personalization;
 using OverhaulMod.Utils;
-using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
@@ -62,11 +61,11 @@ namespace OverhaulMod.UI
                     UIPersonalizationEditor.instance.PropertiesPanel.EditObject(PersonalizationEditorObjectManager.Instance.GetInstantiatedObject(obj.UniqueIndex));
                 });
 
-                Action action = delegate
+                void action()
                 {
-                    if(button)
+                    if (button)
                         button.interactable = UIPersonalizationEditor.instance.PropertiesPanel.GetEditingObjectUniqueIndex() != obj.UniqueIndex;
-                };
+                }
                 action();
 
                 EventController eventController = moddedObject.gameObject.AddComponent<EventController>();
