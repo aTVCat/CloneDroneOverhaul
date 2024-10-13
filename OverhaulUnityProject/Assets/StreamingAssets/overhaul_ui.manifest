@@ -1,17 +1,9 @@
 ManifestFileVersion: 0
-<<<<<<< HEAD
-CRC: 1781724234
+CRC: 2387005582
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: d9fcb2b5ff132250f9f34b64c4768f1c
-=======
-CRC: 418026426
-Hashes:
-  AssetFileHash:
-    serializedVersion: 2
-    Hash: 276383d13e1706b4153a0358726fb263
->>>>>>> 0.4.2-patch
+    Hash: 6ca415c79702923abc86b4660fa362a2
   TypeTreeHash:
     serializedVersion: 2
     Hash: acf1344b0dbbc80b9165ec9e7dce57f8
@@ -96,6 +88,7 @@ ClassTypes:
 - Class: 225
   Script: {instanceID: 0}
 Assets:
+- Assets/Font/DSEG7-Classic-Bold.ttf
 - Assets/UI/UI_DuelInviteMenuRework.prefab
 - Assets/UI/UI_VersionLabel.prefab
 - Assets/UI/UI_WorkshopBrowserRework.prefab
@@ -103,26 +96,23 @@ Assets:
 - Assets/UI/UI_PersonalizationEditorHelpMenu.prefab
 - Assets/UI/UI_DamageIndicator.prefab
 - Assets/UI/UI_DevelopmentGallery.prefab
+- Assets/UI/UI_SettingsImportExportMenu.prefab
 - Assets/UI/UI_CrashScreen.prefab
 - Assets/UI/UI_PersonalizationEditorVerificationMenu.prefab
 - Assets/UI/UI_UpdatesWindow.prefab
 - Assets/Font/OpenSans-Regular.ttf
+- Assets/Sprites/Glyphs/Cursor2.png
 - Assets/Sprites/Glyphs/Exit-V2-16x16.png
 - Assets/UI/UI_ConnectScreen.prefab
+- Assets/UI/UI_Intro.prefab
 - Assets/UI/UI_PersonalizationEditorExclusivityEditMenu.prefab
 - Assets/UI/UI_GameLossWindow.prefab
 - Assets/UI/UI_ImageExplorer.prefab
 - Assets/UI/UI_EndlessGameLossWindow.prefab
-<<<<<<< HEAD
-- Assets/UI/UI_ExclusivePerksEditor.prefab
 - Assets/UI/UI_PersonalizationEditorMagicaVoxelTip.prefab
-- Assets/Font/Edit-Undo-BRK.ttf
-=======
-- Assets/UI/UI_PersonalizationEditorMagicaVoxelTip.prefab
->>>>>>> 0.4.2-patch
 - Assets/UI/UI_MessagePopupFullScreen.prefab
 - Assets/UI/UI_WorkshopItemPageWindow.prefab
-- Assets/UI/UI_Intro.prefab
+- Assets/Font/Eternal-UI.ttf
 - Assets/Sprites/Glyphs/RevertUpgradesButton.png
 - Assets/UI/UI_PhotoModeUIRework.prefab
 - Assets/UI/UI_ScreenTooltips.prefab
@@ -132,14 +122,8 @@ Assets:
 - Assets/Sprites/Glyphs/Redirect-16x16.png
 - Assets/UI/UI_PatchNotes.prefab
 - Assets/UI/UI_NewsDetailsPanel.prefab
-- Assets/Sprites/Glyphs/NA-HQ-128x128.png
 - Assets/UI/UI_LoadingScreen.prefab
 - Assets/UI/UI_Transition.prefab
-<<<<<<< HEAD
-- Assets/Font/DSEG7-Classic-Bold.ttf
-- Assets/UI/UI_WorkshopBrowserHistoryPanel.prefab
-=======
->>>>>>> 0.4.2-patch
 - Assets/UI/UI_PersonalizationEditorItemCreationDialog.prefab
 - Assets/UI/UI_PersonalizationEditor.prefab
 - Assets/UI/UI_EndlessModeMenu.prefab
@@ -154,33 +138,30 @@ Assets:
 - Assets/UI/UI_AutoBuildMenu.prefab
 - Assets/UI/UI_TitleScreenCustomizationPanel.prefab
 - Assets/UI/UI_GenericColorPicker.prefab
-- Assets/UI/UI_SettingsImportExportMenu.prefab
+- Assets/UI/UI_WorkshopBrowserHistoryPanel.prefab
 - Assets/UI/Elements/WindowPrefab.prefab
 - Assets/UI/UI_DownloadPersonalizationAssetsMenu.prefab
 - Assets/Sprites/Glyphs/GetUpgradesButton.png
 - Assets/Sprites/Glow-2-256x256.png
 - Assets/UI/UI_RestartRequiredScreen.prefab
 - Assets/UI/UI_OverhaulUIsManagementPanel.prefab
-- Assets/UI/UI_WorkshopItemPagePlayOptions.prefab
 - Assets/UI/UI_SetKeyBindWindow.prefab
+- Assets/Font/Edit-Undo-BRK.ttf
 - Assets/UI/UI_AutoBuildSelectionMenu.prefab
 - Assets/UI/UI_FileExplorer.prefab
+- Assets/UI/UI_FeaturesMenu.prefab
 - Assets/UI/UI_CreditsMenu.prefab
 - Assets/Sprites/Glyphs/Tick-16x16.png
 - Assets/UI/UI_InformationSelectWindow.prefab
 - Assets/Sprites/Glyphs/Drive-Mini-16x16.png
 - Assets/Font/Piksieli-Prosto.ttf
 - Assets/UI/UI_PauseMenuRework.prefab
+- Assets/UI/UI_ExclusivePerksEditor.prefab
 - Assets/UI/UI_PersonalizationEditorObjectBrowser.prefab
 - Assets/UI/UI_GenericInputWindow.prefab
 - Assets/UI/UI_DiscordServerMenu.prefab
-<<<<<<< HEAD
-- Assets/Font/VCR-OSD-Mono.ttf
-=======
->>>>>>> 0.4.2-patch
 - Assets/UI/Prefabs/RevertUpgradesButtonPrefab.prefab
 - Assets/UI/UI_NewsPanel.prefab
-- Assets/Font/Edit-Undo.ttf
 - Assets/UI/UI_LocalizationEditor.prefab
 - Assets/UI/UI_PersonalizationEditorItemImportDialog.prefab
 - Assets/UI/UI_ChallengesMenuRework.prefab
@@ -189,33 +170,26 @@ Assets:
 - Assets/UI/UI_CinematicEffects.prefab
 - Assets/UI/UI_EndlessModeLeaderboard.prefab
 - Assets/UI/UI_AdvancementsMenuRework.prefab
-<<<<<<< HEAD
-- Assets/Sprites/Glyphs/Cursor2.png
-=======
-- Assets/Font/3117-font.ttf
->>>>>>> 0.4.2-patch
+- Assets/Font/VCR-OSD-Mono.ttf
 - Assets/UI/UI_PersonalizationEditorAuthorsEditMenu.prefab
-- Assets/UI/UI_FeaturesMenu.prefab
 - Assets/UI/UI_DebugMenu.prefab
 - Assets/UI/UI_PersonalizationEditorPlaytestHUD.prefab
 - Assets/UI/UI_ContentDownloadWindow.prefab
 - Assets/UI/UI_CommunityHub.prefab
 - Assets/UI/UI_PersonalizationEditorItemDialog.prefab
 - Assets/UI/UI_PressActionKeyDescription.prefab
+- Assets/UI/UI_WorkshopItemPagePlayOptions.prefab
 - Assets/Sprites/Glyphs/Cursor.png
 - Assets/UI/UI_AddonsMenu.prefab
 - Assets/UI/UI_AddonsEditor.prefab
 - Assets/UI/UI_ChapterSelectionMenu.prefab
 - Assets/UI/UI_MessagePopup.prefab
-<<<<<<< HEAD
-- Assets/UI/UI_ExclusivePerksMenu.prefab
-=======
->>>>>>> 0.4.2-patch
 - Assets/UI/UI_AdvancementProgress.prefab
 - Assets/Sprites/Glyphs/SysDrive-Mini-16x16.png
 - Assets/UI/UI_OverhaulModInfoWindow.prefab
 - Assets/UI/UI_Tooltips.prefab
 - Assets/UI/UI_UpdatesWindowRework.prefab
+- Assets/UI/UI_ExclusivePerksMenu.prefab
 - Assets/UI/UI_UpdateInfoEditor.prefab
 - Assets/UI/UI_MPSelectScreen.prefab
 - Assets/UI/UI_PersonalizationEditorItemsBrowser.prefab
@@ -225,9 +199,5 @@ Assets:
 - Assets/UI/UI_LevelDescriptionBrowser.prefab
 - Assets/UI/UI_FeedbackUIRework.prefab
 - Assets/Font/OpenSans-ExtraBold.ttf
-<<<<<<< HEAD
-- Assets/Font/Eternal-UI.ttf
-=======
->>>>>>> 0.4.2-patch
 - Assets/UI/UI_TitleScreenRework.prefab
 Dependencies: []

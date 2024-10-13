@@ -62,14 +62,6 @@ namespace OverhaulMod.UI
             }
         }
 
-        public bool showFullWatermark
-        {
-            get
-            {
-                return GameModeManager.IsOnTitleScreen();
-            }
-        }
-
         private float m_offsetX;
         public float offsetX
         {
@@ -143,9 +135,9 @@ namespace OverhaulMod.UI
                 return;
 
             bool show = !ForceHide && showWatermark;
-            bool titleScreen = showFullWatermark;
-            m_watermark.SetActive(show && ModCache.titleScreenUI.RootButtonsContainerBG.activeInHierarchy && titleScreen);
-            m_gameplayWatermark.SetActive(show && !titleScreen);
+            bool isOnTitleScreen = GameModeManager.IsOnTitleScreen();
+            m_watermark.SetActive(show && ModCache.titleScreenUI.RootButtonsContainerBG.activeInHierarchy && isOnTitleScreen);
+            m_gameplayWatermark.SetActive(show && !isOnTitleScreen);
         }
 
         public void RefreshLabels()

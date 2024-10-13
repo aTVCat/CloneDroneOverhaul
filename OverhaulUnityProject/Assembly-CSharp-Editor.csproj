@@ -65,6 +65,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Editor\CreateAssetBundles.cs" />
+    <Compile Include="Assets\Editor\MissingPrefabsFinder.cs" />
+    <Compile Include="Assets\Editor\MissingReferencesFinder.cs" />
+    <Compile Include="Assets\Editor\MissingReferencesResultsWindow.cs" />
     <Compile Include="Assets\SEGI\Editor\SEGICascadedEditor.cs" />
     <Compile Include="Assets\SEGI\Editor\SEGIEditor.cs" />
     <Reference Include="UnityEngine.Purchasing">
