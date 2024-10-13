@@ -11,6 +11,9 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(UpgradeUI.Show))]
         private static void Show_Postfix(UpgradeUI __instance)
         {
+            if (!ModFeatures.IsEnabled(ModFeatures.FeatureType.ShowUpgradeUIExitButtonInLBS))
+                return;
+
             bool isBattleRoyale = GameModeManager.IsBattleRoyale();
 
             RectTransform button = __instance.ExitButton.transform as RectTransform;

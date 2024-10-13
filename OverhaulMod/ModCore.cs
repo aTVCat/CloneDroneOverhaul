@@ -218,13 +218,6 @@ namespace OverhaulMod
 
             ModSpecialUtils.SetTitleBarStateDependingOnSettings();
 
-            if (EnterCustomizationEditor)
-            {
-                EnterCustomizationEditor = false;
-                if (PersonalizationEditorManager.Instance)
-                    PersonalizationEditorManager.Instance.StartEditorGameMode(true);
-            }
-
             if (ModFeatures.IsEnabled(ModFeatures.FeatureType.TitleScreenRework))
             {
                 ModActionUtils.DoInFrames(delegate
@@ -238,7 +231,7 @@ namespace OverhaulMod
         public override void OnModLoaded()
         {
             instance = this;
-            GlobalEventManager.Instance.AddEventListenerOnce(GlobalEvents.GameInitializtionCompleted, TriggerGameInitializedEvent);
+            GlobalEventManager.Instance.AddEventListenerOnce(GlobalEvents.GameInitializtionCompleted, onGameInitialized);
             ModLoader.Load();
         }
 
@@ -395,6 +388,17 @@ namespace OverhaulMod
                 }
             }
             yield break;
+        }
+
+        private void onGameInitialized()
+        {
+            if (EnterCustomizationEditor)
+            {
+                EnterCustomizationEditor = false;
+                if (PersonalizationEditorManager.Instance)
+                    PersonalizationEditorManager.Instance.StartEditorGameMode(true);
+            }
+            TriggerGameInitializedEvent();
         }
 
         public static void TriggerGameInitializedEvent()

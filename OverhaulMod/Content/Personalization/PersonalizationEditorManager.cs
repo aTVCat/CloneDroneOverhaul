@@ -495,6 +495,9 @@ namespace OverhaulMod.Content.Personalization
             }
             WelcomeMessage();
 
+            ArenaCameraManager.Instance.HideTitleScreenCamera();
+            ArenaCameraManager.Instance.TurnOffArenaCamera();
+
             yield break;
         }
 

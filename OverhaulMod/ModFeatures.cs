@@ -116,6 +116,9 @@ namespace OverhaulMod
                 case FeatureType.DisplayDisconnectedPlayers:
                     result = true;
                     break;
+                case FeatureType.ShowUpgradeUIExitButtonInLBS:
+                    result = false;
+                    break;
                 default:
                     return false;
             }
@@ -189,7 +192,9 @@ namespace OverhaulMod
 
             RequireNormalAndFireVariantsForSwordAndSpearSkins,
 
-            DisplayDisconnectedPlayers
+            DisplayDisconnectedPlayers,
+
+            ShowUpgradeUIExitButtonInLBS
         }
     }
 }
