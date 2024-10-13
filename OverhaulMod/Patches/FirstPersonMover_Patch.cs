@@ -28,6 +28,22 @@ namespace OverhaulMod.Patches
             return false;
         }*/
 
+        [HarmonyPostfix]
+        [HarmonyPatch(nameof(FirstPersonMover.UnSetGrabbedByGarbageBot))]
+        private static void UnSetGrabbedByGarbageBot_Postfix(FirstPersonMover __instance)
+        {
+            if (GameModeManager.IsBattleRoyale())
+            {
+                if(__instance.GetEquippedWeaponType() == WeaponType.None)
+                {
+                    ModGameUtils.WaitForPlayerInputUpdate(delegate (IFPMoveCommandInput commandInput)
+                    {
+                        commandInput.NextWeapon = true;
+                    });
+                }
+            }
+        }
+
         [HarmonyPrefix]
         [HarmonyPatch(nameof(FirstPersonMover.tryRenderAttack))]
         private static void tryRenderAttack_Prefix(FirstPersonMover __instance, int attackServerFrame, ref AttackDirection attackDirection)

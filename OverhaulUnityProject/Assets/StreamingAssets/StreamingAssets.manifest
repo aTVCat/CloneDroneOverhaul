@@ -1,17 +1,5 @@
 ManifestFileVersion: 0
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-CRC: 3076249099
-=======
-CRC: 253251127
->>>>>>> 0.4.x-development
-=======
-CRC: 715654934
->>>>>>> 0.4.x-development
-=======
-CRC: 2736990149
->>>>>>> 0.4.x-development
+CRC: 1124892097
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
@@ -21,29 +9,23 @@ AssetBundleManifest:
       Name: overhaulassets_p2
       Dependencies: {}
     Info_2:
-      Name: overhaul_ui
+      Name: overhaul_imageeffects
       Dependencies: {}
     Info_3:
-      Name: effect_amplifyocclusion
+      Name: overhaul_ui
       Dependencies: {}
     Info_4:
-      Name: overhaulassets_skyboxes
-      Dependencies: {}
-    Info_5:
       Name: overhaul_default_skyboxes
       Dependencies: {}
-    Info_6:
+    Info_5:
       Name: overhaul_sfx
       Dependencies: {}
-    Info_7:
+    Info_6:
       Name: overhaul_vfx
       Dependencies: {}
-    Info_8:
+    Info_7:
       Name: overhaul_weapons
       Dependencies: {}
-    Info_9:
+    Info_8:
       Name: overhaul_models
-      Dependencies: {}
-    Info_10:
-      Name: overhaul_imageeffects
       Dependencies: {}

@@ -9,6 +9,17 @@ namespace OverhaulMod.Patches
     [HarmonyPatch(typeof(UpgradeUIIcon))]
     internal static class UpgradeUIIcon_Patch
     {
+        [HarmonyPostfix]
+        [HarmonyPatch(nameof(UpgradeUIIcon.GetIsUpgradeLocked))]
+        private static void GetIsUpgradeLocked_Postfix(UpgradeUIIcon __instance, ref bool __result)
+        {
+            AutoBuildManager autoBuildManager = AutoBuildManager.Instance;
+            if (autoBuildManager && autoBuildManager.isInAutoBuildConfigurationMode)
+            {
+                __result = false;
+            }
+        }
+
         [HarmonyPrefix]
         [HarmonyPatch(nameof(UpgradeUIIcon.OnClickToUpgradeAbility))]
         private static bool OnClickToUpgradeAbility_Prefix(UpgradeUIIcon __instance, ref bool __result, bool isRandomSelectionInput)

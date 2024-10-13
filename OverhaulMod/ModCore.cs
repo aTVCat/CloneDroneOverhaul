@@ -224,6 +224,15 @@ namespace OverhaulMod
                 if (PersonalizationEditorManager.Instance)
                     PersonalizationEditorManager.Instance.StartEditorGameMode(true);
             }
+
+            if (ModFeatures.IsEnabled(ModFeatures.FeatureType.TitleScreenRework))
+            {
+                ModActionUtils.DoInFrames(delegate
+                {
+                    if (GameModeManager.IsOnTitleScreen())
+                        _ = ModUIConstants.ShowTitleScreenRework();
+                }, 60);
+            }
         }
 
         public override void OnModLoaded()
@@ -347,6 +356,12 @@ namespace OverhaulMod
                     _ = firstPersonMover.gameObject.AddComponent<RobotWeaponBag>();
 
                 RobotInventory robotInventory = firstPersonMover.gameObject.AddComponent<RobotInventory>();
+
+                if (GameModeManager.IsCoop())
+                {
+                    WeaponInvisibilityFixer weaponInvisibilityFixer = firstPersonMover.gameObject.AddComponent<WeaponInvisibilityFixer>();
+                    weaponInvisibilityFixer.Owner = firstPersonMover;
+                }
             }
 
             yield return new WaitUntil(() => !firstPersonMover || firstPersonMover._playerCamera);

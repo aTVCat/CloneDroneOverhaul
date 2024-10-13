@@ -1,33 +1,9 @@
 ManifestFileVersion: 0
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-CRC: 2374715870
+CRC: 1335667367
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 8514091567d00ab216bb498e7fcbd513
-=======
-CRC: 1856363288
-Hashes:
-  AssetFileHash:
-    serializedVersion: 2
-    Hash: af536c91e5f1e594a9fe3a8bf43cacc0
->>>>>>> 0.4.x-development
-=======
-CRC: 4152140112
-Hashes:
-  AssetFileHash:
-    serializedVersion: 2
-    Hash: 38c2a9e323aaedc49f84cfe2c40071ee
->>>>>>> 0.4.x-development
-=======
-CRC: 3936876200
-Hashes:
-  AssetFileHash:
-    serializedVersion: 2
-    Hash: f79837193722ae4ad08504246bbf2daa
->>>>>>> 0.4.x-development
+    Hash: 6feb69088f9d73ec55658fda1778ba1e
   TypeTreeHash:
     serializedVersion: 2
     Hash: acf1344b0dbbc80b9165ec9e7dce57f8
@@ -129,9 +105,7 @@ Assets:
 - Assets/UI/UI_GameLossWindow.prefab
 - Assets/UI/UI_ImageExplorer.prefab
 - Assets/UI/UI_EndlessGameLossWindow.prefab
-- Assets/UI/UI_ExclusiveContentEditor.prefab
 - Assets/UI/UI_PersonalizationEditorMagicaVoxelTip.prefab
-- Assets/Font/Edit-Undo.ttf
 - Assets/UI/UI_MessagePopupFullScreen.prefab
 - Assets/UI/UI_WorkshopItemPageWindow.prefab
 - Assets/Sprites/Glyphs/RevertUpgradesButton.png
@@ -146,7 +120,6 @@ Assets:
 - Assets/Sprites/Glyphs/NA-HQ-128x128.png
 - Assets/UI/UI_LoadingScreen.prefab
 - Assets/UI/UI_Transition.prefab
-- Assets/Font/dseg7classicbold.ttf
 - Assets/UI/UI_PersonalizationEditorItemCreationDialog.prefab
 - Assets/UI/UI_PersonalizationEditor.prefab
 - Assets/UI/UI_EndlessModeMenu.prefab
@@ -179,9 +152,9 @@ Assets:
 - Assets/UI/UI_PersonalizationEditorObjectBrowser.prefab
 - Assets/UI/UI_GenericInputWindow.prefab
 - Assets/UI/UI_DiscordServerMenu.prefab
-- Assets/Font/3117-font.ttf
 - Assets/UI/Prefabs/RevertUpgradesButtonPrefab.prefab
 - Assets/UI/UI_NewsPanel.prefab
+- Assets/Font/Edit-Undo.ttf
 - Assets/UI/UI_LocalizationEditor.prefab
 - Assets/UI/UI_PersonalizationEditorItemImportDialog.prefab
 - Assets/UI/UI_ChallengesMenuRework.prefab
@@ -190,6 +163,7 @@ Assets:
 - Assets/UI/UI_CinematicEffects.prefab
 - Assets/UI/UI_EndlessModeLeaderboard.prefab
 - Assets/UI/UI_AdvancementsMenuRework.prefab
+- Assets/Font/3117-font.ttf
 - Assets/UI/UI_PersonalizationEditorAuthorsEditMenu.prefab
 - Assets/UI/UI_DebugMenu.prefab
 - Assets/UI/UI_PersonalizationEditorPlaytestHUD.prefab
@@ -197,11 +171,11 @@ Assets:
 - Assets/UI/UI_CommunityHub.prefab
 - Assets/UI/UI_PersonalizationEditorItemDialog.prefab
 - Assets/UI/UI_PressActionKeyDescription.prefab
+- Assets/Sprites/Glyphs/Cursor.png
 - Assets/UI/UI_AddonsMenu.prefab
 - Assets/UI/UI_AddonsEditor.prefab
 - Assets/UI/UI_ChapterSelectionMenu.prefab
 - Assets/UI/UI_MessagePopup.prefab
-- Assets/UI/UI_ExclusiveContentMenu.prefab
 - Assets/UI/UI_AdvancementProgress.prefab
 - Assets/Sprites/Glyphs/SysDrive-Mini-16x16.png
 - Assets/UI/UI_OverhaulModInfoWindow.prefab
@@ -216,6 +190,5 @@ Assets:
 - Assets/UI/UI_LevelDescriptionBrowser.prefab
 - Assets/UI/UI_FeedbackUIRework.prefab
 - Assets/Font/OpenSans-ExtraBold.ttf
-- Assets/Font/eternalui_bold.ttf
 - Assets/UI/UI_TitleScreenRework.prefab
 Dependencies: []

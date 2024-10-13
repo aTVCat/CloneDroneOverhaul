@@ -65,6 +65,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Editor\CreateAssetBundles.cs" />
+    <Compile Include="Assets\Editor\MissingPrefabsFinder.cs" />
+    <Compile Include="Assets\Editor\MissingReferencesFinder.cs" />
+    <Compile Include="Assets\Editor\MissingReferencesResultsWindow.cs" />
     <Reference Include="UnityEngine.Purchasing">
       <HintPath>U:/OverhaulSource/CloneDroneOverhaul/OverhaulUnityProject/Library/ScriptAssemblies/UnityEngine.Purchasing.dll</HintPath>
     </Reference>

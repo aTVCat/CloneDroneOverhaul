@@ -96,7 +96,7 @@ namespace OverhaulMod.Engine
             setRenderersActive(headRenderers, value);
             setRenderersActive(jawRenderers, value);
             setRenderersActive(shieldRenderers, value);
-            setRenderersActive(torsoRenderers, value || m_owner._isOnFloorFromKick);
+            setRenderersActive(torsoRenderers, (m_owner ? m_owner.IsMindSpaceCharacter : false) || value || m_owner._isOnFloorFromKick);
         }
 
         public bool IsMindTransferInProgress()
@@ -174,7 +174,12 @@ namespace OverhaulMod.Engine
             if (!array.IsNullOrEmpty())
                 foreach (Renderer renderer3 in array)
                     if (renderer3)
+                    {
+                        if (renderer3.GetComponent<SwordHitArea>())
+                            continue;
+
                         renderer3.enabled = value;
+                    }
         }
 
         private void LateUpdate()
@@ -188,7 +193,7 @@ namespace OverhaulMod.Engine
             if (IsMindTransferInProgress() || !firstPersonMover || !firstPersonMover.IsAlive())
                 return;
 
-            m_lerp = Mathf.Clamp01(m_lerp + ((CameraManager.EnableFirstPersonMode && !m_cameraManager.enableThirdPerson && (!GameModeManager.UsesMultiplayerSpawnPoints() || firstPersonMover.HasConstructionFinished()) && !firstPersonMover._isGrabbedForUpgrade ? -Time.unscaledDeltaTime : Time.unscaledDeltaTime) * 3f));
+            m_lerp = Mathf.Clamp01(m_lerp + ((CameraManager.EnableFirstPersonMode && !m_cameraManager.enableThirdPerson && !MultiplayerSpectateManager.Instance.IsInMultiplayerSpectatorMode() && (!GameModeManager.UsesMultiplayerSpawnPoints() || firstPersonMover.HasConstructionFinished()) && !firstPersonMover._isGrabbedForUpgrade ? -Time.unscaledDeltaTime : Time.unscaledDeltaTime) * 3f));
 
             if (refresh)
                 RefreshHeadVisibility(m_lerp);

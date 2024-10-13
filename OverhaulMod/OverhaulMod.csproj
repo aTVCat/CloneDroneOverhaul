@@ -383,6 +383,7 @@
     <Compile Include="Engine\RealisticLightUserSettings.cs" />
     <Compile Include="Engine\ScheduledActionsManager.cs" />
     <Compile Include="Engine\ScheduledActionType.cs" />
+    <Compile Include="Engine\WeaponInvisibilityFixer.cs" />
     <Compile Include="Engine\WeaponVariant.cs" />
     <Compile Include="Content\Personalization\PersonalizationEditorObjectVisibilityController.cs" />
     <Compile Include="Content\Personalization\PersonalizationEditorObjectSpawnInfo.cs" />
@@ -514,6 +515,7 @@
     <Compile Include="Patches\GameModeSelectScreen_Patch.cs" />
     <Compile Include="Patches\GameplayAchievementManager_Patch.cs" />
     <Compile Include="Patches\GameUIRoot_Patch.cs" />
+    <Compile Include="Patches\LevelEditorCinematicCamera_Patch.cs" />
     <Compile Include="Patches\UpgradeStation_Patch.cs" />
     <Compile Include="Patches\GlobalFireParticleSystem_Patch.cs" />
     <Compile Include="Patches\LevelEditorDataManager_Patch.cs" />

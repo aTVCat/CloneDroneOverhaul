@@ -12,7 +12,7 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(AudioManager.refreshVolume))]
         private static void refreshVolume_Postfix()
         {
-            ModAudioManager.Instance.StopChangingVolume(false);
+            ModAudioManager.Instance.RefreshVolume();
         }
     }
 }
