@@ -1,0 +1,17 @@
+- Changed the names of several options in the settings menu
+
+Fixes:
+- The game crashes when attempting to use vanilla achivements menu during gameplay
+- Reworked workshop browser displays ratings incorrectly
+- If you're dead (in LBS), available to you exclusive skins are locked until you respawn
+- Going to customization editor from the customization menu might break shaders in some cases
+- Customization menu crashes if there're items with the same name
+- Mindspace sword robots have a white string on their weapon
+- When you're in spectator and try to select weapon skin, the game crashes
+- Spectating players in multiplayer with first person mode enabled will remove heads and bodies of other players
+- There's no delay for the next upgrade to pick after you go 1-2 (points cost upgrades), which may leave the build unfinished
+- Camera FOV can break in some cases
+- If you decide to unfocus the window (Simply by alt-tabbing) while holding the auto-build button, the window won't disappear until you tap the auto-build button again
+- Enabling the disabled mod through mods menu will not load modded main menu
+- Player list is displayed incorrectly if someone joins/leaves while you're in pause menu
+- Challenge-locked upgrades (ex.: Fire Hammer) are locked in auto-build menu, if you haven't completed the challenge

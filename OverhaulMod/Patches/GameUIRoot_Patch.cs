@@ -85,6 +85,12 @@ namespace OverhaulMod.Patches
                     return true;
                 }
 
+                if (__instance.AchievementProgressUI.gameObject.activeSelf)
+                {
+                    __instance.AchievementProgressUI.Hide();
+                    return false;
+                }
+
                 if (lastShownUi is UIAutoBuildMenu autoBuildMenu)
                 {
                     if (autoBuildMenu.isShowingUpgradeUI)

@@ -1,0 +1,9 @@
+enable_vignette 0,1
+enable_dithering 0,1
+enable_s_s_a_o 0,3
+enable_g_i 0,4
+enable_reflection_probe 0,4
+enable_c_a 0,1
+enable_bloom 0,1
+enable_do_f 0,3
+enable_sun_shafts 0,1
