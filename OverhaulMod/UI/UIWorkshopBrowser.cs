@@ -626,7 +626,7 @@ namespace OverhaulMod.UI
             if (collections)
             {
                 Vector2 vector = m_mainBG.sizeDelta;
-                vector.y = -25f;
+                vector.y = -55f;
                 m_mainBG.sizeDelta = vector;
             }
             else
