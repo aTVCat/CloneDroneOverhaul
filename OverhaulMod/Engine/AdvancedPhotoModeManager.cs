@@ -42,6 +42,9 @@ namespace OverhaulMod.Engine
 
         public void OnLevelLightSettingsChanged(LevelLightSettings changedLightSettings)
         {
+            if (!changedLightSettings)
+                return;
+
             LevelLightSettings currentLightSettings = editingLevelLightSettings;
             if (currentLightSettings != changedLightSettings)
             {

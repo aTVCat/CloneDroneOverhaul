@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 418026426
+CRC: 3556768122
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 276383d13e1706b4153a0358726fb263
+    Hash: 09bb3329d78922b1fdc27e8ca47cc68d
   TypeTreeHash:
     serializedVersion: 2
     Hash: acf1344b0dbbc80b9165ec9e7dce57f8
@@ -117,7 +117,6 @@ Assets:
 - Assets/Sprites/Glyphs/Redirect-16x16.png
 - Assets/UI/UI_PatchNotes.prefab
 - Assets/UI/UI_NewsDetailsPanel.prefab
-- Assets/Sprites/Glyphs/NA-HQ-128x128.png
 - Assets/UI/UI_LoadingScreen.prefab
 - Assets/UI/UI_Transition.prefab
 - Assets/UI/UI_PersonalizationEditorItemCreationDialog.prefab
