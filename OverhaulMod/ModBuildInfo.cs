@@ -75,7 +75,10 @@ namespace OverhaulMod
             {
                 if (s_versionString == null)
                 {
-                    s_versionString = $"{versionMajor}.{versionMinor}.{versionBuild}.{versionRevision}";
+                    if (isPrereleaseBuild)
+                        s_versionString = $"{versionMajor}.{versionMinor}.{versionBuild}.{versionRevision} {branchName}";
+                    else
+                        s_versionString = $"{versionMajor}.{versionMinor}.{versionBuild}.{versionRevision}";
                 }
                 return s_versionString;
             }
@@ -140,6 +143,14 @@ namespace OverhaulMod
 #else
                 return false;
 #endif
+            }
+        }
+
+        public static string branchName
+        {
+            get
+            {
+                return "0.4-dev";
             }
         }
 

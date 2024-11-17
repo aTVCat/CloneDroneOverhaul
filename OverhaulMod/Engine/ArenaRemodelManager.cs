@@ -223,9 +223,30 @@ namespace OverhaulMod.Engine
             if (!m_battleCruiserTransform)
                 return;
 
-            Transform transformBC = Instantiate(EnemyFactory.Instance.Enemies[56].EnemyPrefab.GetComponent<BattleCruiserController>().CharacterModelPrefab.transform);
+            Transform transformBC = Instantiate(EnemyFactory.Instance.GetEnemyConfiguration(EnemyType.BattlecruiserFlagship).EnemyPrefab.GetComponent<BattleCruiserController>().CharacterModelPrefab.transform);
             foreach (MonoBehaviour behaviour in transformBC.GetComponentsInChildren<MonoBehaviour>())
-                Destroy(behaviour);
+            {
+                if(behaviour is MechBodyPart mbp)
+                {
+                    mbp.CanBeDamaged = false;
+                }
+                else if (behaviour is OverrideBodyPartMaterials obpm)
+                {
+                    obpm.Dead = obpm.NotTakingDamage;
+                }
+                else if (behaviour is PicaVoxel.Volume volume)
+                {
+                    volume.CollisionMode = PicaVoxel.CollisionMode.None;
+                }
+
+                if (!(behaviour is ReplaceVoxelColor || behaviour is ReplaceVoxelColorsInChildren || behaviour is OverrideBodyPartMaterials || behaviour is PicaVoxel.Volume || behaviour is PicaVoxel.Frame || behaviour is PicaVoxel.Chunk || behaviour is MechBodyPart))
+                    DestroyImmediate(behaviour);
+            }
+
+            foreach (Collider collider in transformBC.GetComponentsInChildren<Collider>())
+            {
+                collider.enabled = false;
+            }
 
             TransformUtils.HideAllChildren(transformBC);
             transformBC.GetChild(0).gameObject.SetActive(true);
