@@ -1,34 +1,31 @@
 ManifestFileVersion: 0
-CRC: 801287406
+CRC: 2068120656
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
-      Name: overhaul_globalillumination
-      Dependencies: {}
-    Info_1:
       Name: overhaul_upgrades
       Dependencies: {}
-    Info_2:
+    Info_1:
       Name: overhaulassets_p2
       Dependencies: {}
-    Info_3:
+    Info_2:
       Name: overhaul_imageeffects
       Dependencies: {}
-    Info_4:
+    Info_3:
       Name: overhaul_ui
       Dependencies: {}
-    Info_5:
+    Info_4:
       Name: overhaul_default_skyboxes
       Dependencies: {}
-    Info_6:
+    Info_5:
       Name: overhaul_sfx
       Dependencies: {}
-    Info_7:
+    Info_6:
       Name: overhaul_vfx
       Dependencies: {}
-    Info_8:
+    Info_7:
       Name: overhaul_weapons
       Dependencies: {}
-    Info_9:
+    Info_8:
       Name: overhaul_models
       Dependencies: {}

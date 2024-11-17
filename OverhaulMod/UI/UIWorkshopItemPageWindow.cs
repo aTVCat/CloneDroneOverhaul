@@ -258,7 +258,7 @@ namespace OverhaulMod.UI
             RectTransform nameHolder = m_nameHolder;
             float preferredWidth = LayoutUtility.GetPreferredWidth(m_itemTitleText.rectTransform);
             float xa = 0f;
-            float xb = Mathf.Min(namePanel.rect.width - preferredWidth, 0f);
+            float xb = Mathf.Min(namePanel.rect.width - preferredWidth + 35f, 0f);
 
             if (xb != 0f && m_timeLeftToResumeTicker <= 0f)
             {
