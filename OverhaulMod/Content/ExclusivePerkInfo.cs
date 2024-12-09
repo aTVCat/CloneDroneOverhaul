@@ -32,6 +32,12 @@ namespace OverhaulMod.Content
                 case ExclusivePerkType.Color:
                     m_deserializedData = ModJsonUtils.Deserialize<ExclusivePerkColor>(Data);
                     break;
+                case ExclusivePerkType.Feature:
+                    m_deserializedData = ModJsonUtils.Deserialize<int>(Data);
+                    break;
+                default:
+                    m_deserializedData = null;
+                    break;
             }
             m_hasDeserializedData = true;
 

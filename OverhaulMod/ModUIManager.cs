@@ -77,7 +77,7 @@ namespace OverhaulMod
             m_instantiatedUIs = new Dictionary<string, GameObject>();
             m_shownUIs = new List<OverhaulUIBehaviour>();
 
-            if(ModFeatures.IsEnabled(ModFeatures.FeatureType.Intro))
+            if(ModFeatures.IsEnabled(ModFeatures.FeatureType.Intro) && Time.timeSinceLevelLoad < 3f)
                 ModUIConstants.ShowIntro();
         }
 

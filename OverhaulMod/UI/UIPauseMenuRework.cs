@@ -443,6 +443,11 @@ namespace OverhaulMod.UI
 
         public void OnAchievementsButtonClicked()
         {
+            if (!ModUIManager.ShowAdvancementsMenuRework)
+            {
+                ModCache.gameUIRoot.EscMenu.OnAchievementsClicked();
+                return;
+            }
             _ = ModUIConstants.ShowAdvancementsMenuRework();
         }
 

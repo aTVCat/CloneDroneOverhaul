@@ -99,7 +99,7 @@ namespace OverhaulMod.UI
                 ModActionUtils.DoInFrames(delegate
                 {
                     m_fadeInLabel = GameModeManager.IsOnTitleScreen() && !ModUIManager.Instance.HasInstantiatedUI($"{AssetBundleConstants.UI}.{ModUIConstants.UI_INTRO}");
-                }, 10);
+                }, 30);
             }
         }
 
@@ -122,12 +122,16 @@ namespace OverhaulMod.UI
                 rectTransform.sizeDelta = sideDelta;
             }
 
-            if (m_fadeInLabel)
+            bool isOnTitleScreen = GameModeManager.IsOnTitleScreen();
+            if (isOnTitleScreen)
             {
-                m_watermarkCanvasGroup.alpha += Mathf.Min(Time.unscaledDeltaTime, 0.025f);
-                if (m_watermarkCanvasGroup.alpha >= 1f)
+                if (m_fadeInLabel)
                 {
-                    m_fadeInLabel = false;
+                    m_watermarkCanvasGroup.alpha += Mathf.Min(Time.unscaledDeltaTime, 0.025f);
+                    if (m_watermarkCanvasGroup.alpha >= 1f)
+                    {
+                        m_fadeInLabel = false;
+                    }
                 }
             }
 
@@ -135,7 +139,6 @@ namespace OverhaulMod.UI
                 return;
 
             bool show = !ForceHide && showWatermark;
-            bool isOnTitleScreen = GameModeManager.IsOnTitleScreen();
             m_watermark.SetActive(show && ModCache.titleScreenUI.RootButtonsContainerBG.activeInHierarchy && isOnTitleScreen);
             m_gameplayWatermark.SetActive(show && !isOnTitleScreen);
         }

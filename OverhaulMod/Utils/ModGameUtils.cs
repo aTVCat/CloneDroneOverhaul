@@ -42,8 +42,6 @@ namespace OverhaulMod.Utils
 
         private static readonly List<Action<IFPMoveCommandInput>> m_playerInputUpdateActions = new List<Action<IFPMoveCommandInput>>();
 
-        public static Dictionary<string, string> currentLevelMetaData { get; set; }
-
         public static int GetNumOfAchievements()
         {
             GameplayAchievementManager gameplayAchievementManager = GameplayAchievementManager.Instance;

@@ -1,95 +1,26 @@
 ﻿using OverhaulMod.Content;
-using OverhaulMod.Utils;
 using System.Collections.Generic;
-using System.IO;
 
 namespace OverhaulMod
 {
     public static class ModFeatures
     {
-        public const string FEATURES_DATA_FILE_NAME = "featureStates.json";
+        private static readonly Dictionary<FeatureType, bool> m_cachedValues = new Dictionary<FeatureType, bool>();
 
-        private static ModFeaturesData s_data;
-
-        public static void Load()
+        public static void CacheValues()
         {
-            string path = Path.Combine(ModCore.dataFolder, FEATURES_DATA_FILE_NAME);
+            Dictionary<FeatureType, bool> d = m_cachedValues;
+            d.Clear();
 
-            ModFeaturesData data;
-            try
-            {
-                data = ModJsonUtils.DeserializeStream<ModFeaturesData>(path);
-            }
-            catch
-            {
-                data = new ModFeaturesData();
-            }
-            data.FixValues();
-
-            bool anyChanges = false;
-            foreach (object enumName in typeof(FeatureType).GetEnumValues())
-            {
-                FeatureType featureType = (FeatureType)enumName;
-                if (!data.FeatureStates.ContainsKey(featureType))
-                {
-                    data.FeatureStates.Add(featureType, IsEnabled(featureType, false));
-                    anyChanges = true;
-                }
-            }
-
-            s_data = data;
-
-            if (anyChanges)
-                Save();
-        }
-
-        public static void Save()
-        {
-            if (s_data == null)
-                return;
-
-            ModJsonUtils.WriteStream(Path.Combine(ModCore.dataFolder, FEATURES_DATA_FILE_NAME), s_data);
-        }
-
-        /// <summary>
-        /// Reset feature states
-        /// </summary>
-        /// <returns>False if feature states already were default</returns>
-        public static bool Default()
-        {
-            bool anyChanges = false;
-
-            Dictionary<FeatureType, bool> d = s_data.FeatureStates;
-            foreach (object enumName in typeof(FeatureType).GetEnumValues())
-            {
-                FeatureType featureType = (FeatureType)enumName;
-                bool state = IsEnabled(featureType, false);
-
-                if (!d.ContainsKey(featureType))
-                {
-                    d.Add(featureType, state);
-                    anyChanges = true;
-                }
-                else if (d[featureType] != state)
-                {
-                    d[featureType] = state;
-                    anyChanges = true;
-                }
-            }
-
-            return anyChanges;
-        }
-
-        public static ModFeaturesData GetData()
-        {
-            return s_data;
+            foreach (FeatureType feature in typeof(FeatureType).GetEnumValues())
+                d.Add(feature, IsEnabled(feature, false));
         }
 
         public static bool IsEnabled(FeatureType feature, bool useCaching = true)
         {
             if (useCaching)
             {
-                Dictionary<FeatureType, bool> d = s_data?.FeatureStates;
+                Dictionary<FeatureType, bool> d = m_cachedValues;
                 if (d != null && d.ContainsKey(feature))
                     return d[feature];
             }
@@ -217,8 +148,8 @@ namespace OverhaulMod
 
             if (!result)
             {
-                ExclusivePerkManager modExclusiveContentManager = ExclusivePerkManager.Instance;
-                if (modExclusiveContentManager && modExclusiveContentManager.IsFeatureUnlocked(feature))
+                ExclusivePerkManager exclusivePerkManager = ExclusivePerkManager.Instance;
+                if (exclusivePerkManager.IsFeatureUnlocked(feature))
                     result = true;
             }
             return result;
@@ -285,6 +216,7 @@ namespace OverhaulMod
             RequireNormalAndFireVariantsForSwordAndSpearSkins,
 
             DisplayDisconnectedPlayers,
+
             ShowUpgradeUIExitButtonInLBS,
 
             Intro,

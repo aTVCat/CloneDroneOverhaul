@@ -31,7 +31,6 @@ namespace OverhaulMod
             loadGameUIThemeData();
 
             ModBuildInfo.Load();
-            ModFeatures.Load();
 
             GameObject gameObject = new GameObject("OverhaulManagers", new Type[] { typeof(ModManagers) });
             UnityEngine.Object.DontDestroyOnLoad(gameObject);
@@ -39,6 +38,7 @@ namespace OverhaulMod
             createDirectories();
             addManagers();
             ModManagers.Instance.TriggerModLoadedEvent();
+            ModFeatures.CacheValues();
 
             loadMiscellaneousAssets();
             addLevelEditorObjects();

@@ -81,8 +81,6 @@ namespace OverhaulMod.Content.Personalization
 
         private Dictionary<WeaponType, WeaponVariant> m_weaponTypeToVariant;
 
-        private bool m_spawnSkinsNextFrame;
-
         private bool m_isEnemy;
 
         private bool m_isPlayer, m_isMainPlayer, m_isMindSpace;
@@ -91,7 +89,7 @@ namespace OverhaulMod.Content.Personalization
 
         private bool m_hasInitialized, m_hasAddedEventListeners;
 
-        private float m_timeLeftToRefreshWeaponSkinAndParts, m_timeLeftToRefreshSkinVisibility;
+        private float m_timeLeftToRefreshSkins, m_timeLeftToRefreshSkinVisibility;
 
         private bool m_hasRefreshedAfterDeath;
 
@@ -108,7 +106,7 @@ namespace OverhaulMod.Content.Personalization
         private void OnEnable()
         {
             FirstPersonMover firstPersonMover = owner;
-            if (!firstPersonMover || !firstPersonMover.IsAlive())
+            if (!firstPersonMover || !firstPersonMover.IsAttachedAndAlive())
             {
                 base.enabled = false;
                 return;
@@ -131,16 +129,7 @@ namespace OverhaulMod.Content.Personalization
 
         private void Update()
         {
-            if (m_hasRefreshedAfterDeath)
-                return;
-
-            if (m_spawnSkinsNextFrame)
-            {
-                m_spawnSkinsNextFrame = false;
-                SpawnEquippedSkins();
-            }
-
-            if (!m_hasInitialized)
+            if (m_hasRefreshedAfterDeath || !m_hasInitialized)
                 return;
 
             FirstPersonMover firstPersonMover = owner;
@@ -149,13 +138,16 @@ namespace OverhaulMod.Content.Personalization
 
             float d = Time.deltaTime;
 
-            m_timeLeftToRefreshWeaponSkinAndParts -= d;
-            if (m_timeLeftToRefreshWeaponSkinAndParts <= 0f)
+            m_timeLeftToRefreshSkins -= d;
+            if (m_timeLeftToRefreshSkins <= 0f)
             {
-                m_timeLeftToRefreshWeaponSkinAndParts = 0.5f;
+                m_timeLeftToRefreshSkins = 0.5f;
 
                 if (!firstPersonMover.IsAlive())
                     m_hasRefreshedAfterDeath = true;
+
+                bool inEditor = PersonalizationEditorManager.IsInEditor();
+                bool originalModelsEnabled = inEditor && PersonalizationEditorManager.Instance.originalModelsEnabled;
 
                 if (!m_isMindSpace)
                 {
@@ -179,6 +171,9 @@ namespace OverhaulMod.Content.Personalization
                         PersonalizationEditorObjectBehaviour behaviour = SpawnItem(skin);
                         if (behaviour)
                         {
+                            if(inEditor)
+                                behaviour.gameObject.SetActive(!PersonalizationEditorManager.Instance.originalModelsEnabled);
+
                             personalizationItemInfo = behaviour.ControllerInfo?.ItemInfo;
                             hasSpawnedSkinForWeapon = true;
                         }
@@ -188,8 +183,7 @@ namespace OverhaulMod.Content.Personalization
                         }
                     }
 
-                    bool forceEnable = PersonalizationEditorManager.IsInEditor() && PersonalizationEditorManager.Instance.originalModelsEnabled;
-                    SetWeaponPartsVisible(weaponType, forceEnable || !hasSpawnedSkinForWeapon, personalizationItemInfo != null && personalizationItemInfo.HideBowStrings);
+                    SetWeaponPartsVisible(weaponType, originalModelsEnabled || !hasSpawnedSkinForWeapon, !originalModelsEnabled && personalizationItemInfo != null && personalizationItemInfo.HideBowStrings);
                 }
             }
 
@@ -218,23 +212,25 @@ namespace OverhaulMod.Content.Personalization
         {
             if (playFabId == owner.GetPlayFabID())
             {
-                SpawnEquippedSkinsNextFrame();
+                RefreshWeaponSkinsNextFrame();
             }
         }
 
-        private void refreshWeaponSkinAndParts()
+        public void RefreshWeaponSkinsNextFrame()
         {
-            m_timeLeftToRefreshWeaponSkinAndParts = 0f;
+            m_timeLeftToRefreshSkins = 0f;
         }
 
         private IEnumerator initializeCoroutine(FirstPersonMover firstPersonMover)
         {
             yield return null;
 
-            while (firstPersonMover && firstPersonMover.IsAlive() && !firstPersonMover.IsInitialized())
+            while (firstPersonMover && firstPersonMover.IsAttachedAndAlive() && (!firstPersonMover.IsInitialized() || !firstPersonMover.HasCharacterModel()))
                 yield return null;
 
-            if (!firstPersonMover || !firstPersonMover.IsAlive())
+            yield return null;
+
+            if (!firstPersonMover || !firstPersonMover.IsAttachedAndAlive())
             {
                 Destroy(this);
                 yield break;
@@ -254,7 +250,7 @@ namespace OverhaulMod.Content.Personalization
                     m_isPlayer = true;
                     m_isMainPlayer = firstPersonMover.IsMainPlayer();
 
-                    float timeOut = Time.time + 1f;
+                    float timeOut = Time.time + 3f;
                     while (Time.time < timeOut && firstPersonMover.GetPlayFabID().IsNullOrEmpty())
                         yield return null;
                 }
@@ -268,11 +264,12 @@ namespace OverhaulMod.Content.Personalization
                 m_isMindSpace = firstPersonMover.IsMindSpaceCharacter;
             }
 
-            m_hasInitialized = true;
             GlobalEventManager.Instance.AddEventListener<string>(PersonalizationMultiplayerManager.PLAYER_INFO_UPDATED_EVENT, onPlayerInfoUpdated);
             m_hasAddedEventListeners = true;
-            refreshWeaponSkinAndParts();
-            SpawnEquippedSkinsNextFrame();
+            m_hasInitialized = true;
+
+            RefreshWeaponRenderers();
+            RefreshWeaponSkinsNextFrame();
             yield break;
         }
 
@@ -384,7 +381,7 @@ namespace OverhaulMod.Content.Personalization
                     SetBowStringsWidth(Mathf.Clamp(personalizationItemInfo.BowStringsWidth, 0.1f, 1f));
                 }
 
-                refreshWeaponSkinAndParts();
+                RefreshWeaponSkinsNextFrame();
             }
 
             return behaviour;
@@ -396,7 +393,7 @@ namespace OverhaulMod.Content.Personalization
                 return;
 
             if (personalizationItemInfo.Category == PersonalizationCategory.WeaponSkins)
-                refreshWeaponSkinAndParts();
+                RefreshWeaponSkinsNextFrame();
 
             PersonalizationEditorObjectBehaviour b = m_spawnedItems[personalizationItemInfo];
             if (b)
@@ -458,18 +455,12 @@ namespace OverhaulMod.Content.Personalization
             }
         }
 
-        public void SpawnEquippedSkinsNextFrame()
-        {
-            m_spawnSkinsNextFrame = true;
-        }
-
         public void SpawnEquippedSkins()
         {
             if (PersonalizationEditorManager.IsInEditor())
                 return;
 
             DestroyAllItems();
-            RefreshWeaponRenderers();
 
             if (GameModeManager.IsMultiplayer() && !owner.IsMainPlayer())
                 return;
@@ -479,12 +470,14 @@ namespace OverhaulMod.Content.Personalization
             string hammerSkin = GetWeaponSkinDependingOnOwner(WeaponType.Hammer);
             string spearSkin = GetWeaponSkinDependingOnOwner(WeaponType.Spear);
             string shieldSkin = GetWeaponSkinDependingOnOwner(WeaponType.Shield);
+            string scytheSkin = GetWeaponSkinDependingOnOwner(ModWeaponsManager.SCYTHE_TYPE);
 
             _ = SpawnItem(swordSkin);
             _ = SpawnItem(bowSkin);
             _ = SpawnItem(hammerSkin);
             _ = SpawnItem(spearSkin);
             _ = SpawnItem(shieldSkin);
+            _ = SpawnItem(scytheSkin);
         }
 
         public void RespawnSkinsIfRequired()
@@ -496,8 +489,6 @@ namespace OverhaulMod.Content.Personalization
             }
             else
             {
-                RefreshWeaponRenderers();
-
                 List<PersonalizationItemInfo> skinsToRespawn = null;
                 foreach (KeyValuePair<PersonalizationItemInfo, PersonalizationEditorObjectBehaviour> kv in d)
                 {

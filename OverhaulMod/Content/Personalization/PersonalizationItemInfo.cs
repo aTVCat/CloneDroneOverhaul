@@ -133,11 +133,8 @@ namespace OverhaulMod.Content.Personalization
             if (!IsExclusive())
                 return true;
 
-            /*if (!character)
-                return false;*/
-
             bool isSinglePlayer = GameModeManager.IsSinglePlayer();
-            string playFabId = isSinglePlayer || !character ? ModUserInfo.localPlayerPlayFabID : character.GetPlayFabID();
+            string playFabId = isSinglePlayer || (!character || !character.IsAttachedAndAlive()) ? ModUserInfo.localPlayerPlayFabID : character.GetPlayFabID();
 
             bool result = false;
             List<PersonalizationItemLockInfo> exclusiveForList = ExclusiveFor_V2;

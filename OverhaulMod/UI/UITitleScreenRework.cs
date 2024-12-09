@@ -248,7 +248,7 @@ namespace OverhaulMod.UI
             NewsButtonWarnController.isNewsButton = true;
             UpdatesButtonWarnController.isUpdatesButton = true;
             m_debugButtonsObject.SetActive(debug);
-            m_featuresButton.gameObject.SetActive(debug);
+            m_featuresButton.gameObject.SetActive(false);
 
             float fraction = GameplayAchievementManager.Instance.GetFractionOfAchievementsCompleted();
             m_advancementsProgressImage.fillAmount = fraction;

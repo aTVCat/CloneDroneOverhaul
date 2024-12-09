@@ -1,5 +1,6 @@
 ﻿using HarmonyLib;
 using ModLibrary;
+using OverhaulMod.Engine;
 using UnityEngine;
 
 namespace OverhaulMod.Patches
@@ -11,15 +12,17 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(CustomUpgradeManager.Update))]
         private static void Update_Postfix(CustomUpgradeManager __instance)
         {
-            bool notOnTitleScreen = !GameModeManager.IsOnTitleScreen();
+            bool hide = AutoBuildManager.Instance.isInAutoBuildConfigurationMode;
+            if (hide)
+            {
+                GameObject backButton = __instance._backButton;
+                if (backButton)
+                    backButton.SetActive(false);
 
-            GameObject backButton = __instance._backButton;
-            if (backButton)
-                backButton.SetActive(backButton.activeSelf && notOnTitleScreen);
-
-            GameObject nextButton = __instance._nextButton;
-            if (nextButton)
-                nextButton.SetActive(nextButton.activeSelf && notOnTitleScreen);
+                GameObject nextButton = __instance._nextButton;
+                if (nextButton)
+                    nextButton.SetActive(false);
+            }
         }
     }
 }
