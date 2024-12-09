@@ -15,6 +15,9 @@ namespace OverhaulMod.UI
         [UIElement("DescriptionField")]
         private readonly InputField m_descriptionField;
 
+        [UIElement("charLeftText_Description")]
+        private readonly Text m_descriptionFieldCharsLeftText;
+
         [UIElement("NewEditorIdField")]
         private readonly InputField m_editorIdField;
 
@@ -48,6 +51,7 @@ namespace OverhaulMod.UI
         [UIElement("RevealEditorIDButton")]
         private readonly Button m_revealEditorIDButton;
 
+        [UIElementAction(nameof(OnEditedTypeDropdown))]
         [UIElement("TypeDropdown")]
         private readonly Dropdown m_typeDropdown;
 
@@ -100,6 +104,8 @@ namespace OverhaulMod.UI
 
         protected override void OnInitialized()
         {
+            m_descriptionField.onValueChanged.AddListener(OnDescriptionFieldChanged);
+
             List<Dropdown.OptionData> weaponList = m_weaponDropdown.options;
             weaponList.Clear();
             weaponList.Add(new DropdownWeaponTypeOptionData(WeaponType.Sword));
@@ -139,7 +145,15 @@ namespace OverhaulMod.UI
             }
             m_bodyPartDropdown.RefreshShownValue();
 
-            m_typeDropdown.interactable = ModFeatures.IsEnabled(ModFeatures.FeatureType.AccessoriesAndPets);
+            List<Dropdown.OptionData> typeList = m_typeDropdown.options;
+            typeList.Clear();
+            typeList.Add(new DropdownIntOptionData() { text = "Weapon skin", IntValue = (int)PersonalizationCategory.WeaponSkins });
+            if (ModFeatures.IsEnabled(ModFeatures.FeatureType.Accessories))
+                typeList.Add(new DropdownIntOptionData() { text = "Accessory", IntValue = (int)PersonalizationCategory.Accessories });
+            if (ModFeatures.IsEnabled(ModFeatures.FeatureType.Pets))
+                typeList.Add(new DropdownIntOptionData() { text = "Pet", IntValue = (int)PersonalizationCategory.Pets });
+            m_typeDropdown.RefreshShownValue();
+            m_typeDropdown.interactable = typeList.Count > 1;
 
             m_specialInfoPanel.SetActive(PersonalizationEditorManager.Instance.canEditItemSpecialInfo);
         }
@@ -156,7 +170,6 @@ namespace OverhaulMod.UI
             m_descriptionField.text = personalizationItemInfo.Description;
             m_authorField.referenceList = personalizationItemInfo.Authors;
             m_exclusiveForField.referenceList = personalizationItemInfo.ExclusiveFor_V2;
-            m_typeDropdown.value = (int)personalizationItemInfo.Category - 1;
             m_verifyButton.interactable = !personalizationItemInfo.IsVerified;
             m_hierarchyPanel.itemInfo = personalizationItemInfo;
             m_filesPanel.itemInfo = personalizationItemInfo;
@@ -176,6 +189,10 @@ namespace OverhaulMod.UI
 
             m_editorIdField.interactable = false;
             m_revealEditorIDButton.gameObject.SetActive(true);
+
+            m_specialInfoPanel.SetActive(personalizationItemInfo.Category == PersonalizationCategory.WeaponSkins);
+            m_weaponDropdown.gameObject.SetActive(personalizationItemInfo.Category == PersonalizationCategory.WeaponSkins);
+            m_bodyPartDropdown.gameObject.SetActive(personalizationItemInfo.Category == PersonalizationCategory.Accessories);
 
             for (int i = 0; i < m_weaponDropdown.options.Count; i++)
             {
@@ -205,6 +222,15 @@ namespace OverhaulMod.UI
                 }
             }
 
+            for (int i = 0; i < m_typeDropdown.options.Count; i++)
+            {
+                if ((m_typeDropdown.options[i] as DropdownIntOptionData).IntValue == (int)personalizationItemInfo.Category)
+                {
+                    m_typeDropdown.value = i;
+                    break;
+                }
+            }
+
             FirstPersonMover firstPersonMover = PersonalizationEditorManager.Instance.GetBot();
             firstPersonMover.SetEquippedWeaponType(personalizationItemInfo.Weapon, false);
 
@@ -221,7 +247,7 @@ namespace OverhaulMod.UI
             personalizationItemInfo.Name = m_nameField.text;
             personalizationItemInfo.Description = m_descriptionField.text;
             personalizationItemInfo.EditorID = m_editorIdField.text;
-            personalizationItemInfo.Category = (PersonalizationCategory)(m_typeDropdown.value + 1);
+            personalizationItemInfo.Category = (PersonalizationCategory)(m_typeDropdown.options[m_typeDropdown.value] as DropdownIntOptionData).IntValue;
             personalizationItemInfo.ItemID = m_itemIdField.text;
             personalizationItemInfo.BodyPartName = m_bodyPartDropdown.options[m_bodyPartDropdown.value].text;
 
@@ -252,6 +278,37 @@ namespace OverhaulMod.UI
         private string getExportedItemFileName()
         {
             return $"{ModFileUtils.GetDirectoryName(itemInfo.FolderPath)}.zip";
+        }
+
+        private string getCharLeftTextForField(InputField inputField)
+        {
+            return $"{inputField.characterLimit - inputField.text.Length} {LocalizationManager.Instance.GetTranslatedString("charsleft")}";
+        }
+
+        public void OnDescriptionFieldChanged(string text)
+        {
+            m_descriptionFieldCharsLeftText.text = getCharLeftTextForField(m_descriptionField);
+        }
+
+        public void OnEditedTypeDropdown(int value)
+        {
+            if (m_disallowCallbacks)
+                return;
+
+            PersonalizationItemInfo personalizationItemInfo = itemInfo;
+            if (personalizationItemInfo == null)
+                return;
+
+            PersonalizationCategory category = (PersonalizationCategory)(m_typeDropdown.options[value] as DropdownIntOptionData).IntValue;
+            personalizationItemInfo.Category = category;
+
+            m_specialInfoPanel.SetActive(category == PersonalizationCategory.WeaponSkins);
+            m_weaponDropdown.gameObject.SetActive(category == PersonalizationCategory.WeaponSkins);
+            m_bodyPartDropdown.gameObject.SetActive(category == PersonalizationCategory.Accessories);
+
+            PersonalizationEditorManager manager = PersonalizationEditorManager.Instance;
+            manager.SerializeRoot();
+            manager.SpawnRootObject();
         }
 
         public void OnEditedWeaponTypeDropdown(int value)

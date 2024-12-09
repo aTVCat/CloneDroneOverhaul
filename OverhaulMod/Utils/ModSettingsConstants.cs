@@ -202,6 +202,11 @@ namespace OverhaulMod.Utils
         public const string SCYTHE_SKIN = "ScytheSkin";
 
         /// <summary>
+        /// <see cref="Content.Personalization.PersonalizationController"/>
+        /// </summary>
+        public const string ACCESSORIES = "Accessories";
+
+        /// <summary>
         /// <see cref="Visuals.RobotWeaponBag"/>
         /// </summary>
         public const string ENABLE_WEAPON_BAG = "EnableWeaponBag";

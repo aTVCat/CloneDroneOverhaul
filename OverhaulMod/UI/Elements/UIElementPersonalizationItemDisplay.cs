@@ -85,8 +85,6 @@ namespace OverhaulMod.UI
             GlobalEventManager.Instance.RemoveEventListener(PersonalizationManager.ITEM_EQUIPPED_OR_UNEQUIPPED_EVENT, RefreshDisplays);
         }
 
-        public bool IsDoubleClicked() => m_timeForDoubleClick != -1f && Time.unscaledTime < m_timeForDoubleClick;
-
         public void SetBrowserUI(UIPersonalizationItemBrowser itemsBrowser)
         {
             m_browser = itemsBrowser;
@@ -127,7 +125,9 @@ namespace OverhaulMod.UI
             updateItemUserInfo();
 
             PersonalizationManager.Instance.EquipItem(itemInfo);
-            m_browser.MakeDefaultSkinButtonInteractable();
+
+            if(itemInfo.Category == PersonalizationCategory.WeaponSkins)
+                m_browser.MakeDefaultSkinButtonInteractable();
         }
 
         private void updateItemUserInfo()

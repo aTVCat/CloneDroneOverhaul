@@ -76,7 +76,7 @@ namespace OverhaulMod
                 case FeatureType.Tooltips:
                     result = false;
                     break;
-                case FeatureType.AccessoriesAndPets:
+                case FeatureType.Pets:
                     result = false;
                     break;
                 case FeatureType.AdvancedSettings:
@@ -142,6 +142,9 @@ namespace OverhaulMod
                 case FeatureType.ReflectionProbe:
                     result = false;
                     break;
+                case FeatureType.Accessories:
+                    result = ModBuildInfo.VERSION_4_3;
+                    break;
                 default:
                     return false;
             }
@@ -189,7 +192,7 @@ namespace OverhaulMod
 
             Tooltips,
 
-            AccessoriesAndPets,
+            Pets,
 
             AdvancedSettings,
 
@@ -231,7 +234,9 @@ namespace OverhaulMod
 
             MoreSettingsMod_ColorBlindnessOptions,
 
-            ReflectionProbe
+            ReflectionProbe,
+
+            Accessories,
         }
     }
 }

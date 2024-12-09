@@ -15,3 +15,5 @@ Fixes:
 - Enabling the disabled mod through mods menu will not load modded main menu
 - Player list is displayed incorrectly if someone joins/leaves while you're in pause menu
 - Challenge-locked upgrades (ex.: Fire Hammer) are locked in auto-build menu, if you haven't completed the challenge
+- Rare advanced photo mode crash
+- Collections are displayed incorrectly in the reworked workshop browser

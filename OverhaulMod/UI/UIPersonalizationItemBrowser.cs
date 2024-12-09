@@ -392,6 +392,8 @@ namespace OverhaulMod.UI
             _ = base.StartCoroutine(populateCoroutine());
         }
 
+
+        // todo: make this better
         private IEnumerator populateCoroutine()
         {
             yield return null;
@@ -417,13 +419,60 @@ namespace OverhaulMod.UI
             if (m_container.childCount != 0)
                 TransformUtils.DestroyAllChildren(m_container);
 
-            if (m_selectedCategory != PersonalizationCategory.WeaponSkins && !ModFeatures.IsEnabled(ModFeatures.FeatureType.AccessoriesAndPets))
+            bool instantiateExtraElements = false;
+            bool isDeveloper = ModUserInfo.isDeveloper;
+
+            if (m_selectedCategory != PersonalizationCategory.WeaponSkins)
             {
-                m_notImplementedTextObject.SetActive(true);
+                if(m_selectedCategory == PersonalizationCategory.Accessories)
+                {
+                    if (!ModFeatures.IsEnabled(ModFeatures.FeatureType.Accessories))
+                    {
+                        m_notImplementedTextObject.SetActive(true);
+                    }
+                    else
+                    {
+                        m_notImplementedTextObject.SetActive(false);
+                        instantiateExtraElements = true;
+
+                        List<PersonalizationItemInfo> list = PersonalizationManager.Instance.itemList.GetItems(m_selectedCategory, PersonalizationItemsSortType.Alphabet);
+                        for (int i = 0; i < list.Count; i++)
+                        {
+                            PersonalizationItemInfo item = list[i];
+                            if (item.HideInBrowser && !isDeveloper)
+                                continue;
+
+                            instantiateItemEntryDisplay(item);
+                        }
+                    }
+                }
+                else if(m_selectedCategory == PersonalizationCategory.Pets)
+                {
+                    if (!ModFeatures.IsEnabled(ModFeatures.FeatureType.Pets))
+                    {
+                        m_notImplementedTextObject.SetActive(true);
+                    }
+                    else
+                    {
+                        m_notImplementedTextObject.SetActive(false);
+                        instantiateExtraElements = true;
+
+                        List<PersonalizationItemInfo> list = PersonalizationManager.Instance.itemList.GetItems(m_selectedCategory, PersonalizationItemsSortType.Alphabet);
+                        for (int i = 0; i < list.Count; i++)
+                        {
+                            PersonalizationItemInfo item = list[i];
+                            if (item.HideInBrowser && !isDeveloper)
+                                continue;
+
+                            instantiateItemEntryDisplay(item);
+                        }
+                    }
+                }
             }
             else
             {
                 m_notImplementedTextObject.SetActive(false);
+                instantiateExtraElements = true;
 
                 if (!Enum.TryParse(m_selectedSubcategory, out WeaponType weaponType))
                     weaponType = WeaponType.Sword;
@@ -483,15 +532,9 @@ namespace OverhaulMod.UI
 
                     PersonalizationManager personalizationManager = PersonalizationManager.Instance;
                     if (personalizationManager.GetPersonalizationAssetsState() == PersonalizationAssetsState.NotInstalled)
-                    {
                         utilsPanel.GetObject<Text>(2).text = LocalizationManager.Instance.GetTranslatedString("Download");
-                    }
                     else
-                    {
                         utilsPanel.GetObject<Text>(2).text = LocalizationManager.Instance.GetTranslatedString("customization_button_update");
-                    }
-
-                    bool isDeveloper = ModUserInfo.isDeveloper;
 
                     List<PersonalizationItemInfo> list = PersonalizationManager.Instance.itemList.GetItems(m_selectedCategory, PersonalizationItemsSortType.Alphabet);
                     for (int i = 0; i < list.Count; i++)
@@ -500,102 +543,28 @@ namespace OverhaulMod.UI
                         if (item.Weapon != weaponType || (item.HideInBrowser && !isDeveloper))
                             continue;
 
-                        bool isExclusive = item.IsExclusive();
-                        bool isVerified = item.IsVerified;
-                        bool noSpecificAuthor = false;
-
-                        string authorsString = item.GetAuthorsString(true);
-                        string prefix;
-                        if (authorsString == "vanilla")
-                        {
-                            noSpecificAuthor = true;
-                            prefix = LocalizationManager.Instance.GetTranslatedString("customization_vanilla");
-                        }
-                        else
-                            prefix = $"{((item.Authors.IsNullOrEmpty() || item.Authors.Count <= 1) ? LocalizationManager.Instance.GetTranslatedString("customization_author") : LocalizationManager.Instance.GetTranslatedString("customization_authors"))} ";
-
-                        string authorsStringToDisplay;
-                        if (noSpecificAuthor)
-                        {
-                            authorsStringToDisplay = prefix;
-                        }
-                        else
-                        {
-                            authorsStringToDisplay = $"{prefix}{authorsString.AddColor(Color.white)}";
-                        }
-
-                        Color textColor;
-                        Color textOutlineColor;
-                        Color glowColor;
-
-                        if (isExclusive && !isVerified)
-                        {
-                            textColor = ModParseUtils.TryParseToColor(ITEM_DISPLAY_NONVERIFIED_EXCLUSIVE_TEXT_COLOR, Color.white);
-                            textOutlineColor = ModParseUtils.TryParseToColor(ITEM_DISPLAY_NONVERIFIED_EXCLUSIVE_TEXT_OUTLINE_COLOR, Color.black);
-                            glowColor = ModParseUtils.TryParseToColor(ITEM_DISPLAY_NONVERIFIED_EXCLUSIVE_TEXT_GLOW_COLOR, Color.white);
-                        }
-                        else if (isExclusive)
-                        {
-                            textColor = ModParseUtils.TryParseToColor(ITEM_DISPLAY_EXCLUSIVE_TEXT_COLOR, Color.white);
-                            textOutlineColor = ModParseUtils.TryParseToColor(ITEM_DISPLAY_EXCLUSIVE_TEXT_OUTLINE_COLOR, Color.black);
-                            glowColor = ModParseUtils.TryParseToColor(ITEM_DISPLAY_EXCLUSIVE_TEXT_GLOW_COLOR, Color.white);
-                        }
-                        else if (!isVerified)
-                        {
-                            textColor = ModParseUtils.TryParseToColor(ITEM_DISPLAY_NONVERIFIED_TEXT_COLOR, Color.white);
-                            textOutlineColor = ModParseUtils.TryParseToColor(ITEM_DISPLAY_NONVERIFIED_TEXT_OUTLINE_COLOR, Color.black);
-                            glowColor = ModParseUtils.TryParseToColor(ITEM_DISPLAY_NONVERIFIED_TEXT_GLOW_COLOR, Color.white);
-                        }
-                        else
-                        {
-                            textColor = ModParseUtils.TryParseToColor(ITEM_DISPLAY_DEFAULT_TEXT_COLOR, Color.white);
-                            textOutlineColor = ModParseUtils.TryParseToColor(ITEM_DISPLAY_DEFAULT_TEXT_OUTLINE_COLOR, Color.black);
-                            glowColor = ModParseUtils.TryParseToColor(ITEM_DISPLAY_DEFAULT_TEXT_GLOW_COLOR, Color.white);
-                        }
-                        glowColor.a = !isExclusive && isVerified ? 0.25f : 0.4f;
-
-                        ModdedObject moddedObject = Instantiate(m_itemDisplay, m_container);
-                        moddedObject.gameObject.SetActive(true);
-
-                        Text itemNameText = moddedObject.GetObject<Text>(0);
-                        itemNameText.text = item.Name.ToUpper();
-                        itemNameText.color = textColor;
-                        Outline itemNameTextOutline = itemNameText.GetComponent<Outline>();
-                        itemNameTextOutline.effectColor = textOutlineColor;
-
-                        Image glowImage = moddedObject.GetObject<Image>(2);
-                        glowImage.color = glowColor;
-
-                        moddedObject.GetObject<Text>(1).text = authorsStringToDisplay;
-
-                        UIElementPersonalizationItemDisplay personalizationItemDisplay = moddedObject.gameObject.AddComponent<UIElementPersonalizationItemDisplay>();
-                        personalizationItemDisplay.ItemInfo = item;
-                        personalizationItemDisplay.SetBrowserUI(this);
-                        personalizationItemDisplay.InitializeElement();
-
-                        string text = item.Name.ToLower();
-                        while (m_cachedDisplays.ContainsKey(text))
-                            text += "_1";
-
-                        m_cachedDisplays.Add(text, moddedObject.gameObject);
+                        instantiateItemEntryDisplay(item);
                     }
-
-                    ModdedObject bottomPanel = Instantiate(m_bottomPanel, m_container);
-                    bottomPanel.gameObject.SetActive(true);
-                    Button editorButton = bottomPanel.GetObject<Button>(0);
-                    editorButton.onClick.AddListener(delegate
-                    {
-                        ModUIUtils.MessagePopup(true, LocalizationManager.Instance.GetTranslatedString("enter_ceditor_dialog_header"), LocalizationManager.Instance.GetTranslatedString("enter_ceditor_dialog_text"), 150f, MessageMenu.ButtonLayout.EnableDisableButtons, "ok", "Yes", "No", null, delegate
-                        {
-                            ModCore.EnterCustomizationEditor = true;
-                            SceneTransitionManager.Instance.DisconnectAndExitToMainMenu();
-                        });
-                    });
-
-                    ModdedObject messageDisplay1 = Instantiate(m_messageDisplay, m_container);
-                    messageDisplay1.gameObject.SetActive(true);
-                    messageDisplay1.GetObject<Text>(0).text = LocalizationManager.Instance.GetTranslatedString("authors_reminder");
                 }
+            }
+
+            if (instantiateExtraElements)
+            {
+                ModdedObject bottomPanel = Instantiate(m_bottomPanel, m_container);
+                bottomPanel.gameObject.SetActive(true);
+                Button editorButton = bottomPanel.GetObject<Button>(0);
+                editorButton.onClick.AddListener(delegate
+                {
+                    ModUIUtils.MessagePopup(true, LocalizationManager.Instance.GetTranslatedString("enter_ceditor_dialog_header"), LocalizationManager.Instance.GetTranslatedString("enter_ceditor_dialog_text"), 150f, MessageMenu.ButtonLayout.EnableDisableButtons, "ok", "Yes", "No", null, delegate
+                    {
+                        ModCore.EnterCustomizationEditor = true;
+                        SceneTransitionManager.Instance.DisconnectAndExitToMainMenu();
+                    });
+                });
+
+                ModdedObject messageDisplay1 = Instantiate(m_messageDisplay, m_container);
+                messageDisplay1.gameObject.SetActive(true);
+                messageDisplay1.GetObject<Text>(0).text = LocalizationManager.Instance.GetTranslatedString("authors_reminder");
             }
 
             OnSearchBoxChanged(m_searchBox.text);
@@ -607,6 +576,88 @@ namespace OverhaulMod.UI
             m_showContents = true;
             m_isPopulating = false;
             yield break;
+        }
+
+        private void instantiateItemEntryDisplay(PersonalizationItemInfo item)
+        {
+            bool isExclusive = item.IsExclusive();
+            bool isVerified = item.IsVerified;
+            bool noSpecificAuthor = false;
+
+            string authorsString = item.GetAuthorsString(true);
+            string prefix;
+            if (authorsString == "vanilla")
+            {
+                noSpecificAuthor = true;
+                prefix = LocalizationManager.Instance.GetTranslatedString("customization_vanilla");
+            }
+            else
+                prefix = $"{((item.Authors.IsNullOrEmpty() || item.Authors.Count <= 1) ? LocalizationManager.Instance.GetTranslatedString("customization_author") : LocalizationManager.Instance.GetTranslatedString("customization_authors"))} ";
+
+            string authorsStringToDisplay;
+            if (noSpecificAuthor)
+            {
+                authorsStringToDisplay = prefix;
+            }
+            else
+            {
+                authorsStringToDisplay = $"{prefix}{authorsString.AddColor(Color.white)}";
+            }
+
+            Color textColor;
+            Color textOutlineColor;
+            Color glowColor;
+
+            if (isExclusive && !isVerified)
+            {
+                textColor = ModParseUtils.TryParseToColor(ITEM_DISPLAY_NONVERIFIED_EXCLUSIVE_TEXT_COLOR, Color.white);
+                textOutlineColor = ModParseUtils.TryParseToColor(ITEM_DISPLAY_NONVERIFIED_EXCLUSIVE_TEXT_OUTLINE_COLOR, Color.black);
+                glowColor = ModParseUtils.TryParseToColor(ITEM_DISPLAY_NONVERIFIED_EXCLUSIVE_TEXT_GLOW_COLOR, Color.white);
+            }
+            else if (isExclusive)
+            {
+                textColor = ModParseUtils.TryParseToColor(ITEM_DISPLAY_EXCLUSIVE_TEXT_COLOR, Color.white);
+                textOutlineColor = ModParseUtils.TryParseToColor(ITEM_DISPLAY_EXCLUSIVE_TEXT_OUTLINE_COLOR, Color.black);
+                glowColor = ModParseUtils.TryParseToColor(ITEM_DISPLAY_EXCLUSIVE_TEXT_GLOW_COLOR, Color.white);
+            }
+            else if (!isVerified)
+            {
+                textColor = ModParseUtils.TryParseToColor(ITEM_DISPLAY_NONVERIFIED_TEXT_COLOR, Color.white);
+                textOutlineColor = ModParseUtils.TryParseToColor(ITEM_DISPLAY_NONVERIFIED_TEXT_OUTLINE_COLOR, Color.black);
+                glowColor = ModParseUtils.TryParseToColor(ITEM_DISPLAY_NONVERIFIED_TEXT_GLOW_COLOR, Color.white);
+            }
+            else
+            {
+                textColor = ModParseUtils.TryParseToColor(ITEM_DISPLAY_DEFAULT_TEXT_COLOR, Color.white);
+                textOutlineColor = ModParseUtils.TryParseToColor(ITEM_DISPLAY_DEFAULT_TEXT_OUTLINE_COLOR, Color.black);
+                glowColor = ModParseUtils.TryParseToColor(ITEM_DISPLAY_DEFAULT_TEXT_GLOW_COLOR, Color.white);
+            }
+            glowColor.a = !isExclusive && isVerified ? 0.25f : 0.4f;
+
+            ModdedObject moddedObject = Instantiate(m_itemDisplay, m_container);
+            moddedObject.gameObject.SetActive(true);
+
+            Text itemNameText = moddedObject.GetObject<Text>(0);
+            itemNameText.text = item.Name.ToUpper();
+            itemNameText.color = textColor;
+            Outline itemNameTextOutline = itemNameText.GetComponent<Outline>();
+            itemNameTextOutline.effectColor = textOutlineColor;
+
+            Image glowImage = moddedObject.GetObject<Image>(2);
+            glowImage.color = glowColor;
+
+            moddedObject.GetObject<Text>(1).text = authorsStringToDisplay;
+
+            UIElementPersonalizationItemDisplay personalizationItemDisplay = moddedObject.gameObject.AddComponent<UIElementPersonalizationItemDisplay>();
+            personalizationItemDisplay.ItemInfo = item;
+            personalizationItemDisplay.SetBrowserUI(this);
+            personalizationItemDisplay.InitializeElement();
+
+            string text = item.Name.ToLower();
+            while (m_cachedDisplays.ContainsKey(text))
+                text += "_1";
+
+            m_cachedDisplays.Add(text, moddedObject.gameObject);
         }
 
         private IEnumerator waitThenRefreshCameraCoroutine()

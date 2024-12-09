@@ -393,6 +393,7 @@ namespace OverhaulMod.Content.Personalization
                 if (firstPersonMover)
                     allPlayers.Add(firstPersonMover);
 
+                SetIsItemEquipped(item, true);
                 foreach (FirstPersonMover clone in allPlayers)
                 {
                     if (!clone)
@@ -405,9 +406,9 @@ namespace OverhaulMod.Content.Personalization
                     }
                 }
             }
-            else
+            else if (item.Category == PersonalizationCategory.Accessories)
             {
-
+                SetIsItemEquipped(item, !GetIsItemEquipped(item));
             }
         }
 
@@ -418,6 +419,9 @@ namespace OverhaulMod.Content.Personalization
             {
                 case PersonalizationCategory.WeaponSkins:
                     PersonalizationController.SetWeaponSkin(item.Weapon, id);
+                    break;
+                case PersonalizationCategory.Accessories:
+                    PersonalizationController.SetAccessoryEquipped(item.ItemID, value);
                     break;
             }
 
@@ -446,6 +450,8 @@ namespace OverhaulMod.Content.Personalization
                             return PersonalizationController.ScytheSkin == itemId;
                     }
                     return false;
+                case PersonalizationCategory.Accessories:
+                    return !itemId.IsNullOrEmpty() && PersonalizationController.Accessories.Contains(itemId);
             }
             return false;
         }

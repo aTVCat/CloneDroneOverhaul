@@ -29,6 +29,9 @@ namespace OverhaulMod.Content.Personalization
         [ModSetting(ModSettingsConstants.SCYTHE_SKIN, null)]
         public static string ScytheSkin;
 
+        [ModSetting(ModSettingsConstants.ACCESSORIES, "")]
+        public static string Accessories;
+
         [ModSetting(ModSettingsConstants.ALLOW_ENEMIES_USE_WEAPON_SKINS, true)]
         public static bool AllowEnemiesUseSkins;
 
@@ -122,6 +125,7 @@ namespace OverhaulMod.Content.Personalization
         {
             if (m_hasAddedEventListeners)
             {
+                GlobalEventManager.Instance.RemoveEventListener(PersonalizationManager.ITEM_EQUIPPED_OR_UNEQUIPPED_EVENT, onItemEquippedOrUnequipped);
                 GlobalEventManager.Instance.RemoveEventListener<string>(PersonalizationMultiplayerManager.PLAYER_INFO_UPDATED_EVENT, onPlayerInfoUpdated);
                 m_hasAddedEventListeners = false;
             }
@@ -161,6 +165,9 @@ namespace OverhaulMod.Content.Personalization
                     foreach (KeyValuePair<PersonalizationItemInfo, PersonalizationEditorObjectBehaviour> kv in m_spawnedItems)
                     {
                         PersonalizationItemInfo key = kv.Key;
+                        if (key.Category != PersonalizationCategory.WeaponSkins)
+                            continue;
+
                         behaviour = kv.Value;
                         if (key.Weapon == weaponType)
                         {
@@ -229,6 +236,11 @@ namespace OverhaulMod.Content.Personalization
             }
         }
 
+        private void onItemEquippedOrUnequipped()
+        {
+            SpawnEquippedAccessories();
+        }
+
         public void RefreshWeaponSkinsNextFrame()
         {
             m_timeLeftToRefreshSkins = 0f;
@@ -277,12 +289,14 @@ namespace OverhaulMod.Content.Personalization
                 m_isMindSpace = firstPersonMover.IsMindSpaceCharacter;
             }
 
+            GlobalEventManager.Instance.AddEventListener(PersonalizationManager.ITEM_EQUIPPED_OR_UNEQUIPPED_EVENT, onItemEquippedOrUnequipped);
             GlobalEventManager.Instance.AddEventListener<string>(PersonalizationMultiplayerManager.PLAYER_INFO_UPDATED_EVENT, onPlayerInfoUpdated);
             m_hasAddedEventListeners = true;
             m_hasInitialized = true;
 
             RefreshWeaponRenderers();
             RefreshWeaponSkinsNextFrame();
+            SpawnEquippedAccessories();
             yield break;
         }
 
@@ -368,14 +382,19 @@ namespace OverhaulMod.Content.Personalization
 
         public PersonalizationEditorObjectBehaviour SpawnItem(PersonalizationItemInfo personalizationItemInfo)
         {
-            if (personalizationItemInfo == null || (!PersonalizationEditorManager.IsInEditor() && !personalizationItemInfo.IsUnlocked(owner)) || personalizationItemInfo.RootObject == null || HasSpawnedItem(personalizationItemInfo))
+            bool inEditor = PersonalizationEditorManager.IsInEditor();
+            if (personalizationItemInfo == null || (!inEditor && !personalizationItemInfo.IsUnlocked(owner)) || personalizationItemInfo.RootObject == null || HasSpawnedItem(personalizationItemInfo))
                 return null;
 
-            RefreshWeaponVariantOfSpawnedSkin(personalizationItemInfo.Weapon);
+            if (personalizationItemInfo.Category == PersonalizationCategory.WeaponSkins)
+                RefreshWeaponVariantOfSpawnedSkin(personalizationItemInfo.Weapon);
 
-            EnemyType enemyType = owner.CharacterType;
-            if (owner.IsMindSpaceCharacter || enemyType == EnemyType.ZombieArcher1 || enemyType == EnemyType.FleetAnalysisBot1 || enemyType == EnemyType.FleetAnalysisBot2 || enemyType == EnemyType.FleetAnalysisBot3 || enemyType == EnemyType.FleetAnalysisBot4 || (personalizationItemInfo.Weapon == WeaponType.Bow && ModSpecialUtils.IsModEnabled("ee32ba1b-8c92-4f50-bdf4-400a14da829e")))
-                return null;
+            if (!inEditor && personalizationItemInfo.Category == PersonalizationCategory.WeaponSkins)
+            {
+                EnemyType enemyType = owner.CharacterType;
+                if (owner.IsMindSpaceCharacter || enemyType == EnemyType.ZombieArcher1 || enemyType == EnemyType.FleetAnalysisBot1 || enemyType == EnemyType.FleetAnalysisBot2 || enemyType == EnemyType.FleetAnalysisBot3 || enemyType == EnemyType.FleetAnalysisBot4 || (personalizationItemInfo.Weapon == WeaponType.Bow && ModSpecialUtils.IsModEnabled("ee32ba1b-8c92-4f50-bdf4-400a14da829e")))
+                    return null;
+            }
 
             Transform transform = GetParentForItem(personalizationItemInfo);
             if (!transform)
@@ -383,7 +402,10 @@ namespace OverhaulMod.Content.Personalization
 
             PersonalizationEditorObjectBehaviour behaviour = personalizationItemInfo.RootObject.Deserialize(transform, new PersonalizationControllerInfo(this, personalizationItemInfo));
             if (!behaviour)
+            {
+                m_spawnedItems.Add(personalizationItemInfo, null);
                 return null;
+            }
 
             m_spawnedItems.Add(personalizationItemInfo, behaviour);
 
@@ -396,7 +418,6 @@ namespace OverhaulMod.Content.Personalization
 
                 RefreshWeaponSkinsNextFrame();
             }
-
             return behaviour;
         }
 
@@ -433,6 +454,33 @@ namespace OverhaulMod.Content.Personalization
             dictionary.Clear();
         }
 
+        public void DestroyItemsOfCategory(PersonalizationCategory personalizationCategory)
+        {
+            Dictionary<PersonalizationItemInfo, PersonalizationEditorObjectBehaviour> dictionary = m_spawnedItems;
+            if (dictionary == null || dictionary.Count == 0)
+                return;
+
+            List<PersonalizationItemInfo> toRemove = null;
+            foreach (KeyValuePair<PersonalizationItemInfo, PersonalizationEditorObjectBehaviour> kv in dictionary)
+                if (kv.Key.Category == personalizationCategory)
+                {
+                    if (toRemove == null)
+                        toRemove = new List<PersonalizationItemInfo>() { kv.Key };
+                    else
+                        toRemove.Add(kv.Key);
+
+                    DestroyItem(kv.Key, false);
+                }
+
+            if (toRemove != null)
+            {
+                foreach (PersonalizationItemInfo info in toRemove)
+                {
+                    dictionary.Remove(info);
+                }
+            }
+        }
+
         public bool HasSpawnedItem(PersonalizationItemInfo personalizationItemInfo)
         {
             return m_spawnedItems.ContainsKey(personalizationItemInfo);
@@ -441,7 +489,7 @@ namespace OverhaulMod.Content.Personalization
         public PersonalizationItemInfo GetItem(WeaponType weaponType)
         {
             foreach (KeyValuePair<PersonalizationItemInfo, PersonalizationEditorObjectBehaviour> keyValue in m_spawnedItems)
-                if (keyValue.Key.Weapon == weaponType)
+                if (keyValue.Key.Category == PersonalizationCategory.WeaponSkins && keyValue.Key.Weapon == weaponType)
                     return keyValue.Key;
 
             return null;
@@ -473,7 +521,7 @@ namespace OverhaulMod.Content.Personalization
             if (PersonalizationEditorManager.IsInEditor())
                 return;
 
-            DestroyAllItems();
+            DestroyItemsOfCategory(PersonalizationCategory.WeaponSkins);
 
             if (GameModeManager.IsMultiplayer() && !owner.IsMainPlayer())
                 return;
@@ -493,6 +541,23 @@ namespace OverhaulMod.Content.Personalization
             _ = SpawnItem(scytheSkin);
         }
 
+        public void SpawnEquippedAccessories()
+        {
+            if (PersonalizationEditorManager.IsInEditor())
+                return;
+
+            DestroyItemsOfCategory(PersonalizationCategory.Accessories);
+
+            if (GameModeManager.IsMultiplayer() && !owner.IsMainPlayer())
+                return;
+
+            List<string> accessories = GetEquippedAccessories();
+            foreach (string item in accessories)
+            {
+                _ = SpawnItem(item);
+            }
+        }
+
         public void RespawnSkinsIfRequired()
         {
             Dictionary<PersonalizationItemInfo, PersonalizationEditorObjectBehaviour> d = m_spawnedItems;
@@ -505,7 +570,7 @@ namespace OverhaulMod.Content.Personalization
                 List<PersonalizationItemInfo> skinsToRespawn = null;
                 foreach (KeyValuePair<PersonalizationItemInfo, PersonalizationEditorObjectBehaviour> kv in d)
                 {
-                    if (ShouldRefreshSkinOfWeapon(kv.Key.Weapon))
+                    if (kv.Key.Category == PersonalizationCategory.WeaponSkins && ShouldRefreshSkinOfWeapon(kv.Key.Weapon))
                     {
                         if (skinsToRespawn == null)
                             skinsToRespawn = new List<PersonalizationItemInfo>();
@@ -517,8 +582,11 @@ namespace OverhaulMod.Content.Personalization
                 if (skinsToRespawn != null)
                     foreach (PersonalizationItemInfo info in skinsToRespawn)
                     {
-                        DestroyItem(info);
-                        _ = SpawnItem(GetWeaponSkinDependingOnOwner(info.Weapon));
+                        if (info.Category == PersonalizationCategory.WeaponSkins)
+                        {
+                            DestroyItem(info);
+                            _ = SpawnItem(GetWeaponSkinDependingOnOwner(info.Weapon));
+                        }
                     }
             }
         }
@@ -527,13 +595,11 @@ namespace OverhaulMod.Content.Personalization
         {
             PersonalizationItemInfo info = null;
             foreach (PersonalizationItemInfo key in m_spawnedItems.Keys)
-                if (key.Weapon == itemToEquip.Weapon)
+                if (itemToEquip.Category == PersonalizationCategory.WeaponSkins && key.Category == PersonalizationCategory.WeaponSkins && key.Weapon == itemToEquip.Weapon)
                 {
                     info = key;
                     break;
                 }
-
-            PersonalizationManager.SetIsItemEquipped(itemToEquip, true);
 
             DestroyItem(info);
             _ = SpawnItem(itemToEquip);
@@ -543,11 +609,23 @@ namespace OverhaulMod.Content.Personalization
         {
             if (personalizationItemInfo.Category == PersonalizationCategory.Pets)
             {
-                return base.transform.transform;
+                return base.transform;
             }
             else if (personalizationItemInfo.Category == PersonalizationCategory.Accessories)
             {
-                _ = TransformUtils.FindChildRecursive(base.transform, personalizationItemInfo.BodyPartName);
+                Transform bodyPart = TransformUtils.FindChildRecursive(base.transform, personalizationItemInfo.BodyPartName);
+                if (!bodyPart)
+                {
+                    if (owner.HasCharacterModel())
+                    {
+                        bodyPart = ownerModel.transform;
+                    }
+                    else
+                    {
+                        bodyPart = owner.transform;
+                    }
+                }
+                return bodyPart;
             }
             else if (personalizationItemInfo.Category == PersonalizationCategory.WeaponSkins)
             {
@@ -654,6 +732,36 @@ namespace OverhaulMod.Content.Personalization
                     return ScytheSkin;
             }
             return null;
+        }
+
+        public static void SetAccessoryEquipped(string itemId, bool value)
+        {
+            string stringValue = Accessories;
+            if (stringValue == null)
+                stringValue = string.Empty;
+
+            string formattedValue = $"{itemId},";
+
+            if (value && !stringValue.Contains(itemId))
+            {
+                stringValue += formattedValue;
+            }
+            else if (!value && stringValue.Contains(formattedValue))
+            {
+                stringValue = stringValue.Replace(formattedValue, string.Empty);
+            }
+
+            ModSettingsManager.SetStringValue(ModSettingsConstants.ACCESSORIES, stringValue);
+        }
+
+        public static bool IsAccessoryEquipped(string itemId)
+        {
+            return !Accessories.IsNullOrEmpty() && Accessories.Contains(itemId);
+        }
+
+        public static List<string> GetEquippedAccessories()
+        {
+            return new List<string>(StringUtils.GetNonEmptySplitOfCommaSeparatedString(Accessories));
         }
     }
 }
