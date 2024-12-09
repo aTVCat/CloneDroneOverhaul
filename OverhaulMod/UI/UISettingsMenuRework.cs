@@ -1321,7 +1321,7 @@ namespace OverhaulMod.UI
             }, "Enable");
 
             _ = pageBuilder.Header3("Intensity");
-            _ = pageBuilder.Slider(0.1f, 1f, false, ModSettingsManager.GetFloatValue(ModSettingsConstants.CHROMATIC_ABERRATION_INTENSITY), delegate (float value)
+            _ = pageBuilder.Slider(0.01f, 1f, false, ModSettingsManager.GetFloatValue(ModSettingsConstants.CHROMATIC_ABERRATION_INTENSITY), delegate (float value)
             {
                 ModSettingsManager.SetFloatValue(ModSettingsConstants.CHROMATIC_ABERRATION_INTENSITY, value, true);
             });

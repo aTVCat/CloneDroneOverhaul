@@ -718,6 +718,7 @@
     <Compile Include="Visuals\ImageEffects\OverhaulChromaticAberration.cs" />
     <Compile Include="Visuals\ImageEffects\OverhaulColorBlindness.cs" />
     <Compile Include="Visuals\ParticleManager.cs" />
+    <Compile Include="Visuals\PostEffectsContainer.cs" />
     <Compile Include="Visuals\PostEffectsManager.cs" />
     <Compile Include="Visuals\RobotWeaponBag.cs" />
     <Compile Include="UI\UIDeveloperMenu.cs" />
