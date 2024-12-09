@@ -155,25 +155,27 @@ namespace OverhaulMod.Content.Personalization
                     string skin = GetWeaponSkinDependingOnOwner(weaponType);
                     bool noSkin = skin.IsNullOrEmpty() || skin == "_";
 
+                    PersonalizationEditorObjectBehaviour behaviour = null;
                     PersonalizationItemInfo personalizationItemInfo = null;
                     bool hasSpawnedSkinForWeapon = false;
-                    foreach (PersonalizationItemInfo key in m_spawnedItems.Keys)
+                    foreach (KeyValuePair<PersonalizationItemInfo, PersonalizationEditorObjectBehaviour> kv in m_spawnedItems)
+                    {
+                        PersonalizationItemInfo key = kv.Key;
+                        behaviour = kv.Value;
                         if (key.Weapon == weaponType)
                         {
                             personalizationItemInfo = key;
-                            hasSpawnedSkinForWeapon = true;
+                            hasSpawnedSkinForWeapon = behaviour;
                         }
+                    }
 
                     if (!noSkin && !hasSpawnedSkinForWeapon)
                     {
                         //Debug.Log("Spawned an item because we didnt earlier");
 
-                        PersonalizationEditorObjectBehaviour behaviour = SpawnItem(skin);
+                        behaviour = SpawnItem(skin);
                         if (behaviour)
                         {
-                            if(inEditor)
-                                behaviour.gameObject.SetActive(!PersonalizationEditorManager.Instance.originalModelsEnabled);
-
                             personalizationItemInfo = behaviour.ControllerInfo?.ItemInfo;
                             hasSpawnedSkinForWeapon = true;
                         }
@@ -183,7 +185,18 @@ namespace OverhaulMod.Content.Personalization
                         }
                     }
 
-                    SetWeaponPartsVisible(weaponType, originalModelsEnabled || !hasSpawnedSkinForWeapon, !originalModelsEnabled && personalizationItemInfo != null && personalizationItemInfo.HideBowStrings);
+                    if (inEditor && behaviour)
+                        behaviour.gameObject.SetActive(!PersonalizationEditorManager.Instance.originalModelsEnabled);
+
+                    if (inEditor && weaponType == WeaponType.Sword)
+                    {
+                        WeaponVariant wv = PersonalizationEditorManager.Instance.previewPresetKey;
+                        SetWeaponPartsVisible(WeaponType.Sword, (originalModelsEnabled || !hasSpawnedSkinForWeapon) && !(wv == WeaponVariant.NormalMultiplayer || wv == WeaponVariant.OnFireMultiplayer), false);
+                    }
+                    else
+                    {
+                        SetWeaponPartsVisible(weaponType, originalModelsEnabled || !hasSpawnedSkinForWeapon, !originalModelsEnabled && personalizationItemInfo != null && personalizationItemInfo.HideBowStrings);
+                    }
                 }
             }
 
