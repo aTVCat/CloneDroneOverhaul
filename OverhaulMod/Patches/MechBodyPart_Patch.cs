@@ -1,4 +1,5 @@
 ﻿using HarmonyLib;
+using OverhaulMod.Content.Personalization;
 using OverhaulMod.Engine;
 using OverhaulMod.Utils;
 using OverhaulMod.Visuals;
@@ -11,6 +12,17 @@ namespace OverhaulMod.Patches
     [HarmonyPatch(typeof(MechBodyPart))]
     internal static class MechBodyPart_Patch
     {
+        [HarmonyPostfix]
+        [HarmonyPatch(nameof(MechBodyPart.DispatchDisconnectedEvent))]
+        private static void DispatchDisconnectedEvent_Postfix(MechBodyPart __instance)
+        {
+            PersonalizationAccessoryReferences personalizationAccessoryReferences = ModComponentCache.GetPersonalizationAccessoryReferences(__instance.transform);
+            if (personalizationAccessoryReferences)
+            {
+                personalizationAccessoryReferences.RefreshVisibility();
+            }
+        }
+
         [HarmonyPostfix]
         [HarmonyPatch(nameof(MechBodyPart.createNewVoxelBeingDestroyed), new Type[] { typeof(PicaVoxelPoint), typeof(FireSpreadDefinition), typeof(float) })]
         private static void createNewVoxelBeingDestroyed_Postfix(MechBodyPart __instance, ref VoxelBeingDestroyed __result, PicaVoxelPoint picaVoxelPoint, FireSpreadDefinition fireSpreadDefinition, float probabilityOfFireSpread)

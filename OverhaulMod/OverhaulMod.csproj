@@ -352,6 +352,7 @@
     <Compile Include="Content\Personalization\CVMModelPreset.cs" />
     <Compile Include="Content\Personalization\FavoriteColorSettings.cs" />
     <Compile Include="Content\Personalization\GreatSwordPreviewController.cs" />
+    <Compile Include="Content\Personalization\PersonalizationAccessoryBehaviour.cs" />
     <Compile Include="Content\Personalization\PersonalizationAssetsInfo.cs" />
     <Compile Include="Content\Personalization\PersonalizationAssetsState.cs" />
     <Compile Include="Content\Personalization\PersonalizationCacheManager.cs" />
@@ -372,6 +373,7 @@
     <Compile Include="Content\Personalization\PersonalizationEditorTemplateManager.cs" />
     <Compile Include="Content\Personalization\PersonalizationItemLockInfo.cs" />
     <Compile Include="Content\Personalization\PersonalizationItemMetaData.cs" />
+    <Compile Include="Content\Personalization\PersonalizationAccessoryReferences.cs" />
     <Compile Include="Content\Personalization\PersonalizationMultiplayerManager.cs" />
     <Compile Include="Content\Personalization\PersonalizationMultiplayerPlayerInfo.cs" />
     <Compile Include="Engine\AutoBuildListInfo.cs" />
@@ -480,6 +482,7 @@
     <Compile Include="ModDataManager.cs" />
     <Compile Include="Content\NewsInfoList.cs" />
     <Compile Include="ModUserInfo.cs" />
+    <Compile Include="Patches\BaseBodyPart_Patch.cs" />
     <Compile Include="Patches\ExplodeWhenCut_Patch.cs" />
     <Compile Include="Patches\AttackManager_Patch.cs" />
     <Compile Include="Patches\AudioManager_Patch.cs" />

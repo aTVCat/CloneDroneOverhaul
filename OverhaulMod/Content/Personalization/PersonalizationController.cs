@@ -380,43 +380,65 @@ namespace OverhaulMod.Content.Personalization
             return SpawnItem(PersonalizationManager.Instance.itemList.GetItem(itemId));
         }
 
-        public PersonalizationEditorObjectBehaviour SpawnItem(PersonalizationItemInfo personalizationItemInfo)
+        public PersonalizationEditorObjectBehaviour SpawnItem(PersonalizationItemInfo itemInfo)
         {
             bool inEditor = PersonalizationEditorManager.IsInEditor();
-            if (personalizationItemInfo == null || (!inEditor && !personalizationItemInfo.IsUnlocked(owner)) || personalizationItemInfo.RootObject == null || HasSpawnedItem(personalizationItemInfo))
+            if (itemInfo == null || (!inEditor && !itemInfo.IsUnlocked(owner)) || itemInfo.RootObject == null || HasSpawnedItem(itemInfo))
                 return null;
 
-            if (personalizationItemInfo.Category == PersonalizationCategory.WeaponSkins)
-                RefreshWeaponVariantOfSpawnedSkin(personalizationItemInfo.Weapon);
+            if (itemInfo.Category == PersonalizationCategory.WeaponSkins)
+                RefreshWeaponVariantOfSpawnedSkin(itemInfo.Weapon);
 
-            if (!inEditor && personalizationItemInfo.Category == PersonalizationCategory.WeaponSkins)
+            if (!inEditor && itemInfo.Category == PersonalizationCategory.WeaponSkins)
             {
                 EnemyType enemyType = owner.CharacterType;
-                if (owner.IsMindSpaceCharacter || enemyType == EnemyType.ZombieArcher1 || enemyType == EnemyType.FleetAnalysisBot1 || enemyType == EnemyType.FleetAnalysisBot2 || enemyType == EnemyType.FleetAnalysisBot3 || enemyType == EnemyType.FleetAnalysisBot4 || (personalizationItemInfo.Weapon == WeaponType.Bow && ModSpecialUtils.IsModEnabled("ee32ba1b-8c92-4f50-bdf4-400a14da829e")))
+                if (owner.IsMindSpaceCharacter || enemyType == EnemyType.ZombieArcher1 || enemyType == EnemyType.FleetAnalysisBot1 || enemyType == EnemyType.FleetAnalysisBot2 || enemyType == EnemyType.FleetAnalysisBot3 || enemyType == EnemyType.FleetAnalysisBot4 || (itemInfo.Weapon == WeaponType.Bow && ModSpecialUtils.IsModEnabled("ee32ba1b-8c92-4f50-bdf4-400a14da829e")))
                     return null;
             }
 
-            Transform transform = GetParentForItem(personalizationItemInfo);
+            Transform transform = GetParentForItem(itemInfo);
             if (!transform)
                 return null;
 
-            PersonalizationEditorObjectBehaviour behaviour = personalizationItemInfo.RootObject.Deserialize(transform, new PersonalizationControllerInfo(this, personalizationItemInfo));
+            PersonalizationEditorObjectBehaviour behaviour = itemInfo.RootObject.Deserialize(transform, new PersonalizationControllerInfo(this, itemInfo));
             if (!behaviour)
             {
-                m_spawnedItems.Add(personalizationItemInfo, null);
+                m_spawnedItems.Add(itemInfo, null);
                 return null;
             }
 
-            m_spawnedItems.Add(personalizationItemInfo, behaviour);
+            m_spawnedItems.Add(itemInfo, behaviour);
 
-            if (personalizationItemInfo.Category == PersonalizationCategory.WeaponSkins)
+            if (itemInfo.Category == PersonalizationCategory.WeaponSkins)
             {
-                if (personalizationItemInfo.Weapon == WeaponType.Bow)
+                if (itemInfo.Weapon == WeaponType.Bow)
                 {
-                    SetBowStringsWidth(Mathf.Clamp(personalizationItemInfo.BowStringsWidth, 0.1f, 1f));
+                    SetBowStringsWidth(Mathf.Clamp(itemInfo.BowStringsWidth, 0.1f, 1f));
                 }
 
                 RefreshWeaponSkinsNextFrame();
+            }
+            else if (itemInfo.Category == PersonalizationCategory.Accessories)
+            {
+                PersonalizationAccessoryBehaviour personalizationAccessoryBehaviour = behaviour.gameObject.AddComponent<PersonalizationAccessoryBehaviour>();
+                personalizationAccessoryBehaviour.SetItemObject(behaviour);
+
+                List<MechBodyPart> bodyParts = owner.GetAllBodyParts();
+                if (bodyParts != null && bodyParts.Count != 0)
+                {
+                    foreach (MechBodyPart bodyPart in bodyParts)
+                    {
+                        Transform parent = bodyPart.transform.parent;
+                        if (parent && parent.name == itemInfo.BodyPartName)
+                        {
+                            personalizationAccessoryBehaviour.SetBodyPart(bodyPart);
+                            break;
+                        }
+                    }
+                }
+
+                personalizationAccessoryBehaviour.RefreshVisibility();
+                personalizationAccessoryBehaviour.Register();
             }
             return behaviour;
         }
