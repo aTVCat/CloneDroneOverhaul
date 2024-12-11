@@ -9,9 +9,11 @@ namespace OverhaulMod.UI
     public class UIElementPersonalizationItemDisplay : OverhaulUIBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
         public const string ITEM_UNEQUIPPED_BG_COLOR = "#404040";
+        public const string ITEM_UNEQUIPPED_BG_COLOR2 = "#4D4D4D";
         public const string ITEM_EQUIPPED_BG_COLOR = "#305EE0";
 
         public const string ITEM_UNEQUIPPED_NAME_BG_COLOR = "#272727";
+        public const string ITEM_UNEQUIPPED_NAME_BG_COLOR2 = "#333333";
         public const string ITEM_EQUIPPED_NAME_BG_COLOR = "#10204F";
 
         [UIElement("NameBG")]
@@ -48,8 +50,6 @@ namespace OverhaulMod.UI
 
         public PersonalizationItemInfo ItemInfo;
 
-        private float m_timeForDoubleClick;
-
         private bool m_refreshNameHolderNextFrame;
 
         protected override void OnInitialized()
@@ -62,7 +62,6 @@ namespace OverhaulMod.UI
             GlobalEventManager.Instance.AddEventListener(PersonalizationManager.ITEM_EQUIPPED_OR_UNEQUIPPED_EVENT, RefreshDisplays);
             RefreshDisplays();
 
-            m_timeForDoubleClick = -1f;
             m_refreshNameHolderNextFrame = true;
         }
 
@@ -102,6 +101,21 @@ namespace OverhaulMod.UI
             bool wasVerified = personalizationUserInfo.IsItemUnverified(itemInfo) && itemInfo.IsVerified;
             bool isDiscovered = personalizationUserInfo.IsItemDiscovered(itemInfo);
             bool isFavorite = personalizationUserInfo.IsItemFavorite(itemInfo);
+
+            RefreshBG();
+
+            m_favoriteIndicator.SetActive(isFavorite);
+            m_newIndicator.SetActive(!isDiscovered && !wasVerified && !wasUpdated);
+            m_wasVerifiedIndicator.SetActive(wasVerified);
+            m_wasUpdatedIndicator.SetActive(wasUpdated && !wasVerified && isDiscovered);
+        }
+
+        public void RefreshBG()
+        {
+            PersonalizationItemInfo itemInfo = ItemInfo;
+            if (itemInfo == null)
+                return;
+
             bool equipped = itemInfo.IsEquipped();
 
             Color bgColor = ModParseUtils.TryParseToColor(equipped ? ITEM_EQUIPPED_BG_COLOR : ITEM_UNEQUIPPED_BG_COLOR, Color.white);
@@ -110,10 +124,6 @@ namespace OverhaulMod.UI
             m_bg.color = bgColor;
             m_nameBg.color = nameBgColor;
             m_frame.color = nameBgColor;
-            m_favoriteIndicator.SetActive(isFavorite);
-            m_newIndicator.SetActive(!isDiscovered && !wasVerified && !wasUpdated);
-            m_wasVerifiedIndicator.SetActive(wasVerified);
-            m_wasUpdatedIndicator.SetActive(wasUpdated && !wasVerified && isDiscovered);
         }
 
         private void onClicked()

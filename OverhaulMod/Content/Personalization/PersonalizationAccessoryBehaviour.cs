@@ -19,7 +19,7 @@ namespace OverhaulMod.Content.Personalization
             {
                 m_isBodyPartActive = isBodyPartActive;
                 RefreshVisibility();
-            }
+            } // todo: optimize?
         }
 
         private void OnDestroy()

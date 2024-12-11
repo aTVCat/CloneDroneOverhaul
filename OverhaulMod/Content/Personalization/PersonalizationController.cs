@@ -383,16 +383,16 @@ namespace OverhaulMod.Content.Personalization
         public PersonalizationEditorObjectBehaviour SpawnItem(PersonalizationItemInfo itemInfo)
         {
             bool inEditor = PersonalizationEditorManager.IsInEditor();
-            if (itemInfo == null || (!inEditor && !itemInfo.IsUnlocked(owner)) || itemInfo.RootObject == null || HasSpawnedItem(itemInfo))
+            if (itemInfo == null || !owner || (!inEditor && !itemInfo.IsUnlocked(owner)) || itemInfo.RootObject == null || HasSpawnedItem(itemInfo))
                 return null;
 
             if (itemInfo.Category == PersonalizationCategory.WeaponSkins)
                 RefreshWeaponVariantOfSpawnedSkin(itemInfo.Weapon);
 
-            if (!inEditor && itemInfo.Category == PersonalizationCategory.WeaponSkins)
+            if (!inEditor)
             {
                 EnemyType enemyType = owner.CharacterType;
-                if (owner.IsMindSpaceCharacter || enemyType == EnemyType.ZombieArcher1 || enemyType == EnemyType.FleetAnalysisBot1 || enemyType == EnemyType.FleetAnalysisBot2 || enemyType == EnemyType.FleetAnalysisBot3 || enemyType == EnemyType.FleetAnalysisBot4 || (itemInfo.Weapon == WeaponType.Bow && ModSpecialUtils.IsModEnabled("ee32ba1b-8c92-4f50-bdf4-400a14da829e")))
+                if (owner.IsMindSpaceCharacter || enemyType == EnemyType.ZombieArcher1 || enemyType == EnemyType.FleetAnalysisBot1 || enemyType == EnemyType.FleetAnalysisBot2 || enemyType == EnemyType.FleetAnalysisBot3 || enemyType == EnemyType.FleetAnalysisBot4 || (itemInfo.Category == PersonalizationCategory.WeaponSkins && itemInfo.Weapon == WeaponType.Bow && ModSpecialUtils.IsModEnabled("ee32ba1b-8c92-4f50-bdf4-400a14da829e")))
                     return null;
             }
 
@@ -400,13 +400,36 @@ namespace OverhaulMod.Content.Personalization
             if (!transform)
                 return null;
 
+            MechBodyPart bodyPartForAccessory = null;
+            if(itemInfo.Category == PersonalizationCategory.Accessories)
+            {
+                List<MechBodyPart> bodyParts = owner.GetAllBodyParts();
+                if (bodyParts != null && bodyParts.Count != 0)
+                {
+                    foreach (MechBodyPart bodyPart in bodyParts)
+                    {
+                        if (!bodyPart || !bodyPart.transform)
+                            continue;
+
+                        Transform parent = bodyPart.transform.parent;
+                        if (parent && parent.name == itemInfo.BodyPartName)
+                        {
+                            bodyPartForAccessory = bodyPart;
+                            break;
+                        }
+                    }
+                }
+
+                if (!bodyPartForAccessory)
+                    return null;
+            }
+
             PersonalizationEditorObjectBehaviour behaviour = itemInfo.RootObject.Deserialize(transform, new PersonalizationControllerInfo(this, itemInfo));
             if (!behaviour)
             {
                 m_spawnedItems.Add(itemInfo, null);
                 return null;
             }
-
             m_spawnedItems.Add(itemInfo, behaviour);
 
             if (itemInfo.Category == PersonalizationCategory.WeaponSkins)
@@ -415,28 +438,14 @@ namespace OverhaulMod.Content.Personalization
                 {
                     SetBowStringsWidth(Mathf.Clamp(itemInfo.BowStringsWidth, 0.1f, 1f));
                 }
-
                 RefreshWeaponSkinsNextFrame();
+
             }
             else if (itemInfo.Category == PersonalizationCategory.Accessories)
             {
                 PersonalizationAccessoryBehaviour personalizationAccessoryBehaviour = behaviour.gameObject.AddComponent<PersonalizationAccessoryBehaviour>();
                 personalizationAccessoryBehaviour.SetItemObject(behaviour);
-
-                List<MechBodyPart> bodyParts = owner.GetAllBodyParts();
-                if (bodyParts != null && bodyParts.Count != 0)
-                {
-                    foreach (MechBodyPart bodyPart in bodyParts)
-                    {
-                        Transform parent = bodyPart.transform.parent;
-                        if (parent && parent.name == itemInfo.BodyPartName)
-                        {
-                            personalizationAccessoryBehaviour.SetBodyPart(bodyPart);
-                            break;
-                        }
-                    }
-                }
-
+                personalizationAccessoryBehaviour.SetBodyPart(bodyPartForAccessory);
                 personalizationAccessoryBehaviour.RefreshVisibility();
                 personalizationAccessoryBehaviour.Register();
             }

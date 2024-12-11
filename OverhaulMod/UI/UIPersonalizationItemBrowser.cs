@@ -112,7 +112,7 @@ namespace OverhaulMod.UI
         [UIElement("CameraRotationTutorial")]
         private readonly GameObject m_cameraRotationTutorial;
 
-        private Dictionary<string, GameObject> m_cachedDisplays;
+        private Dictionary<string, UIElementPersonalizationItemDisplay> m_cachedDisplays;
 
         private RectTransform m_rectTransform;
 
@@ -140,7 +140,7 @@ namespace OverhaulMod.UI
 
         protected override void OnInitialized()
         {
-            m_cachedDisplays = new Dictionary<string, GameObject>();
+            m_cachedDisplays = new Dictionary<string, UIElementPersonalizationItemDisplay>();
             m_rectTransform = base.GetComponent<RectTransform>();
 
             m_categoryTabs.AddTab(m_weaponSkinsTab.gameObject, "weapon skins");
@@ -315,7 +315,7 @@ namespace OverhaulMod.UI
             {
                 RectTransform rt = newTab.transform as RectTransform;
                 Vector2 vector = rt.sizeDelta;
-                vector.y = 30f;
+                vector.y = 28f;
                 rt.sizeDelta = vector;
             }
 
@@ -404,12 +404,12 @@ namespace OverhaulMod.UI
             m_sortDropdown.interactable = false;
 
             RectTransform scrollRectTransform = m_scrollRectTransform;
-            Vector2 sizeDelta = scrollRectTransform.sizeDelta;
+            Vector2 offsetMax = scrollRectTransform.offsetMax;
             if (m_selectedCategory != PersonalizationCategory.WeaponSkins)
-                sizeDelta.y = -190f;
+                offsetMax.y = -125f;
             else
-                sizeDelta.y = -225f;
-            scrollRectTransform.sizeDelta = sizeDelta;
+                offsetMax.y = -155f;
+            scrollRectTransform.offsetMax = offsetMax;
 
             float timeToWait = Time.unscaledTime + 0.25f;
             while (timeToWait > Time.unscaledTime)
@@ -657,7 +657,7 @@ namespace OverhaulMod.UI
             while (m_cachedDisplays.ContainsKey(text))
                 text += "_1";
 
-            m_cachedDisplays.Add(text, moddedObject.gameObject);
+            m_cachedDisplays.Add(text, personalizationItemDisplay);
         }
 
         private IEnumerator waitThenRefreshCameraCoroutine()
@@ -735,16 +735,16 @@ namespace OverhaulMod.UI
 
         public void OnSearchBoxChanged(string text)
         {
-            m_clearButton.interactable = !text.IsNullOrEmpty();
+            m_clearButton.gameObject.SetActive(!text.IsNullOrEmpty());
 
             _ = text.ToLower();
             bool forceEnableAll = text.IsNullOrEmpty();
-            foreach (KeyValuePair<string, GameObject> keyValue in m_cachedDisplays)
+            foreach (KeyValuePair<string, UIElementPersonalizationItemDisplay> keyValue in m_cachedDisplays)
             {
                 if (forceEnableAll)
-                    keyValue.Value.SetActive(true);
+                    keyValue.Value.gameObject.SetActive(true);
                 else
-                    keyValue.Value.SetActive(keyValue.Key.Contains(text));
+                    keyValue.Value.gameObject.SetActive(keyValue.Key.Contains(text));
             }
         }
 
