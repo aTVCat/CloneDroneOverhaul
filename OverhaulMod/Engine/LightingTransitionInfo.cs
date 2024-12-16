@@ -146,7 +146,7 @@ namespace OverhaulMod.Engine
 
             if (rIndex != -1)
             {
-                RealisticLightingManager.Instance.SetSkybox(rIndex);
+                //RealisticLightingManager.Instance.SetSkybox(rIndex);
                 return;
             }
 

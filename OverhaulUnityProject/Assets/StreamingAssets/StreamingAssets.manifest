@@ -1,5 +1,5 @@
 ManifestFileVersion: 0
-CRC: 3259401638
+CRC: 1205757999
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
@@ -28,4 +28,49 @@ AssetBundleManifest:
       Dependencies: {}
     Info_8:
       Name: overhaul_models
+      Dependencies: {}
+    Info_9:
+      Name: overhaul_rs1
+      Dependencies: {}
+    Info_10:
+      Name: overhaul_rs2
+      Dependencies: {}
+    Info_11:
+      Name: overhaul_rs3
+      Dependencies: {}
+    Info_12:
+      Name: overhaul_rs4
+      Dependencies: {}
+    Info_13:
+      Name: overhaul_rs5
+      Dependencies: {}
+    Info_14:
+      Name: overhaul_rs6
+      Dependencies: {}
+    Info_15:
+      Name: overhaul_rs7
+      Dependencies: {}
+    Info_16:
+      Name: overhaul_rs8
+      Dependencies: {}
+    Info_17:
+      Name: overhaul_rs9
+      Dependencies: {}
+    Info_18:
+      Name: overhaul_rs10
+      Dependencies: {}
+    Info_19:
+      Name: overhaul_rs11
+      Dependencies: {}
+    Info_20:
+      Name: overhaul_rs12
+      Dependencies: {}
+    Info_21:
+      Name: overhaul_rs13
+      Dependencies: {}
+    Info_22:
+      Name: overhaul_rs14
+      Dependencies: {}
+    Info_23:
+      Name: overhaul_rs15
       Dependencies: {}

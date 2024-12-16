@@ -212,7 +212,7 @@ namespace OverhaulMod.UI
 
             m_skyBoxSlider.value = lightingInfo.SkyboxIndex;
 
-            RealisticLightingInfo realisticLightingInfo = RealisticLightingManager.Instance.GetCurrentRealisticLightingInfo();
+            /*RealisticLightingInfo realisticLightingInfo = RealisticLightingManager.Instance.GetCurrentRealisticLightingInfo();
             if (realisticLightingInfo == null)
             {
                 m_realisticSkyBoxToggle.isOn = false;
@@ -220,9 +220,12 @@ namespace OverhaulMod.UI
             }
             else
             {
-                m_realisticSkyBoxToggle.isOn = realisticLightingInfo.SkyboxIndex != -1;
-                m_realisticSkyBoxSlider.value = realisticLightingInfo.SkyboxIndex;
-            }
+                m_realisticSkyBoxToggle.isOn = !realisticLightingInfo.SkyboxName.IsNullOrEmpty();
+                m_realisticSkyBoxSlider.value = realisticLightingInfo.SkyboxName;
+            }*/
+
+            m_realisticSkyBoxToggle.isOn = false;
+            m_realisticSkyBoxSlider.value = -1;
 
             m_disallowCallbacks = false;
         }

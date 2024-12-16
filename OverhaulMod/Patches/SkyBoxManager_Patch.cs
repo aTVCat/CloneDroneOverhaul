@@ -27,7 +27,7 @@ namespace OverhaulMod.Patches
             if (!realisticLightSettings)
                 return;
 
-            RealisticLightingManager.Instance.SetSkybox(realisticLightSettings.RealisticSkyBoxIndex);
+            //RealisticLightingManager.Instance.SetSkybox(realisticLightSettings.RealisticSkyBoxIndex);
         }
     }
 }

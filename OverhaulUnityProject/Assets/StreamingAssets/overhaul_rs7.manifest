@@ -1,0 +1,20 @@
+ManifestFileVersion: 0
+CRC: 565351578
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: fb9f0fe6131b16b85d3b3eb09947ac10
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: ad2c05b8876f9b151dbabc095aa47606
+HashAppended: 0
+ClassTypes:
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 89
+  Script: {instanceID: 0}
+Assets:
+- Assets/Skyboxes/Realistic/CoriolisNight4k.mat
+Dependencies: []

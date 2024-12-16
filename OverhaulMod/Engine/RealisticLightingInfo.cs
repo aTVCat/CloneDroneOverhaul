@@ -6,7 +6,7 @@
 
         public string LevelPrefabName;
 
-        public int SkyboxIndex;
+        public string SkyboxName;
 
         public void FixValues()
         {

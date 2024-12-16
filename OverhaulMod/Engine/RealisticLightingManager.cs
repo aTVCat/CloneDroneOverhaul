@@ -1,6 +1,7 @@
 ﻿using OverhaulMod.Content;
 using OverhaulMod.Utils;
 using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
@@ -18,9 +19,11 @@ namespace OverhaulMod.Engine
 
         public static readonly string LightSettingsOverrideObjectResourcePath = "Prefabs/LevelObjects/Lights/LightSettingsOverride";
 
-        private Material[] m_skyboxes;
+        private Dictionary<string, Material> m_skyboxes;
 
         private RealisticLightingInfoList m_lightingInfoList;
+
+        private Dictionary<string, bool?> m_loadingSkyboxes;
 
         private void Start()
         {
@@ -32,14 +35,40 @@ namespace OverhaulMod.Engine
             if (ErrorManager.Instance.HasCrashed() || !AddonManager.Instance.HasInstalledAddon(AddonManager.REALISTIC_SKYBOXES_ADDON_FOLDER_NAME))
                 return;
 
-            AddonManager.Instance.SetAddonIsLoading(this, true);
-            ModResources.LoadBundleAsync(OVERHAUL_ASSETS_SKYBOXES, delegate (bool result)
-            {
-                if (!result)
-                    return;
+            string dirPath = Path.Combine(ModCore.addonsFolder, AddonManager.REALISTIC_SKYBOXES_ADDON_FOLDER_NAME);
+            string[] files = Directory.GetFiles(dirPath, "overhaul_rs*");
+            if (files.IsNullOrEmpty())
+                return;
 
-                _ = ModActionUtils.RunCoroutine(loadAllSkyboxesCoroutine());
-            }, Path.Combine(ModCore.addonsFolder, AddonManager.REALISTIC_SKYBOXES_ADDON_FOLDER_NAME));
+            AddonManager.Instance.SetAddonIsLoading(this, true);
+            m_loadingSkyboxes = new Dictionary<string, bool?>();
+            foreach (string file in files)
+                m_loadingSkyboxes.Add(Path.GetFileName(file), false);
+
+            foreach (string file in files)
+            {
+                string fn = Path.GetFileName(file);
+                ModResources.LoadBundleAsync(fn, delegate (bool result)
+                {
+                    if (!result)
+                    {
+                        m_loadingSkyboxes[fn] = null;
+                    }
+                    else
+                    {
+                        m_loadingSkyboxes[fn] = true;
+                    }
+
+                }, dirPath);
+            }
+
+            _ = ModActionUtils.RunCoroutine(processSkyboxesCoroutine());
+        }
+
+        private IEnumerator processSkyboxesCoroutine()
+        {
+            while (m_loadingSkyboxes.ContainsValue(false))
+                yield return null;
 
             RealisticLightingInfoList realisticLightingInfoList = null;
             try
@@ -67,32 +96,42 @@ namespace OverhaulMod.Engine
                 realisticLightingInfoList.FixValues();
             }
             m_lightingInfoList = realisticLightingInfoList;
-        }
 
-        private IEnumerator loadAllSkyboxesCoroutine()
-        {
-            AssetBundle bundle = ModResources.AssetBundle("overhaulassets_skyboxes", Path.Combine(ModCore.addonsFolder, AddonManager.REALISTIC_SKYBOXES_ADDON_FOLDER_NAME));
-            if (ModAdvancedCache.TryGet("RealisticSkyboxes", out Material[] array))
-                m_skyboxes = array;
-            else
+            m_loadingSkyboxes.Clear();
+            m_skyboxes = new Dictionary<string, Material>();
+            string dirPath = Path.Combine(ModCore.addonsFolder, AddonManager.REALISTIC_SKYBOXES_ADDON_FOLDER_NAME);
+            foreach (KeyValuePair<string, bool?> kv in m_loadingSkyboxes)
             {
-                AssetBundleRequest r = bundle.LoadAllAssetsAsync<Material>();
-                yield return r;
-                if (!r.allAssets.IsNullOrEmpty())
+                if (kv.Value.HasValue && kv.Value.Value)
                 {
-                    m_skyboxes = new Material[r.allAssets.Length];
-                    int i = 0;
-                    foreach (Object obj in r.allAssets)
-                    {
-                        m_skyboxes[i] = r.allAssets[i] as Material;
-                        i++;
-                    }
+                    m_loadingSkyboxes.Add(kv.Key, false);
+                    ModActionUtils.RunCoroutine(processBundle(ModResources.AssetBundle(kv.Key, dirPath), kv.Key));
                 }
-                ModAdvancedCache.Add("RealisticSkyboxes", m_skyboxes);
             }
+
+            while (m_loadingSkyboxes.ContainsValue(false))
+                yield return null;
+
+            m_loadingSkyboxes.Clear();
+            m_loadingSkyboxes = null;
 
             LevelEditorLightManager.Instance.RefreshLightInScene();
             AddonManager.Instance.SetAddonIsLoading(this, false);
+            yield break;
+        }
+
+        private IEnumerator processBundle(AssetBundle assetBundle, string key)
+        {
+            AssetBundleRequest r = assetBundle.LoadAllAssetsAsync<Material>();
+            yield return r;
+            if (!r.allAssets.IsNullOrEmpty() && r.allAssets[0] is Material material)
+            {
+                m_skyboxes.Add(key, material);
+            }
+            else
+            {
+                m_loadingSkyboxes[key] = null;
+            }
             yield break;
         }
 
@@ -131,7 +170,6 @@ namespace OverhaulMod.Engine
 
             realisticLightingInfo.Lighting.SetValuesUsingEnvironmentSettings();
             realisticLightingInfo.LevelPrefabName = prefabName;
-            realisticLightingInfo.SkyboxIndex = skyboxIndex;
             SaveLightingInfo();
         }
 
@@ -156,14 +194,16 @@ namespace OverhaulMod.Engine
             return name.IsNullOrEmpty() ? null : name.Substring(name.LastIndexOf("/") + 1);
         }
 
-        public void SetSkybox(int index)
+        public void SetSkybox(string skyboxName)
         {
-            if (index < 0 || m_skyboxes.IsNullOrEmpty())
+            if (skyboxName.IsNullOrEmpty() || m_skyboxes.IsNullOrEmpty())
                 return;
 
-            Material material = m_skyboxes[index];
-            SkyBoxManager.Instance._currentSkybox = material;
-            RenderSettings.skybox = material;
+            if(m_skyboxes.TryGetValue(skyboxName, out Material material))
+            {
+                SkyBoxManager.Instance._currentSkybox = material;
+                RenderSettings.skybox = material;
+            }
         }
 
         public RealisticLightingInfo GetCurrentRealisticLightingInfo()
@@ -196,8 +236,6 @@ namespace OverhaulMod.Engine
                 if (realisticLightingInfo.Lighting != null)
                     realisticLightingInfo.Lighting.ApplyValues(lightSettings);
 
-                realisticLightSettings.RealisticSkyBoxIndex = realisticLightingInfo.SkyboxIndex;
-
                 if (refreshLight)
                     LevelEditorLightManager.Instance.RefreshLightInScene();
             }
@@ -205,7 +243,6 @@ namespace OverhaulMod.Engine
             {
                 realisticLightSettings.RealisticSkyBoxIndex = -1;
             }
-            //realisticLightSettings.HasSetSkyBoxIndex = true;
         }
     }
 }
