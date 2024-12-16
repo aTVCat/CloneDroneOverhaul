@@ -16,13 +16,13 @@ namespace OverhaulMod.Content
 
         public void FixValues()
         {
-            if(Branches == null)
+            if (Branches == null)
                 Branches = new Dictionary<string, UpdateInfo>();
         }
 
         public bool HasAnyNewBuildAvailable()
         {
-            foreach (var item in Branches.Values)
+            foreach (UpdateInfo item in Branches.Values)
                 if (item.CanBeInstalledByLocalUser() && item.IsNewerBuild())
                     return true;
 

@@ -83,7 +83,7 @@ namespace OverhaulMod
             _ = ModManagers.NewSingleton<TitleScreenCustomizationManager>();
 
             _ = ModManagers.NewSingleton<ModWebhookManager>();
-            _ = ModManagers.NewSingleton<ContentManager>();
+            _ = ModManagers.NewSingleton<AddonManager>();
             _ = ModManagers.NewSingleton<UpdateManager>();
             _ = ModManagers.NewSingleton<NewsManager>();
             _ = ModManagers.NewSingleton<PersonalizationCacheManager>();

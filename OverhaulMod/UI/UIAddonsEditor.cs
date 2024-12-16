@@ -30,7 +30,7 @@ namespace OverhaulMod.UI
         [UIElement("AddonVersionField")]
         private readonly InputField m_addonVersionField;
 
-        private List<ContentInfo> m_content;
+        private List<AddonInfo> m_content;
 
         private bool m_disableDropdownCallbacks;
 
@@ -42,7 +42,7 @@ namespace OverhaulMod.UI
             private set;
         }
 
-        public ContentInfo editingContentInfo
+        public AddonInfo editingContentInfo
         {
             get;
             private set;
@@ -59,13 +59,13 @@ namespace OverhaulMod.UI
             List<Dropdown.OptionData> list = new List<Dropdown.OptionData>();
             list.Clear();
 
-            List<ContentInfo> content = ContentManager.Instance.GetContent();
+            List<AddonInfo> content = AddonManager.Instance.GetInstalledAddons();
             m_content = content;
 
             if (content.IsNullOrEmpty())
                 return;
 
-            foreach (ContentInfo c in content)
+            foreach (AddonInfo c in content)
             {
                 list.Add(new Dropdown.OptionData(c.DisplayName));
             }
@@ -77,16 +77,16 @@ namespace OverhaulMod.UI
             if (m_disableDropdownCallbacks)
                 return;
 
-            List<ContentInfo> list = m_content;
+            List<AddonInfo> list = m_content;
             if (list.IsNullOrEmpty())
             {
                 editingFile = string.Empty;
                 return;
             }
 
-            ContentInfo content = list[index];
+            AddonInfo content = list[index];
             editingContentInfo = content;
-            editingFile = Path.Combine(content.FolderPath, ContentManager.CONTENT_INFO_FILE);
+            editingFile = Path.Combine(content.FolderPath, AddonManager.ADDON_INFO_FILE);
 
             m_addonNameField.text = content.DisplayName;
             m_addonVersionField.text = content.Version.ToString();
@@ -98,7 +98,7 @@ namespace OverhaulMod.UI
             if (file.IsNullOrEmpty())
                 return;
 
-            ContentInfo contentInfo = editingContentInfo;
+            AddonInfo contentInfo = editingContentInfo;
             if (contentInfo == null)
                 return;
 
@@ -114,14 +114,14 @@ namespace OverhaulMod.UI
             {
                 string folderName = value.Replace(" ", string.Empty);
                 string folderPath = Path.Combine(ModCore.addonsFolder, folderName);
-                string contentInfoFilePath = folderPath + ContentManager.CONTENT_INFO_FILE;
+                string contentInfoFilePath = folderPath + AddonManager.ADDON_INFO_FILE;
 
                 _ = Directory.CreateDirectory(folderPath);
                 using (File.CreateText(contentInfoFilePath))
                 {
                     m_disableDropdownCallbacks = true;
 
-                    editingContentInfo = new ContentInfo();
+                    editingContentInfo = new AddonInfo();
                     editingFile = contentInfoFilePath;
                     m_addonNameField.text = string.Empty;
                     m_addonVersionField.text = "0";

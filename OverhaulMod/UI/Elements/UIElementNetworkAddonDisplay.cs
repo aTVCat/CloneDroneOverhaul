@@ -32,7 +32,7 @@ namespace OverhaulMod.UI
         [UIElement("Fill")]
         private readonly Image m_progressBarFill;
 
-        private ContentManager m_contentManager;
+        private AddonManager m_contentManager;
 
         private bool m_hasImages;
 
@@ -80,7 +80,7 @@ namespace OverhaulMod.UI
 
         protected override void OnInitialized()
         {
-            m_contentManager = ContentManager.Instance;
+            m_contentManager = AddonManager.Instance;
 
             string versionString = "N/A";
             if (minModVersion != null)
@@ -94,11 +94,11 @@ namespace OverhaulMod.UI
 
         public override void Update()
         {
-            ContentManager contentManager = m_contentManager;
+            AddonManager contentManager = m_contentManager;
             string file = contentFile;
 
-            bool isDownloadingContent = contentManager.IsDownloading(file);
-            bool hasDownloaded = contentManager.HasContent(contentName, true);
+            bool isDownloadingContent = contentManager.IsDownloadingAddon(file);
+            bool hasDownloaded = contentManager.HasInstalledAddon(contentName, true);
 
             m_progressBar.SetActive(isDownloadingContent);
             m_contentSizeText.SetActive(!isDownloadingContent && isSupported);
@@ -107,7 +107,7 @@ namespace OverhaulMod.UI
             m_imagesButton.gameObject.SetActive(m_hasImages && !isDownloadingContent && isSupported);
 
             if (isDownloadingContent)
-                m_progressBarFill.fillAmount = contentManager.GetDownloadProgress(file);
+                m_progressBarFill.fillAmount = contentManager.GetDownloadProgressOfAddon(file);
         }
 
         public void OnDownloadButtonClicked()
@@ -116,7 +116,7 @@ namespace OverhaulMod.UI
             {
                 ModUIUtils.MessagePopup(true, LocalizationManager.Instance.GetTranslatedString("addons_largeaddon_header"), LocalizationManager.Instance.GetTranslatedString("addons_largeaddon_text"), 125f, MessageMenu.ButtonLayout.EnableDisableButtons, "ok", "Yes", "No", null, delegate
                 {
-                    _ = m_contentManager.DownloadContent(contentName, contentFile, delegate (string error)
+                    _ = m_contentManager.DownloadAddon(contentName, contentFile, delegate (string error)
                     {
                         if (error != null)
                             ModUIUtils.MessagePopupOK("Addon download error", error, true);
@@ -124,7 +124,7 @@ namespace OverhaulMod.UI
                 });
                 return;
             }
-            _ = m_contentManager.DownloadContent(contentName, contentFile, delegate (string error)
+            _ = m_contentManager.DownloadAddon(contentName, contentFile, delegate (string error)
             {
                 if (error != null)
                     ModUIUtils.MessagePopupOK("Addon download error", error, true);

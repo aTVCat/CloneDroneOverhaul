@@ -52,13 +52,13 @@ namespace OverhaulMod.UI
         [UIElement("Content")]
         private readonly Transform m_filesContainer;
 
-        public ContentListInfo editingContentList
+        public AddonListInfo editingContentList
         {
             get;
             private set;
         }
 
-        public ContentDownloadInfo editingContentDownloadInfo
+        public AddonDownloadInfo editingContentDownloadInfo
         {
             get;
             private set;
@@ -75,11 +75,11 @@ namespace OverhaulMod.UI
         {
             List<Dropdown.OptionData> list = new List<Dropdown.OptionData>();
 
-            ContentListInfo cl = editingContentList;
-            if (cl == null || cl.ContentToDownload.IsNullOrEmpty())
+            AddonListInfo cl = editingContentList;
+            if (cl == null || cl.Addons.IsNullOrEmpty())
                 return;
 
-            foreach (ContentDownloadInfo c in cl.ContentToDownload)
+            foreach (AddonDownloadInfo c in cl.Addons)
             {
                 list.Add(new Dropdown.OptionData(c.DisplayName));
             }
@@ -88,7 +88,7 @@ namespace OverhaulMod.UI
 
         private void populateFields()
         {
-            ContentDownloadInfo contentDownloadInfo = editingContentDownloadInfo;
+            AddonDownloadInfo contentDownloadInfo = editingContentDownloadInfo;
             if (contentDownloadInfo == null)
                 return;
 
@@ -104,16 +104,16 @@ namespace OverhaulMod.UI
         private void readFileFromDisk()
         {
             ModDataManager manager = ModDataManager.Instance;
-            ContentListInfo contentListInfo;
-            if (manager.FileExists(ContentManager.CONTENT_LIST_REPOSITORY_FILE, true))
+            AddonListInfo contentListInfo;
+            if (manager.FileExists(AddonManager.ADDONS_LIST_REPOSITORY_FILE, true))
             {
-                string rawData = ModDataManager.Instance.ReadFile(ContentManager.CONTENT_LIST_REPOSITORY_FILE, true);
-                contentListInfo = ModJsonUtils.Deserialize<ContentListInfo>(rawData);
+                string rawData = ModDataManager.Instance.ReadFile(AddonManager.ADDONS_LIST_REPOSITORY_FILE, true);
+                contentListInfo = ModJsonUtils.Deserialize<AddonListInfo>(rawData);
                 contentListInfo.FixValues();
             }
             else
             {
-                contentListInfo = new ContentListInfo();
+                contentListInfo = new AddonListInfo();
                 contentListInfo.FixValues();
             }
 
@@ -125,11 +125,11 @@ namespace OverhaulMod.UI
 
         public void OnEditedInfosDropdown(int index)
         {
-            ContentListInfo cl = editingContentList;
-            if (cl == null || cl.ContentToDownload.IsNullOrEmpty())
+            AddonListInfo cl = editingContentList;
+            if (cl == null || cl.Addons.IsNullOrEmpty())
                 return;
 
-            editingContentDownloadInfo = cl.ContentToDownload[index];
+            editingContentDownloadInfo = cl.Addons[index];
             populateFields();
         }
 
@@ -141,7 +141,7 @@ namespace OverhaulMod.UI
                 return;
             }
 
-            ContentDownloadInfo contentDownloadInfo = editingContentDownloadInfo;
+            AddonDownloadInfo contentDownloadInfo = editingContentDownloadInfo;
             if (contentDownloadInfo != null)
             {
                 contentDownloadInfo.DisplayName = m_contentNameField.text;
@@ -153,10 +153,10 @@ namespace OverhaulMod.UI
                 contentDownloadInfo.Description = m_contentDescriptionField.text;
             }
 
-            ContentListInfo contentListInfo = editingContentList;
+            AddonListInfo contentListInfo = editingContentList;
             if (contentListInfo != null)
             {
-                ModDataManager.Instance.SerializeToFile(ContentManager.CONTENT_LIST_REPOSITORY_FILE, contentListInfo, true);
+                ModDataManager.Instance.SerializeToFile(AddonManager.ADDONS_LIST_REPOSITORY_FILE, contentListInfo, true);
             }
 
             populateDropdown();
@@ -166,16 +166,16 @@ namespace OverhaulMod.UI
         {
             ModUIUtils.InputFieldWindow("Create new content folder", "Name it", null, 30, 125f, delegate (string value)
             {
-                ContentListInfo contentListInfo = editingContentList;
+                AddonListInfo contentListInfo = editingContentList;
                 if (contentListInfo != null)
                 {
-                    ContentDownloadInfo contentDownloadInfo = new ContentDownloadInfo()
+                    AddonDownloadInfo contentDownloadInfo = new AddonDownloadInfo()
                     {
                         DisplayName = value,
                         Size = 1,
                         Files = new List<string>()
                     };
-                    contentListInfo.ContentToDownload.Add(contentDownloadInfo);
+                    contentListInfo.Addons.Add(contentDownloadInfo);
 
                     editingContentDownloadInfo = contentDownloadInfo;
                     populateDropdown();
@@ -188,7 +188,7 @@ namespace OverhaulMod.UI
         {
             m_getDataFromServersButton.interactable = false;
 
-            ContentManager.Instance.DownloadContentList(out _, delegate (ContentListInfo contentListInfo)
+            AddonManager.Instance.DownloadAddonsList(out _, delegate (AddonListInfo contentListInfo)
             {
                 editingContentList = contentListInfo;
                 m_getDataFromServersButton.interactable = true;

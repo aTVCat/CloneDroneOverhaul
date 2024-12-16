@@ -29,25 +29,25 @@ namespace OverhaulMod.Engine
 
         private void loadSkyboxesAddon()
         {
-            if (ErrorManager.Instance.HasCrashed() || !ContentManager.Instance.HasContent(ContentManager.REALISTIC_SKYBOXES_CONTENT_FOLDER_NAME))
+            if (ErrorManager.Instance.HasCrashed() || !AddonManager.Instance.HasInstalledAddon(AddonManager.REALISTIC_SKYBOXES_ADDON_FOLDER_NAME))
                 return;
 
-            ContentManager.Instance.SetContentIsLoading(this, true);
+            AddonManager.Instance.SetAddonIsLoading(this, true);
             ModResources.LoadBundleAsync(OVERHAUL_ASSETS_SKYBOXES, delegate (bool result)
             {
                 if (!result)
                     return;
 
                 _ = ModActionUtils.RunCoroutine(loadAllSkyboxesCoroutine());
-            }, Path.Combine(ModCore.addonsFolder, ContentManager.REALISTIC_SKYBOXES_CONTENT_FOLDER_NAME));
+            }, Path.Combine(ModCore.addonsFolder, AddonManager.REALISTIC_SKYBOXES_ADDON_FOLDER_NAME));
 
             RealisticLightingInfoList realisticLightingInfoList = null;
             try
             {
-                string path = Path.Combine(ModCore.addonsFolder, ContentManager.REALISTIC_SKYBOXES_CONTENT_FOLDER_NAME, LIGHTING_INFO_LIST_FILE);
+                string path = Path.Combine(ModCore.addonsFolder, AddonManager.REALISTIC_SKYBOXES_ADDON_FOLDER_NAME, LIGHTING_INFO_LIST_FILE);
                 if (!File.Exists(path))
                 {
-                    string oldPath = Path.Combine(ModCore.addonsFolder, ContentManager.REALISTIC_SKYBOXES_CONTENT_FOLDER_NAME, OLD_LIGHTING_INFO_LIST_FILE);
+                    string oldPath = Path.Combine(ModCore.addonsFolder, AddonManager.REALISTIC_SKYBOXES_ADDON_FOLDER_NAME, OLD_LIGHTING_INFO_LIST_FILE);
                     if (File.Exists(oldPath))
                     {
                         ModFileUtils.WriteText(ModFileUtils.ReadText(oldPath).Replace("Lightning", "Lighting"), oldPath);
@@ -71,7 +71,7 @@ namespace OverhaulMod.Engine
 
         private IEnumerator loadAllSkyboxesCoroutine()
         {
-            AssetBundle bundle = ModResources.AssetBundle("overhaulassets_skyboxes", Path.Combine(ModCore.addonsFolder, ContentManager.REALISTIC_SKYBOXES_CONTENT_FOLDER_NAME));
+            AssetBundle bundle = ModResources.AssetBundle("overhaulassets_skyboxes", Path.Combine(ModCore.addonsFolder, AddonManager.REALISTIC_SKYBOXES_ADDON_FOLDER_NAME));
             if (ModAdvancedCache.TryGet("RealisticSkyboxes", out Material[] array))
                 m_skyboxes = array;
             else
@@ -92,7 +92,7 @@ namespace OverhaulMod.Engine
             }
 
             LevelEditorLightManager.Instance.RefreshLightInScene();
-            ContentManager.Instance.SetContentIsLoading(this, false);
+            AddonManager.Instance.SetAddonIsLoading(this, false);
             yield break;
         }
 
@@ -102,7 +102,7 @@ namespace OverhaulMod.Engine
             if (realisticLightingInfoList == null || realisticLightingInfoList.LightingInfos.IsNullOrEmpty())
                 return;
 
-            ModJsonUtils.WriteStream(Path.Combine(ModCore.addonsFolder, ContentManager.REALISTIC_SKYBOXES_CONTENT_FOLDER_NAME, LIGHTING_INFO_LIST_FILE), realisticLightingInfoList);
+            ModJsonUtils.WriteStream(Path.Combine(ModCore.addonsFolder, AddonManager.REALISTIC_SKYBOXES_ADDON_FOLDER_NAME, LIGHTING_INFO_LIST_FILE), realisticLightingInfoList);
         }
 
         public void SaveCurrentLightingInfo(int skyboxIndex)

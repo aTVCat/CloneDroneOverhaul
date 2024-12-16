@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace OverhaulMod.Content
 {
-    public class ContentDownloadInfo
+    public class AddonDownloadInfo
     {
         public string DisplayName, Description, Images;
         public long Size;

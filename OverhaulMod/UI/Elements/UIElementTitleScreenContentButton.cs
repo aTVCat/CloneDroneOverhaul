@@ -11,16 +11,16 @@ namespace OverhaulMod.UI
         [UIElement("Image", true)]
         private readonly GameObject m_icon;
 
-        private ContentManager m_contentManager;
+        private AddonManager m_addonManager;
 
         protected override void OnInitialized()
         {
-            m_contentManager = ContentManager.Instance;
+            m_addonManager = AddonManager.Instance;
         }
 
         public override void Update()
         {
-            bool isLoadingAnyContent = m_contentManager.isLoadingAnyContent;
+            bool isLoadingAnyContent = m_addonManager.IsLoadingAddons();
             m_loadingIndicator.SetActive(isLoadingAnyContent);
             m_icon.SetActive(!isLoadingAnyContent);
         }

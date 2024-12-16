@@ -11,7 +11,7 @@ namespace OverhaulMod.UI
 {
     public class UIAddonsMenu : OverhaulUIBehaviour
     {
-        private static ContentListInfo s_contentLiftInfo;
+        private static AddonListInfo s_contentLiftInfo;
 
         [UIElementAction(nameof(Hide))]
         [UIElement("CloseButton")]
@@ -54,7 +54,7 @@ namespace OverhaulMod.UI
             m_tabs.AddTab(m_networkAddonsTab.gameObject, "network addons");
             m_tabs.SelectTab("local addons");
 
-            GlobalEventManager.Instance.AddEventListener<string>(ContentManager.CONTENT_DOWNLOAD_DONE_EVENT, onContentDownloaded);
+            GlobalEventManager.Instance.AddEventListener<string>(AddonManager.ADDON_DOWNLOADED_EVENT, onContentDownloaded);
 
             if (TitleScreenCustomizationManager.IntroduceCustomization)
             {
@@ -124,11 +124,11 @@ namespace OverhaulMod.UI
             if (m_container.childCount != 0)
                 TransformUtils.DestroyAllChildren(m_container);
 
-            System.Collections.Generic.List<ContentInfo> list = ContentManager.Instance.GetContent();
+            System.Collections.Generic.List<AddonInfo> list = AddonManager.Instance.GetInstalledAddons();
             if (list.IsNullOrEmpty())
                 return;
 
-            foreach (ContentInfo content in list)
+            foreach (AddonInfo content in list)
             {
                 string translationKey = $"addons_addon_{content.DisplayName.ToLower().Replace(' ', '_')}";
                 string displayName = LocalizationManager.Instance.GetTranslatedString($"{translationKey}_name");
@@ -143,7 +143,7 @@ namespace OverhaulMod.UI
                         if (moddedObject && moddedObject.gameObject)
                         {
                             Directory.Delete(content.FolderPath, true);
-                            ContentManager.Instance.RefreshContent(true);
+                            AddonManager.Instance.RefreshInstalledAddons(true);
                             Destroy(moddedObject.gameObject);
                         }
                     });
@@ -164,7 +164,7 @@ namespace OverhaulMod.UI
 
             m_loadingIndicator.SetActive(true);
             m_tabs.interactable = false;
-            ContentManager.Instance.DownloadContentList(out _, populate, delegate (string error)
+            AddonManager.Instance.DownloadAddonsList(out _, populate, delegate (string error)
             {
                 ModUIUtils.MessagePopupOK("Error", error, true);
 
@@ -174,10 +174,10 @@ namespace OverhaulMod.UI
             });
         }
 
-        private void populate(ContentListInfo contentListInfo)
+        private void populate(AddonListInfo contentListInfo)
         {
             s_contentLiftInfo = contentListInfo;
-            foreach (ContentDownloadInfo content in contentListInfo.ContentToDownload)
+            foreach (AddonDownloadInfo content in contentListInfo.Addons)
             {
                 if (content == null || content.File.IsNullOrEmpty() || content.DisplayName.IsNullOrEmpty())
                     continue;

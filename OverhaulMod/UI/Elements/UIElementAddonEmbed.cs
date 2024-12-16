@@ -62,7 +62,7 @@ namespace OverhaulMod.UI
 
         public bool ShouldBeHidden()
         {
-            return ContentManager.Instance.HasContent(addonId, true);
+            return AddonManager.Instance.HasInstalledAddon(addonId, true);
         }
 
         public void RefreshDisplays()
@@ -70,9 +70,9 @@ namespace OverhaulMod.UI
             if (addonId.IsNullOrEmpty())
                 return;
 
-            ContentManager contentManager = ContentManager.Instance;
-            m_idleDisplays.SetActive(!contentManager.HasContent(addonId, true) && !contentManager.IsDownloading(addonId));
-            m_loadingIndicatorObject.SetActive(contentManager.IsDownloading(addonId));
+            AddonManager contentManager = AddonManager.Instance;
+            m_idleDisplays.SetActive(!contentManager.HasInstalledAddon(addonId, true) && !contentManager.IsDownloadingAddon(addonId));
+            m_loadingIndicatorObject.SetActive(contentManager.IsDownloadingAddon(addonId));
         }
 
         public void RefreshLoading()
@@ -80,10 +80,10 @@ namespace OverhaulMod.UI
             if (addonId.IsNullOrEmpty())
                 return;
 
-            ContentManager contentManager = ContentManager.Instance;
-            if (contentManager.IsDownloading(addonId))
+            AddonManager contentManager = AddonManager.Instance;
+            if (contentManager.IsDownloadingAddon(addonId))
             {
-                m_loadingIndicatorText.text = $"{LocalizationManager.Instance.GetTranslatedString("downloading...")}  {(Mathf.RoundToInt(Mathf.Clamp01(contentManager.GetDownloadProgress(addonId)) * 100f).ToString() + "%").AddColor(Color.white)}";
+                m_loadingIndicatorText.text = $"{LocalizationManager.Instance.GetTranslatedString("downloading...")}  {(Mathf.RoundToInt(Mathf.Clamp01(contentManager.GetDownloadProgressOfAddon(addonId)) * 100f).ToString() + "%").AddColor(Color.white)}";
             }
         }
 
@@ -94,8 +94,8 @@ namespace OverhaulMod.UI
 
             ModUIUtils.MessagePopup(true, $"Download {addonId}?", string.Empty, 100f, MessageMenu.ButtonLayout.EnableDisableButtons, "ok", "Yes", "No", null, delegate
             {
-                ContentManager contentManager = ContentManager.Instance;
-                _ = contentManager.DownloadContent(addonId, addonFile, delegate (string error)
+                AddonManager contentManager = AddonManager.Instance;
+                _ = contentManager.DownloadAddon(addonId, addonFile, delegate (string error)
                 {
                     if (error != null)
                     {

@@ -339,9 +339,9 @@
   <ItemGroup>
     <Compile Include="Combat\CharacterInventory.cs" />
     <Compile Include="Combat\Weapons\ModSwordBlockArea.cs" />
-    <Compile Include="Content\ContentDownloadInfo.cs" />
-    <Compile Include="Content\ContentInfo.cs" />
-    <Compile Include="Content\ContentListInfo.cs" />
+    <Compile Include="Content\AddonDownloadInfo.cs" />
+    <Compile Include="Content\AddonInfo.cs" />
+    <Compile Include="Content\AddonListInfo.cs" />
     <Compile Include="Content\ExclusivePerkColor.cs" />
     <Compile Include="Content\GoogleDriveManager.cs" />
     <Compile Include="Content\LevelEditor\LevelEditorWeatherSettingsOverride.cs" />
@@ -471,7 +471,7 @@
     <Compile Include="IGameLoadListener.cs" />
     <Compile Include="IModLoadListener.cs" />
     <Compile Include="Content\UpdateManager.cs" />
-    <Compile Include="Content\ContentManager.cs" />
+    <Compile Include="Content\AddonManager.cs" />
     <Compile Include="Content\RepositoryManager.cs" />
     <Compile Include="Content\ExclusivePerkManager.cs" />
     <Compile Include="Engine\ModLevelManager.cs" />

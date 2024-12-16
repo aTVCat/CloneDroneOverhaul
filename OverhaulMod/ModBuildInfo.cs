@@ -68,6 +68,19 @@ namespace OverhaulMod
             }
         }
 
+        private static string s_versionStringNoBranch;
+        public static string versionStringNoBranch
+        {
+            get
+            {
+                if (s_versionStringNoBranch == null)
+                {
+                    s_versionStringNoBranch = $"{versionMajor}.{versionMinor}.{versionBuild}.{versionRevision}";
+                }
+                return s_versionStringNoBranch;
+            }
+        }
+
         private static string s_versionString;
         public static string versionString
         {
@@ -143,6 +156,14 @@ namespace OverhaulMod
 #else
                 return false;
 #endif
+            }
+        }
+
+        public static bool isHyperdomeBuild
+        {
+            get
+            {
+                return false;
             }
         }
 

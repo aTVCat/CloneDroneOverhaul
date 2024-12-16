@@ -61,7 +61,7 @@ namespace OverhaulMod.UI
             if (!base.gameObject.activeInHierarchy || !base.enabled)
                 return;
 
-            string contentPath = ContentManager.Instance.GetContentPath(ContentManager.EXTRAS_CONTENT_FOLDER_NAME);
+            string contentPath = AddonManager.Instance.GetAddonPath(AddonManager.EXTRAS_ADDON_FOLDER_NAME);
             if (contentPath.IsNullOrEmpty())
                 return;
 

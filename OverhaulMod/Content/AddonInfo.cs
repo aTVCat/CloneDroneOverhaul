@@ -1,8 +1,9 @@
 ﻿using System;
+using UnityEngine.Serialization;
 
 namespace OverhaulMod.Content
 {
-    public class ContentInfo
+    public class AddonInfo
     {
         public string DisplayName;
 

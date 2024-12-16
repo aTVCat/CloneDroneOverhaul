@@ -54,7 +54,7 @@ namespace OverhaulMod
 
         public void TriggerModContentLoadedEvent(string errorString)
         {
-            GlobalEventManager.Instance.Dispatch(Content.ContentManager.CONTENT_DOWNLOAD_DONE_EVENT, errorString);
+            GlobalEventManager.Instance.Dispatch(Content.AddonManager.ADDON_DOWNLOADED_EVENT, errorString);
         }
 
         public void TriggerGameLoadedEvent()

@@ -43,7 +43,7 @@ namespace OverhaulMod.UI
 
         protected override void OnInitialized()
         {
-            m_installedVersionText.text = ModBuildInfo.versionString;
+            m_installedVersionText.text = ModBuildInfo.versionStringNoBranch;
             displayUpdatesLastCheckedIdleText();
         }
 
