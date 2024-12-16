@@ -110,6 +110,7 @@ namespace OverhaulMod
             _ = ModManagers.NewSingleton<CameraManager>();
             _ = ModManagers.NewSingleton<RichPresenceManager>();
             _ = ModManagers.NewSingleton<PooledPrefabManager>();
+            _ = ModManagers.NewSingleton<AdditionalSkyboxesManager>();
             _ = ModManagers.NewSingleton<RealisticLightingManager>();
             _ = ModManagers.NewSingleton<ParticleManager>();
             _ = ModManagers.NewSingleton<PostEffectsManager>();

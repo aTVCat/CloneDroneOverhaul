@@ -19,8 +19,6 @@ namespace OverhaulMod.Engine
 
         public static readonly string LightSettingsOverrideObjectResourcePath = "Prefabs/LevelObjects/Lights/LightSettingsOverride";
 
-        private Dictionary<string, Material> m_skyboxes;
-
         private RealisticLightingInfoList m_lightingInfoList;
 
         private Dictionary<string, bool?> m_loadingSkyboxes;
@@ -97,10 +95,10 @@ namespace OverhaulMod.Engine
             }
             m_lightingInfoList = realisticLightingInfoList;
 
+            Dictionary<string, bool?> dictionary = new Dictionary<string, bool?>(m_loadingSkyboxes);
             m_loadingSkyboxes.Clear();
-            m_skyboxes = new Dictionary<string, Material>();
             string dirPath = Path.Combine(ModCore.addonsFolder, AddonManager.REALISTIC_SKYBOXES_ADDON_FOLDER_NAME);
-            foreach (KeyValuePair<string, bool?> kv in m_loadingSkyboxes)
+            foreach (KeyValuePair<string, bool?> kv in dictionary)
             {
                 if (kv.Value.HasValue && kv.Value.Value)
                 {
@@ -126,7 +124,8 @@ namespace OverhaulMod.Engine
             yield return r;
             if (!r.allAssets.IsNullOrEmpty() && r.allAssets[0] is Material material)
             {
-                m_skyboxes.Add(key, material);
+                AdditionalSkyboxesManager.Instance.AddSkybox(key, material.name, material);
+                m_loadingSkyboxes[key] = true;
             }
             else
             {
@@ -192,18 +191,6 @@ namespace OverhaulMod.Engine
 
             string name = levelDescription.PrefabName;
             return name.IsNullOrEmpty() ? null : name.Substring(name.LastIndexOf("/") + 1);
-        }
-
-        public void SetSkybox(string skyboxName)
-        {
-            if (skyboxName.IsNullOrEmpty() || m_skyboxes.IsNullOrEmpty())
-                return;
-
-            if(m_skyboxes.TryGetValue(skyboxName, out Material material))
-            {
-                SkyBoxManager.Instance._currentSkybox = material;
-                RenderSettings.skybox = material;
-            }
         }
 
         public RealisticLightingInfo GetCurrentRealisticLightingInfo()

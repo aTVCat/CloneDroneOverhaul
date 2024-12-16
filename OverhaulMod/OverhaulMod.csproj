@@ -376,6 +376,8 @@
     <Compile Include="Content\Personalization\PersonalizationAccessoryReferences.cs" />
     <Compile Include="Content\Personalization\PersonalizationMultiplayerManager.cs" />
     <Compile Include="Content\Personalization\PersonalizationMultiplayerPlayerInfo.cs" />
+    <Compile Include="Engine\AdditionalSkyboxesManager.cs" />
+    <Compile Include="Engine\AdditionalSkyboxInfo.cs" />
     <Compile Include="Engine\AutoBuildListInfo.cs" />
     <Compile Include="Engine\MeshSerializer.cs" />
     <Compile Include="Engine\ModSettingSubDescription.cs" />
