@@ -108,6 +108,20 @@ namespace OverhaulMod.Combat.Weapons
             RefreshRenderer();
         }
 
+        public override GameObject GetModel()
+        {
+            ModdedObject moddedObject = base.GetComponent<ModdedObject>();
+            if (!moddedObject)
+                return null;
+
+            FirstPersonMover owner = GetOwner();
+            if (!owner)
+                return null;
+
+            bool fire = owner.HasUpgrade(ModUpgradesManager.SCYTHE_FIRE_UPGRADE);
+            return moddedObject.GetObject<GameObject>(fire ? 4 : 3);
+        }
+
         public void RefreshRenderer()
         {
             ModdedObject moddedObject = base.GetComponent<ModdedObject>();

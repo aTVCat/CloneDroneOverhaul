@@ -1,4 +1,6 @@
-﻿using OverhaulMod.Engine;
+﻿using OverhaulMod.Combat;
+using OverhaulMod.Combat.Weapons;
+using OverhaulMod.Engine;
 using OverhaulMod.Utils;
 using System.Collections.Generic;
 using UnityEngine;
@@ -16,10 +18,11 @@ namespace OverhaulMod.Visuals
 
         public static readonly Dictionary<WeaponType, TransformInfo> WeaponToPosition = new Dictionary<WeaponType, TransformInfo>()
         {
-            { WeaponType.Sword, new TransformInfo(new Vector3(1.15f, 1.75f, -0.8f), new Vector3(60f, 260f, 260f))},
+            { WeaponType.Sword, new TransformInfo(new Vector3(1.15f, 1.75f, -0.85f), new Vector3(60f, 260f, 260f))},
             { WeaponType.Bow, new TransformInfo(new Vector3(-0.15f, 0.35f, -0.6f), new Vector3(0f, 0f, 35f))},
             { WeaponType.Hammer, new TransformInfo(new Vector3(-0.85f, 2f, -0.95f), new Vector3(4f, 0f, 193f), Vector3.one * 0.75f)},
             { WeaponType.Spear, new TransformInfo(new Vector3(0f, 0.6f, -0.6f), new Vector3(283f, 46f, 120f), Vector3.one * 0.85f)},
+            { ModWeaponsManager.SCYTHE_TYPE, new TransformInfo(new Vector3(0.1f, 0.5f, -0.6f), new Vector3(290f, 280f, 70f), Vector3.one)},
         };
 
         public Dictionary<WeaponType, GameObject> WeaponToRenderer;
@@ -168,19 +171,28 @@ namespace OverhaulMod.Visuals
             {
                 if (!WeaponToRenderer.ContainsKey(weaponType))
                 {
-                    Transform renderer = weaponType == WeaponType.Spear ? weaponModel.PartsToDrop[0] : weaponModel.getExistingWeaponModel();
-                    if (renderer)
+                    Transform renderer;
+                    if (weaponModel is ModWeaponModel modWeaponModel)
                     {
-                        if (weaponType == WeaponType.Bow)
-                        {
-                            renderer = renderer.parent;
-                        }
+                        renderer = modWeaponModel.GetModel()?.transform;
+                        renderer.GetComponent<Renderer>().enabled = true;
+                    }
+                    else if (weaponType == WeaponType.Bow)
+                    {
+                        renderer = weaponModel.getExistingWeaponModel().parent;
+                    }
+                    else
+                    {
+                        renderer = weaponType == WeaponType.Spear ? weaponModel.PartsToDrop[0] : weaponModel.getExistingWeaponModel();
+                    }
 
-                        GameObject newRenderer = InstantiateNewRenderer(renderer, weaponType);
-                        if (newRenderer)
-                        {
-                            WeaponToRenderer.Add(weaponType, newRenderer);
-                        }
+                    if (!renderer)
+                        return;
+
+                    GameObject newRenderer = InstantiateNewRenderer(renderer, weaponType);
+                    if (newRenderer)
+                    {
+                        WeaponToRenderer.Add(weaponType, newRenderer);
                     }
                 }
             }

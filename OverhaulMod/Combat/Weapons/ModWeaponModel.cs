@@ -79,5 +79,10 @@ namespace OverhaulMod.Combat.Weapons
         {
             return IsModelActive;
         }
+
+        public virtual GameObject GetModel()
+        {
+            return null;
+        }
     }
 }

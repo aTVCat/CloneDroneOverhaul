@@ -35,7 +35,7 @@ namespace OverhaulMod
                     result = true;
                     break;
                 case FeatureType.WeaponBag:
-                    result = false;
+                    result = ModBuildInfo.VERSION_4_3;
                     break;
                 case FeatureType.ChapterSelectMenuRework:
                     result = true;

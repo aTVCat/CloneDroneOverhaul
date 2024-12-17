@@ -34,6 +34,9 @@ namespace OverhaulMod.UI
         [UIElement("ExportSettingsButton")]
         private Button m_exportSettingsButton;
 
+        [UIElement("Shadow")]
+        private GameObject m_shadow;
+
         [UIElement("Content")]
         public Transform PageContentsTransform;
 
@@ -201,6 +204,7 @@ namespace OverhaulMod.UI
             m_shadingObject.SetActive(true);
             m_normalBgObject.SetActive(true);
             m_setupBgObject.SetActive(false);
+            m_shadow.SetActive(true);
 
             if (!m_hasSelectedTab)
             {
@@ -218,6 +222,7 @@ namespace OverhaulMod.UI
             m_shadingObject.SetActive(false);
             m_normalBgObject.SetActive(false);
             m_setupBgObject.SetActive(true);
+            m_shadow.SetActive(false);
             PopulatePage("setup");
         }
 
