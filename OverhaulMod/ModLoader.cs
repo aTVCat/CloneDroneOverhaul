@@ -30,6 +30,7 @@ namespace OverhaulMod
             loadAssemblies();
             loadGameUIThemeData();
 
+            ModUserInfo.Load();
             ModBuildInfo.Load();
 
             GameObject gameObject = new GameObject("OverhaulManagers", new Type[] { typeof(ModManagers) });

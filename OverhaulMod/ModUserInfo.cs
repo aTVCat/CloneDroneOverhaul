@@ -1,11 +1,56 @@
-﻿using Steamworks;
+﻿using OverhaulMod.Utils;
+using Steamworks;
+using System.IO;
 
 namespace OverhaulMod
 {
     public static class ModUserInfo
     {
+        public const string FILE_NAME = "SavedUserInfo.json";
+
         public static readonly CSteamID DeveloperSteamID = new CSteamID(76561199028311109);
         public static readonly string DeveloperPlayFabID = "883CC7F4CA3155A3";
+
+        private static Info s_info;
+
+        public static void Load()
+        {
+            Info info;
+            try
+            {
+                info = ModJsonUtils.DeserializeStream<Info>(Path.Combine(ModCore.modUserDataFolder, FILE_NAME));
+            }
+            catch
+            {
+                info = null;
+            }
+        }
+
+        public static void Save()
+        {
+            Info info = s_info;
+            if (info == null)
+            {
+                info = new Info();
+                s_info = info;
+            }
+
+            bool hasChanged = false;
+            if ((info.PlayfabID.IsNullOrEmpty() || info.PlayfabID != localPlayerPlayFabID) && !localPlayerPlayFabID.IsNullOrEmpty())
+            {
+                info.PlayfabID = localPlayerPlayFabID;
+                hasChanged = true;
+            }
+
+            if ((info.SteamID == default || info.SteamID != (ulong)localPlayerSteamID) && (ulong)localPlayerSteamID != default)
+            {
+                info.SteamID = (ulong)localPlayerSteamID;
+                hasChanged = true;
+            }
+
+            if(hasChanged)
+                ModJsonUtils.WriteStream(Path.Combine(ModCore.modUserDataFolder, FILE_NAME), s_info);
+        }
 
         private static CSteamID s_localPlayerSteamID;
         public static CSteamID localPlayerSteamID
@@ -16,9 +61,10 @@ namespace OverhaulMod
                 {
                     SteamManager steamManager = SteamManager.Instance;
                     if (!steamManager || !steamManager.Initialized)
-                        return default;
+                        return s_info != null ? (CSteamID)s_info.SteamID : default;
 
                     s_localPlayerSteamID = SteamUser.GetSteamID();
+                    Save();
                 }
                 return s_localPlayerSteamID;
             }
@@ -33,9 +79,10 @@ namespace OverhaulMod
                 {
                     MultiplayerLoginManager multiplayerLoginManager = MultiplayerLoginManager.Instance;
                     if (!multiplayerLoginManager || !multiplayerLoginManager.IsLoggedIntoPlayfab())
-                        return null;
+                        return s_info != null ? s_info.PlayfabID : null;
 
                     s_localPlayerPlayFabID = multiplayerLoginManager.GetLocalPlayFabID();
+                    Save();
                 }
                 return s_localPlayerPlayFabID;
             }
@@ -47,6 +94,13 @@ namespace OverhaulMod
             {
                 return localPlayerSteamID == DeveloperSteamID || localPlayerPlayFabID == DeveloperPlayFabID;
             }
+        }
+
+        public class Info
+        {
+            public string PlayfabID;
+
+            public ulong SteamID;
         }
     }
 }
