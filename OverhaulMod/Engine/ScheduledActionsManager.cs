@@ -17,6 +17,9 @@ namespace OverhaulMod.Engine
         [ModSetting(ModSettingsConstants.REFRESH_NEWS_DATE_TIME, null, ModSetting.Tag.IgnoreExport)]
         public static string RefreshNewsDateTime;
 
+        [ModSetting(ModSettingsConstants.DISABLE_SCHEDULES, false)]
+        public static bool DisableSchedules;
+
         public void SetActionExecuted(ScheduledActionType scheduledAction)
         {
             DateTime dateTime = DateTime.Now;
@@ -40,7 +43,7 @@ namespace OverhaulMod.Engine
 
         public bool ShouldExecuteAction(ScheduledActionType scheduledAction)
         {
-            return DateTime.Now > GetActionExecutionDateTime(scheduledAction);
+            return !DisableSchedules && DateTime.Now > GetActionExecutionDateTime(scheduledAction);
         }
 
         public DateTime GetActionExecutionDateTime(ScheduledActionType scheduledAction)

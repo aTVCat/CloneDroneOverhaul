@@ -58,6 +58,8 @@ namespace OverhaulMod.Content
             RepositoryManager repositoryManager = RepositoryManager.Instance;
             repositoryManager.GetTextFile(FILE_NAME, delegate (string contents)
             {
+                ModFileUtils.WriteText(contents, Path.Combine(ModCore.modUserDataFolder, FILE_NAME));
+
                 ExclusivePerkInfoList contentInfoList = null;
                 try
                 {
@@ -78,6 +80,11 @@ namespace OverhaulMod.Content
             {
                 callback?.Invoke(error);
             }, out _, 20);
+        }
+
+        public ExclusivePerkInfoList GetPerkInfoList()
+        {
+            return m_perksData;
         }
 
         public List<ExclusivePerkInfo> GetPerks()

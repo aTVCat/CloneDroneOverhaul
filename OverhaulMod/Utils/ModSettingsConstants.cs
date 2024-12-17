@@ -585,5 +585,10 @@ namespace OverhaulMod.Utils
         /// <see cref="Content.UpdateManager"/>
         /// </summary>
         public const string UPDATES_LAST_CHECKED_DATE = "UpdatesLastCheckedDate";
+
+        /// <summary>
+        /// <see cref="Engine.ScheduledActionsManager"/>
+        /// </summary>
+        public const string DISABLE_SCHEDULES = "DisableSchedules";
     }
 }

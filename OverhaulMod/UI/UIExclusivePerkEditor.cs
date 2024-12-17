@@ -1,7 +1,6 @@
 ﻿using OverhaulMod.Content;
 using OverhaulMod.Utils;
-using System;
-using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,41 +12,80 @@ namespace OverhaulMod.UI
         [UIElement("CloseButton")]
         private readonly Button m_exitButton;
 
-        [UIElementAction(nameof(OnDataFolderButtonClicked))]
-        [UIElement("DataFolderButton")]
-        private readonly Button m_dataFolderButton;
+        [UIElement("PerksPanel", false)]
+        private readonly GameObject m_perksPanel;
+
+        [UIElement("EditorBG", false)]
+        private readonly GameObject m_editorBg;
+
+        [UIElement("NonEditorBG", true)]
+        private readonly GameObject m_nonEditorBg;
+
+        [UIElementAction(nameof(OnPerksButtonClicked))]
+        [UIElement("PerksButton")]
+        private readonly Button m_perksButton;
 
         [UIElementAction(nameof(OnSaveButtonClicked))]
         [UIElement("SaveButton")]
         private readonly Button m_saveButton;
 
-        [UIElementAction(nameof(OnNewButtonClicked))]
-        [UIElement("NewButton")]
-        private readonly Button m_newButton;
+        [UIElement("NeedsSaveIcon", false)]
+        private readonly GameObject m_needsSaveIcon;
 
-        [UIElement("NameInputField")]
-        private readonly InputField m_contentNameInputField;
+        [UIElementAction(nameof(OnClosePerksPanelButtonClicked))]
+        [UIElement("ClosePerksPanelButton")]
+        private readonly Button m_closePerksPanelButton;
 
-        [UIElement("SteamIDInputField")]
-        private readonly InputField m_steamIdInputField;
+        [UIElementAction(nameof(OnNewPerkButtonClicked))]
+        [UIElement("NewPerkButton")]
+        private readonly Button m_newPerkButton;
 
-        [UIElement("PlayFabIDInputField")]
-        private readonly InputField m_playFabIdInputField;
-
-        [UIElement("TypeDropdown")]
-        private readonly Dropdown m_perkTypeDropdown;
+        [UIElement("PerkDisplay", false)]
+        private readonly ModdedObject m_perkDisplay;
 
         [UIElement("Content")]
-        private readonly Transform m_container;
+        private readonly Transform m_perkPanelContent;
+
+        [UIElementAction(nameof(OnPerkNameEdited))]
+        [UIElement("PerkNameField")]
+        private readonly InputField m_perkNameField;
+
+        [UIElementAction(nameof(OnPerkTypeDropdownEdited))]
+        [UIElement("PerkTypeDropdown")]
+        private readonly Dropdown m_perkTypeDropdown;
+
+        [UIElementAction(nameof(OnOwnerPlayfabIDEdited))]
+        [UIElement("OwnerPlayfabID")]
+        private readonly InputField m_ownerPlayfabIDField;
+
+        [UIElementAction(nameof(OnRevealOwnerPlayfabIDButtonClicked))]
+        [UIElement("RevealOnwerPlayfabIDButton", true)]
+        private readonly Button m_revealOwnerPlayfabIDButton;
+
+        [UIElementAction(nameof(OnOwnerSteamIDEdited))]
+        [UIElement("OwnerSteamID")]
+        private readonly InputField m_ownerSteamIDField;
+
+        [UIElementAction(nameof(OnRevealOwnerSteamIDButtonClicked))]
+        [UIElement("RevealOnwerSteamIDButton", true)]
+        private readonly Button m_revealOwnerSteamIDButton;
+
+        private ExclusivePerkInfo m_editingPerk;
+
+        private bool m_disableUICallbacks;
 
         protected override void OnInitialized()
         {
-            List<Dropdown.OptionData> contentTypeOptions = new List<Dropdown.OptionData>();
-            foreach (string str in typeof(ExclusivePerkType).GetEnumNames())
+            m_saveButton.interactable = false;
+
+            System.Collections.Generic.List<Dropdown.OptionData> options = m_perkTypeDropdown.options;
+            options.Clear();
+            foreach (object enumValue in typeof(ExclusivePerkType).GetEnumValues())
             {
-                contentTypeOptions.Add(new Dropdown.OptionData() { text = str });
+                ExclusivePerkType exclusivePerkType = (ExclusivePerkType)enumValue;
+                options.Add(new DropdownIntOptionData() { text = StringUtils.AddSpacesToCamelCasedString(exclusivePerkType.ToString()), IntValue = (int)enumValue });
             }
-            m_perkTypeDropdown.options = contentTypeOptions;
+            m_perkTypeDropdown.RefreshShownValue();
         }
 
         public override void Show()
@@ -60,19 +98,187 @@ namespace OverhaulMod.UI
             base.Hide();
         }
 
-        public void OnDataFolderButtonClicked()
+        private void editPerk(ExclusivePerkInfo exclusivePerkInfo)
         {
-            _ = ModFileUtils.OpenFileExplorer(ModCache.dataRepository.GetRootDataPath(false));
+            m_editingPerk = exclusivePerkInfo;
+
+            if (m_perksPanel.activeSelf)
+                togglePerksPanel();
+
+            setFieldsValue(exclusivePerkInfo);
+
+            m_revealOwnerPlayfabIDButton.gameObject.SetActive(true);
+            m_revealOwnerSteamIDButton.gameObject.SetActive(true);
+
+            m_editorBg.SetActive(true);
+            m_nonEditorBg.SetActive(false);
+            m_saveButton.interactable = true;
+        }
+
+        private void saveEditingPerk()
+        {
+            m_needsSaveIcon.SetActive(false);
+
+            ExclusivePerkInfoList infoList = ExclusivePerkManager.Instance.GetPerkInfoList();
+            if (infoList != null)
+            {
+                ExclusivePerkInfo perk = m_editingPerk;
+                if (perk != null)
+                {
+                    updatePerkInfo(perk);
+
+                    ModJsonUtils.WriteStream(Path.Combine(ModCore.modUserDataFolder, ExclusivePerkManager.FILE_NAME), infoList);
+                    ModJsonUtils.WriteStream(Path.Combine(ModCore.savesFolder, ExclusivePerkManager.FILE_NAME), infoList);
+                }
+                else
+                {
+                    ModUIUtils.MessagePopupOK("Error", "You're not editing any perk.", true);
+                }
+            }
+            else
+            {
+                ModUIUtils.MessagePopupOK("Error", "Perk list is not available.\nThis is a bug.", true);
+            }
+        }
+
+        private void setFieldsValue(ExclusivePerkInfo perk)
+        {
+            m_disableUICallbacks = true;
+
+            m_perkNameField.text = perk.DisplayName;
+            for(int i = 0; i < m_perkTypeDropdown.options.Count; i++)
+            {
+                DropdownIntOptionData dropdownIntOptionData = m_perkTypeDropdown.options[i] as DropdownIntOptionData;
+                if(dropdownIntOptionData.IntValue == (int)perk.PerkType)
+                {
+                    m_perkTypeDropdown.value = i;
+                    break;
+                }
+            }
+            m_ownerPlayfabIDField.text = perk.PlayFabID;
+            m_ownerSteamIDField.text = perk.SteamID.ToString();
+
+            m_disableUICallbacks = false;
+        }
+
+        private void updatePerkInfo(ExclusivePerkInfo perk)
+        {
+            perk.DisplayName = m_perkNameField.text;
+            perk.PerkType = (ExclusivePerkType)(m_perkTypeDropdown.options[m_perkTypeDropdown.value] as DropdownIntOptionData).IntValue;
+            perk.PlayFabID = m_ownerPlayfabIDField.text;
+
+            if (m_ownerSteamIDField.text.IsNullOrEmpty())
+                perk.SteamID = 0;
+            else if (!ulong.TryParse(m_ownerSteamIDField.text, out perk.SteamID))
+                ModUIUtils.MessagePopupOK("Warning", "Could not parse the Steam ID.\nMake sure it only has numbers", true);
+        }
+
+        private void togglePerksPanel()
+        {
+            if (!m_perksPanel.activeSelf)
+                populatePerksPanel();
+
+            m_perksPanel.SetActive(!m_perksPanel.activeSelf);
+        }
+
+        private void populatePerksPanel()
+        {
+            if (m_perkPanelContent.childCount != 0)
+                TransformUtils.DestroyAllChildren(m_perkPanelContent);
+
+            ExclusivePerkInfoList infoList = ExclusivePerkManager.Instance.GetPerkInfoList();
+            if (infoList != null)
+            {
+                for (int i = 0; i < infoList.List.Count; i++)
+                {
+                    ExclusivePerkInfo perk = infoList.List[i];
+                    ModdedObject moddedObject = Instantiate(m_perkDisplay, m_perkPanelContent);
+                    moddedObject.gameObject.SetActive(true);
+                    moddedObject.GetObject<Text>(0).text = perk.DisplayName;
+
+                    Button button = moddedObject.GetComponent<Button>();
+                    button.onClick.AddListener(delegate
+                    {
+                        editPerk(perk);
+                    });
+                }
+            }
+            else
+            {
+                ModUIUtils.MessagePopupOK("Error", "Perk list is not available.\nThis is a bug.", true);
+            }
+        }
+
+        public void OnPerksButtonClicked()
+        {
+            togglePerksPanel();
         }
 
         public void OnSaveButtonClicked()
         {
-            ModUIUtils.MessagePopupOK("Content file saved!", string.Empty);
+            saveEditingPerk();
         }
 
-        public void OnNewButtonClicked()
+        public void OnClosePerksPanelButtonClicked()
         {
+            togglePerksPanel();
+        }
 
+        public void OnNewPerkButtonClicked()
+        {
+            ExclusivePerkInfoList infoList = ExclusivePerkManager.Instance.GetPerkInfoList();
+            if (infoList != null)
+            {
+                ExclusivePerkInfo exclusivePerkInfo = new ExclusivePerkInfo();
+                infoList.List.Add(exclusivePerkInfo);
+                editPerk(exclusivePerkInfo);
+            }
+            else
+            {
+                ModUIUtils.MessagePopupOK("Error", "Perk list is not available.\nThis is a bug.", true);
+            }
+        }
+
+        public void OnRevealOwnerPlayfabIDButtonClicked()
+        {
+            m_revealOwnerPlayfabIDButton.gameObject.SetActive(false);
+        }
+
+        public void OnRevealOwnerSteamIDButtonClicked()
+        {
+            m_revealOwnerSteamIDButton.gameObject.SetActive(false);
+        }
+
+        public void OnPerkNameEdited(string text)
+        {
+            if (m_disableUICallbacks)
+                return;
+
+            m_needsSaveIcon.SetActive(true);
+        }
+
+        public void OnPerkTypeDropdownEdited(int value)
+        {
+            if (m_disableUICallbacks)
+                return;
+
+            m_needsSaveIcon.SetActive(true);
+        }
+
+        public void OnOwnerPlayfabIDEdited(string text)
+        {
+            if (m_disableUICallbacks)
+                return;
+
+            m_needsSaveIcon.SetActive(true);
+        }
+
+        public void OnOwnerSteamIDEdited(string text)
+        {
+            if (m_disableUICallbacks)
+                return;
+
+            m_needsSaveIcon.SetActive(true);
         }
     }
 }
