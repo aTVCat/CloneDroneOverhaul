@@ -13,6 +13,7 @@ using System.IO;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
+using static OverhaulMod.UI.UISettingsMenuRework;
 
 namespace OverhaulMod.UI
 {
@@ -596,6 +597,12 @@ namespace OverhaulMod.UI
                 }, "Enable title bar changes");
             }
 
+            _ = pageBuilder.Button("Additional settings", delegate
+            {
+                ClearPageContents();
+                populateAdditoonalGraphicsPage(settingsMenu);
+            });
+
             bool vsyncToggleValue = settingsMenu.VsyncOnToggle.isOn;
             _ = pageBuilder.Header3("FPS settings");
             _ = pageBuilder.Toggle(vsyncToggleValue, delegate (bool value)
@@ -754,6 +761,10 @@ namespace OverhaulMod.UI
             }
 
             _ = pageBuilder.Header1("Camera");
+            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.DISABLE_SCREEN_SHAKING), delegate (bool value)
+            {
+                ModSettingsManager.SetBoolValue(ModSettingsConstants.DISABLE_SCREEN_SHAKING, value, true);
+            }, "Disable shaking effects");
             _ = pageBuilder.Header3("Field of view");
             _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_FOV_OVERRIDE), delegate (bool value)
             {
@@ -818,6 +829,7 @@ namespace OverhaulMod.UI
             {
                 ModSettingsManager.SetIntValue(ModSettingsConstants.FORCE_WEATHER_TYPE, value, true);
             });
+
 
             _ = pageBuilder.Header1("Voxel engine");
             _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.CHANGE_HIT_COLORS), delegate (bool value)
@@ -1089,6 +1101,46 @@ namespace OverhaulMod.UI
                     ModSettingsManager.Instance.ResetSettings();
                     _ = ModUIConstants.ShowRestartRequiredScreen(true);
                 });
+            });
+        }
+
+        private void populateAdditoonalGraphicsPage(SettingsMenu settingsMenu)
+        {
+            PageBuilder pageBuilder = new PageBuilder(this);
+            _ = pageBuilder.Button("Go back", delegate
+            {
+                ClearPageContents();
+                populateGraphicsPage(settingsMenu);
+            });
+
+            _ = pageBuilder.Header1("Shadows");
+            _ = pageBuilder.Header3("Resolution");
+            _ = pageBuilder.Dropdown(QualityManager.Instance.GetShadowResolutionOptions(), ModSettingsManager.GetIntValue(ModSettingsConstants.SHADOW_RESOLUTION), delegate (int value)
+            {
+                ModSettingsManager.SetIntValue(ModSettingsConstants.SHADOW_RESOLUTION, value, true);
+                QualityManager.Instance.RefreshQualitySettings();
+            });
+            _ = pageBuilder.Header3("Distance");
+            _ = pageBuilder.Slider(100f, 1500f, true, ModSettingsManager.GetFloatValue(ModSettingsConstants.SHADOW_DISTANCE), delegate (float value)
+            {
+                ModSettingsManager.SetFloatValue(ModSettingsConstants.SHADOW_DISTANCE, value, true);
+                QualityManager.Instance.RefreshQualitySettings();
+            }, true, (float val) =>
+            {
+                float roundedValue = Mathf.Round(val * 10f) / 10f;
+                return roundedValue.ToString();
+            });
+
+            _ = pageBuilder.Header1("Lights");
+            _ = pageBuilder.Header3("Limit");
+            _ = pageBuilder.Slider(1, 14, true, ModSettingsManager.GetIntValue(ModSettingsConstants.MAX_LIGHT_COUNT), delegate (float value)
+            {
+                ModSettingsManager.SetIntValue(ModSettingsConstants.MAX_LIGHT_COUNT, Mathf.RoundToInt(value), true);
+                QualityManager.Instance.RefreshQualitySettings();
+            }, true, (float val) =>
+            {
+                int roundedValue = Mathf.RoundToInt(val);
+                return roundedValue.ToString();
             });
         }
 

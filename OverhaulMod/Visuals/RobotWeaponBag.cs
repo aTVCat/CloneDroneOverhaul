@@ -1,5 +1,6 @@
 ﻿using OverhaulMod.Combat;
 using OverhaulMod.Combat.Weapons;
+using OverhaulMod.Content.Personalization;
 using OverhaulMod.Engine;
 using OverhaulMod.Utils;
 using System.Collections.Generic;
@@ -122,7 +123,7 @@ namespace OverhaulMod.Visuals
                 return;
             }
 
-            if (firstPersonMover.IsMindSpaceCharacter)
+            if (PersonalizationEditorManager.IsInEditor() || firstPersonMover.IsMindSpaceCharacter)
                 return;
 
             List<WeaponType> equippedWeapons = firstPersonMover._equippedWeapons;

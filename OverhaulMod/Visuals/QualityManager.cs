@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace OverhaulMod.Visuals
 {
@@ -25,6 +26,16 @@ namespace OverhaulMod.Visuals
             QualitySettings.shadowResolution = ShadowResolution;
             QualitySettings.shadowDistance = ShadowDistance;
             QualitySettings.pixelLightCount = MaxLightCount;
+        }
+
+        public List<Dropdown.OptionData> GetShadowResolutionOptions()
+        {
+            List<Dropdown.OptionData> list = new List<Dropdown.OptionData>();
+            foreach(var enumValue in typeof(ShadowResolution).GetEnumValues())
+            {
+                list.Add(new Dropdown.OptionData(StringUtils.AddSpacesToCamelCasedString(((ShadowResolution)enumValue).ToString())));
+            }
+            return list;
         }
     }
 }

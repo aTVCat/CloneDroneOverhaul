@@ -8,6 +8,13 @@ namespace OverhaulMod.Patches
     [HarmonyPatch(typeof(CameraShaker))]
     internal static class CameraShaker_Patch
     {
+        [HarmonyPrefix]
+        [HarmonyPatch(nameof(CameraShaker.ShakeCamera))]
+        private static bool ShakeCamera_Prefix(CameraShaker __instance)
+        {
+            return !ModCore.DisableScreenShaking || GameModeManager.IsInLevelEditor();
+        }
+
         [HarmonyPostfix]
         [HarmonyPatch(nameof(CameraShaker.Update))]
         private static void Update_Postfix(CameraShaker __instance)

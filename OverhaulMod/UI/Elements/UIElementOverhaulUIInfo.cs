@@ -29,6 +29,7 @@ namespace OverhaulMod.UI
         protected override void OnInitialized()
         {
             m_image = GetComponent<RawImage>();
+            m_image.color = Color.black;
             LoadPreview();
         }
 
@@ -79,6 +80,7 @@ namespace OverhaulMod.UI
                     Texture2D texture = (unityWebRequest.downloadHandler as DownloadHandlerTexture).texture;
                     m_loadedImage = texture;
                     m_image.texture = texture;
+                    m_image.color = Color.white;
                 }
                 else
                 {

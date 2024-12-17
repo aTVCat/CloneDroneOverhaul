@@ -32,6 +32,9 @@ namespace OverhaulMod
         [ModSetting(ModSettingsConstants.CURSOR_SKIN, 1)]
         public static int CursorSkin;
 
+        [ModSetting(ModSettingsConstants.DISABLE_SCREEN_SHAKING, false)]
+        public static bool DisableScreenShaking;
+
         public static bool EnterCustomizationEditor;
 
         public static event Action GameInitialized;

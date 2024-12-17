@@ -590,5 +590,10 @@ namespace OverhaulMod.Utils
         /// <see cref="Engine.ScheduledActionsManager"/>
         /// </summary>
         public const string DISABLE_SCHEDULES = "DisableSchedules";
+
+        /// <summary>
+        /// <see cref="ModCore"/>
+        /// </summary>
+        public const string DISABLE_SCREEN_SHAKING = "DisableScreenShaking";
     }
 }
