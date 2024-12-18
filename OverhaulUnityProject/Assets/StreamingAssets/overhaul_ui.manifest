@@ -1,12 +1,12 @@
 ManifestFileVersion: 0
-CRC: 4159515233
+CRC: 2969580399
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 7e49d51de9f073bc2baf997dc4bc8d35
+    Hash: 28cbc4a4bbd74e5a068d766822570907
   TypeTreeHash:
     serializedVersion: 2
-    Hash: acf1344b0dbbc80b9165ec9e7dce57f8
+    Hash: 11a2c5244a74fc567c6938c3491df245
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -87,6 +87,8 @@ ClassTypes:
   Script: {instanceID: 0}
 - Class: 225
   Script: {instanceID: 0}
+- Class: 687078895
+  Script: {instanceID: 0}
 Assets:
 - Assets/Font/DSEG7-Classic-Bold.ttf
 - Assets/UI/UI_DuelInviteMenuRework.prefab
@@ -122,6 +124,7 @@ Assets:
 - Assets/Sprites/Glyphs/Redirect-16x16.png
 - Assets/UI/UI_PatchNotes.prefab
 - Assets/UI/UI_NewsDetailsPanel.prefab
+- Assets/Sprites/Glyphs/NA-HQ-128x128.png
 - Assets/UI/UI_LoadingScreen.prefab
 - Assets/UI/UI_Transition.prefab
 - Assets/UI/UI_PersonalizationEditorItemCreationDialog.prefab
