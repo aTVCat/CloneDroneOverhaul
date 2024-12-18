@@ -64,6 +64,7 @@ namespace OverhaulMod.UI
             GlobalEventManager.Instance.AddEventListener("SpeechSentenceStarted", onSentenceStarted);
             GlobalEventManager.Instance.AddEventListener("SpeechSequenceFinished", onSentenceFinishedOrCancelled);
             GlobalEventManager.Instance.AddEventListener("SpeechSentenceCancelled", onSentenceFinishedOrCancelled);
+            GlobalEventManager.Instance.AddEventListener<string>(ModResources.ASSET_BUNDLE_LOADED_EVENT, onAssetBundleLoaded);
 
             ModSettingsManager.Instance.AddSettingValueChangedListener(refreshSettings, ModSettingsConstants.SUBTITLE_TEXT_FIELD_BG);
             ModSettingsManager.Instance.AddSettingValueChangedListener(refreshSettings, ModSettingsConstants.SUBTITLE_TEXT_FIELD_UPPER_POSITION);
@@ -80,6 +81,7 @@ namespace OverhaulMod.UI
             GlobalEventManager.Instance.RemoveEventListener("SpeechSentenceStarted", onSentenceStarted);
             GlobalEventManager.Instance.RemoveEventListener("SpeechSequenceFinished", onSentenceFinishedOrCancelled);
             GlobalEventManager.Instance.RemoveEventListener("SpeechSentenceCancelled", onSentenceFinishedOrCancelled);
+            GlobalEventManager.Instance.RemoveEventListener<string>(ModResources.ASSET_BUNDLE_LOADED_EVENT, onAssetBundleLoaded);
 
             ModSettingsManager.Instance.RemoveSettingValueChangedListener(refreshSettings, ModSettingsConstants.SUBTITLE_TEXT_FIELD_BG);
             ModSettingsManager.Instance.RemoveSettingValueChangedListener(refreshSettings, ModSettingsConstants.SUBTITLE_TEXT_FIELD_UPPER_POSITION);
@@ -105,6 +107,12 @@ namespace OverhaulMod.UI
             }
 
             m_expandProgress = Mathf.Clamp01(m_expandProgress + ((m_show ? 1f : -1f) * Time.unscaledDeltaTime * 5f));
+        }
+
+        private void onAssetBundleLoaded(string assetBundle)
+        {
+            if (assetBundle == AssetBundleConstants.UI_EXTRA)
+                refreshSettings(null);
         }
 
         private void onSentenceStarted()

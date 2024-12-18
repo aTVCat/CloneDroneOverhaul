@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 2969580399
+CRC: 2734108285
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 28cbc4a4bbd74e5a068d766822570907
+    Hash: 87a123209667870718c1308194b3fe9a
   TypeTreeHash:
     serializedVersion: 2
     Hash: 11a2c5244a74fc567c6938c3491df245
@@ -133,6 +133,7 @@ Assets:
 - Assets/UI/UI_SubtitleTextFieldRework.prefab
 - Assets/UI/UI_NewsInfoEditor.prefab
 - Assets/UI/UI_ChapterLevelSelectionMenu.prefab
+- Assets/Sprites/Atlas.spriteatlas
 - Assets/UI/UI_LevelDescriptionListEditor.prefab
 - Assets/UI/UI_OtherMods.prefab
 - Assets/UI/UI_AssetBundleAssetsBrowser.prefab

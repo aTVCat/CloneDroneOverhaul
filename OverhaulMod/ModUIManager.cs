@@ -1,4 +1,5 @@
-﻿using OverhaulMod.Engine;
+﻿using OverhaulMod.Content;
+using OverhaulMod.Engine;
 using OverhaulMod.UI;
 using OverhaulMod.Utils;
 using System;
@@ -79,6 +80,14 @@ namespace OverhaulMod
 
             if(ModFeatures.IsEnabled(ModFeatures.FeatureType.Intro) && Time.timeSinceLevelLoad < 3f)
                 ModUIConstants.ShowIntro();
+        }
+
+        private void Start()
+        {
+            if (AddonManager.Instance.HasInstalledAddon(AddonManager.EXTRAS_ADDON_FOLDER_NAME, false))
+            {
+                ModResources.LoadBundleAsync(AssetBundleConstants.UI_EXTRA, null, System.IO.Path.Combine(ModCore.addonsFolder, AddonManager.EXTRAS_ADDON_FOLDER_NAME));
+            }
         }
 
         private void OnDestroy()

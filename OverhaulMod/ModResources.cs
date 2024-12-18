@@ -13,6 +13,8 @@ namespace OverhaulMod
     {
         internal const string ASSET_BUNDLES_FOLDER = "assets/";
 
+        public const string ASSET_BUNDLE_LOADED_EVENT = "AssetBundleLoaded";
+
         private static readonly Dictionary<string, AssetBundleInfo> s_bundles = new Dictionary<string, AssetBundleInfo>();
 
         private void OnDestroy()
@@ -89,6 +91,24 @@ namespace OverhaulMod
             return pathPrefix == null ? Path.Combine(ModCore.folder, ASSET_BUNDLES_FOLDER, bundle) : Path.Combine(pathPrefix, bundle);
         }
 
+        public static bool IsAssetBundleNotLoadedOrBeingLoaded(string bundle, string pathPrefix = null)
+        {
+            AssetBundleInfo assetBundleInfo = GetAssetBundleInfo(bundle, pathPrefix);
+            return assetBundleInfo == null || assetBundleInfo.LoadingState != AssetLoadingState.Loaded;
+        }
+
+        public static string GetAssetBundleInfoKey(AssetBundleInfo assetBundleInfo)
+        {
+            if (assetBundleInfo == null || !s_bundles.ContainsValue(assetBundleInfo))
+                return null;
+
+            foreach (var kv in s_bundles)
+                if (kv.Value == assetBundleInfo)
+                    return kv.Key;
+
+            return null;
+        }
+
         public static GameObject Prefab(string bundle, string asset, string pathPrefix = null)
         {
             return Load<GameObject>(bundle, asset, pathPrefix);
@@ -126,7 +146,17 @@ namespace OverhaulMod
 
         public static AssetBundle AssetBundle(string bundle, string pathPrefix = null)
         {
-            return Instance.getOrCreateAssetBundleInfo(GetBundlePath(bundle, pathPrefix), bundle, true).GetBundle();
+            return GetAssetBundleInfo(bundle, pathPrefix).GetBundle();
+        }
+
+        public static AssetBundleInfo GetAssetBundleInfo(string bundle, string pathPrefix = null)
+        {
+            string bundleName = bundle.IsNullOrEmpty() ? GetBundleName(GetBundlePath(bundle, pathPrefix)) : bundle;
+            if (!s_bundles.ContainsKey(bundleName))
+            {
+                return null;
+            }
+            return s_bundles[bundleName];
         }
 
         public static Font EditUndoFont()
@@ -146,7 +176,7 @@ namespace OverhaulMod
 
         public static Font FontByIndex(int index)
         {
-            if (!AddonManager.Instance.HasInstalledAddon(AddonManager.EXTRAS_ADDON_FOLDER_NAME, true))
+            if (index > 5 && (IsAssetBundleNotLoadedOrBeingLoaded(AssetBundleConstants.UI_EXTRA, Path.Combine(ModCore.addonsFolder, AddonManager.EXTRAS_ADDON_FOLDER_NAME)) || !AddonManager.Instance.HasInstalledAddon(AddonManager.EXTRAS_ADDON_FOLDER_NAME, true)))
                 return Font(AssetBundleConstants.UI, "OpenSans-Regular");
 
             switch (index)
@@ -314,6 +344,8 @@ namespace OverhaulMod
                 m_bundle = UnityEngine.AssetBundle.LoadFromFile(FileLocation);
                 m_loadProgress = 1f;
                 LoadingState = AssetLoadingState.Loaded;
+
+                GlobalEventManager.Instance.Dispatch(ASSET_BUNDLE_LOADED_EVENT, ModResources.GetAssetBundleInfoKey(this));
             }
 
             public void LoadAsync(Action<bool> callback)
@@ -361,6 +393,7 @@ namespace OverhaulMod
 
                 LoadingState = AssetLoadingState.Loaded;
                 callback?.Invoke(true);
+                GlobalEventManager.Instance.Dispatch(ASSET_BUNDLE_LOADED_EVENT, ModResources.GetAssetBundleInfoKey(this));
                 yield break;
             }
 

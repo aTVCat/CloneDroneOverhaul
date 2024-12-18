@@ -48,6 +48,8 @@ namespace OverhaulMod.UI
             betterOutline.effectDistance = Vector2.one * 1.25f;
             m_textOutline = betterOutline;
 
+            GlobalEventManager.Instance.AddEventListener<string>(ModResources.ASSET_BUNDLE_LOADED_EVENT, onAssetBundleLoaded);
+
             ModSettingsManager.Instance.AddSettingValueChangedListener(refreshSettings, ModSettingsConstants.PAK_DESCRIPTION_BG);
             ModSettingsManager.Instance.AddSettingValueChangedListener(refreshSettings, ModSettingsConstants.PAK_DESCRIPTION_FONT);
             ModSettingsManager.Instance.AddSettingValueChangedListener(refreshSettings, ModSettingsConstants.PAK_DESCRIPTION_FONT_SIZE);
@@ -58,6 +60,8 @@ namespace OverhaulMod.UI
         public override void OnDestroy()
         {
             base.OnDestroy();
+
+            GlobalEventManager.Instance.RemoveEventListener<string>(ModResources.ASSET_BUNDLE_LOADED_EVENT, onAssetBundleLoaded);
 
             ModSettingsManager.Instance.RemoveSettingValueChangedListener(refreshSettings, ModSettingsConstants.PAK_DESCRIPTION_BG);
             ModSettingsManager.Instance.RemoveSettingValueChangedListener(refreshSettings, ModSettingsConstants.PAK_DESCRIPTION_FONT);
@@ -82,6 +86,12 @@ namespace OverhaulMod.UI
             }
 
             m_expandProgress = Mathf.Clamp01(m_expandProgress + ((m_show ? 1f : -1f) * Time.unscaledDeltaTime * 7.5f));
+        }
+
+        private void onAssetBundleLoaded(string assetBundle)
+        {
+            if (assetBundle == AssetBundleConstants.UI_EXTRA)
+                refreshSettings(null);
         }
 
         public void ShowText(string text)
