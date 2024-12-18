@@ -1,9 +1,5 @@
 ﻿using OverhaulMod.Utils;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -24,7 +20,10 @@ namespace OverhaulMod.Engine
         public void SetSkybox(string skyboxKey)
         {
             if (skyboxKey.IsNullOrEmpty() || m_skyboxes.IsNullOrEmpty())
+            {
+                LevelEditorLightManager.Instance.RefreshLightInScene();
                 return;
+            }
 
             if (m_skyboxes.TryGetValue(skyboxKey, out AdditionalSkyboxInfo skyboxInfo))
             {
@@ -36,10 +35,29 @@ namespace OverhaulMod.Engine
         public List<Dropdown.OptionData> GetSkyboxOptions()
         {
             List<Dropdown.OptionData> list = new List<Dropdown.OptionData>();
-            foreach(var kv in m_skyboxes)
+            foreach (KeyValuePair<string, AdditionalSkyboxInfo> kv in m_skyboxes)
             {
                 list.Add(new DropdownStringOptionData() { text = kv.Value.DisplayName, StringValue = kv.Key });
             }
+            return list;
+        }
+
+        public List<Dropdown.OptionData> GetSkyboxOptionsForLevelEditor(string currentValue)
+        {
+            bool foundOption = currentValue.IsNullOrEmpty();
+
+            List<Dropdown.OptionData> list = new List<Dropdown.OptionData>() { new DropdownStringOptionData() { text = "Default", StringValue = string.Empty } };
+            foreach (KeyValuePair<string, AdditionalSkyboxInfo> kv in m_skyboxes)
+            {
+                list.Add(new DropdownStringOptionData() { text = kv.Value.DisplayName, StringValue = kv.Key });
+
+                if (!foundOption && kv.Key == currentValue)
+                    foundOption = true;
+            }
+
+            if(!foundOption)
+                list.Add(new DropdownStringOptionData() { text = currentValue, StringValue = currentValue });
+
             return list;
         }
     }

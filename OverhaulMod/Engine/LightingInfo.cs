@@ -22,7 +22,7 @@ namespace OverhaulMod.Engine
 
         public int SkyboxIndex;
 
-        public int RealisticSkyboxIndex;
+        public string AdditonalSkybox;
 
         public float SunSize;
 
@@ -103,15 +103,11 @@ namespace OverhaulMod.Engine
             CameraColorBlend = levelLightSettings.CameraColorBlend;
             CameraExposure = levelLightSettings.CameraExposure;
 
-            RealisticLightUserSettings realisticLightUserSettings = levelLightSettings.GetComponent<RealisticLightUserSettings>();
-            if (realisticLightUserSettings && realisticLightUserSettings.EnableRealisticSkybox)
-            {
-                RealisticSkyboxIndex = realisticLightUserSettings.RealisticSkyBox;
-                return;
-            }
-
-            RealisticLightSettings realisticLightSettings = levelLightSettings.GetComponent<RealisticLightSettings>();
-            RealisticSkyboxIndex = realisticLightSettings ? realisticLightSettings.RealisticSkyBoxIndex : -1;
+            AdditionalSkyboxSettings realisticLightUserSettings = levelLightSettings.GetComponent<AdditionalSkyboxSettings>();
+            if (realisticLightUserSettings)
+                AdditonalSkybox = realisticLightUserSettings.GetSkybox();
+            else
+                AdditonalSkybox = null;
         }
 
         public void SetValuesUsingEnvironmentSettings()
@@ -151,9 +147,6 @@ namespace OverhaulMod.Engine
                 SkyBottomExponent = material2.GetFloat("_Exponent2");
                 SkyIntensity = material2.GetFloat("_Intensity");
             }
-
-            ModLevelManager modLevelManager = ModLevelManager.Instance;
-            SkyboxIndex = modLevelManager.currentSkyBoxIndex;
 
             LevelLightSettings levelLightSettings = LevelEditorLightManager.Instance?.GetActiveLightSettings();
             if (!levelLightSettings)
@@ -198,9 +191,11 @@ namespace OverhaulMod.Engine
             levelLightSettings.CameraColorBlend = CameraColorBlend;
             levelLightSettings.CameraExposure = CameraExposure;
 
-            RealisticLightSettings realisticLightSettings = levelLightSettings.GetComponent<RealisticLightSettings>();
-            if (realisticLightSettings)
-                realisticLightSettings.RealisticSkyBoxIndex = RealisticSkyboxIndex;
+            ObjectPlacedInLevel opil = levelLightSettings.GetComponent<ObjectPlacedInLevel>();
+            if (opil)
+            {
+                opil.SetCustomInspectorStringValue(nameof(AdditionalSkyboxSettings), nameof(AdditionalSkyboxSettings.Skybox), AdditonalSkybox);
+            }
         }
 
         public override bool Equals(object obj)

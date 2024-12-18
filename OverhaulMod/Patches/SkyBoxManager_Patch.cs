@@ -1,5 +1,6 @@
 ﻿using HarmonyLib;
 using OverhaulMod.Engine;
+using OverhaulMod.Utils;
 using UnityEngine;
 
 namespace OverhaulMod.Patches
@@ -7,14 +8,14 @@ namespace OverhaulMod.Patches
     [HarmonyPatch(typeof(SkyBoxManager))]
     internal static class SkyBoxManager_Patch
     {
-        [HarmonyPrefix]
+        /*[HarmonyPrefix]
         [HarmonyPatch(nameof(SkyBoxManager.RefreshSkyboxAmbientLightAndFog))]
         private static void RefreshSkyboxAmbientLightAndFog_Prefix(SkyBoxManager __instance, LevelLightSettings lightSettings)
         {
             ModLevelManager modLevelManager = ModLevelManager.Instance;
             if (modLevelManager && lightSettings)
                 modLevelManager.currentSkyBoxIndex = lightSettings.SkyboxIndex;
-        }
+        }*/
 
         [HarmonyPostfix]
         [HarmonyPatch(nameof(SkyBoxManager.RefreshSkyboxAmbientLightAndFog))]
@@ -23,11 +24,11 @@ namespace OverhaulMod.Patches
             if (GameModeManager.IsStoryChapter4())
                 RenderSettings.skybox = __instance.LevelConfigurableSkyboxes[7];
 
-            RealisticLightSettings realisticLightSettings = lightSettings.GetComponent<RealisticLightSettings>();
-            if (!realisticLightSettings)
+            AdditionalSkyboxSettings realisticLightSettings = lightSettings.GetComponent<AdditionalSkyboxSettings>();
+            if (!realisticLightSettings || realisticLightSettings.GetSkybox().IsNullOrEmpty())
                 return;
 
-            //RealisticLightingManager.Instance.SetSkybox(realisticLightSettings.RealisticSkyBoxIndex);
+            AdditionalSkyboxesManager.Instance.SetSkybox(realisticLightSettings.GetSkybox());
         }
     }
 }

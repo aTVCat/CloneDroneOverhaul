@@ -131,6 +131,12 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="TVCat.CloneDrone">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\mods\CloneDroneOverhaul\TVCat.CloneDrone.dll</HintPath>
+    </Reference>
+    <Reference Include="TVCat.Launcher">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\mods\CloneDroneOverhaul\TVCat.Launcher.dll</HintPath>
+    </Reference>
     <Reference Include="Unity.Analytics.DataPrivacy">
       <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\Unity.Analytics.DataPrivacy.dll</HintPath>
     </Reference>
@@ -382,7 +388,7 @@
     <Compile Include="Engine\MeshSerializer.cs" />
     <Compile Include="Engine\ModSettingSubDescription.cs" />
     <Compile Include="Engine\UseKeyTriggerManager.cs" />
-    <Compile Include="Engine\RealisticLightUserSettings.cs" />
+    <Compile Include="Engine\AdditionalSkyboxSettings.cs" />
     <Compile Include="Engine\ScheduledActionsManager.cs" />
     <Compile Include="Engine\ScheduledActionType.cs" />
     <Compile Include="Engine\WeaponInvisibilityFixer.cs" />
@@ -454,7 +460,6 @@
     <Compile Include="Engine\RealisticLightingInfo.cs" />
     <Compile Include="Engine\RealisticLightingInfoList.cs" />
     <Compile Include="Engine\RealisticLightingManager.cs" />
-    <Compile Include="Engine\RealisticLightSettings.cs" />
     <Compile Include="Engine\RichPresenceBase.cs" />
     <Compile Include="Engine\RichPresenceDiscord.cs" />
     <Compile Include="Engine\RichPresenceManager.cs" />

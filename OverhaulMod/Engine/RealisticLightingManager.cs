@@ -205,31 +205,5 @@ namespace OverhaulMod.Engine
 
             return realisticLightingInfoList.GetLightingInfo(prefabName);
         }
-
-        public void PatchLevelLightSettings(LevelLightSettings lightSettings = null, bool refreshLight = false)
-        {
-            if (!lightSettings)
-                lightSettings = LevelEditorLightManager.Instance.GetActiveLightSettings();
-
-            RealisticLightSettings realisticLightSettings = lightSettings.GetComponent<RealisticLightSettings>();
-            if (!realisticLightSettings)
-            {
-                realisticLightSettings = lightSettings.gameObject.AddComponent<RealisticLightSettings>();
-            }
-
-            RealisticLightingInfo realisticLightingInfo = GetCurrentRealisticLightingInfo();
-            if (realisticLightingInfo != null)
-            {
-                if (realisticLightingInfo.Lighting != null)
-                    realisticLightingInfo.Lighting.ApplyValues(lightSettings);
-
-                if (refreshLight)
-                    LevelEditorLightManager.Instance.RefreshLightInScene();
-            }
-            else
-            {
-                realisticLightSettings.RealisticSkyBoxIndex = -1;
-            }
-        }
     }
 }

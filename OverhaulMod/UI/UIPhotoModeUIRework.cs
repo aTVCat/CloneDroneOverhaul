@@ -462,7 +462,7 @@ namespace OverhaulMod.UI
             if (m_disallowCallbacks)
                 return;
 
-            m_lightingInfo.RealisticSkyboxIndex = value ? Mathf.RoundToInt(m_realisticSkyBoxSlider.value) : -1;
+            //m_lightingInfo.AdditonalSkybox = value ? Mathf.RoundToInt(m_realisticSkyBoxSlider.value) : -1;
             AdvancedPhotoModeManager.Instance.RefreshLightingWithEditedInfo();
         }
 
@@ -471,7 +471,7 @@ namespace OverhaulMod.UI
             if (m_disallowCallbacks)
                 return;
 
-            m_lightingInfo.RealisticSkyboxIndex = m_realisticSkyBoxToggle.isOn ? Mathf.RoundToInt(value) : -1;
+            //m_lightingInfo.AdditonalSkybox = m_realisticSkyBoxToggle.isOn ? Mathf.RoundToInt(value) : -1;
             AdvancedPhotoModeManager.Instance.RefreshLightingWithEditedInfo();
         }
 

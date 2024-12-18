@@ -146,7 +146,6 @@ namespace OverhaulMod.Engine
             {
                 m_isInPhotoMode = false;
 
-                RealisticLightingManager.Instance.PatchLevelLightSettings();
                 RefreshLightingWithNormalInfo();
 
                 UIPhotoModeUIRework photoModeUI = ModUIManager.Instance?.Get<UIPhotoModeUIRework>(AssetBundleConstants.UI, ModUIConstants.UI_PHOTO_MODE_UI_REWORK);

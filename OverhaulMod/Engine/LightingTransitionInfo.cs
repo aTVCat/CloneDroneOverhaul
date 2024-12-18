@@ -60,7 +60,7 @@ namespace OverhaulMod.Engine
                 Mathf.Lerp(a.SkyTopExponent, b.SkyTopExponent, d),
                 Mathf.Lerp(a.SkyBottomExponent, b.SkyBottomExponent, d),
                 Mathf.Lerp(a.SkyIntensity, b.SkyIntensity, d),
-                b.RealisticSkyboxIndex);
+                b.AdditonalSkybox);
 
             refreshFog(b.FogEnabled,
                 Mathf.Lerp(a.FogEndDistance, b.FogEndDistance, d),
@@ -111,7 +111,7 @@ namespace OverhaulMod.Engine
             float skyTopExponent,
             float skyBottomExponent,
             float skyIntensity,
-            int rIndex)
+            string additSkybox)
         {
             SkyBoxManager skyBoxManager = SkyBoxManager.Instance;
             Material material;
@@ -144,9 +144,9 @@ namespace OverhaulMod.Engine
 
             material = index == 1 ? customSkybox : index == 3 ? gradientSkybox : skyBoxManager.LevelConfigurableSkyboxes[index];
 
-            if (rIndex != -1)
+            if (!additSkybox.IsNullOrEmpty())
             {
-                //RealisticLightingManager.Instance.SetSkybox(rIndex);
+                AdditionalSkyboxesManager.Instance.SetSkybox(additSkybox);
                 return;
             }
 

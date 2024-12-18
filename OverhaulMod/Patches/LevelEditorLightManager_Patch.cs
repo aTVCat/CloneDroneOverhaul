@@ -11,8 +11,6 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(LevelEditorLightManager.AddLightSettingInScene))]
         private static bool AddLightSettingInScene_Prefix(LevelEditorLightManager __instance, LevelLightSettings lightSettings)
         {
-            RealisticLightingManager.Instance.PatchLevelLightSettings(lightSettings);
-
             LightingTransitionManager manager = LightingTransitionManager.Instance;
             if (manager && manager.IsDoingTransition())
             {
