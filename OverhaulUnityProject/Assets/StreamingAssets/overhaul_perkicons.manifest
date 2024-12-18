@@ -1,0 +1,25 @@
+ManifestFileVersion: 0
+CRC: 1040747816
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 24ec2dc9b2bc31d1faf02da50f06c176
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 8f81471f4cfc7bf93c7fa752ebb4eb40
+HashAppended: 0
+ClassTypes:
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 213
+  Script: {instanceID: 0}
+- Class: 687078895
+  Script: {instanceID: 0}
+Assets:
+- Assets/Sprites/ExclusivePerkIcons/EP_Tester-16x16.png
+- Assets/Sprites/ExclusivePerkIcons/EP_ExclusiveColorOld-16x16.png
+- Assets/Sprites/ExclusivePerkIcons/EP_ItemVerifier-16x16.png
+- Assets/Sprites/ExclusivePerkIcons/EP_ExclusiveColor-16x16.png
+- Assets/Sprites/ExclusivePerkIcons/EP_Feature-16x16.png
+- Assets/Sprites/ExclusivePerkIcons/PerkIconsAtlas.spriteatlas
+Dependencies: []

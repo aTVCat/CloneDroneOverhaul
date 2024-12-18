@@ -9,6 +9,7 @@ namespace OverhaulMod.Content
         public ExclusivePerkType PerkType;
 
         public string DisplayName;
+        public string Icon;
         public string Data;
 
         public ulong SteamID;

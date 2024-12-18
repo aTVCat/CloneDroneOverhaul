@@ -144,6 +144,11 @@ namespace OverhaulMod
             return Load<Shader>(bundle, asset, pathPrefix);
         }
 
+        public static AssetBundle LoadAndGetAssetBundle(string bundle, string pathPrefix = null)
+        {
+            return Instance.getOrCreateAssetBundleInfo(GetBundlePath(bundle, pathPrefix), bundle, true).GetBundle();
+        }
+
         public static AssetBundle AssetBundle(string bundle, string pathPrefix = null)
         {
             return GetAssetBundleInfo(bundle, pathPrefix).GetBundle();

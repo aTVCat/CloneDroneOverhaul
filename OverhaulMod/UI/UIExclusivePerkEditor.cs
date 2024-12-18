@@ -70,6 +70,26 @@ namespace OverhaulMod.UI
         [UIElement("RevealOnwerSteamIDButton", true)]
         private readonly Button m_revealOwnerSteamIDButton;
 
+        [UIElementAction(nameof(OnEditIconButtonClicked))]
+        [UIElement("EditPerkIconButton")]
+        private readonly Button m_editIconButton;
+
+        [UIElementAction(nameof(OnClosePerkIconsPanelButtonClicked))]
+        [UIElement("CloseIconsPanelButton")]
+        private readonly Button m_closePerkIconsButton;
+
+        [UIElement("IconsPanel", false)]
+        private readonly GameObject m_perkIconsPanel;
+
+        [UIElement("PerkIconDisplay", false)]
+        private readonly ModdedObject m_perkIconDisplay;
+
+        [UIElement("PerkIconsContent")]
+        private readonly Transform m_perkIconsPanelContent;
+
+        [UIElement("PerkIcon")]
+        private readonly Image m_perkIcon;
+
         private ExclusivePerkInfo m_editingPerk;
 
         private bool m_disableUICallbacks;
@@ -146,10 +166,10 @@ namespace OverhaulMod.UI
             m_disableUICallbacks = true;
 
             m_perkNameField.text = perk.DisplayName;
-            for(int i = 0; i < m_perkTypeDropdown.options.Count; i++)
+            for (int i = 0; i < m_perkTypeDropdown.options.Count; i++)
             {
                 DropdownIntOptionData dropdownIntOptionData = m_perkTypeDropdown.options[i] as DropdownIntOptionData;
-                if(dropdownIntOptionData.IntValue == (int)perk.PerkType)
+                if (dropdownIntOptionData.IntValue == (int)perk.PerkType)
                 {
                     m_perkTypeDropdown.value = i;
                     break;
@@ -157,6 +177,8 @@ namespace OverhaulMod.UI
             }
             m_ownerPlayfabIDField.text = perk.PlayFabID;
             m_ownerSteamIDField.text = perk.SteamID.ToString();
+
+            m_perkIcon.sprite = perk.Icon.IsNullOrEmpty() ? null : ModResources.Sprite(AssetBundleConstants.PERK_ICONS, perk.Icon);
 
             m_disableUICallbacks = false;
         }
@@ -195,6 +217,7 @@ namespace OverhaulMod.UI
                     ModdedObject moddedObject = Instantiate(m_perkDisplay, m_perkPanelContent);
                     moddedObject.gameObject.SetActive(true);
                     moddedObject.GetObject<Text>(0).text = perk.DisplayName;
+                    moddedObject.GetObject<Image>(1).sprite = perk.Icon.IsNullOrEmpty() ? null : ModResources.Sprite(AssetBundleConstants.PERK_ICONS, perk.Icon);
 
                     Button button = moddedObject.GetComponent<Button>();
                     button.onClick.AddListener(delegate
@@ -224,6 +247,11 @@ namespace OverhaulMod.UI
             togglePerksPanel();
         }
 
+        public void OnClosePerkIconsPanelButtonClicked()
+        {
+            m_perkIconsPanel.SetActive(false);
+        }
+
         public void OnNewPerkButtonClicked()
         {
             ExclusivePerkInfoList infoList = ExclusivePerkManager.Instance.GetPerkInfoList();
@@ -236,6 +264,31 @@ namespace OverhaulMod.UI
             else
             {
                 ModUIUtils.MessagePopupOK("Error", "Perk list is not available.\nThis is a bug.", true);
+            }
+        }
+
+        public void OnEditIconButtonClicked()
+        {
+            m_perkIconsPanel.SetActive(true);
+
+            if (m_perkIconsPanelContent.childCount != 0)
+                return;
+
+            AssetBundle assetBundle = ModResources.LoadAndGetAssetBundle(AssetBundleConstants.PERK_ICONS);
+            foreach (Sprite sprite in assetBundle.LoadAllAssets<Sprite>())
+            {
+                ModdedObject moddedObject = Instantiate(m_perkIconDisplay, m_perkIconsPanelContent);
+                moddedObject.gameObject.SetActive(true);
+                moddedObject.GetObject<Image>(0).sprite = sprite;
+
+                Button button = moddedObject.GetComponent<Button>();
+                button.onClick.AddListener(delegate
+                {
+                    m_editingPerk.Icon = sprite.name;
+                    m_perkIcon.sprite = sprite;
+                    m_needsSaveIcon.SetActive(true);
+                    OnClosePerkIconsPanelButtonClicked();
+                });
             }
         }
 

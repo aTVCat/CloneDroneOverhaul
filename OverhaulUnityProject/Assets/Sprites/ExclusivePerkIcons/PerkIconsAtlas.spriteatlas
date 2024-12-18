@@ -1,0 +1,65 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: PerkIconsAtlas
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 0
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings:
+    - serializedVersion: 2
+      m_BuildTarget: DefaultTexturePlatform
+      m_MaxTextureSize: 2048
+      m_ResizeAlgorithm: 0
+      m_TextureFormat: -1
+      m_TextureCompression: 0
+      m_CompressionQuality: 50
+      m_CrunchedCompression: 0
+      m_AllowsAlphaSplitting: 0
+      m_Overridden: 0
+      m_AndroidETC2FallbackOverride: 0
+    packingSettings:
+      serializedVersion: 2
+      padding: 4
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 1
+      enableTightPacking: 1
+    variantMultiplier: 1
+    packables:
+    - {fileID: 2800000, guid: a9d69f7bb07b4f34cbaabf4167ec612f, type: 3}
+    - {fileID: 2800000, guid: 871a23b2dc66dbd4093dfa1821aa7aa2, type: 3}
+    - {fileID: 2800000, guid: d025123d896466942817247dd0ebd0bc, type: 3}
+    - {fileID: 2800000, guid: 3bb63b489221b99439a9e7e0013b783e, type: 3}
+    - {fileID: 2800000, guid: e9230361071dbb8419f39ffde4f5b70d, type: 3}
+    totalSpriteSurfaceArea: 1280
+    bindAsDefault: 1
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: e9230361071dbb8419f39ffde4f5b70d, type: 3}
+  - {fileID: 21300000, guid: 871a23b2dc66dbd4093dfa1821aa7aa2, type: 3}
+  - {fileID: 21300000, guid: 3bb63b489221b99439a9e7e0013b783e, type: 3}
+  - {fileID: 21300000, guid: a9d69f7bb07b4f34cbaabf4167ec612f, type: 3}
+  - {fileID: 21300000, guid: d025123d896466942817247dd0ebd0bc, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - EP_Tester-16x16
+  - EP_ExclusiveColorOld-16x16
+  - EP_ItemVerifier-16x16
+  - EP_ExclusiveColor-16x16
+  - EP_Feature-16x16
+  m_Tag: PerkIconsAtlas
+  m_IsVariant: 0

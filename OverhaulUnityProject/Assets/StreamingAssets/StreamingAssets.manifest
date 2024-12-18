@@ -1,5 +1,5 @@
 ManifestFileVersion: 0
-CRC: 3126836389
+CRC: 3365701986
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
@@ -76,4 +76,7 @@ AssetBundleManifest:
       Dependencies: {}
     Info_24:
       Name: overhaul_ui_extra
+      Dependencies: {}
+    Info_25:
+      Name: overhaul_perkicons
       Dependencies: {}
