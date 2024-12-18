@@ -1,17 +1,19 @@
 ManifestFileVersion: 0
-CRC: 525946831
+CRC: 2144521978
 Hashes:
   AssetFileHash:
     serializedVersion: 2
     Hash: 54df3bc4a8fc4f61798b67ddc1c1fc91
   TypeTreeHash:
     serializedVersion: 2
-    Hash: ea5a42e0fd8ea905efa7aa926a3b8944
+    Hash: 8f81471f4cfc7bf93c7fa752ebb4eb40
 HashAppended: 0
 ClassTypes:
 - Class: 28
   Script: {instanceID: 0}
 - Class: 213
+  Script: {instanceID: 0}
+- Class: 687078895
   Script: {instanceID: 0}
 Assets:
 - Assets/Sprites/UpgradeIcons/FireBoomerang-128x128.png

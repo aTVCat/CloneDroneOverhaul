@@ -1,0 +1,92 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: UpgradeIconsSpriteAtlas
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings:
+    - serializedVersion: 2
+      m_BuildTarget: DefaultTexturePlatform
+      m_MaxTextureSize: 2048
+      m_ResizeAlgorithm: 0
+      m_TextureFormat: -1
+      m_TextureCompression: 1
+      m_CompressionQuality: 50
+      m_CrunchedCompression: 0
+      m_AllowsAlphaSplitting: 0
+      m_Overridden: 0
+      m_AndroidETC2FallbackOverride: 0
+    packingSettings:
+      serializedVersion: 2
+      padding: 2
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 1
+      enableTightPacking: 1
+    variantMultiplier: 1
+    packables:
+    - {fileID: 2800000, guid: 605e98e1fb1deb4429729613ab3ae9b8, type: 3}
+    - {fileID: 2800000, guid: c3684a9ec2474b944aded516239c6c22, type: 3}
+    - {fileID: 2800000, guid: b3bb78ee252d9d440a071a0541b7f20d, type: 3}
+    - {fileID: 2800000, guid: 13466a15a372a8340af2bb7cf38a2ed6, type: 3}
+    - {fileID: 2800000, guid: 0384806b06279da4ba9524884b46bb82, type: 3}
+    - {fileID: 2800000, guid: ee8200d1d3065f4449679ab8e5a586d2, type: 3}
+    - {fileID: 2800000, guid: affe1247a53241244a702c4e5c6f0eac, type: 3}
+    - {fileID: 2800000, guid: 870793ad5ccc9564cb6bafc306866aed, type: 3}
+    - {fileID: 2800000, guid: 8f33563bc5afe57429a8dc510f689f09, type: 3}
+    - {fileID: 2800000, guid: dd84b7c6643117243a4bc454a81f2186, type: 3}
+    - {fileID: 2800000, guid: 695f631745a581847bc15a4b140b4432, type: 3}
+    - {fileID: 2800000, guid: 272f3deb22713084bae1f00170a9d156, type: 3}
+    - {fileID: 2800000, guid: 180234e402a93ae47b6cc8a7af286793, type: 3}
+    - {fileID: 2800000, guid: 5e383b328a87a694da345b512adb8b65, type: 3}
+    totalSpriteSurfaceArea: 278528
+    bindAsDefault: 1
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: ee8200d1d3065f4449679ab8e5a586d2, type: 3}
+  - {fileID: 21300000, guid: 605e98e1fb1deb4429729613ab3ae9b8, type: 3}
+  - {fileID: 21300000, guid: 5e383b328a87a694da345b512adb8b65, type: 3}
+  - {fileID: 21300000, guid: 180234e402a93ae47b6cc8a7af286793, type: 3}
+  - {fileID: 21300000, guid: 13466a15a372a8340af2bb7cf38a2ed6, type: 3}
+  - {fileID: 21300000, guid: dd84b7c6643117243a4bc454a81f2186, type: 3}
+  - {fileID: 21300000, guid: 695f631745a581847bc15a4b140b4432, type: 3}
+  - {fileID: 21300000, guid: affe1247a53241244a702c4e5c6f0eac, type: 3}
+  - {fileID: 21300000, guid: 8f33563bc5afe57429a8dc510f689f09, type: 3}
+  - {fileID: 21300000, guid: 0384806b06279da4ba9524884b46bb82, type: 3}
+  - {fileID: 21300000, guid: 272f3deb22713084bae1f00170a9d156, type: 3}
+  - {fileID: 21300000, guid: 870793ad5ccc9564cb6bafc306866aed, type: 3}
+  - {fileID: 21300000, guid: c3684a9ec2474b944aded516239c6c22, type: 3}
+  - {fileID: 21300000, guid: b3bb78ee252d9d440a071a0541b7f20d, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - FireBoomerang-128x128
+  - Axe-128x128
+  - HQ-Question-256x256
+  - NA-HQ-128x128
+  - DKnives-128x128
+  - MBlaster-128x128
+  - Scythe-128x128
+  - FireScythe-128x128
+  - Hands-128x128
+  - DoubleJump-128x128
+  - ScytheBlade-128x128
+  - Halberd-128x128
+  - Boomerang-128x128
+  - Claws-128x128
+  m_Tag: UpgradeIconsSpriteAtlas
+  m_IsVariant: 0
