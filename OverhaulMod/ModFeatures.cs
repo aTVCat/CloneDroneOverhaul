@@ -145,6 +145,9 @@ namespace OverhaulMod
                 case FeatureType.Accessories:
                     result = ModBuildInfo.VERSION_4_3;
                     break;
+                case FeatureType.AdditionalGraphicsSettings:
+                    result = ModBuildInfo.VERSION_4_3;
+                    break;
                 default:
                     return false;
             }
@@ -237,6 +240,8 @@ namespace OverhaulMod
             ReflectionProbe,
 
             Accessories,
+
+            AdditionalGraphicsSettings,
         }
     }
 }

@@ -65,6 +65,10 @@ namespace OverhaulMod.Engine
             Transform transform = ArenaCameraManager.Instance?.ArenaCameraTransform?.parent;
             if (transform)
                 transform.SetParent(WorldRoot.Instance?.transform);
+
+            Camera camera = ArenaCameraManager.Instance?.TitleScreenLevelCamera;
+            if (camera)
+                camera.farClipPlane = 10000f;
         }
 
         public void StopTitleScreenMusic()

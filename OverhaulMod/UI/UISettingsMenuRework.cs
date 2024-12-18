@@ -1,6 +1,7 @@
 ﻿using AmplifyOcclusion;
 using InternalModBot;
 using ModBotWebsiteAPI;
+using OverhaulMod.Content;
 using OverhaulMod.Engine;
 using OverhaulMod.Patches.Behaviours;
 using OverhaulMod.UI.Elements;
@@ -13,7 +14,6 @@ using System.IO;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
-using static OverhaulMod.UI.UISettingsMenuRework;
 
 namespace OverhaulMod.UI
 {
@@ -76,6 +76,9 @@ namespace OverhaulMod.UI
 
         [UIElement("LanguageButtonPrefab", false)]
         public ModdedObject LanguageButton;
+
+        [UIElement("AddonDownload", false)]
+        public ModdedObject AddonDownload;
 
         [TabManager(typeof(UIElementSettingsMenuCategoryTab), nameof(m_tabPrefab), nameof(m_tabContainer), nameof(OnTabCreated), nameof(OnTabSelected), new string[] { "Home", "Gameplay", "Interface", "Graphics", "Sounds", "Controls", "Multiplayer", "Languages", "Advanced" })]
         private readonly TabManager m_tabs;
@@ -597,11 +600,14 @@ namespace OverhaulMod.UI
                 }, "Enable title bar changes");
             }
 
-            _ = pageBuilder.Button("Additional settings", delegate
+            if (ModFeatures.IsEnabled(ModFeatures.FeatureType.AdditionalGraphicsSettings))
             {
-                ClearPageContents();
-                populateAdditoonalGraphicsPage(settingsMenu);
-            });
+                _ = pageBuilder.Button("Additional settings", delegate
+                {
+                    ClearPageContents();
+                    populateAdditionalGraphicsPage(settingsMenu);
+                });
+            }
 
             bool vsyncToggleValue = settingsMenu.VsyncOnToggle.isOn;
             _ = pageBuilder.Header3("FPS settings");
@@ -667,7 +673,7 @@ namespace OverhaulMod.UI
                 _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_GLOBAL_ILLUMINATION), delegate (bool value)
                 {
                     ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_GLOBAL_ILLUMINATION, value, true);
-                }, "Global Illumination");
+                }, "Global Illumination".AddColor(Color.yellow));
                 pageBuilder.AddDescriptionBoxToRecentElement(ModSettingsConstants.ENABLE_GLOBAL_ILLUMINATION);
 
                 if (ModFeatures.IsEnabled(ModFeatures.FeatureType.ReflectionProbe))
@@ -1104,7 +1110,7 @@ namespace OverhaulMod.UI
             });
         }
 
-        private void populateAdditoonalGraphicsPage(SettingsMenu settingsMenu)
+        private void populateAdditionalGraphicsPage(SettingsMenu settingsMenu)
         {
             PageBuilder pageBuilder = new PageBuilder(this);
             _ = pageBuilder.Button("Go back", delegate
@@ -1227,12 +1233,20 @@ namespace OverhaulMod.UI
             }, "Enable background");
 
             _ = pageBuilder.Header3("Font");
-            _ = pageBuilder.Dropdown(UISubtitleTextFieldRework.FontOptions, ModSettingsManager.GetIntValue(ModSettingsConstants.SUBTITLE_TEXT_FIELD_FONT), delegate (int value)
+            _ = pageBuilder.Dropdown(ModConstants.GetFontOptions(ModSettingsManager.GetIntValue(ModSettingsConstants.SUBTITLE_TEXT_FIELD_FONT)), ModSettingsManager.GetIntValue(ModSettingsConstants.SUBTITLE_TEXT_FIELD_FONT), delegate (int value)
             {
                 ModSettingsManager.SetIntValue(ModSettingsConstants.SUBTITLE_TEXT_FIELD_FONT, value, true);
                 SpeechAudioManager.Instance.PlaySequence("CloneDroneIntro", false);
             });
             _ = pageBuilder.Header4("Some languages might not be supported by certain fonts");
+
+            if (!AddonManager.Instance.HasInstalledAddon(AddonManager.EXTRAS_ADDON_FOLDER_NAME, true))
+                pageBuilder.AddonDownload("Install \"Extras\" addon for more fonts", AddonManager.EXTRAS_ADDON_FOLDER_NAME, delegate
+                {
+                    ClearPageContents();
+                    populateSubtitlesReworkSettingsPage(initialPage);
+                });
+
             _ = pageBuilder.Header3("Font size");
             _ = pageBuilder.Slider(8f, 15f, true, ModSettingsManager.GetIntValue(ModSettingsConstants.SUBTITLE_TEXT_FIELD_FONT_SIZE), delegate (float value)
             {
@@ -1281,12 +1295,20 @@ namespace OverhaulMod.UI
             }, "Enable background");
 
             _ = pageBuilder.Header3("Font");
-            _ = pageBuilder.Dropdown(UISubtitleTextFieldRework.FontOptions, ModSettingsManager.GetIntValue(ModSettingsConstants.PAK_DESCRIPTION_FONT), delegate (int value)
+            _ = pageBuilder.Dropdown(ModConstants.GetFontOptions(ModSettingsManager.GetIntValue(ModSettingsConstants.PAK_DESCRIPTION_FONT)), ModSettingsManager.GetIntValue(ModSettingsConstants.PAK_DESCRIPTION_FONT), delegate (int value)
             {
                 ModSettingsManager.SetIntValue(ModSettingsConstants.PAK_DESCRIPTION_FONT, value, true);
                 UseKeyTriggerManager.Instance.ShowThenHideDescription(ModConstants.LoremIpsumText, 2f);
             });
             _ = pageBuilder.Header4("Some languages might not be supported by certain fonts");
+
+            if (!AddonManager.Instance.HasInstalledAddon(AddonManager.EXTRAS_ADDON_FOLDER_NAME, true))
+                pageBuilder.AddonDownload("Install \"Extras\" addon for more fonts", AddonManager.EXTRAS_ADDON_FOLDER_NAME, delegate
+                {
+                    ClearPageContents();
+                    populateUKTDReworkSettingsPage(initialPage);
+                });
+
             _ = pageBuilder.Header3("Font size");
             _ = pageBuilder.Slider(8f, 13f, true, ModSettingsManager.GetIntValue(ModSettingsConstants.PAK_DESCRIPTION_FONT_SIZE), delegate (float value)
             {
@@ -2097,6 +2119,21 @@ namespace OverhaulMod.UI
                     SettingsMenu.m_tabs.ReinstantiatePreconfiguredTabs();
                     SettingsMenu.m_tabs.SelectTab("Languages");
                 });
+            }
+
+            public void AddonDownload(string labelText, string addonId, UnityAction addonInstalledCallback = null, Transform parentOverride = null)
+            {
+                ModdedObject moddedObject = Instantiate(SettingsMenu.AddonDownload, parentOverride ? parentOverride : SettingsMenu.PageContentsTransform);
+                moddedObject.gameObject.SetActive(true);
+
+                Text label = moddedObject.GetObject<Text>(4);
+                label.text = labelText;
+
+                UIElementAddonEmbed addonEmbed = moddedObject.gameObject.AddComponent<UIElementAddonEmbed>();
+                addonEmbed.addonId = addonId;
+                if (addonInstalledCallback != null)
+                    addonEmbed.onContentDownloaded.AddListener(addonInstalledCallback);
+                addonEmbed.InitializeElement();
             }
 
             public void AddDescriptionBoxToRecentElement(string settingId)

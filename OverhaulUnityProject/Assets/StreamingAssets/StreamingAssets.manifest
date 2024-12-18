@@ -1,5 +1,5 @@
 ManifestFileVersion: 0
-CRC: 1145778710
+CRC: 3253177009
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
@@ -73,4 +73,7 @@ AssetBundleManifest:
       Dependencies: {}
     Info_23:
       Name: overhaul_rs15
+      Dependencies: {}
+    Info_24:
+      Name: overhaul_ui_extra
       Dependencies: {}

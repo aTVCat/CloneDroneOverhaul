@@ -1,9 +1,11 @@
-﻿using OverhaulMod.Utils;
+﻿using OverhaulMod.Content;
+using OverhaulMod.Utils;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using static RootMotion.BipedNaming;
 
 namespace OverhaulMod
 {
@@ -140,6 +142,32 @@ namespace OverhaulMod
         public static Font VSROSDMonoFont()
         {
             return Load<Font>(AssetBundleConstants.UI, "VCR-OSD-Mono");
+        }
+
+        public static Font FontByIndex(int index)
+        {
+            if (!AddonManager.Instance.HasInstalledAddon(AddonManager.EXTRAS_ADDON_FOLDER_NAME, true))
+                return Font(AssetBundleConstants.UI, "OpenSans-Regular");
+
+            switch (index)
+            {
+                case 1:
+                    return VSROSDMonoFont();
+                case 2:
+                    return PiksieliProstoFont();
+                case 3:
+                    return EditUndoFont();
+                case 5:
+                    return Font(AssetBundleConstants.UI, "OpenSans-ExtraBold");
+                case 6:
+                    return Font(AssetBundleConstants.UI_EXTRA, "NotoSansCJKtc-Regular", Path.Combine(ModCore.addonsFolder, AddonManager.EXTRAS_ADDON_FOLDER_NAME));
+                case 7:
+                    return Font(AssetBundleConstants.UI_EXTRA, "NotoSansCJKtc-Bold", Path.Combine(ModCore.addonsFolder, AddonManager.EXTRAS_ADDON_FOLDER_NAME));
+                case 8:
+                    return Font(AssetBundleConstants.UI_EXTRA, "NotoSansCJKtc-Black", Path.Combine(ModCore.addonsFolder, AddonManager.EXTRAS_ADDON_FOLDER_NAME));
+                default:
+                    return Font(AssetBundleConstants.UI, "OpenSans-Regular");
+            }
         }
 
         public static string GetBundleName(string fileLocation)

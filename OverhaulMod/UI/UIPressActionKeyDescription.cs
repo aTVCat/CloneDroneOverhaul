@@ -70,8 +70,8 @@ namespace OverhaulMod.UI
 
             RectTransform rt = m_bg;
             Vector2 sd = rt.sizeDelta;
-            sd.x = Mathf.Lerp(0f, Mathf.Clamp(textComponent.preferredWidth + 10f, 100f, 200f), NumberUtils.EaseOutQuad(0f, 1f, m_expandProgress));
-            sd.y = Mathf.Lerp(0f, textComponent.preferredHeight + 10f, NumberUtils.EaseOutQuad(0f, 1f, m_expandProgress));
+            sd.x = Mathf.Lerp(0f, Mathf.Clamp(textComponent.preferredWidth + 15f, 100f, 200f), NumberUtils.EaseOutQuad(0f, 1f, m_expandProgress));
+            sd.y = Mathf.Lerp(0f, textComponent.preferredHeight + 12.5f, NumberUtils.EaseOutQuad(0f, 1f, m_expandProgress));
             rt.sizeDelta = sd;
 
             m_bgObject.SetActive(m_expandProgress > 0f);
@@ -119,24 +119,7 @@ namespace OverhaulMod.UI
             m_bgImage.enabled = EnableBG;
 
             m_text.fontSize = FontSize;
-            switch (FontType)
-            {
-                case 1:
-                    m_text.font = ModResources.VSROSDMonoFont();
-                    break;
-                case 2:
-                    m_text.font = ModResources.PiksieliProstoFont();
-                    break;
-                case 3:
-                    m_text.font = ModResources.EditUndoFont();
-                    break;
-                case 4:
-                    m_text.font = ModResources.Font(AssetBundleConstants.UI, "OpenSans-Regular");
-                    break;
-                case 5:
-                    m_text.font = ModResources.Font(AssetBundleConstants.UI, "OpenSans-ExtraBold");
-                    break;
-            }
+            m_text.font = ModResources.FontByIndex(FontType);
         }
     }
 }

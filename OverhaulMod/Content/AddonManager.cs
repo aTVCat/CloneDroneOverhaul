@@ -187,6 +187,18 @@ namespace OverhaulMod.Content
         }
 
         /// <summary>
+        /// Check if specified addon version is installed
+        /// </summary>
+        /// <param name="addonName"></param>
+        /// <param name="quick">If true, it check if addon is cached</param>
+        /// <returns></returns>
+        public bool HasInstalledAddonVersion(string addonName, int minVersion, bool quick = false)
+        {
+            // todo: implement addon version system
+            return HasInstalledAddon(addonName, quick);
+        }
+
+        /// <summary>
         /// Get content directory path
         /// </summary>
         /// <param name="addonName"></param>
