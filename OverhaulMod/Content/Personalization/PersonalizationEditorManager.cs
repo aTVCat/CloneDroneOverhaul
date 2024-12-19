@@ -148,6 +148,9 @@ namespace OverhaulMod.Content.Personalization
 
         private IEnumerator startEditorGameModeCoroutine(bool useTransitionManager)
         {
+            AudioManager.Instance.FadeOutMusic(1f);
+            ModAudioManager.Instance.PlayCustomizationEditorAmbience();
+
             if (useTransitionManager)
                 yield return new WaitForSecondsRealtime(0.25f);
 

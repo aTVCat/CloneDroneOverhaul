@@ -1,4 +1,5 @@
-﻿using OverhaulMod.Utils;
+﻿using OverhaulMod.Engine;
+using OverhaulMod.Utils;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -32,6 +33,16 @@ namespace OverhaulMod.UI
             m_progressBarFill.fillAmount = 0f;
             m_chapterLoadingScreen = ModCache.gameUIRoot.ChapterLoadingScreen;
             m_loadingScreen = ModCache.gameUIRoot.LoadingScreen;
+
+            if (TransitionManager.TransitionSound)
+                ModAudioManager.Instance.PlayTransitionSound((!GameModeManager.UsesAsyncLevelLoading() || GameModeManager.IsWorkshopChallenge()) ? 0.5f : 0f);
+        }
+
+        public override void Hide()
+        {
+            base.Hide();
+            if(!TransitionManager.Instance.IsDoingTransition())
+                ModAudioManager.Instance.StopTransitionSound();
         }
 
         public string GetStateString(ChapterLoadingScreenState chapterLoadingScreenState)

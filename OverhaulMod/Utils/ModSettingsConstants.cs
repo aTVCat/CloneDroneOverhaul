@@ -600,5 +600,10 @@ namespace OverhaulMod.Utils
         /// <see cref="OverhaulMod.Visuals.ArrowModelRefresher"/>
         /// </summary>
         public const string ENABLE_ARROW_REWORK = "EnableArrowRework";
+
+        /// <summary>
+        /// <see cref="Engine.TransitionManager"/>
+        /// </summary>
+        public const string TRANSITION_SOUND = "TransitionSound";
     }
 }

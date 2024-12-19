@@ -17,6 +17,9 @@ namespace OverhaulMod.Engine
         [ModSetting(ModSettingsConstants.TRANSITION_ON_STARTUP, true)]
         public static bool TransitionOnStartup;
 
+        [ModSetting(ModSettingsConstants.TRANSITION_SOUND, true)]
+        public static bool TransitionSound;
+
         private TransitionBehaviour m_transitionBehaviour;
 
         public override void Awake()
@@ -24,6 +27,11 @@ namespace OverhaulMod.Engine
             base.Awake();
             if (TransitionOnStartup)
                 DoTransition(null, Color.white, false, true, true, 0.1f);
+        }
+
+        public bool IsDoingTransition()
+        {
+            return m_transitionBehaviour;
         }
 
         public void DoNonSceneTransition(IEnumerator coroutine)

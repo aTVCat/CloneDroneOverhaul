@@ -59,6 +59,15 @@ namespace OverhaulMod.Engine
         public override void Start()
         {
             m_errorManager = ErrorManager.Instance;
+            if (TransitionManager.TransitionSound && !fadeOut)
+                ModAudioManager.Instance.PlayTransitionSound();
+
+            ModUIConstants.HideLoadingScreen();
+        }
+
+        public override void OnDestroy()
+        {
+            ModAudioManager.Instance.StopTransitionSound();
         }
 
         public override void Update()

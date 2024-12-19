@@ -166,31 +166,37 @@ namespace OverhaulMod.Visuals
                     hasModel = true;
                     break;
                 }
+
             bool hasWeapon = equippedWeapons.Contains(weaponType);
 
             if (hasModel && hasWeapon)
             {
                 if (!WeaponToRenderer.ContainsKey(weaponType))
                 {
-                    Transform renderer;
+                    Transform modelTransform;
                     if (weaponModel is ModWeaponModel modWeaponModel)
                     {
-                        renderer = modWeaponModel.GetModel()?.transform;
-                        renderer.GetComponent<Renderer>().enabled = true;
+                        modelTransform = modWeaponModel.GetModel()?.transform;
+                        if (modelTransform)
+                        {
+                            Renderer renderer = modelTransform.GetComponent<Renderer>();
+                            if(renderer)
+                                renderer.enabled = true;
+                        }
                     }
                     else if (weaponType == WeaponType.Bow)
                     {
-                        renderer = weaponModel.getExistingWeaponModel().parent;
+                        modelTransform = weaponModel.getExistingWeaponModel().parent;
                     }
                     else
                     {
-                        renderer = weaponType == WeaponType.Spear ? weaponModel.PartsToDrop[0] : weaponModel.getExistingWeaponModel();
+                        modelTransform = weaponType == WeaponType.Spear ? weaponModel.PartsToDrop[0] : weaponModel.getExistingWeaponModel();
                     }
 
-                    if (!renderer)
+                    if (!modelTransform)
                         return;
 
-                    GameObject newRenderer = InstantiateNewRenderer(renderer, weaponType);
+                    GameObject newRenderer = InstantiateNewRenderer(modelTransform, weaponType);
                     if (newRenderer)
                     {
                         WeaponToRenderer.Add(weaponType, newRenderer);

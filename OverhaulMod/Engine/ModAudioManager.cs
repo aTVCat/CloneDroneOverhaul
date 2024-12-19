@@ -34,6 +34,10 @@ namespace OverhaulMod.Engine
 
         private AudioSource[] m_commentatorAudioSources;
 
+        private GameObject m_loadingSoundSourcePrefab;
+
+        private AudioClipDefinition m_customizationManagerAmbience;
+
         private float m_updateVolumeUntilTime;
 
         private float m_volumeMultiplier, m_prevVolumeMultiplier;
@@ -44,6 +48,8 @@ namespace OverhaulMod.Engine
 
         private void Start()
         {
+            m_loadingSoundSourcePrefab = ModResources.Prefab(AssetBundleConstants.SFX, "LoadingSoundSource");
+            m_customizationManagerAmbience = new AudioClipDefinition() { Clip = ModResources.AudioClip(AssetBundleConstants.SFX, "SB_Ambiance_19") };
             m_focused = !MuteSoundWhenUnfocused || Application.isFocused;
             m_volumeMultiplier = m_focused ? 1f : 0f;
             RefreshVolume();
@@ -74,6 +80,30 @@ namespace OverhaulMod.Engine
             refreshVolumeSettings();
             m_focused = !MuteSoundWhenUnfocused || focused;
             m_updateVolumeUntilTime = Time.unscaledTime + 2f;
+        }
+
+        public void PlayCustomizationEditorAmbience()
+        {
+            AudioManager.Instance.PlayClipGlobal(m_customizationManagerAmbience, 0f, true, 0.7f);
+        }
+
+        public void PlayTransitionSound(float volumeOffset = 0f)
+        {
+            if (!ModFeatures.IsEnabled(ModFeatures.FeatureType.TransitionUpdates) || TransitionSoundBehaviour.Instance)
+                return;
+
+            GameObject gameObject = Instantiate(m_loadingSoundSourcePrefab);
+            DontDestroyOnLoad(gameObject);
+            TransitionSoundBehaviour transitionSoundBehaviour = gameObject.AddComponent<TransitionSoundBehaviour>();
+            transitionSoundBehaviour.Initialize(volumeOffset);
+        }
+
+        public void StopTransitionSound()
+        {
+            if (!TransitionSoundBehaviour.Instance)
+                return;
+
+            TransitionSoundBehaviour.Instance.FadeOutSoundThenDestroySelf();
         }
 
         public void OnGameLoaded()
