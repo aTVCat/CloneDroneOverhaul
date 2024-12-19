@@ -27,6 +27,9 @@ namespace OverhaulMod.Content.Personalization
 
         public const string PRESET_PREVIEW_CHANGED_EVENT = "PersonalizationEditorPresetPreviewChanged";
 
+        [ModSetting(ModSettingsConstants.CUSTOMIZATION_EDITOR_AMBIANCE, true)]
+        public static bool EditorAmbiance;
+
         public readonly GameData GameData = new GameData();
 
         private bool m_hasConfiguredGameData;
@@ -149,7 +152,9 @@ namespace OverhaulMod.Content.Personalization
         private IEnumerator startEditorGameModeCoroutine(bool useTransitionManager)
         {
             AudioManager.Instance.FadeOutMusic(1f);
-            ModAudioManager.Instance.PlayCustomizationEditorAmbience();
+
+            if (EditorAmbiance)
+                ModAudioManager.Instance.PlayCustomizationEditorAmbience();
 
             if (useTransitionManager)
                 yield return new WaitForSecondsRealtime(0.25f);

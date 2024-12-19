@@ -605,5 +605,10 @@ namespace OverhaulMod.Utils
         /// <see cref="Engine.TransitionManager"/>
         /// </summary>
         public const string TRANSITION_SOUND = "TransitionSound";
+
+        /// <summary>
+        /// <see cref="Content.Personalization.PersonalizationEditorManager"/>
+        /// </summary>
+        public const string CUSTOMIZATION_EDITOR_AMBIANCE = "CustomizationEditorAmbiance";
     }
 }

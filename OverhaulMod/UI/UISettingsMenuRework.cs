@@ -449,6 +449,10 @@ namespace OverhaulMod.UI
                 {
                     ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_DEBUG_MENU, value, true);
                 }, "Debug menu");
+                _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.CUSTOMIZATION_EDITOR_AMBIANCE), delegate (bool value)
+                {
+                    ModSettingsManager.SetBoolValue(ModSettingsConstants.CUSTOMIZATION_EDITOR_AMBIANCE, value, true);
+                }, "Customization editor ambiance");
             }
 
             _ = pageBuilder.Header1("Game interface");
