@@ -34,6 +34,9 @@ namespace OverhaulMod.UI
         [UIElement("EquipButton")]
         private readonly Button m_equipButton;
 
+        [UIElement("NameHolder")]
+        private readonly RectTransform m_nameHolder;
+
         private PersonalizationItemInfo m_selectedItemInfo;
 
         private UIElementMouseEventsComponent m_mouseEvents;
@@ -73,6 +76,11 @@ namespace OverhaulMod.UI
                 Vector2 sizeDelta2 = t2.sizeDelta;
                 sizeDelta2.y = preferredTextHeight;
                 t2.sizeDelta = sizeDelta2;
+
+                RectTransform t3 = m_nameHolder;
+                Vector2 sizeDelta3 = t3.sizeDelta;
+                sizeDelta3.x = Mathf.Min(m_itemNameText.preferredWidth + 10f, 251f);
+                t3.sizeDelta = sizeDelta3;
             }
         }
 

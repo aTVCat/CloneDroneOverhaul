@@ -1,4 +1,5 @@
-﻿using OverhaulMod.Utils;
+﻿using OverhaulMod.Engine;
+using OverhaulMod.Utils;
 using System;
 using System.Collections;
 using UnityEngine;
@@ -7,6 +8,9 @@ namespace OverhaulMod.Visuals
 {
     public class ArrowModelRefresher : ModBehaviour
     {
+        [ModSetting(ModSettingsConstants.ENABLE_ARROW_REWORK, true)]
+        public static bool EnableArrowRework;
+
         private ArrowProjectile m_arrowProjectile;
 
         private Transform m_normalVisualsTransform;
@@ -71,7 +75,7 @@ namespace OverhaulMod.Visuals
             if (!m_arrowProjectile || !m_hasStarted)
                 return;
 
-            bool featureEnabled = ModCore.isEnabled && ModFeatures.IsEnabled(ModFeatures.FeatureType.ArrowModelRefresh);
+            bool featureEnabled = ModCore.isEnabled && EnableArrowRework && ModFeatures.IsEnabled(ModFeatures.FeatureType.ArrowModelRefresh);
             if (!featureEnabled)
             {
                 SetDefaultVisuals(true);

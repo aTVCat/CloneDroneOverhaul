@@ -213,6 +213,8 @@ namespace OverhaulMod.UI
 
                 if (!HasEverSentFeedback)
                 {
+                    ModSettingsManager.SetStringValue(ModSettingsConstants.FEEDBACK_MENU_IMPROVE_TEXT, string.Empty);
+                    ModSettingsManager.SetStringValue(ModSettingsConstants.FEEDBACK_MENU_FAVORITE_TEXT, string.Empty);
                     ModSettingsManager.SetBoolValue(ModSettingsConstants.HAS_EVER_SENT_FEEDBACK, true);
                 }
             }, delegate (string error)

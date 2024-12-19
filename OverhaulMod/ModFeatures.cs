@@ -148,6 +148,12 @@ namespace OverhaulMod
                 case FeatureType.AdditionalGraphicsSettings:
                     result = ModBuildInfo.VERSION_4_3;
                     break;
+                case FeatureType.CustomizationMenuUpdates:
+                    result = ModBuildInfo.VERSION_4_3;
+                    break;
+                case FeatureType.TransitionUpdates:
+                    result = ModBuildInfo.VERSION_4_3;
+                    break;
                 default:
                     return false;
             }
@@ -242,6 +248,10 @@ namespace OverhaulMod
             Accessories,
 
             AdditionalGraphicsSettings,
+
+            CustomizationMenuUpdates,
+
+            TransitionUpdates,
         }
     }
 }

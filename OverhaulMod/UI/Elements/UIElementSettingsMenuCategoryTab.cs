@@ -67,7 +67,7 @@ namespace OverhaulMod.UI.Elements
                     InitializeSubcategoryDisplay("Render", true);
                     InitializeSubcategoryDisplay("Post effects", true);
                     if (ModFeatures.IsEnabled(ModFeatures.FeatureType.MoreImageEffects)) InitializeSubcategoryDisplay("Color blindness mode", true);
-                    if (ModFeatures.IsEnabled(ModFeatures.FeatureType.WeaponBag)) InitializeSubcategoryDisplay("Robots", false);
+                    InitializeSubcategoryDisplay("Robots", false);
                     InitializeSubcategoryDisplay("Camera", false);
                     InitializeSubcategoryDisplay("Environment", false);
                     InitializeSubcategoryDisplay("Voxel engine", false);

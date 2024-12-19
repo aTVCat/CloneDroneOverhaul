@@ -595,5 +595,10 @@ namespace OverhaulMod.Utils
         /// <see cref="ModCore"/>
         /// </summary>
         public const string DISABLE_SCREEN_SHAKING = "DisableScreenShaking";
+
+        /// <summary>
+        /// <see cref="OverhaulMod.Visuals.ArrowModelRefresher"/>
+        /// </summary>
+        public const string ENABLE_ARROW_REWORK = "EnableArrowRework";
     }
 }

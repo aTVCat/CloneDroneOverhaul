@@ -9,11 +9,15 @@ namespace OverhaulMod.Engine
     {
         private Image m_image;
         private CanvasGroup m_canvasGroup;
+
         private Text m_text;
+        private CanvasGroup m_loadingIndicator;
 
         private ErrorManager m_errorManager;
 
         private float m_timeToFade;
+
+        private bool m_use43Variant;
 
         private bool m_destroyed;
 
@@ -45,7 +49,11 @@ namespace OverhaulMod.Engine
         {
             m_image = base.GetComponent<Image>();
             m_canvasGroup = base.GetComponent<CanvasGroup>();
+
+            m_use43Variant = ModFeatures.IsEnabled(ModFeatures.FeatureType.TransitionUpdates);
+
             m_text = moddedObjectReference.GetObject<Text>(0);
+            m_loadingIndicator = moddedObjectReference.GetObject<CanvasGroup>(1);
         }
 
         public override void Start()
@@ -75,6 +83,9 @@ namespace OverhaulMod.Engine
             m_canvasGroup.alpha = alpha;
             m_canvasGroup.blocksRaycasts = alpha >= 0.9f;
 
+            if (m_use43Variant)
+                m_loadingIndicator.alpha = alpha;
+
             if (fo && alpha <= 0.05f)
             {
                 Destroy(base.gameObject);
@@ -83,7 +94,8 @@ namespace OverhaulMod.Engine
 
         public void SetTextVisible(bool value)
         {
-            m_text.gameObject.SetActive(value);
+            m_text.gameObject.SetActive(!m_use43Variant && value);
+            m_loadingIndicator.gameObject.SetActive(m_use43Variant && value);
         }
 
         public void SetBackgroundColor(Color color)

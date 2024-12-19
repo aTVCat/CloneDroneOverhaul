@@ -94,6 +94,12 @@ namespace OverhaulMod.UI
 
         [UIElement("ScrollRect")]
         private readonly RectTransform m_scrollRectTransform;
+        [UIElement("ScrollRect")]
+        private readonly Image m_scrollRectImage;
+        [UIElement("Viewport")]
+        private readonly RectTransform m_viewportTransform;
+        [UIElement("ScrollbarVertical")]
+        private readonly CanvasGroup m_scrollbarVerticalCanvasGroup;
 
         [UIElement("DescriptionBox", typeof(UIElementPersonalizationItemDescriptionBox), false)]
         private readonly UIElementPersonalizationItemDescriptionBox m_descriptionBox;
@@ -106,31 +112,31 @@ namespace OverhaulMod.UI
         [UIElement("SortDropdown")]
         private readonly Dropdown m_sortDropdown;
 
-        [UIElement("LoadingSawblade")]
-        private readonly Image m_loadingSawblade;
+        [UIElement("LoadingIndicator")]
+        private readonly CanvasGroup m_loadingIndicator;
 
         [UIElement("CameraRotationTutorial")]
         private readonly GameObject m_cameraRotationTutorial;
 
-        private Dictionary<string, UIElementPersonalizationItemDisplay> m_cachedDisplays;
-
         private RectTransform m_rectTransform;
 
-        private bool m_isOpen, m_isPopulating, m_showContents;
-
-        private string m_prevTab;
+        private bool m_allowUICallbacks;
 
         private PersonalizationCategory m_selectedCategory;
 
-        private int m_sortType;
-
         private string m_selectedSubcategory;
 
-        private readonly UnityWebRequest m_webRequest;
+        private int m_sortType;
+
+        private Dictionary<string, UIElementPersonalizationItemDisplay> m_cachedDisplays;
+
+        private bool m_isOpen, m_isPopulating, m_showContents, m_use43Variant, m_hasEverShown;
+
+        private float m_transitionProgress, m_prevTransitionProgress;
+
+        private string m_prevTab;
 
         private Button m_defaultSkinButton;
-
-        private bool m_allowUICallbacks;
 
         private Transform m_cameraHolderTransform;
 
@@ -140,6 +146,9 @@ namespace OverhaulMod.UI
 
         protected override void OnInitialized()
         {
+            m_use43Variant = ModFeatures.IsEnabled(ModFeatures.FeatureType.CustomizationMenuUpdates);
+            m_loadingIndicator.gameObject.SetActive(m_use43Variant);
+
             m_cachedDisplays = new Dictionary<string, UIElementPersonalizationItemDisplay>();
             m_rectTransform = base.GetComponent<RectTransform>();
 
@@ -171,7 +180,8 @@ namespace OverhaulMod.UI
             base.Show();
             IsPreviewing = true;
             m_isOpen = true;
-            m_showContents = true;
+            m_showContents = !m_hasEverShown;
+            m_transitionProgress = 0f;
             m_categoryTabs.interactable = true;
 
             if (m_categoryTabs.selectedTab && m_prevTab != m_categoryTabs.selectedTab.tabId)
@@ -191,11 +201,10 @@ namespace OverhaulMod.UI
             if (m_container.childCount != 0)
                 TransformUtils.DestroyAllChildren(m_container);
 
-            m_loadingSawblade.color = Color.white;
-
             if (m_selectedCategory == PersonalizationCategory.WeaponSkins)
                 selectSubcategoryOfCurrentWeapon();
 
+            m_hasEverShown = true;
             Populate();
         }
 
@@ -216,15 +225,32 @@ namespace OverhaulMod.UI
         {
             base.Update();
 
-            float d = Time.unscaledDeltaTime * 12.5f * (m_showContents ? 1f : -1f);
+            m_transitionProgress = Mathf.Clamp01(m_transitionProgress + (Time.unscaledDeltaTime * 5f * (m_showContents ? 1f : -1f)));
+            if(m_transitionProgress != m_prevTransitionProgress)
+            {
+                m_prevTransitionProgress = m_transitionProgress;
+                float progress = NumberUtils.EaseInOutQuad(0f, 1f, m_transitionProgress);
 
-            float a = m_containerCanvasGroup.alpha;
-            a = Mathf.Clamp(a + d, 0f, 1f);
-            m_containerCanvasGroup.alpha = a;
+                float a = m_containerCanvasGroup.alpha;
+                a = progress;
+                m_containerCanvasGroup.alpha = a;
 
-            Color color = m_loadingSawblade.color;
-            color.a = 1f - a;
-            m_loadingSawblade.color = color;
+                m_scrollbarVerticalCanvasGroup.alpha = progress;
+                m_loadingIndicator.alpha = 1f - progress;
+
+                if (m_use43Variant)
+                {
+                    Color color2 = m_scrollRectImage.color;
+                    color2.r = Mathf.Lerp(0.05f, 0.15f, progress);
+                    color2.g = Mathf.Lerp(0.05f, 0.15f, progress);
+                    color2.b = Mathf.Lerp(0.05f, 0.15f, progress);
+                    m_scrollRectImage.color = color2;
+
+                    Vector2 offsetMax = m_viewportTransform.offsetMax;
+                    offsetMax.y = -50f * (1f - progress);
+                    m_viewportTransform.offsetMax = offsetMax;
+                }
+            }
 
             Transform holder = m_cameraHolderTransform;
             if (holder)
@@ -235,7 +261,7 @@ namespace OverhaulMod.UI
                     ModSettingsManager.SetBoolValue(ModSettingsConstants.HAS_EVER_ROTATED_THE_CAMERA, true);
                 }
 
-                float d2 = Time.deltaTime * 10f;
+                float d2 = Time.deltaTime * 15f;
                 m_cameraHolderRotationY = Mathf.Lerp(m_cameraHolderRotationY, mouseButtonDown ? Input.GetAxis("Mouse X") * 1.25f : 0f, d2);
 
                 Vector3 currentEulerAngles = holder.localEulerAngles;
@@ -438,6 +464,9 @@ namespace OverhaulMod.UI
                         List<PersonalizationItemInfo> list = PersonalizationManager.Instance.itemList.GetItems(m_selectedCategory, PersonalizationItemsSortType.Alphabet);
                         for (int i = 0; i < list.Count; i++)
                         {
+                            if (i % 20 == 0)
+                                yield return null;
+
                             PersonalizationItemInfo item = list[i];
                             if (item.HideInBrowser && !isDeveloper)
                                 continue;
@@ -460,6 +489,9 @@ namespace OverhaulMod.UI
                         List<PersonalizationItemInfo> list = PersonalizationManager.Instance.itemList.GetItems(m_selectedCategory, PersonalizationItemsSortType.Alphabet);
                         for (int i = 0; i < list.Count; i++)
                         {
+                            if (i % 20 == 0)
+                                yield return null;
+
                             PersonalizationItemInfo item = list[i];
                             if (item.HideInBrowser && !isDeveloper)
                                 continue;
@@ -539,6 +571,9 @@ namespace OverhaulMod.UI
                     List<PersonalizationItemInfo> list = PersonalizationManager.Instance.itemList.GetItems(m_selectedCategory, PersonalizationItemsSortType.Alphabet);
                     for (int i = 0; i < list.Count; i++)
                     {
+                        if (i % 20 == 0)
+                            yield return null;
+
                         PersonalizationItemInfo item = list[i];
                         if (item.Weapon != weaponType || (item.HideInBrowser && !isDeveloper))
                             continue;
@@ -568,6 +603,10 @@ namespace OverhaulMod.UI
             }
 
             OnSearchBoxChanged(m_searchBox.text);
+
+            float waitTime = Time.unscaledTime + 0.1f;
+            while (Time.unscaledTime < waitTime)
+                yield return null;
 
             m_prevTab = m_categoryTabs.selectedTab?.tabId;
             m_categoryTabs.interactable = true;
@@ -632,7 +671,7 @@ namespace OverhaulMod.UI
                 textOutlineColor = ModParseUtils.TryParseToColor(ITEM_DISPLAY_DEFAULT_TEXT_OUTLINE_COLOR, Color.black);
                 glowColor = ModParseUtils.TryParseToColor(ITEM_DISPLAY_DEFAULT_TEXT_GLOW_COLOR, Color.white);
             }
-            glowColor.a = !isExclusive && isVerified ? 0.25f : 0.4f;
+            glowColor.a = !isExclusive && isVerified ? 0.1f : 0.35f;
 
             ModdedObject moddedObject = Instantiate(m_itemDisplay, m_container);
             moddedObject.gameObject.SetActive(true);

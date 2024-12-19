@@ -757,13 +757,20 @@ namespace OverhaulMod.UI
             }, "Adjust bloom settings");
             _ = pageBuilder.Header4("Disable this setting to revert the vanilla bloom");*/
 
+            _ = pageBuilder.Header1("Robots");
             if (ModFeatures.IsEnabled(ModFeatures.FeatureType.WeaponBag))
             {
-                _ = pageBuilder.Header1("Robots");
                 _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_WEAPON_BAG), delegate (bool value)
                 {
                     ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_WEAPON_BAG, value, true);
                 }, "Show equipped weapons");
+            }
+            if (ModFeatures.IsEnabled(ModFeatures.FeatureType.ArrowModelRefresh))
+            {
+                _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_ARROW_REWORK), delegate (bool value)
+                {
+                    ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_ARROW_REWORK, value, true);
+                }, "New arrow model");
             }
 
             _ = pageBuilder.Header1("Camera");
