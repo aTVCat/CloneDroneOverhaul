@@ -1,6 +1,6 @@
 - Changed the names of several options in the settings menu
 
-Fixes:
+# Fixes:
 - The game crashes when attempting to use vanilla achivements menu during gameplay
 - Reworked workshop browser displays ratings incorrectly
 - If you're dead (in LBS), available to you exclusive skins are locked until you respawn

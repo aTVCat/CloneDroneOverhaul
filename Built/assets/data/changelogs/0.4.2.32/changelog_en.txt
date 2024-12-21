@@ -24,7 +24,7 @@
 - Reimplemented vignette and dithering effects in a better way to fix memory leaks and performance issues
 - Removed update 5 content
 
-FIXES:
+# FIXES:
 - Fixed a crash occuring when entering level editor with disabled reworked arena model
 - Fixed UI elements flickering when the mouse is on their edge
 - Fixed missing translation in some places

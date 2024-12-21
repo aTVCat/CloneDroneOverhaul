@@ -434,7 +434,7 @@ namespace OverhaulMod.UI
                     titleScreenCustomizationPanel.enableRework = ModUIManager.ShowTitleScreenRework;
                 }
 
-                ModUIUtils.ShowNewUpdateMessageOrChangelog(1f, true, false);
+                ModUIUtils.ShowNewUpdateMessageOrChangelog(1f, false);
 
                 Hide();
             });

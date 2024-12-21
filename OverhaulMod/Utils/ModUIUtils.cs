@@ -9,24 +9,25 @@ namespace OverhaulMod.Utils
 {
     public static class ModUIUtils
     {
-        public static void ShowNewUpdateMessageOrChangelog(float delay, bool dontShowNewUpdateMessage = false, bool dontShowPatchNotes = false)
+        public static void ShowNewUpdateMessageOrChangelog(float delay, bool showNewUpdateMessage = true)
         {
-            bool showChangelog = false;
-
+            bool showChangelog;
             string lastBuildChangelogWasShownOn = UIPatchNotes.LastBuildChangelogWasShownOn;
             if (lastBuildChangelogWasShownOn.IsNullOrEmpty())
                 showChangelog = true;
-            else if (Version.TryParse(lastBuildChangelogWasShownOn, out Version prevVersion) && prevVersion < ModBuildInfo.version)
+            else if (Version.TryParse(lastBuildChangelogWasShownOn, out Version prevVersion) && ModBuildInfo.version > prevVersion)
                 showChangelog = true;
+            else
+                showChangelog = false;
 
-            if (!dontShowPatchNotes && showChangelog)
+            if (showChangelog)
             {
                 DelegateScheduler.Instance.Schedule(delegate
                 {
                     _ = ModUIConstants.ShowPatchNotes();
                 }, delay);
             }
-            else if (!dontShowNewUpdateMessage)
+            else if (showNewUpdateMessage)
             {
                 DelegateScheduler.Instance.Schedule(delegate
                 {

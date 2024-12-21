@@ -10,6 +10,8 @@ namespace OverhaulMod.UI
 {
     public class UIPatchNotes : OverhaulUIBehaviour
     {
+        private static Color s_darkerWhite = new Color(0.87f, 0.87f, 0.87f, 1f);
+
         [ModSetting(ModSettingsConstants.LAST_BUILD_CHANGELOG_WAS_SHOWN, null)]
         public static string LastBuildChangelogWasShownOn;
 
@@ -33,12 +35,13 @@ namespace OverhaulMod.UI
         [UIElement("Header")]
         private readonly Text m_headerText;
 
-        [UIElement("Description")]
-        private readonly Text m_descriptionText;
+        [UIElement("TextLine", false)]
+        private readonly Text m_textLine;
+
+        [UIElement("TextContent")]
+        private readonly Transform m_textContainer;
 
         public override bool hideTitleScreen => true;
-
-        private bool m_shouldRefreshText;
 
         private Button m_previousButtonClicked;
 
@@ -46,7 +49,7 @@ namespace OverhaulMod.UI
 
         protected override void OnInitialized()
         {
-            m_descriptionText.fontSize = 10;
+            m_textLine.gameObject.AddComponent<BetterOutline>().effectColor = Color.black;
 
             string path = Path.Combine(ModCore.dataFolder, "changelogs");
             if (!Directory.Exists(path))
@@ -120,21 +123,8 @@ namespace OverhaulMod.UI
         {
             base.Hide();
 
-            ModSettingsManager.SetStringValue(ModSettingsConstants.LAST_BUILD_CHANGELOG_WAS_SHOWN, ModBuildInfo.versionString);
+            ModSettingsManager.SetStringValue(ModSettingsConstants.LAST_BUILD_CHANGELOG_WAS_SHOWN, ModBuildInfo.version.ToString());
             ModSettingsDataManager.Instance.Save();
-        }
-
-        public override void Update()
-        {
-            base.Update();
-            if (m_shouldRefreshText)
-            {
-                m_shouldRefreshText = false;
-
-                Vector2 sizeDelta = m_descriptionText.rectTransform.sizeDelta;
-                sizeDelta.y = m_descriptionText.preferredHeight + 30f;
-                m_descriptionText.rectTransform.sizeDelta = sizeDelta;
-            }
         }
 
         public void ClickOnFirstButton()
@@ -145,6 +135,9 @@ namespace OverhaulMod.UI
 
         public void PopulateChangelog(string header, string folderName)
         {
+            if (m_textContainer.childCount != 0)
+                TransformUtils.DestroyAllChildren(m_textContainer);
+
             string path = Path.Combine(ModCore.dataFolder, "changelogs", folderName);
             string langCode = LocalizationManager.Instance.GetCurrentLanguageCode();
             if (langCode != "ru" && langCode != "en")
@@ -153,7 +146,13 @@ namespace OverhaulMod.UI
             string file = Path.Combine(path, $"changelog_{langCode}.txt");
             string text;
             if (File.Exists(file))
+            {
                 text = ModFileUtils.ReadText(file);
+                if (text.IsNullOrEmpty())
+                {
+                    text = "This update doesn't have any description.";
+                }
+            }
             else
             {
                 if (langCode != "en")
@@ -171,8 +170,41 @@ namespace OverhaulMod.UI
             }
 
             m_headerText.text = header;
-            m_descriptionText.text = text;
-            m_shouldRefreshText = true;
+
+            if (!text.Contains(Environment.NewLine))
+            {
+                Text textLine = Instantiate(m_textLine, m_textContainer);
+                textLine.gameObject.SetActive(true);
+                textLine.text = text;
+            }
+            else
+            {
+                string[] lines = text.Split(Environment.NewLine.ToCharArray());
+                foreach (string line in lines)
+                {
+                    if (line.IsNullOrEmpty())
+                        continue;
+
+                    Text textLine = Instantiate(m_textLine, m_textContainer);
+                    textLine.gameObject.SetActive(true);
+
+                    if (line.StartsWith("# "))
+                    {
+                        textLine.fontSize = 19;
+                        textLine.color = Color.white;
+                        textLine.text = line.Substring(2);
+                        textLine.transform.GetChild(0).gameObject.SetActive(true);
+                    }
+                    else
+                    {
+                        textLine.fontSize = 12;
+                        textLine.color = s_darkerWhite;
+                        textLine.text = line;
+                        textLine.transform.GetChild(0).gameObject.SetActive(false);
+                    }
+                }
+            }
+            m_textLine.text = text;
         }
 
         private string getBuildDisplayVersion(string folder)
