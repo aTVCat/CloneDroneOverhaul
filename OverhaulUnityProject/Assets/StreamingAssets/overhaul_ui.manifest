@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 2719204400
+CRC: 2714310378
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 83dec0bf1427b02b6b03ab51ed6f6371
+    Hash: 0c48cf4144761fe98da16f04c03f63e8
   TypeTreeHash:
     serializedVersion: 2
     Hash: 11a2c5244a74fc567c6938c3491df245
@@ -90,6 +90,7 @@ ClassTypes:
 - Class: 687078895
   Script: {instanceID: 0}
 Assets:
+- Assets/Sprites/Glow-3-256x256.png
 - Assets/Font/DSEG7-Classic-Bold.ttf
 - Assets/UI/UI_DuelInviteMenuRework.prefab
 - Assets/UI/UI_VersionLabel.prefab

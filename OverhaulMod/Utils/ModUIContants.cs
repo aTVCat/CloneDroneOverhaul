@@ -300,9 +300,9 @@ namespace OverhaulMod.Utils
             return ModUIManager.Instance.Show<UIMultiplayerGameModeSelectScreen>(AssetBundleConstants.UI, UI_MULTIPLAYER_GAMEMODE_SELECT_SCREEN, ModUIManager.UILayer.AfterTitleScreen);
         }
 
-        public static UIAllCreditsMenu ShowCreditsMenu(Transform parent)
+        public static UICreditsMenu ShowCreditsMenu(Transform parent)
         {
-            return ModUIManager.Instance.Show<UIAllCreditsMenu>(AssetBundleConstants.UI, UI_CREDITS_MENU, parent);
+            return ModUIManager.Instance.Show<UICreditsMenu>(AssetBundleConstants.UI, UI_CREDITS_MENU, parent);
         }
 
         public static UIAddonsMenu ShowAddonsMenu()

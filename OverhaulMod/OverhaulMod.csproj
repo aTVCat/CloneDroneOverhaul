@@ -667,7 +667,7 @@
     <Compile Include="UI\UIAddonsEditor.cs" />
     <Compile Include="UI\UIGenericInputFieldWindow.cs" />
     <Compile Include="UI\UIMultiplayerGameModeSelectScreen.cs" />
-    <Compile Include="UI\UIAllCreditsMenu.cs" />
+    <Compile Include="UI\UICreditsMenu.cs" />
     <Compile Include="UI\UIAddonsMenu.cs" />
     <Compile Include="UI\UIChallengesMenuRework.cs" />
     <Compile Include="UI\UILevelDescriptionBrowser.cs" />
