@@ -4,7 +4,6 @@ using ModBotWebsiteAPI;
 using OverhaulMod.Content;
 using OverhaulMod.Engine;
 using OverhaulMod.Patches.Behaviours;
-using OverhaulMod.UI.Elements;
 using OverhaulMod.Utils;
 using OverhaulMod.Visuals;
 using OverhaulMod.Visuals.Environment;

@@ -38,6 +38,9 @@ namespace OverhaulMod.UI
         [UIElement("TextLine", false)]
         private readonly Text m_textLine;
 
+        [UIElement("ImageEmbed", false)]
+        private readonly ModdedObject m_imageEmbed;
+
         [UIElement("TextContent")]
         private readonly Transform m_textContainer;
 
@@ -185,22 +188,35 @@ namespace OverhaulMod.UI
                     if (line.IsNullOrEmpty())
                         continue;
 
-                    Text textLine = Instantiate(m_textLine, m_textContainer);
-                    textLine.gameObject.SetActive(true);
-
-                    if (line.StartsWith("# "))
+                    if (line.StartsWith("img="))
                     {
-                        textLine.fontSize = 19;
-                        textLine.color = Color.white;
-                        textLine.text = line.Substring(2);
-                        textLine.transform.GetChild(0).gameObject.SetActive(true);
+                        ModdedObject moddedObject = Instantiate(m_imageEmbed, m_textContainer);
+                        moddedObject.gameObject.SetActive(true);
+
+                        UIElementPatchNotesImageEmbed imageEmbed = moddedObject.gameObject.AddComponent<UIElementPatchNotesImageEmbed>();
+                        imageEmbed.URL = line.Substring(4);
+                        imageEmbed.PatchNotesTransform = base.transform;
+                        imageEmbed.InitializeElement();
                     }
                     else
                     {
-                        textLine.fontSize = 12;
-                        textLine.color = s_darkerWhite;
-                        textLine.text = line;
-                        textLine.transform.GetChild(0).gameObject.SetActive(false);
+                        Text textLine = Instantiate(m_textLine, m_textContainer);
+                        textLine.gameObject.SetActive(true);
+
+                        if (line.StartsWith("# "))
+                        {
+                            textLine.fontSize = 19;
+                            textLine.color = Color.white;
+                            textLine.text = line.Substring(2);
+                            textLine.transform.GetChild(0).gameObject.SetActive(true);
+                        }
+                        else
+                        {
+                            textLine.fontSize = 12;
+                            textLine.color = s_darkerWhite;
+                            textLine.text = line;
+                            textLine.transform.GetChild(0).gameObject.SetActive(false);
+                        }
                     }
                 }
             }

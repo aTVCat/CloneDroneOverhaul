@@ -2,7 +2,6 @@
 using OverhaulMod.Combat;
 using OverhaulMod.Engine;
 using OverhaulMod.UI;
-using OverhaulMod.UI.Elements;
 using OverhaulMod.Utils;
 using Steamworks;
 using System;

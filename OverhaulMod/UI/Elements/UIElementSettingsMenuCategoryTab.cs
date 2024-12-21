@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-namespace OverhaulMod.UI.Elements
+namespace OverhaulMod.UI
 {
     public class UIElementSettingsMenuCategoryTab : UIElementTab, IPointerEnterHandler, IPointerExitHandler, IPointerUpHandler
     {

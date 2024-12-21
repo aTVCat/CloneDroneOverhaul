@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace OverhaulMod.UI.Elements
+namespace OverhaulMod.UI
 {
     public class UIElementSettingsMenuSettingDescriptionBox : OverhaulUIBehaviour
     {
