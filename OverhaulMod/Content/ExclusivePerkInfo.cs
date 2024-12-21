@@ -27,17 +27,24 @@ namespace OverhaulMod.Content
             if (m_hasDeserializedData)
                 return m_deserializedData;
 
-            switch (PerkType)
+            if (!Data.IsNullOrEmpty())
             {
-                case ExclusivePerkType.Color:
-                    m_deserializedData = ModJsonUtils.Deserialize<ExclusivePerkColor>(Data);
-                    break;
-                case ExclusivePerkType.Feature:
-                    m_deserializedData = ModJsonUtils.Deserialize<int>(Data);
-                    break;
-                default:
-                    m_deserializedData = null;
-                    break;
+                switch (PerkType)
+                {
+                    case ExclusivePerkType.Color:
+                        m_deserializedData = ModJsonUtils.Deserialize<ExclusivePerkColor>(Data);
+                        break;
+                    case ExclusivePerkType.Feature:
+                        m_deserializedData = ModJsonUtils.Deserialize<int>(Data);
+                        break;
+                    default:
+                        m_deserializedData = null;
+                        break;
+                }
+            }
+            else
+            {
+                m_deserializedData = null;
             }
             m_hasDeserializedData = true;
 

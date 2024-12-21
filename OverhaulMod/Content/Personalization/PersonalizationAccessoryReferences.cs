@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using OverhaulMod.Engine;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace OverhaulMod.Content.Personalization
@@ -8,9 +9,22 @@ namespace OverhaulMod.Content.Personalization
         private List<PersonalizationAccessoryBehaviour> m_accessories;
 
         private bool m_isDestroyed;
+        private void Start()
+        {
+            GlobalEventManager.Instance.AddEventListener(CameraManager.FIRST_PERSON_MODE_SWITCHED_EVENT, RefreshVisibility);
+            GlobalEventManager.Instance.AddEventListener(GlobalEvents.CinematicCameraTurnedOn, RefreshVisibility);
+            GlobalEventManager.Instance.AddEventListener(CameraManager.CINEMATIC_CAMERA_TURNED_OFF_EVENT, RefreshVisibility);
+            GlobalEventManager.Instance.AddEventListener(GlobalEvents.EnteredPhotoMode, RefreshVisibility);
+            GlobalEventManager.Instance.AddEventListener(GlobalEvents.ExitedPhotoMode, RefreshVisibility);
+        }
 
         private void OnDestroy()
         {
+            GlobalEventManager.Instance.RemoveEventListener(CameraManager.FIRST_PERSON_MODE_SWITCHED_EVENT, RefreshVisibility);
+            GlobalEventManager.Instance.RemoveEventListener(GlobalEvents.CinematicCameraTurnedOn, RefreshVisibility);
+            GlobalEventManager.Instance.RemoveEventListener(CameraManager.CINEMATIC_CAMERA_TURNED_OFF_EVENT, RefreshVisibility);
+            GlobalEventManager.Instance.RemoveEventListener(GlobalEvents.EnteredPhotoMode, RefreshVisibility);
+            GlobalEventManager.Instance.RemoveEventListener(GlobalEvents.ExitedPhotoMode, RefreshVisibility);
             m_isDestroyed = true;
         }
 

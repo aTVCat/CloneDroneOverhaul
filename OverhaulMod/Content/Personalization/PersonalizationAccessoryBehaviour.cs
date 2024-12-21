@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using OverhaulMod.Engine;
+using UnityEngine;
 
 namespace OverhaulMod.Content.Personalization
 {
@@ -12,6 +13,11 @@ namespace OverhaulMod.Content.Personalization
 
         private PersonalizationAccessoryReferences m_references;
 
+        private void OnDestroy()
+        {
+            Unregister();
+        }
+
         private void Update()
         {
             bool isBodyPartActive = m_bodyPart ? m_bodyPart.gameObject.activeSelf : false;
@@ -20,11 +26,6 @@ namespace OverhaulMod.Content.Personalization
                 m_isBodyPartActive = isBodyPartActive;
                 RefreshVisibility();
             } // todo: optimize?
-        }
-
-        private void OnDestroy()
-        {
-            Unregister();
         }
 
         public void SetBodyPart(MechBodyPart bodyPart)
@@ -72,6 +73,15 @@ namespace OverhaulMod.Content.Personalization
                 return;
             }
 
+            if (owner.IsMainPlayer())
+            {
+                PersonalizationItemInfo itemInfo = m_itemObject.ControllerInfo.ItemInfo;
+                if (itemInfo.BodyPartName == "Head" && CameraManager.EnableFirstPersonMode && !CameraManager.Instance.isCameraControlledByCutscene && !PhotoManager.Instance.IsInPhotoMode())
+                {
+                    m_itemObject.SetChildrenActive(false);
+                    return;
+                }
+            }
             m_itemObject.SetChildrenActive(m_isBodyPartActive && m_bodyPart.GetNumDestroyedVoxels() == 0 && !m_bodyPart.HasParentConnectionBeenSevered());
         }
     }

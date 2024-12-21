@@ -151,7 +151,6 @@ namespace OverhaulMod.Content.Personalization
                     m_hasRefreshedAfterDeath = true;
 
                 bool inEditor = PersonalizationEditorManager.IsInEditor();
-                bool originalModelsEnabled = inEditor && PersonalizationEditorManager.Instance.originalModelsEnabled;
 
                 if (!m_isMindSpace)
                 {
@@ -192,17 +191,14 @@ namespace OverhaulMod.Content.Personalization
                         }
                     }
 
-                    if (inEditor && behaviour)
-                        behaviour.gameObject.SetActive(!PersonalizationEditorManager.Instance.originalModelsEnabled);
-
                     if (inEditor && weaponType == WeaponType.Sword)
                     {
                         WeaponVariant wv = PersonalizationEditorManager.Instance.previewPresetKey;
-                        SetWeaponPartsVisible(WeaponType.Sword, (originalModelsEnabled || !hasSpawnedSkinForWeapon) && !(wv == WeaponVariant.NormalMultiplayer || wv == WeaponVariant.OnFireMultiplayer), false);
+                        SetWeaponPartsVisible(WeaponType.Sword, !hasSpawnedSkinForWeapon && !(wv == WeaponVariant.NormalMultiplayer || wv == WeaponVariant.OnFireMultiplayer), false);
                     }
                     else
                     {
-                        SetWeaponPartsVisible(weaponType, originalModelsEnabled || !hasSpawnedSkinForWeapon, !originalModelsEnabled && personalizationItemInfo != null && personalizationItemInfo.HideBowStrings);
+                        SetWeaponPartsVisible(weaponType, !hasSpawnedSkinForWeapon, personalizationItemInfo != null && personalizationItemInfo.HideBowStrings);
                     }
                 }
             }
