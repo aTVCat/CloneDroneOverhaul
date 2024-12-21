@@ -1,4 +1,5 @@
 ﻿using OverhaulMod.Utils;
+using OverhaulMod.Visuals;
 using UnityEngine;
 
 namespace OverhaulMod.Engine
@@ -12,6 +13,12 @@ namespace OverhaulMod.Engine
 
         [ModSetting(ModSettingsConstants.CAMERA_MODE_TOGGLE_KEYBIND, KeyCode.Y)]
         public static KeyCode CameraModeToggleKeyBind;
+
+        public bool isCameraControlledByCutscene
+        {
+            get;
+            private set;
+        }
 
         public bool enableThirdPerson
         {
@@ -35,6 +42,30 @@ namespace OverhaulMod.Engine
         {
             get;
             private set;
+        }
+
+        private void Start()
+        {
+            GlobalEventManager.Instance.AddEventListener(GlobalEvents.CinematicCameraTurnedOn, onCinematicCameraEnabled);
+            GlobalEventManager.Instance.AddEventListener(CINEMATIC_CAMERA_TURNED_OFF_EVENT, onCinematicCameraDisabled);
+        }
+
+        private void OnDestroy()
+        {
+            GlobalEventManager.Instance.RemoveEventListener(GlobalEvents.CinematicCameraTurnedOn, onCinematicCameraEnabled);
+            GlobalEventManager.Instance.RemoveEventListener(CINEMATIC_CAMERA_TURNED_OFF_EVENT, onCinematicCameraDisabled);
+        }
+
+        private void onCinematicCameraEnabled()
+        {
+            isCameraControlledByCutscene = true;
+            PostEffectsManager.Instance.RefreshCameraPostEffects();
+        }
+
+        private void onCinematicCameraDisabled()
+        {
+            isCameraControlledByCutscene = false;
+            PostEffectsManager.Instance.RefreshCameraPostEffects();
         }
 
         public void ResetCameraRect()

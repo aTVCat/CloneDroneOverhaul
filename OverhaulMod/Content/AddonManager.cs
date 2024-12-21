@@ -219,7 +219,7 @@ namespace OverhaulMod.Content
                 return m_installedAddons;
 
             List<AddonInfo> list = m_installedAddons;
-            if(list == null)
+            if (list == null)
             {
                 list = new List<AddonInfo>();
                 m_installedAddons = list;

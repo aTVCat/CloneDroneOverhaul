@@ -55,7 +55,7 @@ namespace OverhaulMod.Engine
                     foundOption = true;
             }
 
-            if(!foundOption)
+            if (!foundOption)
                 list.Add(new DropdownStringOptionData() { text = currentValue, StringValue = currentValue });
 
             return list;

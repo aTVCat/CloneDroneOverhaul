@@ -1,6 +1,5 @@
 ﻿using OverhaulMod.Utils;
 using Steamworks;
-using System;
 
 namespace OverhaulMod.Content
 {
@@ -63,9 +62,14 @@ namespace OverhaulMod.Content
 
         public bool IsUnlocked()
         {
+            return IsUnlockedForUser(ModUserInfo.localPlayerPlayFabID, ModUserInfo.localPlayerSteamID);
+        }
+
+        public bool IsUnlockedForUser(string playFabId, CSteamID steamId)
+        {
             bool hasSteamId = HasSteamID();
             bool hasPlayFabId = HasPlayFabID();
-            return (!hasSteamId && !hasPlayFabId) || (hasPlayFabId && PlayFabID == ModUserInfo.localPlayerPlayFabID) || (hasSteamId && SteamID == (ulong)ModUserInfo.localPlayerSteamID);
+            return (!hasSteamId && !hasPlayFabId) || (hasPlayFabId && PlayFabID == playFabId) || (hasSteamId && SteamID == (ulong)steamId);
         }
     }
 }

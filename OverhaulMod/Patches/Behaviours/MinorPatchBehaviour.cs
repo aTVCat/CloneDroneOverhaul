@@ -54,6 +54,11 @@ namespace OverhaulMod.Patches.Behaviours
                         image.color = new Color(0f, 0f, 0f, 0.4f);
                     }
                 }
+
+                gameUIRoot.SettingsMenu.HideGameUIToggle.onValueChanged.AddListener(delegate
+                {
+                    ModUIManager.Instance.RefreshUIVisibility();
+                });
             }
 
             /*

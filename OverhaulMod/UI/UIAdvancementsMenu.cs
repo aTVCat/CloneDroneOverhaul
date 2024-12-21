@@ -120,7 +120,7 @@ namespace OverhaulMod.UI
             float fraction = GameplayAchievementManager.Instance.GetFractionOfAchievementsCompleted();
             int percentage = Mathf.FloorToInt(fraction * 100f);
 
-            if(!m_hasUpdatedLabels)
+            if (!m_hasUpdatedLabels)
             {
                 m_hasUpdatedLabels = true;
                 m_progressBarFill.fillAmount = fraction;
@@ -128,7 +128,7 @@ namespace OverhaulMod.UI
             }
 
             GridLayoutGroup gridLayoutGroup = m_pageGridContentsTransform.GetComponent<GridLayoutGroup>();
-            if(percentage >= 100f)
+            if (percentage >= 100f)
             {
                 ModdedObject moddedObject1 = Instantiate(m_allAchievementsUnlockedLabelPrefab, m_pageGridContentsTransform);
                 moddedObject1.gameObject.SetActive(true);
@@ -226,7 +226,7 @@ namespace OverhaulMod.UI
                 return;
             }
 
-            GameUIRoot.Instance.AchievementProgressUI.Show();
+            ModCache.gameUIRoot.AchievementProgressUI.Show();
         }
 
         public void OnSyncWthSteamButtonClicked()

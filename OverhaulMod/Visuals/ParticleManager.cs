@@ -39,7 +39,7 @@ namespace OverhaulMod.Visuals
 
         private void adjustParticleSettings(ParticleSystem particleSystem)
         {
-            var main = particleSystem.main;
+            ParticleSystem.MainModule main = particleSystem.main;
             main.scalingMode = ParticleSystemScalingMode.Hierarchy;
             main.simulationSpeed *= 0.75f;
         }

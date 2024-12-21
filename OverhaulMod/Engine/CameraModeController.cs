@@ -1,4 +1,5 @@
 ﻿using OverhaulMod.Utils;
+using OverhaulMod.Visuals;
 using UnityEngine;
 
 namespace OverhaulMod.Engine
@@ -78,6 +79,9 @@ namespace OverhaulMod.Engine
 
             GlobalEventManager.Instance.AddEventListener(GlobalEvents.ConsciousnessTransferStarted, ForceEnableHeadRenderers);
             GlobalEventManager.Instance.AddEventListener(GlobalEvents.ConsciousnessTransferComplete, ForceEnableHeadRenderers);
+
+            if(CameraManager.EnableFirstPersonMode)
+            PostEffectsManager.Instance.RefreshCameraPostEffects();
         }
 
         private void OnDestroy()

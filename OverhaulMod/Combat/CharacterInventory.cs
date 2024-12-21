@@ -37,9 +37,9 @@ namespace OverhaulMod.Combat
                 return;
 
             float scroll = Input.mouseScrollDelta.y;
-            if(scroll != 0f)
+            if (scroll != 0f)
             {
-                if(scroll > 0f)
+                if (scroll > 0f)
                 {
                     // todo: scroll to switch weapons
                 }

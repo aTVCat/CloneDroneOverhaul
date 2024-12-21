@@ -7,6 +7,9 @@ namespace OverhaulMod.Engine
 {
     public class TransitionBehaviour : ModBehaviour
     {
+        public const string PRE_43_BG_COLOR = "0D0D0D";
+        public const string POST_43_BG_COLOR = "060E1A";
+
         private Image m_image;
         private CanvasGroup m_canvasGroup;
 
@@ -47,10 +50,10 @@ namespace OverhaulMod.Engine
 
         public override void Awake()
         {
+            m_use43Variant = ModFeatures.IsEnabled(ModFeatures.FeatureType.TransitionUpdates);
+
             m_image = base.GetComponent<Image>();
             m_canvasGroup = base.GetComponent<CanvasGroup>();
-
-            m_use43Variant = ModFeatures.IsEnabled(ModFeatures.FeatureType.TransitionUpdates);
 
             m_text = moddedObjectReference.GetObject<Text>(0);
             m_loadingIndicator = moddedObjectReference.GetObject<CanvasGroup>(1);
@@ -75,7 +78,7 @@ namespace OverhaulMod.Engine
             if (m_destroyed)
                 return;
 
-            ErrorManager errorManager = ErrorManager.Instance;
+            ErrorManager errorManager = m_errorManager;
             if (errorManager && errorManager.HasCrashed())
             {
                 m_destroyed = true;

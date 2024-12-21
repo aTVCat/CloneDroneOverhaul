@@ -488,8 +488,8 @@ public class SEGI : MonoBehaviour
         //Apply depth render flags
         attachedCamera = GetComponent<Camera>();
 #if UNITY_5_4_OR_NEWER
-		attachedCamera.depthTextureMode |= DepthTextureMode.Depth;
-		attachedCamera.depthTextureMode |= DepthTextureMode.MotionVectors;
+        attachedCamera.depthTextureMode |= DepthTextureMode.Depth;
+        attachedCamera.depthTextureMode |= DepthTextureMode.MotionVectors;
 #else
         attachedCamera.depthTextureMode |= DepthTextureMode.Depth;
 #endif
@@ -574,7 +574,7 @@ public class SEGI : MonoBehaviour
         for (int i = 0; i < 64; i++)
         {
             string fileName = "LDR_RGBA_" + i.ToString();
-            Texture2D blueNoiseTexture = ModResources.Texture2D(AssetBundleConstants.GLOBAL_ILLUMINATION, "Noise Textures/" + fileName) as Texture2D;
+            Texture2D blueNoiseTexture = ModResources.Texture2D(AssetBundleConstants.GLOBAL_ILLUMINATION, "Noise Textures/" + fileName);
 
             if (blueNoiseTexture == null)
             {

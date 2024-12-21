@@ -199,7 +199,7 @@ namespace OverhaulMod
         private static void onLevelObjectPreInitialized(ObjectPlacedInLevel objectPlacedInLevel)
         {
             LevelObjectEntry levelObjectEntry = objectPlacedInLevel.LevelObjectEntry;
-            if(levelObjectEntry != null && (levelObjectEntry.PathUnderResources == RealisticLightingManager.LightSettingsObjectResourcePath || levelObjectEntry.PathUnderResources == RealisticLightingManager.LightSettingsOverrideObjectResourcePath))
+            if (levelObjectEntry != null && (levelObjectEntry.PathUnderResources == RealisticLightingManager.LightSettingsObjectResourcePath || levelObjectEntry.PathUnderResources == RealisticLightingManager.LightSettingsOverrideObjectResourcePath))
             {
                 objectPlacedInLevel.gameObject.AddComponent<AdditionalSkyboxSettings>();
             }
@@ -234,6 +234,7 @@ namespace OverhaulMod
             modSettingsManager.AddSettingValueChangedListener(refreshCameraPostEffects, ModSettingsConstants.ENABLE_VIGNETTE);
             modSettingsManager.AddSettingValueChangedListener(refreshCameraPostEffects, ModSettingsConstants.ENABLE_SUN_SHAFTS);
             modSettingsManager.AddSettingValueChangedListener(refreshCameraPostEffects, ModSettingsConstants.ENABLE_GLOBAL_ILLUMINATION);
+            modSettingsManager.AddSettingValueChangedListener(refreshCameraPostEffects, ModSettingsConstants.ENABLE_FIRST_PERSON_MODE);
             modSettingsManager.AddSettingValueChangedListener(refreshReflectionProbe, ModSettingsConstants.ENABLE_REFLECTION_PROBE);
             modSettingsManager.AddSettingValueChangedListener(refreshFPSCap, ModSettingsConstants.FPS_CAP);
             modSettingsManager.AddSettingValueChangedListener(ModCore.RefreshCursor, ModSettingsConstants.CURSOR_SKIN);

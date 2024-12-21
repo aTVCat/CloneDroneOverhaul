@@ -1,11 +1,9 @@
-﻿using AmplifyOcclusion;
-using OverhaulMod.Engine;
+﻿using OverhaulMod.Engine;
 using OverhaulMod.Utils;
 using OverhaulMod.Visuals.ImageEffects;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityStandardAssets.ImageEffects;
 
 namespace OverhaulMod.Visuals
 {

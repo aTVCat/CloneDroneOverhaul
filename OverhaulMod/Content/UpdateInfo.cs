@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices.WindowsRuntime;
 
 namespace OverhaulMod.Content
 {
@@ -17,10 +16,10 @@ namespace OverhaulMod.Content
 
         public void FixValues()
         {
-            if(AllowedUsers == null)
+            if (AllowedUsers == null)
                 AllowedUsers = new List<string>();
 
-            if(ModVersion == null)
+            if (ModVersion == null)
                 ModVersion = new Version(ModBuildInfo.versionMajor, ModBuildInfo.versionMinor, ModBuildInfo.versionBuild, ModBuildInfo.versionRevision);
         }
 
@@ -31,9 +30,9 @@ namespace OverhaulMod.Content
 
         public bool CanBeInstalledByLocalUser()
         {
-            if(RequireExclusivePerk != ExclusivePerkType.None)
+            if (RequireExclusivePerk != ExclusivePerkType.None)
             {
-                if(ExclusivePerkManager.Instance.HasUnlockedPerk(RequireExclusivePerk))
+                if (ExclusivePerkManager.Instance.HasUnlockedPerk(RequireExclusivePerk))
                     return true;
             }
             return AllowedUsers == null || AllowedUsers.Contains(ModUserInfo.localPlayerPlayFabID) || AllowedUsers.Contains(ModUserInfo.localPlayerSteamID.ToString());

@@ -226,7 +226,7 @@ namespace OverhaulMod.Engine
             Transform transformBC = Instantiate(EnemyFactory.Instance.GetEnemyConfiguration(EnemyType.BattlecruiserFlagship).EnemyPrefab.GetComponent<BattleCruiserController>().CharacterModelPrefab.transform);
             foreach (MonoBehaviour behaviour in transformBC.GetComponentsInChildren<MonoBehaviour>())
             {
-                if(behaviour is MechBodyPart mbp)
+                if (behaviour is MechBodyPart mbp)
                 {
                     mbp.CanBeDamaged = false;
                 }

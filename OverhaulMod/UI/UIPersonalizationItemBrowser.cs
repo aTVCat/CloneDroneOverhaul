@@ -6,7 +6,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Networking;
 using UnityEngine.UI;
 
 namespace OverhaulMod.UI
@@ -195,7 +194,8 @@ namespace OverhaulMod.UI
             _ = base.StartCoroutine(waitThenRefreshCameraCoroutine());
             ShowDownloadCustomizationAssetsDownloadMenuIfRequired();
 
-            UIVersionLabel.instance.offsetX = 325f;
+            if (UIVersionLabel.instance)
+                UIVersionLabel.instance.offsetX = 325f;
 
             m_cachedDisplays.Clear();
             if (m_container.childCount != 0)
@@ -226,7 +226,7 @@ namespace OverhaulMod.UI
             base.Update();
 
             m_transitionProgress = Mathf.Clamp01(m_transitionProgress + (Time.unscaledDeltaTime * 5f * (m_showContents ? 1f : -1f)));
-            if(m_transitionProgress != m_prevTransitionProgress)
+            if (m_transitionProgress != m_prevTransitionProgress)
             {
                 m_prevTransitionProgress = m_transitionProgress;
                 float progress = NumberUtils.EaseInOutQuad(0f, 1f, m_transitionProgress);
@@ -450,7 +450,7 @@ namespace OverhaulMod.UI
 
             if (m_selectedCategory != PersonalizationCategory.WeaponSkins)
             {
-                if(m_selectedCategory == PersonalizationCategory.Accessories)
+                if (m_selectedCategory == PersonalizationCategory.Accessories)
                 {
                     if (!ModFeatures.IsEnabled(ModFeatures.FeatureType.Accessories))
                     {
@@ -475,7 +475,7 @@ namespace OverhaulMod.UI
                         }
                     }
                 }
-                else if(m_selectedCategory == PersonalizationCategory.Pets)
+                else if (m_selectedCategory == PersonalizationCategory.Pets)
                 {
                     if (!ModFeatures.IsEnabled(ModFeatures.FeatureType.Pets))
                     {

@@ -1,6 +1,4 @@
-﻿using OverhaulMod.Utils;
-using UnityEngine;
-using UnityEngine.UI;
+﻿using UnityEngine;
 
 namespace OverhaulMod.UI
 {
@@ -26,7 +24,7 @@ namespace OverhaulMod.UI
 
         public override void Update()
         {
-            if(!m_fadeOut && Time.unscaledTime > m_timeout)
+            if (!m_fadeOut && Time.unscaledTime > m_timeout)
             {
                 m_fadeOut = true;
             }
@@ -34,7 +32,7 @@ namespace OverhaulMod.UI
             if (m_fadeOut)
             {
                 m_canvasGroup.alpha -= Time.unscaledDeltaTime * 2.5f;
-                if(m_canvasGroup.alpha <= 0f)
+                if (m_canvasGroup.alpha <= 0f)
                 {
                     Hide();
                     UIVersionLabel versionLabel = UIVersionLabel.instance;

@@ -401,7 +401,7 @@ namespace OverhaulMod.Content.Personalization
                 return null;
 
             MechBodyPart bodyPartForAccessory = null;
-            if(itemInfo.Category == PersonalizationCategory.Accessories)
+            if (itemInfo.Category == PersonalizationCategory.Accessories)
             {
                 List<MechBodyPart> bodyParts = owner.GetAllBodyParts();
                 if (bodyParts != null && bodyParts.Count != 0)

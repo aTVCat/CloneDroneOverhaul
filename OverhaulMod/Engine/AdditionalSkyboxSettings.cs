@@ -1,5 +1,4 @@
-﻿using OverhaulMod.Utils;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -19,7 +18,7 @@ namespace OverhaulMod.Engine
                 {
                     objectPlacedInLevel.AddValueChangedListener(delegate (string value)
                     {
-                        if(value == nameof(Skybox))
+                        if (value == nameof(Skybox))
                         {
                             SkyBoxManager.Instance.RefreshSkyboxAmbientLightAndFog(LevelEditorLightManager.Instance.GetActiveLightSettings());
                         }
@@ -53,7 +52,7 @@ namespace OverhaulMod.Engine
 
         public List<Dropdown.OptionData> GetDropdownOptions(string fieldName)
         {
-            if(fieldName == nameof(Skybox))
+            if (fieldName == nameof(Skybox))
             {
                 return AdditionalSkyboxesManager.Instance.GetSkyboxOptionsForLevelEditor(Skybox);
             }

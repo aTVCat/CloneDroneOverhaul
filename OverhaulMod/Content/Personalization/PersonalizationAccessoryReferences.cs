@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 namespace OverhaulMod.Content.Personalization
@@ -23,7 +19,7 @@ namespace OverhaulMod.Content.Personalization
             if (m_isDestroyed)
                 return;
 
-            if(m_accessories == null)
+            if (m_accessories == null)
                 m_accessories = new List<PersonalizationAccessoryBehaviour>() { accessory };
             else if (!m_accessories.Contains(accessory))
                 m_accessories.Add(accessory);
@@ -45,9 +41,9 @@ namespace OverhaulMod.Content.Personalization
             if (m_isDestroyed || m_accessories == null || m_accessories.Count == 0)
                 return;
 
-            for(int i = 0; i < m_accessories.Count; i++)
+            for (int i = 0; i < m_accessories.Count; i++)
             {
-                var accessory = m_accessories[i];
+                PersonalizationAccessoryBehaviour accessory = m_accessories[i];
                 if (accessory)
                     accessory.RefreshVisibility();
             }

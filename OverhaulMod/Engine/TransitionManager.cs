@@ -29,6 +29,11 @@ namespace OverhaulMod.Engine
                 DoTransition(null, Color.white, false, true, true, 0.1f);
         }
 
+        public Color GetBlackScreenColor()
+        {
+            return ModParseUtils.TryParseToColor(ModFeatures.IsEnabled(ModFeatures.FeatureType.TransitionUpdates) ? TransitionBehaviour.POST_43_BG_COLOR : TransitionBehaviour.PRE_43_BG_COLOR, Color.black);
+        }
+
         public bool IsDoingTransition()
         {
             return m_transitionBehaviour;
@@ -36,7 +41,7 @@ namespace OverhaulMod.Engine
 
         public void DoNonSceneTransition(IEnumerator coroutine)
         {
-            DoTransition(coroutine, Color.black, true, false);
+            DoTransition(coroutine, GetBlackScreenColor(), true, false);
         }
 
         public void DoTransition(IEnumerator coroutine, Color bgColor, bool showText, bool fadeOut, bool ignoreDeltaTime = false, float deltaTimeMultiplier = 15f, float waitBeforeFadeOut = 0.25f)
@@ -44,7 +49,7 @@ namespace OverhaulMod.Engine
             if (m_transitionBehaviour)
                 return;
 
-            GameObject gameObject = Instantiate(ModResources.Prefab(AssetBundleConstants.UI, "UI_Transition"), GameUIRoot.Instance.transform, false);
+            GameObject gameObject = Instantiate(ModResources.Prefab(AssetBundleConstants.UI, "UI_Transition"), ModCache.gameUIRoot.transform, false);
             RectTransform transform = gameObject.transform as RectTransform;
             transform.anchoredPosition = Vector2.zero;
             transform.localEulerAngles = Vector2.zero;

@@ -1,10 +1,6 @@
 ﻿using HarmonyLib;
 using OverhaulMod.Content.Personalization;
-using OverhaulMod.Engine;
 using OverhaulMod.Utils;
-using OverhaulMod.Visuals;
-using PicaVoxel;
-using System;
 using UnityEngine;
 
 namespace OverhaulMod.Patches

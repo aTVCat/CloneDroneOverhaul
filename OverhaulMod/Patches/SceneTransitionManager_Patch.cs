@@ -13,7 +13,8 @@ namespace OverhaulMod.Patches
             if (!TransitionManager.OverhaulSceneTransitions)
                 return true;
 
-            TransitionManager.Instance.DoTransition(TransitionManager.SceneTransitionCoroutine(__instance), UnityEngine.Color.black, true, false);
+            TransitionManager transitionManager = TransitionManager.Instance;
+            transitionManager.DoTransition(TransitionManager.SceneTransitionCoroutine(__instance), transitionManager.GetBlackScreenColor(), true, false);
             return false;
         }
     }

@@ -227,6 +227,8 @@ namespace OverhaulMod.UI
             m_realisticSkyBoxToggle.isOn = false;
             m_realisticSkyBoxSlider.value = -1;
 
+            m_showHUDToggle.isOn = !CutSceneManager.Instance.IsInCutscene() && !SettingsManager.Instance.ShouldHideGameUI();
+
             m_disallowCallbacks = false;
         }
 
@@ -277,11 +279,17 @@ namespace OverhaulMod.UI
 
         public void OnShowPlayerToggled(bool value)
         {
+            if (m_disallowCallbacks)
+                return;
+
             toggleRobot(CharacterTracker.Instance.GetPlayerRobot(), value);
         }
 
         public void OnShowEnemiesToggled(bool value)
         {
+            if (m_disallowCallbacks)
+                return;
+
             foreach (Character character in CharacterTracker.Instance.GetAllLivingCharacters())
             {
                 if (!character || character.IsMainPlayer() || !(character is FirstPersonMover firstPersonMover))
@@ -293,6 +301,9 @@ namespace OverhaulMod.UI
 
         public void OnShowGarbageToggled(bool value)
         {
+            if (m_disallowCallbacks)
+                return;
+
             List<GarbageTarget> list = value ? m_garbageTargets : GarbageManager.Instance.GetAllGarbageReadyForCollection();
             if (list.IsNullOrEmpty())
                 return;
@@ -315,7 +326,10 @@ namespace OverhaulMod.UI
 
         public void OnHUDToggled(bool value)
         {
-            GameUIRoot.Instance.SetPlayerHUDVisible(value && !CutSceneManager.Instance.IsInCutscene());
+            if (m_disallowCallbacks)
+                return;
+
+            ModCache.gameUIRoot.SetPlayerHUDVisible(value && !CutSceneManager.Instance.IsInCutscene());
         }
 
         public void OnCinematicBordersToggled(bool value)

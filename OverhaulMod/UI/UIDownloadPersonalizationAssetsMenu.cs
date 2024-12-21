@@ -1,4 +1,6 @@
-﻿using OverhaulMod.Content.Personalization;
+﻿using BestHTTP.SocketIO;
+using OverhaulMod.Content.Personalization;
+using OverhaulMod.Utils;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -121,10 +123,15 @@ namespace OverhaulMod.UI
         {
             m_progressBarFill.fillAmount = 0f;
             m_exitButton.gameObject.SetActive(false);
-            m_personalizationManager.DownloadCustomizationFile(delegate
+            m_personalizationManager.DownloadCustomizationFile(delegate (string error)
             {
                 m_exitButton.gameObject.SetActive(true);
                 refreshContents();
+
+                if (!error.IsNullOrEmpty())
+                {
+                    ModUIUtils.MessagePopupOK("Error", $"Something went wrong while processing customization assets:\n{error}", true);
+                }
             });
             refreshContents();
         }
@@ -133,10 +140,15 @@ namespace OverhaulMod.UI
         {
             m_progressBarFill.fillAmount = 0f;
             m_exitButton.gameObject.SetActive(false);
-            m_personalizationManager.DownloadCustomizationFile(delegate
+            m_personalizationManager.DownloadCustomizationFile(delegate (string error)
             {
                 m_exitButton.gameObject.SetActive(true);
                 refreshContents();
+
+                if (!error.IsNullOrEmpty())
+                {
+                    ModUIUtils.MessagePopupOK("Error", $"Something went wrong while processing customization assets:\n{error}", true);
+                }
             });
             refreshContents();
         }

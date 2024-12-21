@@ -1,5 +1,4 @@
 ﻿using HarmonyLib;
-using OverhaulMod.Utils;
 using UnityEngine;
 
 namespace OverhaulMod.Patches

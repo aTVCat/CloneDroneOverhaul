@@ -18,12 +18,8 @@ namespace OverhaulMod.Content.Personalization
         [NonSerialized]
         public Exception LoadError;
 
-        [NonSerialized]
-        private int m_version;
-
         public void Load()
         {
-            m_version++;
             Dictionary<string, Exception> errors = new Dictionary<string, Exception>();
             List<PersonalizationItemInfo> list = Items ?? new List<PersonalizationItemInfo>();
             list.Clear();

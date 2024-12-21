@@ -195,17 +195,21 @@ namespace OverhaulMod.Visuals
                     depthOfField = cameraObject.AddComponent<DepthOfField>();
                     depthOfField.dofHdrShader = ModResources.Shader(AssetBundleConstants.IMAGE_EFFECTS, "DepthOfFieldScatter");
                     depthOfField.dx11BokehShader = ModResources.Shader(AssetBundleConstants.IMAGE_EFFECTS, "DepthOfFieldDX11");
-                    depthOfField.focalLength = 9;
-                    depthOfField.focalSize = 0.9f;
                     depthOfField.blurSampleCount = DepthOfField.BlurSampleCount.Low;
-                    depthOfField.nearBlur = true;
+                    depthOfField.focalSize = 0.9f;
                 }
 
                 DoF = depthOfField;
             }
 
             if (depthOfField)
-                depthOfField.enabled = enable;
+            {
+                bool fpm = CameraManager.EnableFirstPersonMode;
+
+                depthOfField.nearBlur = !fpm;
+                depthOfField.focalLength = fpm ? 1f : 9f;
+                depthOfField.enabled = !CameraManager.Instance.isCameraControlledByCutscene && enable;
+            }
         }
 
         private void refreshSunShafts(bool enable, GameObject cameraObject)

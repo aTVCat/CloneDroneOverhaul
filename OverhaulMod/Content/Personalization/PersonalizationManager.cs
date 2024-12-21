@@ -117,12 +117,12 @@ namespace OverhaulMod.Content.Personalization
             }
         }
 
-        public void DownloadCustomizationFile(Action<bool> callback)
+        public void DownloadCustomizationFile(Action<string> callback)
         {
             _ = downloadCustomizationFileCoroutine(callback).Run();
         }
 
-        private IEnumerator downloadCustomizationFileCoroutine(Action<bool> callback)
+        private IEnumerator downloadCustomizationFileCoroutine(Action<string> callback)
         {
             RepositoryManager.Instance.GetCustomFile($"https://github.com/aTVCat/Overhaul-Mod-Content/raw/main/content/customization.zip", delegate (byte[] bytes)
             {
@@ -175,16 +175,18 @@ namespace OverhaulMod.Content.Personalization
                     itemList.Load();
                     GlobalEventManager.Instance.Dispatch(CUSTOMIZATION_ASSETS_FILE_DOWNLOADED_EVENT);
                 }
-                catch (Exception)
+                catch (Exception exc)
                 {
-                    callback?.Invoke(false);
+                    callback?.Invoke(exc.ToString());
                     return;
                 }
-                callback?.Invoke(true);
+                callback?.Invoke(null);
             }, delegate
             {
+                string error = ModUnityUtils.GetWebRequestErrorString(m_webRequest);
                 m_webRequest = null;
-                callback?.Invoke(false);
+
+                callback?.Invoke(error);
             }, out UnityWebRequest unityWebRequest, -1);
             m_webRequest = unityWebRequest;
             yield break;

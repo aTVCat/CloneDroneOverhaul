@@ -1,9 +1,4 @@
 ﻿using OverhaulMod.Utils;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -52,7 +47,7 @@ namespace OverhaulMod.UI.Elements
             rectTransform.position = vector;
 
             Vector2 vector2 = rectTransform.anchoredPosition;
-            if(vector2.y <= -180f)
+            if (vector2.y <= -180f)
             {
                 rectTransform.pivot = new Vector2(0.5f, 0f);
                 vector2.y = vector2.y + 20f;

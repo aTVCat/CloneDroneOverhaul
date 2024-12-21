@@ -458,7 +458,16 @@ namespace OverhaulMod.UI
             _ = pageBuilder.Header1("Game interface");
             //_ = pageBuilder.Header3("Language");
             //_ = pageBuilder.Dropdown(ModLocalizationManager.Instance.GetLanguageOptions(false), getCurrentLanguageIndex(), OnLanguageDropdownChanged);
-            _ = pageBuilder.Toggle(!settingsMenu.HideGameUIToggle.isOn, OnHideGameUIToggleChanged, "Show game UI");
+
+            GameObject hideGameUIToggleNote = null;
+            _ = pageBuilder.Toggle(!settingsMenu.HideGameUIToggle.isOn, delegate (bool value)
+            {
+                hideGameUIToggleNote.SetActive(value && CutSceneManager.Instance.IsInCutscene());
+                OnHideGameUIToggleChanged(value);
+            }, "Show game UI");
+            hideGameUIToggleNote = pageBuilder.Header4("You're in cutscene mode, UI will be still hidden.".AddColor(Color.yellow)).transform.parent.gameObject;
+            hideGameUIToggleNote.SetActive(!settingsMenu.HideGameUIToggle.isOn && CutSceneManager.Instance.IsInCutscene());
+
             _ = pageBuilder.Toggle(settingsMenu.SubtitlesToggle.isOn, OnSubtitlesToggleChanged, "Show subtitles");
             _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.SHOW_SPEAKER_NAME), delegate (bool value)
             {
@@ -506,10 +515,10 @@ namespace OverhaulMod.UI
             _ = pageBuilder.Toggle(settingsMenu.UseSkinInSinglePlayer.isOn, OnUseSkinInSinglePlayerToggleChanged, "Use skin in singleplayer");
             _ = pageBuilder.Button("Select emotes", delegate
             {
-                GameUIRoot.Instance.EmoteSettingsUI.Show();
+                ModCache.gameUIRoot.EmoteSettingsUI.Show();
                 ModUIManager.Instance.InvokeActionInsteadOfHidingCustomUI(delegate
                 {
-                    GameUIRoot.Instance.EmoteSettingsUI.Hide();
+                    ModCache.gameUIRoot.EmoteSettingsUI.Hide();
                 });
             });
         }
@@ -523,7 +532,16 @@ namespace OverhaulMod.UI
             {
                 ModSettingsManager.SetIntValue(ModSettingsConstants.CURSOR_SKIN, value, true);
             });
-            _ = pageBuilder.Toggle(!settingsMenu.HideGameUIToggle.isOn, OnHideGameUIToggleChanged, "Show game UI");
+
+            GameObject hideGameUIToggleNote = null;
+            _ = pageBuilder.Toggle(!settingsMenu.HideGameUIToggle.isOn, delegate (bool value)
+            {
+                hideGameUIToggleNote.SetActive(value && CutSceneManager.Instance.IsInCutscene());
+                OnHideGameUIToggleChanged(value);
+            }, "Show game UI");
+            hideGameUIToggleNote = pageBuilder.Header4("You're in cutscene mode, UI will be still hidden.".AddColor(Color.yellow)).transform.parent.gameObject;
+            hideGameUIToggleNote.SetActive(!settingsMenu.HideGameUIToggle.isOn && CutSceneManager.Instance.IsInCutscene());
+
             _ = pageBuilder.Toggle(settingsMenu.SubtitlesToggle.isOn, OnSubtitlesToggleChanged, "Show subtitles");
             _ = pageBuilder.Button("Configure Overhaul mod UIs", delegate
             {
@@ -919,7 +937,7 @@ namespace OverhaulMod.UI
                 settingsMenu.OnTwitchEnemyLimitButtonClicked();
                 ModUIManager.Instance.InvokeActionInsteadOfHidingCustomUI(delegate
                 {
-                    GameUIRoot.Instance.TwitchEnemySettingsMenu.Hide();
+                    ModCache.gameUIRoot.TwitchEnemySettingsMenu.Hide();
                 });
             });
             _ = pageBuilder.Toggle(settingsMenu.MuteEmotesToggle.isOn, OnMuteEmotesToggleChanged, "Mute twitch emotes");
@@ -966,10 +984,10 @@ namespace OverhaulMod.UI
             _ = pageBuilder.Dropdown(settingsMenu.RegionDropdown.options, settingsMenu.RegionDropdown.value, OnRegionChanged);
             _ = pageBuilder.Button("Manage muted players", delegate
             {
-                GameUIRoot.Instance.BlockListSettingsUI.Show();
+                ModCache.gameUIRoot.BlockListSettingsUI.Show();
                 ModUIManager.Instance.InvokeActionInsteadOfHidingCustomUI(delegate
                 {
-                    GameUIRoot.Instance.BlockListSettingsUI.Hide();
+                    ModCache.gameUIRoot.BlockListSettingsUI.Hide();
                 });
             });
 
@@ -982,7 +1000,7 @@ namespace OverhaulMod.UI
             _ = pageBuilder.Header3("Personalization");
             _ = pageBuilder.Button("Select emotes", delegate
             {
-                GameUIRoot.Instance.EmoteSettingsUI.Show();
+                ModCache.gameUIRoot.EmoteSettingsUI.Show();
             });
         }
 
@@ -992,10 +1010,10 @@ namespace OverhaulMod.UI
             _ = pageBuilder.Header1("Controls settings");
             _ = pageBuilder.Button("Edit controls", delegate
             {
-                GameUIRoot.Instance.ControlMapper.Open();
+                ModCache.gameUIRoot.ControlMapper.Open();
                 ModUIManager.Instance.InvokeActionInsteadOfHidingCustomUI(delegate
                 {
-                    _ = GameUIRoot.Instance.ControlMapper.Close(true);
+                    _ = ModCache.gameUIRoot.ControlMapper.Close(true);
                 });
             });
 
@@ -1053,7 +1071,7 @@ namespace OverhaulMod.UI
             {
                 _ = pageBuilder.Button("Sign in", delegate
                 {
-                    GameUIRoot.Instance.SettingsMenu.Hide();
+                    ModCache.gameUIRoot.SettingsMenu.Hide();
                     ModBotUIRoot.Instance.ModBotSignInUI.OpenSignInForm();
                 });
             }

@@ -5,7 +5,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
-using static RootMotion.BipedNaming;
 
 namespace OverhaulMod
 {
@@ -102,7 +101,7 @@ namespace OverhaulMod
             if (assetBundleInfo == null || !s_bundles.ContainsValue(assetBundleInfo))
                 return null;
 
-            foreach (var kv in s_bundles)
+            foreach (KeyValuePair<string, AssetBundleInfo> kv in s_bundles)
                 if (kv.Value == assetBundleInfo)
                     return kv.Key;
 

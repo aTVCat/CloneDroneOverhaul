@@ -41,7 +41,7 @@ namespace OverhaulMod.UI
         public override void Hide()
         {
             base.Hide();
-            if(!TransitionManager.Instance.IsDoingTransition())
+            if (!TransitionManager.Instance.IsDoingTransition())
                 ModAudioManager.Instance.StopTransitionSound();
         }
 

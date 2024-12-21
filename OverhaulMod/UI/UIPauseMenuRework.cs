@@ -520,19 +520,19 @@ namespace OverhaulMod.UI
 
         public void OnReturnToLevelEditorButtonClicked()
         {
-            GameUIRoot.Instance.EscMenu.OnBackToLevelEditorButtonClicked();
+            ModCache.gameUIRoot.EscMenu.OnBackToLevelEditorButtonClicked();
         }
 
         public void OnStartMatchButtonClicked()
         {
-            GameUIRoot.Instance.EscMenu.OnStartBattleRoyaleLevelClicked();
+            ModCache.gameUIRoot.EscMenu.OnStartBattleRoyaleLevelClicked();
             Hide();
         }
 
         public void OnSkipLevelButtonClicked()
         {
             Hide();
-            GameUIRoot.Instance.EscMenu.OnSkipWorkshopLevelClicked();
+            ModCache.gameUIRoot.EscMenu.OnSkipWorkshopLevelClicked();
         }
 
         public void OnLegacyUIButtonClicked()

@@ -1,10 +1,6 @@
 ﻿using OverhaulMod.Engine;
 using OverhaulMod.Utils;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -31,7 +27,7 @@ namespace OverhaulMod.Visuals
         public List<Dropdown.OptionData> GetShadowResolutionOptions()
         {
             List<Dropdown.OptionData> list = new List<Dropdown.OptionData>();
-            foreach(var enumValue in typeof(ShadowResolution).GetEnumValues())
+            foreach (object enumValue in typeof(ShadowResolution).GetEnumValues())
             {
                 list.Add(new Dropdown.OptionData(StringUtils.AddSpacesToCamelCasedString(((ShadowResolution)enumValue).ToString())));
             }

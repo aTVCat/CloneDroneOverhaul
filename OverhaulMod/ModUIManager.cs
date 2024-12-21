@@ -1,4 +1,5 @@
 ﻿using OverhaulMod.Content;
+using OverhaulMod.Content.Personalization;
 using OverhaulMod.Engine;
 using OverhaulMod.UI;
 using OverhaulMod.Utils;
@@ -78,7 +79,7 @@ namespace OverhaulMod
             m_instantiatedUIs = new Dictionary<string, GameObject>();
             m_shownUIs = new List<OverhaulUIBehaviour>();
 
-            if(ModFeatures.IsEnabled(ModFeatures.FeatureType.Intro) && Time.timeSinceLevelLoad < 3f)
+            if (ModFeatures.IsEnabled(ModFeatures.FeatureType.Intro) && Time.timeSinceLevelLoad < 3f)
                 ModUIConstants.ShowIntro();
         }
 
@@ -345,6 +346,29 @@ namespace OverhaulMod
         internal void RemoveFromList(OverhaulUIBehaviour uIBehaviour)
         {
             _ = m_instantiatedUIs.Remove(uIBehaviour.Name);
+        }
+
+        public void RefreshUIVisibility()
+        {
+            if (!BoltNetwork.IsRunning)
+                return;
+
+            bool shouldDisplay = !SettingsManager.Instance.ShouldHideGameUI();
+            GameUIRoot gameUIRoot = ModCache.gameUIRoot;
+
+            if (GameModeManager.IsBattleRoyale())
+            {
+                gameUIRoot.BattleRoyaleUI.refreshVisibility();
+                gameUIRoot.BattleRoyaleUI.HumansLeftUIRoot.SetActive(shouldDisplay);
+
+                if(shouldDisplay)
+                    gameUIRoot.KillFeedUI.Show();
+                else
+                    gameUIRoot.KillFeedUI.Hide();
+            }
+
+            Character character = CharacterTracker.Instance.GetPlayer();
+            gameUIRoot.SetPlayerHUDVisible(shouldDisplay && character && character.IsAttachedAndAlive() && !CutSceneManager.Instance.IsInCutscene());
         }
 
         public enum UILayer

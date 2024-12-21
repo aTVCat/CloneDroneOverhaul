@@ -50,7 +50,7 @@ namespace OverhaulMod
                 hasChanged = true;
             }
 
-            if(hasChanged)
+            if (hasChanged)
                 ModJsonUtils.WriteStream(Path.Combine(ModCore.modUserDataFolder, FILE_NAME), s_info);
         }
 

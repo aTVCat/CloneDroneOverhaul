@@ -14,5 +14,15 @@ namespace OverhaulMod.Patches
                 GlobalEventManager.Instance.Dispatch(Engine.CameraManager.CINEMATIC_CAMERA_TURNED_OFF_EVENT);
             }
         }
+
+        [HarmonyPostfix]
+        [HarmonyPatch(nameof(LevelEditorCinematicCamera.OnDestroy))]
+        private static void OnDestroy_Postfix(LevelEditorCinematicCamera __instance)
+        {
+            if (__instance._hasTakenOverPlayerCamera)
+            {
+                GlobalEventManager.Instance.Dispatch(Engine.CameraManager.CINEMATIC_CAMERA_TURNED_OFF_EVENT);
+            }
+        }
     }
 }

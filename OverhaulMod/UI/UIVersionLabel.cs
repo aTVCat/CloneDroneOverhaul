@@ -160,7 +160,7 @@ namespace OverhaulMod.UI
 
         private void onDevBuildLabelSettingChanged(object obj)
         {
-            m_devBuildLabelObject.SetActive((obj is bool b && ModBuildInfo.isDeveloperBuild && ModBuildInfo.debug) && b);
+            m_devBuildLabelObject.SetActive(obj is bool b && ModBuildInfo.isDeveloperBuild && ModBuildInfo.debug && b);
         }
 
         public void OnOtherModsButtonClicked()

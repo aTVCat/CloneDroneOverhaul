@@ -45,7 +45,7 @@ namespace OverhaulMod.Engine
         {
             if (!m_buttonController)
             {
-                RectTransform upgradeUITransform = GameUIRoot.Instance.UpgradeUI.transform as RectTransform;
+                RectTransform upgradeUITransform = ModCache.gameUIRoot.UpgradeUI.transform as RectTransform;
                 RectTransform centerHolderTransform = TransformUtils.FindChildRecursive(upgradeUITransform, "CenterHolder") as RectTransform;
                 RectTransform iconContainerTransform = TransformUtils.FindChildRecursive(upgradeUITransform, "IconContainer") as RectTransform;
 
@@ -73,8 +73,8 @@ namespace OverhaulMod.Engine
         {
             Mode = upgradeMode;
 
-            if (GameUIRoot.Instance && GameUIRoot.Instance.UpgradeUI && GameUIRoot.Instance.UpgradeUI.gameObject.activeSelf)
-                GameUIRoot.Instance.UpgradeUI.PopulateIcons();
+            if (ModCache.gameUIRoot && ModCache.gameUIRoot.UpgradeUI && ModCache.gameUIRoot.UpgradeUI.gameObject.activeSelf)
+                ModCache.gameUIRoot.UpgradeUI.PopulateIcons();
 
             UpgradeModeButtonController controller = m_buttonController;
             if (!controller)

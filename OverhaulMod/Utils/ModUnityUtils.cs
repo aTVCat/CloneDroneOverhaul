@@ -1,11 +1,32 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
 namespace OverhaulMod.Utils
 {
     internal static class ModUnityUtils
     {
         private static readonly Dictionary<string, Transform> s_clonedObjects = new Dictionary<string, Transform>();
+
+        public static string GetWebRequestErrorString(UnityWebRequest unityWebRequest)
+        {
+            if (unityWebRequest == null)
+                return null;
+
+            if (!unityWebRequest.error.IsNullOrEmpty())
+            {
+                return unityWebRequest.error;
+            }
+            else if (unityWebRequest.isHttpError)
+            {
+                return "Unknown HTTP error.";
+            }
+            else if (unityWebRequest.isNetworkError)
+            {
+                return "Unknown network error.";
+            }
+            return null;
+        }
 
         public static Transform CloneAndSetLevelEnemySpawnerUp(string name, EnemyType enemyType)
         {

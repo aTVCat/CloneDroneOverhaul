@@ -491,6 +491,7 @@
     <Compile Include="Content\NewsInfoList.cs" />
     <Compile Include="ModUserInfo.cs" />
     <Compile Include="Patches\BaseBodyPart_Patch.cs" />
+    <Compile Include="Patches\ControlsHintPanel_Patch.cs" />
     <Compile Include="Patches\ExplodeWhenCut_Patch.cs" />
     <Compile Include="Patches\AttackManager_Patch.cs" />
     <Compile Include="Patches\AudioManager_Patch.cs" />

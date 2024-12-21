@@ -34,7 +34,7 @@ namespace OverhaulMod.Engine
                 {
                     if (modSettingsManager.HasSettingWithName(keyValue.Key))
                     {
-                        if(modSettingsManager.GetSetting(keyValue.Key).valueType == ModSetting.ValueType.Bool)
+                        if (modSettingsManager.GetSetting(keyValue.Key).valueType == ModSetting.ValueType.Bool)
                         {
                             if (ModSettingsManager.GetBoolValue(keyValue.Key) != (keyValue.Value == 0 ? false : true))
                                 ModSettingsManager.SetBoolValue(keyValue.Key, keyValue.Value == 0 ? false : true, fromUI);

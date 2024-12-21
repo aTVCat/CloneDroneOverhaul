@@ -2,7 +2,6 @@
 using OverhaulMod.Utils;
 using Steamworks;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
@@ -105,6 +104,19 @@ namespace OverhaulMod.Content
             return list;
         }
 
+        public List<ExclusivePerkInfo> GetUnlockedPerksForUser(string playFabId, CSteamID steamId)
+        {
+            List<ExclusivePerkInfo> list = new List<ExclusivePerkInfo>();
+            if (m_perksData != null && m_perksData.List != null && m_perksData.List.Count != 0)
+                foreach (ExclusivePerkInfo info in m_perksData.List)
+                {
+                    if (info.IsUnlockedForUser(playFabId, steamId))
+                        list.Add(info);
+                }
+
+            return list;
+        }
+
         public List<ExclusivePerkInfo> GetPerksOfType(ExclusivePerkType perkType)
         {
             List<ExclusivePerkInfo> list = new List<ExclusivePerkInfo>();
@@ -131,6 +143,19 @@ namespace OverhaulMod.Content
             return list;
         }
 
+        public List<ExclusivePerkInfo> GetUnlockedPerksOfTypeForUser(ExclusivePerkType perkType, string playFabId, CSteamID steamId)
+        {
+            List<ExclusivePerkInfo> list = new List<ExclusivePerkInfo>();
+            if (m_perksData != null && m_perksData.List != null && m_perksData.List.Count != 0)
+                foreach (ExclusivePerkInfo info in m_perksData.List)
+                {
+                    if (info.PerkType == perkType && info.IsUnlockedForUser(playFabId, steamId))
+                        list.Add(info);
+                }
+
+            return list;
+        }
+
         public void GetOverrideRobotColor(FirstPersonMover firstPersonMover, Color oldColor, out Color newColor)
         {
             newColor = oldColor;
@@ -143,10 +168,10 @@ namespace OverhaulMod.Content
 
             foreach (ExclusivePerkInfo exclusiveContentInfo in GetPerksOfType(ExclusivePerkType.Color))
             {
-                if(exclusiveContentInfo.PlayFabID == robotPlayFabId)
+                if (exclusiveContentInfo.PlayFabID == robotPlayFabId)
                 {
                     object deserializedData = exclusiveContentInfo.DeserializeData();
-                    if(deserializedData != null && deserializedData is ExclusivePerkColor perkColor)
+                    if (deserializedData != null && deserializedData is ExclusivePerkColor perkColor)
                     {
                         int index = -1;
                         foreach (HumanFavouriteColor favColor in HumanFactsManager.Instance.FavouriteColors)
@@ -156,7 +181,7 @@ namespace OverhaulMod.Content
                                 break;
                         }
 
-                        if(index == perkColor.Index)
+                        if (index == perkColor.Index)
                         {
                             newColor = perkColor.NewColor;
                         }
@@ -191,6 +216,15 @@ namespace OverhaulMod.Content
         public bool HasUnlockedPerk(ExclusivePerkType perkType)
         {
             foreach (ExclusivePerkInfo content in GetUnlockedPerks())
+                if (content.PerkType == perkType)
+                    return true;
+
+            return false;
+        }
+
+        public bool HasUnlockedPerkForUser(ExclusivePerkType perkType, string playFabId, CSteamID steamId)
+        {
+            foreach (ExclusivePerkInfo content in GetUnlockedPerksForUser(playFabId, steamId))
                 if (content.PerkType == perkType)
                     return true;
 

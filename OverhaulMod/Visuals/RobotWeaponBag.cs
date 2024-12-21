@@ -180,7 +180,7 @@ namespace OverhaulMod.Visuals
                         if (modelTransform)
                         {
                             Renderer renderer = modelTransform.GetComponent<Renderer>();
-                            if(renderer)
+                            if (renderer)
                                 renderer.enabled = true;
                         }
                     }
