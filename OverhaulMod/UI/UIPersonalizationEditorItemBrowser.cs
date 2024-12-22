@@ -4,7 +4,6 @@ using OverhaulMod.Utils;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -133,7 +132,7 @@ namespace OverhaulMod.UI
             }
 
             if (!itemList.ItemLoadErrors.IsNullOrEmpty())
-                foreach (KeyValuePair<string, System.Exception> keyValue in  itemList.ItemLoadErrors)
+                foreach (KeyValuePair<string, System.Exception> keyValue in itemList.ItemLoadErrors)
                 {
                     ModdedObject moddedObject = Instantiate(m_itemLoadErrorDisplayPrefab, m_container);
                     moddedObject.gameObject.SetActive(true);

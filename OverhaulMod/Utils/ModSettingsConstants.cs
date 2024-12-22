@@ -610,5 +610,10 @@ namespace OverhaulMod.Utils
         /// <see cref="Content.Personalization.PersonalizationEditorManager"/>
         /// </summary>
         public const string CUSTOMIZATION_EDITOR_AMBIANCE = "CustomizationEditorAmbiance";
+
+        /// <summary>
+        /// <see cref="Combat.CharacterExtension"/>
+        /// </summary>
+        public const string ENABLE_SCROLL_TO_SWITCH_WEAPON = "EnableScrollToSwitchWeapon";
     }
 }

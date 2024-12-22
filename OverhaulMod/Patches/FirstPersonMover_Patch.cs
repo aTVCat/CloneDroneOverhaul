@@ -28,8 +28,8 @@ namespace OverhaulMod.Patches
             if (GameModeManager.IsMultiplayer() || !__instance.IsMainPlayer() || !__instance._isJumping || !moveCommand.Input.Jump)
                 return;
 
-            CharacterInventory characterInventory = ModComponentCache.GetRobotInventory(__instance.transform);
-            if (characterInventory && characterInventory.LastServerFrameDoubleJumped < __instance._lastServerFrameTouchedGround && characterInventory.hasDoubleJumpAbility)
+            CharacterExtension characterInventory = ModComponentCache.GetRobotInventory(__instance.transform);
+            if (characterInventory && characterInventory.LastServerFrameDoubleJumped < __instance._lastServerFrameTouchedGround && characterInventory.HasDoubleJumpAbility)
             {
                 EnergySource energySource = __instance._energySource;
                 if (!energySource || !energySource.CanConsume(0.5f))

@@ -1,5 +1,4 @@
 ﻿using OverhaulMod.Content;
-using OverhaulMod.Content.Personalization;
 using OverhaulMod.Engine;
 using OverhaulMod.UI;
 using OverhaulMod.Utils;
@@ -361,7 +360,7 @@ namespace OverhaulMod
                 gameUIRoot.BattleRoyaleUI.refreshVisibility();
                 gameUIRoot.BattleRoyaleUI.HumansLeftUIRoot.SetActive(shouldDisplay);
 
-                if(shouldDisplay)
+                if (shouldDisplay)
                     gameUIRoot.KillFeedUI.Show();
                 else
                     gameUIRoot.KillFeedUI.Hide();

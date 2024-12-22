@@ -2,7 +2,6 @@
 using Steamworks;
 using UnityEngine;
 using UnityEngine.UI;
-using static Mono.Security.X509.X520;
 
 namespace OverhaulMod.UI
 {

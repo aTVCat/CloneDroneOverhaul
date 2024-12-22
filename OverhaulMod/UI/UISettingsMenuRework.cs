@@ -906,6 +906,12 @@ namespace OverhaulMod.UI
             _ = pageBuilder.Dropdown(settingsMenu.StoryModeDifficultyDropDown.options, settingsMenu.StoryModeDifficultyDropDown.value, OnStoryDifficultyIndexChanged);
             _ = pageBuilder.Header4("Change what enemies spawn");
 
+            _ = pageBuilder.Header1("Player");
+            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_SCROLL_TO_SWITCH_WEAPON), delegate (bool value)
+            {
+                ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_SCROLL_TO_SWITCH_WEAPON, value, true);
+            }, "Scroll to switch weapon");
+
             _ = pageBuilder.Header1("Camera");
             _ = pageBuilder.KeyBind("Camera mode", (KeyCode)ModSettingsManager.GetIntValue(ModSettingsConstants.CAMERA_MODE_TOGGLE_KEYBIND), KeyCode.Y, delegate (KeyCode value)
             {

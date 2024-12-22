@@ -10,7 +10,7 @@ namespace OverhaulMod.Utils
     {
         private static readonly CacheForGetComponent<CameraModeController> s_cacheForCameraModeControllerComponent = new CacheForGetComponent<CameraModeController>();
 
-        private static readonly CacheForGetComponent<CharacterInventory> s_cacheForRobotInventoryComponent = new CacheForGetComponent<CharacterInventory>();
+        private static readonly CacheForGetComponent<CharacterExtension> s_cacheForRobotInventoryComponent = new CacheForGetComponent<CharacterExtension>();
 
         private static readonly CacheForGetComponent<PersonalizationAccessoryReferences> s_cacheForPersonalizationAccessoryReferencesComponent = new CacheForGetComponent<PersonalizationAccessoryReferences>();
 
@@ -26,7 +26,7 @@ namespace OverhaulMod.Utils
             return s_cacheForCameraModeControllerComponent.GetScript(transform);
         }
 
-        public static CharacterInventory GetRobotInventory(Transform transform)
+        public static CharacterExtension GetRobotInventory(Transform transform)
         {
             return s_cacheForRobotInventoryComponent.GetScript(transform);
         }

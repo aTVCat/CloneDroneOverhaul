@@ -291,7 +291,7 @@ namespace OverhaulMod
             owner.addWeaponToEquipppedIfHasUpgradeAndModelPresent(ModUpgradesManager.SCYTHE_UNLOCK_UPGRADE, ModWeaponsManager.SCYTHE_TYPE);
             owner.RefreshModWeaponModels();
 
-            CharacterInventory robotInventory = ModComponentCache.GetRobotInventory(owner.transform);
+            CharacterExtension robotInventory = ModComponentCache.GetRobotInventory(owner.transform);
             if (robotInventory)
             {
                 robotInventory.OnUpgradesRefreshed(upgrades);
@@ -362,7 +362,7 @@ namespace OverhaulMod
                 if (ModFeatures.IsEnabled(ModFeatures.FeatureType.WeaponBag) && !firstPersonMover.IsMindSpaceCharacter && ((!GameModeManager.IsMultiplayerDuel() && !GameModeManager.IsBattleRoyale()) || firstPersonMover.IsMainPlayer()))
                     _ = firstPersonMover.gameObject.AddComponent<RobotWeaponBag>();
 
-                CharacterInventory robotInventory = firstPersonMover.gameObject.AddComponent<CharacterInventory>();
+                CharacterExtension robotInventory = firstPersonMover.gameObject.AddComponent<CharacterExtension>();
 
                 if (GameModeManager.IsCoop())
                 {

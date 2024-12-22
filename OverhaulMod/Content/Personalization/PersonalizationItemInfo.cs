@@ -141,7 +141,7 @@ namespace OverhaulMod.Content.Personalization
             bool isSinglePlayer = GameModeManager.IsSinglePlayer();
             string playFabId = isSinglePlayer || !character || !character.IsAttachedAndAlive() ? ModUserInfo.localPlayerPlayFabID : character.GetPlayFabID();
 
-            if(ExclusivePerkManager.Instance.HasUnlockedPerkForUser(ExclusivePerkType.CustomizationItemsVerifierRole, playFabId, CSteamID.Nil))
+            if (ExclusivePerkManager.Instance.HasUnlockedPerkForUser(ExclusivePerkType.CustomizationItemsVerifierRole, playFabId, CSteamID.Nil))
                 return true;
 
             bool result = false;
