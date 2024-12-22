@@ -386,6 +386,7 @@
     <Compile Include="Engine\AdditionalSkyboxInfo.cs" />
     <Compile Include="Engine\AutoBuildListInfo.cs" />
     <Compile Include="Engine\MeshSerializer.cs" />
+    <Compile Include="Engine\ModSettingsPreset.cs" />
     <Compile Include="Engine\ModSettingSubDescription.cs" />
     <Compile Include="Engine\TransitionSoundBehaviour.cs" />
     <Compile Include="Engine\UseKeyTriggerManager.cs" />

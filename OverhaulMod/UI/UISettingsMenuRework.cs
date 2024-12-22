@@ -674,10 +674,16 @@ namespace OverhaulMod.UI
             _ = pageBuilder.Header3("Post effects");
             if (moreEffectsEnabled)
             {
-                //_ = pageBuilder.Header3("Preset");
                 _ = pageBuilder.Dropdown(PostEffectsManager.PresetOptions, 0, delegate (int value)
                 {
+                    if (value == 0)
+                        return;
 
+                    PostEffectsManager.Instance.ApplyGraphicsPreset(value - 1);
+                    settingsMenu.populateSettings();
+
+                    ClearPageContents();
+                    populateGraphicsPage(settingsMenu);
                 });
             }
             _ = pageBuilder.ToggleWithOptions(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_SSAO), delegate (bool value)

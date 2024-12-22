@@ -172,7 +172,7 @@ namespace OverhaulMod.Engine
                 SetValue(value);
         }
 
-        public void SetStringValue(int value)
+        public void SetStringValue(string value)
         {
             if (valueType == ValueType.String)
                 SetValue(value);
