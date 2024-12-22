@@ -120,6 +120,7 @@ namespace OverhaulMod.UI
 
             m_toolbarWindowButton.interactable = false;
             m_toolbarUploadButton.interactable = false;
+            m_saveButton.interactable = false;
 
             DelegateScheduler.Instance.Schedule(delegate
             {
@@ -184,6 +185,7 @@ namespace OverhaulMod.UI
         {
             m_toolbarWindowButton.interactable = true;
             m_toolbarUploadButton.interactable = true;
+            m_saveButton.interactable = true;
             ShowInspector();
             ShowObjectProperties();
             ShowItemModerator();

@@ -88,6 +88,11 @@ namespace OverhaulMod.Content.Personalization
                 };
             }
 
+            if (BodyPartName.IsNullOrEmpty())
+            {
+                BodyPartName = "Head";
+            }
+
             RootObject.SetPosition(Vector3.zero);
             RootObject.SetEulerAngles(Vector3.zero);
             RootObject.SetScale(Vector3.one);

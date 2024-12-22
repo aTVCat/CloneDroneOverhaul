@@ -75,8 +75,8 @@ namespace OverhaulMod.Content.Personalization
 
             if (owner.IsMainPlayer())
             {
-                PersonalizationItemInfo itemInfo = m_itemObject.ControllerInfo.ItemInfo;
-                if (itemInfo.BodyPartName == "Head" && CameraManager.EnableFirstPersonMode && !CameraManager.Instance.isCameraControlledByCutscene && !PhotoManager.Instance.IsInPhotoMode())
+                PersonalizationItemInfo itemInfo = m_itemObject.ControllerInfo?.ItemInfo;
+                if (itemInfo != null && itemInfo.BodyPartName == "Head" && CameraManager.EnableFirstPersonMode && !CameraManager.Instance.isCameraControlledByCutscene && !PhotoManager.Instance.IsInPhotoMode())
                 {
                     m_itemObject.SetChildrenActive(false);
                     return;

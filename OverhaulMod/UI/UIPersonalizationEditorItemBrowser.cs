@@ -4,6 +4,7 @@ using OverhaulMod.Utils;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -47,6 +48,9 @@ namespace OverhaulMod.UI
         [UIElement("TextPrefab", false)]
         private readonly Text m_textPrefab;
 
+        [UIElement("HeaderPrefab", false)]
+        private readonly ModdedObject m_headerPrefab;
+
         [UIElement("Content")]
         private readonly Transform m_container;
 
@@ -88,26 +92,58 @@ namespace OverhaulMod.UI
 
         public void Populate()
         {
-            bool getAll = m_viewAllItemsToggle.isOn && PersonalizationEditorManager.Instance.canEditNonOwnItems;
-
-            PersonalizationItemList itemList = PersonalizationManager.Instance.itemList;
-            if (itemList == null || itemList.LoadError != null)
-                return;
-
-            List<PersonalizationItemInfo> list = new List<PersonalizationItemInfo>();
-            foreach (PersonalizationItemInfo item in itemList.Items)
-                if (item.CanBeEdited() || getAll)
-                    list.Add(item);
-
-            populate(list, itemList.ItemLoadErrors);
-        }
-
-        private void populate(List<PersonalizationItemInfo> list, Dictionary<string, System.Exception> exceptions)
-        {
             m_cachedInstantiatedDisplays.Clear();
             if (m_container.childCount != 0)
                 TransformUtils.DestroyAllChildren(m_container);
 
+            PersonalizationItemList itemList = PersonalizationManager.Instance.itemList;
+            if (itemList == null)
+                return;
+
+            if (!itemList.Items.IsNullOrEmpty())
+            {
+                bool getAll = m_viewAllItemsToggle.isOn && PersonalizationEditorManager.Instance.canEditNonOwnItems;
+                List<PersonalizationItemInfo> nonPersistent = new List<PersonalizationItemInfo>();
+                List<PersonalizationItemInfo> persistent = new List<PersonalizationItemInfo>();
+                foreach (PersonalizationItemInfo item in itemList.Items)
+                    if (item.CanBeEdited() || getAll)
+                    {
+                        if (item.IsPersistentAsset)
+                        {
+                            persistent.Add(item);
+                            continue;
+                        }
+                        nonPersistent.Add(item);
+                    }
+
+                if (!nonPersistent.IsNullOrEmpty())
+                {
+                    instantiateHeader("Verified items");
+                    populate(nonPersistent);
+                }
+                if (!persistent.IsNullOrEmpty())
+                {
+                    instantiateHeader("Local items");
+                    populate(persistent);
+                }
+
+                Text textComponent = Instantiate(m_textPrefab, m_container);
+                textComponent.gameObject.SetActive(true);
+                textComponent.text = $"{nonPersistent.Count + persistent.Count} items in total";
+            }
+
+            if (!itemList.ItemLoadErrors.IsNullOrEmpty())
+                foreach (KeyValuePair<string, System.Exception> keyValue in  itemList.ItemLoadErrors)
+                {
+                    ModdedObject moddedObject = Instantiate(m_itemLoadErrorDisplayPrefab, m_container);
+                    moddedObject.gameObject.SetActive(true);
+                    moddedObject.GetObject<Text>(0).text = $"Item load error: {keyValue.Key}";
+                    moddedObject.GetObject<Text>(1).text = keyValue.Value.ToString();
+                }
+        }
+
+        private void populate(List<PersonalizationItemInfo> list)
+        {
             if (list != null)
             {
                 foreach (PersonalizationItemInfo item in list)
@@ -140,15 +176,13 @@ namespace OverhaulMod.UI
                 textComponent.gameObject.SetActive(true);
                 textComponent.text = $"{list.Count} items";
             }
+        }
 
-            if (exceptions != null)
-                foreach (KeyValuePair<string, System.Exception> keyValue in exceptions)
-                {
-                    ModdedObject moddedObject = Instantiate(m_itemLoadErrorDisplayPrefab, m_container);
-                    moddedObject.gameObject.SetActive(true);
-                    moddedObject.GetObject<Text>(0).text = $"Item load error: {keyValue.Key}";
-                    moddedObject.GetObject<Text>(1).text = keyValue.Value.ToString();
-                }
+        private void instantiateHeader(string text)
+        {
+            ModdedObject moddedObject = Instantiate(m_headerPrefab, m_container);
+            moddedObject.gameObject.SetActive(true);
+            moddedObject.GetObject<Text>(0).text = text;
         }
 
         public void OnViewAllItemsToggleChanged(bool value)
