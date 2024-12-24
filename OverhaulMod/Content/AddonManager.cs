@@ -175,13 +175,14 @@ namespace OverhaulMod.Content
         {
             if (quick)
             {
-                string lower = addonName.ToLower();
+                return false;
+                /*string lower = addonName.ToLower();
                 if (m_installedAddons.IsNullOrEmpty())
                     return false;
 
                 foreach (AddonInfo c in m_installedAddons)
                     if (c.DisplayName.ToLower() == lower)
-                        return true;
+                        return true;*/
             }
             return File.Exists(Path.Combine(GetAddonPath(addonName), ADDON_INFO_FILE));
         }

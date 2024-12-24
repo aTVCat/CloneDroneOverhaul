@@ -81,7 +81,7 @@ namespace OverhaulMod.UI
 
             foreach (AddonDownloadInfo c in cl.Addons)
             {
-                list.Add(new Dropdown.OptionData(c.DisplayName));
+                list.Add(new Dropdown.OptionData(c.GetDisplayName()));
             }
             m_infosDropdown.options = list;
         }
@@ -92,13 +92,13 @@ namespace OverhaulMod.UI
             if (contentDownloadInfo == null)
                 return;
 
-            m_contentNameField.text = contentDownloadInfo.DisplayName;
-            m_contentSizeField.text = contentDownloadInfo.Size.ToString();
-            m_contentPathField.text = contentDownloadInfo.File;
+            m_contentNameField.text = contentDownloadInfo.GetDisplayName();
+            m_contentSizeField.text = contentDownloadInfo.PackageFileSize.ToString();
+            m_contentPathField.text = contentDownloadInfo.PackageFileURL;
             m_contentMinModVersionField.text = contentDownloadInfo.MinModVersion?.ToString();
-            m_contentDescriptionField.text = contentDownloadInfo.Description;
+            m_contentDescriptionField.text = contentDownloadInfo.GetDescription(LocalizationManager.Instance.GetCurrentLanguageCode());
             m_contentImagesField.text = contentDownloadInfo.Images;
-            m_contentVersionField.text = contentDownloadInfo.Version.ToString();
+            m_contentVersionField.text = contentDownloadInfo.GetVersion().ToString();
         }
 
         private void readFileFromDisk()
@@ -144,13 +144,14 @@ namespace OverhaulMod.UI
             AddonDownloadInfo contentDownloadInfo = editingContentDownloadInfo;
             if (contentDownloadInfo != null)
             {
+                /*
                 contentDownloadInfo.DisplayName = m_contentNameField.text;
-                contentDownloadInfo.Size = long.Parse(m_contentSizeField.text);
-                contentDownloadInfo.File = m_contentPathField.text;
+                contentDownloadInfo.PackageFileSize = long.Parse(m_contentSizeField.text);
+                contentDownloadInfo.PackageFileURL = m_contentPathField.text;
                 contentDownloadInfo.MinModVersion = version;
                 contentDownloadInfo.Version = int.Parse(m_contentVersionField.text);
                 contentDownloadInfo.Images = m_contentImagesField.text;
-                contentDownloadInfo.Description = m_contentDescriptionField.text;
+                contentDownloadInfo.Description = m_contentDescriptionField.text;*/
             }
 
             AddonListInfo contentListInfo = editingContentList;
@@ -171,9 +172,9 @@ namespace OverhaulMod.UI
                 {
                     AddonDownloadInfo contentDownloadInfo = new AddonDownloadInfo()
                     {
-                        DisplayName = value,
-                        Size = 1,
-                        Files = new List<string>()
+                        /*DisplayName = value,
+                        PackageFileSize = 1,
+                        Files = new List<string>()*/
                     };
                     contentListInfo.Addons.Add(contentDownloadInfo);
 
