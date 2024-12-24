@@ -26,7 +26,7 @@ namespace OverhaulMod.Content
 
         private List<object> m_loadingAddons;
 
-        private List<AddonInfo> m_installedAddons;
+        private List<AddonInfo> m_loadedAddons;
 
         private bool m_hasInitialized;
 
@@ -216,14 +216,14 @@ namespace OverhaulMod.Content
         /// <returns></returns>
         public List<AddonInfo> GetInstalledAddons(bool returnCached = true)
         {
-            if (returnCached && m_installedAddons != null)
-                return m_installedAddons;
+            if (returnCached && m_loadedAddons != null)
+                return m_loadedAddons;
 
-            List<AddonInfo> list = m_installedAddons;
+            List<AddonInfo> list = m_loadedAddons;
             if (list == null)
             {
                 list = new List<AddonInfo>();
-                m_installedAddons = list;
+                m_loadedAddons = list;
             }
             else
             {

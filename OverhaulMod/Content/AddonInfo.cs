@@ -1,7 +1,7 @@
 ﻿using OverhaulMod.Utils;
 using System;
 using System.Collections.Generic;
-using static OverhaulMod.ModUserInfo;
+using System.IO;
 
 namespace OverhaulMod.Content
 {
@@ -11,12 +11,36 @@ namespace OverhaulMod.Content
 
         public Dictionary<string, string> Description;
 
+        public string Images;
+
         public string UniqueID;
 
         public int Version;
 
+        public Version MinModVersion;
+
+        public string PackageFileURL;
+
+        public long PackageFileSize;
+
         [NonSerialized]
         public string FolderPath;
+
+        public bool IsSupported()
+        {
+            return MinModVersion != null && ModBuildInfo.version >= MinModVersion;
+        }
+
+        public void CalculatePackageFileSize(string path)
+        {
+            FileInfo fileInfo = new FileInfo(path);
+            if (!fileInfo.Exists)
+            {
+                PackageFileSize = -1L;
+                return;
+            }
+            PackageFileSize = fileInfo.Length;
+        }
 
         public void GenerateUniqueID()
         {
@@ -63,6 +87,14 @@ namespace OverhaulMod.Content
                 return null;
             }
             return Description[language];
+        }
+
+        public string[] GetImages()
+        {
+            if (Images.IsNullOrEmpty())
+                return Array.Empty<string>();
+
+            return StringUtils.GetNonEmptySplitOfCommaSeparatedString(Images);
         }
     }
 }

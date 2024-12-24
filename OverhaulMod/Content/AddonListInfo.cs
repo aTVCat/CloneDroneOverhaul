@@ -4,12 +4,12 @@ namespace OverhaulMod.Content
 {
     public class AddonListInfo
     {
-        public List<AddonDownloadInfo> Addons;
+        public List<AddonInfo> Addons;
 
         public void FixValues()
         {
             if (Addons == null)
-                Addons = new List<AddonDownloadInfo>();
+                Addons = new List<AddonInfo>();
         }
     }
 }

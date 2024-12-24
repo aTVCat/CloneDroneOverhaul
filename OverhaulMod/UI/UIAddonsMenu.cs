@@ -17,13 +17,9 @@ namespace OverhaulMod.UI
         [UIElement("CloseButton")]
         private readonly Button m_exitButton;
 
-        [UIElementAction(nameof(OnLocalAddonsEditorButtonClicked))]
+        [UIElementAction(nameof(OnAddonsEditorButtonClicked))]
         [UIElement("EditorButton")]
-        private readonly Button m_localAddonsEditorButton;
-
-        [UIElementAction(nameof(OnNetworkAddonsEditorButtonClicked))]
-        [UIElement("NetworkEditorButton")]
-        private readonly Button m_networkAddonsEditorButton;
+        private readonly Button m_addonsEditorButton;
 
         [UIElement("LocalAddons")]
         private readonly ModdedObject m_localAddonsTab;
@@ -66,8 +62,7 @@ namespace OverhaulMod.UI
         {
             base.Show();
 
-            m_localAddonsEditorButton.gameObject.SetActive(ModUserInfo.isDeveloper);
-            m_networkAddonsEditorButton.gameObject.SetActive(ModUserInfo.isDeveloper);
+            m_addonsEditorButton.gameObject.SetActive(ModUserInfo.isDeveloper);
         }
 
         public override void Hide()
@@ -176,50 +171,15 @@ namespace OverhaulMod.UI
         private void populate(AddonListInfo contentListInfo)
         {
             s_contentLiftInfo = contentListInfo;
-            foreach (AddonDownloadInfo content in contentListInfo.Addons)
+            foreach (AddonInfo content in contentListInfo.Addons)
             {
-                if (content == null || content.PackageFileURL.IsNullOrEmpty())
-                    continue;
-
-                string displayName = content.GetDisplayName();
-                if (displayName.IsNullOrEmpty())
-                    continue;
-
-                string description = content.GetDescription(LocalizationManager.Instance.GetCurrentLanguageCode());
-                if (description.IsNullOrEmpty())
-                {
-                    description = LocalizationManager.Instance.GetTranslatedString("no_description_provided");
-                }
-
-                string translationKey = $"addons_addon_{content.GetDescription(LocalizationManager.Instance.GetCurrentLanguageCode()).ToLower().Replace(' ', '_')}";
-
-                ModdedObject moddedObject = Instantiate(m_networkContentDisplay, m_container);
-                moddedObject.gameObject.SetActive(true);
-                moddedObject.GetObject<Text>(0).text = LocalizationManager.Instance.GetTranslatedString($"{translationKey}_name");
-                moddedObject.GetObject<Text>(7).text = description;
-                moddedObject.GetObject<Text>(1).text = (Mathf.RoundToInt(Mathf.Round(content.PackageFileSize / 1048576f * 10f)) / 10f).ToString() + " Megabytes";
-
-                List<string> list = content.GetImages().ToList();
-                if (!list.IsNullOrEmpty())
-                    for (int i = 0; i < list.Count; i++)
-                        list[i] = RepositoryManager.REPOSITORY_URL + "images/" + list[i];
-
-                UIElementNetworkAddonDisplay networkAddonDisplay = moddedObject.gameObject.AddComponent<UIElementNetworkAddonDisplay>();
-                networkAddonDisplay.contentFile = content.PackageFileURL;
-                networkAddonDisplay.contentName = content.GetDisplayName();
-                networkAddonDisplay.isSupported = content.IsSupported();
-                networkAddonDisplay.minModVersion = content.MinModVersion;
-                networkAddonDisplay.isLarge = content.PackageFileSize > 52428800L;
-                networkAddonDisplay.imageExplorerParentTransform = base.transform;
-                networkAddonDisplay.images = list;
-                networkAddonDisplay.InitializeElement();
             }
 
             m_loadingIndicator.SetActive(false);
             m_tabs.interactable = true;
         }
 
-        public void OnLocalAddonsEditorButtonClicked()
+        public void OnAddonsEditorButtonClicked()
         {
             _ = ModUIConstants.ShowAddonsEditor(base.transform);
         }
