@@ -122,13 +122,13 @@ namespace OverhaulMod.UI
         {
             m_editingPerk = exclusivePerkInfo;
 
-            if (m_perksPanel.activeSelf)
-                togglePerksPanel();
-
             setFieldsValue(exclusivePerkInfo);
 
             m_revealOwnerPlayfabIDButton.gameObject.SetActive(true);
             m_revealOwnerSteamIDButton.gameObject.SetActive(true);
+
+            if (m_perksPanel.activeSelf)
+                togglePerksPanel();
 
             m_editorBg.SetActive(true);
             m_nonEditorBg.SetActive(false);
