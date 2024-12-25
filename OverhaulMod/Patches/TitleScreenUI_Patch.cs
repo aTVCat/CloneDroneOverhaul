@@ -35,7 +35,7 @@ namespace OverhaulMod.Patches
 
         [HarmonyPostfix]
         [HarmonyPatch(nameof(TitleScreenUI.PlayExplosionAudio))]
-        private static void PlayExplosionAudio_Prefix(TitleScreenUI __instance)
+        private static void PlayExplosionAudio_Postfix(TitleScreenUI __instance)
         {
             UIIntro intro = ModUIManager.Instance.Get<UIIntro>(AssetBundleConstants.UI, ModUIConstants.UI_INTRO);
             if (intro)

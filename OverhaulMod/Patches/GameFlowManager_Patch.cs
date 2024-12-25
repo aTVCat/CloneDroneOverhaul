@@ -30,7 +30,7 @@ namespace OverhaulMod.Patches
         private static void ShowTitleScreen_Postfix(GameFlowManager __instance)
         {
             if (ModFeatures.IsEnabled(ModFeatures.FeatureType.TitleScreenRework))
-                _ = ModUIConstants.ShowTitleScreenRework();
+                _ = ModUIConstants.ShowTitleScreenReworkIfHaventBefore();
 
             if (ModManagers.ShowModSetupScreenOnStart)
             {

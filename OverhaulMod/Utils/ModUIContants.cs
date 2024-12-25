@@ -132,6 +132,15 @@ namespace OverhaulMod.Utils
             return ModUIManager.Instance.Show<UITitleScreenRework>(AssetBundleConstants.UI, UI_TITLE_SCREEN, ModUIManager.UILayer.AfterTitleScreen);
         }
 
+        public static UITitleScreenRework ShowTitleScreenReworkIfHaventBefore()
+        {
+            var result = ModUIManager.Instance.Get<UITitleScreenRework>(AssetBundleConstants.UI, UI_TITLE_SCREEN);
+            if (result && result.visible)
+                return result;
+
+            return ModUIManager.Instance.Show<UITitleScreenRework>(AssetBundleConstants.UI, UI_TITLE_SCREEN, ModUIManager.UILayer.AfterTitleScreen);
+        }
+
         public static void HideTitleScreenRework()
         {
             _ = ModUIManager.Instance.Hide(AssetBundleConstants.UI, UI_TITLE_SCREEN);

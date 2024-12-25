@@ -219,7 +219,7 @@ namespace OverhaulMod
                 ModActionUtils.DoInFrames(delegate
                 {
                     if (GameModeManager.IsOnTitleScreen())
-                        _ = ModUIConstants.ShowTitleScreenRework();
+                        _ = ModUIConstants.ShowTitleScreenReworkIfHaventBefore();
                 }, 60);
             }
         }

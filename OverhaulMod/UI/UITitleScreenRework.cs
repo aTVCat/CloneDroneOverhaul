@@ -293,6 +293,11 @@ namespace OverhaulMod.UI
 
         public override void Update()
         {
+            if (Input.GetKeyDown(KeyCode.Alpha3))
+            {
+                OnPlaySinglePlayerButtonClicked();
+            }
+
             bool reworkEnabled = enableRework;
             bool shouldBeActive = m_legacyContainer.activeInHierarchy;
             bool flag = reworkEnabled && shouldBeActive;
