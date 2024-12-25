@@ -19,6 +19,11 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(ErrorManager.HandleLog))]
         private static bool HandleLog_Prefix(ErrorManager __instance, string logString, string stackTrace, ref LogType type)
         {
+            /*ModCore.TempStringBuilder.Append(logString);
+            ModCore.TempStringBuilder.Append(' ');
+            ModCore.TempStringBuilder.Append(stackTrace);
+            ModCore.TempStringBuilder.Append('\n');*/
+
             if (CrashPreventionManager.IgnoreCrashes)
                 return false;
 

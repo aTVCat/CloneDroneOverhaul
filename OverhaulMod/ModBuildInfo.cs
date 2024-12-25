@@ -9,7 +9,7 @@ namespace OverhaulMod
 {
     public static class ModBuildInfo
     {
-        public const bool VERSION_4_3 = true;
+        public const bool VERSION_4_3 = false;
 
         public const bool VERSION_5 = false;
 
@@ -128,14 +128,6 @@ namespace OverhaulMod
 #else
                 return false;
 #endif
-            }
-        }
-
-        public static bool enableV5
-        {
-            get
-            {
-                return VERSION_5;
             }
         }
 

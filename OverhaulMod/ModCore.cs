@@ -9,6 +9,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using UnityEngine;
 
 namespace OverhaulMod
@@ -42,6 +43,8 @@ namespace OverhaulMod
         public static event Action<Camera, Camera> OnCameraSwitched;
 
         public static ModCore instance { get; private set; }
+
+        //public static StringBuilder TempStringBuilder = new StringBuilder();
 
         public static bool isEnabled
         {

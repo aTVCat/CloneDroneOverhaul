@@ -59,16 +59,16 @@ namespace OverhaulMod
                     result = true;
                     break;
                 case FeatureType.NightmariumDifficultyTier:
-                    result = ModBuildInfo.enableV5;
+                    result = ModBuildInfo.VERSION_5;
                     break;
                 case FeatureType.GameModeSelectionScreensRework:
                     result = true;
                     break;
                 case FeatureType.NewGameplayContent:
-                    result = ModBuildInfo.enableV5;
+                    result = ModBuildInfo.VERSION_5;
                     break;
                 case FeatureType.NewEnemies:
-                    result = ModBuildInfo.enableV5;
+                    result = ModBuildInfo.VERSION_5;
                     break;
                 case FeatureType.DuelInviteMenuRework:
                     result = true;
@@ -161,7 +161,7 @@ namespace OverhaulMod
             if (!result)
             {
                 ExclusivePerkManager exclusivePerkManager = ExclusivePerkManager.Instance;
-                if (exclusivePerkManager.IsFeatureUnlocked(feature))
+                if (exclusivePerkManager && exclusivePerkManager.IsFeatureUnlocked(feature))
                     result = true;
             }
             return result;
