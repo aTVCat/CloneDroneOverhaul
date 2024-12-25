@@ -35,10 +35,12 @@ namespace OverhaulMod.Engine
         public List<Dropdown.OptionData> GetSkyboxOptions()
         {
             List<Dropdown.OptionData> list = new List<Dropdown.OptionData>();
-            foreach (KeyValuePair<string, AdditionalSkyboxInfo> kv in m_skyboxes)
-            {
-                list.Add(new DropdownStringOptionData() { text = kv.Value.DisplayName, StringValue = kv.Key });
-            }
+            if (!m_skyboxes.IsNullOrEmpty())
+                foreach (KeyValuePair<string, AdditionalSkyboxInfo> kv in m_skyboxes)
+                {
+                    list.Add(new DropdownStringOptionData() { text = kv.Value.DisplayName, StringValue = kv.Key });
+                }
+
             return list;
         }
 
@@ -47,13 +49,14 @@ namespace OverhaulMod.Engine
             bool foundOption = currentValue.IsNullOrEmpty();
 
             List<Dropdown.OptionData> list = new List<Dropdown.OptionData>() { new DropdownStringOptionData() { text = "Default", StringValue = string.Empty } };
-            foreach (KeyValuePair<string, AdditionalSkyboxInfo> kv in m_skyboxes)
-            {
-                list.Add(new DropdownStringOptionData() { text = kv.Value.DisplayName, StringValue = kv.Key });
+            if (!m_skyboxes.IsNullOrEmpty())
+                foreach (KeyValuePair<string, AdditionalSkyboxInfo> kv in m_skyboxes)
+                {
+                    list.Add(new DropdownStringOptionData() { text = kv.Value.DisplayName, StringValue = kv.Key });
 
-                if (!foundOption && kv.Key == currentValue)
-                    foundOption = true;
-            }
+                    if (!foundOption && kv.Key == currentValue)
+                        foundOption = true;
+                }
 
             if (!foundOption)
                 list.Add(new DropdownStringOptionData() { text = currentValue, StringValue = currentValue });
