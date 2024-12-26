@@ -1,5 +1,6 @@
 ﻿using OverhaulMod.Engine;
 using OverhaulMod.Utils;
+using Pathfinding.RVO;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -43,6 +44,18 @@ namespace OverhaulMod.UI
 
         [UIElement("TextContent")]
         private readonly Transform m_textContainer;
+
+        [UIElement("VersionListBG")]
+        private readonly GameObject m_versionListBG;
+
+        [UIElement("VersionListScrollRect")]
+        private readonly GameObject m_versionListScrollRect;
+
+        [UIElement("MainPart")]
+        private readonly RectTransform m_mainPartTransform;
+
+        [UIElement("Panel")]
+        private readonly RectTransform m_panelTransform;
 
         public override bool hideTitleScreen => true;
 
@@ -130,6 +143,40 @@ namespace OverhaulMod.UI
             ModSettingsDataManager.Instance.Save();
         }
 
+        public void ShowVersionList()
+        {
+            m_versionListBG.SetActive(true);
+            m_versionListScrollRect.SetActive(true);
+
+            Vector2 offset = m_mainPartTransform.offsetMin;
+            offset.x = 265f;
+            m_mainPartTransform.offsetMin = offset;
+        }
+
+        public void HideVersionList()
+        {
+            m_versionListBG.SetActive(false);
+            m_versionListScrollRect.SetActive(false);
+
+            Vector2 offset = m_mainPartTransform.offsetMin;
+            offset.x = 10f;
+            m_mainPartTransform.offsetMin = offset;
+        }
+
+        public void ShrinkPanel()
+        {
+            Vector2 sideDelta = m_panelTransform.sizeDelta;
+            sideDelta.x = -500f;
+            m_panelTransform.sizeDelta = sideDelta;
+        }
+
+        public void ExpandPanel()
+        {
+            Vector2 sideDelta = m_panelTransform.sizeDelta;
+            sideDelta.x = -50f;
+            m_panelTransform.sizeDelta = sideDelta;
+        }
+
         public void ClickOnFirstButton()
         {
             if (m_firstButton)
@@ -172,55 +219,62 @@ namespace OverhaulMod.UI
                 }
             }
 
+            PopulateText(header, text);
+        }
+
+        public void PopulateText(string header, string text)
+        {
             m_headerText.text = header;
 
-            if (!text.Contains(Environment.NewLine))
+            if (text.Contains(Environment.NewLine))
             {
-                Text textLine = Instantiate(m_textLine, m_textContainer);
-                textLine.gameObject.SetActive(true);
-                textLine.text = text;
+                foreach (string line in text.Split(Environment.NewLine.ToCharArray()))
+                    instantiateChangelogElement(line);
+
+                return;
+            }
+            instantiateChangelogElement(text);
+        }
+
+        private void instantiateChangelogElement(string line)
+        {
+            if (line.IsNullOrEmpty())
+                return;
+
+            if (line.StartsWith("img="))
+            {
+                ModdedObject moddedObject = Instantiate(m_imageEmbed, m_textContainer);
+                moddedObject.gameObject.SetActive(true);
+
+                UIElementPatchNotesImageEmbed imageEmbed = moddedObject.gameObject.AddComponent<UIElementPatchNotesImageEmbed>();
+                imageEmbed.URL = line.Substring(4);
+                imageEmbed.PatchNotesTransform = base.transform;
+                imageEmbed.InitializeElement();
             }
             else
             {
-                string[] lines = text.Split(Environment.NewLine.ToCharArray());
-                foreach (string line in lines)
-                {
-                    if (line.IsNullOrEmpty())
-                        continue;
-
-                    if (line.StartsWith("img="))
-                    {
-                        ModdedObject moddedObject = Instantiate(m_imageEmbed, m_textContainer);
-                        moddedObject.gameObject.SetActive(true);
-
-                        UIElementPatchNotesImageEmbed imageEmbed = moddedObject.gameObject.AddComponent<UIElementPatchNotesImageEmbed>();
-                        imageEmbed.URL = line.Substring(4);
-                        imageEmbed.PatchNotesTransform = base.transform;
-                        imageEmbed.InitializeElement();
-                    }
-                    else
-                    {
-                        Text textLine = Instantiate(m_textLine, m_textContainer);
-                        textLine.gameObject.SetActive(true);
-
-                        if (line.StartsWith("# "))
-                        {
-                            textLine.fontSize = 19;
-                            textLine.color = Color.white;
-                            textLine.text = line.Substring(2);
-                            textLine.transform.GetChild(0).gameObject.SetActive(true);
-                        }
-                        else
-                        {
-                            textLine.fontSize = 12;
-                            textLine.color = s_darkerWhite;
-                            textLine.text = line;
-                            textLine.transform.GetChild(0).gameObject.SetActive(false);
-                        }
-                    }
-                }
+                Text textLine = Instantiate(m_textLine, m_textContainer);
+                textLine.gameObject.SetActive(true);
+                configureLine(textLine, line);
             }
-            m_textLine.text = text;
+        }
+
+        private void configureLine(Text textLine, string line)
+        {
+            if (line.StartsWith("# "))
+            {
+                textLine.fontSize = 19;
+                textLine.color = Color.white;
+                textLine.text = line.Substring(2);
+                textLine.transform.GetChild(0).gameObject.SetActive(true);
+            }
+            else
+            {
+                textLine.fontSize = 12;
+                textLine.color = s_darkerWhite;
+                textLine.text = line;
+                textLine.transform.GetChild(0).gameObject.SetActive(false);
+            }
         }
 
         private string getBuildDisplayVersion(string folder)

@@ -9,7 +9,7 @@ namespace OverhaulMod
 {
     public static class ModBuildInfo
     {
-        public const bool VERSION_4_3 = false;
+        public const bool VERSION_4_3 = true;
 
         public const bool VERSION_5 = false;
 

@@ -134,7 +134,7 @@ namespace OverhaulMod.Utils
 
         public static UITitleScreenRework ShowTitleScreenReworkIfHaventBefore()
         {
-            var result = ModUIManager.Instance.Get<UITitleScreenRework>(AssetBundleConstants.UI, UI_TITLE_SCREEN);
+            UITitleScreenRework result = ModUIManager.Instance.Get<UITitleScreenRework>(AssetBundleConstants.UI, UI_TITLE_SCREEN);
             if (result && result.visible)
                 return result;
 
@@ -525,9 +525,20 @@ namespace OverhaulMod.Utils
             return ModUIManager.Instance.Show<UIAssetBundleAssetsBrowser>(AssetBundleConstants.UI, UI_ASSET_BUNDLE_ASSETS_BROWSER, transform);
         }
 
-        public static UIPatchNotes ShowPatchNotes()
+        public static UIPatchNotes ShowPatchNotes(bool showVersionList = true, bool expandPanel = true)
         {
-            return ModUIManager.Instance.Show<UIPatchNotes>(AssetBundleConstants.UI, UI_PATCH_NOTES, ModUIManager.UILayer.AfterTitleScreen, 1);
+            UIPatchNotes patchNotes = ModUIManager.Instance.Show<UIPatchNotes>(AssetBundleConstants.UI, UI_PATCH_NOTES, ModUIManager.UILayer.AfterTitleScreen, 1);
+            if (showVersionList)
+                patchNotes.ShowVersionList();
+            else
+                patchNotes.HideVersionList();
+
+            if (expandPanel)
+                patchNotes.ExpandPanel();
+            else
+                patchNotes.ShrinkPanel();
+
+            return patchNotes;
         }
 
         public static UIPersonalizationEditorItemCreationDialog ShowPersonalizationEditorItemCreationDialog(Transform transform)
