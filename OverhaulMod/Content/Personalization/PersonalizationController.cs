@@ -575,7 +575,7 @@ namespace OverhaulMod.Content.Personalization
 
             DestroyItemsOfCategory(PersonalizationCategory.Accessories);
 
-            if (GameModeManager.IsMultiplayer() && !owner.IsMainPlayer())
+            if (!owner.IsMainPlayer() && (!AllowEnemiesUseSkins || GameModeManager.IsMultiplayer()))
                 return;
 
             List<string> accessories = GetEquippedAccessories();

@@ -67,22 +67,24 @@ namespace OverhaulMod.Content.Personalization
             }
 
             Character owner = m_bodyPart.GetOwner();
-            if (owner && !owner.IsAlive())
+            if (owner)
             {
-                m_itemObject.SetChildrenActive(false);
-                return;
-            }
-
-            if (owner.IsMainPlayer())
-            {
-                PersonalizationItemInfo itemInfo = m_itemObject.ControllerInfo?.ItemInfo;
-                if (itemInfo != null && itemInfo.BodyPartName == "Head" && CameraManager.EnableFirstPersonMode && !CameraManager.Instance.isCameraControlledByCutscene && !PhotoManager.Instance.IsInPhotoMode())
+                if (!owner.IsAlive())
                 {
                     m_itemObject.SetChildrenActive(false);
                     return;
                 }
+                else if (owner.IsMainPlayer())
+                {
+                    PersonalizationItemInfo itemInfo = m_itemObject.ControllerInfo?.ItemInfo;
+                    if (itemInfo != null && itemInfo.BodyPartName == "Head" && CameraManager.EnableFirstPersonMode && !CameraManager.Instance.isCameraControlledByCutscene && !PhotoManager.Instance.IsInPhotoMode())
+                    {
+                        m_itemObject.SetChildrenActive(false);
+                        return;
+                    }
+                }
             }
-            m_itemObject.SetChildrenActive(m_isBodyPartActive && m_bodyPart.GetNumDestroyedVoxels() == 0 && !m_bodyPart.HasParentConnectionBeenSevered());
+            m_itemObject.SetChildrenActive(m_isBodyPartActive && mechBodyPart.GetNumDestroyedVoxels() == 0 && !mechBodyPart.HasParentConnectionBeenSevered());
         }
     }
 }
