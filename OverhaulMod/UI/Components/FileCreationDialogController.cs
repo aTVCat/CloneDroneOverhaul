@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-namespace OverhaulMod.UI.Components
+namespace OverhaulMod.UI
 {
     public class FileCreationDialogController
     {
@@ -118,7 +118,7 @@ namespace OverhaulMod.UI.Components
                 if (!fileNameProcessResult.Error)
                 {
                     string path = Path.Combine(TargetDirectory, FileNameField.text);
-                    if (Directory.Exists(path))
+                    if (CreateFolder ? Directory.Exists(path) : File.Exists(path))
                     {
                         fileNameProcessResult.Message = $"A {getFileSystemEntryName(CreateFolder, false)} with the same name already exists.";
                         fileNameProcessResult.DisplayColor = Color.red;

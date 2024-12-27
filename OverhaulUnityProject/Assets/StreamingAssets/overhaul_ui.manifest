@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 3320081087
+CRC: 4079167640
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 6d29fc3b3dfe8c17e251a9c48ce2f486
+    Hash: f419a2c2cebfa25019617aa3caa599a0
   TypeTreeHash:
     serializedVersion: 2
     Hash: 11a2c5244a74fc567c6938c3491df245
@@ -177,6 +177,7 @@ Assets:
 - Assets/UI/UI_AdvancementsMenuRework.prefab
 - Assets/Font/VCR-OSD-Mono.ttf
 - Assets/UI/UI_PersonalizationEditorAuthorsEditMenu.prefab
+- Assets/UI/UI_AddonsEditorCreationDialog.prefab
 - Assets/UI/UI_DebugMenu.prefab
 - Assets/UI/UI_PersonalizationEditorPlaytestHUD.prefab
 - Assets/UI/UI_ContentDownloadWindow.prefab

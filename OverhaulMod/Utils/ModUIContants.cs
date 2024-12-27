@@ -94,6 +94,7 @@ namespace OverhaulMod.Utils
         public const string UI_FEATURES_MENU = "UI_FeaturesMenu";
         public const string UI_WORKSHOP_ITEM_PAGE_PLAY_OPTIONS = "UI_WorkshopItemPagePlayOptions";
         public const string UI_WORKSHOP_BROWSER_HISTORY_PANEL = "UI_WorkshopBrowserHistoryPanel";
+        public const string UI_ADDONS_EDITOR_CREATION_DIALOG = "UI_AddonsEditorCreationDialog";
 
         public static UIVersionLabel ShowVersionLabel()
         {
@@ -604,6 +605,11 @@ namespace OverhaulMod.Utils
         public static UIWorkshopBrowserHistoryPanel ShowWorkshopBrowserHistoryPanel(Transform transform)
         {
             return ModUIManager.Instance.Show<UIWorkshopBrowserHistoryPanel>(AssetBundleConstants.UI, UI_WORKSHOP_BROWSER_HISTORY_PANEL, transform);
+        }
+
+        public static UIAddonsEditorCreationDialog ShowAddonsEditorCreationDialog(Transform transform)
+        {
+            return ModUIManager.Instance.Show<UIAddonsEditorCreationDialog>(AssetBundleConstants.UI, UI_ADDONS_EDITOR_CREATION_DIALOG, transform);
         }
     }
 }

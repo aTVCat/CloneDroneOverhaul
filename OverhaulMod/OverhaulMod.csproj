@@ -624,6 +624,7 @@
     <Compile Include="UI\Elements\UIElementWorkshopItemQuickPreview.cs" />
     <Compile Include="UI\Elements\UIElementFileExplorerItemDisplay.cs" />
     <Compile Include="UI\UIAddonsDownloadEditor.cs" />
+    <Compile Include="UI\UIAddonsEditorCreationDialog.cs" />
     <Compile Include="UI\UICrashScreen.cs" />
     <Compile Include="UI\UIEndlessGameLossWindow.cs" />
     <Compile Include="UI\UIGenericImageViewer.cs" />

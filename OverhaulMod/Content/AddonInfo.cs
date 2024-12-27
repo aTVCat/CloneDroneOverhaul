@@ -52,13 +52,16 @@ namespace OverhaulMod.Content
             return GetDisplayName(LocalizationManager.Instance.GetCurrentLanguageCode());
         }
 
-        public string GetDisplayName(string language)
+        public string GetDisplayName(string language, bool returnNullIfNotPresent = false)
         {
             if (DisplayName.IsNullOrEmpty())
                 return null;
 
             if (!DisplayName.ContainsKey(language))
             {
+                if (returnNullIfNotPresent)
+                    return null;
+
                 if (DisplayName.ContainsKey("en"))
                 {
                     return DisplayName["en"];
@@ -73,13 +76,16 @@ namespace OverhaulMod.Content
             return GetDescription(LocalizationManager.Instance.GetCurrentLanguageCode());
         }
 
-        public string GetDescription(string language)
+        public string GetDescription(string language, bool returnNullIfNotPresent = false)
         {
             if (Description.IsNullOrEmpty())
                 return null;
 
             if (!Description.ContainsKey(language))
             {
+                if (returnNullIfNotPresent)
+                    return null;
+
                 if (Description.ContainsKey("en"))
                 {
                     return Description["en"];

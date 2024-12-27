@@ -255,6 +255,11 @@ namespace OverhaulMod.Content
             return list;
         }
 
+        public void AddLoadedAddon(AddonInfo addonInfo)
+        {
+            m_loadedAddons.Add(addonInfo);
+        }
+
         public void RefreshInstalledAddons(bool force = false)
         {
             _ = GetInstalledAddons(force);

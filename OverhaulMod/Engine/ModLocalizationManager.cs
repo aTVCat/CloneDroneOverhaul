@@ -125,7 +125,12 @@ namespace OverhaulMod.Engine
                 foreach (LanguageDefinition lang in LocalizationManager.Instance.SupportedLanguages)
                 {
                     string displayName = returnLangCode ? lang.LanguageCode : LocalizationManager.Instance.GetTranslatedString(lang.LanguageNameLocID);
-                    list.Add(new Dropdown.OptionData(displayName, lang.FlagImage));
+                    list.Add(new DropdownStringOptionData()
+                    {
+                        text = displayName,
+                        image = lang.FlagImage,
+                        StringValue = lang.LanguageCode
+                    });
                 }
                 return list;
             });

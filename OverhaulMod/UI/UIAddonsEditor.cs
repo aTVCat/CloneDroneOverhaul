@@ -1,5 +1,7 @@
 ﻿using OverhaulMod.Content;
+using OverhaulMod.Engine;
 using OverhaulMod.Utils;
+using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -46,15 +48,21 @@ namespace OverhaulMod.UI
         private readonly Transform m_addonsContent;
 
 
+        [UIElementAction(nameof(OnDisplayNameLanguageDropdownChanged))]
         [UIElement("NameLanguageDropdown")]
         private readonly Dropdown m_displayNameLanguageDropdown;
 
+        [UIElementCallback(true)]
+        [UIElementAction(nameof(OnDisplayNameFieldChanged))]
         [UIElement("NameField")]
         private readonly InputField m_displayNameField;
 
+        [UIElementAction(nameof(OnDescriptionLanguageDropdownChanged))]
         [UIElement("DescriptionLanguageDropdown")]
         private readonly Dropdown m_descriptionLanguageDropdown;
 
+        [UIElementCallback(true)]
+        [UIElementAction(nameof(OnDescriptionFieldChanged))]
         [UIElement("DescriptionField")]
         private readonly InputField m_descriptionField;
 
@@ -94,14 +102,26 @@ namespace OverhaulMod.UI
 
         [UIElementAction(nameof(OnCalculatePackageSizeButtonClicked))]
         [UIElement("CalculatePackageSizeButton")]
-        private readonly Button m_cCalculatePackageSizeButton;
+        private readonly Button m_calculatePackageSizeButton;
 
 
         private AddonInfo m_editingAddonInfo;
 
+        private string m_editingDisplayNameTranslationLangCode, m_editingDescriptionTranslationLangCode;
+
+        private bool m_disableUICallbacks;
+
         protected override void OnInitialized()
         {
             m_saveButton.interactable = false;
+
+            m_editingDisplayNameTranslationLangCode = "en";
+            m_editingDescriptionTranslationLangCode = "en";
+
+            m_displayNameLanguageDropdown.options = ModLocalizationManager.Instance.GetLanguageOptions(false);
+            m_displayNameLanguageDropdown.value = 0;
+            m_descriptionLanguageDropdown.options = m_displayNameLanguageDropdown.options;
+            m_descriptionLanguageDropdown.value = 0;
         }
 
         private void populateAddonsPanel()
@@ -112,8 +132,13 @@ namespace OverhaulMod.UI
             System.Collections.Generic.List<AddonInfo> addons = AddonManager.Instance.GetInstalledAddons();
             foreach (AddonInfo addon in addons)
             {
+                string displayName = addon.GetDisplayName();
+                if (displayName.IsNullOrEmpty())
+                    displayName = "<i>No name addon</i>".AddColor(Color.gray);
+
                 ModdedObject moddedObject = Instantiate(m_addonDisplay, m_addonsContent);
                 moddedObject.gameObject.SetActive(true);
+                moddedObject.GetObject<Text>(0).text = displayName;
                 Button button = moddedObject.GetComponent<Button>();
                 button.onClick.AddListener(delegate
                 {
@@ -128,6 +153,8 @@ namespace OverhaulMod.UI
 
             m_saveButton.interactable = true;
 
+            setFieldsValue(addonInfo);
+
             OnCloseAddonsPanelButtonClicked();
             m_editorBG.SetActive(true);
             m_nonEditorBG.SetActive(false);
@@ -141,6 +168,8 @@ namespace OverhaulMod.UI
             if (addonInfo != null)
             {
                 updateAddonInfo(addonInfo);
+                ModJsonUtils.WriteStream(Path.Combine(addonInfo.FolderPath, AddonManager.ADDON_INFO_FILE), addonInfo);
+
             }
             else
             {
@@ -150,12 +179,36 @@ namespace OverhaulMod.UI
 
         private void setFieldsValue(AddonInfo addonInfo)
         {
+            m_disableUICallbacks = true;
 
+            m_displayNameField.text = addonInfo.GetDisplayName(m_editingDisplayNameTranslationLangCode, true);
+            m_descriptionField.text = addonInfo.GetDescription(m_editingDescriptionTranslationLangCode, true);
+            m_uniqueIDField.text = m_editingAddonInfo.UniqueID;
+
+            m_disableUICallbacks = false;
         }
 
         private void updateAddonInfo(AddonInfo addonInfo)
         {
 
+        }
+
+        private void onAddonCreation(string folderName)
+        {
+            string folderPath = Path.Combine(ModCore.addonsFolder, folderName);
+            Directory.CreateDirectory(folderPath);
+
+            AddonInfo addonInfo = new AddonInfo();
+            addonInfo.DisplayName = new System.Collections.Generic.Dictionary<string, string>();
+            addonInfo.Description = new System.Collections.Generic.Dictionary<string, string>();
+            addonInfo.MinModVersion = ModBuildInfo.version;
+            addonInfo.FolderPath = folderPath;
+            addonInfo.GenerateUniqueID();
+
+            ModJsonUtils.WriteStream(Path.Combine(folderPath, AddonManager.ADDON_INFO_FILE), addonInfo);
+
+            AddonManager.Instance.AddLoadedAddon(addonInfo);
+            editAddon(addonInfo);
         }
 
         public void OnAddonsButtonClicked()
@@ -171,6 +224,8 @@ namespace OverhaulMod.UI
 
         public void OnNewAddonButtonClicked()
         {
+            UIAddonsEditorCreationDialog dialog = ModUIConstants.ShowAddonsEditorCreationDialog(base.transform);
+            dialog.Callback = onAddonCreation;
         }
 
         public void OnSaveButtonClicked()
@@ -178,9 +233,60 @@ namespace OverhaulMod.UI
             saveEditingAddon();
         }
 
+        public void OnDisplayNameLanguageDropdownChanged(int value)
+        {
+            if (m_disableUICallbacks)
+                return;
+
+            m_editingDisplayNameTranslationLangCode = (m_displayNameLanguageDropdown.options[value] as DropdownStringOptionData).StringValue;
+
+            m_disableUICallbacks = true;
+            m_displayNameField.text = m_editingAddonInfo.GetDisplayName(m_editingDisplayNameTranslationLangCode, true);
+            m_disableUICallbacks = false;
+        }
+
+        public void OnDisplayNameFieldChanged(string value)
+        {
+            if (m_disableUICallbacks)
+                return;
+
+            m_needsSaveIcon.SetActive(true);
+            
+            if(m_editingAddonInfo.DisplayName.ContainsKey(m_editingDisplayNameTranslationLangCode))
+                m_editingAddonInfo.DisplayName[m_editingDisplayNameTranslationLangCode] = value;
+            else
+                m_editingAddonInfo.DisplayName.Add(m_editingDisplayNameTranslationLangCode, value);
+        }
+
+        public void OnDescriptionLanguageDropdownChanged(int value)
+        {
+            if (m_disableUICallbacks)
+                return;
+
+            m_editingDescriptionTranslationLangCode = (m_descriptionLanguageDropdown.options[value] as DropdownStringOptionData).StringValue;
+
+            m_disableUICallbacks = true;
+            m_descriptionField.text = m_editingAddonInfo.GetDescription(m_editingDescriptionTranslationLangCode, true);
+            m_disableUICallbacks = false;
+        }
+
+        public void OnDescriptionFieldChanged(string value)
+        {
+            if (m_disableUICallbacks)
+                return;
+
+            m_needsSaveIcon.SetActive(true);
+
+            if (m_editingAddonInfo.Description.ContainsKey(m_editingDescriptionTranslationLangCode))
+                m_editingAddonInfo.Description[m_editingDescriptionTranslationLangCode] = value;
+            else
+                m_editingAddonInfo.Description.Add(m_editingDescriptionTranslationLangCode, value);
+        }
+
         public void OnGenerateUniqueIDButtonClicked()
         {
-
+            m_editingAddonInfo.GenerateUniqueID();
+            m_uniqueIDField.text = m_editingAddonInfo.UniqueID;
         }
 
         public void OnBumpAddonVersionButtonClicked()
