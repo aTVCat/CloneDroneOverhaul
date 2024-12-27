@@ -2163,6 +2163,7 @@ namespace OverhaulMod.UI
                 button.onClick.AddListener(delegate
                 {
                     LocalizationManager.Instance.SetCurrentLanguage(langCode);
+                    ModCache.gameUIRoot.SettingsMenu.populateSettings();
                     SettingsMenu.m_tabs.ReinstantiatePreconfiguredTabs();
                     SettingsMenu.m_tabs.SelectTab("Languages");
                 });
@@ -2199,11 +2200,6 @@ namespace OverhaulMod.UI
                     else
                         SettingsMenu.HideDescription();
                 };
-            }
-
-            public void Dispose()
-            {
-                SettingsMenu = null;
             }
 
             public static string GetFillText(float value)

@@ -201,6 +201,16 @@ namespace OverhaulMod
             }
         }
 
+        public override void OnModLoaded()
+        {
+            instance = this;
+            GlobalEventManager.Instance.AddEventListenerOnce(GlobalEvents.GameInitializtionCompleted, onGameInitialized);
+            ModLoader.Load();
+
+            TVCat.Launcher.Launcher.LoadAssembly(this, "TVCat.CloneDrone.dll");
+            TVCat.Launcher.Launcher.AddModsLoadedEventListener(ModLoader.AddLevelObjectListeners);
+        }
+
         public override void OnModEnabled()
         {
             instance = this;
@@ -216,19 +226,9 @@ namespace OverhaulMod
 
             if (ModFeatures.IsEnabled(ModFeatures.FeatureType.TitleScreenRework))
             {
-                ModActionUtils.DoInFrames(delegate
-                {
-                    if (GameModeManager.IsOnTitleScreen())
-                        _ = ModUIConstants.ShowTitleScreenReworkIfHaventBefore();
-                }, 60);
+                if (GameModeManager.IsOnTitleScreen())
+                    _ = ModUIConstants.ShowTitleScreenReworkIfHaventBefore();
             }
-        }
-
-        public override void OnModLoaded()
-        {
-            instance = this;
-            GlobalEventManager.Instance.AddEventListenerOnce(GlobalEvents.GameInitializtionCompleted, onGameInitialized);
-            ModLoader.Load();
         }
 
         public override void OnModDeactivated()
@@ -256,6 +256,7 @@ namespace OverhaulMod
             ModSpecialUtils.SetTitleBarStateDependingOnSettings();
 
             GamePatchBehaviour.Unload();
+            ModLoader.RemoveLevelObjectListeners();
             ModLoader.Unload();
         }
 

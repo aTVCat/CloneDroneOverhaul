@@ -93,14 +93,8 @@ namespace OverhaulMod.UI
 
             ModCache.titleScreenUI.VersionLabel.gameObject.SetActive(false);
 
-            if (ModFeatures.IsEnabled(ModFeatures.FeatureType.Intro))
-            {
-                m_watermarkCanvasGroup.alpha = 0f;
-                ModActionUtils.DoInFrames(delegate
-                {
-                    m_fadeInLabel = GameModeManager.IsOnTitleScreen() && !ModUIManager.Instance.HasInstantiatedUI($"{AssetBundleConstants.UI}.{ModUIConstants.UI_INTRO}");
-                }, 30);
-            }
+            if (ModFeatures.IsEnabled(ModFeatures.FeatureType.Intro) && GameModeManager.IsOnTitleScreen())
+                m_watermarkCanvasGroup.alpha = UIIntro.HasEverShownIntro ? 1f : 0f;
         }
 
         public override void OnDestroy()

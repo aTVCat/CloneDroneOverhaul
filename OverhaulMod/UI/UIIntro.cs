@@ -4,6 +4,8 @@ namespace OverhaulMod.UI
 {
     public class UIIntro : OverhaulUIBehaviour
     {
+        public static bool HasEverShownIntro;
+
         private CanvasGroup m_canvasGroup;
 
         private bool m_fadeOut;
@@ -20,6 +22,11 @@ namespace OverhaulMod.UI
             base.Show();
             m_canvasGroup.alpha = 1f;
             m_timeout = Time.unscaledTime + 15f;
+        }
+
+        public override void Start()
+        {
+            HasEverShownIntro = true;
         }
 
         public override void Update()

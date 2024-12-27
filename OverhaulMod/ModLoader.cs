@@ -19,17 +19,6 @@ namespace OverhaulMod
     {
         private static bool s_hasAddedObjects;
 
-        private static bool s_hasAddedTVCatLibraryListeners;
-
-        private static bool s_tvCatLibraryLoaded;
-        public static bool TVCatLibraryLoaded
-        {
-            get
-            {
-                return s_tvCatLibraryLoaded;
-            }
-        }
-
         public static void Load()
         {
             if (!HasToLoad())
@@ -71,11 +60,6 @@ namespace OverhaulMod
             if (modManagers && modManagers.gameObject)
             {
                 UnityEngine.Object.Destroy(modManagers.gameObject);
-            }
-
-            if (s_hasAddedTVCatLibraryListeners)
-            {
-                removeLevelObjectListeners();
             }
         }
 
@@ -143,19 +127,6 @@ namespace OverhaulMod
         {
             LevelEditorPatch.Patch.Apply();
             ModIntegrationUtils.Load();
-
-            if (s_tvCatLibraryLoaded)
-            {
-                addLevelObjectListeners();
-                return;
-            }
-
-            TVCat.Launcher.Launcher.LoadAssembly(ModCore.instance, "TVCat.CloneDrone.dll");
-            TVCat.Launcher.Launcher.AddModsLoadedEventListener(delegate
-            {
-                s_tvCatLibraryLoaded = true;
-                addLevelObjectListeners();
-            });
         }
 
         private static void loadMiscellaneousAssets()
@@ -178,21 +149,13 @@ namespace OverhaulMod
             }
         }
 
-        private static void addLevelObjectListeners()
+        public static void AddLevelObjectListeners()
         {
-            if (s_hasAddedTVCatLibraryListeners)
-                return;
-
-            s_hasAddedTVCatLibraryListeners = true;
             TVCat.CloneDrone.ObjectPlacedInLevelUtils.AddPreInitializeCallback(onLevelObjectPreInitialized);
         }
 
-        private static void removeLevelObjectListeners()
+        public static void RemoveLevelObjectListeners()
         {
-            if (!s_hasAddedTVCatLibraryListeners)
-                return;
-
-            s_hasAddedTVCatLibraryListeners = false;
             TVCat.CloneDrone.ObjectPlacedInLevelUtils.RemovePreInitializeCallback(onLevelObjectPreInitialized);
         }
 
