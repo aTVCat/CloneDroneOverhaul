@@ -575,6 +575,7 @@
     <Compile Include="UI\Components\DraggablePanel.cs" />
     <Compile Include="UI\Components\EnergyUIBehaviour.cs" />
     <Compile Include="UI\Components\EventController.cs" />
+    <Compile Include="UI\Components\FileCreationDialogController.cs" />
     <Compile Include="UI\Components\SliderFillText.cs" />
     <Compile Include="UI\DropdownPersonalizationItemInfo.cs" />
     <Compile Include="UI\DropdownWeaponVariantOptionData.cs" />
