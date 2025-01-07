@@ -1,1 +1,30 @@
-Work in progress
+# Header1
+- There're cool changes
+- Change 1
+img=images/PlaceholderChangelog.png
+- Change 2
+- The changelog menu has been changed
+img=images/PlaceholderChangelog.png
+# Header2
+- There're cool changes
+- Change 1
+- There're cool changes
+- Change 1
+- There're cool changes
+- Change 1
+- There're cool changes
+- Change 1
+- There're cool changes
+- Change 1
+- There're cool changes
+- Change 1
+- There're cool changes
+- Change 1
+- There're cool changes
+- Change 1
+- There're cool changes
+- Change 1
+- There're cool changes
+- Change 1
+- There're cool changes
+- Change 1

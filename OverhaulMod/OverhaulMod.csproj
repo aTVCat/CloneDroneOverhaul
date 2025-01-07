@@ -347,6 +347,7 @@
     <Compile Include="Content\GoogleDriveManager.cs" />
     <Compile Include="Content\LevelEditor\LevelEditorWeatherSettingsOverride.cs" />
     <Compile Include="Content\MagicaVoxelImporter.cs" />
+    <Compile Include="Content\PostmanManager.cs" />
     <Compile Include="Content\NewsUserData.cs" />
     <Compile Include="Content\Personalization\BowPartType.cs" />
     <Compile Include="Content\Personalization\CVMImporter.cs" />
@@ -748,7 +749,6 @@
     <Compile Include="Utils\ModUnityUtils.cs" />
     <Compile Include="Combat\Weapons\ScytheWeaponModel.cs" />
     <Compile Include="Combat\Weapons\ModWeaponModel.cs" />
-    <Compile Include="ModWebhookManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
