@@ -123,6 +123,19 @@ namespace OverhaulMod
             }
         }
 
+        private static string s_developerFolder;
+        public static string developerFolder
+        {
+            get
+            {
+                if (s_developerFolder == null)
+                {
+                    s_developerFolder = $"{Path.Combine(modUserDataFolder, "devFolder")}/";
+                }
+                return s_developerFolder;
+            }
+        }
+
         private static string s_contentFolder;
         public static string contentFolder
         {

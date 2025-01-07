@@ -176,6 +176,7 @@ namespace OverhaulMod
             _ = ModFileUtils.CreateDirectoryIfNotExists(ModCore.addonsFolder);
             _ = ModFileUtils.CreateDirectoryIfNotExists(ModCore.customizationFolder);
             _ = ModFileUtils.CreateDirectoryIfNotExists(ModCore.customizationPersistentFolder);
+            _ = ModFileUtils.CreateDirectoryIfNotExists(ModCore.developerFolder);
         }
 
         private static void addListeners()

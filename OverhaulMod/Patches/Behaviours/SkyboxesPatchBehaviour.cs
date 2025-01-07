@@ -27,7 +27,7 @@ namespace OverhaulMod.Patches.Behaviours
             yield return null;
 
             SkyBoxManager.Instance.LevelConfigurableSkyboxes[8].SetColor("_Tint", new Color(0.6f, 0.73f, 2f, 1f));
-            if (AddonManager.Instance.HasInstalledAddon(AddonManager.EXTRAS_ADDON_FOLDER_NAME))
+            if (AddonManager.Instance.HasLoadedAddon(AddonManager.EXTRAS_ADDON_FOLDER_NAME))
             {
                 string path = Path.Combine(ModCore.addonsFolder, AddonManager.EXTRAS_ADDON_FOLDER_NAME);
                 ModResources.LoadBundleAsync(OVERHAUL_DEFAULT_SKYBOXES, delegate (bool result)

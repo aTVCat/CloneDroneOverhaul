@@ -7,13 +7,9 @@ namespace OverhaulMod.UI
     {
         public string Name;
 
-        public int Index = -1;
-
         public bool? DefaultActiveState;
 
         public Type ComponentToAdd;
-
-        public bool HasIndex() => Index != -1;
 
         public UIElementAttribute(string name, bool enable)
         {
@@ -37,17 +33,6 @@ namespace OverhaulMod.UI
             Name = name;
             ComponentToAdd = componentType;
             DefaultActiveState = enable;
-        }
-
-        public UIElementAttribute(int index, bool enable)
-        {
-            Index = index;
-            DefaultActiveState = enable;
-        }
-
-        public UIElementAttribute(int index)
-        {
-            Index = index;
         }
     }
 }

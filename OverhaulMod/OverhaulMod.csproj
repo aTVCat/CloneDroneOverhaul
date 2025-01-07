@@ -345,6 +345,7 @@
   <ItemGroup>
     <Compile Include="Combat\CharacterExtension.cs" />
     <Compile Include="Combat\Weapons\ModSwordBlockArea.cs" />
+    <Compile Include="Content\AddonDownloadInfo.cs" />
     <Compile Include="Content\AddonInfo.cs" />
     <Compile Include="Content\AddonListInfo.cs" />
     <Compile Include="Content\ExclusivePerkColor.cs" />

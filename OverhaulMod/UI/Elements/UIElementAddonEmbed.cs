@@ -83,7 +83,7 @@ namespace OverhaulMod.UI
             AddonManager contentManager = AddonManager.Instance;
             if (contentManager.IsDownloadingAddon(addonId))
             {
-                m_loadingIndicatorText.text = $"{LocalizationManager.Instance.GetTranslatedString("downloading...")}  {(Mathf.RoundToInt(Mathf.Clamp01(contentManager.GetDownloadProgressOfAddon(addonId)) * 100f).ToString() + "%").AddColor(Color.white)}";
+                m_loadingIndicatorText.text = $"{LocalizationManager.Instance.GetTranslatedString("downloading...")}  {(Mathf.RoundToInt(Mathf.Clamp01(contentManager.GetAddonDownloadProgress(addonId)) * 100f).ToString() + "%").AddColor(Color.white)}";
             }
         }
 
@@ -94,7 +94,7 @@ namespace OverhaulMod.UI
 
             ModUIUtils.MessagePopup(true, $"Download {addonId}?", string.Empty, 100f, MessageMenu.ButtonLayout.EnableDisableButtons, "ok", "Yes", "No", null, delegate
             {
-                AddonManager contentManager = AddonManager.Instance;
+                /*AddonManager contentManager = AddonManager.Instance;
                 _ = contentManager.DownloadAddon(addonId, addonFile, delegate (string error)
                 {
                     if (error != null)
@@ -107,7 +107,7 @@ namespace OverhaulMod.UI
                     RefreshDisplays();
                 });
                 RefreshDisplays();
-                RefreshLoading();
+                RefreshLoading();*/
             });
         }
     }

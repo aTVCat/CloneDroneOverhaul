@@ -107,7 +107,7 @@ namespace OverhaulMod.UI
             m_imagesButton.gameObject.SetActive(m_hasImages && !isDownloadingContent && isSupported);
 
             if (isDownloadingContent)
-                m_progressBarFill.fillAmount = contentManager.GetDownloadProgressOfAddon(file);
+                m_progressBarFill.fillAmount = contentManager.GetAddonDownloadProgress(file);
         }
 
         public void OnDownloadButtonClicked()
@@ -116,19 +116,19 @@ namespace OverhaulMod.UI
             {
                 ModUIUtils.MessagePopup(true, LocalizationManager.Instance.GetTranslatedString("addons_largeaddon_header"), LocalizationManager.Instance.GetTranslatedString("addons_largeaddon_text"), 125f, MessageMenu.ButtonLayout.EnableDisableButtons, "ok", "Yes", "No", null, delegate
                 {
-                    _ = m_contentManager.DownloadAddon(contentName, contentFile, delegate (string error)
+                    /*_ = m_contentManager.DownloadAddon(contentName, contentFile, delegate (string error)
                     {
                         if (error != null)
                             ModUIUtils.MessagePopupOK("Addon download error", error, true);
-                    });
+                    });*/
                 });
                 return;
             }
-            _ = m_contentManager.DownloadAddon(contentName, contentFile, delegate (string error)
+            /*_ = m_contentManager.DownloadAddon(contentName, contentFile, delegate (string error)
             {
                 if (error != null)
                     ModUIUtils.MessagePopupOK("Addon download error", error, true);
-            });
+            });*/
         }
 
         public void OnImagesButtonClicked()

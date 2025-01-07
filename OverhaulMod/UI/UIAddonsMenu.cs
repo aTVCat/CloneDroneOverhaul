@@ -119,7 +119,7 @@ namespace OverhaulMod.UI
             if (m_container.childCount != 0)
                 TransformUtils.DestroyAllChildren(m_container);
 
-            System.Collections.Generic.List<AddonInfo> list = AddonManager.Instance.GetInstalledAddons();
+            System.Collections.Generic.List<AddonInfo> list = AddonManager.Instance.GetLoadedAddons();
             if (list.IsNullOrEmpty())
                 return;
 
@@ -171,7 +171,7 @@ namespace OverhaulMod.UI
         private void populate(AddonListInfo contentListInfo)
         {
             s_contentLiftInfo = contentListInfo;
-            foreach (AddonInfo content in contentListInfo.Addons)
+            foreach (AddonDownloadInfo content in contentListInfo.Addons)
             {
             }
 
@@ -182,6 +182,11 @@ namespace OverhaulMod.UI
         public void OnAddonsEditorButtonClicked()
         {
             _ = ModUIConstants.ShowAddonsEditor(base.transform);
+        }
+
+        public void OnDownloadsEditorButtonClicked()
+        {
+
         }
 
         public void OnNetworkAddonsEditorButtonClicked()

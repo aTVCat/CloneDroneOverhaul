@@ -66,6 +66,7 @@ namespace OverhaulMod.UI
         [UIElement("DescriptionField")]
         private readonly InputField m_descriptionField;
 
+        [UIElementAction(nameof(OnUniqueIDFieldChanged))]
         [UIElement("UniqueIDField")]
         private readonly InputField m_uniqueIDField;
 
@@ -129,7 +130,7 @@ namespace OverhaulMod.UI
             if (m_addonsContent.childCount != 0)
                 TransformUtils.DestroyAllChildren(m_addonsContent);
 
-            System.Collections.Generic.List<AddonInfo> addons = AddonManager.Instance.GetInstalledAddons();
+            System.Collections.Generic.List<AddonInfo> addons = AddonManager.Instance.GetLoadedAddons();
             foreach (AddonInfo addon in addons)
             {
                 string displayName = addon.GetDisplayName();
@@ -281,6 +282,11 @@ namespace OverhaulMod.UI
                 m_editingAddonInfo.Description[m_editingDescriptionTranslationLangCode] = value;
             else
                 m_editingAddonInfo.Description.Add(m_editingDescriptionTranslationLangCode, value);
+        }
+
+        public void OnUniqueIDFieldChanged(string value)
+        {
+            m_needsSaveIcon.SetActive(true);
         }
 
         public void OnGenerateUniqueIDButtonClicked()

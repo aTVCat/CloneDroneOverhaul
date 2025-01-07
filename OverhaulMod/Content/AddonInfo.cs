@@ -19,10 +19,6 @@ namespace OverhaulMod.Content
 
         public Version MinModVersion;
 
-        public string PackageFileURL;
-
-        public long PackageFileSize;
-
         [NonSerialized]
         public string FolderPath;
 
@@ -31,20 +27,9 @@ namespace OverhaulMod.Content
             return MinModVersion != null && ModBuildInfo.version >= MinModVersion;
         }
 
-        public void CalculatePackageFileSize(string path)
-        {
-            FileInfo fileInfo = new FileInfo(path);
-            if (!fileInfo.Exists)
-            {
-                PackageFileSize = -1L;
-                return;
-            }
-            PackageFileSize = fileInfo.Length;
-        }
-
         public void GenerateUniqueID()
         {
-            UniqueID = Guid.NewGuid().ToString();
+            UniqueID = Guid.NewGuid().ToString().Remove(8);
         }
 
         public string GetDisplayName()

@@ -30,7 +30,7 @@ namespace OverhaulMod.Engine
 
         private void loadSkyboxesAddon()
         {
-            if (ErrorManager.Instance.HasCrashed() || !AddonManager.Instance.HasInstalledAddon(AddonManager.REALISTIC_SKYBOXES_ADDON_FOLDER_NAME))
+            if (ErrorManager.Instance.HasCrashed() || !AddonManager.Instance.HasLoadedAddon(AddonManager.REALISTIC_SKYBOXES_ADDON_FOLDER_NAME))
                 return;
 
             string dirPath = Path.Combine(ModCore.addonsFolder, AddonManager.REALISTIC_SKYBOXES_ADDON_FOLDER_NAME);
