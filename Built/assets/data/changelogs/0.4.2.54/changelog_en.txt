@@ -1,0 +1,3 @@
+- Changed the way feedbacks and customization items are sent
+- Temporary disabled the exclusive perks menu. It'll return in later updates
+- Fixed the crash occuring on old Mod-Bot versions

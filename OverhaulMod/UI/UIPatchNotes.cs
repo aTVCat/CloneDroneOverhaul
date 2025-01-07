@@ -194,8 +194,8 @@ namespace OverhaulMod.UI
                     return $"{LocalizationManager.Instance.GetTranslatedString("changelog_update")} 4.2 {LocalizationManager.Instance.GetTranslatedString("word_patch")} (0.4.2.46)";
                 case "0.4.2.52":
                     return $"{LocalizationManager.Instance.GetTranslatedString("changelog_update")} 4.2 {LocalizationManager.Instance.GetTranslatedString("word_patch")} 2 (0.4.2.52)";
-                case "0.4.2.53":
-                    return $"{LocalizationManager.Instance.GetTranslatedString("changelog_update")} 4.2 {LocalizationManager.Instance.GetTranslatedString("word_patch")} 3 (0.4.2.53)";
+                case "0.4.2.54":
+                    return $"{LocalizationManager.Instance.GetTranslatedString("changelog_update")} 4.2 {LocalizationManager.Instance.GetTranslatedString("word_patch")} 3 (0.4.2.54)";
                 case "0.4.3.0":
                     return $"{LocalizationManager.Instance.GetTranslatedString("changelog_update")} 4.3 (0.4.3.0)";
                 default:
