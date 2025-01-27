@@ -429,7 +429,7 @@
     <Compile Include="Engine\CameraManager.cs" />
     <Compile Include="Engine\CameraRollingController.cs" />
     <Compile Include="Engine\ColorPairFloat.cs" />
-    <Compile Include="Engine\CrashPreventionManager.cs" />
+    <Compile Include="Engine\CrashManager.cs" />
     <Compile Include="Engine\DifficultyTierManager.cs" />
     <Compile Include="Engine\FadingVoxel.cs" />
     <Compile Include="Engine\LevelEditorObjectAdvancedBehaviour.cs" />
@@ -529,7 +529,6 @@
     <Compile Include="Patches\UpgradeStation_Patch.cs" />
     <Compile Include="Patches\GlobalFireParticleSystem_Patch.cs" />
     <Compile Include="Patches\LevelEditorDataManager_Patch.cs" />
-    <Compile Include="Patches\LevelEditorLevelObject_Patch.cs" />
     <Compile Include="Patches\LevelEditorLightManager_Patch.cs" />
     <Compile Include="Patches\GenericKeyboardHint_Patch.cs" />
     <Compile Include="Patches\LevelLightSettings_Patch.cs" />
@@ -550,14 +549,12 @@
     <Compile Include="Patches\SeveredVolumeGenerator_Patch.cs" />
     <Compile Include="Patches\SingleplayerServerStarter_Patch.cs" />
     <Compile Include="Patches\SkyBoxManager_Patch.cs" />
-    <Compile Include="Patches\Story3_IntroCutScene_Patch.cs" />
     <Compile Include="Patches\SubtitleTextField_Patch.cs" />
     <Compile Include="Patches\TitleScreenUI_Patch.cs" />
     <Compile Include="Patches\UpgradeDescription_Patch.cs" />
     <Compile Include="Patches\UpgradeManager_Patch.cs" />
     <Compile Include="Patches\UpgradeUI_Patch.cs" />
     <Compile Include="Patches\UpgradeUIIcon_Patch.cs" />
-    <Compile Include="Patches\WinLoseDialog_Patch.cs" />
     <Compile Include="Patches\LevelEditorUseButtonTrigger_Patch.cs" />
     <Compile Include="Patches\ModBotSignInUI_Patch.cs" />
     <Compile Include="Patches\WorldAudioSource_Patch.cs" />
@@ -572,7 +569,6 @@
     <Compile Include="UI\Attributes\UIElementIgnoreIfMissingAttribute.cs" />
     <Compile Include="UI\Components\BetterSliderCallback.cs" />
     <Compile Include="UI\Attributes\TabManagerAttribute.cs" />
-    <Compile Include="UI\Components\CrosshairOffsetController.cs" />
     <Compile Include="UI\Components\DraggablePanel.cs" />
     <Compile Include="UI\Components\EnergyUIBehaviour.cs" />
     <Compile Include="UI\Components\EventController.cs" />

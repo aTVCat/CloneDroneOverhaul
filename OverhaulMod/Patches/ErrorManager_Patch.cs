@@ -12,7 +12,11 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(ErrorManager.sendExceptionDetailsToLoggly))]
         private static bool sendExceptionDetailsToLoggly_Prefix(ErrorManager __instance)
         {
-            return false;
+            bool value = CrashManager.HasCrashedThisSession;
+            if(!value)
+                CrashManager.HasCrashedThisSession = true;
+
+            return !value;
         }
 
         [HarmonyPrefix]
@@ -24,7 +28,7 @@ namespace OverhaulMod.Patches
             ModCore.TempStringBuilder.Append(stackTrace);
             ModCore.TempStringBuilder.Append('\n');*/
 
-            if (CrashPreventionManager.IgnoreCrashes)
+            if (CrashManager.IgnoreCrashes)
                 return false;
 
             if (!__instance._hasCrashed && (type == LogType.Error || type == LogType.Exception))
@@ -35,7 +39,7 @@ namespace OverhaulMod.Patches
                 _ = stringBuilder.Append(stackTrace);
                 string fullString = stringBuilder.ToString();
 
-                if (CrashPreventionManager.OnGameCrashed() || fullString.Contains("UpdateMe"))
+                if (CrashManager.OnGameCrashed() || fullString.Contains("UpdateMe"))
                     return false;
 
                 return true;

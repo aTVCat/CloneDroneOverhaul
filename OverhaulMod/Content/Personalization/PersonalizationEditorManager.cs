@@ -581,8 +581,10 @@ namespace OverhaulMod.Content.Personalization
 
         private IEnumerator exitPlaytestModeCoroutine(FirstPersonMover firstPersonMover)
         {
-            int ffc = ModTime.fixedFrameCount;
-            while (ModTime.fixedFrameCount < ffc + 2)
+            ModTime modTime = ModTime.Instance;
+
+            int ffc = modTime.GetFixedFrameCount();
+            while (modTime.GetFixedFrameCount() < ffc + 2)
                 yield return null;
 
             if (firstPersonMover)

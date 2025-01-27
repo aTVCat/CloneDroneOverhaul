@@ -14,11 +14,14 @@ namespace OverhaulMod.Utils
 
         private static readonly CacheForGetComponent<PersonalizationAccessoryReferences> s_cacheForPersonalizationAccessoryReferencesComponent = new CacheForGetComponent<PersonalizationAccessoryReferences>();
 
+        private static readonly CacheForGetComponent<SwordHitArea> s_cacheForSwordHitArea = new CacheForGetComponent<SwordHitArea>();
+
         public static void ClearCache()
         {
             s_cacheForCameraModeControllerComponent.Clear();
             s_cacheForRobotInventoryComponent.Clear();
             s_cacheForPersonalizationAccessoryReferencesComponent.Clear();
+            s_cacheForSwordHitArea.Clear();
         }
 
         public static CameraModeController GetCameraModeController(Transform transform)
@@ -34,6 +37,11 @@ namespace OverhaulMod.Utils
         public static PersonalizationAccessoryReferences GetPersonalizationAccessoryReferences(Transform transform)
         {
             return s_cacheForPersonalizationAccessoryReferencesComponent.GetScript(transform);
+        }
+
+        public static SwordHitArea GetSwordHitArea(Transform transform)
+        {
+            return s_cacheForSwordHitArea.GetScript(transform);
         }
 
         protected class CacheForGetComponent<T>

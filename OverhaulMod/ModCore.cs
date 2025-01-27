@@ -365,30 +365,30 @@ namespace OverhaulMod
 
         private IEnumerator waitUntilCharacterModelInitialization(FirstPersonMover firstPersonMover)
         {
-            yield return new WaitUntil(() => (!firstPersonMover || firstPersonMover.gameObject.activeInHierarchy) && firstPersonMover.HasCharacterModel());
-            for (int i = 0; i < 3; i++)
+            while (firstPersonMover && (!firstPersonMover.gameObject.activeInHierarchy || !firstPersonMover.HasCharacterModel()))
                 yield return null;
 
-            if (!firstPersonMover || !firstPersonMover.IsAlive())
+            yield return null;
+            yield return null;
+            yield return null;
+
+            if (!firstPersonMover || !firstPersonMover.IsAttachedAndAlive())
                 yield break;
 
-            if (firstPersonMover.IsAttachedAndAlive())
+            _ = firstPersonMover.gameObject.AddComponent<CharacterExtension>();
+            _ = firstPersonMover.gameObject.AddComponent<PersonalizationController>();
+
+            if (ModFeatures.IsEnabled(ModFeatures.FeatureType.WeaponBag) && !firstPersonMover.IsMindSpaceCharacter && ((!GameModeManager.IsMultiplayerDuel() && !GameModeManager.IsBattleRoyale()) || firstPersonMover.IsMainPlayer()))
+                _ = firstPersonMover.gameObject.AddComponent<RobotWeaponBag>();
+
+            if (GameModeManager.IsCoop())
             {
-                _ = firstPersonMover.gameObject.AddComponent<PersonalizationController>();
-
-                if (ModFeatures.IsEnabled(ModFeatures.FeatureType.WeaponBag) && !firstPersonMover.IsMindSpaceCharacter && ((!GameModeManager.IsMultiplayerDuel() && !GameModeManager.IsBattleRoyale()) || firstPersonMover.IsMainPlayer()))
-                    _ = firstPersonMover.gameObject.AddComponent<RobotWeaponBag>();
-
-                CharacterExtension robotInventory = firstPersonMover.gameObject.AddComponent<CharacterExtension>();
-
-                if (GameModeManager.IsCoop())
-                {
-                    WeaponInvisibilityFixer weaponInvisibilityFixer = firstPersonMover.gameObject.AddComponent<WeaponInvisibilityFixer>();
-                    weaponInvisibilityFixer.Owner = firstPersonMover;
-                }
+                firstPersonMover.gameObject.AddComponent<WeaponInvisibilityFixer>().Initialize(firstPersonMover);
             }
 
-            yield return new WaitUntil(() => !firstPersonMover || firstPersonMover._playerCamera);
+            while (firstPersonMover && !firstPersonMover._playerCamera)
+                yield return null;
+
             if (firstPersonMover)
                 CameraManager.Instance.AddControllers(firstPersonMover._playerCamera, firstPersonMover);
 

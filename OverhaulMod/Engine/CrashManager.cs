@@ -1,7 +1,9 @@
 ﻿namespace OverhaulMod.Engine
 {
-    public static class CrashPreventionManager
+    public static class CrashManager
     {
+        public static bool HasCrashedThisSession;
+
         public static bool IgnoreCrashes;
 
         public static bool OnGameCrashed()

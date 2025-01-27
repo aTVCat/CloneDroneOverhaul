@@ -50,7 +50,6 @@ namespace OverhaulMod.UI
             }
         }
 
-
         public virtual bool enableUIOverLogoMode
         {
             get

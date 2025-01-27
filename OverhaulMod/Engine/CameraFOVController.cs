@@ -23,25 +23,25 @@ namespace OverhaulMod.Engine
 
         private float m_lerpedOffset;
 
-        private bool m_hasAddedEventListeners;
+       // private bool m_hasAddedEventListeners;
 
         private void Start()
         {
-            refreshReferences();
+            //refreshReferences();
             m_timeToAllowUnclampedFovUntil = Time.time + 1f;
             m_lerpedOffset = getFovOffset();
 
-            GlobalEventManager.Instance.AddEventListener(CameraManager.CINEMATIC_CAMERA_TURNED_OFF_EVENT, refreshReferences);
-            m_hasAddedEventListeners = true;
+            /*GlobalEventManager.Instance.AddEventListener(CameraManager.CINEMATIC_CAMERA_TURNED_OFF_EVENT, refreshReferences);
+            m_hasAddedEventListeners = true;*/
         }
 
-        private void OnDestroy()
+        /*private void OnDestroy()
         {
             if (m_hasAddedEventListeners)
             {
                 GlobalEventManager.Instance.RemoveEventListener(CameraManager.CINEMATIC_CAMERA_TURNED_OFF_EVENT, refreshReferences);
             }
-        }
+        }*/
 
         private void LateUpdate()
         {
@@ -64,7 +64,7 @@ namespace OverhaulMod.Engine
             camera.fieldOfView = Mathf.Min(camera.fieldOfView + m_lerpedOffset, Time.time < m_timeToAllowUnclampedFovUntil ? 165f : 110f);
         }
 
-        private void refreshReferences()
+        /*private void refreshReferences()
         {
             if (!m_cameraManager)
                 m_cameraManager = CameraManager.Instance;
@@ -74,10 +74,13 @@ namespace OverhaulMod.Engine
 
             if (!m_cameraAnimator)
                 m_cameraAnimator = base.GetComponentInParent<Animator>();
-        }
+        }*/
 
-        public void SetOwner(FirstPersonMover firstPersonMover)
+        public void Initialize(CameraManager cameraManager, Camera camera, Animator animator, FirstPersonMover firstPersonMover)
         {
+            m_cameraManager = cameraManager;
+            m_camera = camera;
+            m_cameraAnimator = animator;
             m_owner = firstPersonMover;
         }
 

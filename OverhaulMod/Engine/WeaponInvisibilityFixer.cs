@@ -4,14 +4,14 @@ namespace OverhaulMod.Engine
 {
     public class WeaponInvisibilityFixer : MonoBehaviour
     {
-        public FirstPersonMover Owner;
+        private FirstPersonMover m_owner;
 
         private void Update()
         {
-            if (!ModTime.hasFixedUpdated)
+            if (!ModTime.Instance.HasFixedUpdated())
                 return;
 
-            FirstPersonMover firstPersonMover = Owner;
+            FirstPersonMover firstPersonMover = m_owner;
             if (!firstPersonMover || firstPersonMover.IsMainPlayer() || firstPersonMover.IsDetached())
                 return;
 
@@ -33,6 +33,11 @@ namespace OverhaulMod.Engine
                     firstPersonMover.SetEquippedWeaponType(stateEquippedWeapon, false);
                 }
             }
+        }
+
+        public void Initialize(FirstPersonMover firstPersonMover)
+        {
+            m_owner = firstPersonMover;
         }
     }
 }

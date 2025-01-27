@@ -71,7 +71,7 @@ namespace OverhaulMod.Utils
         public static void InvokePlayerInputUpdateAction(IFPMoveCommandInput fpmoveCommand)
         {
             List<Action<IFPMoveCommandInput>> list = m_playerInputUpdateActions;
-            if (list == null || list.Count == 0)
+            if (list.IsNullOrEmpty())
                 return;
 
             foreach (Action<IFPMoveCommandInput> action in list)
@@ -192,30 +192,47 @@ namespace OverhaulMod.Utils
             return $"{LocalizationManager.Instance.GetTranslatedString($"enum_{speakerName}")}:".AddColor(Color.white);
         }
 
-        public static Renderer[] GetRenderersOfBodyPart(this FirstPersonMover firstPersonMover, MechBodyPartType bodyPartType)
+        public static List<Renderer> GetRenderersOfBodyPart(this FirstPersonMover firstPersonMover, MechBodyPartType bodyPartType)
         {
             if (!firstPersonMover || bodyPartType == MechBodyPartType.None)
             {
-                return Array.Empty<Renderer>();
+                return new List<Renderer>();
             }
+
             MechBodyPart bodyPart = firstPersonMover.GetBodyPart(bodyPartType);
             if (bodyPart == null)
             {
-                return Array.Empty<Renderer>();
+                return new List<Renderer>();
             }
-            return bodyPart.GetComponentsInChildren<Renderer>();
+
+            Renderer[] renderers = bodyPart.GetComponentsInChildren<Renderer>();
+            if (renderers.Length == 0)
+                return new List<Renderer>();
+
+            List<Renderer> result = new List<Renderer>();
+            for (int i = 0; i < renderers.Length; i++)
+            {
+                Renderer renderer = renderers[i];
+                if (!renderer.GetComponent<SwordHitArea>())
+                {
+                    result.Add(renderer);
+                }
+            }
+
+            return result;
         }
 
-        public static Renderer[] GetRenderersOfBodyPart(this FirstPersonMover firstPersonMover, string bodyPart)
+        public static List<Renderer> GetRenderersOfBodyPart(this FirstPersonMover firstPersonMover, string bodyPart)
         {
             if (!firstPersonMover || bodyPart.IsNullOrEmpty())
             {
-                return Array.Empty<Renderer>();
+                return new List<Renderer>();
             }
+
             Transform bodyPartParent = firstPersonMover.GetBodyPartParent(bodyPart);
             if (bodyPartParent == null || bodyPartParent.childCount == 0)
             {
-                return Array.Empty<Renderer>();
+                return new List<Renderer>();
             }
 
             for (int i = 0; i < bodyPartParent.childCount; i++)
@@ -226,8 +243,22 @@ namespace OverhaulMod.Utils
                     break;
                 }
             }
+            
+            Renderer[] renderers = bodyPartParent.GetComponentsInChildren<Renderer>();
+            if (renderers.Length == 0)
+                return new List<Renderer>();
 
-            return bodyPartParent.GetComponentsInChildren<Renderer>();
+            List<Renderer> result = new List<Renderer>();
+            for(int i = 0; i < renderers.Length; i++)
+            {
+                Renderer renderer = renderers[i];
+                if (!renderer.GetComponent<SwordHitArea>())
+                {
+                    result.Add(renderer);
+                }
+            }
+
+            return result;
         }
 
         public static bool IsGamePaused()

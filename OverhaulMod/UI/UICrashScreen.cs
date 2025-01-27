@@ -49,7 +49,7 @@ namespace OverhaulMod.UI
             expandButton.collapsedSize = new Vector2(-50f, 175f);
             expandButton.expandedSize = new Vector2(-50f, 350f);
 
-            m_ignoreCrashesToggle.isOn = CrashPreventionManager.IgnoreCrashes;
+            m_ignoreCrashesToggle.isOn = CrashManager.IgnoreCrashes;
             m_sendReportButton.interactable = !HasSentReport;
         }
 
@@ -95,7 +95,7 @@ namespace OverhaulMod.UI
 
         public void OnIgnoreCrashesToggleChanged(bool value)
         {
-            CrashPreventionManager.IgnoreCrashes = value;
+            CrashManager.IgnoreCrashes = value;
         }
     }
 }

@@ -1,17 +1,30 @@
 ﻿namespace OverhaulMod
 {
-    public static class ModTime
+    public class ModTime : Singleton<ModTime>
     {
-        public static bool hasFixedUpdated
+        private bool m_hasFixedUpdated;
+
+        private int m_fixedFrameCount;
+
+        private void FixedUpdate()
         {
-            get;
-            set;
+            m_fixedFrameCount++;
+            m_hasFixedUpdated = true;
         }
 
-        public static int fixedFrameCount
+        private void LateUpdate()
         {
-            get;
-            set;
+            m_hasFixedUpdated = false;
+        }
+
+        public int GetFixedFrameCount()
+        {
+            return m_fixedFrameCount;
+        }
+
+        public bool HasFixedUpdated()
+        {
+            return m_hasFixedUpdated;
         }
     }
 }

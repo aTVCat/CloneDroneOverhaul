@@ -75,6 +75,7 @@ namespace OverhaulMod
             _ = ModManagers.NewSingleton<ModLocalizationManager>();
             _ = ModManagers.NewSingleton<ModAudioManager>();
             _ = ModManagers.NewSingleton<ModResources>();
+            _ = ModManagers.NewSingleton<ModTime>();
             _ = ModManagers.NewSingleton<ModUIManager>();
             _ = ModManagers.NewSingleton<ModLevelManager>();
             _ = ModManagers.NewSingleton<ModWeaponsManager>();

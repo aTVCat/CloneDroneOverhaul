@@ -44,15 +44,20 @@ namespace OverhaulMod.Engine
                 HideDescription();
             }
 
-            if (!EnablePressButtonTriggerDescriptionRework || !ModTime.hasFixedUpdated)
+            if (!EnablePressButtonTriggerDescriptionRework || !ModTime.Instance.HasFixedUpdated())
+                return;
+
+            List<LevelEditorUseButtonTrigger> list = m_triggers;
+            if (list.IsNullOrEmpty())
                 return;
 
             CharacterTracker characterTracker = CharacterTracker.Instance;
 
             float dist = float.MaxValue;
             LevelEditorUseButtonTrigger nearestTrigger = null;
-            foreach (LevelEditorUseButtonTrigger trigger in m_triggers)
+            for (int i = 0; i < list.Count; i++)
             {
+                LevelEditorUseButtonTrigger trigger = list[i];
                 if (!trigger || !trigger.CanBeActivated())
                     continue;
 

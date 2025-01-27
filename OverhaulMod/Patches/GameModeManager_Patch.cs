@@ -3,16 +3,13 @@ using OverhaulMod.Combat;
 
 namespace OverhaulMod.Patches
 {
-    [HarmonyPatch(typeof(GameModeManager))]
+    /*[HarmonyPatch(typeof(GameModeManager))]
     internal static class GameModeManager_Patch
     {
         [HarmonyPostfix]
         [HarmonyPatch(nameof(GameModeManager.UsesMultiplayerSpeedMultiplier))]
         private static void UsesMultiplayerSpeedMultiplier_Postfix(ref bool __result)
         {
-            if (!ModBuildInfo.VERSION_5)
-                return;
-
             if (ModFeatures.IsEnabled(ModFeatures.FeatureType.StoryModeModifiers) && GameModeManager.Is(GameMode.Story))
             {
                 __result = ModGameModifiersManager.Instance.forceEnableGreatSwords && LevelManager.Instance.GetCurrentLevelID() != "StoryC5_5";
@@ -30,5 +27,5 @@ namespace OverhaulMod.Patches
             }
         }
 #endif
-    }
+    }*/
 }

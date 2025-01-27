@@ -180,29 +180,41 @@ namespace OverhaulMod.Engine
 
         public void AddControllers(Camera camera, FirstPersonMover firstPersonMover)
         {
-            if (!camera || !firstPersonMover)
+            PlayerCameraMover playerCameraMover = camera.GetComponent<PlayerCameraMover>();
+            if (!playerCameraMover)
                 return;
+
+            Animator animator = firstPersonMover._cameraHolderAnimator;
+            if (!animator)
+                return;
+
+            Transform targetTransform = null;
+            BaseBodyPart headPart = firstPersonMover.IsMindSpaceCharacter ? (BaseBodyPart)firstPersonMover.GetBodyPartParent("Head").GetComponentInChildren<MindSpaceBodyPart>() : firstPersonMover.GetBodyPart(MechBodyPartType.Head);
+            if (headPart)
+            {
+                targetTransform = headPart.transform.parent;
+            }
 
             CameraFOVController cameraFovController = camera.GetComponent<CameraFOVController>();
             if (!cameraFovController)
             {
                 cameraFovController = camera.gameObject.AddComponent<CameraFOVController>();
             }
-            cameraFovController.SetOwner(firstPersonMover);
+            cameraFovController.Initialize(this, camera, animator, firstPersonMover);
 
             CameraModeController cameraModeController = camera.GetComponent<CameraModeController>();
             if (!cameraModeController)
             {
                 cameraModeController = camera.gameObject.AddComponent<CameraModeController>();
             }
-            cameraModeController.SetOwner(firstPersonMover);
+            cameraModeController.Initialize(this, firstPersonMover, playerCameraMover, animator, targetTransform);
 
             CameraRollingController cameraRollingController = camera.GetComponent<CameraRollingController>();
             if (!cameraRollingController)
             {
                 cameraRollingController = camera.gameObject.AddComponent<CameraRollingController>();
             }
-            cameraRollingController.SetConfiguration(camera, firstPersonMover);
+            cameraRollingController.Initialize(camera, firstPersonMover);
         }
 
         private void Update()

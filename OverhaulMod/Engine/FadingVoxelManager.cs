@@ -15,6 +15,10 @@ namespace OverhaulMod.Engine
 
         private List<FadingVoxel> m_voxelsToFade;
 
+        private ModTime m_modTime;
+
+        private bool m_hasInitialized;
+
         public float multiplier
         {
             get;
@@ -42,11 +46,14 @@ namespace OverhaulMod.Engine
         private void Start()
         {
             m_voxelsToFade = new List<FadingVoxel>();
+            m_modTime = ModTime.Instance;
+            m_hasInitialized = true;
         }
 
         private void Update()
         {
-            if (ModTime.hasFixedUpdated && ModTime.fixedFrameCount % 10 == 0)
+            ModTime modTime = m_modTime;
+            if (modTime.HasFixedUpdated() && modTime.GetFixedFrameCount() % 10 == 0)
             {
                 UpdateFading();
             }
@@ -54,7 +61,7 @@ namespace OverhaulMod.Engine
 
         public void AddFadingVoxel(PicaVoxelPoint picaVoxelPoint, MechBodyPart mechBodyPart, float timeToDestroy)
         {
-            if (m_voxelsToFade.Count > fadingVoxelsLimit)
+            if (!m_hasInitialized || m_voxelsToFade.Count > fadingVoxelsLimit)
                 return;
 
             FadingVoxel fadingVoxel = new FadingVoxel()
@@ -83,7 +90,7 @@ namespace OverhaulMod.Engine
 
         public void UpdateFading()
         {
-            if (m_voxelsToFade == null || m_voxelsToFade.Count == 0)
+            if (!m_hasInitialized || m_voxelsToFade == null || m_voxelsToFade.Count == 0)
                 return;
 
             int index = 0;

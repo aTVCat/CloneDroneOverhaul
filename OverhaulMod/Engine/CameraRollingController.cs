@@ -47,7 +47,7 @@ namespace OverhaulMod.Engine
             }
         }
 
-        public void SetConfiguration(Camera camera, FirstPersonMover firstPersonMover)
+        public void Initialize(Camera camera, FirstPersonMover firstPersonMover)
         {
             m_settingsManager = SettingsManager.Instance;
             m_playerCameraTransform = camera.transform;
