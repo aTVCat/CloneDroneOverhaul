@@ -107,7 +107,7 @@ namespace OverhaulMod
             _ = ModManagers.NewSingleton<ArenaAudienceManager>();
             _ = ModManagers.NewSingleton<LightingTransitionManager>();
             _ = ModManagers.NewSingleton<AdvancedPhotoModeManager>();
-            _ = ModManagers.NewSingleton<UpgradeModesManager>();
+            if (ModFeatures.IsEnabled(ModFeatures.FeatureType.RevertUpgrades)) _ = ModManagers.NewSingleton<UpgradeModesManager>();
             _ = ModManagers.NewSingleton<TransitionManager>();
             _ = ModManagers.NewSingleton<CameraManager>();
             _ = ModManagers.NewSingleton<RichPresenceManager>();

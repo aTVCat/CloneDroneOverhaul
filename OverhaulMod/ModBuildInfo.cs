@@ -11,7 +11,7 @@ namespace OverhaulMod
     {
         public const bool VERSION_4_3 = true;
 
-        public const bool VERSION_5 = false;
+        public const bool VERSION_5_0 = false;
 
         public const string EXTRA_INFO_FILE_PATH = "buildInfo.json";
 

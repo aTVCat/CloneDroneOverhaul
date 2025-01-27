@@ -84,10 +84,17 @@ namespace OverhaulMod.UI
                     return;
 
                 string fn = Path.GetFileName(path);
+                string fnNoExtension = Path.GetFileNameWithoutExtension(path);
+                if (ModFileUtils.HasUnsupportedCharacters(fnNoExtension))
+                {
+                    ModUIUtils.MessagePopupOK("This file contains unsupported characters.", "Only Latin, number and a few special characters are supported for technical reasons.", 150f, true);
+                    return;
+                }
+
                 string dest = Path.Combine(PersonalizationItemInfo.GetImportedFilesFolder(item), fn);
                 if (File.Exists(dest))
                 {
-                    ModUIUtils.MessagePopup(true, "File with the same name is already imported!", "Replace the file?", 125f, MessageMenu.ButtonLayout.EnableDisableButtons, "ok", "Replace", "No", null, delegate
+                    ModUIUtils.MessagePopup(true, "File with the same name is already imported!", "Replace the file?", 150f, MessageMenu.ButtonLayout.EnableDisableButtons, "ok", "Replace", "No", null, delegate
                     {
                         File.Delete(dest);
                         File.Copy(path, dest);

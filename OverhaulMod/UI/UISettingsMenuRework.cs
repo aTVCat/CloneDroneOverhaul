@@ -515,10 +515,6 @@ namespace OverhaulMod.UI
             _ = pageBuilder.Button("Select emotes", delegate
             {
                 ModCache.gameUIRoot.EmoteSettingsUI.Show();
-                ModUIManager.Instance.InvokeActionInsteadOfHidingCustomUI(delegate
-                {
-                    ModCache.gameUIRoot.EmoteSettingsUI.Hide();
-                });
             });
         }
 

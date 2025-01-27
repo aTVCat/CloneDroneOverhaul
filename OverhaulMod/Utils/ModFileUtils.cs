@@ -1,11 +1,28 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace OverhaulMod.Utils
 {
     internal static class ModFileUtils
     {
+        public static readonly char[] SupportedCharacters = "1234567890()[]-_abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ".ToCharArray();
+
+        public static bool HasUnsupportedCharacters(string inputString)
+        {
+            // https://www.dotnetperls.com/ascii-table
+
+            foreach (char c in inputString)
+            {
+                if (!SupportedCharacters.Contains(c))
+                    return true;
+            }
+
+            return false;
+        }
+
         public static long GetDirectorySize(DirectoryInfo d)
         {
             long size = 0;

@@ -59,16 +59,16 @@ namespace OverhaulMod
                     result = true;
                     break;
                 case FeatureType.NightmariumDifficultyTier:
-                    result = ModBuildInfo.VERSION_5;
+                    result = ModBuildInfo.VERSION_5_0;
                     break;
                 case FeatureType.GameModeSelectionScreensRework:
                     result = true;
                     break;
                 case FeatureType.NewGameplayContent:
-                    result = ModBuildInfo.VERSION_5;
+                    result = ModBuildInfo.VERSION_5_0;
                     break;
                 case FeatureType.NewEnemies:
-                    result = ModBuildInfo.VERSION_5;
+                    result = ModBuildInfo.VERSION_5_0;
                     break;
                 case FeatureType.DuelInviteMenuRework:
                     result = true;
@@ -153,6 +153,9 @@ namespace OverhaulMod
                     break;
                 case FeatureType.TransitionUpdates:
                     result = ModBuildInfo.VERSION_4_3;
+                    break;
+                case FeatureType.RevertUpgrades:
+                    result = ModBuildInfo.VERSION_5_0;
                     break;
                 default:
                     return false;
@@ -252,6 +255,8 @@ namespace OverhaulMod
             CustomizationMenuUpdates,
 
             TransitionUpdates,
+
+            RevertUpgrades,
         }
     }
 }

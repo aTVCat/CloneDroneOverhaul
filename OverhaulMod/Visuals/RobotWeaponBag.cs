@@ -147,7 +147,7 @@ namespace OverhaulMod.Visuals
                     continue;
 
                 bool isEquipped = firstPersonMover.GetEquippedWeaponType() == keyValue.Key;
-                bool shouldDisplay = EnableWeaponBag && !isEquipped && !droppedWeapons.Contains(keyValue.Key);
+                bool shouldDisplay = EnableWeaponBag && firstPersonMover.HasConstructionFinished() && !isEquipped && !droppedWeapons.Contains(keyValue.Key);
                 WeaponToRenderer[keyValue.Key].SetActive(shouldDisplay);
             }
         }
