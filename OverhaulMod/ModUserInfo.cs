@@ -1,4 +1,4 @@
-﻿#define FORCE_DEVELOPER
+﻿//#define FORCE_DEVELOPER
 
 using OverhaulMod.Utils;
 using Steamworks;

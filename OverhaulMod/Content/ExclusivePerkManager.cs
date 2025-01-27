@@ -22,7 +22,7 @@ namespace OverhaulMod.Content
             LoadDataFromDisk();
 
             ScheduledActionsManager scheduledActionsManager = ScheduledActionsManager.Instance;
-            if (m_perksData.List.Count == 0 || scheduledActionsManager.ShouldExecuteAction(ScheduledActionType.RefreshExclusivePerks))
+            if (!ModUserInfo.isDeveloper && (m_perksData.List.Count == 0 || scheduledActionsManager.ShouldExecuteAction(ScheduledActionType.RefreshExclusivePerks)))
             {
                 LoadDataFromRepository(delegate (string error)
                 {
@@ -205,12 +205,12 @@ namespace OverhaulMod.Content
 
         public bool IsLocalUserTheTester()
         {
-            return !GetUnlockedPerksOfType(ExclusivePerkType.TesterRole).IsNullOrEmpty();
+            return HasUnlockedPerk(ExclusivePerkType.TesterRole);
         }
 
         public bool IsLocalUserAbleToVerifyItems()
         {
-            return !GetUnlockedPerksOfType(ExclusivePerkType.CustomizationItemsVerifierRole).IsNullOrEmpty();
+            return HasUnlockedPerk(ExclusivePerkType.CustomizationItemsVerifierRole);
         }
 
         public bool HasUnlockedPerk(ExclusivePerkType perkType)

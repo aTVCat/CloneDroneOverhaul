@@ -57,6 +57,23 @@ namespace OverhaulMod.Content
             m_hasDeserializedData = true;
         }
 
+        public void SetDefaultData()
+        {
+
+            switch (PerkType)
+            {
+                case ExclusivePerkType.Color:
+                    SetData(new ExclusivePerkColor());
+                    break;
+                case ExclusivePerkType.Feature:
+                    SetData(0);
+                    break;
+                default:
+                    SetData(null);
+                    break;
+            }
+        }
+
         public bool HasSteamID()
         {
             return SteamID != default;

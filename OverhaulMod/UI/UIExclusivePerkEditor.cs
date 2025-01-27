@@ -29,6 +29,18 @@ namespace OverhaulMod.UI
         [UIElement("SaveButton")]
         private readonly Button m_saveButton;
 
+        [UIElementAction(nameof(OnDeleteButtonClicked))]
+        [UIElement("DeleteButton")]
+        private readonly Button m_deleteButton;
+
+        [UIElementAction(nameof(OnSavesFolderButtonClicked))]
+        [UIElement("SavesFolderButton")]
+        private readonly Button m_savesFolderButton;
+
+        [UIElementAction(nameof(OnSetSelfButtonClicked))]
+        [UIElement("SetSelfButton")]
+        private readonly Button m_setSelfButton;
+
         [UIElement("NeedsSaveIcon", false)]
         private readonly GameObject m_needsSaveIcon;
 
@@ -90,6 +102,16 @@ namespace OverhaulMod.UI
         [UIElement("PerkIcon")]
         private readonly Image m_perkIcon;
 
+        [UIElement("ExclusiveColorPerkSettings", false)]
+        private readonly GameObject m_exclusiveColorPerkSettingsObject;
+
+        [UIElement("ECColorToReplaceDropdown")]
+        private readonly Dropdown m_ecColorToReplaceDropdown;
+
+        [ColorPicker(true)]
+        [UIElement("ECNewColorButton")]
+        private readonly UIElementColorPickerButton m_ecNewColorButton;
+
         private ExclusivePerkInfo m_editingPerk;
 
         private bool m_disableUICallbacks;
@@ -97,6 +119,9 @@ namespace OverhaulMod.UI
         protected override void OnInitialized()
         {
             m_saveButton.interactable = false;
+
+            m_ecColorToReplaceDropdown.options = HumanFactsManager.Instance.GetColorDropdownOptions();
+            m_ecNewColorButton.color = Color.white;
 
             System.Collections.Generic.List<Dropdown.OptionData> options = m_perkTypeDropdown.options;
             options.Clear();
@@ -133,6 +158,8 @@ namespace OverhaulMod.UI
             m_editorBg.SetActive(true);
             m_nonEditorBg.SetActive(false);
             m_saveButton.interactable = true;
+
+            refreshSettings();
         }
 
         private void saveEditingPerk()
@@ -146,9 +173,9 @@ namespace OverhaulMod.UI
                 if (perk != null)
                 {
                     updatePerkInfo(perk);
+                    perk.SerializeData();
 
-                    ModJsonUtils.WriteStream(Path.Combine(ModCore.modUserDataFolder, ExclusivePerkManager.FILE_NAME), infoList);
-                    ModJsonUtils.WriteStream(Path.Combine(ModCore.savesFolder, ExclusivePerkManager.FILE_NAME), infoList);
+                    writeData();
                 }
                 else
                 {
@@ -159,6 +186,18 @@ namespace OverhaulMod.UI
             {
                 ModUIUtils.MessagePopupOK("Error", "Perk list is not available.\nThis is a bug.", true);
             }
+        }
+
+        private void writeData()
+        {
+            ExclusivePerkInfoList infoList = ExclusivePerkManager.Instance.GetPerkInfoList();
+            ModJsonUtils.WriteStream(Path.Combine(ModCore.modUserDataFolder, ExclusivePerkManager.FILE_NAME), infoList);
+            ModJsonUtils.WriteStream(Path.Combine(ModCore.savesFolder, ExclusivePerkManager.FILE_NAME), infoList);
+        }
+
+        private void refreshSettings()
+        {
+            m_exclusiveColorPerkSettingsObject.SetActive(m_editingPerk.PerkType == ExclusivePerkType.Color);
         }
 
         private void setFieldsValue(ExclusivePerkInfo perk)
@@ -180,6 +219,22 @@ namespace OverhaulMod.UI
 
             m_perkIcon.sprite = perk.Icon.IsNullOrEmpty() ? null : ModResources.Sprite(AssetBundleConstants.PERK_ICONS, perk.Icon);
 
+            object data = perk.DeserializeData();
+            if (data == null)
+            {
+                perk.SetDefaultData();
+                data = perk.DeserializeData();
+            }
+
+            switch (perk.PerkType)
+            {
+                case ExclusivePerkType.Color:
+                    ExclusivePerkColor ec = (ExclusivePerkColor)perk.DeserializeData();
+                    m_ecNewColorButton.color = ec.NewColor;
+                    m_ecColorToReplaceDropdown.value = ec.Index + 1;
+                    break;
+            }
+
             m_disableUICallbacks = false;
         }
 
@@ -188,6 +243,22 @@ namespace OverhaulMod.UI
             perk.DisplayName = m_perkNameField.text;
             perk.PerkType = (ExclusivePerkType)(m_perkTypeDropdown.options[m_perkTypeDropdown.value] as DropdownIntOptionData).IntValue;
             perk.PlayFabID = m_ownerPlayfabIDField.text;
+
+            object data = perk.DeserializeData();
+            if(data == null)
+            {
+                perk.SetDefaultData();
+                data = perk.DeserializeData();
+            }
+
+            switch (perk.PerkType)
+            {
+                case ExclusivePerkType.Color:
+                    ExclusivePerkColor ec = (ExclusivePerkColor)data;
+                    ec.NewColor = m_ecNewColorButton.color;
+                    ec.Index = m_ecColorToReplaceDropdown.value - 1;
+                    break;
+            }
 
             if (m_ownerSteamIDField.text.IsNullOrEmpty())
                 perk.SteamID = 0;
@@ -258,6 +329,7 @@ namespace OverhaulMod.UI
             if (infoList != null)
             {
                 ExclusivePerkInfo exclusivePerkInfo = new ExclusivePerkInfo();
+                exclusivePerkInfo.SetDefaultData();
                 infoList.List.Add(exclusivePerkInfo);
                 editPerk(exclusivePerkInfo);
             }
@@ -316,6 +388,9 @@ namespace OverhaulMod.UI
                 return;
 
             m_needsSaveIcon.SetActive(true);
+            m_editingPerk.PerkType = (ExclusivePerkType)(m_perkTypeDropdown.options[m_perkTypeDropdown.value] as DropdownIntOptionData).IntValue;
+            m_editingPerk.SetDefaultData();
+            refreshSettings();
         }
 
         public void OnOwnerPlayfabIDEdited(string text)
@@ -332,6 +407,39 @@ namespace OverhaulMod.UI
                 return;
 
             m_needsSaveIcon.SetActive(true);
+        }
+
+        public void OnDeleteButtonClicked()
+        {
+            if (m_editingPerk == null)
+                return;
+
+            ModUIUtils.MessagePopup(true, $"Delete \"{m_editingPerk.DisplayName}\"?", "yo", 125f, MessageMenu.ButtonLayout.EnableDisableButtons, "ok", "Yes", "No", null, delegate
+            {
+                ExclusivePerkInfoList infoList = ExclusivePerkManager.Instance.GetPerkInfoList();
+                if (infoList != null)
+                {
+                    infoList.List.Remove(m_editingPerk);
+                    writeData();
+
+                    OnPerksButtonClicked();
+                }
+                else
+                {
+                    ModUIUtils.MessagePopupOK("Error", "Perk list is not available.\nThis is a bug.", true);
+                }
+            });
+        }
+
+        public void OnSavesFolderButtonClicked()
+        {
+            ModFileUtils.OpenFileExplorer(ModCore.savesFolder);
+        }
+
+        public void OnSetSelfButtonClicked()
+        {
+            m_ownerPlayfabIDField.text = ModUserInfo.localPlayerPlayFabID;
+            m_ownerSteamIDField.text = ModUserInfo.localPlayerSteamID.ToString();
         }
     }
 }

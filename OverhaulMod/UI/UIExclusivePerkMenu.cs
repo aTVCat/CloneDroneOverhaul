@@ -15,6 +15,10 @@ namespace OverhaulMod.UI
         [UIElement("EditorButton")]
         private readonly Button m_editorButton;
 
+        [UIElementAction(nameof(OnRefreshButtonClicked))]
+        [UIElement("RetrieveDataButton")]
+        private readonly Button m_refreshButton;
+
         [UIElement("UnlockedPerkDisplay", false)]
         private readonly ModdedObject m_unlockedPerkDisplay;
 
@@ -36,7 +40,7 @@ namespace OverhaulMod.UI
             {
                 ModUIUtils.MessagePopup(true, "Could not get data. Retry?", error, 150f, MessageMenu.ButtonLayout.EnableDisableButtons, "Ok", "Retry", "No", null, delegate
                 {
-                    LoadDataFromRepository();
+                    OnRefreshButtonClicked();
                 }, null);
             }
 
@@ -71,8 +75,18 @@ namespace OverhaulMod.UI
             ModUIConstants.ShowExclusivePerksEditor(base.transform);
         }
 
-        public void LoadDataFromRepository()
+        public void OnRefreshButtonClicked()
         {
+            m_refreshButton.interactable = false;
+            ExclusivePerkManager.Instance.LoadDataFromRepository(delegate (string error)
+            {
+                m_refreshButton.interactable = true;
+
+                if(!error.IsNullOrEmpty())
+                    ModUIUtils.MessagePopupOK("Error", error, true);
+
+                Populate();
+            });
         }
     }
 }
