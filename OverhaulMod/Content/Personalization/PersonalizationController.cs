@@ -137,7 +137,7 @@ namespace OverhaulMod.Content.Personalization
                 return;
 
             FirstPersonMover firstPersonMover = owner;
-            if (!firstPersonMover || !firstPersonMover.HasConstructionFinished())
+            if (!firstPersonMover)
                 return;
 
             float d = Time.deltaTime;
