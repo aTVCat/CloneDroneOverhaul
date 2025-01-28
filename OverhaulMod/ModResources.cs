@@ -180,7 +180,10 @@ namespace OverhaulMod
 
         public static Font FontByIndex(int index)
         {
-            if (index > 5 && (IsAssetBundleNotLoadedOrBeingLoaded(AssetBundleConstants.UI_EXTRA, Path.Combine(ModCore.addonsFolder, AddonManager.EXTRAS_ADDON_FOLDER_NAME)) || !AddonManager.Instance.HasInstalledAddon(AddonManager.EXTRAS_ADDON_FOLDER_NAME, true)))
+            string path = null;
+            bool hasAddon = AddonManager.Instance.HasInstalledAddon(AddonManager.EXTRAS_ADDON_ID, out path);
+
+            if (index > 5 && (!hasAddon || IsAssetBundleNotLoadedOrBeingLoaded(AssetBundleConstants.UI_EXTRA, path)))
                 return Font(AssetBundleConstants.UI, "OpenSans-Regular");
 
             switch (index)
@@ -194,11 +197,11 @@ namespace OverhaulMod
                 case 5:
                     return Font(AssetBundleConstants.UI, "OpenSans-ExtraBold");
                 case 6:
-                    return Font(AssetBundleConstants.UI_EXTRA, "NotoSansCJKtc-Regular", Path.Combine(ModCore.addonsFolder, AddonManager.EXTRAS_ADDON_FOLDER_NAME));
+                    return Font(AssetBundleConstants.UI_EXTRA, "NotoSansCJKtc-Regular", path);
                 case 7:
-                    return Font(AssetBundleConstants.UI_EXTRA, "NotoSansCJKtc-Bold", Path.Combine(ModCore.addonsFolder, AddonManager.EXTRAS_ADDON_FOLDER_NAME));
+                    return Font(AssetBundleConstants.UI_EXTRA, "NotoSansCJKtc-Bold", path);
                 case 8:
-                    return Font(AssetBundleConstants.UI_EXTRA, "NotoSansCJKtc-Black", Path.Combine(ModCore.addonsFolder, AddonManager.EXTRAS_ADDON_FOLDER_NAME));
+                    return Font(AssetBundleConstants.UI_EXTRA, "NotoSansCJKtc-Black", path);
                 default:
                     return Font(AssetBundleConstants.UI, "OpenSans-Regular");
             }

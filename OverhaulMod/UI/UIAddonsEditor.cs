@@ -1,6 +1,7 @@
 ﻿using OverhaulMod.Content;
 using OverhaulMod.Engine;
 using OverhaulMod.Utils;
+using System;
 using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
@@ -47,7 +48,6 @@ namespace OverhaulMod.UI
         [UIElement("Content")]
         private readonly Transform m_addonsContent;
 
-
         [UIElementAction(nameof(OnDisplayNameLanguageDropdownChanged))]
         [UIElement("NameLanguageDropdown")]
         private readonly Dropdown m_displayNameLanguageDropdown;
@@ -87,24 +87,6 @@ namespace OverhaulMod.UI
         [UIElementAction(nameof(OnSetCurrentModVersionButtonClicked))]
         [UIElement("SetCurrentModVersionButton")]
         private readonly Button m_setCurrentModVersionButton;
-
-        [UIElement("PackageURLField")]
-        private readonly InputField m_packageURLField;
-
-        [UIElement("PackageSizeField")]
-        private readonly InputField m_packageSizeField;
-
-        [UIElement("PackageCompressedFilePathField")]
-        private readonly InputField m_packageCompressedFilePathField;
-
-        [UIElementAction(nameof(OnSetCurrentModVersionButtonClicked))]
-        [UIElement("SetPackageCompressedFilePathButton")]
-        private readonly Button m_setPackageCompressedFilePathButton;
-
-        [UIElementAction(nameof(OnCalculatePackageSizeButtonClicked))]
-        [UIElement("CalculatePackageSizeButton")]
-        private readonly Button m_calculatePackageSizeButton;
-
 
         private AddonInfo m_editingAddonInfo;
 
@@ -186,12 +168,33 @@ namespace OverhaulMod.UI
             m_descriptionField.text = addonInfo.GetDescription(m_editingDescriptionTranslationLangCode, true);
             m_uniqueIDField.text = m_editingAddonInfo.UniqueID;
 
+            m_addonVersionField.text = m_editingAddonInfo.Version.ToString();
+            m_minModVersionField.text = m_editingAddonInfo.MinModVersion.ToString();
+
             m_disableUICallbacks = false;
         }
 
         private void updateAddonInfo(AddonInfo addonInfo)
         {
+            m_editingAddonInfo.UniqueID = m_uniqueIDField.text;
 
+            if(!int.TryParse(m_addonVersionField.text, out int addonVersion))
+            {
+                ModUIUtils.MessagePopupOK("Cannot parse ADDON VERSION", "please try contacting tech support that doesnt exist", true);
+            }
+            else
+            {
+                m_editingAddonInfo.Version = addonVersion;
+            }
+
+            if (!Version.TryParse(m_minModVersionField.text, out Version minVersion))
+            {
+                ModUIUtils.MessagePopupOK("Cannot parse MIN MOD VERSION", "please try contacting tech support that doesnt exist", true);
+            }
+            else
+            {
+                m_editingAddonInfo.MinModVersion = minVersion;
+            }
         }
 
         private void onAddonCreation(string folderName)
@@ -297,22 +300,15 @@ namespace OverhaulMod.UI
 
         public void OnBumpAddonVersionButtonClicked()
         {
-
+            if(int.TryParse(m_addonVersionField.text, out int ver))
+            {
+                m_addonVersionField.text = (ver + 1).ToString();
+            }
         }
 
         public void OnSetCurrentModVersionButtonClicked()
         {
-
-        }
-
-        public void OnSetPackageCompressedFilePathButtonClicked()
-        {
-
-        }
-
-        public void OnCalculatePackageSizeButtonClicked()
-        {
-
+            m_minModVersionField.text = ModBuildInfo.versionStringNoBranch;
         }
     }
 }

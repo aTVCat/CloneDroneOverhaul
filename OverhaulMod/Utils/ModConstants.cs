@@ -40,7 +40,7 @@ namespace OverhaulMod.Utils
 
         public static List<Dropdown.OptionData> GetFontOptions(int dropdownValue = -1)
         {
-            if (dropdownValue > 5 || AddonManager.Instance.HasInstalledAddonVersion(AddonManager.EXTRAS_ADDON_FOLDER_NAME, 1, true))
+            if (dropdownValue > 5 || AddonManager.Instance.HasInstalledAddon(AddonManager.EXTRAS_ADDON_ID))
             {
                 return FontOptions;
             }

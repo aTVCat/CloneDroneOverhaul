@@ -11,7 +11,7 @@ namespace OverhaulMod.UI
 {
     public class UIAddonsMenu : OverhaulUIBehaviour
     {
-        private static AddonListInfo s_contentLiftInfo;
+        private static AddonDownloadListInfo s_contentLiftInfo;
 
         [UIElementAction(nameof(Hide))]
         [UIElement("CloseButton")]
@@ -20,6 +20,10 @@ namespace OverhaulMod.UI
         [UIElementAction(nameof(OnAddonsEditorButtonClicked))]
         [UIElement("EditorButton")]
         private readonly Button m_addonsEditorButton;
+
+        [UIElementAction(nameof(OnAddonsDownloadEditorButtonClicked))]
+        [UIElement("AddonDownloadsEditorButton")]
+        private readonly Button m_addonsDownloadEditorButton;
 
         [UIElement("LocalAddons")]
         private readonly ModdedObject m_localAddonsTab;
@@ -63,6 +67,7 @@ namespace OverhaulMod.UI
             base.Show();
 
             m_addonsEditorButton.gameObject.SetActive(ModUserInfo.isDeveloper);
+            m_addonsDownloadEditorButton.gameObject.SetActive(ModUserInfo.isDeveloper);
         }
 
         public override void Hide()
@@ -137,8 +142,8 @@ namespace OverhaulMod.UI
                         if (moddedObject && moddedObject.gameObject)
                         {
                             Directory.Delete(content.FolderPath, true);
-                            AddonManager.Instance.RefreshInstalledAddons(true);
-                            Destroy(moddedObject.gameObject);
+                            AddonManager.Instance.RefreshInstalledAddons();
+                            populateLocalContent();
                         }
                     });
                 });
@@ -168,7 +173,7 @@ namespace OverhaulMod.UI
             });
         }
 
-        private void populate(AddonListInfo contentListInfo)
+        private void populate(AddonDownloadListInfo contentListInfo)
         {
             s_contentLiftInfo = contentListInfo;
             foreach (AddonDownloadInfo content in contentListInfo.Addons)
@@ -184,12 +189,7 @@ namespace OverhaulMod.UI
             _ = ModUIConstants.ShowAddonsEditor(base.transform);
         }
 
-        public void OnDownloadsEditorButtonClicked()
-        {
-
-        }
-
-        public void OnNetworkAddonsEditorButtonClicked()
+        public void OnAddonsDownloadEditorButtonClicked()
         {
             _ = ModUIConstants.ShowAddonsDownloadEditor(base.transform);
         }

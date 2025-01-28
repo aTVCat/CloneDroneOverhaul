@@ -1283,8 +1283,8 @@ namespace OverhaulMod.UI
             });
             _ = pageBuilder.Header4("Some languages might not be supported by certain fonts");
 
-            if (!AddonManager.Instance.HasInstalledAddon(AddonManager.EXTRAS_ADDON_FOLDER_NAME, true))
-                pageBuilder.AddonDownload("Install \"Extras\" addon for more fonts", AddonManager.EXTRAS_ADDON_FOLDER_NAME, delegate
+            if (!AddonManager.Instance.HasInstalledAddon(AddonManager.EXTRAS_ADDON_ID))
+                pageBuilder.AddonDownload("Install \"Extras\" addon for more fonts", AddonManager.EXTRAS_ADDON_ID, delegate
                 {
                     ClearPageContents();
                     populateSubtitlesReworkSettingsPage(initialPage);
@@ -1345,8 +1345,8 @@ namespace OverhaulMod.UI
             });
             _ = pageBuilder.Header4("Some languages might not be supported by certain fonts");
 
-            if (!AddonManager.Instance.HasInstalledAddon(AddonManager.EXTRAS_ADDON_FOLDER_NAME, true))
-                pageBuilder.AddonDownload("Install \"Extras\" addon for more fonts", AddonManager.EXTRAS_ADDON_FOLDER_NAME, delegate
+            if (!AddonManager.Instance.HasInstalledAddon(AddonManager.EXTRAS_ADDON_ID))
+                pageBuilder.AddonDownload("Install \"Extras\" addon for more fonts", AddonManager.EXTRAS_ADDON_ID, delegate
                 {
                     ClearPageContents();
                     populateUKTDReworkSettingsPage(initialPage);
@@ -2174,7 +2174,7 @@ namespace OverhaulMod.UI
                 label.text = labelText;
 
                 UIElementAddonEmbed addonEmbed = moddedObject.gameObject.AddComponent<UIElementAddonEmbed>();
-                addonEmbed.addonId = addonId;
+                addonEmbed.AddonId = addonId;
                 if (addonInstalledCallback != null)
                     addonEmbed.onContentDownloaded.AddListener(addonInstalledCallback);
                 addonEmbed.InitializeElement();

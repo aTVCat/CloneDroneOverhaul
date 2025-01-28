@@ -2,7 +2,7 @@
 
 namespace OverhaulMod.Content
 {
-    public class AddonListInfo
+    public class AddonDownloadListInfo
     {
         public List<AddonDownloadInfo> Addons;
 

@@ -23,17 +23,7 @@ namespace OverhaulMod.UI
 
         private float m_timeLeftToRefresh;
 
-        public string addonId
-        {
-            get;
-            set;
-        }
-
-        public string addonFile
-        {
-            get;
-            set;
-        }
+        public string AddonId;
 
         public UnityEvent onContentDownloaded { get; set; } = new UnityEvent();
 
@@ -62,52 +52,52 @@ namespace OverhaulMod.UI
 
         public bool ShouldBeHidden()
         {
-            return AddonManager.Instance.HasInstalledAddon(addonId, true);
+            return AddonManager.Instance.HasInstalledAddon(AddonId);
         }
 
         public void RefreshDisplays()
         {
-            if (addonId.IsNullOrEmpty())
+            if (AddonId.IsNullOrEmpty())
                 return;
 
             AddonManager contentManager = AddonManager.Instance;
-            m_idleDisplays.SetActive(!contentManager.HasInstalledAddon(addonId, true) && !contentManager.IsDownloadingAddon(addonId));
-            m_loadingIndicatorObject.SetActive(contentManager.IsDownloadingAddon(addonId));
+            m_idleDisplays.SetActive(!contentManager.HasInstalledAddon(AddonId) && !contentManager.IsDownloadingAddon(AddonId));
+            m_loadingIndicatorObject.SetActive(contentManager.IsDownloadingAddon(AddonId));
         }
 
         public void RefreshLoading()
         {
-            if (addonId.IsNullOrEmpty())
+            if (AddonId.IsNullOrEmpty())
                 return;
 
             AddonManager contentManager = AddonManager.Instance;
-            if (contentManager.IsDownloadingAddon(addonId))
+            if (contentManager.IsDownloadingAddon(AddonId))
             {
-                m_loadingIndicatorText.text = $"{LocalizationManager.Instance.GetTranslatedString("downloading...")}  {(Mathf.RoundToInt(Mathf.Clamp01(contentManager.GetAddonDownloadProgress(addonId)) * 100f).ToString() + "%").AddColor(Color.white)}";
+                m_loadingIndicatorText.text = $"{LocalizationManager.Instance.GetTranslatedString("downloading...")}  {(Mathf.RoundToInt(Mathf.Clamp01(contentManager.GetAddonDownloadProgress(AddonId)) * 100f).ToString() + "%").AddColor(Color.white)}";
             }
         }
 
         public void OnDownloadButtonClicked()
         {
-            if (addonId.IsNullOrEmpty())
+            if (AddonId.IsNullOrEmpty())
                 return;
 
-            ModUIUtils.MessagePopup(true, $"Download {addonId}?", string.Empty, 100f, MessageMenu.ButtonLayout.EnableDisableButtons, "ok", "Yes", "No", null, delegate
+            ModUIUtils.MessagePopup(true, $"Download {AddonId}?", string.Empty, 100f, MessageMenu.ButtonLayout.EnableDisableButtons, "ok", "Yes", "No", null, delegate
             {
-                /*AddonManager contentManager = AddonManager.Instance;
-                _ = contentManager.DownloadAddon(addonId, addonFile, delegate (string error)
+                AddonManager contentManager = AddonManager.Instance;
+                contentManager.DownloadAddon(AddonId, delegate (string error)
                 {
-                    if (error != null)
+                    RefreshDisplays();
+                    if (!error.IsNullOrEmpty())
                     {
                         ModUIUtils.MessagePopupOK("Mod content download error", error);
                         return;
                     }
 
                     onContentDownloaded.Invoke();
-                    RefreshDisplays();
                 });
                 RefreshDisplays();
-                RefreshLoading();*/
+                RefreshLoading();
             });
         }
     }

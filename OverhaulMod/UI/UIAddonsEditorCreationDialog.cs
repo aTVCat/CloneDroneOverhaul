@@ -40,6 +40,7 @@ namespace OverhaulMod.UI
 
         public override void Show()
         {
+            base.Show();
             m_controller.ClearInput();
         }
 

@@ -98,7 +98,7 @@ namespace OverhaulMod.UI
             string file = contentFile;
 
             bool isDownloadingContent = contentManager.IsDownloadingAddon(file);
-            bool hasDownloaded = contentManager.HasInstalledAddon(contentName, true);
+            bool hasDownloaded = contentManager.HasInstalledAddon(contentName);
 
             m_progressBar.SetActive(isDownloadingContent);
             m_contentSizeText.SetActive(!isDownloadingContent && isSupported);

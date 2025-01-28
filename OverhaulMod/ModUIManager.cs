@@ -84,9 +84,9 @@ namespace OverhaulMod
 
         private void Start()
         {
-            if (AddonManager.Instance.HasInstalledAddon(AddonManager.EXTRAS_ADDON_FOLDER_NAME, false))
+            if (AddonManager.Instance.HasInstalledAddon(AddonManager.EXTRAS_ADDON_ID, out string path))
             {
-                ModResources.LoadBundleAsync(AssetBundleConstants.UI_EXTRA, null, System.IO.Path.Combine(ModCore.addonsFolder, AddonManager.EXTRAS_ADDON_FOLDER_NAME));
+                ModResources.LoadBundleAsync(AssetBundleConstants.UI_EXTRA, null, path);
             }
         }
 

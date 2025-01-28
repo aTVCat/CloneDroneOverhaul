@@ -39,7 +39,7 @@ namespace OverhaulMod.Combat
         private void Update()
         {
             m_weaponSwitchCooldown = Mathf.Max(0f, m_weaponSwitchCooldown - Time.deltaTime);
-            if (!EnableScrollToSwitchWeapon || m_weaponSwitchCooldown > 0f || m_hasNotSwitchedWeaponWithScrolling)
+            if (!EnableScrollToSwitchWeapon || !allowSwitchingWeapons() || m_weaponSwitchCooldown > 0f || m_hasNotSwitchedWeaponWithScrolling)
                 return;
 
             FirstPersonMover firstPersonMover = owner;
@@ -55,6 +55,11 @@ namespace OverhaulMod.Combat
                     selectPreviousWeapon(firstPersonMover);
                 }
             }
+        }
+
+        private bool allowSwitchingWeapons()
+        {
+            return !InputManager.Instance.IsCursorEnabled();
         }
 
         public void OnUpgradesRefreshed(UpgradeCollection upgrades)

@@ -20,6 +20,8 @@ namespace OverhaulMod.Content
         /// </summary>
         public long PackageFileSize;
 
+        public List<string> Images;
+
         public bool HasAddonInfo()
         {
             return Addon != null;
