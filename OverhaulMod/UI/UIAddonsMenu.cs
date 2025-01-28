@@ -135,7 +135,8 @@ namespace OverhaulMod.UI
                 ModdedObject moddedObject = Instantiate(m_localContentDisplay, m_container);
                 moddedObject.gameObject.SetActive(true);
                 moddedObject.GetObject<Text>(0).text = displayName;
-                moddedObject.GetObject<Button>(1).onClick.AddListener(delegate
+                moddedObject.GetObject<Text>(1).text = content.GetDescription();
+                moddedObject.GetObject<Button>(2).onClick.AddListener(delegate
                 {
                     ModUIUtils.MessagePopup(true, $"{LocalizationManager.Instance.GetTranslatedString("addons_confirmdelete_header")} \"{displayName}\"?", LocalizationManager.Instance.GetTranslatedString("action_cannot_be_undone"), 125f, MessageMenu.ButtonLayout.EnableDisableButtons, "ok", "Yes", "No", null, delegate
                     {
@@ -176,8 +177,12 @@ namespace OverhaulMod.UI
         private void populate(AddonDownloadListInfo contentListInfo)
         {
             s_contentLiftInfo = contentListInfo;
-            foreach (AddonDownloadInfo content in contentListInfo.Addons)
+            foreach (AddonDownloadInfo addonDownloadInfo in contentListInfo.Addons)
             {
+                ModdedObject moddedObject = Instantiate(m_networkContentDisplay, m_container);
+                moddedObject.gameObject.SetActive(true);
+                UIElementNetworkAddonDisplay networkAddonDisplay = moddedObject.gameObject.AddComponent<UIElementNetworkAddonDisplay>();
+                networkAddonDisplay.Initialize(addonDownloadInfo, base.transform);
             }
 
             m_loadingIndicator.SetActive(false);

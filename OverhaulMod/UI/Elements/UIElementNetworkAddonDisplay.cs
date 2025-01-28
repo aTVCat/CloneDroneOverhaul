@@ -1,7 +1,5 @@
 ﻿using OverhaulMod.Content;
 using OverhaulMod.Utils;
-using System;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,131 +7,70 @@ namespace OverhaulMod.UI
 {
     public class UIElementNetworkAddonDisplay : OverhaulUIBehaviour
     {
+        [UIElement("ContentName")]
+        private readonly Text m_addonNameText;
+
+        [UIElement("ContentDescription")]
+        private readonly Text m_addonDescriptionText;
+
         [UIElement("ContentSize")]
-        private readonly GameObject m_contentSizeText;
+        private readonly Text m_addonSizeText;
 
-        [UIElementAction(nameof(OnDownloadButtonClicked))]
-        [UIElement("DownloadButton")]
-        private readonly Button m_downloadButton;
+        [UIElement("ErrorPanel", false)]
+        private readonly GameObject m_errorPanelObject;
 
-        [UIElementAction(nameof(OnImagesButtonClicked))]
-        [UIElement("ImagesButton")]
-        private readonly Button m_imagesButton;
+        [UIElement("ErrorLabel")]
+        private readonly Text m_errorLabel;
 
-        [UIElement("ProgressBar")]
-        private readonly GameObject m_progressBar;
+        private AddonManager m_addonManager;
 
-        [UIElement("NotSupportedText", false)]
-        private readonly GameObject m_notSupportedText;
+        public AddonDownloadInfo m_addonDownloadInfo;
 
-        [UIElement("MinVersionText")]
-        private readonly Text m_minVersionText;
+        private Transform m_subUIParent;
 
-        [UIElement("Fill")]
-        private readonly Image m_progressBarFill;
-
-        private AddonManager m_contentManager;
-
-        private bool m_hasImages;
-
-        public string contentName
+        public void Initialize(AddonDownloadInfo addonDownloadInfo, Transform subUIParent)
         {
-            get;
-            set;
-        }
+            base.InitializeElement();
+            m_addonManager = AddonManager.Instance;
+            m_addonDownloadInfo = addonDownloadInfo;
+            m_subUIParent = subUIParent;
 
-        public string contentFile
-        {
-            get;
-            set;
-        }
+            m_addonNameText.text = addonDownloadInfo.GetDisplayName();
+            m_addonDescriptionText.text = addonDownloadInfo.GetDescription();
+            m_addonSizeText.text = $"{Mathf.Round(addonDownloadInfo.PackageFileSize / (1024f * 1024f) * 100f) / 100f} mb";
 
-        public bool isSupported
-        {
-            get;
-            set;
-        }
+            bool isSupported = addonDownloadInfo.Addon.IsSupported();
+            if (!isSupported)
+            {
+                string versionString;
+                if (addonDownloadInfo.Addon.MinModVersion != null)
+                    versionString = addonDownloadInfo.Addon.MinModVersion.ToString();
+                else
+                    versionString = "N/A";
 
-        public bool isLarge
-        {
-            get;
-            set;
-        }
+                m_errorLabel.text = $"{LocalizationManager.Instance.GetTranslatedString("addon_requires_version")} {versionString}";
+            }
 
-        public Version minModVersion
-        {
-            get;
-            set;
-        }
+            m_errorPanelObject.SetActive(!isSupported);
 
-        public List<string> images
-        {
-            get;
-            set;
-        }
-
-        public Transform imageExplorerParentTransform
-        {
-            get;
-            set;
-        }
-
-        protected override void OnInitialized()
-        {
-            m_contentManager = AddonManager.Instance;
-
-            string versionString = "N/A";
-            if (minModVersion != null)
-                versionString = minModVersion.ToString();
-
-            m_minVersionText.enabled = !isSupported;
-            m_minVersionText.text = $"{LocalizationManager.Instance.GetTranslatedString("addon_requires_version")} {versionString}";
-
-            m_hasImages = !images.IsNullOrEmpty();
-        }
-
-        public override void Update()
-        {
-            AddonManager contentManager = m_contentManager;
-            string file = contentFile;
-
-            bool isDownloadingContent = contentManager.IsDownloadingAddon(file);
-            bool hasDownloaded = contentManager.HasInstalledAddon(contentName);
-
-            m_progressBar.SetActive(isDownloadingContent);
-            m_contentSizeText.SetActive(!isDownloadingContent && isSupported);
-            m_downloadButton.gameObject.SetActive(!isDownloadingContent && isSupported);
-            m_downloadButton.interactable = !hasDownloaded;
-            m_imagesButton.gameObject.SetActive(m_hasImages && !isDownloadingContent && isSupported);
-
-            if (isDownloadingContent)
-                m_progressBarFill.fillAmount = contentManager.GetAddonDownloadProgress(file);
+            RectTransform rectTransform = base.transform as RectTransform;
+            Vector2 size = rectTransform.sizeDelta;
+            size.y = isSupported ? 80f : 110f;
+            rectTransform.sizeDelta = size;
         }
 
         public void OnDownloadButtonClicked()
         {
-            if (isLarge)
-            {
-                ModUIUtils.MessagePopup(true, LocalizationManager.Instance.GetTranslatedString("addons_largeaddon_header"), LocalizationManager.Instance.GetTranslatedString("addons_largeaddon_text"), 125f, MessageMenu.ButtonLayout.EnableDisableButtons, "ok", "Yes", "No", null, delegate
-                {
-                    /*_ = m_contentManager.DownloadAddon(contentName, contentFile, delegate (string error)
-                    {
-                        if (error != null)
-                            ModUIUtils.MessagePopupOK("Addon download error", error, true);
-                    });*/
-                });
-                return;
-            }
-            /*_ = m_contentManager.DownloadAddon(contentName, contentFile, delegate (string error)
+            m_addonManager.DownloadAddon(m_addonDownloadInfo, delegate (string error)
             {
                 if (error != null)
                     ModUIUtils.MessagePopupOK("Addon download error", error, true);
-            });*/
+            });
         }
 
         public void OnImagesButtonClicked()
         {
-            ModUIUtils.ImageExplorer(images, imageExplorerParentTransform);
+            //ModUIUtils.ImageExplorer(images, m_imageExplorerParentTransform);
         }
     }
 }

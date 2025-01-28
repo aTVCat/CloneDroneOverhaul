@@ -205,7 +205,7 @@ namespace OverhaulMod.Content
                 }
 
                 callback?.Invoke(addonsList);
-            }, errorCallback, out unityWebRequest, 15);
+            }, errorCallback, out unityWebRequest, 20);
         }
 
         private IEnumerator waitUntilAddonIsDownloaded(Action<string> callback)
@@ -365,6 +365,9 @@ namespace OverhaulMod.Content
                 try
                 {
                     AddonInfo contentInfo = ModJsonUtils.DeserializeStream<AddonInfo>(addonInfoFilePath);
+                    if (!contentInfo.IsSupported())
+                        continue;
+
                     contentInfo.FolderPath = folder;
                     list.Add(contentInfo);
                 }
