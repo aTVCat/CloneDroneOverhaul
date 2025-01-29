@@ -1,26 +1,28 @@
 ﻿using DiscordWebhook;
 using Newtonsoft.Json;
+using OverhaulMod.Content;
 using OverhaulMod.Content.Personalization;
+using OverhaulMod.Utils;
 using Steamworks;
 using System;
+using System.IO;
 using System.Net;
+using System.Security.Policy;
+using System.Threading.Tasks;
 using UnityEngine;
 
 namespace OverhaulMod
 {
-    public class ModWebhookManager : Singleton<ModWebhookManager>
+    public class PostmanManager : Singleton<PostmanManager>
     {
         private const string START_ENABLED_EMOJI = "<:star_enabled:1196444610751373434>";
         private const string START_DISABLED_EMOJI = "<:star_disabled:1196444266772316182>";
 
-        public const string FeedbacksWebhookURL = "https://discord.com/api/webhooks/1124285317768290454/QuXjaAywp5eRXT2a5BfOtYGFS9h2eHb8giuze3yxLkZ1Y7m7m2AOTfxf9hB4IeCIkTk5";
-        public const string SurveysWebhookURL = "https://discord.com/api/webhooks/1197656266848342057/66RNDd0uzzEHWfMG-tJFxgLciQfrMryHEcm7h6m7YQYwu5vUtDfhIEImH_SuVNCl29Hb";
-        public const string VerificationRequestsWebhookURL = "https://discord.com/api/webhooks/1206265503836930098/XhMcbjEETktOqZlbW1CHY7kQWscJzG-Nk65Q8bvghHfnMFMk7A2_KZWx7CiTG554YsSG";
-        public const string CrashReportsWebhookURL = "https://discord.com/api/webhooks/1106574827806019665/n486TzxFbaF6sMmbqg2CUHKGN1o15UpR9AUJAmi5c7sdIwI1jeXpTReD4jtZ3U76PzWS";
-
         public static string ErrorReportText;
 
-        public void ExecuteCrashReportsWebhook(string text, Action successCallback, Action<string> errorCallback)
+        private static Destinations s_destinations;
+
+        public void SendCrashReport(string text, Action successCallback, Action<string> errorCallback)
         {
             int color = int.Parse("d63a51", System.Globalization.NumberStyles.HexNumber);
             string deviceInfo = $"- **OS:** {SystemInfo.operatingSystem}\n- **CPU:** {SystemInfo.processorType}\n * {SystemInfo.processorCount}/{SystemInfo.processorFrequency}\n- **GPU:** {SystemInfo.graphicsDeviceName}\n * {SystemInfo.graphicsMemorySize} MBs\n- **Memory:** {SystemInfo.systemMemorySize} MBs";
@@ -84,10 +86,20 @@ namespace OverhaulMod
                     },
                 },
             };
-            UploadMessageWithWebhook(obj1, CrashReportsWebhookURL, successCallback, errorCallback);
+
+            DownloadDestinations(delegate (Destinations destinations)
+            {
+                if (destinations == null)
+                {
+                    errorCallback?.Invoke("Could not get the link");
+                    return;
+                }
+
+                SendMessage(obj1, destinations.CrashReport, successCallback, errorCallback);
+            });
         }
 
-        public void ExecuteFeedbacksWebhook(int rank, string improveText, string likedText, Action successCallback, Action<string> errorCallback)
+        public void SendFeedback(int rank, string improveText, string likedText, Action successCallback, Action<string> errorCallback)
         {
             rank = Mathf.Clamp(rank, 1, 5);
             string userInfo = $"- **User:** {SteamFriends.GetPersonaName()} [[Profile]](<https://steamcommunity.com/profiles/{SteamUser.GetSteamID()}>)";
@@ -132,10 +144,20 @@ namespace OverhaulMod
                     },
                 },
             };
-            UploadMessageWithWebhook(obj1, FeedbacksWebhookURL, successCallback, errorCallback);
+
+            DownloadDestinations(delegate (Destinations destinations)
+            {
+                if (destinations == null)
+                {
+                    errorCallback?.Invoke("Could not get the link");
+                    return;
+                }
+
+                SendMessage(obj1, destinations.Feedback, successCallback, errorCallback);
+            });
         }
 
-        public void ExecuteSurveysWebhook(string selectedVariant, string newsTitle, Action successCallback, Action<string> errorCallback)
+        public void SendSurveyAnswer(string selectedVariant, string newsTitle, Action successCallback, Action<string> errorCallback)
         {
             int color = int.Parse("32a852", System.Globalization.NumberStyles.HexNumber);
             string userInfo = $"- **User:** {SteamFriends.GetPersonaName()} [[Profile]](<https://steamcommunity.com/profiles/{SteamUser.GetSteamID()}>)";
@@ -159,10 +181,20 @@ namespace OverhaulMod
                     },
                 },
             };
-            UploadMessageWithWebhook(obj1, SurveysWebhookURL, successCallback, errorCallback);
+
+            DownloadDestinations(delegate (Destinations destinations)
+            {
+                if (destinations == null)
+                {
+                    errorCallback?.Invoke("Could not get the link");
+                    return;
+                }
+
+                SendMessage(obj1, destinations.Survey, successCallback, errorCallback);
+            });
         }
 
-        public void ExecuteVerificationRequestWebhook(string zipPath, PersonalizationItemInfo personalizationItem, Action successCallback, Action<string> errorCallback)
+        public void SendVerificationRequest(string zipPath, PersonalizationItemInfo personalizationItem, Action successCallback, Action<string> errorCallback)
         {
             string weaponString;
             switch (personalizationItem.Weapon)
@@ -200,18 +232,22 @@ namespace OverhaulMod
                 },
             };
 
-            UploadMessageWithWebhook(obj1, VerificationRequestsWebhookURL, delegate
+            DownloadDestinations(delegate (Destinations destinations)
             {
-                UploadFileWithWebhook(zipPath, VerificationRequestsWebhookURL, successCallback, errorCallback);
-            }, errorCallback);
+                if(destinations == null)
+                {
+                    errorCallback?.Invoke("Could not get the link");
+                    return;
+                }
+
+                SendMessage(obj1, destinations.VerificationRequest, delegate
+                {
+                    SendFile(zipPath, destinations.VerificationRequest, successCallback, errorCallback);
+                }, errorCallback);
+            });
         }
 
-        public void ExecuteTestUploadWebhook(string filePath, Action successCallback, Action<string> errorCallback)
-        {
-            UploadFileWithWebhook(filePath, FeedbacksWebhookURL, successCallback, errorCallback);
-        }
-
-        public async void UploadMessageWithWebhook(WebhookObject webhookObject, string url, Action successCallback, Action<string> errorCallback)
+        public async void SendMessage(WebhookObject webhookObject, string url, Action successCallback, Action<string> errorCallback)
         {
             try
             {
@@ -238,7 +274,7 @@ namespace OverhaulMod
             }
         }
 
-        public async void UploadFileWithWebhook(string filePath, string url, Action successCallback, Action<string> errorCallback)
+        public async void SendFile(string filePath, string url, Action successCallback, Action<string> errorCallback)
         {
             try
             {
@@ -262,6 +298,69 @@ namespace OverhaulMod
                 ModDebug.LogWarning(exc);
                 errorCallback?.Invoke(exc.ToString());
             }
+        }
+
+        public void DownloadDestinations(Action<Destinations> result)
+        {
+            if(s_destinations != null)
+            {
+                if (result != null)
+                    result(s_destinations);
+
+                return;
+            }
+
+            string tempPath = Path.GetTempFileName();
+            GoogleDriveManager.Instance.DownloadFile("https://drive.google.com/file/d/1H5L3Yt_xEuy1RvLFv0DN68bXwCav7x6P/view?usp=drive_link", tempPath, null,
+            delegate (string r)
+            {
+                if (!r.IsNullOrEmpty())
+                {
+                    if (result != null)
+                        result(null);
+
+                    return;
+                }
+
+                try
+                {
+                    s_destinations = Destinations.Deserialize(tempPath);
+                }
+                catch
+                {
+                    if (result != null)
+                        result(null);
+                }
+
+                try
+                {
+                    File.Delete(tempPath);
+                }
+                catch { }
+
+                if (result != null)
+                    result(s_destinations);
+            });
+        }
+
+        public class Destinations
+        {
+            public string CrashReport, Feedback, Survey, VerificationRequest;
+
+            public static void Serialize(Destinations destinations, string path = null)
+            {
+                if (path.IsNullOrEmpty())
+                    path = Path.Combine(ModCore.savesFolder, "Destinations.json");
+
+                ModJsonUtils.WriteStream(path, destinations);
+            }
+
+            public static Destinations Deserialize(string path)
+            {
+                return ModJsonUtils.DeserializeStream<Destinations>(path);
+            }
+
+            public static Destinations CreateNew() => new Destinations();
         }
     }
 }

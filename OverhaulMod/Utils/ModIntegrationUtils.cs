@@ -1,4 +1,5 @@
-﻿using Steamworks;
+﻿using InternalModBot;
+using Steamworks;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -276,6 +277,14 @@ namespace OverhaulMod.Utils
                     gameModeId,
                     lobbyCode
                 });
+            }
+        }
+
+        public static class ModBot
+        {
+            public static string GetModBotUsername()
+            {
+                return ModBotSignInUI._userName;
             }
         }
     }

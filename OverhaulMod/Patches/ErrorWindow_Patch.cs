@@ -11,7 +11,7 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(ErrorWindow.Show))]
         private static bool Show_Prefix(ErrorWindow __instance, string errorMessage)
         {
-            ModWebhookManager.ErrorReportText = errorMessage;
+            PostmanManager.ErrorReportText = errorMessage;
             if (ModUIManager.Instance)
             {
                 try

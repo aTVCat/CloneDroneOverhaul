@@ -78,7 +78,7 @@ namespace OverhaulMod.UI
                                 if (button1)
                                     button1.interactable = false;
 
-                        ModWebhookManager.Instance.ExecuteSurveysWebhook(answer, newsInfo.Title, delegate
+                        PostmanManager.Instance.SendSurveyAnswer(answer, newsInfo.Title, delegate
                         {
                             NewsManager.Instance.SetHasAnsweredSurvey(newsInfo.Title);
 

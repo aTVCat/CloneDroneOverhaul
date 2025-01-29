@@ -211,6 +211,8 @@ namespace OverhaulMod.UI
         private Vector2 m_initialSocialButtonContainerPosition, m_newSocialButtonContainerPosition;
         private Vector2 m_initialSocialButtonPopoutHolderPosition, m_newSocialButtonPopoutHolderPosition;
 
+        private bool m_mobBotUsernameAvailable;
+
         private bool m_enableRework;
         public bool enableRework
         {
@@ -289,6 +291,8 @@ namespace OverhaulMod.UI
             }
 
             enableRework = ModUIManager.ShowTitleScreenRework;
+
+            m_mobBotUsernameAvailable = checkIfModBotUserNameIsAvailable();
         }
 
         public override void Update()
@@ -304,17 +308,25 @@ namespace OverhaulMod.UI
                 //m_excContentMenuButton.interactable = ExclusiveContentManager.Instance.HasDownloadedContent();
                 m_tutorialLayerObject.SetActive(TitleScreenCustomizationManager.IntroduceCustomization);
 
-                string userName = ModBotSignInUI._userName;
-                if (!userName.IsNullOrEmpty())
+                if (m_mobBotUsernameAvailable)
                 {
-                    m_modBotLogonText.text = $"{LocalizationManager.Instance.GetTranslatedString("modui_modbot_logged_as")} {userName.AddColor(Color.white)}";
-                    m_modBotLogonText.enabled = true;
-                    m_modBotLogInButton.gameObject.SetActive(false);
+                    string userName = ModIntegrationUtils.ModBot.GetModBotUsername();
+                    if (!userName.IsNullOrEmpty())
+                    {
+                        m_modBotLogonText.text = $"{LocalizationManager.Instance.GetTranslatedString("modui_modbot_logged_as")} {userName.AddColor(Color.white)}";
+                        m_modBotLogonText.enabled = true;
+                        m_modBotLogInButton.gameObject.SetActive(false);
+                    }
+                    else
+                    {
+                        m_modBotLogonText.enabled = false;
+                        m_modBotLogInButton.gameObject.SetActive(true);
+                    }
                 }
                 else
                 {
                     m_modBotLogonText.enabled = false;
-                    m_modBotLogInButton.gameObject.SetActive(true);
+                    m_modBotLogInButton.gameObject.SetActive(false);
                 }
 
                 SteamManager steamManager = SteamManager.Instance;
@@ -332,6 +344,19 @@ namespace OverhaulMod.UI
         {
             base.OnDestroy();
             enableRework = false;
+        }
+
+        private bool checkIfModBotUserNameIsAvailable()
+        {
+            try
+            {
+                string str = ModIntegrationUtils.ModBot.GetModBotUsername();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         public void SetMultiplayerButtonActive(bool value)

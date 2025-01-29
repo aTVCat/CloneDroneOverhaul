@@ -84,7 +84,7 @@ namespace OverhaulMod.UI
         {
             HasSentReport = true;
             m_sendReportButton.interactable = false;
-            ModWebhookManager.Instance.ExecuteCrashReportsWebhook(m_stackTraceText.text, delegate
+            PostmanManager.Instance.SendCrashReport(m_stackTraceText.text, delegate
             {
                 ModUIUtils.MessagePopupOK("Report sent!", string.Empty, true);
             }, delegate (string error)

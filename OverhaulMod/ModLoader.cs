@@ -84,7 +84,7 @@ namespace OverhaulMod
             _ = ModManagers.NewSingleton<ModGameModifiersManager>();
             _ = ModManagers.NewSingleton<TitleScreenCustomizationManager>();
 
-            _ = ModManagers.NewSingleton<ModWebhookManager>();
+            _ = ModManagers.NewSingleton<PostmanManager>();
             _ = ModManagers.NewSingleton<AddonManager>();
             _ = ModManagers.NewSingleton<UpdateManager>();
             _ = ModManagers.NewSingleton<NewsManager>();

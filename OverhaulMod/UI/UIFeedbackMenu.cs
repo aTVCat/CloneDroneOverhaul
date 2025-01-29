@@ -205,7 +205,7 @@ namespace OverhaulMod.UI
             HasSentFeedback = true;
             m_isSendingFeedback = true;
             refreshElementsNextFrame();
-            ModWebhookManager.Instance.ExecuteFeedbacksWebhook(selectedRank, m_improveField.text, m_favoriteField.text, delegate
+            PostmanManager.Instance.SendFeedback(selectedRank, m_improveField.text, m_favoriteField.text, delegate
             {
                 m_isSendingFeedback = false;
                 refreshElementsNextFrame();
