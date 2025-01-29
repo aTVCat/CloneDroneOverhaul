@@ -380,6 +380,7 @@
     <Compile Include="Content\Personalization\PersonalizationItemLockInfo.cs" />
     <Compile Include="Content\Personalization\PersonalizationItemMetaData.cs" />
     <Compile Include="Content\Personalization\PersonalizationAccessoryReferences.cs" />
+    <Compile Include="Content\Personalization\PersonalizationItemOffsetList.cs" />
     <Compile Include="Content\Personalization\PersonalizationMultiplayerManager.cs" />
     <Compile Include="Content\Personalization\PersonalizationMultiplayerPlayerInfo.cs" />
     <Compile Include="Content\PostmanManager.cs" />

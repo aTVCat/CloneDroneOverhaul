@@ -94,6 +94,12 @@ namespace OverhaulMod.UI
         [UIElement("SpecialInfoGroup", false)]
         private readonly GameObject m_specialInfoPanel;
 
+        [UIElement("GenericInfoGroup")]
+        private readonly RectTransform m_generalInfoPanel;
+
+        [UIElement("EditOffsetsButton")]
+        private readonly Button m_editOffsetsButton;
+
         private bool m_disallowCallbacks;
 
         public PersonalizationItemInfo itemInfo
@@ -163,6 +169,8 @@ namespace OverhaulMod.UI
             itemInfo = personalizationItemInfo;
             if (personalizationItemInfo == null)
                 return;
+
+            RefreshGeneralInfoPanel();
 
             m_disallowCallbacks = true;
             personalizationItemInfo.FixValues();
@@ -275,6 +283,16 @@ namespace OverhaulMod.UI
             m_hierarchyPanel.Populate();
         }
 
+        public void RefreshGeneralInfoPanel()
+        {
+            RectTransform rectTransform = m_generalInfoPanel;
+            Vector2 size = rectTransform.sizeDelta;
+            size.y = itemInfo.Category == PersonalizationCategory.Accessories ? 320f : 290f;
+            rectTransform.sizeDelta = size;
+
+            m_editOffsetsButton.gameObject.SetActive(itemInfo.Category == PersonalizationCategory.Accessories);
+        }
+
         private string getExportedItemFileName()
         {
             return $"{ModFileUtils.GetDirectoryName(itemInfo.FolderPath)}.zip";
@@ -305,6 +323,8 @@ namespace OverhaulMod.UI
             m_specialInfoPanel.SetActive(category == PersonalizationCategory.WeaponSkins);
             m_weaponDropdown.gameObject.SetActive(category == PersonalizationCategory.WeaponSkins);
             m_bodyPartDropdown.gameObject.SetActive(category == PersonalizationCategory.Accessories);
+
+            RefreshGeneralInfoPanel();
 
             PersonalizationEditorManager manager = PersonalizationEditorManager.Instance;
             manager.SerializeRoot();

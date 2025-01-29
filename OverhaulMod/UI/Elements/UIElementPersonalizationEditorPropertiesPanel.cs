@@ -48,6 +48,9 @@ namespace OverhaulMod.UI
         [UIElement("VolumeSettingsPresetDisplay", false)]
         private readonly ModdedObject m_volumeSettingsPresetDisplay;
 
+        [UIElement("VolumeSettingsPresetDisplay_Acc", false)]
+        private readonly ModdedObject m_volumeSettingsPresetDisplayAccessory;
+
         [UIElement("EnableIfPresetDropdown", false)]
         private readonly ModdedObject m_enableIfPresetDropdown;
 
@@ -176,7 +179,9 @@ namespace OverhaulMod.UI
             m_rotationField.vector = objectBehaviour.transform.localEulerAngles;
             m_scaleField.vector = objectBehaviour.transform.localScale;
 
-            if (objectBehaviour.GetComponent<PersonalizationEditorObjectVisibilityController>())
+            bool isWeaponSkin = objectBehaviour.ControllerInfo.ItemInfo.Category == PersonalizationCategory.WeaponSkins;
+
+            if (isWeaponSkin && objectBehaviour.GetComponent<PersonalizationEditorObjectVisibilityController>())
             {
                 m_visibilityPropertiesController.PopulateFields(this, m_container, objectBehaviour);
             }
@@ -658,17 +663,22 @@ namespace OverhaulMod.UI
                     propertiesPanel.Refresh();
                 }
 
+                var isWeaponSkin = objectBehaviour.ControllerInfo.ItemInfo.Category == PersonalizationCategory.WeaponSkins;
+
                 PersonalizationEditorObjectVolume volume = objectBehaviour.GetComponent<PersonalizationEditorObjectVolume>();
 
-                ModdedObject volumeExtraSettings = Instantiate(propertiesPanel.m_volumeExtraSettings, container);
-                volumeExtraSettings.gameObject.SetActive(true);
-                Toggle hideIfNoPresetToggle = volumeExtraSettings.GetObject<Toggle>(0);
-                hideIfNoPresetToggle.isOn = volume.hideIfNoPreset;
-                hideIfNoPresetToggle.onValueChanged.AddListener(delegate (bool value)
+                if (isWeaponSkin)
                 {
-                    volume.hideIfNoPreset = value;
-                    GlobalEventManager.Instance.Dispatch(PersonalizationEditorManager.OBJECT_EDITED_EVENT);
-                });
+                    ModdedObject volumeExtraSettings = Instantiate(propertiesPanel.m_volumeExtraSettings, container);
+                    volumeExtraSettings.gameObject.SetActive(true);
+                    Toggle hideIfNoPresetToggle = volumeExtraSettings.GetObject<Toggle>(0);
+                    hideIfNoPresetToggle.isOn = volume.hideIfNoPreset;
+                    hideIfNoPresetToggle.onValueChanged.AddListener(delegate (bool value)
+                    {
+                        volume.hideIfNoPreset = value;
+                        GlobalEventManager.Instance.Dispatch(PersonalizationEditorManager.OBJECT_EDITED_EVENT);
+                    });
+                }
 
                 Dictionary<WeaponVariant, VolumeSettingsPreset> volumePresets = volume.volumeSettingPresets;
                 if (volumePresets != null && volumePresets.Count != 0)
@@ -677,7 +687,7 @@ namespace OverhaulMod.UI
                     {
                         VolumeSettingsPreset settingsPreset = preset.Value;
 
-                        ModdedObject display = Instantiate(propertiesPanel.m_volumeSettingsPresetDisplay, container);
+                        ModdedObject display = Instantiate((isWeaponSkin || volumePresets.Count != 1) ? propertiesPanel.m_volumeSettingsPresetDisplay : propertiesPanel.m_volumeSettingsPresetDisplayAccessory, container);
                         display.gameObject.SetActive(true);
 
                         // voxel model file
@@ -838,7 +848,7 @@ namespace OverhaulMod.UI
                     }
                 }
 
-                if (volume.GetUnusedShowCondition() != WeaponVariant.None)
+                if ((isWeaponSkin || volumePresets.Count == 0) && volume.GetUnusedShowCondition() != WeaponVariant.None)
                 {
                     Button newPresetButton = Instantiate(propertiesPanel.m_addVolumeSettingsPresetButton, container);
                     newPresetButton.gameObject.SetActive(true);

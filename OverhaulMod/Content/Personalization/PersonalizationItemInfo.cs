@@ -35,6 +35,8 @@ namespace OverhaulMod.Content.Personalization
 
         public PersonalizationEditorObjectInfo RootObject;
 
+        public PersonalizationItemOffsetList Offsets;
+
         [NonSerialized]
         public bool Corrupted;
 
@@ -92,6 +94,9 @@ namespace OverhaulMod.Content.Personalization
             {
                 BodyPartName = "Head";
             }
+
+            if (Offsets == null)
+                Offsets = new PersonalizationItemOffsetList();
 
             RootObject.SetPosition(Vector3.zero);
             RootObject.SetEulerAngles(Vector3.zero);
