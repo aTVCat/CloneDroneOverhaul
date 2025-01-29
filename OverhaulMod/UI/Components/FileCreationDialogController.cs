@@ -59,7 +59,7 @@ namespace OverhaulMod.UI
 
         public void ProcessInput()
         {
-            if(TimeToProcessInput <= 0f)
+            if (TimeToProcessInput <= 0f)
             {
                 ProcessInputNow();
                 return;

@@ -82,7 +82,7 @@ namespace OverhaulMod.UI
             {
                 m_refreshButton.interactable = true;
 
-                if(!error.IsNullOrEmpty())
+                if (!error.IsNullOrEmpty())
                     ModUIUtils.MessagePopupOK("Error", error, true);
 
                 Populate();

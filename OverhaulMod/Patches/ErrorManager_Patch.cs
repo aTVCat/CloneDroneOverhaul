@@ -13,7 +13,7 @@ namespace OverhaulMod.Patches
         private static bool sendExceptionDetailsToLoggly_Prefix(ErrorManager __instance)
         {
             bool value = CrashManager.HasCrashedThisSession;
-            if(!value)
+            if (!value)
                 CrashManager.HasCrashedThisSession = true;
 
             return !value;

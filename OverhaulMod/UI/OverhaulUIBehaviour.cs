@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.UI;
 
 namespace OverhaulMod.UI
@@ -89,7 +88,7 @@ namespace OverhaulMod.UI
             BindingFlags bindingFlags = s_initializationBindingFlags;
             Type localType = base.GetType();
             FieldInfo[] fields = localType.GetFields(bindingFlags);
-            if(fields.Length != 0)
+            if (fields.Length != 0)
                 for (int i = 0; i < fields.Length; i++)
                 {
                     FieldInfo fieldInfo = fields[i];

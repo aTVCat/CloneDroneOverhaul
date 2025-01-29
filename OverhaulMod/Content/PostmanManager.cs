@@ -7,8 +7,6 @@ using Steamworks;
 using System;
 using System.IO;
 using System.Net;
-using System.Security.Policy;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace OverhaulMod
@@ -234,7 +232,7 @@ namespace OverhaulMod
 
             DownloadDestinations(delegate (Destinations destinations)
             {
-                if(destinations == null)
+                if (destinations == null)
                 {
                     errorCallback?.Invoke("Could not get the link");
                     return;
@@ -302,7 +300,7 @@ namespace OverhaulMod
 
         public void DownloadDestinations(Action<Destinations> result)
         {
-            if(s_destinations != null)
+            if (s_destinations != null)
             {
                 if (result != null)
                     result(s_destinations);

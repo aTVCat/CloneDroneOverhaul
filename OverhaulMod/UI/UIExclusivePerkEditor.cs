@@ -245,7 +245,7 @@ namespace OverhaulMod.UI
             perk.PlayFabID = m_ownerPlayfabIDField.text;
 
             object data = perk.DeserializeData();
-            if(data == null)
+            if (data == null)
             {
                 perk.SetDefaultData();
                 data = perk.DeserializeData();

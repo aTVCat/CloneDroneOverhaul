@@ -178,7 +178,7 @@ namespace OverhaulMod.UI
         {
             m_editingAddonInfo.UniqueID = m_uniqueIDField.text;
 
-            if(!int.TryParse(m_addonVersionField.text, out int addonVersion))
+            if (!int.TryParse(m_addonVersionField.text, out int addonVersion))
             {
                 ModUIUtils.MessagePopupOK("Cannot parse ADDON VERSION", "please try contacting tech support that doesnt exist", true);
             }
@@ -255,8 +255,8 @@ namespace OverhaulMod.UI
                 return;
 
             m_needsSaveIcon.SetActive(true);
-            
-            if(m_editingAddonInfo.DisplayName.ContainsKey(m_editingDisplayNameTranslationLangCode))
+
+            if (m_editingAddonInfo.DisplayName.ContainsKey(m_editingDisplayNameTranslationLangCode))
                 m_editingAddonInfo.DisplayName[m_editingDisplayNameTranslationLangCode] = value;
             else
                 m_editingAddonInfo.DisplayName.Add(m_editingDisplayNameTranslationLangCode, value);
@@ -300,7 +300,7 @@ namespace OverhaulMod.UI
 
         public void OnBumpAddonVersionButtonClicked()
         {
-            if(int.TryParse(m_addonVersionField.text, out int ver))
+            if (int.TryParse(m_addonVersionField.text, out int ver))
             {
                 m_addonVersionField.text = (ver + 1).ToString();
             }

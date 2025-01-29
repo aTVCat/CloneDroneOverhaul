@@ -382,6 +382,7 @@
     <Compile Include="Content\Personalization\PersonalizationAccessoryReferences.cs" />
     <Compile Include="Content\Personalization\PersonalizationMultiplayerManager.cs" />
     <Compile Include="Content\Personalization\PersonalizationMultiplayerPlayerInfo.cs" />
+    <Compile Include="Content\PostmanManager.cs" />
     <Compile Include="Engine\AdditionalSkyboxesManager.cs" />
     <Compile Include="Engine\AdditionalSkyboxInfo.cs" />
     <Compile Include="Engine\AutoBuildListInfo.cs" />
@@ -767,7 +768,6 @@
     <Compile Include="Utils\ModUnityUtils.cs" />
     <Compile Include="Combat\Weapons\ScytheWeaponModel.cs" />
     <Compile Include="Combat\Weapons\ModWeaponModel.cs" />
-    <Compile Include="ModWebhookManager.cs" />
     <Compile Include="Visuals\QualityManager.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -9,7 +9,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using UnityEngine;
 
 namespace OverhaulMod
@@ -386,7 +385,7 @@ namespace OverhaulMod
                 firstPersonMover.gameObject.AddComponent<WeaponInvisibilityFixer>().Initialize(firstPersonMover);
             }
 
-            while (firstPersonMover && !firstPersonMover._playerCamera && ((GameModeManager.IsMultiplayerDuel() || GameModeManager.IsBattleRoyale()) && !firstPersonMover.HasConstructionFinished()))
+            while (firstPersonMover && !firstPersonMover._playerCamera && (GameModeManager.IsMultiplayerDuel() || GameModeManager.IsBattleRoyale()) && !firstPersonMover.HasConstructionFinished())
                 yield return null;
 
             if (firstPersonMover && firstPersonMover.HasCharacterModel() && firstPersonMover._playerCamera)

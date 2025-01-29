@@ -1,7 +1,4 @@
-﻿using HarmonyLib;
-using OverhaulMod.Combat;
-
-namespace OverhaulMod.Patches
+﻿namespace OverhaulMod.Patches
 {
     /*[HarmonyPatch(typeof(GameModeManager))]
     internal static class GameModeManager_Patch

@@ -23,7 +23,7 @@ namespace OverhaulMod.Engine
 
         private float m_lerpedOffset;
 
-       // private bool m_hasAddedEventListeners;
+        // private bool m_hasAddedEventListeners;
 
         private void Start()
         {

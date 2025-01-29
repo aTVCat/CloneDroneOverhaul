@@ -243,13 +243,13 @@ namespace OverhaulMod.Utils
                     break;
                 }
             }
-            
+
             Renderer[] renderers = bodyPartParent.GetComponentsInChildren<Renderer>();
             if (renderers.Length == 0)
                 return new List<Renderer>();
 
             List<Renderer> result = new List<Renderer>();
-            for(int i = 0; i < renderers.Length; i++)
+            for (int i = 0; i < renderers.Length; i++)
             {
                 Renderer renderer = renderers[i];
                 if (!renderer.GetComponent<SwordHitArea>())

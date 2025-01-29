@@ -1,5 +1,4 @@
-﻿using Steamworks;
-using System;
+﻿using System;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
@@ -59,7 +58,7 @@ namespace OverhaulMod.UI
         public void OnDoneButtonClicked()
         {
             Hide();
-            if(Callback != null)
+            if (Callback != null)
             {
                 Callback(m_nameField.text);
                 Callback = null;
