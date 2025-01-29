@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UnityEngine;
 
 namespace OverhaulMod.Content
 {
@@ -45,6 +46,11 @@ namespace OverhaulMod.Content
         public string GetDescription()
         {
             return Addon?.GetDescription(LocalizationManager.Instance.GetCurrentLanguageCode());
+        }
+
+        public string GetPackageSizeString()
+        {
+            return $"{Mathf.Round(PackageFileSize / (1024f * 1024f) * 100f) / 100f} mb";
         }
 
         public void CalculatePackageFileSize(string path)

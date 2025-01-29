@@ -137,6 +137,7 @@ namespace OverhaulMod.Content
 
             string uniqueId = addonDownloadInfo.UniqueID;
             string downloadUrl = addonDownloadInfo.PackageFileURL;
+            string displayName = addonDownloadInfo.GetDisplayName();
 
             if (m_downloadingAddons.ContainsKey(uniqueId))
             {
@@ -177,14 +178,14 @@ namespace OverhaulMod.Content
                 }
                 catch (Exception exc)
                 {
-                    ModManagers.Instance.TriggerModContentLoadedEvent(exc.ToString());
+                    ModManagers.Instance.TriggerModContentLoadedEvent($"\"{displayName}\" download error:\n{exc}");
                     return;
                 }
 
+                RefreshInstalledAddons();
+
                 ModManagers.Instance.TriggerModContentLoadedEvent(null);
                 callback?.Invoke(null);
-
-                RefreshInstalledAddons();
             });
         }
 

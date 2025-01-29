@@ -82,11 +82,7 @@ namespace OverhaulMod.UI
 
         private void onContentDownloaded(string error)
         {
-            if (!error.IsNullOrEmpty())
-            {
-                ModUIUtils.MessagePopupOK("Content download error", "Details:\n" + error, 350f, true);
-            }
-            else
+            if (error.IsNullOrEmpty())
             {
                 m_shouldSuggestGameRestart = true;
             }

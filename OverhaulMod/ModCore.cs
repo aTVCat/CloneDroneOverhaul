@@ -386,10 +386,10 @@ namespace OverhaulMod
                 firstPersonMover.gameObject.AddComponent<WeaponInvisibilityFixer>().Initialize(firstPersonMover);
             }
 
-            while (firstPersonMover && !firstPersonMover._playerCamera)
+            while (firstPersonMover && !firstPersonMover._playerCamera && ((GameModeManager.IsMultiplayerDuel() || GameModeManager.IsBattleRoyale()) && !firstPersonMover.HasConstructionFinished()))
                 yield return null;
 
-            if (firstPersonMover)
+            if (firstPersonMover && firstPersonMover.HasCharacterModel() && firstPersonMover._playerCamera)
                 CameraManager.Instance.AddControllers(firstPersonMover._playerCamera, firstPersonMover);
 
             yield break;

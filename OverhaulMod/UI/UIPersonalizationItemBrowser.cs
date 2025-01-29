@@ -630,6 +630,11 @@ namespace OverhaulMod.UI
                 noSpecificAuthor = true;
                 prefix = LocalizationManager.Instance.GetTranslatedString("customization_vanilla");
             }
+            else if (authorsString == "vanilla-hd")
+            {
+                noSpecificAuthor = true;
+                prefix = LocalizationManager.Instance.GetTranslatedString("customization_vanilla_hd");
+            }
             else
                 prefix = $"{((item.Authors.IsNullOrEmpty() || item.Authors.Count <= 1) ? LocalizationManager.Instance.GetTranslatedString("customization_author") : LocalizationManager.Instance.GetTranslatedString("customization_authors"))} ";
 

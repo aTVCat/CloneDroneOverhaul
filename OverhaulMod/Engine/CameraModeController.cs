@@ -166,7 +166,7 @@ namespace OverhaulMod.Engine
 
         public void RefreshOffset()
         {
-            if (m_owner.IsMindSpaceCharacter)
+            if (m_owner && m_owner.IsMindSpaceCharacter)
             {
                 m_offset = Vector3.up * 0.575f;
                 return;

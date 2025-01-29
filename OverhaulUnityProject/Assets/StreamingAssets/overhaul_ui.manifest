@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 1969897775
+CRC: 4026650988
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 29ad4b5a23dad63ccf65bfe7418b8692
+    Hash: 4bcfe0b32468afe7168efbbb02ebdebb
   TypeTreeHash:
     serializedVersion: 2
     Hash: 11a2c5244a74fc567c6938c3491df245
@@ -197,6 +197,7 @@ Assets:
 - Assets/UI/UI_UpdatesWindowRework.prefab
 - Assets/UI/UI_ExclusivePerksMenu.prefab
 - Assets/UI/UI_UpdateInfoEditor.prefab
+- Assets/UI/UI_AddonsDetailsMenu.prefab
 - Assets/UI/UI_MPSelectScreen.prefab
 - Assets/UI/UI_PersonalizationEditorItemsBrowser.prefab
 - Assets/UI/UI_ImageEffects.prefab

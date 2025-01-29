@@ -31,13 +31,16 @@ namespace OverhaulMod.UI
         public void Initialize(AddonDownloadInfo addonDownloadInfo, Transform subUIParent)
         {
             base.InitializeElement();
+            Button button = base.GetComponent<Button>();
+            button.onClick.AddListener(OnClicked);
+
             m_addonManager = AddonManager.Instance;
             m_addonDownloadInfo = addonDownloadInfo;
             m_subUIParent = subUIParent;
 
             m_addonNameText.text = addonDownloadInfo.GetDisplayName();
             m_addonDescriptionText.text = addonDownloadInfo.GetDescription();
-            m_addonSizeText.text = $"{Mathf.Round(addonDownloadInfo.PackageFileSize / (1024f * 1024f) * 100f) / 100f} mb";
+            m_addonSizeText.text = addonDownloadInfo.GetPackageSizeString();
 
             bool isSupported = addonDownloadInfo.Addon.IsSupported();
             if (!isSupported)
@@ -59,18 +62,10 @@ namespace OverhaulMod.UI
             rectTransform.sizeDelta = size;
         }
 
-        public void OnDownloadButtonClicked()
+        public void OnClicked()
         {
-            m_addonManager.DownloadAddon(m_addonDownloadInfo, delegate (string error)
-            {
-                if (error != null)
-                    ModUIUtils.MessagePopupOK("Addon download error", error, true);
-            });
-        }
-
-        public void OnImagesButtonClicked()
-        {
-            //ModUIUtils.ImageExplorer(images, m_imageExplorerParentTransform);
+            UIAddonDetailsMenu menu = ModUIConstants.ShowAddonDetailsMenu(m_subUIParent);
+            menu.SetAddon(m_addonDownloadInfo);
         }
     }
 }
