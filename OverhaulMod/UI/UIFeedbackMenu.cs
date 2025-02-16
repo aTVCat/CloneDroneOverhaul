@@ -61,6 +61,10 @@ namespace OverhaulMod.UI
         [UIElement("ExitGameButton")]
         private readonly Button m_exitGameButton;
 
+        [UIElementAction(nameof(OnSkipButtonClicked))]
+        [UIElement("SkipButton")]
+        private readonly Button m_skipButton;
+
         [UIElement("LoadingIndicator", false)]
         private readonly GameObject m_loadingIndicator;
 
@@ -115,6 +119,8 @@ namespace OverhaulMod.UI
 
             m_charsLeftText = LocalizationManager.Instance.GetTranslatedString("charsleft");
             m_likeButton.interactable = !ModBotSignInUI._userName.IsNullOrEmpty() && !HasLikedTheMod;
+
+            m_skipButton.interactable = true;
 
             if (!m_usedSavedSettings)
             {
@@ -180,6 +186,7 @@ namespace OverhaulMod.UI
         public void SetExitButtonVisible(bool value)
         {
             m_exitGameButton.gameObject.SetActive(value);
+            m_skipButton.gameObject.SetActive(value && !HasEverSentFeedback);
         }
 
         public void OnExitGameButtonClicked()
@@ -216,6 +223,7 @@ namespace OverhaulMod.UI
                     ModSettingsManager.SetStringValue(ModSettingsConstants.FEEDBACK_MENU_IMPROVE_TEXT, string.Empty);
                     ModSettingsManager.SetStringValue(ModSettingsConstants.FEEDBACK_MENU_FAVORITE_TEXT, string.Empty);
                     ModSettingsManager.SetBoolValue(ModSettingsConstants.HAS_EVER_SENT_FEEDBACK, true);
+                    m_skipButton.gameObject.SetActive(false);
                 }
             }, delegate (string error)
             {
@@ -258,6 +266,12 @@ namespace OverhaulMod.UI
         {
             selectedRank = 5;
             refreshElementsNextFrame();
+        }
+
+        public void OnSkipButtonClicked()
+        {
+            m_skipButton.interactable = false;
+            ModSettingsManager.SetBoolValue(ModSettingsConstants.HAS_EVER_SENT_FEEDBACK, true);
         }
     }
 }
