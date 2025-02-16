@@ -348,6 +348,7 @@
     <Compile Include="Content\AddonDownloadInfo.cs" />
     <Compile Include="Content\AddonInfo.cs" />
     <Compile Include="Content\AddonDownloadListInfo.cs" />
+    <Compile Include="Content\ContentInfo.cs" />
     <Compile Include="Content\ExclusivePerkColor.cs" />
     <Compile Include="Content\GoogleDriveManager.cs" />
     <Compile Include="Content\LevelEditor\LevelEditorWeatherSettingsOverride.cs" />
@@ -585,6 +586,7 @@
     <Compile Include="UI\Elements\UIElementGalleryImage.cs" />
     <Compile Include="UI\Elements\UIElementImageDisplay.cs" />
     <Compile Include="UI\Elements\UIElementKeyBindSetter.cs" />
+    <Compile Include="UI\Elements\UIElementLocalAddonDisplay.cs" />
     <Compile Include="UI\Elements\UIElementMouseEventsComponent.cs" />
     <Compile Include="UI\Elements\UIElementMultiplayerMessageBox.cs" />
     <Compile Include="UI\Elements\UIElementMultiplayerMessageButton.cs" />

@@ -15,6 +15,10 @@ namespace OverhaulMod.UI
         [UIElement("DownloadButton")]
         public Button m_downloadButton;
 
+        [UIElementAction(nameof(OnUpdateButtonClicked))]
+        [UIElement("UpdateButton")]
+        public Button m_updateButton;
+
         [UIElement("LoadingIndicator", false)]
         public GameObject m_loadingIndicatorObject;
 
@@ -24,6 +28,8 @@ namespace OverhaulMod.UI
         private float m_timeLeftToRefresh;
 
         public string AddonId;
+
+        public int Version;
 
         public UnityEvent onContentDownloaded { get; set; } = new UnityEvent();
 
@@ -61,8 +67,14 @@ namespace OverhaulMod.UI
                 return;
 
             AddonManager contentManager = AddonManager.Instance;
-            m_idleDisplays.SetActive(!contentManager.HasInstalledAddon(AddonId) && !contentManager.IsDownloadingAddon(AddonId));
-            m_loadingIndicatorObject.SetActive(contentManager.IsDownloadingAddon(AddonId));
+            bool hasInstalled = contentManager.HasInstalledAddon(AddonId);
+            bool hasUpdates = hasInstalled && !contentManager.HasInstalledAddon(AddonId, Version);
+            bool isDownloading = contentManager.IsDownloadingAddon(AddonId);
+
+            m_idleDisplays.SetActive((!hasInstalled || hasUpdates) && !isDownloading);
+            m_downloadButton.gameObject.SetActive(!hasInstalled);
+            m_updateButton.gameObject.SetActive(hasUpdates);
+            m_loadingIndicatorObject.SetActive(isDownloading);
         }
 
         public void RefreshLoading()
@@ -77,12 +89,12 @@ namespace OverhaulMod.UI
             }
         }
 
-        public void OnDownloadButtonClicked()
+        private void installAddon(bool update)
         {
             if (AddonId.IsNullOrEmpty())
                 return;
 
-            ModUIUtils.MessagePopup(true, $"Download {AddonId}?", string.Empty, 100f, MessageMenu.ButtonLayout.EnableDisableButtons, "ok", "Yes", "No", null, delegate
+            ModUIUtils.MessagePopup(true, $"{(update ? "Update" : "Download")} {AddonId}?", string.Empty, 100f, MessageMenu.ButtonLayout.EnableDisableButtons, "ok", "Yes", "No", null, delegate
             {
                 AddonManager contentManager = AddonManager.Instance;
                 contentManager.DownloadAddon(AddonId, delegate (string error)
@@ -90,7 +102,7 @@ namespace OverhaulMod.UI
                     RefreshDisplays();
                     if (!error.IsNullOrEmpty())
                     {
-                        ModUIUtils.MessagePopupOK("Mod content download error", error);
+                        ModUIUtils.MessagePopupOK($"Addon {(update ? "update" : "download")} error", error);
                         return;
                     }
 
@@ -99,6 +111,16 @@ namespace OverhaulMod.UI
                 RefreshDisplays();
                 RefreshLoading();
             });
+        }
+
+        public void OnDownloadButtonClicked()
+        {
+            installAddon(false);
+        }
+
+        public void OnUpdateButtonClicked()
+        {
+            installAddon(true);
         }
     }
 }

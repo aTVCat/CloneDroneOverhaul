@@ -75,7 +75,7 @@ namespace OverhaulMod.UI
             if (m_addonDownloadInfo == null)
                 return;
 
-            bool isInstalled = AddonManager.Instance.HasInstalledAddon(m_addonDownloadInfo.UniqueID);
+            bool isInstalled = AddonManager.Instance.HasInstalledAddon(m_addonDownloadInfo.UniqueID, 0);
             bool isDownloading = AddonManager.Instance.IsDownloadingAddon(m_addonDownloadInfo.UniqueID);
             m_downloadButton.gameObject.SetActive(!isInstalled && !isDownloading);
             m_loadingIndicator.SetActive(isDownloading);

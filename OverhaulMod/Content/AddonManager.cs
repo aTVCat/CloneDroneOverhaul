@@ -1,9 +1,11 @@
 ﻿using ICSharpCode.SharpZipLib.Zip;
+using OverhaulMod.Engine;
 using OverhaulMod.Utils;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using UnityEngine.Networking;
 
 namespace OverhaulMod.Content
@@ -14,6 +16,8 @@ namespace OverhaulMod.Content
 
         public const string ADDON_INFO_FILE = "AddonInfo.json";
 
+        public const string ADDON_INFO_FILE_OLD = "contentInfo.json";
+
         public const string ADDON_DOWNLOADED_EVENT = "OverhaulAddonDownloaded";
 
         public const string EXTRAS_ADDON_ID = "d1ca04f0";
@@ -21,6 +25,11 @@ namespace OverhaulMod.Content
         public const string REALISTIC_SKYBOXES_ADDON_ID = "51a9fc49";
 
         public const string GALLERY_ADDON_ID = "084c7e7a";
+
+        public const string ADDON_UPDATES_REFRESHED = "AddonUpdatesRefreshed";
+
+        [ModSetting(ModSettingsConstants.ADDONS_TO_UPDATE, "", ModSetting.Tag.IgnoreExport)]
+        public static string AddonsToUpdate;
 
         private Dictionary<string, float> m_downloadingAddons;
 
@@ -36,6 +45,36 @@ namespace OverhaulMod.Content
             m_downloadingAddons = new Dictionary<string, float>();
             m_loadingAddons = new List<object>();
             RefreshInstalledAddons();
+        }
+
+        private void Start()
+        {
+            RefreshAddonUpdates();
+        }
+
+        public void RefreshAddonUpdates()
+        {
+            if (!ScheduledActionsManager.Instance.ShouldExecuteAction(ScheduledActionType.RefreshAddonUpdates))
+                return;
+
+            GetDownloads(delegate (GetDownloadsResult getDownloadsResult)
+            {
+                if (!getDownloadsResult.IsError())
+                {
+                    StringBuilder stringBuilder = new StringBuilder();
+                    foreach (AddonDownloadInfo addonInfo in getDownloadsResult.Downloads.Addons)
+                    {
+                        if (HasInstalledAddon(addonInfo.UniqueID) && !HasInstalledAddon(addonInfo.UniqueID, addonInfo.Addon.Version))
+                        {
+                            stringBuilder.Append(addonInfo.UniqueID);
+                            stringBuilder.Append(',');
+                        }
+                    }
+                    ModSettingsManager.SetStringValue(ModSettingsConstants.ADDONS_TO_UPDATE, stringBuilder.ToString(), false);
+                    ScheduledActionsManager.Instance.SetActionExecuted(ScheduledActionType.RefreshAddonUpdates);
+                    GlobalEventManager.Instance.Dispatch(ADDON_UPDATES_REFRESHED);
+                }
+            });
         }
 
         public AddonDownloadListInfo GetDownloadsFromDisk()
@@ -182,6 +221,11 @@ namespace OverhaulMod.Content
                     return;
                 }
 
+                if (DoesAddonNeedUpdate(uniqueId))
+                {
+                    ModSettingsManager.SetStringValue(ModSettingsConstants.ADDONS_TO_UPDATE, AddonsToUpdate.Replace($"{uniqueId},", string.Empty), false);
+                }
+
                 RefreshInstalledAddons();
 
                 ModManagers.Instance.TriggerModContentLoadedEvent(null);
@@ -286,7 +330,7 @@ namespace OverhaulMod.Content
         /// <param name="addonId"></param>
         /// <param name="quick">If true, it check if addon is cached</param>
         /// <returns></returns>
-        public bool HasInstalledAddonVersion(string addonId, int minVersion)
+        public bool HasInstalledAddon(string addonId, int minVersion)
         {
             if (m_loadedAddons.IsNullOrEmpty())
                 return false;
@@ -361,7 +405,47 @@ namespace OverhaulMod.Content
             {
                 string addonInfoFilePath = Path.Combine(folder, ADDON_INFO_FILE);
                 if (!File.Exists(addonInfoFilePath))
-                    continue;
+                {
+                    addonInfoFilePath = Path.Combine(folder, ADDON_INFO_FILE_OLD);
+                    if (!File.Exists(addonInfoFilePath))
+                        continue;
+
+                    try
+                    {
+                        string newId = null;
+
+                        ContentInfo contentInfo = ModJsonUtils.DeserializeStream<ContentInfo>(addonInfoFilePath);
+                        if (contentInfo.DisplayName == "Extras")
+                        {
+                            newId = EXTRAS_ADDON_ID;
+                        }
+                        else if (contentInfo.DisplayName == "Behind the scenes")
+                        {
+                            newId = GALLERY_ADDON_ID;
+                        }
+                        else if (contentInfo.DisplayName == "Realistic skyboxes")
+                        {
+                            newId = REALISTIC_SKYBOXES_ADDON_ID;
+                        }
+
+                        if (newId.IsNullOrEmpty())
+                            continue;
+
+                        AddonInfo addonInfo = new AddonInfo();
+                        addonInfo.DisplayName = new Dictionary<string, string>();
+                        addonInfo.DisplayName.Add("en", contentInfo.DisplayName);
+                        addonInfo.Description = new Dictionary<string, string>();
+                        addonInfo.Version = -1;
+                        addonInfo.UniqueID = newId;
+                        addonInfo.FolderPath = folder;
+                        addonInfo.MinModVersion = ModBuildInfo.version;
+                        list.Add(addonInfo);
+                    }
+                    catch
+                    {
+                        continue;
+                    }
+                }
 
                 try
                 {
@@ -384,6 +468,16 @@ namespace OverhaulMod.Content
         public void AddLoadedAddon(AddonInfo addonInfo)
         {
             m_loadedAddons.Add(addonInfo);
+        }
+
+        public bool DoesAddonNeedUpdate(string addonId)
+        {
+            return AddonsToUpdate.Contains(addonId);
+        }
+
+        public bool DoesAddonNeedUpdate(AddonInfo addonInfo)
+        {
+            return DoesAddonNeedUpdate(addonInfo.UniqueID);
         }
 
         public class GetDownloadsResult

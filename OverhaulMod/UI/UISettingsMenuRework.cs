@@ -538,6 +538,11 @@ namespace OverhaulMod.UI
             hideGameUIToggleNote.SetActive(!settingsMenu.HideGameUIToggle.isOn && CutSceneManager.Instance.IsInCutscene());
 
             _ = pageBuilder.Toggle(settingsMenu.SubtitlesToggle.isOn, OnSubtitlesToggleChanged, "Show subtitles");
+            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.SHOW_SPEAKER_NAME), delegate (bool value)
+            {
+                ModSettingsManager.SetBoolValue(ModSettingsConstants.SHOW_SPEAKER_NAME, value, true);
+                SpeechAudioManager.Instance.PlaySequence("CloneDroneIntro", false);
+            }, "Display who's speaking");
             _ = pageBuilder.Button("Configure Overhaul mod UIs", delegate
             {
                 _ = ModUIConstants.ShowOverhaulUIManagementPanel(base.transform);
@@ -592,11 +597,6 @@ namespace OverhaulMod.UI
             {
                 populateSubtitlesReworkSettingsPage(m_selectedTabId);
             });
-            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.SHOW_SPEAKER_NAME), delegate (bool value)
-            {
-                ModSettingsManager.SetBoolValue(ModSettingsConstants.SHOW_SPEAKER_NAME, value, true);
-                SpeechAudioManager.Instance.PlaySequence("CloneDroneIntro", false);
-            }, "Display who's speaking");
         }
 
         private void populateGraphicsPage(SettingsMenu settingsMenu)
@@ -1274,6 +1274,23 @@ namespace OverhaulMod.UI
                 ModSettingsManager.SetBoolValue(ModSettingsConstants.SUBTITLE_TEXT_FIELD_BG, value, true);
                 SpeechAudioManager.Instance.PlaySequence("CloneDroneIntro", false);
             }, "Enable background");
+            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.SHOW_SPEAKER_NAME), delegate (bool value)
+            {
+                ModSettingsManager.SetBoolValue(ModSettingsConstants.SHOW_SPEAKER_NAME, value, true);
+                SpeechAudioManager.Instance.PlaySequence("CloneDroneIntro", false);
+
+                ClearPageContents();
+                populateSubtitlesReworkSettingsPage(initialPage);
+            }, "Display who's speaking");
+
+            if (ModSettingsManager.GetBoolValue(ModSettingsConstants.SHOW_SPEAKER_NAME))
+            {
+                _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.SWAP_SUBTITLES_COLOR), delegate (bool value)
+                {
+                    ModSettingsManager.SetBoolValue(ModSettingsConstants.SWAP_SUBTITLES_COLOR, value, true);
+                    SpeechAudioManager.Instance.PlaySequence("CloneDroneIntro", false);
+                }, "Swap subtitles color");
+            }
 
             _ = pageBuilder.Header3("Font");
             _ = pageBuilder.Dropdown(ModConstants.GetFontOptions(ModSettingsManager.GetIntValue(ModSettingsConstants.SUBTITLE_TEXT_FIELD_FONT)), ModSettingsManager.GetIntValue(ModSettingsConstants.SUBTITLE_TEXT_FIELD_FONT), delegate (int value)
@@ -1283,8 +1300,8 @@ namespace OverhaulMod.UI
             });
             _ = pageBuilder.Header4("Some languages might not be supported by certain fonts");
 
-            if (!AddonManager.Instance.HasInstalledAddon(AddonManager.EXTRAS_ADDON_ID))
-                pageBuilder.AddonDownload("Install \"Extras\" addon for more fonts", AddonManager.EXTRAS_ADDON_ID, delegate
+            if (!AddonManager.Instance.HasInstalledAddon(AddonManager.EXTRAS_ADDON_ID, 0))
+                pageBuilder.AddonDownload("Install \"Extras\" addon for more fonts", AddonManager.EXTRAS_ADDON_ID, 0, delegate
                 {
                     ClearPageContents();
                     populateSubtitlesReworkSettingsPage(initialPage);
@@ -1345,8 +1362,8 @@ namespace OverhaulMod.UI
             });
             _ = pageBuilder.Header4("Some languages might not be supported by certain fonts");
 
-            if (!AddonManager.Instance.HasInstalledAddon(AddonManager.EXTRAS_ADDON_ID))
-                pageBuilder.AddonDownload("Install \"Extras\" addon for more fonts", AddonManager.EXTRAS_ADDON_ID, delegate
+            if (!AddonManager.Instance.HasInstalledAddon(AddonManager.EXTRAS_ADDON_ID, 0))
+                pageBuilder.AddonDownload("Install \"Extras\" addon for more fonts", AddonManager.EXTRAS_ADDON_ID, 0, delegate
                 {
                     ClearPageContents();
                     populateUKTDReworkSettingsPage(initialPage);
@@ -2165,7 +2182,7 @@ namespace OverhaulMod.UI
                 });
             }
 
-            public void AddonDownload(string labelText, string addonId, UnityAction addonInstalledCallback = null, Transform parentOverride = null)
+            public void AddonDownload(string labelText, string addonId, int version, UnityAction addonInstalledCallback = null, Transform parentOverride = null)
             {
                 ModdedObject moddedObject = Instantiate(SettingsMenu.AddonDownload, parentOverride ? parentOverride : SettingsMenu.PageContentsTransform);
                 moddedObject.gameObject.SetActive(true);

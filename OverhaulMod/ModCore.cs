@@ -26,6 +26,9 @@ namespace OverhaulMod
         [ModSetting(ModSettingsConstants.SHOW_SPEAKER_NAME, true)]
         public static bool ShowSpeakerName;
 
+        [ModSetting(ModSettingsConstants.SWAP_SUBTITLES_COLOR, false)]
+        public static bool SwapSubtitlesColor;
+
         [ModSetting(ModSettingsConstants.STREAMER_MODE, true)]
         public static bool StreamerMode;
 

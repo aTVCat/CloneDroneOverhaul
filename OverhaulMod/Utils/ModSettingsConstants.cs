@@ -615,5 +615,20 @@ namespace OverhaulMod.Utils
         /// <see cref="Combat.CharacterExtension"/>
         /// </summary>
         public const string ENABLE_SCROLL_TO_SWITCH_WEAPON = "EnableScrollToSwitchWeapon";
+
+        /// <summary>
+        /// <see cref="Content.AddonManager"/>
+        /// </summary>
+        public const string ADDONS_TO_UPDATE = "AddonsToUpdate";
+
+        /// <summary>
+        /// <see cref="Engine.ScheduledActionsManager"/>
+        /// </summary>
+        public const string REFRESH_ADDON_UPDATES_DATE_TIME = "RefreshAddonUpdatesDateTime";
+
+        /// <summary>
+        /// <see cref="ModCore"/>
+        /// </summary>
+        public const string SWAP_SUBTITLES_COLOR = "SwapSubtitlesColor";
     }
 }

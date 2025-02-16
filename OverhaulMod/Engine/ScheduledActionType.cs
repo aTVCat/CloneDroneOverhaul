@@ -6,5 +6,6 @@
         RefreshExclusivePerks,
         RefreshCustomizationAssetsRemoteVersion,
         RefreshNews,
+        RefreshAddonUpdates
     }
 }

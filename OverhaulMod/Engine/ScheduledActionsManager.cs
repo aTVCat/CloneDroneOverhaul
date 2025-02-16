@@ -17,6 +17,9 @@ namespace OverhaulMod.Engine
         [ModSetting(ModSettingsConstants.REFRESH_NEWS_DATE_TIME, null, ModSetting.Tag.IgnoreExport)]
         public static string RefreshNewsDateTime;
 
+        [ModSetting(ModSettingsConstants.REFRESH_ADDON_UPDATES_DATE_TIME, null, ModSetting.Tag.IgnoreExport)]
+        public static string RefreshAddonUpdatesDateTime;
+
         [ModSetting(ModSettingsConstants.DISABLE_SCHEDULES, false)]
         public static bool DisableSchedules;
 
@@ -36,6 +39,9 @@ namespace OverhaulMod.Engine
                     break;
                 case ScheduledActionType.RefreshNews:
                     ModSettingsManager.SetStringValue(ModSettingsConstants.REFRESH_NEWS_DATE_TIME, dateTime.AddDays(3).ToString());
+                    break;
+                case ScheduledActionType.RefreshAddonUpdates:
+                    ModSettingsManager.SetStringValue(ModSettingsConstants.REFRESH_ADDON_UPDATES_DATE_TIME, dateTime.AddDays(5).ToString());
                     break;
             }
             ModSettingsDataManager.Instance.Save();
@@ -62,6 +68,9 @@ namespace OverhaulMod.Engine
                     break;
                 case ScheduledActionType.RefreshNews:
                     dateTimeString = RefreshNewsDateTime;
+                    break;
+                case ScheduledActionType.RefreshAddonUpdates:
+                    dateTimeString = RefreshAddonUpdatesDateTime;
                     break;
                 default:
                     dateTimeString = null;

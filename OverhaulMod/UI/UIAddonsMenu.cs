@@ -113,6 +113,11 @@ namespace OverhaulMod.UI
                 populateNetworkContent();
         }
 
+        public void Populate()
+        {
+            populateLocalContent();
+        }
+
         private void populateLocalContent()
         {
             if (m_container.childCount != 0)
@@ -122,26 +127,13 @@ namespace OverhaulMod.UI
             if (list.IsNullOrEmpty())
                 return;
 
-            foreach (AddonInfo content in list)
+            foreach (AddonInfo addon in list)
             {
-                string displayName = content.GetDisplayName();
-
                 ModdedObject moddedObject = Instantiate(m_localContentDisplay, m_container);
                 moddedObject.gameObject.SetActive(true);
-                moddedObject.GetObject<Text>(0).text = displayName;
-                moddedObject.GetObject<Text>(1).text = content.GetDescription();
-                moddedObject.GetObject<Button>(2).onClick.AddListener(delegate
-                {
-                    ModUIUtils.MessagePopup(true, $"{LocalizationManager.Instance.GetTranslatedString("addons_confirmdelete_header")} \"{displayName}\"?", LocalizationManager.Instance.GetTranslatedString("action_cannot_be_undone"), 125f, MessageMenu.ButtonLayout.EnableDisableButtons, "ok", "Yes", "No", null, delegate
-                    {
-                        if (moddedObject && moddedObject.gameObject)
-                        {
-                            Directory.Delete(content.FolderPath, true);
-                            AddonManager.Instance.RefreshInstalledAddons();
-                            populateLocalContent();
-                        }
-                    });
-                });
+
+                UIElementLocalAddonDisplay localAddonDisplay = moddedObject.gameObject.AddComponent<UIElementLocalAddonDisplay>();
+                localAddonDisplay.Initialize(addon, this);
             }
         }
 

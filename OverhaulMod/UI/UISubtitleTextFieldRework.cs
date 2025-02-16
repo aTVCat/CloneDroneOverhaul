@@ -153,11 +153,21 @@ namespace OverhaulMod.UI
                     _ = m_stringBuilder.Clear();
                     if (ModCore.ShowSpeakerName)
                     {
-                        _ = m_stringBuilder.Append(ModGameUtils.GetSpeakerNameText(currentSentence.SpeakerName));
+                        string speakerName = ModGameUtils.GetSpeakerNameText(currentSentence.SpeakerName);
+                        if (ModCore.SwapSubtitlesColor)
+                        {
+                            speakerName = speakerName.AddColor(speechAudioManager.GetSubtitleColorForSpeaker(currentSentence.SpeakerName));
+                        }
+                        else
+                        {
+                            speakerName = speakerName.AddColor(Color.white);
+                        }
+
+                        _ = m_stringBuilder.Append(speakerName);
                         _ = m_stringBuilder.Append(' ');
                     }
                     _ = m_stringBuilder.Append(currentSentence.SpeechText);
-                    ShowText(m_stringBuilder.ToString(), speechAudioManager.GetSubtitleColorForSpeaker(currentSentence.SpeakerName));
+                    ShowText(m_stringBuilder.ToString(), ModCore.SwapSubtitlesColor ? Color.white : speechAudioManager.GetSubtitleColorForSpeaker(currentSentence.SpeakerName));
                 }
             }
         }

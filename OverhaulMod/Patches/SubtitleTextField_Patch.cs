@@ -25,13 +25,22 @@ namespace OverhaulMod.Patches
             SpeechSentence currentSentence = SpeechAudioManager.Instance.GetCurrentSentence();
             if (currentSentence != null)
             {
-                __instance.TextField.color = SpeechAudioManager.Instance.GetSubtitleColorForSpeaker(currentSentence.SpeakerName);
+                __instance.TextField.color = ModCore.SwapSubtitlesColor ? Color.white : SpeechAudioManager.Instance.GetSubtitleColorForSpeaker(currentSentence.SpeakerName);
                 if (currentSentence.SpeechText.IsNullOrWhiteSpace())
                     __instance.TextField.text = "!!!NOT_LOCALIZED!!!";
                 else
                 {
                     string speakerName = ModGameUtils.GetSpeakerNameText(currentSentence.SpeakerName);
-                    __instance.TextField.text = $"{speakerName} {currentSentence.SpeechText}";
+                    if (ModCore.SwapSubtitlesColor)
+                    {
+                        speakerName = speakerName.AddColor(SpeechAudioManager.Instance.GetSubtitleColorForSpeaker(currentSentence.SpeakerName));
+                    }
+                    else
+                    {
+                        speakerName = speakerName.AddColor(Color.white);
+                    }
+
+                    __instance.TextField.text = $"{speakerName} {(ModCore.SwapSubtitlesColor ? currentSentence.SpeechText.AddColor(Color.white) : currentSentence.SpeechText)}";
                 }
 
                 __instance.transform.localScale = Vector3.one * 0.5f;

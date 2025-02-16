@@ -174,6 +174,7 @@ namespace OverhaulMod.UI
             m_refreshPlayerListTime = -1f;
 
             m_extrasAddonEmbed.AddonId = AddonManager.EXTRAS_ADDON_ID;
+            m_extrasAddonEmbed.Version = 0;
             m_extrasAddonEmbed.RefreshDisplays();
             m_extrasAddonEmbed.onContentDownloaded.AddListener(refreshPlayers);
 
