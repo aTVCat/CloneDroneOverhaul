@@ -12,17 +12,17 @@ namespace OverhaulMod.Content
 
         public UpdateInfo ModBotRelease, GitHubRelease, InternalRelease;
 
-        public Dictionary<string, UpdateInfo> Branches;
+        public Dictionary<string, UpdateInfo> Builds;
 
         public void FixValues()
         {
-            if (Branches == null)
-                Branches = new Dictionary<string, UpdateInfo>();
+            if (Builds == null)
+                Builds = new Dictionary<string, UpdateInfo>();
         }
 
         public bool HasAnyNewBuildAvailable()
         {
-            foreach (UpdateInfo item in Branches.Values)
+            foreach (UpdateInfo item in Builds.Values)
                 if (item.CanBeInstalledByLocalUser() && item.IsNewerBuild())
                     return true;
 

@@ -96,6 +96,7 @@ namespace OverhaulMod.Utils
         public const string UI_WORKSHOP_BROWSER_HISTORY_PANEL = "UI_WorkshopBrowserHistoryPanel";
         public const string UI_ADDONS_EDITOR_CREATION_DIALOG = "UI_AddonsEditorCreationDialog";
         public const string UI_ADDON_DETAILS_MENU = "UI_AddonsDetailsMenu";
+        public const string UI_UPDATES_EDITOR = "UI_UpdatesEditor";
 
         public static UIVersionLabel ShowVersionLabel()
         {
@@ -616,6 +617,11 @@ namespace OverhaulMod.Utils
         public static UIAddonDetailsMenu ShowAddonDetailsMenu(Transform transform)
         {
             return ModUIManager.Instance.Show<UIAddonDetailsMenu>(AssetBundleConstants.UI, UI_ADDON_DETAILS_MENU, transform);
+        }
+
+        public static UIUpdatesEditor ShowUpdatesEditor(Transform transform)
+        {
+            return ModUIManager.Instance.Show<UIUpdatesEditor>(AssetBundleConstants.UI, UI_UPDATES_EDITOR, transform);
         }
     }
 }

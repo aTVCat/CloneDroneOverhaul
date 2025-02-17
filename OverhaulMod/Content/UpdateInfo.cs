@@ -11,14 +11,11 @@ namespace OverhaulMod.Content
         public bool IsGoogleDriveLink;
         public string DownloadLink;
 
-        public List<string> AllowedUsers;
+        public string AllowedUsers;
         public ExclusivePerkType RequireExclusivePerk;
 
         public void FixValues()
         {
-            if (AllowedUsers == null)
-                AllowedUsers = new List<string>();
-
             if (ModVersion == null)
                 ModVersion = new Version(ModBuildInfo.versionMajor, ModBuildInfo.versionMinor, ModBuildInfo.versionBuild, ModBuildInfo.versionRevision);
         }

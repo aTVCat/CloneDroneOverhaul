@@ -12,6 +12,10 @@ namespace OverhaulMod.UI
         [UIElement("CloseButton")]
         private readonly Button m_exitButton;
 
+        [UIElementAction(nameof(OnEditorButtonClicked))]
+        [UIElement("EditorButton")]
+        private readonly Button m_editorButton;
+
         [UIElementAction(nameof(OnCheckForUpdatesButtonClicked))]
         [UIElement("CheckForUpdatesButton")]
         private readonly Button m_checkForUpdatesButton;
@@ -54,6 +58,11 @@ namespace OverhaulMod.UI
 
             m_idleHeaderText.text = "Overhaul mod is up-to-date!";
             m_idleDescriptionText.text = $"Last checked: {(dateTime == DateTime.MinValue ? "unknown" : dateTime.ToShortDateString())}";
+        }
+
+        public void OnEditorButtonClicked()
+        {
+            ModUIConstants.ShowUpdatesEditor(base.transform);
         }
 
         public void OnPatchNotesButtonClicked()

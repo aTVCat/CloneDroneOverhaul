@@ -93,9 +93,9 @@ namespace OverhaulMod.Content
                     string n = NotifyAboutNewVersionFromBranch;
                     if (!n.IsNullOrEmpty())
                     {
-                        if (updateInfoList.Branches.ContainsKey(n))
+                        if (updateInfoList.Builds.ContainsKey(n))
                         {
-                            UpdateInfo updateInfo = updateInfoList.Branches[n];
+                            UpdateInfo updateInfo = updateInfoList.Builds[n];
                             if (updateInfo.CanBeInstalledByLocalUser() && updateInfo.IsNewerBuild())
                             {
                                 ModSettingsManager.SetStringValue(ModSettingsConstants.SAVED_NEW_VERSION, updateInfo.ModVersion.ToString());
