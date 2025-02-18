@@ -544,6 +544,22 @@ namespace OverhaulMod.Utils
             return patchNotes;
         }
 
+        public static UIPatchNotes ShowPatchNotes(Transform parent, bool showVersionList = true, bool expandPanel = true)
+        {
+            UIPatchNotes patchNotes = ModUIManager.Instance.Show<UIPatchNotes>(AssetBundleConstants.UI, UI_PATCH_NOTES, parent);
+            if (showVersionList)
+                patchNotes.ShowVersionList();
+            else
+                patchNotes.HideVersionList();
+
+            if (expandPanel)
+                patchNotes.ExpandPanel();
+            else
+                patchNotes.ShrinkPanel();
+
+            return patchNotes;
+        }
+
         public static UIPersonalizationEditorItemCreationDialog ShowPersonalizationEditorItemCreationDialog(Transform transform)
         {
             return ModUIManager.Instance.Show<UIPersonalizationEditorItemCreationDialog>(AssetBundleConstants.UI, UI_PERSONALIZATION_EDITOR_ITEM_CREATION_DIALOG, transform);

@@ -480,11 +480,9 @@ namespace OverhaulMod.Content
             return DoesAddonNeedUpdate(addonInfo.UniqueID);
         }
 
-        public class GetDownloadsResult
+        public class GetDownloadsResult : DownloadResult
         {
             public AddonDownloadListInfo Downloads;
-
-            public string Error;
 
             public GetDownloadsResult()
             {
@@ -499,11 +497,6 @@ namespace OverhaulMod.Content
             public GetDownloadsResult(AddonDownloadListInfo downloads)
             {
                 Downloads = downloads;
-            }
-
-            public bool IsError()
-            {
-                return !Error.IsNullOrEmpty();
             }
         }
     }

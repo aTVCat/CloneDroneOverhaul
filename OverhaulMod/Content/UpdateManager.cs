@@ -1,4 +1,5 @@
-﻿using ICSharpCode.SharpZipLib.Zip;
+﻿using BestHTTP.SocketIO;
+using ICSharpCode.SharpZipLib.Zip;
 using InternalModBot;
 using OverhaulMod.Engine;
 using OverhaulMod.Utils;
@@ -49,7 +50,9 @@ namespace OverhaulMod.Content
             set;
         }
 
-        private readonly UpdateInfoList m_downloadedUpdateInfoList;
+        private UpdateInfoList m_updatesList;
+
+        public bool GetUpdatesFromTestFolder = true;
 
         private void Start()
         {
@@ -66,6 +69,27 @@ namespace OverhaulMod.Content
             _ = ModActionUtils.RunCoroutine(retrieveDataOnStartCoroutine());
         }
 
+        public void LoadDataFromDisk()
+        {
+            UpdateInfoList infoList;
+            try
+            {
+                infoList = ModJsonUtils.DeserializeStream<UpdateInfoList>(Path.Combine(ModCore.developerFolder, REPOSITORY_FILE));
+            }
+            catch
+            {
+                infoList = new UpdateInfoList();
+            }
+            infoList.FixValues();
+
+            m_updatesList = infoList;
+        }
+
+        public UpdateInfoList GetUpdatesList()
+        {
+            return m_updatesList;
+        }
+
         private IEnumerator retrieveDataOnStartCoroutine()
         {
             DownloadUpdateInfoFile(delegate
@@ -78,6 +102,36 @@ namespace OverhaulMod.Content
         public bool ShouldHighlightUpdatesButton()
         {
             return downloadedVersion > ModBuildInfo.version;
+        }
+
+        public void DownloadUpdatesList(Action<GetUpdatesResult> callback)
+        {
+            string prefix = string.Empty;
+            if(GetUpdatesFromTestFolder)
+            {
+                prefix = "test/";
+            }
+
+            RepositoryManager.Instance.GetTextFile(prefix+ REPOSITORY_FILE, delegate (string content)
+            {
+                UpdateInfoList updateInfoList;
+                try
+                {
+                    updateInfoList = ModJsonUtils.Deserialize<UpdateInfoList>(content);
+                    updateInfoList.FixValues();
+                }
+                catch (Exception exc)
+                {
+                    callback?.Invoke(new GetUpdatesResult(exc.ToString()));
+                    return;
+                }
+
+                m_updatesList = updateInfoList;
+                callback?.Invoke(new GetUpdatesResult(updateInfoList));
+            }, delegate (string error)
+            {
+                callback?.Invoke(new GetUpdatesResult(error));
+            }, out _);
         }
 
         public void DownloadUpdateInfoFile(Action<UpdateInfoList> callback, Action<string> errorCallback)
@@ -186,6 +240,26 @@ namespace OverhaulMod.Content
                     File.Delete(backupFilePath);
 
                 File.Move(filePath, backupFilePath);
+            }
+        }
+
+        public class GetUpdatesResult : DownloadResult
+        {
+            public UpdateInfoList Updates;
+
+            public GetUpdatesResult()
+            {
+
+            }
+
+            public GetUpdatesResult(string error)
+            {
+                Error = error;
+            }
+
+            public GetUpdatesResult(UpdateInfoList updates)
+            {
+                Updates = updates;
             }
         }
     }

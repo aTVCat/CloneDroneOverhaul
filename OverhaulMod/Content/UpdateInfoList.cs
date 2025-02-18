@@ -14,6 +14,24 @@ namespace OverhaulMod.Content
 
         public Dictionary<string, UpdateInfo> Builds;
 
+        public void SetReleasesValuesForOldVersions()
+        {
+            if (Builds.ContainsKey(RELEASE_BRANCH))
+            {
+                ModBotRelease = Builds[RELEASE_BRANCH];
+            }
+
+            if (Builds.ContainsKey(PREVIEW_BRANCH))
+            {
+                GitHubRelease = Builds[PREVIEW_BRANCH];
+            }
+
+            if (Builds.ContainsKey(CANARY_BRANCH))
+            {
+                InternalRelease = Builds[CANARY_BRANCH];
+            }
+        }
+
         public void FixValues()
         {
             if (Builds == null)

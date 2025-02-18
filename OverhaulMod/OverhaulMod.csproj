@@ -349,6 +349,7 @@
     <Compile Include="Content\AddonInfo.cs" />
     <Compile Include="Content\AddonDownloadListInfo.cs" />
     <Compile Include="Content\ContentInfo.cs" />
+    <Compile Include="Content\DownloadResult.cs" />
     <Compile Include="Content\ExclusivePerkColor.cs" />
     <Compile Include="Content\GoogleDriveManager.cs" />
     <Compile Include="Content\LevelEditor\LevelEditorWeatherSettingsOverride.cs" />
