@@ -577,7 +577,13 @@ namespace OverhaulMod.UI
 
         public void OnPatchNotesButtonClicked()
         {
-            _ = ModUIConstants.ShowPatchNotes();
+            _ = ModUIConstants.ShowPatchNotes(new UIPatchNotes.ShowArguments()
+            {
+                CloseButtonActive = true,
+                PanelOffset = Vector2.zero,
+                ShrinkPanel = false,
+                HideVersionList = false,
+            });
         }
 
         public void OnFeaturesButtonClicked()

@@ -1,5 +1,4 @@
-﻿using BestHTTP.SocketIO;
-using ICSharpCode.SharpZipLib.Zip;
+﻿using ICSharpCode.SharpZipLib.Zip;
 using InternalModBot;
 using OverhaulMod.Engine;
 using OverhaulMod.Utils;
@@ -50,9 +49,13 @@ namespace OverhaulMod.Content
             set;
         }
 
-        private UpdateInfoList m_updatesList;
-
         public bool GetUpdatesFromTestFolder = true;
+
+        private UnityWebRequest m_webRequest;
+
+        private float m_buildDownloadProgress;
+
+        private UpdateInfoList m_updatesList;
 
         private void Start()
         {
@@ -67,6 +70,21 @@ namespace OverhaulMod.Content
                 return;
 
             _ = ModActionUtils.RunCoroutine(retrieveDataOnStartCoroutine());
+        }
+
+        private void Update()
+        {
+            if(m_webRequest != null)
+            {
+                try
+                {
+                    m_buildDownloadProgress = m_webRequest.downloadProgress;
+                }
+                catch
+                {
+                    m_webRequest = null;
+                }
+            }
         }
 
         public void LoadDataFromDisk()
@@ -90,6 +108,11 @@ namespace OverhaulMod.Content
             return m_updatesList;
         }
 
+        public float GetBuildDownloadProgress()
+        {
+            return m_buildDownloadProgress;
+        }
+
         private IEnumerator retrieveDataOnStartCoroutine()
         {
             DownloadUpdateInfoFile(delegate
@@ -107,12 +130,12 @@ namespace OverhaulMod.Content
         public void DownloadUpdatesList(Action<GetUpdatesResult> callback)
         {
             string prefix = string.Empty;
-            if(GetUpdatesFromTestFolder)
+            if (GetUpdatesFromTestFolder)
             {
                 prefix = "test/";
             }
 
-            RepositoryManager.Instance.GetTextFile(prefix+ REPOSITORY_FILE, delegate (string content)
+            RepositoryManager.Instance.GetTextFile(prefix + REPOSITORY_FILE, delegate (string content)
             {
                 UpdateInfoList updateInfoList;
                 try
@@ -143,22 +166,6 @@ namespace OverhaulMod.Content
                 {
                     updateInfoList = ModJsonUtils.Deserialize<UpdateInfoList>(content);
                     updateInfoList.FixValues();
-
-                    string n = NotifyAboutNewVersionFromBranch;
-                    if (!n.IsNullOrEmpty())
-                    {
-                        if (updateInfoList.Builds.ContainsKey(n))
-                        {
-                            UpdateInfo updateInfo = updateInfoList.Builds[n];
-                            if (updateInfo.CanBeInstalledByLocalUser() && updateInfo.IsNewerBuild())
-                            {
-                                ModSettingsManager.SetStringValue(ModSettingsConstants.SAVED_NEW_VERSION, updateInfo.ModVersion.ToString());
-                                ModSettingsManager.SetStringValue(ModSettingsConstants.SAVED_NEW_VERSION_BRANCH, n);
-                            }
-                        }
-                    }
-                    ModSettingsManager.SetStringValue(ModSettingsConstants.UPDATES_LAST_CHECKED_DATE, DateTime.Now.ToString());
-                    ModSettingsDataManager.Instance.Save();
                 }
                 catch (Exception exc)
                 {
@@ -167,6 +174,76 @@ namespace OverhaulMod.Content
                 }
                 callback?.Invoke(updateInfoList);
             }, errorCallback, out _);
+        }
+
+        public void DownloadBuild(string url, bool isGoogleDriveLink, string directoryName, Action<InstallUpdateResult> callback)
+        {
+            m_buildDownloadProgress = 0f;
+
+            string directoryPath = Path.Combine(ModsManager.Instance.ModFolderPath, directoryName);
+            if (Directory.Exists(directoryPath))
+            {
+                try
+                {
+                    Directory.Delete(directoryPath, true);
+                }
+                catch (Exception exc)
+                {
+                    callback?.Invoke(new InstallUpdateResult(exc.ToString()));
+                    return;
+                }
+            }
+
+            if (isGoogleDriveLink)
+            {
+                string tempPath = Path.GetTempFileName();
+                GoogleDriveManager.Instance.DownloadFile(url, tempPath, delegate (float progress)
+                {
+                    m_buildDownloadProgress = progress;
+                }, delegate (string result)
+                {
+                    if (result != null)
+                    {
+                        callback?.Invoke(new InstallUpdateResult(result));
+                        return;
+                    }
+
+                    callback?.Invoke(new InstallUpdateResult(installBuild(tempPath, directoryPath)));
+                });
+                return;
+            }
+
+            RepositoryManager.Instance.GetCustomFile(url, delegate (byte[] bytes)
+            {
+                m_webRequest = null;
+
+                string tempFile = Path.GetTempFileName();
+                ModFileUtils.WriteBytes(bytes, tempFile);
+
+                callback?.Invoke(new InstallUpdateResult(installBuild(tempFile, directoryPath)));
+            }, delegate (string error)
+            {
+                m_webRequest = null;
+                callback?.Invoke(new InstallUpdateResult(error));
+            }, out m_webRequest, -1);
+        }
+
+        private string installBuild(string archivePath, string targetDirectory)
+        {
+            FastZip fastZip = new FastZip();
+            fastZip.ExtractZip(archivePath, targetDirectory, null);
+            if (File.Exists(archivePath))
+                File.Delete(archivePath);
+
+            try
+            {
+                prepareCurrentBuildForAnUpdate();
+            }
+            catch (Exception exc)
+            {
+                return "Prepare build error: " + exc;
+            }
+            return null;
         }
 
         public void DownloadBuildFromSource(string source, string directoryName, Action callback, Action<string> errorCallback, out UnityWebRequest unityWebRequest)
@@ -260,6 +337,19 @@ namespace OverhaulMod.Content
             public GetUpdatesResult(UpdateInfoList updates)
             {
                 Updates = updates;
+            }
+        }
+
+        public class InstallUpdateResult : DownloadResult
+        {
+            public InstallUpdateResult()
+            {
+
+            }
+
+            public InstallUpdateResult(string error)
+            {
+                Error = error;
             }
         }
     }

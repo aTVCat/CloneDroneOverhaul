@@ -41,7 +41,7 @@ namespace OverhaulMod.Content
         public bool HasAnyNewBuildAvailable()
         {
             foreach (UpdateInfo item in Builds.Values)
-                if (item.CanBeInstalledByLocalUser() && item.IsNewerBuild())
+                if (item.IsNewerBuild() && item.CanBeInstalledByLocalUser())
                     return true;
 
             return false;

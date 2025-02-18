@@ -182,13 +182,7 @@ namespace OverhaulMod
                 GameObject gameObject = Instantiate(prefab, GameUIRootTransform);
                 gameObject.SetActive(true);
                 m_instantiatedUIs.Add(fullName, gameObject);
-                RectTransform transform = gameObject.transform as RectTransform;
-                transform.SetSiblingIndex(GetSiblingIndex(layer) + siblingIndexOffset);
-                transform.anchorMin = Vector2.zero;
-                transform.anchorMax = Vector2.one;
-                transform.sizeDelta = Vector2.zero;
-                transform.anchoredPosition = Vector2.zero;
-                transform.localScale = Vector3.one;
+                reparentUI(gameObject.transform as RectTransform, layer, siblingIndexOffset);
 
                 T result1 = gameObject.AddComponent<T>();
                 result1.Name = fullName;
@@ -208,6 +202,10 @@ namespace OverhaulMod
 
                 return result1;
             }
+            else
+            {
+                reparentUI(m_instantiatedUIs[fullName].transform as RectTransform, layer, siblingIndexOffset);
+            }
 
             T result = m_instantiatedUIs[fullName].GetComponent<T>();
             result.Show();
@@ -216,6 +214,16 @@ namespace OverhaulMod
                 m_shownUIs.Add(result);
 
             return result;
+        }
+
+        private void reparentUI(RectTransform transform, UILayer layer, int siblingIndexOffset)
+        {
+            transform.SetSiblingIndex(GetSiblingIndex(layer) + siblingIndexOffset);
+            transform.anchorMin = Vector2.zero;
+            transform.anchorMax = Vector2.one;
+            transform.sizeDelta = Vector2.zero;
+            transform.anchoredPosition = Vector2.zero;
+            transform.localScale = Vector3.one;
         }
 
         public T Show<T>(string assetBundle, string assetKey, Transform parent) where T : OverhaulUIBehaviour

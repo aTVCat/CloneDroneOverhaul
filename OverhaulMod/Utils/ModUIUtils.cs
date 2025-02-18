@@ -24,7 +24,13 @@ namespace OverhaulMod.Utils
             {
                 DelegateScheduler.Instance.Schedule(delegate
                 {
-                    _ = ModUIConstants.ShowPatchNotes();
+                    _ = ModUIConstants.ShowPatchNotes(new UIPatchNotes.ShowArguments()
+                    {
+                        CloseButtonActive = true,
+                        PanelOffset = Vector2.zero,
+                        ShrinkPanel = false,
+                        HideVersionList = false,
+                    });
                 }, delay);
             }
             else if (showNewUpdateMessage)

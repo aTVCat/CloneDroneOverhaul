@@ -648,6 +648,7 @@
     <Compile Include="UI\UIAutoBuildSelectionMenu.cs" />
     <Compile Include="UI\UIIntro.cs" />
     <Compile Include="UI\UIFeaturesMenu.cs" />
+    <Compile Include="UI\UIUpdateDetailsWindow.cs" />
     <Compile Include="UI\UIUpdatesEditor.cs" />
     <Compile Include="UI\UIWorkshopBrowserHistoryPanel.cs" />
     <Compile Include="UI\UIWorkshopItemPagePlayOptions.cs" />

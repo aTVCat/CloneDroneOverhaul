@@ -252,7 +252,13 @@ namespace OverhaulMod.UI
 
         public void OnPreviewChangelogButtonClicked()
         {
-            UIPatchNotes patchNotes = ModUIConstants.ShowPatchNotes(base.transform, false, false);
+            UIPatchNotes patchNotes = ModUIConstants.ShowPatchNotes(base.transform, new UIPatchNotes.ShowArguments()
+            {
+                CloseButtonActive = true,
+                PanelOffset = Vector2.zero,
+                ShrinkPanel = true,
+                HideVersionList = true,
+            });
             patchNotes.PopulateText($"{m_editingUpdate.ModVersion} [{m_editingBranch}]", m_editingUpdate.Changelog);
         }
 

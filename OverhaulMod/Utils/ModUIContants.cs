@@ -2,6 +2,7 @@
 using OverhaulMod.UI;
 using System.Collections.Generic;
 using UnityEngine;
+using static OverhaulMod.UI.UIPatchNotes;
 
 namespace OverhaulMod.Utils
 {
@@ -97,6 +98,7 @@ namespace OverhaulMod.Utils
         public const string UI_ADDONS_EDITOR_CREATION_DIALOG = "UI_AddonsEditorCreationDialog";
         public const string UI_ADDON_DETAILS_MENU = "UI_AddonsDetailsMenu";
         public const string UI_UPDATES_EDITOR = "UI_UpdatesEditor";
+        public const string UI_UPDATE_DETAILS_WINDOW = "UI_UpdateDetailsWindow";
 
         public static UIVersionLabel ShowVersionLabel()
         {
@@ -528,36 +530,23 @@ namespace OverhaulMod.Utils
             return ModUIManager.Instance.Show<UIAssetBundleAssetsBrowser>(AssetBundleConstants.UI, UI_ASSET_BUNDLE_ASSETS_BROWSER, transform);
         }
 
-        public static UIPatchNotes ShowPatchNotes(bool showVersionList = true, bool expandPanel = true)
+        public static UIPatchNotes ShowPatchNotes(ShowArguments showArguments)
         {
             UIPatchNotes patchNotes = ModUIManager.Instance.Show<UIPatchNotes>(AssetBundleConstants.UI, UI_PATCH_NOTES, ModUIManager.UILayer.AfterTitleScreen, 1);
-            if (showVersionList)
-                patchNotes.ShowVersionList();
-            else
-                patchNotes.HideVersionList();
-
-            if (expandPanel)
-                patchNotes.ExpandPanel();
-            else
-                patchNotes.ShrinkPanel();
-
+            patchNotes.SetElementsViaArguments(showArguments);
             return patchNotes;
         }
 
-        public static UIPatchNotes ShowPatchNotes(Transform parent, bool showVersionList = true, bool expandPanel = true)
+        public static UIPatchNotes ShowPatchNotes(Transform parent, ShowArguments showArguments)
         {
             UIPatchNotes patchNotes = ModUIManager.Instance.Show<UIPatchNotes>(AssetBundleConstants.UI, UI_PATCH_NOTES, parent);
-            if (showVersionList)
-                patchNotes.ShowVersionList();
-            else
-                patchNotes.HideVersionList();
-
-            if (expandPanel)
-                patchNotes.ExpandPanel();
-            else
-                patchNotes.ShrinkPanel();
-
+            patchNotes.SetElementsViaArguments(showArguments);
             return patchNotes;
+        }
+
+        public static void HidePatchNotes()
+        {
+            ModUIManager.Instance.Hide(AssetBundleConstants.UI, UI_PATCH_NOTES);
         }
 
         public static UIPersonalizationEditorItemCreationDialog ShowPersonalizationEditorItemCreationDialog(Transform transform)
@@ -638,6 +627,13 @@ namespace OverhaulMod.Utils
         public static UIUpdatesEditor ShowUpdatesEditor(Transform transform)
         {
             return ModUIManager.Instance.Show<UIUpdatesEditor>(AssetBundleConstants.UI, UI_UPDATES_EDITOR, transform);
+        }
+
+        public static UIUpdateDetailsWindow ShowUpdateDetailsWindow(Transform transform, UpdateInfo updateInfo, string branch)
+        {
+            var detailsWindow = ModUIManager.Instance.Show<UIUpdateDetailsWindow>(AssetBundleConstants.UI, UI_UPDATE_DETAILS_WINDOW, transform);
+            detailsWindow.Populate(updateInfo, branch);
+            return detailsWindow;
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OverhaulMod.Utils;
+using System;
 using System.Collections.Generic;
 
 namespace OverhaulMod.Content
@@ -27,12 +28,13 @@ namespace OverhaulMod.Content
 
         public bool CanBeInstalledByLocalUser()
         {
-            if (RequireExclusivePerk != ExclusivePerkType.None)
-            {
-                if (ExclusivePerkManager.Instance.HasUnlockedPerk(RequireExclusivePerk))
-                    return true;
-            }
-            return AllowedUsers == null || AllowedUsers.Contains(ModUserInfo.localPlayerPlayFabID) || AllowedUsers.Contains(ModUserInfo.localPlayerSteamID.ToString());
+            if (DownloadLink.IsNullOrEmpty() || DownloadLink.IsNullOrWhiteSpace())
+                return false;
+
+            if (RequireExclusivePerk != ExclusivePerkType.None && ExclusivePerkManager.Instance.HasUnlockedPerk(RequireExclusivePerk))
+                return true;
+
+            return AllowedUsers.IsNullOrEmpty() || AllowedUsers.IsNullOrWhiteSpace() || AllowedUsers.Contains(ModUserInfo.localPlayerPlayFabID) || AllowedUsers.Contains(ModUserInfo.localPlayerSteamID.ToString());
         }
 
         public bool IsCurrentBuild()

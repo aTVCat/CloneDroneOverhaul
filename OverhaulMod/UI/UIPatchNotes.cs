@@ -10,7 +10,7 @@ namespace OverhaulMod.UI
 {
     public class UIPatchNotes : OverhaulUIBehaviour
     {
-        private static Color s_darkerWhite = new Color(0.87f, 0.87f, 0.87f, 1f);
+        private static Color s_darkerWhite = new Color(0.95f, 0.95f, 0.95f, 1f);
 
         [ModSetting(ModSettingsConstants.LAST_BUILD_CHANGELOG_WAS_SHOWN, null)]
         public static string LastBuildChangelogWasShownOn;
@@ -56,7 +56,13 @@ namespace OverhaulMod.UI
         [UIElement("Panel")]
         private readonly RectTransform m_panelTransform;
 
+        private Image m_shading;
+
         public override bool hideTitleScreen => true;
+
+        public override bool closeOnEscapeButtonPress => m_allowHidingThisMenu;
+
+        private bool m_allowHidingThisMenu;
 
         private Button m_previousButtonClicked;
 
@@ -64,6 +70,7 @@ namespace OverhaulMod.UI
 
         protected override void OnInitialized()
         {
+            m_shading = base.GetComponent<Image>();
             m_textLine.gameObject.AddComponent<BetterOutline>().effectColor = Color.black;
 
             string path = Path.Combine(ModCore.dataFolder, "changelogs");
@@ -165,15 +172,48 @@ namespace OverhaulMod.UI
         public void ShrinkPanel()
         {
             Vector2 sideDelta = m_panelTransform.sizeDelta;
-            sideDelta.x = -500f;
+            sideDelta.x = 475f;
             m_panelTransform.sizeDelta = sideDelta;
         }
 
         public void ExpandPanel()
         {
             Vector2 sideDelta = m_panelTransform.sizeDelta;
-            sideDelta.x = -50f;
+            sideDelta.x = 725f;
             m_panelTransform.sizeDelta = sideDelta;
+        }
+
+        public void SetPanelOffset(Vector2 offset)
+        {
+            m_panelTransform.anchoredPosition = offset;
+        }
+
+        public void SetCloseButtonActive(bool value)
+        {
+            m_exitButton.gameObject.SetActive(value);
+            m_allowHidingThisMenu = value;
+        }
+
+        public void SetShadingActive(bool value)
+        {
+            m_shading.enabled = value;
+        }
+
+        public void SetElementsViaArguments(ShowArguments showArguments)
+        {
+            if (showArguments.ShrinkPanel)
+                ShrinkPanel();
+            else
+                ExpandPanel();
+
+            if (showArguments.HideVersionList)
+                HideVersionList();
+            else
+                ShowVersionList();
+
+            SetPanelOffset(showArguments.PanelOffset);
+            SetCloseButtonActive(showArguments.CloseButtonActive);
+            SetShadingActive(!showArguments.DisableShading);
         }
 
         public void ClickOnFirstButton()
@@ -184,9 +224,6 @@ namespace OverhaulMod.UI
 
         public void PopulateChangelog(string header, string folderName)
         {
-            if (m_textContainer.childCount != 0)
-                TransformUtils.DestroyAllChildren(m_textContainer);
-
             string path = Path.Combine(ModCore.dataFolder, "changelogs", folderName);
             string langCode = LocalizationManager.Instance.GetCurrentLanguageCode();
             if (langCode != "ru" && langCode != "en")
@@ -221,9 +258,19 @@ namespace OverhaulMod.UI
             PopulateText(header, text);
         }
 
+        public void Clear()
+        {
+            if (m_textContainer.childCount != 0)
+                TransformUtils.DestroyAllChildren(m_textContainer);
+        }
+
         public void PopulateText(string header, string text)
         {
             m_headerText.text = header;
+            Clear();
+
+            if (text.IsNullOrEmpty() || text.IsNullOrWhiteSpace())
+                return;
 
             if (text.Contains(Environment.NewLine))
             {
@@ -334,6 +381,19 @@ namespace OverhaulMod.UI
                 return -1;
             }
             return 0;
+        }
+
+        public struct ShowArguments
+        {
+            public bool ShrinkPanel;
+
+            public bool HideVersionList;
+
+            public Vector2 PanelOffset;
+
+            public bool CloseButtonActive;
+
+            public bool DisableShading;
         }
     }
 }

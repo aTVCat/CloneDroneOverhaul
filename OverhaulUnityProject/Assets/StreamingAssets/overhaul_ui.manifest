@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 3118821440
+CRC: 3947982140
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: e979968c995056f01b77522e14d3a2ad
+    Hash: 3ae57cacde55978b979d6494e3f05c71
   TypeTreeHash:
     serializedVersion: 2
     Hash: 11a2c5244a74fc567c6938c3491df245
@@ -166,6 +166,7 @@ Assets:
 - Assets/UI/UI_PersonalizationEditorObjectBrowser.prefab
 - Assets/UI/UI_GenericInputWindow.prefab
 - Assets/UI/UI_DiscordServerMenu.prefab
+- Assets/UI/UI_UpdateDetailsWindow.prefab
 - Assets/UI/Prefabs/RevertUpgradesButtonPrefab.prefab
 - Assets/UI/UI_NewsPanel.prefab
 - Assets/UI/UI_LocalizationEditor.prefab

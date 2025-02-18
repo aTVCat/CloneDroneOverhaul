@@ -1,4 +1,5 @@
 ﻿using OverhaulMod.Content;
+using OverhaulMod.Engine;
 using OverhaulMod.Utils;
 using System;
 using UnityEngine;
@@ -42,6 +43,12 @@ namespace OverhaulMod.UI
         [UIElement("IdleDescription")]
         private readonly Text m_idleDescriptionText;
 
+        [UIElement("NewBuildDisplay", false)]
+        private readonly ModdedObject m_buildDisplay;
+
+        [UIElement("Content")]
+        private readonly Transform m_content;
+
         public override bool hideTitleScreen => true;
 
         protected override void OnInitialized()
@@ -68,7 +75,13 @@ namespace OverhaulMod.UI
         public void OnPatchNotesButtonClicked()
         {
             Hide();
-            ModUIConstants.ShowPatchNotes().ClickOnFirstButton();
+            ModUIConstants.ShowPatchNotes(new UIPatchNotes.ShowArguments()
+            {
+                CloseButtonActive = true,
+                PanelOffset = Vector2.zero,
+                ShrinkPanel = false,
+                HideVersionList = false,
+            }).ClickOnFirstButton();
         }
 
         public void OnCheckForUpdatesButtonClicked()
@@ -78,30 +91,72 @@ namespace OverhaulMod.UI
             m_resultElements.SetActive(false);
             m_checkForUpdatesButton.interactable = false;
 
-            UpdateManager.Instance.DownloadUpdateInfoFile(delegate (UpdateInfoList updateInfoList)
+            UpdateManager.Instance.DownloadUpdatesList(delegate (UpdateManager.GetUpdatesResult result)
             {
                 m_loadingIndicator.SetActive(false);
+                m_checkForUpdatesButton.interactable = true;
+
+                if (result.IsError())
+                {
+                    m_idleElements.SetActive(true);
+                    m_idleHeaderText.text = "An error occurred.";
+                    m_idleDescriptionText.text = result.Error;
+                    return;
+                }
+
+                UpdateInfoList updateInfoList = result.Updates;
                 if (updateInfoList.HasAnyNewBuildAvailable())
                 {
                     m_resultElements.SetActive(true);
+
+                    if (m_content.childCount != 0)
+                        TransformUtils.DestroyAllChildren(m_content);
+
+                    foreach (System.Collections.Generic.KeyValuePair<string, UpdateInfo> build in updateInfoList.Builds)
+                    {
+                        if (!build.Value.CanBeInstalledByLocalUser())
+                            continue;
+
+                        instantiateBuildDisplay(build.Key, build.Value);
+                    }
+
+                    string n = UpdateManager.NotifyAboutNewVersionFromBranch;
+                    if (!n.IsNullOrEmpty())
+                    {
+                        if (updateInfoList.Builds.ContainsKey(n))
+                        {
+                            UpdateInfo updateInfo = updateInfoList.Builds[n];
+                            if (updateInfo.CanBeInstalledByLocalUser() && updateInfo.IsNewerBuild())
+                            {
+                                ModSettingsManager.SetStringValue(ModSettingsConstants.SAVED_NEW_VERSION, updateInfo.ModVersion.ToString());
+                                ModSettingsManager.SetStringValue(ModSettingsConstants.SAVED_NEW_VERSION_BRANCH, n);
+                            }
+                        }
+                    }
+                    ModSettingsManager.SetStringValue(ModSettingsConstants.UPDATES_LAST_CHECKED_DATE, DateTime.Now.ToString());
+                    ModSettingsDataManager.Instance.Save();
                 }
                 else
                 {
                     m_idleElements.SetActive(true);
 
-                    m_checkForUpdatesButton.interactable = true;
-
                     displayUpdatesLastCheckedIdleText();
                 }
+            });
+        }
 
-            }, delegate (string error)
+        private void instantiateBuildDisplay(string branch, UpdateInfo updateInfo)
+        {
+            ModdedObject moddedObject = Instantiate(m_buildDisplay, m_content);
+            moddedObject.gameObject.SetActive(true);
+            moddedObject.GetObject<Text>(0).text = updateInfo.ModVersion?.ToString();
+            moddedObject.GetObject<Text>(1).text = branch.ToUpper();
+            moddedObject.GetObject<GameObject>(2).SetActive(branch != UpdateInfoList.RELEASE_BRANCH && branch != UpdateInfoList.PREVIEW_BRANCH);
+
+            Button button = moddedObject.GetComponent<Button>();
+            button.onClick.AddListener(delegate
             {
-                m_idleElements.SetActive(true);
-                m_loadingIndicator.SetActive(false);
-                m_checkForUpdatesButton.interactable = true;
-
-                m_idleHeaderText.text = "An error occurred.";
-                m_idleDescriptionText.text = error;
+                ModUIConstants.ShowUpdateDetailsWindow(base.transform, updateInfo, branch);
             });
         }
     }
