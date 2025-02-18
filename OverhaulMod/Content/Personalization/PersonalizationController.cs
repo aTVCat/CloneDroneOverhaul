@@ -191,14 +191,16 @@ namespace OverhaulMod.Content.Personalization
                         }
                     }
 
+                    bool showOriginalModel = inEditor && PersonalizationEditorManager.Instance.originalModelsEnabled;
+
                     if (inEditor && weaponType == WeaponType.Sword)
                     {
                         WeaponVariant wv = PersonalizationEditorManager.Instance.previewPresetKey;
-                        SetWeaponPartsVisible(WeaponType.Sword, !hasSpawnedSkinForWeapon && !(wv == WeaponVariant.NormalMultiplayer || wv == WeaponVariant.OnFireMultiplayer), false);
+                        SetWeaponPartsVisible(WeaponType.Sword, showOriginalModel || (!hasSpawnedSkinForWeapon && !(wv == WeaponVariant.NormalMultiplayer || wv == WeaponVariant.OnFireMultiplayer)), false);
                     }
                     else
                     {
-                        SetWeaponPartsVisible(weaponType, !hasSpawnedSkinForWeapon, personalizationItemInfo != null && personalizationItemInfo.HideBowStrings);
+                        SetWeaponPartsVisible(weaponType, showOriginalModel || !hasSpawnedSkinForWeapon, personalizationItemInfo != null && personalizationItemInfo.HideBowStrings);
                     }
                 }
             }
