@@ -39,7 +39,7 @@ namespace OverhaulMod.UI
             m_updateInfo = updateInfo;
             m_branch = branch;
 
-            ModUIConstants.ShowPatchNotes(base.transform, new UIPatchNotes.ShowArguments
+            UIPatchNotes patchNotes = ModUIConstants.ShowPatchNotes(base.transform, new UIPatchNotes.ShowArguments
             {
                 CloseButtonActive = false,
                 PanelOffset = new UnityEngine.Vector2(0f, 65f),
@@ -47,6 +47,7 @@ namespace OverhaulMod.UI
                 HideVersionList = true,
                 DisableShading = true,
             });
+            patchNotes.PopulateText(updateInfo.ModVersion?.ToString(), updateInfo.Changelog);
         }
 
         public override void Show()

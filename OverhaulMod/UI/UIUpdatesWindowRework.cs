@@ -114,7 +114,7 @@ namespace OverhaulMod.UI
 
                     foreach (System.Collections.Generic.KeyValuePair<string, UpdateInfo> build in updateInfoList.Builds)
                     {
-                        if (!build.Value.CanBeInstalledByLocalUser())
+                        if (build.Value.IsOlderBuild() || !build.Value.CanBeInstalledByLocalUser())
                             continue;
 
                         instantiateBuildDisplay(build.Key, build.Value);
