@@ -45,7 +45,7 @@ namespace OverhaulMod.Patches
             if (oldLevelLightSettings != levelLightSettings)
             {
                 AdvancedPhotoModeManager advancedPhotoModeManager = AdvancedPhotoModeManager.Instance;
-                if (advancedPhotoModeManager && advancedPhotoModeManager.IsInPhotoMode())
+                if (advancedPhotoModeManager)
                 {
                     advancedPhotoModeManager.OnLevelLightSettingsChanged(levelLightSettings);
                 }

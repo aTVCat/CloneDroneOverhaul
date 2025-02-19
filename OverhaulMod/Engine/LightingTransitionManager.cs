@@ -62,7 +62,7 @@ namespace OverhaulMod.Engine
 
         private void Update()
         {
-            if (Time.time < m_timeToAllowTransitionUpdates || m_currentTransition == null || AdvancedPhotoModeManager.Instance.IsInPhotoMode())
+            if (Time.time < m_timeToAllowTransitionUpdates || m_currentTransition == null || AdvancedPhotoModeManager.Instance.IsActive())
                 return;
 
             float v = m_timeLeft - Time.deltaTime;

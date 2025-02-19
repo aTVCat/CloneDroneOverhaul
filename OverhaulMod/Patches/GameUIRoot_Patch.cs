@@ -34,7 +34,7 @@ namespace OverhaulMod.Patches
             Debug.Log($"UIVisible: {manager.IsUIVisible(AssetBundleConstants.UI, ModUIConstants.UI_PHOTO_MODE_UI_REWORK) && AdvancedPhotoModeManager.Instance.IsInPhotoMode() && UIManager.Instance.IsMouseOverUIElement()}");
             */
 
-            if (manager.ShouldEnableCursor() || (manager.IsUIVisible(AssetBundleConstants.UI, ModUIConstants.UI_PHOTO_MODE_UI_REWORK) && AdvancedPhotoModeManager.Instance.IsInPhotoMode() && UIManager.Instance.IsMouseOverUIElement()))
+            if (manager.ShouldEnableCursor() || (manager.IsUIVisible(AssetBundleConstants.UI, ModUIConstants.UI_PHOTO_MODE_UI_REWORK) && AdvancedPhotoModeManager.Instance.IsActive() && UIManager.Instance.IsMouseOverUIElement()))
             {
                 InputManager.Instance.SetCursorEnabled(true);
                 return false;

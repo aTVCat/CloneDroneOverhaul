@@ -630,5 +630,10 @@ namespace OverhaulMod.Utils
         /// <see cref="ModCore"/>
         /// </summary>
         public const string SWAP_SUBTITLES_COLOR = "SwapSubtitlesColor";
+
+        /// <summary>
+        /// <see cref="Engine.AdvancedPhotoModeManager"/>
+        /// </summary>
+        public const string AUTO_RESET_LIGHTING_SETTINGS = "AutoResetLightingSettings";
     }
 }

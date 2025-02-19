@@ -20,8 +20,8 @@ namespace OverhaulMod.Patches
                 if (UIManager.Instance.IsMouseOverUIElement())
                     return false;
 
-                if (Input.GetMouseButtonUp(0))
-                    AdvancedPhotoModeManager.Instance.RefreshLightingWithEditedInfo();
+                /*if (Input.GetMouseButtonUp(0))
+                    AdvancedPhotoModeManager.Instance.SetEditedLighting();*/
             }
             return true;
         }

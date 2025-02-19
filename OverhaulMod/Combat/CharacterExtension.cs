@@ -18,6 +18,8 @@ namespace OverhaulMod.Combat
 
         public bool HasDoubleJumpAbility;
 
+        private PlayerInputController m_inputController;
+
         private FirstPersonMover m_owner;
         public FirstPersonMover owner
         {
@@ -34,6 +36,7 @@ namespace OverhaulMod.Combat
         private void Start()
         {
             OnUpgradesRefreshed(owner._upgradeCollection);
+            m_inputController = owner._playerInputController;
         }
 
         private void Update()
@@ -59,7 +62,7 @@ namespace OverhaulMod.Combat
 
         private bool allowSwitchingWeapons()
         {
-            return !InputManager.Instance.IsCursorEnabled();
+            return m_inputController && m_inputController.enabled && !InputManager.Instance.IsCursorEnabled();
         }
 
         public void OnUpgradesRefreshed(UpgradeCollection upgrades)

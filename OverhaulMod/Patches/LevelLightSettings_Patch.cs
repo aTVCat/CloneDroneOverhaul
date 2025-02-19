@@ -13,8 +13,11 @@ namespace OverhaulMod.Patches
             if (GameModeManager.IsInLevelEditor())
                 return;
 
+            if (LevelEditorLightManager.Instance.GetActiveLightSettings() != __instance)
+                return;
+
             AdvancedPhotoModeManager advancedPhotoModeManager = AdvancedPhotoModeManager.Instance;
-            if (advancedPhotoModeManager && advancedPhotoModeManager.IsInPhotoMode())
+            if (advancedPhotoModeManager)
             {
                 advancedPhotoModeManager.OnLevelLightSettingsChanged(__instance);
             }

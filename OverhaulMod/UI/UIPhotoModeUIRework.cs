@@ -127,6 +127,11 @@ namespace OverhaulMod.UI
         [UIElement("RealisticSkyboxSlider")]
         private readonly Slider m_realisticSkyBoxSlider;
 
+
+        [UIElementAction(nameof(OnAutoResetLightingSettingsToggleChanged))]
+        [UIElement("AutoResetLightingToggle")]
+        private readonly Toggle m_autoResetLightingSettingsToggle;
+
         private LightingInfo m_lightingInfo;
 
         private bool m_disallowCallbacks;
@@ -138,7 +143,7 @@ namespace OverhaulMod.UI
         protected override void OnInitialized()
         {
             RectTransform lightingPanel = m_lightingPanel;
-            lightingPanel.sizeDelta = new Vector2(225f, 300f);
+            lightingPanel.sizeDelta = new Vector2(225f, 400f);
 
             UIElementExpandButton expandButton = m_expandButton;
             expandButton.rectTransform = lightingPanel;
@@ -152,11 +157,17 @@ namespace OverhaulMod.UI
         {
             base.Show();
             ModActionUtils.DoInFrame(setFieldsValues);
+
+            m_autoResetLightingSettingsToggle.isOn = ModSettingsManager.GetBoolValue(ModSettingsConstants.AUTO_RESET_LIGHTING_SETTINGS);
         }
 
         public override void Hide()
         {
             base.Hide();
+            if (!PhotoManager.Instance.IsInPhotoMode())
+            {
+                ResetEnvironmentFields();
+            }
         }
 
         public void ResetEnvironmentFields()
@@ -396,7 +407,7 @@ namespace OverhaulMod.UI
                 return;
 
             m_lightingInfo.FogEnabled = value;
-            AdvancedPhotoModeManager.Instance.RefreshLightingWithEditedInfo();
+            AdvancedPhotoModeManager.Instance.SetEditedLighting();
         }
 
         public void OnFogColored(Color value)
@@ -405,7 +416,7 @@ namespace OverhaulMod.UI
                 return;
 
             m_lightingInfo.FogColor = value;
-            AdvancedPhotoModeManager.Instance.RefreshLightingWithEditedInfo();
+            AdvancedPhotoModeManager.Instance.SetEditedLighting();
         }
 
         public void OnFogStartChanged(float value)
@@ -414,7 +425,7 @@ namespace OverhaulMod.UI
                 return;
 
             m_lightingInfo.FogStartDistance = value;
-            AdvancedPhotoModeManager.Instance.RefreshLightingWithEditedInfo();
+            AdvancedPhotoModeManager.Instance.SetEditedLighting();
         }
 
         public void OnFogEndChanged(float value)
@@ -423,7 +434,7 @@ namespace OverhaulMod.UI
                 return;
 
             m_lightingInfo.FogEndDistance = value;
-            AdvancedPhotoModeManager.Instance.RefreshLightingWithEditedInfo();
+            AdvancedPhotoModeManager.Instance.SetEditedLighting();
         }
 
         public void OnDirectionalLightToggled(bool value)
@@ -432,7 +443,7 @@ namespace OverhaulMod.UI
                 return;
 
             m_lightingInfo.EnableDirectionalLight = value;
-            AdvancedPhotoModeManager.Instance.RefreshLightingWithEditedInfo();
+            AdvancedPhotoModeManager.Instance.SetEditedLighting();
         }
 
         public void OnDirectionalLightColored(Color value)
@@ -441,7 +452,7 @@ namespace OverhaulMod.UI
                 return;
 
             m_lightingInfo.DirectionalColor = value;
-            AdvancedPhotoModeManager.Instance.RefreshLightingWithEditedInfo();
+            AdvancedPhotoModeManager.Instance.SetEditedLighting();
         }
 
         public void OnDirectionalLightXChanged(float value)
@@ -450,7 +461,7 @@ namespace OverhaulMod.UI
                 return;
 
             m_lightingInfo.DirectionalRotationX = value;
-            AdvancedPhotoModeManager.Instance.RefreshLightingWithEditedInfo();
+            AdvancedPhotoModeManager.Instance.SetEditedLighting();
         }
 
         public void OnDirectionalLightYChanged(float value)
@@ -459,7 +470,7 @@ namespace OverhaulMod.UI
                 return;
 
             m_lightingInfo.DirectionalRotationY = value;
-            AdvancedPhotoModeManager.Instance.RefreshLightingWithEditedInfo();
+            AdvancedPhotoModeManager.Instance.SetEditedLighting();
         }
 
         public void OnSkyBoxIndexChanged(float value)
@@ -468,7 +479,7 @@ namespace OverhaulMod.UI
                 return;
 
             m_lightingInfo.SkyboxIndex = Mathf.RoundToInt(value);
-            AdvancedPhotoModeManager.Instance.RefreshLightingWithEditedInfo();
+            AdvancedPhotoModeManager.Instance.SetEditedLighting();
         }
 
         public void OnUseRealisticSkyBoxesToggled(bool value)
@@ -477,7 +488,7 @@ namespace OverhaulMod.UI
                 return;
 
             //m_lightingInfo.AdditonalSkybox = value ? Mathf.RoundToInt(m_realisticSkyBoxSlider.value) : -1;
-            AdvancedPhotoModeManager.Instance.RefreshLightingWithEditedInfo();
+            AdvancedPhotoModeManager.Instance.SetEditedLighting();
         }
 
         public void OnRealisticSkyBoxIndexChanged(float value)
@@ -486,7 +497,7 @@ namespace OverhaulMod.UI
                 return;
 
             //m_lightingInfo.AdditonalSkybox = m_realisticSkyBoxToggle.isOn ? Mathf.RoundToInt(value) : -1;
-            AdvancedPhotoModeManager.Instance.RefreshLightingWithEditedInfo();
+            AdvancedPhotoModeManager.Instance.SetEditedLighting();
         }
 
         public void OnDirectionalLightIntensityChanged(float value)
@@ -495,7 +506,7 @@ namespace OverhaulMod.UI
                 return;
 
             m_lightingInfo.DirectionalIntensity = value;
-            AdvancedPhotoModeManager.Instance.RefreshLightingWithEditedInfo();
+            AdvancedPhotoModeManager.Instance.SetEditedLighting();
         }
 
         public void OnDirectionalLightShadowsChanged(float value)
@@ -504,7 +515,12 @@ namespace OverhaulMod.UI
                 return;
 
             m_lightingInfo.DirectionalShadowStrength = value;
-            AdvancedPhotoModeManager.Instance.RefreshLightingWithEditedInfo();
+            AdvancedPhotoModeManager.Instance.SetEditedLighting();
+        }
+
+        public void OnAutoResetLightingSettingsToggleChanged(bool value)
+        {
+            ModSettingsManager.SetBoolValue(ModSettingsConstants.AUTO_RESET_LIGHTING_SETTINGS, value, true);
         }
     }
 }

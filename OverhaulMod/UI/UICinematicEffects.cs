@@ -62,7 +62,7 @@ namespace OverhaulMod.UI
         public override void Update()
         {
             base.Update();
-            m_bordersObject.SetActive(AdvancedPhotoModeManager.Instance.IsInPhotoMode() && borders);
+            m_bordersObject.SetActive(AdvancedPhotoModeManager.Instance.IsActive() && borders);
         }
     }
 }
