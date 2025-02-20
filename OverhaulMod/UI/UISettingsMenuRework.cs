@@ -244,6 +244,8 @@ namespace OverhaulMod.UI
         {
             if (PageContentsTransform && PageContentsTransform.childCount > 0)
                 TransformUtils.DestroyAllChildren(PageContentsTransform);
+
+            m_descriptionBox.Hide();
         }
 
         public void PopulatePageIfSelected(string id)
@@ -667,8 +669,10 @@ namespace OverhaulMod.UI
             _ = pageBuilder.Dropdown(settingsMenu.AntiAliasingDropdown.options, settingsMenu.AntiAliasingDropdown.value, OnAntiAliasingDropdownChanged);
 
             bool moreEffectsEnabled = ModFeatures.IsEnabled(ModFeatures.FeatureType.MoreImageEffects);
+            bool showExperimentalSettings = ModFeatures.IsEnabled(ModFeatures.FeatureType.DisplayNewGraphicsOptionsInSettings);
+
             _ = pageBuilder.Header3("Post effects");
-            if (moreEffectsEnabled)
+            if (moreEffectsEnabled && showExperimentalSettings)
             {
                 _ = pageBuilder.Dropdown(PostEffectsManager.PresetOptions, 0, delegate (int value)
                 {
@@ -693,20 +697,23 @@ namespace OverhaulMod.UI
 
             if (moreEffectsEnabled)
             {
-                _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_GLOBAL_ILLUMINATION), delegate (bool value)
+                if (showExperimentalSettings || ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_GLOBAL_ILLUMINATION))
                 {
-                    ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_GLOBAL_ILLUMINATION, value, true);
-                }, "Global Illumination".AddColor(Color.yellow));
-                pageBuilder.AddDescriptionBoxToRecentElement(ModSettingsConstants.ENABLE_GLOBAL_ILLUMINATION);
+                    _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_GLOBAL_ILLUMINATION), delegate (bool value)
+                    {
+                        ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_GLOBAL_ILLUMINATION, value, true);
+                    }, "Global Illumination".AddColor(Color.yellow));
+                    pageBuilder.AddDescriptionBoxToRecentElement(ModSettingsConstants.ENABLE_GLOBAL_ILLUMINATION);
+                }
 
-                if (ModFeatures.IsEnabled(ModFeatures.FeatureType.ReflectionProbe))
+                /*if (ModFeatures.IsEnabled(ModFeatures.FeatureType.ReflectionProbe))
                 {
                     _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_REFLECTION_PROBE), delegate (bool value)
                     {
                         ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_REFLECTION_PROBE, value, true);
                     }, "Reflection Probe");
                     pageBuilder.AddDescriptionBoxToRecentElement(ModSettingsConstants.ENABLE_REFLECTION_PROBE);
-                }
+                }*/
 
                 _ = pageBuilder.ToggleWithOptions(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_CHROMATIC_ABERRATION), delegate (bool value)
                 {
@@ -747,14 +754,18 @@ namespace OverhaulMod.UI
                     populateCASettingsPage(m_selectedTabId);
                 });
                 pageBuilder.AddDescriptionBoxToRecentElement(ModSettingsConstants.ENABLE_DOF);
-                _ = pageBuilder.ToggleWithOptions(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_SUN_SHAFTS), delegate (bool value)
+
+                if (showExperimentalSettings || ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_SUN_SHAFTS))
                 {
-                    ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_SUN_SHAFTS, value, true);
-                }, "Sun shafts", delegate
-                {
-                    populateSSAOSettingsPage(m_selectedTabId);
-                });
-                pageBuilder.AddDescriptionBoxToRecentElement(ModSettingsConstants.ENABLE_SUN_SHAFTS);
+                    _ = pageBuilder.ToggleWithOptions(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_SUN_SHAFTS), delegate (bool value)
+                    {
+                        ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_SUN_SHAFTS, value, true);
+                    }, "Sun shafts", delegate
+                    {
+                        populateSSAOSettingsPage(m_selectedTabId);
+                    });
+                    pageBuilder.AddDescriptionBoxToRecentElement(ModSettingsConstants.ENABLE_SUN_SHAFTS);
+                }
             }
             else
             {

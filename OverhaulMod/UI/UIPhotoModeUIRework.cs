@@ -70,6 +70,26 @@ namespace OverhaulMod.UI
         [UIElement("DitheringToggle")]
         private readonly Toggle m_ditheringToggle;
 
+        [UIElementAction(nameof(OnGlobalIlluminationToggled))]
+        [UIElement("GlobalIlluminationToggle")]
+        private readonly Toggle m_globalIlluminationToggle;
+
+        [UIElementAction(nameof(OnReflectionProbeToggled))]
+        [UIElement("ReflectionProbeToggle")]
+        private readonly Toggle m_reflectionProbeToggle;
+
+        [UIElementAction(nameof(OnCAToggled))]
+        [UIElement("CAToggle")]
+        private readonly Toggle m_caToggle;
+
+        [UIElementAction(nameof(OnSunShaftsToggled))]
+        [UIElement("SunShaftsToggle")]
+        private readonly Toggle m_sunShaftsToggle;
+
+        [UIElementAction(nameof(OnDoFToggled))]
+        [UIElement("DoFToggle")]
+        private readonly Toggle m_dofToggle;
+
 
         [UIElementAction(nameof(OnFogToggled))]
         [UIElement("FogToggle")]
@@ -208,6 +228,11 @@ namespace OverhaulMod.UI
             m_ditheringToggle.isOn = AdvancedPhotoModeManager.Settings.EnableDithering;
             m_ambientOcclusionToggle.isOn = AdvancedPhotoModeManager.Settings.EnableSSAO;
             m_vignetteIntensitySlider.value = AdvancedPhotoModeManager.Settings.VignetteIntensity;
+            m_globalIlluminationToggle.isOn = AdvancedPhotoModeManager.Settings.EnableGlobalIllumination;
+            m_reflectionProbeToggle.isOn = AdvancedPhotoModeManager.Settings.EnableReflectionProbe;
+            m_caToggle.isOn = AdvancedPhotoModeManager.Settings.EnableCA;
+            m_sunShaftsToggle.isOn = AdvancedPhotoModeManager.Settings.EnableSunShafts;
+            m_dofToggle.isOn = AdvancedPhotoModeManager.Settings.EnableDoF;
 
             m_fogToggle.isOn = lightingInfo.FogEnabled;
             m_fogColor.color = lightingInfo.FogColor;
@@ -398,6 +423,51 @@ namespace OverhaulMod.UI
                 return;
 
             AdvancedPhotoModeManager.Settings.EnableDithering = value;
+            PostEffectsManager.Instance.RefreshCameraPostEffects();
+        }
+
+        public void OnGlobalIlluminationToggled(bool value)
+        {
+            if (m_disallowCallbacks)
+                return;
+
+            AdvancedPhotoModeManager.Settings.EnableGlobalIllumination = value;
+            PostEffectsManager.Instance.RefreshCameraPostEffects();
+        }
+
+        public void OnReflectionProbeToggled(bool value)
+        {
+            if (m_disallowCallbacks)
+                return;
+
+            AdvancedPhotoModeManager.Settings.EnableReflectionProbe = value;
+            PostEffectsManager.Instance.RefreshCameraPostEffects();
+        }
+
+        public void OnCAToggled(bool value)
+        {
+            if (m_disallowCallbacks)
+                return;
+
+            AdvancedPhotoModeManager.Settings.EnableCA = value;
+            PostEffectsManager.Instance.RefreshCameraPostEffects();
+        }
+
+        public void OnSunShaftsToggled(bool value)
+        {
+            if (m_disallowCallbacks)
+                return;
+
+            AdvancedPhotoModeManager.Settings.EnableSunShafts = value;
+            PostEffectsManager.Instance.RefreshCameraPostEffects();
+        }
+
+        public void OnDoFToggled(bool value)
+        {
+            if (m_disallowCallbacks)
+                return;
+
+            AdvancedPhotoModeManager.Settings.EnableDoF = value;
             PostEffectsManager.Instance.RefreshCameraPostEffects();
         }
 

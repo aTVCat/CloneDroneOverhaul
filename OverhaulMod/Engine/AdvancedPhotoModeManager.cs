@@ -171,16 +171,21 @@ namespace OverhaulMod.Engine
                 }
             }
 
-            public static bool EnableVignette, EnableDithering, EnableSSAO;
+            public static bool EnableReflectionProbe, EnableGlobalIllumination, EnableSSAO, EnableVignette, EnableDithering, EnableCA, EnableSunShafts, EnableDoF;
 
             public static float VignetteIntensity;
 
             public static void SetDefaultSettings()
             {
                 VignetteIntensity = 0.23f;
+                EnableReflectionProbe = PostEffectsManager.EnableReflectionProbe;
+                EnableGlobalIllumination = PostEffectsManager.EnableGlobalIllumination;
+                EnableSSAO = PostEffectsManager.EnableSSAO;
                 EnableVignette = PostEffectsManager.EnableVignette;
                 EnableDithering = PostEffectsManager.EnableDithering;
-                EnableSSAO = PostEffectsManager.EnableSSAO;
+                EnableCA = PostEffectsManager.EnableChromaticAberration;
+                EnableSunShafts = PostEffectsManager.EnableSunShafts;
+                EnableDoF = PostEffectsManager.EnableDoF;
             }
         }
     }

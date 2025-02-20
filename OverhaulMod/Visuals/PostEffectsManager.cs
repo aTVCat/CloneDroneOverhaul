@@ -63,7 +63,7 @@ namespace OverhaulMod.Visuals
 
         private float m_timeLeftToRefreshReflectionProbe;
 
-        private bool m_reflectionProbeEnabled;
+        private bool m_reflectionProbeCreated;
 
         private ReflectionProbe m_reflectionProbe;
 
@@ -105,12 +105,12 @@ namespace OverhaulMod.Visuals
                 return;
 
             createReflectionProbe();
-            m_reflectionProbeEnabled = true;
+            m_reflectionProbeCreated = true;
         }
 
         private void Update()
         {
-            if (!m_reflectionProbeEnabled)
+            if (!m_reflectionProbeCreated)
                 return;
 
             m_timeLeftToRefreshReflectionProbe -= Time.unscaledDeltaTime;
@@ -119,20 +119,18 @@ namespace OverhaulMod.Visuals
 
             m_timeLeftToRefreshReflectionProbe = 1f;
 
-            Transform rp = m_reflectionProbeTransform;
-            if (rp)
-            {
-                Camera camera = m_cameraManager.mainCamera;
-                if (camera)
-                {
-                    rp.position = camera.transform.position;
-                }
-            }
-
             ReflectionProbe reflectionProbe = m_reflectionProbe;
-            if (reflectionProbe)
+            if (reflectionProbe && reflectionProbe.enabled)
             {
-                reflectionProbe.enabled = EnableReflectionProbe;
+                Transform rp = m_reflectionProbeTransform;
+                if (rp)
+                {
+                    Camera camera = m_cameraManager.mainCamera;
+                    if (camera)
+                    {
+                        rp.position = camera.transform.position;
+                    }
+                }
             }
         }
 
@@ -290,6 +288,15 @@ namespace OverhaulMod.Visuals
         {
             if (!camera)
                 return;
+
+            if (m_reflectionProbeCreated)
+            {
+                ReflectionProbe reflectionProbe = m_reflectionProbe;
+                if (reflectionProbe)
+                {
+                    reflectionProbe.enabled = AdvancedPhotoModeManager.Settings.overrideSettings ? AdvancedPhotoModeManager.Settings.EnableReflectionProbe : EnableReflectionProbe;
+                }
+            }
 
             PostEffectsContainer postEffectsContainer = camera.GetComponent<PostEffectsContainer>();
             if (!postEffectsContainer)

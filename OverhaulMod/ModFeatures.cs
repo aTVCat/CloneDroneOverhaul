@@ -131,7 +131,7 @@ namespace OverhaulMod
                     result = ModBuildInfo.VERSION_4_3;
                     break;
                 case FeatureType.ColorBlindnessOptions:
-                    result = true;
+                    result = ModBuildInfo.VERSION_4_3;
                     break;
                 case FeatureType.ShowUpgradeUIExitButtonInLBS:
                     result = false;
@@ -140,7 +140,7 @@ namespace OverhaulMod
                     result = false;
                     break;
                 case FeatureType.ReflectionProbe:
-                    result = false;
+                    result = ModBuildInfo.VERSION_4_3;
                     break;
                 case FeatureType.Accessories:
                     result = ModBuildInfo.VERSION_4_3;
@@ -156,6 +156,9 @@ namespace OverhaulMod
                     break;
                 case FeatureType.RevertUpgrades:
                     result = ModBuildInfo.VERSION_5_0;
+                    break;
+                case FeatureType.DisplayNewGraphicsOptionsInSettings:
+                    result = false;
                     break;
                 default:
                     return false;
@@ -257,6 +260,8 @@ namespace OverhaulMod
             TransitionUpdates,
 
             RevertUpgrades,
+
+            DisplayNewGraphicsOptionsInSettings
         }
     }
 }

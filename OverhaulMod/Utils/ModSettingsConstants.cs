@@ -559,7 +559,7 @@ namespace OverhaulMod.Utils
         /// <summary>
         /// <see cref="Visuals.PostEffectsManager"/>
         /// </summary>
-        public const string ENABLE_REFLECTION_PROBE = "EnableReflectionProbe";
+        public const string ENABLE_REFLECTION_PROBE = "EnableReflectionProbeV2";
 
         /// <summary>
         /// <see cref="ModCore"/>

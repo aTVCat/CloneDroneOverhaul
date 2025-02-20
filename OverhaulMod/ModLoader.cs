@@ -19,6 +19,8 @@ namespace OverhaulMod
     {
         private static bool s_hasAddedObjects;
 
+        private static bool s_hasInitializedTVCatLibrary;
+
         public static void Load()
         {
             if (!HasToLoad())
@@ -152,12 +154,20 @@ namespace OverhaulMod
 
         public static void AddLevelObjectListeners()
         {
+            if (s_hasInitializedTVCatLibrary)
+                return;
+
             TVCat.CloneDrone.ObjectPlacedInLevelUtils.AddPreInitializeCallback(onLevelObjectPreInitialized);
+            s_hasInitializedTVCatLibrary = true;
         }
 
         public static void RemoveLevelObjectListeners()
         {
+            if (!s_hasInitializedTVCatLibrary)
+                return;
+
             TVCat.CloneDrone.ObjectPlacedInLevelUtils.RemovePreInitializeCallback(onLevelObjectPreInitialized);
+            s_hasInitializedTVCatLibrary = false;
         }
 
         private static void onLevelObjectPreInitialized(ObjectPlacedInLevel objectPlacedInLevel)

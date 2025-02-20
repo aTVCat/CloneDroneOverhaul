@@ -97,10 +97,10 @@ namespace OverhaulMod.Visuals
 
             refreshBloom(PostEffectsManager.EnableBloom, cameraObject);
             refreshAmplifyOcclusion(shouldEnableEffects && (overrideSettings ? AdvancedPhotoModeManager.Settings.EnableSSAO : PostEffectsManager.EnableSSAO), cameraObject);
-            refreshGlobalIllumination(shouldEnableEffects && PostEffectsManager.EnableGlobalIllumination, cameraObject);
-            refreshDoF(shouldEnableEffects && PostEffectsManager.EnableDoF, cameraObject);
-            refreshSunShafts(shouldEnableEffects && PostEffectsManager.EnableSunShafts, cameraObject);
-            refreshChromaticAberration(shouldEnableEffects && PostEffectsManager.EnableChromaticAberration, cameraObject);
+            refreshGlobalIllumination(shouldEnableEffects && (overrideSettings ? AdvancedPhotoModeManager.Settings.EnableGlobalIllumination : PostEffectsManager.EnableGlobalIllumination), cameraObject);
+            refreshDoF(shouldEnableEffects && (overrideSettings ? AdvancedPhotoModeManager.Settings.EnableDoF : PostEffectsManager.EnableDoF), cameraObject);
+            refreshSunShafts(shouldEnableEffects && (overrideSettings ? AdvancedPhotoModeManager.Settings.EnableSunShafts : PostEffectsManager.EnableSunShafts), cameraObject);
+            refreshChromaticAberration(shouldEnableEffects && (overrideSettings ? AdvancedPhotoModeManager.Settings.EnableCA : PostEffectsManager.EnableChromaticAberration), cameraObject);
             refreshDithering(shouldEnableEffects && (overrideSettings ? AdvancedPhotoModeManager.Settings.EnableDithering : PostEffectsManager.EnableDithering), cameraObject);
             refreshVignette(shouldEnableEffects && (overrideSettings ? AdvancedPhotoModeManager.Settings.EnableVignette : PostEffectsManager.EnableVignette), cameraObject);
             refreshColorBlindness(!PostEffectsManager.ColorBlindnessAffectUI && PostEffectsManager.ColorBlindnessMode >= 1 && PostEffectsManager.ColorBlindnessMode <= 3, cameraObject);
