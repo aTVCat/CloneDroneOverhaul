@@ -173,7 +173,7 @@ namespace OverhaulMod
         private static void onLevelObjectPreInitialized(ObjectPlacedInLevel objectPlacedInLevel)
         {
             LevelObjectEntry levelObjectEntry = objectPlacedInLevel.LevelObjectEntry;
-            if (levelObjectEntry != null && (levelObjectEntry.PathUnderResources == RealisticLightingManager.LightSettingsObjectResourcePath || levelObjectEntry.PathUnderResources == RealisticLightingManager.LightSettingsOverrideObjectResourcePath))
+            if (levelObjectEntry != null && (levelObjectEntry.PathUnderResources == RealisticLightingManager.LightSettingsObjectResourcePath || levelObjectEntry.PathUnderResources == RealisticLightingManager.LightSettingsOverrideObjectResourcePath) && !objectPlacedInLevel.GetComponent<AdditionalSkyboxSettings>())
             {
                 objectPlacedInLevel.gameObject.AddComponent<AdditionalSkyboxSettings>();
             }

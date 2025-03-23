@@ -200,7 +200,7 @@ namespace OverhaulMod.Content.Personalization
                     }
                     else
                     {
-                        SetWeaponPartsVisible(weaponType, showOriginalModel || !hasSpawnedSkinForWeapon, personalizationItemInfo != null && personalizationItemInfo.HideBowStrings);
+                        SetWeaponPartsVisible(weaponType, showOriginalModel || !hasSpawnedSkinForWeapon, personalizationItemInfo != null && !ModSpecialUtils.IsModEnabled("ee32ba1b-8c92-4f50-bdf4-400a14da829e") && personalizationItemInfo.HideBowStrings);
                     }
                 }
             }

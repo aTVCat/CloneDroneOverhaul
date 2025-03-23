@@ -184,7 +184,12 @@ namespace OverhaulMod.UI
         public override void Hide()
         {
             base.Hide();
-            if (!PhotoManager.Instance.IsInPhotoMode())
+            ModActionUtils.DoInFrame(resetEnvironmentFieldsIfNotInPhotoMode);
+        }
+
+        private void resetEnvironmentFieldsIfNotInPhotoMode()
+        {
+            if (!AdvancedPhotoModeManager.Instance.IsActive())
             {
                 ResetEnvironmentFields();
             }
