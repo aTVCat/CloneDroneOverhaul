@@ -35,7 +35,7 @@ namespace OverhaulMod
                     result = true;
                     break;
                 case FeatureType.WeaponBag:
-                    result = ModBuildInfo.VERSION_4_3;
+                    result = ModBuildInfo.VERSION_5_0;
                     break;
                 case FeatureType.ChapterSelectMenuRework:
                     result = true;
@@ -104,13 +104,13 @@ namespace OverhaulMod
                     result = true;
                     break;
                 case FeatureType.MoreImageEffects:
-                    result = ModBuildInfo.VERSION_4_3;
+                    result = ModBuildInfo.VERSION_4_2_UPDATE;
                     break;
                 case FeatureType.SubtitleTextFieldRework:
                     result = true;
                     break;
                 case FeatureType.UpdatesMenuRework:
-                    result = ModBuildInfo.VERSION_4_3;
+                    result = ModBuildInfo.VERSION_4_2_UPDATE;
                     break;
                 case FeatureType.RequireNormalAndFireVariantsForSwordAndSpearSkins:
                     result = false;
@@ -119,19 +119,19 @@ namespace OverhaulMod
                     result = true;
                     break;
                 case FeatureType.Intro:
-                    result = ModBuildInfo.VERSION_4_3;
+                    result = ModBuildInfo.VERSION_4_2_UPDATE;
                     break;
                 case FeatureType.VersionLabelUpdates:
-                    result = ModBuildInfo.VERSION_4_3;
+                    result = ModBuildInfo.VERSION_4_2_UPDATE;
                     break;
                 case FeatureType.TitleScreenModdedSectionRework:
-                    result = ModBuildInfo.VERSION_4_3;
+                    result = ModBuildInfo.VERSION_4_2_UPDATE;
                     break;
                 case FeatureType.SettingDescriptionBox:
-                    result = ModBuildInfo.VERSION_4_3;
+                    result = ModBuildInfo.VERSION_4_2_UPDATE;
                     break;
                 case FeatureType.ColorBlindnessOptions:
-                    result = ModBuildInfo.VERSION_4_3;
+                    result = ModBuildInfo.VERSION_4_2_UPDATE;
                     break;
                 case FeatureType.ShowUpgradeUIExitButtonInLBS:
                     result = false;
@@ -140,19 +140,19 @@ namespace OverhaulMod
                     result = false;
                     break;
                 case FeatureType.ReflectionProbe:
-                    result = ModBuildInfo.VERSION_4_3;
+                    result = ModBuildInfo.VERSION_4_2_UPDATE;
                     break;
                 case FeatureType.Accessories:
                     result = ModBuildInfo.VERSION_4_3;
                     break;
                 case FeatureType.AdditionalGraphicsSettings:
-                    result = ModBuildInfo.VERSION_4_3;
+                    result = ModBuildInfo.VERSION_4_2_UPDATE;
                     break;
                 case FeatureType.CustomizationMenuUpdates:
-                    result = ModBuildInfo.VERSION_4_3;
+                    result = ModBuildInfo.VERSION_4_2_UPDATE;
                     break;
                 case FeatureType.TransitionUpdates:
-                    result = ModBuildInfo.VERSION_4_3;
+                    result = ModBuildInfo.VERSION_4_2_UPDATE;
                     break;
                 case FeatureType.RevertUpgrades:
                     result = ModBuildInfo.VERSION_5_0;

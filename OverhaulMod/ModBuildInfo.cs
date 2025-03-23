@@ -1,4 +1,4 @@
-﻿//#define OVERRIDE_VER
+﻿#define OVERRIDE_VER
 #define DEVELOPER_BUILD
 
 using OverhaulMod.Utils;
@@ -9,14 +9,16 @@ namespace OverhaulMod
 {
     public static class ModBuildInfo
     {
-        public const bool VERSION_4_3 = true;
+        public const bool VERSION_4_2_UPDATE = true;
+
+        public const bool VERSION_4_3 = false;
 
         public const bool VERSION_5_0 = false;
 
         public const string EXTRA_INFO_FILE_PATH = "buildInfo.json";
 
 #if OVERRIDE_VER
-        public const string OVERRIDE_VERSION = "0.4.2.53";
+        public const string OVERRIDE_VERSION = "0.4.2.1000";
 #endif
 
         private static bool s_loaded;
