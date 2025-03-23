@@ -56,9 +56,15 @@ namespace OverhaulMod.UI
         [UIElement("UpVoteButton")]
         private readonly Button m_voteUpButton;
 
+        [UIElement("UpVoteButtonText")]
+        private readonly Text m_upVoteButtonText;
+
         [UIElementAction(nameof(OnVoteDownButtonClicked))]
         [UIElement("DownVoteButton")]
         private readonly Button m_voteDownButton;
+
+        [UIElement("DownVoteButtonText")]
+        private readonly Text m_downVoteButtonText;
 
         [UIElementAction(nameof(OnFavoriteButtonClicked))]
         [UIElement("AddToFavouritesButton")]
@@ -106,6 +112,9 @@ namespace OverhaulMod.UI
 
         [UIElement("Stars", false)]
         private readonly GameObject m_starsObject;
+
+        [UIElement("CompletedIndicator", false)]
+        private readonly GameObject m_completedIndicator;
 
         [UIElement("LoadingIndicatorText")]
         private readonly Text m_loadingIndicatorText;
@@ -204,6 +213,9 @@ namespace OverhaulMod.UI
             tooltipOnHightLight.tooltipShowDuration = 2f;
             tooltipOnHightLight.InitializeElement();
             m_tooltipOnHightLight = tooltipOnHightLight;
+
+            m_upVoteButtonText.gameObject.AddComponent<BetterOutline>().effectColor = Color.black;
+            m_downVoteButtonText.gameObject.AddComponent<BetterOutline>().effectColor = Color.black;
 
             EaseMultiplier = 50f;
         }
@@ -324,6 +336,10 @@ namespace OverhaulMod.UI
 
             m_itemTitleText.text = workshopItem.Name;
             m_itemDescriptionText.text = workshopItem.Description;
+
+            m_upVoteButtonText.text = workshopItem.UpVotes.ToString();
+            m_downVoteButtonText.text = workshopItem.DownVotes.ToString();
+            m_completedIndicator.SetActive(workshopItem.IsChallengeOrAdventure() && ChallengeManager.Instance.HasCompletedChallenge(workshopItem.ItemID.ToString()));
 
             if (!workshopItem.Author.IsNullOrEmpty() && workshopItem.Author != "[unknown]")
                 m_itemAuthorText.text = $"{LocalizationManager.Instance.GetTranslatedString("workshop_leveldetails_author")} {workshopItem.Author.AddColor(Color.white)}";
@@ -484,7 +500,7 @@ namespace OverhaulMod.UI
             m_subscribeButton.gameObject.SetActive(!subscribed && !downloading);
             m_unsubscribeButton.gameObject.SetActive(subscribed);
             m_playButton.gameObject.SetActive(allowPlayingFromThere && installed && subscribed && !downloading);
-            m_playOptionsButton.gameObject.SetActive(allowPlayingFromThere && installed && subscribed && !downloading);
+            m_playOptionsButton.gameObject.SetActive(ModFeatures.IsEnabled(ModFeatures.FeatureType.WorkshopBrowserHistoryAndCheckpoints) && allowPlayingFromThere && installed && subscribed && !downloading);
             m_updateButton.gameObject.SetActive(installed && subscribed && !downloading && needsUpdate);
 
             m_loadingIndicatorObject.SetActive(downloading || needsUpdate);

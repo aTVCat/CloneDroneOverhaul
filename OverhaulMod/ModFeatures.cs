@@ -160,6 +160,9 @@ namespace OverhaulMod
                 case FeatureType.DisplayNewGraphicsOptionsInSettings:
                     result = false;
                     break;
+                case FeatureType.WorkshopBrowserHistoryAndCheckpoints:
+                    result = ModBuildInfo.VERSION_4_3;
+                    break;
                 default:
                     return false;
             }
@@ -261,7 +264,9 @@ namespace OverhaulMod
 
             RevertUpgrades,
 
-            DisplayNewGraphicsOptionsInSettings
+            DisplayNewGraphicsOptionsInSettings,
+
+            WorkshopBrowserHistoryAndCheckpoints,
         }
     }
 }
