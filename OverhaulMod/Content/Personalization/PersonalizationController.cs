@@ -572,7 +572,7 @@ namespace OverhaulMod.Content.Personalization
 
         public void SpawnEquippedAccessories()
         {
-            if (PersonalizationEditorManager.IsInEditor())
+            if (!ModFeatures.IsEnabled(ModFeatures.FeatureType.Accessories) || PersonalizationEditorManager.IsInEditor())
                 return;
 
             DestroyItemsOfCategory(PersonalizationCategory.Accessories);
