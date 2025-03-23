@@ -120,19 +120,6 @@ namespace OverhaulMod.UI
                         instantiateBuildDisplay(build.Key, build.Value);
                     }
 
-                    string n = UpdateManager.NotifyAboutNewVersionFromBranch;
-                    if (!n.IsNullOrEmpty())
-                    {
-                        if (updateInfoList.Builds.ContainsKey(n))
-                        {
-                            UpdateInfo updateInfo = updateInfoList.Builds[n];
-                            if (updateInfo.CanBeInstalledByLocalUser() && updateInfo.IsNewerBuild())
-                            {
-                                ModSettingsManager.SetStringValue(ModSettingsConstants.SAVED_NEW_VERSION, updateInfo.ModVersion.ToString());
-                                ModSettingsManager.SetStringValue(ModSettingsConstants.SAVED_NEW_VERSION_BRANCH, n);
-                            }
-                        }
-                    }
                     ModSettingsManager.SetStringValue(ModSettingsConstants.UPDATES_LAST_CHECKED_DATE, DateTime.Now.ToString());
                     ModSettingsDataManager.Instance.Save();
                 }

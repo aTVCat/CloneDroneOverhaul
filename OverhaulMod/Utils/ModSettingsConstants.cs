@@ -635,5 +635,10 @@ namespace OverhaulMod.Utils
         /// <see cref="Engine.AdvancedPhotoModeManager"/>
         /// </summary>
         public const string AUTO_RESET_LIGHTING_SETTINGS = "AutoResetLightingSettings";
+
+        /// <summary>
+        /// <see cref="Content.UpdateManager"/>
+        /// </summary>
+        public const string NOTIFY_ABOUT_NEW_TEST_BUILDS = "NotifyAboutNewTestBuilds";
     }
 }

@@ -15,6 +15,13 @@ namespace OverhaulMod.UI
         [UIElement("DownloadButton")]
         private readonly Button m_downloadButton;
 
+        [UIElementAction(nameof(OnDownloadButtonClicked))]
+        [UIElement("UpdateButton")]
+        private readonly Button m_updateButton;
+
+        [UIElement("InstallButtons")]
+        private readonly GameObject m_installButtons;
+
         [UIElement("Header")]
         private readonly Text m_header;
 
@@ -110,7 +117,11 @@ namespace OverhaulMod.UI
 
             bool isInstalled = AddonManager.Instance.HasInstalledAddon(m_addonDownloadInfo.UniqueID, 0);
             bool isDownloading = AddonManager.Instance.IsDownloadingAddon(m_addonDownloadInfo.UniqueID);
-            m_downloadButton.gameObject.SetActive(!isInstalled && !isDownloading);
+            bool isNewVersion = AddonManager.Instance.GetAddonVersion(m_addonDownloadInfo.UniqueID) < m_addonDownloadInfo.Addon.Version;
+
+            m_downloadButton.gameObject.SetActive(!isInstalled);
+            m_updateButton.gameObject.SetActive(isInstalled && isNewVersion);
+            m_installButtons.SetActive(!isDownloading);
             m_loadingIndicator.SetActive(isDownloading);
         }
 

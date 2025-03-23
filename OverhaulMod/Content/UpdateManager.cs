@@ -18,14 +18,11 @@ namespace OverhaulMod.Content
         [ModSetting(ModSettingsConstants.CHECK_FOR_UPDATES_ON_STARTUP, true)]
         public static bool CheckForUpdatesOnStartup;
 
-        [ModSetting(ModSettingsConstants.NOTIFY_ABOUT_NEW_VERSION_FROM_BRANCH, UpdateInfoList.RELEASE_BRANCH)]
-        public static string NotifyAboutNewVersionFromBranch;
+        [ModSetting(ModSettingsConstants.NOTIFY_ABOUT_NEW_TEST_BUILDS, false)]
+        public static bool NotifyAboutNewTestBuilds;
 
         [ModSetting(ModSettingsConstants.SAVED_NEW_VERSION, null, ModSetting.Tag.IgnoreExport)]
         public static string SavedNewVersion;
-
-        [ModSetting(ModSettingsConstants.SAVED_NEW_VERSION_BRANCH, null, ModSetting.Tag.IgnoreExport)]
-        public static string SavedNewVersionBranch;
 
         [ModSetting(ModSettingsConstants.UPDATES_LAST_CHECKED_DATE, null, ModSetting.Tag.IgnoreExport)]
         public static string UpdatesLastCheckedDate;
@@ -74,7 +71,7 @@ namespace OverhaulMod.Content
 
         private void Update()
         {
-            if(m_webRequest != null)
+            if (m_webRequest != null)
             {
                 try
                 {
@@ -148,6 +145,31 @@ namespace OverhaulMod.Content
                     callback?.Invoke(new GetUpdatesResult(exc.ToString()));
                     return;
                 }
+
+                System.Version maxVersion = null;
+                foreach (KeyValuePair<string, UpdateInfo> build in updateInfoList.Builds)
+                {
+                    if (build.Value.IsOlderBuild() || !build.Value.CanBeInstalledByLocalUser())
+                        continue;
+
+                    if (build.Key == UpdateInfoList.RELEASE_BRANCH || NotifyAboutNewTestBuilds)
+                    {
+                        if (maxVersion == null || build.Value.ModVersion > maxVersion)
+                        {
+                            maxVersion = build.Value.ModVersion;
+                        }
+                    }
+                }
+
+                if(maxVersion != null)
+                {
+                    ModSettingsManager.SetStringValue(ModSettingsConstants.SAVED_NEW_VERSION, maxVersion.ToString());
+                }
+                else
+                {
+                    ModSettingsManager.SetStringValue(ModSettingsConstants.SAVED_NEW_VERSION, "0.0.0.0");
+                }
+                ModSettingsDataManager.Instance.Save();
 
                 m_updatesList = updateInfoList;
                 callback?.Invoke(new GetUpdatesResult(updateInfoList));

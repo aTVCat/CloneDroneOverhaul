@@ -18,6 +18,8 @@ namespace OverhaulMod.UI
 
         private UnityWebRequest m_webRequest;
 
+        private bool m_isDestroyed;
+
         public Transform imageViewerParentTransform
         {
             get;
@@ -42,6 +44,9 @@ namespace OverhaulMod.UI
 
         private void onGetTexture(Texture2D texture)
         {
+            if (m_isDestroyed)
+                return;
+
             m_loadedTexture = texture;
             m_rawImage.texture = texture;
             m_rawImage.gameObject.SetActive(true);
@@ -51,6 +56,9 @@ namespace OverhaulMod.UI
 
         private void onFailedToGetTexture(string error)
         {
+            if (m_isDestroyed)
+                return;
+
             m_rawImage.gameObject.SetActive(true);
             m_loadingIndicatorObject.SetActive(false);
             m_webRequest = null;
@@ -59,6 +67,7 @@ namespace OverhaulMod.UI
         public override void OnDestroy()
         {
             base.OnDestroy();
+            m_isDestroyed = true;
 
             UnityWebRequest webRequest = m_webRequest;
             if (webRequest != null)

@@ -357,6 +357,20 @@ namespace OverhaulMod.Content
             return null;
         }
 
+        /// <summary>
+        /// Get the version of installed addon with specified id
+        /// </summary>
+        /// <param name="uniqueId"></param>
+        /// <returns>-1 if addon is not installed, otherwise the installed addon version</returns>
+        public int GetAddonVersion(string uniqueId)
+        {
+            var info = GetAddonInfo(uniqueId);
+            if (info == null)
+                return -1;
+
+            return info.Version;
+        }
+
         public string GetAddonPath(string uniqueId)
         {
             HasInstalledAddon(uniqueId, out string result);
