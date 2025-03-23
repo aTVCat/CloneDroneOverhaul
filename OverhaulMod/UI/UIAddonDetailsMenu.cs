@@ -33,6 +33,15 @@ namespace OverhaulMod.UI
         [UIElement("LoadingIndicatorText")]
         private readonly Text m_loadingIndicatorText;
 
+        [UIElement("ImageDisplayPrefab", false)]
+        private readonly ModdedObject m_imageDisplayPrefab;
+
+        [UIElement("Content")]
+        private readonly Transform m_imageDisplayContainer;
+
+        [UIElement("NoPreviewsLabel")]
+        private readonly GameObject m_noPreviewsLabelObject;
+
         private AddonDownloadInfo m_addonDownloadInfo;
 
         private bool m_downloadedAddonViaThisMenu;
@@ -68,6 +77,30 @@ namespace OverhaulMod.UI
             m_addonSize.text = addonDownloadInfo.GetPackageSizeString();
             m_addonVersion.text = $"Version {addonDownloadInfo.Addon.Version}";
             refreshElements();
+            refreshImages();
+        }
+
+        private void refreshImages()
+        {
+            if (m_imageDisplayContainer.childCount != 0)
+                TransformUtils.DestroyAllChildren(m_imageDisplayContainer);
+
+            if (m_addonDownloadInfo.Images.IsNullOrEmpty())
+            {
+                m_noPreviewsLabelObject.SetActive(true);
+                return;
+            }
+            m_noPreviewsLabelObject.SetActive(false);
+
+            foreach (string p in m_addonDownloadInfo.Images)
+            {
+                ModdedObject moddedObject = Instantiate(m_imageDisplayPrefab, m_imageDisplayContainer);
+                moddedObject.gameObject.SetActive(true);
+                UIElementImageDisplay imageDisplay = moddedObject.gameObject.AddComponent<UIElementImageDisplay>();
+                imageDisplay.InitializeElement();
+                imageDisplay.Populate(p, false);
+                imageDisplay.imageViewerParentTransform = base.transform;
+            }
         }
 
         private void refreshElements()

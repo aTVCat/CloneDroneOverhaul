@@ -58,7 +58,7 @@ namespace OverhaulMod.UI
 
             RectTransform rectTransform = base.transform as RectTransform;
             Vector2 size = rectTransform.sizeDelta;
-            size.y = isSupported ? 80f : 110f;
+            size.y = isSupported ? 90f : 120f;
             rectTransform.sizeDelta = size;
         }
 

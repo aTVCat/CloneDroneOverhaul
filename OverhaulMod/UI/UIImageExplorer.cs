@@ -24,21 +24,21 @@ namespace OverhaulMod.UI
                 TransformUtils.DestroyAllChildren(m_imageDisplayContainer);
         }
 
-        public void Populate(List<string> imagePaths)
+        public void Populate(List<string> imageLinks, bool customLinks = false)
         {
             if (m_imageDisplayContainer.childCount != 0)
                 TransformUtils.DestroyAllChildren(m_imageDisplayContainer);
 
-            if (imagePaths.IsNullOrEmpty())
+            if (imageLinks.IsNullOrEmpty())
                 return;
 
-            foreach (string p in imagePaths)
+            foreach (string p in imageLinks)
             {
                 ModdedObject moddedObject = Instantiate(m_imageDisplayPrefab, m_imageDisplayContainer);
                 moddedObject.gameObject.SetActive(true);
                 UIElementImageDisplay imageDisplay = moddedObject.gameObject.AddComponent<UIElementImageDisplay>();
                 imageDisplay.InitializeElement();
-                imageDisplay.Populate(p);
+                imageDisplay.Populate(p, customLinks);
                 imageDisplay.imageViewerParentTransform = base.transform;
             }
         }

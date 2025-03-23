@@ -56,10 +56,10 @@ namespace OverhaulMod.Utils
             }
         }
 
-        public static void ImageExplorer(List<string> imagePaths, Transform parent)
+        public static void ImageExplorer(List<string> imagePaths, bool customLinks, Transform parent)
         {
             UIImageExplorer imageExplorer = ModUIConstants.ShowImageExplorer(parent);
-            imageExplorer.Populate(imagePaths);
+            imageExplorer.Populate(imagePaths, customLinks);
         }
 
         public static void FileExplorer(Transform parent, bool selectMode, Action<string> callback, string initialFolder, string searchPattern = null)

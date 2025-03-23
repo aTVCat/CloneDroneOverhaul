@@ -30,21 +30,30 @@ namespace OverhaulMod.UI
             button.onClick.AddListener(onClicked);
         }
 
-        public void Populate(string path)
+        public void Populate(string link, bool isCustomLink = false)
         {
-            RepositoryManager.Instance.GetCustomTexture(path, delegate (Texture2D texture)
+            if (isCustomLink)
             {
-                m_loadedTexture = texture;
-                m_rawImage.texture = texture;
-                m_rawImage.gameObject.SetActive(true);
-                m_loadingIndicatorObject.SetActive(false);
-                m_webRequest = null;
-            }, delegate (string error)
-            {
-                m_rawImage.gameObject.SetActive(true);
-                m_loadingIndicatorObject.SetActive(false);
-                m_webRequest = null;
-            }, out m_webRequest);
+                RepositoryManager.Instance.GetCustomTexture(link, onGetTexture, onFailedToGetTexture, out m_webRequest);
+                return;
+            }
+            RepositoryManager.Instance.GetTexture(link, onGetTexture, onFailedToGetTexture, out m_webRequest);
+        }
+
+        private void onGetTexture(Texture2D texture)
+        {
+            m_loadedTexture = texture;
+            m_rawImage.texture = texture;
+            m_rawImage.gameObject.SetActive(true);
+            m_loadingIndicatorObject.SetActive(false);
+            m_webRequest = null;
+        }
+
+        private void onFailedToGetTexture(string error)
+        {
+            m_rawImage.gameObject.SetActive(true);
+            m_loadingIndicatorObject.SetActive(false);
+            m_webRequest = null;
         }
 
         public override void OnDestroy()

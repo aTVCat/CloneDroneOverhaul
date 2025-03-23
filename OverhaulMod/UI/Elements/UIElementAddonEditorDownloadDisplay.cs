@@ -31,6 +31,16 @@ namespace OverhaulMod.UI
         [UIElement("CalculatePackageSizeButton")]
         private readonly Button m_calculatePackageSizeButton;
 
+        [UIElementAction(nameof(OnAddImageButtonClicked))]
+        [UIElement("AddImageButton")]
+        private readonly Button m_addImageButton;
+
+        [UIElement("ImageEntry", false)]
+        private readonly ModdedObject m_imageEntryPrefab;
+
+        [UIElement("Content")]
+        private readonly Transform m_imageEntriesContainer;
+
         private AddonDownloadInfo m_addonDownloadInfo;
 
         private AddonDownloadListInfo m_addonDownloadListInfo;
@@ -45,6 +55,8 @@ namespace OverhaulMod.UI
             m_addonIdField.text = addonDownloadInfo.UniqueID;
             m_packageUrlField.text = addonDownloadInfo.PackageFileURL;
             m_packageSizeField.text = addonDownloadInfo.PackageFileSize.ToString();
+
+            refreshImageEntries();
         }
 
         public void UpdateAddonDownloadInfo()
@@ -57,6 +69,38 @@ namespace OverhaulMod.UI
         private void refreshAddonReferencePresence()
         {
             m_addonReferenceExistIconObject.SetActive(m_addonDownloadInfo.HasAddonInfo());
+        }
+
+        private void refreshImageEntries()
+        {
+            if(m_imageEntriesContainer.childCount != 0)
+                TransformUtils.DestroyAllChildren(m_imageEntriesContainer);
+
+            var list = m_addonDownloadInfo.Images;
+            if (list.IsNullOrEmpty())
+                return;
+
+            for(int i = 0; i < list.Count; i++)
+            {
+                int index = i;
+
+                ModdedObject moddedObject = Instantiate(m_imageEntryPrefab, m_imageEntriesContainer);
+                moddedObject.gameObject.SetActive(true);
+
+                InputField inputField = moddedObject.GetObject<InputField>(0);
+                inputField.text = list[i];
+                inputField.onEndEdit.AddListener(delegate (string text)
+                {
+                    list[index] = text;
+                });
+
+                Button button = moddedObject.GetObject<Button>(1);
+                button.onClick.AddListener(delegate
+                {
+                    list.RemoveAt(index);
+                    refreshImageEntries();
+                });
+            }
         }
 
         public void OnRefreshAddonReferenceButtonClicked()
@@ -86,6 +130,18 @@ namespace OverhaulMod.UI
                 m_addonDownloadListInfo.Addons.Remove(m_addonDownloadInfo);
                 Destroy(base.gameObject);
             });
+        }
+
+        public void OnAddImageButtonClicked()
+        {
+            if (m_addonDownloadInfo.Images == null)
+                m_addonDownloadInfo.Images = new System.Collections.Generic.List<string>();
+
+            if (m_addonDownloadInfo.Images.Contains(string.Empty))
+                return;
+
+            m_addonDownloadInfo.Images.Add(string.Empty);
+            refreshImageEntries();
         }
     }
 }
