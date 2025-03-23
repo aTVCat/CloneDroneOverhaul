@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 2603838541
+CRC: 2923380324
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 18471ab5bee78a56afd1c42e5ecd60c2
+    Hash: 0ddafc9b59c8c77ab68425f1875b345a
   TypeTreeHash:
     serializedVersion: 2
     Hash: cda237583a20f800d271bb0d57c6cbb0
@@ -20,10 +20,17 @@ ClassTypes:
 - Class: 169
   Script: {instanceID: 0}
 Assets:
+- Assets/SFX/Hyperdome_Back_NoEcho.ogg
 - Assets/SFX/HeavyFootStep1.wav
 - Assets/SFX/LoadingSoundSource.prefab
+- Assets/SFX/Hyperdome_Choose.ogg
+- Assets/SFX/Hyperdome_Unpause.mp3
 - Assets/SFX/CustEditorAmbiance.ogg
 - Assets/SFX/CustEditorAmbianceSource.prefab
+- Assets/SFX/Hyperdome_Choose_NoEcho.ogg
+- Assets/SFX/Hyperdome_Click.ogg
+- Assets/SFX/Hyperdome_Pause.mp3
 - Assets/SFX/HeavyFootStep2.wav
 - Assets/SFX/BallonExplosion.mp3
+- Assets/SFX/Hyperdome_Back.mp3
 Dependencies: []

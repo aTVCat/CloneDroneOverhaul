@@ -70,6 +70,7 @@ namespace OverhaulMod.UI
 
         protected override void OnInitialized()
         {
+            m_allowHidingThisMenu = true;
             m_shading = base.GetComponent<Image>();
             m_textLine.gameObject.AddComponent<BetterOutline>().effectColor = Color.black;
 

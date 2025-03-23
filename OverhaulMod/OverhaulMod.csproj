@@ -390,6 +390,7 @@
     <Compile Include="Engine\AdditionalSkyboxInfo.cs" />
     <Compile Include="Engine\AutoBuildListInfo.cs" />
     <Compile Include="Engine\MeshSerializer.cs" />
+    <Compile Include="Engine\ModAudioLibrary.cs" />
     <Compile Include="Engine\ModSettingsPreset.cs" />
     <Compile Include="Engine\ModSettingSubDescription.cs" />
     <Compile Include="Engine\TransitionSoundBehaviour.cs" />
@@ -567,6 +568,7 @@
     <Compile Include="SEGI\SEGICascaded.cs" />
     <Compile Include="SEGI\SEGICascadedPreset.cs" />
     <Compile Include="SEGI\SEGIPreset.cs" />
+    <Compile Include="UI\Attributes\ButtonWithSoundAttribute.cs" />
     <Compile Include="UI\Attributes\KeyBindSetterAttribute.cs" />
     <Compile Include="UI\Attributes\ColorPickerAttribute.cs" />
     <Compile Include="UI\Attributes\ShowTooltipOnHighLightAttribute.cs" />
@@ -574,6 +576,7 @@
     <Compile Include="UI\Attributes\UIElementIgnoreIfMissingAttribute.cs" />
     <Compile Include="UI\Components\BetterSliderCallback.cs" />
     <Compile Include="UI\Attributes\TabManagerAttribute.cs" />
+    <Compile Include="UI\Components\ButtonWithSound.cs" />
     <Compile Include="UI\Components\DraggablePanel.cs" />
     <Compile Include="UI\Components\EnergyUIBehaviour.cs" />
     <Compile Include="UI\Components\EventController.cs" />

@@ -16,30 +16,37 @@ namespace OverhaulMod.UI
         [UIElement("DebugButtons", false)]
         private readonly GameObject m_debugButtonsObject;
 
+        [ButtonWithSound(ButtonWithSound.SoundType.Choose)]
         [UIElementAction(nameof(OnPlaySinglePlayerButtonClicked))]
         [UIElement("PlaySingleplayerButton")]
         private readonly Button m_playSinglePlayerButton;
 
+        [ButtonWithSound(ButtonWithSound.SoundType.Choose)]
         [UIElementAction(nameof(OnPlayMultiPlayerButtonClicked))]
         [UIElement("PlayMultiplayerButton")]
         private readonly Button m_playMultiPlayerButton;
 
+        [ButtonWithSound(ButtonWithSound.SoundType.Choose)]
         [UIElementAction(nameof(OnPlayExpMultiPlayerButtonClicked))]
         [UIElement("ExpPlayMultiplayerButton")]
         private readonly Button m_playExpMultiPlayerButton;
 
+        [ButtonWithSound(ButtonWithSound.SoundType.Click)]
         [UIElementAction(nameof(OnViewMultiplayerErrorButtonClicked))]
         [UIElement("ViewMultiplayerErrorButton")]
         private readonly Button m_viewMultiplayerErrorButton;
 
+        [ButtonWithSound(ButtonWithSound.SoundType.Choose_NoEcho)]
         [UIElementAction(nameof(OnModsButtonClicked))]
         [UIElement("ModsButton")]
         private readonly Button m_modsButton;
 
+        [ButtonWithSound(ButtonWithSound.SoundType.Click)]
         [UIElementAction(nameof(OnInfoButtonClicked))]
         [UIElement("InfoButton")]
         private readonly Button m_infoButton;
 
+        [ButtonWithSound(ButtonWithSound.SoundType.Click)]
         [UIElementAction(nameof(OnFeedbackButtonClicked))]
         [UIElement("FeedbackButton")]
         private readonly Button m_feedbackButton;
@@ -47,14 +54,17 @@ namespace OverhaulMod.UI
         [UIElement("BottomSection", true)]
         private readonly GameObject m_bottomSection;
 
+        [ButtonWithSound(ButtonWithSound.SoundType.Click)]
         [UIElementAction(nameof(OnExcContentMenuButtonClicked))]
         [UIElement("ExclusiveContentMenuButton")]
         private readonly Button m_excContentMenuButton;
 
+        [ButtonWithSound(ButtonWithSound.SoundType.Click)]
         [UIElementAction(nameof(OnUpdatesButtonClicked))]
         [UIElement("UpdatesButton")]
         private readonly Button m_updatesButton;
 
+        [ButtonWithSound(ButtonWithSound.SoundType.Click)]
         [UIElementAction(nameof(OnNewsButtonClicked))]
         [UIElement("NewsButton")]
         private readonly Button m_newsButton;
@@ -62,30 +72,37 @@ namespace OverhaulMod.UI
         [UIElement("NewBottomSection", false)]
         private readonly GameObject m_newBottomSection;
 
+        [ButtonWithSound(ButtonWithSound.SoundType.Click)]
         [UIElementAction(nameof(OnExcContentMenuButtonClicked))]
         [UIElement("NewExclusiveContentMenuButton")]
         private readonly Button m_newExcContentMenuButton;
 
+        [ButtonWithSound(ButtonWithSound.SoundType.Click)]
         [UIElementAction(nameof(OnUpdatesButtonClicked))]
         [UIElement("NewUpdatesButton")]
         private readonly Button m_newUpdatesButton;
 
+        [ButtonWithSound(ButtonWithSound.SoundType.Click)]
         [UIElementAction(nameof(OnNewsButtonClicked))]
         [UIElement("NewNewsButton")]
         private readonly Button m_newNewsButton;
 
+        [ButtonWithSound(ButtonWithSound.SoundType.Click)]
         [UIElementAction(nameof(OnOptionsButtonClicked))]
         [UIElement("OptionsButton")]
         private readonly Button m_optionsButton;
 
+        [ButtonWithSound(ButtonWithSound.SoundType.Click)]
         [UIElementAction(nameof(OnAdvancementsButtonClicked))]
         [UIElement("AchievementsButton")]
         private readonly Button m_advancementsButton;
 
+        [ButtonWithSound(ButtonWithSound.SoundType.Click)]
         [UIElementAction(nameof(OnWorkshopBrowserButtonClicked))]
         [UIElement("WorkshopBrowserButton")]
         private readonly Button m_workshopBrowserButton;
 
+        [ButtonWithSound(ButtonWithSound.SoundType.Click)]
         [UIElementAction(nameof(OnHubButtonClicked))]
         [UIElement("HubButton")]
         private readonly Button m_hubButton;
@@ -94,6 +111,7 @@ namespace OverhaulMod.UI
         [UIElement("LevelDescriptionsEditorButton")]
         private readonly Button m_levelDescriptionsEditorButton;
 
+        [ButtonWithSound(ButtonWithSound.SoundType.Choose)]
         [UIElementAction(nameof(OnPersonalizationEditorButtonClicked))]
         [UIElement("PersonalizationEditorButton")]
         private readonly Button m_personalizationEditorButton;
@@ -106,34 +124,42 @@ namespace OverhaulMod.UI
         [UIElement("SetupScreenButton")]
         private readonly Button m_setupButton;
 
+        [ButtonWithSound(ButtonWithSound.SoundType.Click)]
         [UIElementAction(nameof(OnContentButtonClicked))]
         [UIElement("ContentButton")]
         private readonly Button m_contentButton;
 
+        [ButtonWithSound(ButtonWithSound.SoundType.Choose)]
         [UIElementAction(nameof(OnLevelEditorButtonClicked))]
         [UIElement("LevelEditorButton")]
         private readonly Button m_levelEditorButton;
 
+        [ButtonWithSound(ButtonWithSound.SoundType.Click)]
         [UIElementAction(nameof(OnCreditsButtonClicked))]
         [UIElement("CreditsButton")]
         private readonly Button m_creditsButton;
 
+        [ButtonWithSound(ButtonWithSound.SoundType.Choose_NoEcho)]
         [UIElementAction(nameof(OnExitButtonClicked))]
         [UIElement("ExitButton")]
         private readonly Button m_quitButton;
 
+        [ButtonWithSound(ButtonWithSound.SoundType.Click)]
         [UIElementAction(nameof(OnCustomizeButtonClicked))]
         [UIElement("CustomizeButton")]
         private readonly Button m_customizeButton;
 
+        [ButtonWithSound(ButtonWithSound.SoundType.Click)]
         [UIElementAction(nameof(OnModBotLogInButtonClicked))]
         [UIElement("ModBotLogInButton", false)]
         private readonly Button m_modBotLogInButton;
 
+        [ButtonWithSound(ButtonWithSound.SoundType.Click)]
         [UIElementAction(nameof(OnOldUIButtonClicked))]
         [UIElement("OldUIButton")]
         private readonly Button m_oldUIButton;
 
+        [ButtonWithSound(ButtonWithSound.SoundType.Click)]
         [UIElementAction(nameof(OnNewUIButtonClicked))]
         [UIElement("NewUIButton")]
         private readonly Button m_newUIButton;
@@ -150,18 +176,22 @@ namespace OverhaulMod.UI
         [UIElement("StoryReworkButton")]
         private readonly Button m_storyReworkButton;
 
+        [ButtonWithSound(ButtonWithSound.SoundType.Click)]
         [UIElementAction(nameof(OnBehindTheScenesButtonClicked))]
         [UIElement("BehindTheScenesButton")]
         private readonly Button m_behindTheScenesButton;
 
+        [ButtonWithSound(ButtonWithSound.SoundType.Click)]
         [UIElementAction(nameof(OnDiscordServerButtonClicked))]
         [UIElement("DiscordServerButton")]
         private readonly Button m_discordServerButton;
 
+        [ButtonWithSound(ButtonWithSound.SoundType.Click)]
         [UIElementAction(nameof(OnPatchNotesButtonClicked))]
         [UIElement("PatchNotesButton")]
         private readonly Button m_patchNotesButton;
 
+        [ButtonWithSound(ButtonWithSound.SoundType.Click)]
         [UIElementAction(nameof(OnFeaturesButtonClicked))]
         [UIElement("FeaturesButton")]
         private readonly Button m_featuresButton;

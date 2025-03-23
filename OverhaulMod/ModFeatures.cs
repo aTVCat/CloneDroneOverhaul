@@ -163,6 +163,9 @@ namespace OverhaulMod
                 case FeatureType.WorkshopBrowserHistoryAndCheckpoints:
                     result = ModBuildInfo.VERSION_4_3;
                     break;
+                case FeatureType.UISounds:
+                    result = true;
+                    break;
                 default:
                     return false;
             }
@@ -267,6 +270,8 @@ namespace OverhaulMod
             DisplayNewGraphicsOptionsInSettings,
 
             WorkshopBrowserHistoryAndCheckpoints,
+
+            UISounds,
         }
     }
 }

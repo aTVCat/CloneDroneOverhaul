@@ -120,6 +120,7 @@ namespace OverhaulMod.UI
                     ColorPickerAttribute colorPickerAttribute = fieldInfo.GetCustomAttribute<ColorPickerAttribute>();
                     ShowTooltipOnHighLightAttribute showTooltipHighLightAttribute = fieldInfo.GetCustomAttribute<ShowTooltipOnHighLightAttribute>();
                     UIElementCallbackAttribute elementCallbackAttribute = fieldInfo.GetCustomAttribute<UIElementCallbackAttribute>();
+                    ButtonWithSoundAttribute buttonWithSoundAttribute = fieldInfo.GetCustomAttribute<ButtonWithSoundAttribute>();
 
                     if (elementAttribute.DefaultActiveState != null)
                     {
@@ -133,6 +134,12 @@ namespace OverhaulMod.UI
                         showTooltipOnHightLight.tooltipText = showTooltipHighLightAttribute.Text;
                         showTooltipOnHightLight.tooltipShowDuration = showTooltipHighLightAttribute.Duration;
                         showTooltipOnHightLight.textIsLocalizationId = showTooltipHighLightAttribute.TextIsLocalizationID;
+                    }
+
+                    if(buttonWithSoundAttribute != null && ModFeatures.IsEnabled(ModFeatures.FeatureType.UISounds))
+                    {
+                        ButtonWithSound buttonWithSound = elementObject.AddComponent<ButtonWithSound>();
+                        buttonWithSound.Sound = buttonWithSoundAttribute.SoundType;
                     }
 
                     bool shouldGetComponent = false;

@@ -77,6 +77,7 @@ namespace OverhaulMod
             _ = ModManagers.NewSingleton<ExclusivePerkManager>();
             _ = ModManagers.NewSingleton<ModLocalizationManager>();
             _ = ModManagers.NewSingleton<ModAudioManager>();
+            _ = ModManagers.NewSingleton<ModAudioLibrary>();
             _ = ModManagers.NewSingleton<ModResources>();
             _ = ModManagers.NewSingleton<ModTime>();
             _ = ModManagers.NewSingleton<ModUIManager>();

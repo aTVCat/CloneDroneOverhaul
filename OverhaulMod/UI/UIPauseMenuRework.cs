@@ -1,5 +1,6 @@
 ﻿using InternalModBot;
 using OverhaulMod.Content;
+using OverhaulMod.Engine;
 using OverhaulMod.Utils;
 using Steamworks;
 using UnityEngine;
@@ -191,7 +192,15 @@ namespace OverhaulMod.UI
         {
             base.Show();
             TimeManager.Instance.OnGamePaused();
-            _ = AudioManager.Instance.PlayClipGlobal(AudioLibrary.Instance.UISelectionPress, 0f, 1f, 0f);
+
+            if (ModFeatures.IsEnabled(ModFeatures.FeatureType.UISounds))
+            {
+                _ = AudioManager.Instance.PlayClipGlobal(ModAudioLibrary.Instance.HyperdomeUIPause);
+            }
+            else
+            {
+                _ = AudioManager.Instance.PlayClipGlobal(AudioLibrary.Instance.UISelectionPress, 0f, 1f, 0f);
+            }
 
             refreshLogo();
             refreshButtons();
@@ -204,7 +213,15 @@ namespace OverhaulMod.UI
         {
             base.Hide();
             TimeManager.Instance.OnGameUnPaused();
-            _ = AudioManager.Instance.PlayClipGlobal(AudioLibrary.Instance.UISelectionBack, 0f, 1f, 0f);
+
+            if (ModFeatures.IsEnabled(ModFeatures.FeatureType.UISounds))
+            {
+                _ = AudioManager.Instance.PlayClipGlobal(ModAudioLibrary.Instance.HyperdomeUIResume);
+            }
+            else
+            {
+                _ = AudioManager.Instance.PlayClipGlobal(AudioLibrary.Instance.UISelectionBack, 0f, 1f, 0f);
+            }
         }
 
         public override void Update()
