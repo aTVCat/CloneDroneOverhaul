@@ -153,7 +153,7 @@ namespace OverhaulMod.Content.Personalization
             AudioManager.Instance.FadeOutMusic(1f);
 
             if (EditorAmbiance)
-                ModAudioManager.Instance.PlayCustomizationEditorAmbience();
+                ModAudioManager.Instance.PlayCustomizationEditorAmbiance();
 
             if (useTransitionManager)
                 yield return new WaitForSecondsRealtime(0.25f);

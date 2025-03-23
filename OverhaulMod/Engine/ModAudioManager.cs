@@ -34,9 +34,7 @@ namespace OverhaulMod.Engine
 
         private AudioSource[] m_commentatorAudioSources;
 
-        private GameObject m_loadingSoundSourcePrefab;
-
-        private AudioClipDefinition m_customizationManagerAmbience;
+        private GameObject m_loadingSoundSourcePrefab, m_customizationEditorAmbianceSourcePrefab;
 
         private float m_updateVolumeUntilTime;
 
@@ -46,13 +44,25 @@ namespace OverhaulMod.Engine
 
         private bool m_focused;
 
+        private AudioSource m_customizationEditorAmbiance;
+
+        private float m_timeCustomizationEditorAmbianceStartTime, m_timeCustomizationEditorAmbianceStopTime;
+
         private void Start()
         {
+            m_timeCustomizationEditorAmbianceStartTime = -1f;
+            m_timeCustomizationEditorAmbianceStopTime = -1f;
+
             m_loadingSoundSourcePrefab = ModResources.Prefab(AssetBundleConstants.SFX, "LoadingSoundSource");
-            m_customizationManagerAmbience = new AudioClipDefinition() { Clip = ModResources.AudioClip(AssetBundleConstants.SFX, "SB_Ambiance_19") };
+            m_customizationEditorAmbianceSourcePrefab = ModResources.Prefab(AssetBundleConstants.SFX, "CustEditorAmbianceSource");
             m_focused = !MuteSoundWhenUnfocused || Application.isFocused;
             m_volumeMultiplier = m_focused ? 1f : 0f;
             RefreshVolume();
+        }
+
+        private void OnDestroy()
+        {
+            GlobalEventManager.Instance.RemoveEventListener(GlobalEvents.ExitingToMainMenu, StopCustomizationEditorAmbience);
         }
 
         private void Update()
@@ -64,6 +74,23 @@ namespace OverhaulMod.Engine
                 UIDeveloperMenu.SetKeyValue("Commentators volume", (m_commentatorsVolume * (MuteCommentatorsWhenUnfocused && !MuteMasterVolumeWhenUnfocused ? m_volumeMultiplier : 1f)).ToString());
                 UIDeveloperMenu.SetKeyValue("Volume multiplier", m_volumeMultiplier.ToString());
                 UIDeveloperMenu.SetKeyValue("Mute in progress?", (Time.unscaledTime < m_updateVolumeUntilTime).ToString());
+            }
+
+            if (m_customizationEditorAmbiance)
+            {
+                if (m_timeCustomizationEditorAmbianceStopTime != -1f)
+                {
+                    m_customizationEditorAmbiance.volume = 1f - Mathf.Clamp01(Time.unscaledTime - m_timeCustomizationEditorAmbianceStopTime);
+                    if (m_customizationEditorAmbiance.volume <= 0f)
+                    {
+                        Destroy(m_customizationEditorAmbiance.gameObject);
+                        m_customizationEditorAmbiance = null;
+                    }
+                }
+                else
+                {
+                    m_customizationEditorAmbiance.volume = Mathf.Clamp01((Time.unscaledTime - m_timeCustomizationEditorAmbianceStartTime) * 0.2f);
+                }
             }
 
             if (Time.unscaledTime > m_updateVolumeUntilTime)
@@ -82,9 +109,20 @@ namespace OverhaulMod.Engine
             m_updateVolumeUntilTime = Time.unscaledTime + 2f;
         }
 
-        public void PlayCustomizationEditorAmbience()
+        public void PlayCustomizationEditorAmbiance()
         {
-            AudioManager.Instance.PlayClipGlobal(m_customizationManagerAmbience, 0f, true, 0.7f);
+            if (m_customizationEditorAmbiance)
+                return;
+
+            m_timeCustomizationEditorAmbianceStopTime = -1f;
+            m_timeCustomizationEditorAmbianceStartTime = Time.unscaledTime;
+            m_customizationEditorAmbiance = Instantiate(m_customizationEditorAmbianceSourcePrefab).GetComponent<AudioSource>();
+        }
+
+        public void StopCustomizationEditorAmbience()
+        {
+            m_timeCustomizationEditorAmbianceStartTime = -1f;
+            m_timeCustomizationEditorAmbianceStopTime = Time.unscaledTime;
         }
 
         public void PlayTransitionSound(float volumeOffset = 0f)
@@ -109,6 +147,7 @@ namespace OverhaulMod.Engine
         public void OnGameLoaded()
         {
             refreshAudioSources();
+            GlobalEventManager.Instance.AddEventListener(GlobalEvents.ExitingToMainMenu, StopCustomizationEditorAmbience);
         }
 
         public void RefreshVolume()

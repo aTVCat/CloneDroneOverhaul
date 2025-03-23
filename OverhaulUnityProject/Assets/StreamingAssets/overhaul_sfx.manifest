@@ -1,12 +1,12 @@
 ManifestFileVersion: 0
-CRC: 313144689
+CRC: 2603838541
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 1772cbc0581577f1c61a97c1385172c7
+    Hash: 18471ab5bee78a56afd1c42e5ecd60c2
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 8de51064219e4f947fb7fea9d09a4e34
+    Hash: cda237583a20f800d271bb0d57c6cbb0
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -17,10 +17,13 @@ ClassTypes:
   Script: {instanceID: 0}
 - Class: 83
   Script: {instanceID: 0}
+- Class: 169
+  Script: {instanceID: 0}
 Assets:
 - Assets/SFX/HeavyFootStep1.wav
 - Assets/SFX/LoadingSoundSource.prefab
-- Assets/SFX/SB_Ambiance_19.mp3
+- Assets/SFX/CustEditorAmbiance.ogg
+- Assets/SFX/CustEditorAmbianceSource.prefab
 - Assets/SFX/HeavyFootStep2.wav
 - Assets/SFX/BallonExplosion.mp3
 Dependencies: []
