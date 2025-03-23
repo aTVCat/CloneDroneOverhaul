@@ -194,6 +194,7 @@ namespace OverhaulMod
         private static void addListeners()
         {
             ModSettingsManager modSettingsManager = ModSettingsManager.Instance;
+            modSettingsManager.AddSettingValueChangedListener(refreshEditorAmbiance, ModSettingsConstants.CUSTOMIZATION_EDITOR_AMBIANCE);
             modSettingsManager.AddSettingValueChangedListener(refreshCameraPostEffects, ModSettingsConstants.ENABLE_TITLE_BAR_OVERHAUL);
             modSettingsManager.AddSettingValueChangedListener(refreshCameraPostEffects, ModSettingsConstants.ENABLE_SSAO);
             modSettingsManager.AddSettingValueChangedListener(refreshCameraPostEffects, ModSettingsConstants.SSAO_INTENSITY);
@@ -273,6 +274,11 @@ namespace OverhaulMod
         private static void refreshFPSCap(object obj)
         {
             FPSManager.RefreshFPSCap();
+        }
+
+        private static void refreshEditorAmbiance(object obj)
+        {
+            ModAudioManager.Instance.PlayOrStopCustomizationEditorAmbiance();
         }
 
         private static void loadGameUIThemeData()

@@ -1,4 +1,5 @@
-﻿using OverhaulMod.UI;
+﻿using OverhaulMod.Content.Personalization;
+using OverhaulMod.UI;
 using OverhaulMod.Utils;
 using UnityEngine;
 
@@ -62,7 +63,7 @@ namespace OverhaulMod.Engine
 
         private void OnDestroy()
         {
-            GlobalEventManager.Instance.RemoveEventListener(GlobalEvents.ExitingToMainMenu, StopCustomizationEditorAmbience);
+            GlobalEventManager.Instance.RemoveEventListener(GlobalEvents.ExitingToMainMenu, StopCustomizationEditorAmbiance);
         }
 
         private void Update()
@@ -109,6 +110,25 @@ namespace OverhaulMod.Engine
             m_updateVolumeUntilTime = Time.unscaledTime + 2f;
         }
 
+        public void PlayOrStopCustomizationEditorAmbiance()
+        {
+            if (!PersonalizationEditorManager.IsInEditor())
+                return;
+
+            if (PersonalizationEditorManager.EditorAmbiance)
+            {
+                m_timeCustomizationEditorAmbianceStopTime = -1f;
+                m_timeCustomizationEditorAmbianceStartTime = Time.unscaledTime;
+                PlayCustomizationEditorAmbiance();
+            }
+            else
+            {
+                m_timeCustomizationEditorAmbianceStartTime = -1f;
+                m_timeCustomizationEditorAmbianceStopTime = Time.unscaledTime;
+                StopCustomizationEditorAmbiance();
+            }
+        }
+
         public void PlayCustomizationEditorAmbiance()
         {
             if (m_customizationEditorAmbiance)
@@ -119,8 +139,11 @@ namespace OverhaulMod.Engine
             m_customizationEditorAmbiance = Instantiate(m_customizationEditorAmbianceSourcePrefab).GetComponent<AudioSource>();
         }
 
-        public void StopCustomizationEditorAmbience()
+        public void StopCustomizationEditorAmbiance()
         {
+            if (!m_customizationEditorAmbiance)
+                return;
+
             m_timeCustomizationEditorAmbianceStartTime = -1f;
             m_timeCustomizationEditorAmbianceStopTime = Time.unscaledTime;
         }
@@ -147,7 +170,7 @@ namespace OverhaulMod.Engine
         public void OnGameLoaded()
         {
             refreshAudioSources();
-            GlobalEventManager.Instance.AddEventListener(GlobalEvents.ExitingToMainMenu, StopCustomizationEditorAmbience);
+            GlobalEventManager.Instance.AddEventListener(GlobalEvents.ExitingToMainMenu, StopCustomizationEditorAmbiance);
         }
 
         public void RefreshVolume()
