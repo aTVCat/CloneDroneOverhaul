@@ -24,7 +24,7 @@ namespace OverhaulMod.Content
 
         public const string REALISTIC_SKYBOXES_ADDON_ID = "51a9fc49";
 
-        public const string GALLERY_ADDON_ID = "084c7e7a";
+        public const string GALLERY_ADDON_ID = "b63ebd97";
 
         public const string ADDON_UPDATES_REFRESHED = "AddonUpdatesRefreshed";
 
@@ -157,6 +157,12 @@ namespace OverhaulMod.Content
                 {
                     if (download.UniqueID == addonId)
                     {
+                        if (!download.Addon.IsSupported())
+                        {
+                            callback?.Invoke($"This addon requires new Overhaul mod version: {download.Addon.MinModVersion}");
+                            return;
+                        }
+
                         DownloadAddon(download, callback);
                         return;
                     }

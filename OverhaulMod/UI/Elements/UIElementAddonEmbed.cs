@@ -94,7 +94,7 @@ namespace OverhaulMod.UI
             if (AddonId.IsNullOrEmpty())
                 return;
 
-            ModUIUtils.MessagePopup(true, $"{(update ? "Update" : "Download")} {AddonId}?", string.Empty, 100f, MessageMenu.ButtonLayout.EnableDisableButtons, "ok", "Yes", "No", null, delegate
+            ModUIUtils.MessagePopup(true, $"{(update ? "Update" : "Download")} this addon?", string.Empty, 100f, MessageMenu.ButtonLayout.EnableDisableButtons, "ok", "Yes", "No", null, delegate
             {
                 AddonManager contentManager = AddonManager.Instance;
                 contentManager.DownloadAddon(AddonId, delegate (string error)

@@ -44,10 +44,9 @@ namespace OverhaulMod.UI
             if (m_imageDisplaysContainer.childCount != 0)
                 TransformUtils.DestroyAllChildren(m_imageDisplaysContainer);
 
-            string directory = AddonManager.Instance.GetAddonPath(AddonManager.GALLERY_ADDON_ID);
-            if (directory.IsNullOrEmpty() || !Directory.Exists(directory))
+            if (!AddonManager.Instance.HasInstalledAddon(AddonManager.GALLERY_ADDON_ID, out string directory))
             {
-                ModUIUtils.MessagePopupOK("\"Behind The Scenes\" addon not installed", "Install this add-on to make this menu work.", true);
+                ModUIUtils.MessagePopupOK("\"Behind The Scenes\" addon not installed", "Install this addon to make this menu work.", true);
                 yield break;
             }
 

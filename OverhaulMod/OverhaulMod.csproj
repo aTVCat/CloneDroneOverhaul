@@ -490,6 +490,7 @@
     <Compile Include="Engine\ModLevelManager.cs" />
     <Compile Include="Content\NewsManager.cs" />
     <Compile Include="ModFeaturesData.cs" />
+    <Compile Include="ModLaunchOptions.cs" />
     <Compile Include="ModLoader.cs" />
     <Compile Include="ModTime.cs" />
     <Compile Include="ModDataManager.cs" />

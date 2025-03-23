@@ -23,6 +23,9 @@ namespace OverhaulMod.Content
 
         public bool IsSupported()
         {
+            if (ModLaunchOptions.HasLaunchOption(ModLaunchOptions.LaunchOption.LoadUnsupportedAddons))
+                return true;
+
             return MinModVersion != null && ModBuildInfo.version >= MinModVersion;
         }
 

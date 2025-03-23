@@ -32,6 +32,7 @@ namespace OverhaulMod
             loadAssemblies();
             loadGameUIThemeData();
 
+            ModLaunchOptions.Initialize();
             ModUserInfo.Load();
             ModBuildInfo.Load();
 
