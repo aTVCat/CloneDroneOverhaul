@@ -25,6 +25,17 @@ namespace OverhaulMod.UI
         [UIElement("InstalledBuildChangelogButton")]
         private readonly Button m_patchNotesButton;
 
+        [UIElementAction(nameof(OnCheckUpdatesOnStartToggled))]
+        [UIElement("CheckUpdatesOnStartToggle")]
+        private readonly Toggle m_checkUpdatesOnStartToggle;
+
+        [UIElementAction(nameof(OnNotifyAboutTestBuildsToggled))]
+        [UIElement("NotifyAboutTestBuildsToggle")]
+        private readonly Toggle m_notifyAboutTestBuildsToggle;
+
+        [UIElement("NotifyAboutTestBuildsToggle_Shading")]
+        private readonly GameObject m_notifyAboutTestBuildsToggleShading;
+
         [UIElement("InstalledVersionText")]
         private readonly Text m_installedVersionText;
 
@@ -54,7 +65,17 @@ namespace OverhaulMod.UI
         protected override void OnInitialized()
         {
             m_installedVersionText.text = ModBuildInfo.versionStringNoBranch;
+            m_checkUpdatesOnStartToggle.isOn = UpdateManager.CheckForUpdatesOnStartup;
+            m_notifyAboutTestBuildsToggle.isOn = UpdateManager.NotifyAboutNewTestBuilds;
+            m_notifyAboutTestBuildsToggle.interactable = UpdateManager.CheckForUpdatesOnStartup;
+            m_notifyAboutTestBuildsToggleShading.SetActive(!UpdateManager.CheckForUpdatesOnStartup);
             displayUpdatesLastCheckedIdleText();
+        }
+
+        public override void Hide()
+        {
+            ModSettingsDataManager.Instance.Save();
+            base.Hide();
         }
 
         private void displayUpdatesLastCheckedIdleText()
@@ -65,6 +86,21 @@ namespace OverhaulMod.UI
 
             m_idleHeaderText.text = "Overhaul mod is up-to-date!";
             m_idleDescriptionText.text = $"Last checked: {(dateTime == DateTime.MinValue ? "unknown" : dateTime.ToShortDateString())}";
+        }
+
+        public void OnCheckUpdatesOnStartToggled(bool value)
+        {
+            ModSettingsManager.SetBoolValue(ModSettingsConstants.CHECK_UPDATES_ON_NEXT_START, true);
+            ModSettingsManager.SetBoolValue(ModSettingsConstants.CHECK_FOR_UPDATES_ON_STARTUP, value, true);
+
+            m_notifyAboutTestBuildsToggleShading.SetActive(!value);
+            m_notifyAboutTestBuildsToggle.interactable = value;
+        }
+
+        public void OnNotifyAboutTestBuildsToggled(bool value)
+        {
+            ModSettingsManager.SetBoolValue(ModSettingsConstants.CHECK_UPDATES_ON_NEXT_START, true);
+            ModSettingsManager.SetBoolValue(ModSettingsConstants.NOTIFY_ABOUT_NEW_TEST_BUILDS, value, true);
         }
 
         public void OnEditorButtonClicked()

@@ -33,10 +33,12 @@ namespace OverhaulMod.Utils
                     });
                 }, delay);
             }
-            else if (showNewUpdateMessage)
+            else if (showNewUpdateMessage && !UpdateManager.HasNotifiedAboutNewBuild && UpdateManager.CheckForUpdatesOnStartup)
             {
                 DelegateScheduler.Instance.Schedule(delegate
                 {
+                    UpdateManager.HasNotifiedAboutNewBuild = true;
+
                     string savedVersion = UpdateManager.SavedNewVersion;
                     if (savedVersion.IsNullOrEmpty())
                         return;
@@ -50,7 +52,7 @@ namespace OverhaulMod.Utils
                         {
                             if (ModFeatures.IsEnabled(ModFeatures.FeatureType.UpdatesMenuRework))
                             {
-                                var windowNew = ModUIConstants.ShowUpdatesWindowRework();
+                                UIUpdatesWindowRework windowNew = ModUIConstants.ShowUpdatesWindowRework();
                                 windowNew.OnCheckForUpdatesButtonClicked();
                                 return;
                             }

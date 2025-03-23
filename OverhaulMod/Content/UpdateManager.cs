@@ -27,6 +27,11 @@ namespace OverhaulMod.Content
         [ModSetting(ModSettingsConstants.UPDATES_LAST_CHECKED_DATE, null, ModSetting.Tag.IgnoreExport)]
         public static string UpdatesLastCheckedDate;
 
+        [ModSetting(ModSettingsConstants.CHECK_UPDATES_ON_NEXT_START, false, ModSetting.Tag.IgnoreExport)]
+        public static bool CheckUpdatesOnNextStart;
+
+        public static bool HasNotifiedAboutNewBuild;
+
         public static readonly List<Dropdown.OptionData> BranchesForTestersDropdownOptions = new List<Dropdown.OptionData>()
         {
             new Dropdown.OptionData() { text = "Release" },
@@ -63,7 +68,7 @@ namespace OverhaulMod.Content
             }
 
             ScheduledActionsManager scheduledActionsManager = ScheduledActionsManager.Instance;
-            if (!scheduledActionsManager.ShouldExecuteAction(ScheduledActionType.RefreshModUpdates))
+            if (!scheduledActionsManager.ShouldExecuteAction(ScheduledActionType.RefreshModUpdates) && !CheckForUpdatesOnStartup)
                 return;
 
             _ = ModActionUtils.RunCoroutine(retrieveDataOnStartCoroutine());
@@ -115,6 +120,9 @@ namespace OverhaulMod.Content
             DownloadUpdateInfoFile(delegate
             {
                 ScheduledActionsManager.Instance.SetActionExecuted(ScheduledActionType.RefreshModUpdates);
+
+                ModSettingsManager.SetBoolValue(ModSettingsConstants.CHECK_UPDATES_ON_NEXT_START, false);
+                ModSettingsDataManager.Instance.Save();
             }, null);
             yield break;
         }

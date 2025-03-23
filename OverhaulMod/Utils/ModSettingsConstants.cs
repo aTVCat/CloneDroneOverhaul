@@ -640,5 +640,10 @@ namespace OverhaulMod.Utils
         /// <see cref="Content.UpdateManager"/>
         /// </summary>
         public const string NOTIFY_ABOUT_NEW_TEST_BUILDS = "NotifyAboutNewTestBuilds";
+
+        /// <summary>
+        /// <see cref="Content.UpdateManager"/>
+        /// </summary>
+        public const string CHECK_UPDATES_ON_NEXT_START = "CheckUpdatesOnNextStart";
     }
 }
