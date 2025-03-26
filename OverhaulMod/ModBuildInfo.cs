@@ -18,7 +18,7 @@ namespace OverhaulMod
         public const string EXTRA_INFO_FILE_PATH = "buildInfo.json";
 
 #if OVERRIDE_VER
-        public const string OVERRIDE_VERSION = "0.4.2.1010";
+        public const string OVERRIDE_VERSION = "0.4.2.1011";
 #endif
 
         private static bool s_loaded;

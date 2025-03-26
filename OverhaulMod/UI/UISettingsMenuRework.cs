@@ -1103,7 +1103,7 @@ namespace OverhaulMod.UI
             {
                 ModSettingsManager.SetBoolValue(ModSettingsConstants.OVERHAUL_NON_SCENE_TRANSITIONS, value, true);
             }, "Better in-game transitions");
-            if (ModFeatures.IsEnabled(ModFeatures.FeatureType.TransitionUpdates))
+            if (ModFeatures.IsEnabled(ModFeatures.FeatureType.UpdatedTransitions))
             {
                 _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.TRANSITION_SOUND), delegate (bool value)
                 {

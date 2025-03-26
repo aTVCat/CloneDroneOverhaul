@@ -397,7 +397,7 @@ namespace OverhaulMod.UI
 
         private IEnumerator levelEditorTransitionCoroutine()
         {
-            yield return new WaitForSecondsRealtime(0.25f);
+            yield return new WaitForSecondsRealtime(0.4f);
             while (LevelManager.Instance.IsSpawningCurrentLevel())
                 yield return null;
 
@@ -524,7 +524,7 @@ namespace OverhaulMod.UI
                 m_titleScreenUI.OnLevelEditorButtonClicked();
                 return;
             }
-            TransitionManager.Instance.DoNonSceneTransition(levelEditorTransitionCoroutine());
+            TransitionManager.Instance.DoNonSceneTransition(levelEditorTransitionCoroutine(), false);
         }
 
         public void OnOptionsButtonClicked()

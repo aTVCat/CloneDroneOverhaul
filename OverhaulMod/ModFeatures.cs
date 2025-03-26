@@ -151,7 +151,7 @@ namespace OverhaulMod
                 case FeatureType.CustomizationMenuUpdates:
                     result = ModBuildInfo.VERSION_4_2_UPDATE;
                     break;
-                case FeatureType.TransitionUpdates:
+                case FeatureType.UpdatedTransitions:
                     result = ModBuildInfo.VERSION_4_2_UPDATE;
                     break;
                 case FeatureType.RevertUpgrades:
@@ -263,7 +263,7 @@ namespace OverhaulMod
 
             CustomizationMenuUpdates,
 
-            TransitionUpdates,
+            UpdatedTransitions,
 
             RevertUpgrades,
 
