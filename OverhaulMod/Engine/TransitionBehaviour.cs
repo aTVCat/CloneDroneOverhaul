@@ -119,7 +119,7 @@ namespace OverhaulMod.Engine
         public void SetElementsVisible(bool textValue, bool tipValue)
         {
             m_text.gameObject.SetActive(!m_use43Variant && textValue);
-            m_tipLabel.gameObject.SetActive(m_use43Variant && tipValue);
+            m_tipLabel.gameObject.SetActive(ModFeatures.IsEnabled(ModFeatures.FeatureType.TransitionTips) && m_use43Variant && tipValue);
             m_loadingIndicator.gameObject.SetActive(m_use43Variant && textValue);
         }
 

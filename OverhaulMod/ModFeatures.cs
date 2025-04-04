@@ -166,6 +166,9 @@ namespace OverhaulMod
                 case FeatureType.UISounds:
                     result = ModBuildInfo.VERSION_4_4;
                     break;
+                case FeatureType.TransitionTips:
+                    result = false;
+                    break;
                 default:
                     return false;
             }
@@ -272,6 +275,8 @@ namespace OverhaulMod
             WorkshopBrowserHistoryAndCheckpoints,
 
             UISounds,
+
+            TransitionTips,
         }
     }
 }

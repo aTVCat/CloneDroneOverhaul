@@ -23,7 +23,7 @@ namespace OverhaulMod.UI
 
         public void OnGUI()
         {
-            if (!EnableDebugMenu)
+            if (!ModBuildInfo.debug || !EnableDebugMenu)
                 return;
 
             GUILayout.BeginArea(new Rect(10f, 100f, 200f, 200f));
@@ -51,6 +51,9 @@ namespace OverhaulMod.UI
 
         public override void Update()
         {
+            if (!ModBuildInfo.debug && !ModUserInfo.isDeveloper)
+                return;
+
             if (Input.GetKeyDown(KeyCode.Alpha7) && InputManager.Instance.GetKeyMode() != KeyMode.EditingInputField)
             {
                 bool value = !Enabled;

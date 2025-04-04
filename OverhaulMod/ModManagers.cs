@@ -16,9 +16,6 @@ namespace OverhaulMod
 
             ModCore.GameInitialized += onGameInitialized;
 
-            if (!ModBuildInfo.debug)
-                return;
-
             _ = base.gameObject.AddComponent<UIDeveloperMenu>();
         }
 

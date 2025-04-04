@@ -1,5 +1,5 @@
 ﻿#define OVERRIDE_VER
-#define DEVELOPER_BUILD
+//#define DEVELOPER_BUILD
 
 using OverhaulMod.Utils;
 using System;
@@ -20,7 +20,7 @@ namespace OverhaulMod
         public const string EXTRA_INFO_FILE_PATH = "buildInfo.json";
 
 #if OVERRIDE_VER
-        public const string OVERRIDE_VERSION = "0.4.2.1012";
+        public const string OVERRIDE_VERSION = "0.4.2.1013";
 #endif
 
         private static bool s_loaded;

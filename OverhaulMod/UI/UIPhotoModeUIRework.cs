@@ -168,7 +168,7 @@ namespace OverhaulMod.UI
             UIElementExpandButton expandButton = m_expandButton;
             expandButton.rectTransform = lightingPanel;
             expandButton.collapsedSize = lightingPanel.sizeDelta;
-            expandButton.expandedSize = new Vector2(375f, 300f);
+            expandButton.expandedSize = new Vector2(375f, 400f);
 
             m_saveRLightInfoButton.gameObject.SetActive(ModUserInfo.isDeveloper);
         }

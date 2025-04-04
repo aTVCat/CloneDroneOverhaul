@@ -1,4 +1,5 @@
 ﻿//#define FORCE_DEVELOPER
+//#define FORCE_NOT_DEVELOPER
 
 using OverhaulMod.Utils;
 using Steamworks;
@@ -94,7 +95,9 @@ namespace OverhaulMod
         {
             get
             {
-#if FORCE_DEVELOPER
+#if FORCE_NOT_DEVELOPER
+                return false;
+#elif FORCE_DEVELOPER
                 return true;
 #else
                 return localPlayerSteamID == DeveloperSteamID || localPlayerPlayFabID == DeveloperPlayFabID;
