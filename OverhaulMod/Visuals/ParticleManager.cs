@@ -17,8 +17,11 @@ namespace OverhaulMod.Visuals
 
         public const string LOGO_EXPLOSION_PARTICLES_ID = "VFX_LogoExplosion";
 
-        [ModSetting(ModSettingsConstants.ENABLE_NEW_PARTICLES, true)]
+        [ModSetting(ModSettingsConstants.ENABLE_PARTICLES, true)]
         public static bool EnableParticles;
+
+        [ModSetting(ModSettingsConstants.NEW_EXPLOSION_PARTICLES, true)]
+        public static bool NewExplosionParticles;
 
         private GameObject m_logoParticles;
 

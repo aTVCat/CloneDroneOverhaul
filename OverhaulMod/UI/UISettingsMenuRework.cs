@@ -370,9 +370,9 @@ namespace OverhaulMod.UI
             }, "Adjust bloom settings");
 
             _ = pageBuilder.Header3("Particle effects");
-            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_NEW_PARTICLES), delegate (bool value)
+            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_PARTICLES), delegate (bool value)
             {
-                ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_NEW_PARTICLES, value, true);
+                ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_PARTICLES, value, true);
             }, "Enable particles");
             _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_GARBAGE_PARTICLES), delegate (bool value)
             {
@@ -887,10 +887,18 @@ namespace OverhaulMod.UI
             {
                 ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_VOXEL_BURNING, value, true);
             }, "Always burn voxels");
-            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_NEW_PARTICLES), delegate (bool value)
+            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_PARTICLES), delegate (bool value)
             {
-                ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_NEW_PARTICLES, value, true);
+                ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_PARTICLES, value, true);
             }, "Enable particles");
+            if (ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_PARTICLES))
+            {
+                _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.NEW_EXPLOSION_PARTICLES), delegate (bool value)
+                {
+                    ModSettingsManager.SetBoolValue(ModSettingsConstants.NEW_EXPLOSION_PARTICLES, value, true);
+                    PopulatePage("Graphics");
+                }, "New explosion particles");
+            }
 
             _ = pageBuilder.Header1("Garbage");
             _ = pageBuilder.Dropdown(settingsMenu.GarbageSettingsDropdown.options, settingsMenu.GarbageSettingsDropdown.value, OnGarbageSettingsChanged);

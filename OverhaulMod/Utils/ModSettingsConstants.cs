@@ -134,7 +134,7 @@ namespace OverhaulMod.Utils
         /// <summary>
         /// <see cref="Visuals.ParticleManager"/>
         /// </summary>
-        public const string ENABLE_NEW_PARTICLES = "EnableParticles";
+        public const string ENABLE_PARTICLES = "EnableParticles";
 
         /// <summary>
         /// <see cref="Visuals.Environment.SeveredBodyPartSparks"/>
@@ -645,5 +645,10 @@ namespace OverhaulMod.Utils
         /// <see cref="Content.UpdateManager"/>
         /// </summary>
         public const string CHECK_UPDATES_ON_NEXT_START = "CheckUpdatesOnNextStart";
+
+        /// <summary>
+        /// <see cref="Visuals.ParticleManager"/>
+        /// </summary>
+        public const string NEW_EXPLOSION_PARTICLES = "NewExplosionParticles";
     }
 }

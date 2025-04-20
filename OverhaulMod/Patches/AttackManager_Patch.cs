@@ -22,7 +22,7 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(AttackManager.CreateEmperorHeadExplosionVFX))]
         private static void CreateEmperorHeadExplosionVFX_Postfix(Vector3 position)
         {
-            if (!ParticleManager.EnableParticles)
+            if (!ParticleManager.EnableParticles || !ParticleManager.NewExplosionParticles)
                 return;
 
             ParticleManager.Instance.SpawnLogoExplosionParticles(position);
