@@ -1200,16 +1200,29 @@ namespace OverhaulMod.UI
             });
 
             _ = pageBuilder.Header1("Lights");
-            _ = pageBuilder.Header3("Limit");
-            _ = pageBuilder.Slider(1, 14, true, ModSettingsManager.GetIntValue(ModSettingsConstants.MAX_LIGHT_COUNT), delegate (float value)
+            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.UNLIMITED_LIGHT_SOURCES), delegate (bool value)
             {
-                ModSettingsManager.SetIntValue(ModSettingsConstants.MAX_LIGHT_COUNT, Mathf.RoundToInt(value), true);
+                ModSettingsManager.SetBoolValue(ModSettingsConstants.UNLIMITED_LIGHT_SOURCES, value, true);
                 QualityManager.Instance.RefreshQualitySettings();
-            }, true, (float val) =>
+
+                ClearPageContents();
+                populateAdditionalGraphicsPage(settingsMenu);
+            }, "Unlimited light sources");
+            _ = pageBuilder.Header4("Not recommended for low end devices");
+
+            if (!ModSettingsManager.GetBoolValue(ModSettingsConstants.UNLIMITED_LIGHT_SOURCES))
             {
-                int roundedValue = Mathf.RoundToInt(val);
-                return roundedValue.ToString();
-            });
+                _ = pageBuilder.Header3("Limit");
+                _ = pageBuilder.Slider(1, 15, true, ModSettingsManager.GetIntValue(ModSettingsConstants.MAX_LIGHT_COUNT), delegate (float value)
+                {
+                    ModSettingsManager.SetIntValue(ModSettingsConstants.MAX_LIGHT_COUNT, Mathf.RoundToInt(value), true);
+                    QualityManager.Instance.RefreshQualitySettings();
+                }, true, (float val) =>
+                {
+                    int roundedValue = Mathf.RoundToInt(val);
+                    return roundedValue.ToString();
+                });
+            }
         }
 
         private void populateUIPatchesPage(SettingsMenu settingsMenu)

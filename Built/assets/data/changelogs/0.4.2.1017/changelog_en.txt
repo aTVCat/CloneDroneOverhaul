@@ -1,0 +1,42 @@
+I have devided the update 4.3 into 2 parts due to amount of incomplete tasks and long absence of updates. This patch contains most of new features and fixes from the upcoming update. Major changes to player customization system and the addition of accessories are left for 4.3. I've kinda gone overboard with plans for this year, so don't expect 4.3 out very soon.
+
+# Changes
+- Added Global Illumination (GI) post effect (Photo mode only). It will be improved over time
+- Added Sun shafts post effect (Photo mode only).
+- Added chromatic abberation post effect
+- Added Depth of Field (DoF) post effect
+- Added Reflection probe effect (Photo mode only).
+- Added color blindness mode
+- Added a custom cursor. You can change it in settings (Interface -> Cursor skin)
+- Added a toggle to automatically reset lighting settings in photo mode
+- Added new explosion particles. You can toggle them in settings (Graphics -> Voxel engine -> New explosion particles)
+- Added an option to disable the new model of arrows (Graphics -> Robots -> New arrow model)
+- Added an option to disable shaking effects (Graphics -> Camera -> Disable shaking effects)
+- Added back the "Scroll to switch weapon" feature. You can toggle it in settings (Gameplay -> Player -> Scroll to switch weapon)
+- Added back the Overhaul mod intro
+- Added a button to skip writing a feedback
+- Added like and dislike counters to workshop item panel
+- Added refresh button to workshop item panel
+- Added save button to toolbar of customization editor
+- Added rules section to item verification menu of customization editor
+- Added ambiance to customization editor. You can disable it in settings (Audio -> Misc. -> Customization editor ambiance)
+- Reworked mod info and credits menus to be more informative
+- Reworked mod patch notes menu
+- Reworked exlcusive perks system to be more reliable
+- Reworked updates system to support multiple branches and allow to download builds from Google Drive
+- Reworked addons system and related UIs. You'll have to update every addon to make them work. Realistic skyboxes will work again when patch 4 fully releases
+- Reworked scene transitions to look like CDHD's ones. You can toggle the transition sound in settings (Advanced -> Transitions -> Transition sound)
+- Changed the color of exclusive perks, updates and news buttons
+- Slightly reorganised settings
+- Slightly changed the background of reworked subtitles
+- Minor customization menu changes
+- Minor optimizations
+- Removed upgrades revert feature. It'll return in update 5
+
+# Fixes
+- Glock mod doesn't work properly
+- Emperor's flagship in the sky doesn't glow
+- It's possible to add files with non-latin letters in their name
+- Weapons visible while in upgrade menu
+- Unable to do emote swap in emote wheel menu if it's opened from "Home" tab
+- (Vanilla bug) Shadows have "holes"

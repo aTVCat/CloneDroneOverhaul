@@ -17,11 +17,14 @@ namespace OverhaulMod.Visuals
         [ModSetting(ModSettingsConstants.MAX_LIGHT_COUNT, 6)]
         public static int MaxLightCount;
 
+        [ModSetting(ModSettingsConstants.UNLIMITED_LIGHT_SOURCES, false)]
+        public static bool UnlimitedLightSources;
+
         public void RefreshQualitySettings()
         {
             QualitySettings.shadowResolution = ShadowResolution;
             QualitySettings.shadowDistance = ShadowDistance;
-            QualitySettings.pixelLightCount = MaxLightCount;
+            QualitySettings.pixelLightCount = UnlimitedLightSources ? 999 : MaxLightCount;
         }
 
         public List<Dropdown.OptionData> GetShadowResolutionOptions()

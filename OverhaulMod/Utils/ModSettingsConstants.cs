@@ -650,5 +650,10 @@ namespace OverhaulMod.Utils
         /// <see cref="Visuals.ParticleManager"/>
         /// </summary>
         public const string NEW_EXPLOSION_PARTICLES = "NewExplosionParticles";
+
+        /// <summary>
+        /// <see cref="Visuals.QualityManager"/>
+        /// </summary>
+        public const string UNLIMITED_LIGHT_SOURCES = "UnlimitedLightSources";
     }
 }
