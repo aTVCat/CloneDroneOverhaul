@@ -116,7 +116,7 @@ namespace OverhaulMod.UI
 
         private void onSentenceStarted()
         {
-            if (!EnableRework)
+            if (!EnableRework || !SettingsManager.Instance.ShouldShowSubtitles())
                 return;
 
             if (BeOnTop)

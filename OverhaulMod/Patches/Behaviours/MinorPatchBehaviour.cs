@@ -78,8 +78,8 @@ namespace OverhaulMod.Patches.Behaviours
                 Light light = directionalLightManager.DirectionalLight;
                 if (light)
                 {
-                    light.shadowNormalBias = 1.1f;
-                    light.shadowBias = 1f;
+                    light.shadowNormalBias = 0f;
+                    light.shadowBias = 0.4f;
                 }
             }
 
