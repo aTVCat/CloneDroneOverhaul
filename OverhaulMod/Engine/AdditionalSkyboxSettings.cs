@@ -4,6 +4,7 @@ using UnityEngine.UI;
 
 namespace OverhaulMod.Engine
 {
+    [LevelEditorInspectorDisplayNameOverride("[Overhaul mod] Realistic skybox")]
     public class AdditionalSkyboxSettings : MonoBehaviour, IDropdownOptions, ICustomHideFields
     {
         [IncludeInLevelEditor]

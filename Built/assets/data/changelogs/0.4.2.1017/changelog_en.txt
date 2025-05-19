@@ -2,10 +2,10 @@ I have devided the update 4.3 into 2 parts due to amount of incomplete tasks and
 
 # Changes
 - Added Global Illumination (GI) post effect (Photo mode only). It will be improved over time
-- Added Sun shafts post effect (Photo mode only).
+- Added Sun shafts post effect (Photo mode only)
 - Added chromatic abberation post effect
 - Added Depth of Field (DoF) post effect
-- Added Reflection probe effect (Photo mode only).
+- Added Reflection probe effect (Photo mode only)
 - Added color blindness mode
 - Added a custom cursor. You can change it in settings (Interface -> Cursor skin)
 - Added a toggle to automatically reset lighting settings in photo mode
@@ -20,6 +20,7 @@ I have devided the update 4.3 into 2 parts due to amount of incomplete tasks and
 - Added save button to toolbar of customization editor
 - Added rules section to item verification menu of customization editor
 - Added ambiance to customization editor. You can disable it in settings (Audio -> Misc. -> Customization editor ambiance)
+- Added an option to set realistic skybox to level light settings. Make sure you've installed & updated the realistic skyboxes addon to make this work
 - Reworked mod info and credits menus to be more informative
 - Reworked mod patch notes menu
 - Reworked exlcusive perks system to be more reliable

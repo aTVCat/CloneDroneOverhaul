@@ -59,7 +59,12 @@ namespace OverhaulMod.Engine
                 }
 
             if (!foundOption)
-                list.Add(new DropdownStringOptionData() { text = currentValue, StringValue = currentValue });
+            {
+                if (currentValue.IsNullOrEmpty())
+                    list.Add(new DropdownStringOptionData() { text = "None", StringValue = string.Empty });
+                else
+                    list.Add(new DropdownStringOptionData() { text = currentValue, StringValue = currentValue });
+            }
 
             return list;
         }
