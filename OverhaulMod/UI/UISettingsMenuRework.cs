@@ -863,15 +863,19 @@ namespace OverhaulMod.UI
             {
                 ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_FLOATING_DUST, value, true);
             }, "Floating dust");
-            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_WEATHER), delegate (bool value)
+
+            if (ModFeatures.IsEnabled(ModFeatures.FeatureType.WeatherSystem))
             {
-                ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_WEATHER, value, true);
-            }, "Enable weather");
-            _ = pageBuilder.Header3("Force weather type");
-            _ = pageBuilder.Dropdown(WeatherManager.Instance.GetTranslatedWeatherOptions(), ModSettingsManager.GetIntValue(ModSettingsConstants.FORCE_WEATHER_TYPE), delegate (int value)
-            {
-                ModSettingsManager.SetIntValue(ModSettingsConstants.FORCE_WEATHER_TYPE, value, true);
-            });
+                _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_WEATHER), delegate (bool value)
+                {
+                    ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_WEATHER, value, true);
+                }, "Enable weather");
+                _ = pageBuilder.Header3("Force weather type");
+                _ = pageBuilder.Dropdown(WeatherManager.Instance.GetTranslatedWeatherOptions(), ModSettingsManager.GetIntValue(ModSettingsConstants.FORCE_WEATHER_TYPE), delegate (int value)
+                {
+                    ModSettingsManager.SetIntValue(ModSettingsConstants.FORCE_WEATHER_TYPE, value, true);
+                });
+            }
 
 
             _ = pageBuilder.Header1("Voxel engine");

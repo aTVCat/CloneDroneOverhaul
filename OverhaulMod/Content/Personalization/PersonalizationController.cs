@@ -200,7 +200,7 @@ namespace OverhaulMod.Content.Personalization
                     }
                     else
                     {
-                        SetWeaponPartsVisible(weaponType, showOriginalModel || !hasSpawnedSkinForWeapon, ModSpecialUtils.IsModEnabled("ee32ba1b-8c92-4f50-bdf4-400a14da829e") || (personalizationItemInfo != null && personalizationItemInfo.HideBowStrings));
+                        SetWeaponPartsVisible(weaponType, showOriginalModel || !hasSpawnedSkinForWeapon, (personalizationItemInfo != null && personalizationItemInfo.HideBowStrings));
                     }
                 }
             }
@@ -343,17 +343,23 @@ namespace OverhaulMod.Content.Personalization
 
             if (!m_weaponTypeToParts.IsNullOrEmpty() && m_weaponTypeToParts.TryGetValue(weaponType, out Transform[] parts))
             {
+                bool isBow = weaponType == WeaponType.Bow;
                 foreach (Transform transform in parts)
                     if (transform)
                     {
-                        if (!value && weaponType == WeaponType.Bow && transform.parent && (transform.parent.name == "BowStringUpper" || transform.parent.name == "BowStringLower"))
+                        if (isBow)
                         {
-                            transform.gameObject.SetActive(!hideBowStrings);
+                            if (ModSpecialUtils.IsModEnabled("ee32ba1b-8c92-4f50-bdf4-400a14da829e")) // dont make changes to bow to not break glock mod
+                                continue;
+
+                            if (transform.parent && (transform.parent.name == "BowStringUpper" || transform.parent.name == "BowStringLower"))
+                            {
+                                transform.gameObject.SetActive(!hideBowStrings);
+                                continue;
+                            }
                         }
-                        else
-                        {
-                            transform.gameObject.SetActive(value);
-                        }
+
+                        transform.gameObject.SetActive(value);
                     }
             }
         }

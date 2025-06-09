@@ -53,7 +53,7 @@ namespace OverhaulMod
                     result = true;
                     break;
                 case FeatureType.WeatherSystem:
-                    result = true;
+                    result = ModBuildInfo.VERSION_4_3;
                     break;
                 case FeatureType.WorkshopBrowserRework:
                     result = true;
