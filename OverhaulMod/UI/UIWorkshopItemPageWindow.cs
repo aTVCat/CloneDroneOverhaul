@@ -337,8 +337,6 @@ namespace OverhaulMod.UI
             m_itemTitleText.text = workshopItem.Name;
             m_itemDescriptionText.text = workshopItem.Description;
 
-            m_upVoteButtonText.text = workshopItem.UpVotes.ToString();
-            m_downVoteButtonText.text = workshopItem.DownVotes.ToString();
             m_completedIndicator.SetActive(workshopItem.IsChallengeOrAdventure() && ChallengeManager.Instance.HasCompletedChallenge(workshopItem.ItemID.ToString()));
 
             if (!workshopItem.Author.IsNullOrEmpty() && workshopItem.Author != "[unknown]")
@@ -361,6 +359,7 @@ namespace OverhaulMod.UI
             populateAdditionalPreviews(workshopItem);
             refreshManagementDisplays(workshopItem);
             refreshUserVote(workshopItem);
+            refreshUserVoteCounters(workshopItem);
         }
 
         public void SetFavoriteButtonInteractable(bool value)
@@ -540,6 +539,12 @@ namespace OverhaulMod.UI
             });
         }
 
+        private void refreshUserVoteCounters(WorkshopItem workshopItem)
+        {
+            m_upVoteButtonText.text = workshopItem.UpVotes.ToString();
+            m_downVoteButtonText.text = workshopItem.DownVotes.ToString();
+        }
+
         private void onImageViewerOpened()
         {
             isImageViewerShown = true;
@@ -589,6 +594,8 @@ namespace OverhaulMod.UI
             if (item == null || item.IsDisposed())
                 return;
 
+            bool hasVotedDownBefore = !m_voteDownButton.interactable;
+
             m_voteUpButton.interactable = false;
             ModSteamUGCUtils.SetUserVote(item.ItemID, true, delegate (SetUserItemVoteResult_t t, bool ioError)
             {
@@ -600,6 +607,14 @@ namespace OverhaulMod.UI
                     ModUIUtils.MessagePopupOK("Vote error", $"Error code: {t.m_eResult} (ioError: {ioError})", 150f, true);
                 else
                 {
+                    if (hasVotedDownBefore)
+                    {
+                        item.UpVotes++;
+                        item.DownVotes--;
+                    }
+
+                    refreshUserVoteCounters(item);
+
                     m_voteDownButton.interactable = t.m_bVoteUp;
                     m_voteUpButton.interactable = !t.m_bVoteUp;
                     return;
@@ -615,6 +630,8 @@ namespace OverhaulMod.UI
             if (item == null || item.IsDisposed())
                 return;
 
+            bool hasVotedUpBefore = !m_voteUpButton.interactable;
+
             m_voteDownButton.interactable = false;
             ModSteamUGCUtils.SetUserVote(item.ItemID, false, delegate (SetUserItemVoteResult_t t, bool ioError)
             {
@@ -626,6 +643,14 @@ namespace OverhaulMod.UI
                     ModUIUtils.MessagePopupOK("Vote error", $"Error code: {t.m_eResult} (ioError: {ioError})", 150f, true);
                 else
                 {
+                    if (hasVotedUpBefore)
+                    {
+                        item.UpVotes--;
+                        item.DownVotes++;
+                    }
+
+                    refreshUserVoteCounters(item);
+
                     m_voteDownButton.interactable = t.m_bVoteUp;
                     m_voteUpButton.interactable = !t.m_bVoteUp;
                     return;

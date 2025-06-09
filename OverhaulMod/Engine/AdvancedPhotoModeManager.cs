@@ -157,6 +157,10 @@ namespace OverhaulMod.Engine
                 m_isActive = false;
 
                 SetNormalLighting();
+
+                UIPhotoModeUIRework photoModeUI = ModUIManager.Instance?.Get<UIPhotoModeUIRework>(AssetBundleConstants.UI, ModUIConstants.UI_PHOTO_MODE_UI_REWORK);
+                if (photoModeUI)
+                    photoModeUI.ResetEnvironmentFields();
             }
         }
 
