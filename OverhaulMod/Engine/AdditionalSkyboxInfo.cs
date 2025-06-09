@@ -4,8 +4,15 @@ namespace OverhaulMod.Engine
 {
     public class AdditionalSkyboxInfo
     {
-        public string DisplayName;
+        public string AssetBundle;
 
-        public Material Skybox;
+        public string SkyboxName;
+
+        public Material SkyboxMaterial;
+
+        public string GetKey()
+        {
+            return AdditionalSkyboxesManager.GetSkyboxKey(AssetBundle, SkyboxName);
+        }
     }
 }

@@ -105,7 +105,7 @@ namespace OverhaulMod.Engine
 
             AdditionalSkyboxSettings realisticLightUserSettings = levelLightSettings.GetComponent<AdditionalSkyboxSettings>();
             if (realisticLightUserSettings)
-                AdditonalSkybox = realisticLightUserSettings.GetSkybox();
+                AdditonalSkybox = realisticLightUserSettings.Skybox;
             else
                 AdditonalSkybox = null;
         }

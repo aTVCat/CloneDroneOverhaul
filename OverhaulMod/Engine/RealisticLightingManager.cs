@@ -145,7 +145,7 @@ namespace OverhaulMod.Engine
             ModJsonUtils.WriteStream(Path.Combine(AddonManager.Instance.GetAddonPath(AddonManager.REALISTIC_SKYBOXES_ADDON_ID), LIGHTING_INFO_LIST_FILE), realisticLightingInfoList);
         }
 
-        public void SaveCurrentLightingInfo(int skyboxIndex)
+        public void SaveCurrentLightingInfo(string skyboxName)
         {
             RealisticLightingInfoList realisticLightingInfoList = m_lightingInfoList;
             if (realisticLightingInfoList == null)
@@ -171,6 +171,7 @@ namespace OverhaulMod.Engine
 
             realisticLightingInfo.Lighting.SetValuesUsingEnvironmentSettings();
             realisticLightingInfo.LevelPrefabName = prefabName;
+            realisticLightingInfo.SkyboxName = skyboxName;
             SaveLightingInfo();
         }
 

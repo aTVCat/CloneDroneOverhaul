@@ -7,38 +7,45 @@ namespace OverhaulMod.Engine
 {
     public class AdditionalSkyboxesManager : Singleton<AdditionalSkyboxesManager>
     {
-        private Dictionary<string, AdditionalSkyboxInfo> m_skyboxes;
+        private List<AdditionalSkyboxInfo> m_skyboxes;
 
-        public void AddSkybox(string key, string displayName, Material skybox)
+        public void AddSkybox(string assetBundleName, string skyboxName, Material skybox)
         {
             if (m_skyboxes == null)
-                m_skyboxes = new Dictionary<string, AdditionalSkyboxInfo>() { { key, new AdditionalSkyboxInfo() { DisplayName = displayName, Skybox = skybox } } };
+                m_skyboxes = new List<AdditionalSkyboxInfo>() { { new AdditionalSkyboxInfo() { AssetBundle = assetBundleName, SkyboxName = skyboxName, SkyboxMaterial = skybox } } };
             else
-                m_skyboxes.Add(key, new AdditionalSkyboxInfo() { DisplayName = displayName, Skybox = skybox });
+                m_skyboxes.Add(new AdditionalSkyboxInfo() { AssetBundle = assetBundleName, SkyboxName = skyboxName, SkyboxMaterial = skybox });
         }
 
-        public void SetSkybox(string skyboxKey)
+        public void SetSkybox(string skybox)
         {
-            if (skyboxKey.IsNullOrEmpty() || m_skyboxes.IsNullOrEmpty())
-            {
-                LevelEditorLightManager.Instance.RefreshLightInScene();
+            if (skybox.IsNullOrEmpty() || m_skyboxes.IsNullOrEmpty())
                 return;
-            }
 
-            if (m_skyboxes.TryGetValue(skyboxKey, out AdditionalSkyboxInfo skyboxInfo))
+            foreach (AdditionalSkyboxInfo info in m_skyboxes)
             {
-                SkyBoxManager.Instance._currentSkybox = skyboxInfo.Skybox;
-                RenderSettings.skybox = skyboxInfo.Skybox;
+                if (info.GetKey() == skybox)
+                {
+                    SkyBoxManager.Instance._currentSkybox = info.SkyboxMaterial;
+                    RenderSettings.skybox = info.SkyboxMaterial;
+                    break;
+                }
             }
+        }
+
+        public static string GetSkyboxKey(string bundle, string skyboxName)
+        {
+            return $"{bundle}.{skyboxName}";
         }
 
         public List<Dropdown.OptionData> GetSkyboxOptions()
         {
             List<Dropdown.OptionData> list = new List<Dropdown.OptionData>();
+
             if (!m_skyboxes.IsNullOrEmpty())
-                foreach (KeyValuePair<string, AdditionalSkyboxInfo> kv in m_skyboxes)
+                foreach (AdditionalSkyboxInfo info in m_skyboxes)
                 {
-                    list.Add(new DropdownStringOptionData() { text = kv.Value.DisplayName, StringValue = kv.Key });
+                    list.Add(new DropdownStringOptionData() { text = info.SkyboxName, StringValue = info.GetKey() });
                 }
 
             return list;
@@ -50,11 +57,11 @@ namespace OverhaulMod.Engine
 
             List<Dropdown.OptionData> list = new List<Dropdown.OptionData>() { new DropdownStringOptionData() { text = "Default", StringValue = string.Empty } };
             if (!m_skyboxes.IsNullOrEmpty())
-                foreach (KeyValuePair<string, AdditionalSkyboxInfo> kv in m_skyboxes)
+                foreach (AdditionalSkyboxInfo info in m_skyboxes)
                 {
-                    list.Add(new DropdownStringOptionData() { text = kv.Value.DisplayName, StringValue = kv.Key });
+                    list.Add(new DropdownStringOptionData() { text = info.SkyboxName, StringValue = info.GetKey() });
 
-                    if (!foundOption && kv.Key == currentValue)
+                    if (!foundOption && info.GetKey() == currentValue)
                         foundOption = true;
                 }
 

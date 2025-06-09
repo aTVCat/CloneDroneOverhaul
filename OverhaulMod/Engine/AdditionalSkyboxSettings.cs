@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using OverhaulMod.Utils;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -26,29 +27,19 @@ namespace OverhaulMod.Engine
                     });
                 }
             }
+            else
+            {
+                RealisticLightingInfo realisticLightingInfo = RealisticLightingManager.Instance.GetCurrentRealisticLightingInfo();
+                if (realisticLightingInfo != null)
+                {
+                    Skybox = realisticLightingInfo.SkyboxName;
+                }
+            }
         }
 
         private void OnDestroy()
         {
             SkyBoxManager.Instance.RefreshSkyboxAmbientLightAndFog(LevelEditorLightManager.Instance.GetActiveLightSettings());
-        }
-
-        public string GetSkybox()
-        {
-            if (GameModeManager.IsInLevelEditor())
-            {
-                return Skybox;
-            }
-            else
-            {
-                RealisticLightingManager realisticLightingManager = RealisticLightingManager.Instance;
-                RealisticLightingInfo realisticLightingInfo = realisticLightingManager.GetCurrentRealisticLightingInfo();
-                if (realisticLightingInfo != null)
-                {
-                    return realisticLightingInfo.SkyboxName;
-                }
-                return Skybox;
-            }
         }
 
         public List<Dropdown.OptionData> GetDropdownOptions(string fieldName)

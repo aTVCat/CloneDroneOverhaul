@@ -143,9 +143,12 @@ namespace OverhaulMod.UI
         [UIElement("RealisticSkyboxToggle")]
         private readonly Toggle m_realisticSkyBoxToggle;
 
-        [UIElementAction(nameof(OnRealisticSkyBoxIndexChanged))]
-        [UIElement("RealisticSkyboxSlider")]
-        private readonly Slider m_realisticSkyBoxSlider;
+        [UIElementAction(nameof(OnRealisticSkyBoxDropdownChanged))]
+        [UIElement("RealisticSkyboxDropdown")]
+        private readonly Dropdown m_realisticSkyBoxDropdown;
+
+        [UIElement("RealisticSkyboxDropdownField")]
+        private readonly GameObject m_realisticSkyBoxDropdownFieldObject;
 
 
         [UIElementAction(nameof(OnAutoResetLightingSettingsToggleChanged))]
@@ -253,20 +256,20 @@ namespace OverhaulMod.UI
 
             m_skyBoxSlider.value = lightingInfo.SkyboxIndex;
 
-            /*RealisticLightingInfo realisticLightingInfo = RealisticLightingManager.Instance.GetCurrentRealisticLightingInfo();
-            if (realisticLightingInfo == null)
-            {
-                m_realisticSkyBoxToggle.isOn = false;
-                m_realisticSkyBoxSlider.value = -1;
-            }
-            else
-            {
-                m_realisticSkyBoxToggle.isOn = !realisticLightingInfo.SkyboxName.IsNullOrEmpty();
-                m_realisticSkyBoxSlider.value = realisticLightingInfo.SkyboxName;
-            }*/
+            bool hasAdditionalSkybox = !lightingInfo.AdditonalSkybox.IsNullOrEmpty();
+            m_realisticSkyBoxToggle.isOn = hasAdditionalSkybox;
+            m_realisticSkyBoxDropdownFieldObject.SetActive(hasAdditionalSkybox);
 
-            m_realisticSkyBoxToggle.isOn = false;
-            m_realisticSkyBoxSlider.value = -1;
+            List<Dropdown.OptionData> additonalSkyboxOptions = AdditionalSkyboxesManager.Instance.GetSkyboxOptions();
+            m_realisticSkyBoxDropdown.options = additonalSkyboxOptions;
+            for (int i = 0; i < additonalSkyboxOptions.Count; i++)
+            {
+                if ((additonalSkyboxOptions[i] as DropdownStringOptionData).StringValue == lightingInfo.AdditonalSkybox)
+                {
+                    m_realisticSkyBoxDropdown.value = i;
+                    break;
+                }
+            }
 
             m_showHUDToggle.isOn = !CutSceneManager.Instance.IsInCutscene() && !SettingsManager.Instance.ShouldHideGameUI();
 
@@ -295,7 +298,7 @@ namespace OverhaulMod.UI
 
         public void OnSaveRLightInfoButtonClicked()
         {
-            RealisticLightingManager.Instance.SaveCurrentLightingInfo(Mathf.RoundToInt(m_realisticSkyBoxSlider.value));
+            RealisticLightingManager.Instance.SaveCurrentLightingInfo((m_realisticSkyBoxDropdown.options[m_realisticSkyBoxDropdown.value] as DropdownStringOptionData).StringValue);
         }
 
         public void OnRestoreDefaultsButtonClicked()
@@ -562,16 +565,22 @@ namespace OverhaulMod.UI
             if (m_disallowCallbacks)
                 return;
 
-            //m_lightingInfo.AdditonalSkybox = value ? Mathf.RoundToInt(m_realisticSkyBoxSlider.value) : -1;
+            string skyboxName = (m_realisticSkyBoxDropdown.options[m_realisticSkyBoxDropdown.value] as DropdownStringOptionData).StringValue;
+
+            m_lightingInfo.AdditonalSkybox = value ? skyboxName : string.Empty;
             AdvancedPhotoModeManager.Instance.SetEditedLighting();
+
+            m_realisticSkyBoxDropdownFieldObject.SetActive(value);
         }
 
-        public void OnRealisticSkyBoxIndexChanged(float value)
+        public void OnRealisticSkyBoxDropdownChanged(int value)
         {
             if (m_disallowCallbacks)
                 return;
 
-            //m_lightingInfo.AdditonalSkybox = m_realisticSkyBoxToggle.isOn ? Mathf.RoundToInt(value) : -1;
+            string skyboxName = (m_realisticSkyBoxDropdown.options[value] as DropdownStringOptionData).StringValue;
+
+            m_lightingInfo.AdditonalSkybox = m_realisticSkyBoxToggle.isOn ? skyboxName : string.Empty;
             AdvancedPhotoModeManager.Instance.SetEditedLighting();
         }
 
