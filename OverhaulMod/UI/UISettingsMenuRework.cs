@@ -432,7 +432,7 @@ namespace OverhaulMod.UI
                 UITitleScreenRework titleScreenCustomizationPanel = ModUIManager.Instance?.Get<UITitleScreenRework>(AssetBundleConstants.UI, ModUIConstants.UI_TITLE_SCREEN);
                 if (titleScreenCustomizationPanel)
                 {
-                    titleScreenCustomizationPanel.enableRework = ModUIManager.ShowTitleScreenRework;
+                    titleScreenCustomizationPanel.SetSkinAccordingToSettings();
                 }
 
                 ModUIUtils.ShowNewUpdateMessageOrChangelog(1f, false);
@@ -1661,7 +1661,8 @@ namespace OverhaulMod.UI
                 {
                     ModUIUtils.MessagePopupOK("Import error", "The file is corrupted.", true);
                     return;
-                };
+                }
+                ;
 
                 ModSettingsDataManager.Instance.dataContainer.SetValues(modSettingsDataContainer, true);
                 ModUIUtils.MessagePopupOK("Import successful", $"Imported the file \"{Path.GetFileNameWithoutExtension(path)}\".", true);

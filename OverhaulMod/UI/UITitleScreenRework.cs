@@ -155,14 +155,12 @@ namespace OverhaulMod.UI
         private readonly Button m_modBotLogInButton;
 
         [ButtonWithSound(ButtonWithSound.SoundType.Click)]
-        [UIElementAction(nameof(OnOldUIButtonClicked))]
-        [UIElement("OldUIButton")]
-        private readonly Button m_oldUIButton;
+        [UIElementAction(nameof(OnSkinButtonClicked))]
+        [UIElement("SkinButton")]
+        private readonly Button m_skinButton;
 
-        [ButtonWithSound(ButtonWithSound.SoundType.Click)]
-        [UIElementAction(nameof(OnNewUIButtonClicked))]
-        [UIElement("NewUIButton")]
-        private readonly Button m_newUIButton;
+        [UIElement("SkinNameLabel")]
+        private readonly Text m_skinNameLabelButton;
 
         [UIElementAction(nameof(OnRobotEditorButtonClicked))]
         [UIElement("RobotEditorButton")]
@@ -196,11 +194,11 @@ namespace OverhaulMod.UI
         [UIElement("FeaturesButton")]
         private readonly Button m_featuresButton;
 
-        [UIElement("OtherLayers")]
-        private readonly GameObject m_otherLayersObject;
+        [UIElement("MiscElements")]
+        private readonly GameObject m_miscElementsObject;
 
-        [UIElement("TutorialLayer", false)]
-        private readonly GameObject m_tutorialLayerObject;
+        [UIElement("Tutorial", false)]
+        private readonly GameObject m_tutorialObject;
 
         [UIElement("ModBotLogonText")]
         private readonly Text m_modBotLogonText;
@@ -229,6 +227,9 @@ namespace OverhaulMod.UI
         [UIElement("AdvancementsProgressPercentageText")]
         private readonly Text m_advancementsProgressPercentageText;
 
+        [UIElement("HypocrisisSkinHolder")]
+        private readonly Transform m_hypocrisisSkinHolder;
+
         public override bool closeOnEscapeButtonPress => false;
 
         private TitleScreenUI m_titleScreenUI;
@@ -241,33 +242,55 @@ namespace OverhaulMod.UI
         private Vector2 m_initialSocialButtonContainerPosition, m_newSocialButtonContainerPosition;
         private Vector2 m_initialSocialButtonPopoutHolderPosition, m_newSocialButtonPopoutHolderPosition;
 
+        private bool m_hasSpawnedHypocrisisSkin;
+
         private bool m_mobBotUsernameAvailable;
 
-        private bool m_enableRework;
-        public bool enableRework
+        public bool hideVanillaTitleScreen
         {
             get
             {
-                return m_enableRework;
+                return skin != TitleScreenSkinType.Vanilla;
+            }
+        }
+
+        private TitleScreenSkinType m_skin;
+        public TitleScreenSkinType skin
+        {
+            get
+            {
+                return m_skin;
             }
             set
             {
-                if (m_enableRework == value)
+                if (m_skin == value)
                     return;
 
-                m_enableRework = value;
+                m_skin = value;
+
+                bool nonVanilla = value != TitleScreenSkinType.Vanilla;
+                bool overhaul = value == TitleScreenSkinType.Overhaul;
+                bool hypocrisis = value == TitleScreenSkinType.Hypocrisis3;
 
                 CanvasGroup group = m_canvasGroup;
                 if (group)
                 {
-                    group.alpha = value ? 0f : 1f;
-                    group.interactable = !value;
+                    group.alpha = nonVanilla ? 0f : 1f;
+                    group.interactable = !nonVanilla;
                 }
 
                 if (m_socialButtonContainer && m_socialButtonPopoutHolder)
                 {
-                    m_socialButtonContainer.anchoredPosition = value ? m_newSocialButtonContainerPosition : m_initialSocialButtonContainerPosition;
-                    m_socialButtonPopoutHolder.anchoredPosition = value ? m_newSocialButtonPopoutHolderPosition : m_initialSocialButtonPopoutHolderPosition;
+                    m_socialButtonContainer.anchoredPosition = overhaul ? m_newSocialButtonContainerPosition : m_initialSocialButtonContainerPosition;
+                    m_socialButtonPopoutHolder.anchoredPosition = overhaul ? m_newSocialButtonPopoutHolderPosition : m_initialSocialButtonPopoutHolderPosition;
+                }
+
+                m_hypocrisisSkinHolder.gameObject.SetActive(hypocrisis);
+
+                if (hypocrisis && !m_hasSpawnedHypocrisisSkin)
+                {
+                    ModUIConstants.ShowTitleScreenHypocrisisSkin(m_hypocrisisSkinHolder);
+                    m_hasSpawnedHypocrisisSkin = true;
                 }
             }
         }
@@ -320,23 +343,25 @@ namespace OverhaulMod.UI
                 }
             }
 
-            enableRework = ModUIManager.ShowTitleScreenRework;
+            SetSkinAccordingToSettings();
+
+            refreshSkinButtonLabel();
 
             m_mobBotUsernameAvailable = checkIfModBotUserNameIsAvailable();
         }
 
         public override void Update()
         {
-            bool reworkEnabled = enableRework;
+            bool reworkEnabled = skin == TitleScreenSkinType.Overhaul;
             bool shouldBeActive = m_legacyContainer.activeInHierarchy;
             bool flag = reworkEnabled && shouldBeActive;
             m_container.SetActive(flag);
-            m_otherLayersObject.SetActive(flag);
+            m_miscElementsObject.SetActive(flag);
 
             if (Time.frameCount % 20 == 0)
             {
                 //m_excContentMenuButton.interactable = ExclusiveContentManager.Instance.HasDownloadedContent();
-                m_tutorialLayerObject.SetActive(TitleScreenCustomizationManager.IntroduceCustomization);
+                m_tutorialObject.SetActive(TitleScreenCustomizationManager.IntroduceCustomization);
 
                 if (m_mobBotUsernameAvailable)
                 {
@@ -366,14 +391,26 @@ namespace OverhaulMod.UI
                 m_workshopBrowserButton.interactable = steamInitialized;
             }
 
-            m_oldUIButton.gameObject.SetActive(flag);
-            m_newUIButton.gameObject.SetActive(!reworkEnabled && shouldBeActive);
+            m_skinButton.gameObject.SetActive(shouldBeActive);
         }
 
         public override void OnDestroy()
         {
             base.OnDestroy();
-            enableRework = false;
+            skin = TitleScreenSkinType.Vanilla;
+        }
+
+        public void SetSkinAccordingToSettings()
+        {
+            bool hypocrisisModEnabled = ModSpecialUtils.IsModEnabled("hypocrisis-mod");
+            if (hypocrisisModEnabled)
+            {
+                skin = TitleScreenSkinType.Hypocrisis3;
+            }
+            else
+            {
+                skin = ModUIManager.ShowTitleScreenRework ? TitleScreenSkinType.Overhaul : TitleScreenSkinType.Vanilla;
+            }
         }
 
         private bool checkIfModBotUserNameIsAvailable()
@@ -406,6 +443,29 @@ namespace OverhaulMod.UI
             yield return new WaitForSecondsRealtime(1f);
             TransitionManager.Instance.EndTransition();
             yield break;
+        }
+
+        private void refreshSkinButtonLabel()
+        {
+            var skinType = skin;
+            string displayString;
+            switch (skinType)
+            {
+                case TitleScreenSkinType.Vanilla:
+                    displayString = LocalizationManager.Instance.GetTranslatedString("Vanilla");
+                    break;
+                case TitleScreenSkinType.Overhaul:
+                    displayString = "Overhaul";
+                    break;
+                case TitleScreenSkinType.Hypocrisis3:
+                    displayString = "Hypocrisis";
+                    break;
+                default:
+                    displayString = skinType.ToString();
+                    break;
+            }
+
+            m_skinNameLabelButton.text = displayString;
         }
 
         public void OnPlaySinglePlayerButtonClicked()
@@ -562,14 +622,28 @@ namespace OverhaulMod.UI
             _ = ModUIConstants.ShowSettingsMenuRework(true);
         }
 
-        public void OnOldUIButtonClicked()
+        public void OnSkinButtonClicked()
         {
-            enableRework = false;
-        }
-
-        public void OnNewUIButtonClicked()
-        {
-            enableRework = true;
+            switch (skin)
+            {
+                case TitleScreenSkinType.Vanilla:
+                    skin = TitleScreenSkinType.Overhaul;
+                    break;
+                case TitleScreenSkinType.Overhaul:
+                    if (ModSpecialUtils.IsModEnabled("hypocrisis-mod"))
+                    {
+                        skin = TitleScreenSkinType.Hypocrisis3;
+                    }
+                    else
+                    {
+                        skin = TitleScreenSkinType.Vanilla;
+                    }
+                    break;
+                case TitleScreenSkinType.Hypocrisis3:
+                    skin = TitleScreenSkinType.Vanilla;
+                    break;
+            }
+            refreshSkinButtonLabel();
         }
 
         public void OnRobotEditorButtonClicked()
@@ -619,6 +693,15 @@ namespace OverhaulMod.UI
         public void OnFeaturesButtonClicked()
         {
             _ = ModUIConstants.ShowFeaturesMenu(base.transform);
+        }
+
+        public enum TitleScreenSkinType
+        {
+            Vanilla,
+
+            Overhaul,
+
+            Hypocrisis3
         }
     }
 }
