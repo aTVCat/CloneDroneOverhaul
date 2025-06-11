@@ -133,7 +133,7 @@ namespace OverhaulMod.UI
                 return;
 
             bool show = !ForceHide && showWatermark;
-            m_watermark.SetActive(show && ModCache.titleScreenUI.RootButtonsContainerBG.activeInHierarchy && isOnTitleScreen);
+            m_watermark.SetActive(show && ModCache.titleScreenUI.RootButtonsContainerBG.activeInHierarchy && isOnTitleScreen && !UITitleScreenHypocrisisSkin.HideVersionLabel);
             m_gameplayWatermark.SetActive(show && !isOnTitleScreen);
         }
 

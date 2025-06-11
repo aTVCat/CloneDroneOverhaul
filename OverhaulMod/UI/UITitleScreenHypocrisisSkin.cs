@@ -1,6 +1,10 @@
-﻿using OverhaulMod.Content;
+﻿using InternalModBot;
+using OverhaulMod.Content;
 using OverhaulMod.Utils;
 using Steamworks;
+using System.Collections;
+using System.Diagnostics;
+using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,9 +12,9 @@ namespace OverhaulMod.UI
 {
     public class UITitleScreenHypocrisisSkin : OverhaulUIBehaviour
     {
-        public const string LEVEL_STEAM_ID_STRING = "3494951054";
-
         public static readonly PublishedFileId_t LEVEL_STEAM_ID = new PublishedFileId_t(3494951054);
+
+        public static readonly PublishedFileId_t MAIN_MENU_LEVEL_STEAM_ID = new PublishedFileId_t(3449524730);
 
         public const string LEVEL_AUTHOR_STEAM_PROFILE_PAGE = "https://steamcommunity.com/profiles/76561198886409131";
 
@@ -41,6 +45,24 @@ namespace OverhaulMod.UI
         [UIElement("ProgressBarFill")]
         private readonly Image m_progressBarFill;
 
+        [UIElement("DisabledModsPanel", false)]
+        private readonly GameObject m_disabledModsPanel;
+
+        [UIElement("Description")]
+        private readonly Text m_disabledModsPanelText;
+
+        [UIElementAction(nameof(OnModsButtonClicked))]
+        [UIElement("ModsButton")]
+        private readonly Button m_modsButton;
+
+        [UIElementAction(nameof(OnModsButtonClicked))]
+        [UIElement("ModsButton2", false)]
+        private readonly Button m_modsButton2;
+
+        [UIElementAction(nameof(OnRestartButtonClicked))]
+        [UIElement("RestartButton")]
+        private readonly Button m_restartButton;
+
         public override bool closeOnEscapeButtonPress => false;
 
         private bool m_getCallbacks;
@@ -53,35 +75,79 @@ namespace OverhaulMod.UI
 
         private WorkshopItem m_levelWorkshopItem;
 
+        private bool m_prevHolderState;
+
+        public static bool HideVersionLabel;
+
         protected override void OnInitialized()
         {
             m_startButton.interactable = true;
+
+            ModActionUtils.DoInFrames(checkMods, 60);
         }
 
         public override void Start()
         {
-            ArenaCameraManager.Instance.SetTitleScreenLogoVisible(false);
-            ArenaCameraManager.Instance.TitleScreenLogoCamera.gameObject.SetActive(false);
+            hideTitleScreenElements();
         }
 
         public override void OnEnable()
         {
-            ArenaCameraManager.Instance.SetTitleScreenLogoVisible(false);
-            ArenaCameraManager.Instance.TitleScreenLogoCamera.gameObject.SetActive(false);
+            hideTitleScreenElements();
+            HideVersionLabel = true;
         }
 
         public override void OnDisable()
+        {
+            showTitleScreenElements();
+            HideVersionLabel = false;
+        }
+
+        private void showTitleScreenElements()
         {
             if (ModCache.titleScreenUI.gameObject.activeSelf)
             {
                 ArenaCameraManager.Instance.SetTitleScreenLogoVisible(true);
                 ArenaCameraManager.Instance.TitleScreenLogoCamera.gameObject.SetActive(true);
+
+                Transform leftFade = TransformUtils.FindChildRecursive(ModCache.titleScreenUI.transform, "LeftFadeBG");
+                if (leftFade)
+                {
+                    leftFade.gameObject.SetActive(true);
+                }
+
+                ModCache.titleScreenUI.SocialButtonPanel.gameObject.SetActive(true);
             }
+        }
+
+        private void hideTitleScreenElements()
+        {
+            ArenaCameraManager.Instance.SetTitleScreenLogoVisible(false);
+            ArenaCameraManager.Instance.TitleScreenLogoCamera.gameObject.SetActive(false);
+
+            Transform leftFade = TransformUtils.FindChildRecursive(ModCache.titleScreenUI.transform, "LeftFadeBG");
+            if (leftFade)
+            {
+                leftFade.gameObject.SetActive(false);
+            }
+
+            ModCache.titleScreenUI.SocialButtonPanel.gameObject.SetActive(false);
         }
 
         public override void Update()
         {
-            m_holder.SetActive(ModCache.titleScreenRootButtonsBG.activeInHierarchy);
+            bool state = ModCache.titleScreenRootButtonsBG.activeInHierarchy;
+            if (m_prevHolderState != state)
+            {
+                m_prevHolderState = state;
+
+                m_holder.SetActive(state);
+
+                if (state)
+                {
+                    hideTitleScreenElements();
+                }
+            }
 
             m_progressBarFill.fillAmount = ModSteamUGCUtils.GetItemDownloadProgress(LEVEL_STEAM_ID);
 
@@ -90,13 +156,74 @@ namespace OverhaulMod.UI
             {
                 m_timeLeftToUpdate = 1f;
 
-                ArenaCameraManager.Instance.TitleScreenLogoCamera.gameObject.SetActive(false);
-
                 if (m_startChallengeWhenReady && isReadyToStartChallenge())
                 {
                     m_startChallengeWhenReady = false;
                     startChallenge();
                 }
+            }
+        }
+
+        private void checkMods()
+        {
+            string[] ids = new string[]
+            {
+                "level-editor-ref-objects-nch",
+                "level-editor-custom-level-sounds",
+                "11C6A601-560B-4547-9614-149970671EEB",
+                "more-level-editor-objects",
+                "level-editor-custom-models",
+                "level-dir-api",
+                "ee32ba1b-8c92-4f50-bdf4-400a14da829e",
+                "de731a6b-0a96-4882-a02b-a336904f9853",
+            };
+
+            bool someModsNotEnabled = false;
+            StringBuilder stringBuilder = new StringBuilder();
+            for (int i = 0; i < ids.Length; i++)
+            {
+                string id = ids[i];
+                if (!ModSpecialUtils.IsModEnabled(id))
+                {
+                    someModsNotEnabled = true;
+                    switch (i)
+                    {
+                        case 0:
+                            stringBuilder.AppendLine("- Reference Objects");
+                            break;
+                        case 1:
+                            stringBuilder.AppendLine("- Custom Level Sounds");
+                            break;
+                        case 2:
+                            stringBuilder.AppendLine("- Soundpacks Mod");
+                            break;
+                        case 3:
+                            stringBuilder.AppendLine("- Level Editor Extended");
+                            break;
+                        case 4:
+                            stringBuilder.AppendLine("- Level Editor Custom Models");
+                            break;
+                        case 5:
+                            stringBuilder.AppendLine("- Level Assets Directory API");
+                            break;
+                        case 6:
+                            stringBuilder.AppendLine("- Glock-18 Mod");
+                            break;
+                        case 7:
+                            stringBuilder.AppendLine("- Custom robot model editor");
+                            break;
+                        default:
+                            stringBuilder.AppendLine($"- {id}");
+                            break;
+                    }
+                }
+            }
+
+            m_modsButton2.gameObject.SetActive(!someModsNotEnabled);
+            m_disabledModsPanel.SetActive(someModsNotEnabled);
+            if (someModsNotEnabled)
+            {
+                m_disabledModsPanelText.text = stringBuilder.ToString();
             }
         }
 
@@ -130,6 +257,28 @@ namespace OverhaulMod.UI
                 SteamFriends.ActivateGameOverlayToWebPage(LEVEL_AUTHOR_STEAM_PROFILE_PAGE);
             else
                 Application.OpenURL(LEVEL_AUTHOR_STEAM_PROFILE_PAGE);
+        }
+
+        public void OnModsButtonClicked()
+        {
+            ModsPanelManager.Instance.openModsMenu();
+        }
+
+        public void OnRestartButtonClicked()
+        {
+            m_restartButton.interactable = false;
+            restartCoroutine().Run();
+        }
+
+        private IEnumerator restartCoroutine()
+        {
+            float timeOut = Time.unscaledTime + 10f;
+            while(AddonManager.Instance.IsLoadingAddons() && Time.unscaledTime < timeOut)
+                yield return null;
+
+            _ = Process.Start("steam://rungameid/" + 597170U.ToString());
+            Application.Quit();
+            yield break;
         }
 
         private void onGotItem(Content.WorkshopItem workshopItem)

@@ -230,6 +230,9 @@ namespace OverhaulMod.UI
         [UIElement("HypocrisisSkinHolder")]
         private readonly Transform m_hypocrisisSkinHolder;
 
+        [UIElement("hcLabel", false)]
+        private readonly GameObject m_skinButtonHCLabel;
+
         public override bool closeOnEscapeButtonPress => false;
 
         private TitleScreenUI m_titleScreenUI;
@@ -465,6 +468,7 @@ namespace OverhaulMod.UI
                     break;
             }
 
+            m_skinButtonHCLabel.SetActive(skinType == TitleScreenSkinType.Hypocrisis3);
             m_skinNameLabelButton.text = displayString;
         }
 

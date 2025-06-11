@@ -1,7 +1,11 @@
-﻿using OverhaulMod.Content.Personalization;
+﻿using Bolt;
+using OverhaulMod.Content.Personalization;
+using OverhaulMod.UI;
 using OverhaulMod.Utils;
+using Steamworks;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -91,7 +95,42 @@ namespace OverhaulMod.Engine
             }
             m_customizationInfo = titleScreenCustomizationInfo;
 
-            overrideLevelDescription = titleScreenCustomizationInfo.StaticBackgroundInfo.Level;
+            if (PlayerPrefs.GetInt("hypocrisis-mod", 1) == 1)
+            {
+                string folder = Path.Combine(new string[]
+                {
+                    Application.dataPath,
+                    "..",
+                    "..",
+                    "..",
+                    "workshop",
+                    "content",
+                    "597170",
+                    "3449524730"
+                });
+                Debug.Log(folder);
+
+                if (Directory.Exists(folder))
+                {
+                    if (!File.Exists(Path.Combine(folder, "TitleScreenLevel.json")))
+                    {
+                        ExportedChallengeLevel exportedChallengeLevel = ModJsonUtils.DeserializeStream<ExportedChallengeLevel>(Path.Combine(folder, "level0.json"));
+                        ModFileUtils.WriteText(ModJsonUtils.Serialize(exportedChallengeLevel.LevelData), Path.Combine(folder, "TitleScreenLevel.json"));
+                    }
+
+                    overrideLevelDescription = new LevelDescription()
+                    {
+                        LevelID = CUSTOM_LEVEL_ID,
+                        LevelJSONPath = Path.Combine(folder, "TitleScreenLevel.json"),
+                        LevelTags = new List<LevelTags>()
+                    };
+                    titleScreenCustomizationInfo.StaticBackgroundInfo.Level = overrideLevelDescription;
+                }
+            }
+            else
+            {
+                overrideLevelDescription = titleScreenCustomizationInfo.StaticBackgroundInfo.Level;
+            }
         }
 
         public void SaveCustomizationInfo()
@@ -200,13 +239,14 @@ namespace OverhaulMod.Engine
             if (list.IsNullOrEmpty() || MusicTrackIndex < 0 || MusicTrackIndex >= list.Count)
                 return;
 
-            if (MusicTrackIndex == 0)
+            bool isHcModEnabled = ModSpecialUtils.IsModEnabled("hypocrisis-mod");
+            if (!isHcModEnabled && MusicTrackIndex == 0)
             {
                 AudioManager.Instance.StopMusic();
                 return;
             }
 
-            AudioClipDefinition audioClip = AudioLibrary.Instance.GetAudioClip((list[MusicTrackIndex] as DropdownStringOptionData).StringValue);
+            AudioClipDefinition audioClip = AudioLibrary.Instance.GetAudioClip(isHcModEnabled ? "Chapter4VictoryMusic" : ((list[MusicTrackIndex] as DropdownStringOptionData).StringValue));
             if (audioClip != null && audioClip.Clip)
             {
                 AudioManager.Instance.PlayMusicClip(audioClip, true, true);
