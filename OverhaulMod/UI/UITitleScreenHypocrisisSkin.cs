@@ -189,7 +189,7 @@ namespace OverhaulMod.UI
                     switch (i)
                     {
                         case 0:
-                            stringBuilder.AppendLine("- Reference Objects");
+                            stringBuilder.AppendLine("- Textured Level Objects");
                             break;
                         case 1:
                             stringBuilder.AppendLine("- Custom Level Sounds");
