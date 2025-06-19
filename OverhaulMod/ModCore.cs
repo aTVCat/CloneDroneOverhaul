@@ -10,6 +10,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using UnityEngine.XR;
 
 namespace OverhaulMod
 {
@@ -387,6 +388,9 @@ namespace OverhaulMod
             {
                 firstPersonMover.gameObject.AddComponent<WeaponInvisibilityFixer>().Initialize(firstPersonMover);
             }
+
+            if (XRSettings.enabled)
+                yield break;
 
             while (firstPersonMover && !firstPersonMover._playerCamera && (GameModeManager.IsMultiplayerDuel() || GameModeManager.IsBattleRoyale()) && !firstPersonMover.HasConstructionFinished())
                 yield return null;

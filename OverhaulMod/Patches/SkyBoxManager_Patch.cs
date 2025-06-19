@@ -16,7 +16,7 @@ namespace OverhaulMod.Patches
                 RenderSettings.skybox = __instance.LevelConfigurableSkyboxes[7];
 
             AdditionalSkyboxSettings realisticLightSettings = lightSettings.GetComponent<AdditionalSkyboxSettings>();
-            if (!realisticLightSettings || realisticLightSettings.Skybox.IsNullOrEmpty())
+            if (!realisticLightSettings)
                 return;
 
             AdditionalSkyboxesManager.Instance.SetSkybox(realisticLightSettings.Skybox);

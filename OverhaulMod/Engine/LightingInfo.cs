@@ -152,9 +152,19 @@ namespace OverhaulMod.Engine
             if (!levelLightSettings)
                 return;
 
+            SkyboxIndex = levelLightSettings.SkyboxIndex;
             CameraColorGrading = levelLightSettings.CameraColorGrading;
             CameraColorBlend = levelLightSettings.CameraColorBlend;
             CameraExposure = levelLightSettings.CameraExposure;
+
+            AdditionalSkyboxSettings additionalSkyboxSettings = levelLightSettings.GetComponent<AdditionalSkyboxSettings>();
+            if (!additionalSkyboxSettings)
+            {
+                AdditonalSkybox = null;
+                return;
+            }
+
+            AdditonalSkybox = additionalSkyboxSettings.Skybox;
         }
 
         public void ApplyValues(LevelLightSettings levelLightSettings)

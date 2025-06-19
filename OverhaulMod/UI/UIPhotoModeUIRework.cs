@@ -289,7 +289,7 @@ namespace OverhaulMod.UI
 
         public void OnSaveRLightInfoButtonClicked()
         {
-            RealisticLightingManager.Instance.SaveCurrentLightingInfo((m_realisticSkyBoxDropdown.options[m_realisticSkyBoxDropdown.value] as DropdownStringOptionData).StringValue);
+            RealisticLightingManager.Instance.SaveCurrentLightingInfo(m_realisticSkyBoxToggle.isOn ? (m_realisticSkyBoxDropdown.options[m_realisticSkyBoxDropdown.value] as DropdownStringOptionData).StringValue : string.Empty);
         }
 
         public void OnRestoreDefaultsButtonClicked()
