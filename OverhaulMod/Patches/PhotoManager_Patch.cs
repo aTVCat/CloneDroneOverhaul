@@ -18,7 +18,12 @@ namespace OverhaulMod.Patches
             if (__instance._isInPhotoMode)
             {
                 if (UIManager.Instance.IsMouseOverUIElement())
+                {
+                    if (Input.GetKeyDown(KeyCode.BackQuote))
+                        __instance.TriggerPhotoModeOnOff(false);
+
                     return false;
+                }
 
                 /*if (Input.GetMouseButtonUp(0))
                     AdvancedPhotoModeManager.Instance.SetEditedLighting();*/

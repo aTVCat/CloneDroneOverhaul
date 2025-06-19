@@ -18,20 +18,20 @@ namespace OverhaulMod.Patches
             if (!PhotoManager.Instance.IsInPhotoMode() || __instance._isMovementDisabled)
                 return true;
 
-            InputManager inputManager = InputManager.Instance;
-            if (UIManager.Instance.IsMouseOverUIElement())
-            {
-                inputManager.SetCursorEnabled(true);
-                return false;
-            }
-
             ModUIManager modUIManager = ModUIManager.Instance;
             Player player = ReInput.players.GetPlayer(0);
             if (player != null)
             {
                 bool rmbHeld = player.GetButton(3) || (!AdvancedPhotoModeManager.RequireHoldingRMBWhenUIIsHidden && modUIManager && !modUIManager.IsUIVisible(AssetBundleConstants.UI, ModUIConstants.UI_PHOTO_MODE_UI_REWORK));
 
+                InputManager inputManager = InputManager.Instance;
                 inputManager.SetCursorEnabled(!rmbHeld);
+
+                if (!rmbHeld && UIManager.Instance.IsMouseOverUIElement())
+                {
+                    inputManager.SetCursorEnabled(true);
+                    return false;
+                }
             }
             return true;
         }

@@ -15,8 +15,11 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(GameUIRoot.RefreshCursorEnabled))]
         private static bool RefreshCursorEnabled_Prefix()
         {
-            if (PersonalizationEditorCamera.IsControllingTheCamera)
+            /*if (PersonalizationEditorCamera.IsControllingTheCamera)
+            {
+                InputManager.Instance.SetCursorEnabled(false);
                 return false;
+            }*/
 
 #if DEBUG
             if (ModDebug.forceDisableCursor)
@@ -34,7 +37,7 @@ namespace OverhaulMod.Patches
             Debug.Log($"UIVisible: {manager.IsUIVisible(AssetBundleConstants.UI, ModUIConstants.UI_PHOTO_MODE_UI_REWORK) && AdvancedPhotoModeManager.Instance.IsInPhotoMode() && UIManager.Instance.IsMouseOverUIElement()}");
             */
 
-            if (manager.ShouldEnableCursor() || (manager.IsUIVisible(AssetBundleConstants.UI, ModUIConstants.UI_PHOTO_MODE_UI_REWORK) && AdvancedPhotoModeManager.Instance.IsActive() && UIManager.Instance.IsMouseOverUIElement()))
+            if (manager.ShouldEnableCursor())
             {
                 InputManager.Instance.SetCursorEnabled(true);
                 return false;

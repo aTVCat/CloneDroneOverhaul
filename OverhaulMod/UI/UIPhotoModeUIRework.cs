@@ -173,6 +173,9 @@ namespace OverhaulMod.UI
             expandButton.collapsedSize = lightingPanel.sizeDelta;
             expandButton.expandedSize = new Vector2(375f, 400f);
 
+            m_directionalLightColor.colorPickerParent = base.transform;
+            m_fogColor.colorPickerParent = base.transform;
+
             m_saveRLightInfoButton.gameObject.SetActive(ModUserInfo.isDeveloper);
         }
 
