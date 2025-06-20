@@ -30,16 +30,13 @@ namespace OverhaulMod
         [ModSetting(ModSettingsConstants.SWAP_SUBTITLES_COLOR, false)]
         public static bool SwapSubtitlesColor;
 
-        [ModSetting(ModSettingsConstants.STREAMER_MODE, true)]
-        public static bool StreamerMode;
-
         [ModSetting(ModSettingsConstants.CURSOR_SKIN, 1)]
         public static int CursorSkin;
 
         [ModSetting(ModSettingsConstants.DISABLE_SCREEN_SHAKING, false)]
         public static bool DisableScreenShaking;
 
-        public static bool EnterCustomizationEditor;
+        public static bool ShouldStartCustomizationEditor;
 
         public static event Action GameInitialized;
         public static event Action<bool> ModStateChanged;
@@ -429,9 +426,9 @@ namespace OverhaulMod
 
         private void onGameInitialized()
         {
-            if (EnterCustomizationEditor)
+            if (ShouldStartCustomizationEditor)
             {
-                EnterCustomizationEditor = false;
+                ShouldStartCustomizationEditor = false;
                 if (PersonalizationEditorManager.Instance)
                     PersonalizationEditorManager.Instance.StartEditorGameMode(true);
             }

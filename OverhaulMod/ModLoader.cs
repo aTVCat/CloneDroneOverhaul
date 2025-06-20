@@ -33,6 +33,7 @@ namespace OverhaulMod
             loadGameUIThemeData();
 
             ModLaunchOptions.Initialize();
+            ModFeatures.CacheValues();
             ModUserInfo.Load();
             ModBuildInfo.Load();
 
@@ -42,15 +43,11 @@ namespace OverhaulMod
             createDirectories();
             addManagers();
             ModManagers.Instance.TriggerModLoadedEvent();
-            ModFeatures.CacheValues();
 
             loadMiscellaneousAssets();
             addLevelEditorObjects();
             addListeners();
 
-            QualitySettings.asyncUploadTimeSlice = 4;
-            QualitySettings.asyncUploadBufferSize = 16;
-            QualitySettings.asyncUploadPersistentBuffer = true;
             QualitySettings.softParticles = true;
             FPSManager.RefreshFPSCap();
 

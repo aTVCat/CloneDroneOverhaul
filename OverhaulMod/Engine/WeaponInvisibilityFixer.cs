@@ -12,26 +12,13 @@ namespace OverhaulMod.Engine
                 return;
 
             FirstPersonMover firstPersonMover = m_owner;
-            if (!firstPersonMover || firstPersonMover.IsMainPlayer() || firstPersonMover.IsDetached())
+            if (!firstPersonMover || !firstPersonMover._characterModel || firstPersonMover.IsMainPlayer() || firstPersonMover.IsDetached())
                 return;
 
-            IFirstPersonMoverState state;
-            try
+            WeaponModel weaponModel = firstPersonMover._characterModel.GetWeaponModel(firstPersonMover.GetEquippedWeaponType());
+            if (weaponModel)
             {
-                state = firstPersonMover.state as IFirstPersonMoverState;
-            }
-            catch
-            {
-                state = null;
-            }
-
-            if (state != null)
-            {
-                WeaponType stateEquippedWeapon = (WeaponType)state.EquippedWeaponType;
-                if (firstPersonMover.GetEquippedWeaponType() != stateEquippedWeapon)
-                {
-                    firstPersonMover.SetEquippedWeaponType(stateEquippedWeapon, false);
-                }
+                weaponModel.gameObject.SetActive(true);
             }
         }
 

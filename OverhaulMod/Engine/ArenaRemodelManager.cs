@@ -61,8 +61,6 @@ namespace OverhaulMod.Engine
         private Vector3 m_ogReturnSignPosition;
         private Vector3 m_ogReturnSignEulerAngles;
 
-        private readonly float m_timeToRefreshVanillaArenaParts;
-
         private void Start()
         {
             RefreshArenaLook();
@@ -139,7 +137,7 @@ namespace OverhaulMod.Engine
             m_arenaLightsMaterial = gameObject.transform.GetChild(1).GetComponentInChildren<MeshRenderer>().sharedMaterial;
             m_arenaLightsMaterial.shader = Shader.Find("Standard");
 
-            GlobalEventManager.Instance.AddEventListener("ArenaSettingsRefreshed", onArenaSettingsUpdate);
+            GlobalEventManager.Instance.AddEventListener(GlobalEvents.ArenaSettingsRefreshed, onArenaSettingsUpdate);
 
             SetUpperInteriorActive(true);
             SetVanillaPartsActive(false);
@@ -260,7 +258,7 @@ namespace OverhaulMod.Engine
 
         private void onArenaSettingsUpdate()
         {
-            LevelEditorArenaSettings activeSettings = ArenaCustomizationManager.Instance?.GetActiveSettings();
+            LevelEditorArenaSettings activeSettings = ArenaCustomizationManager.Instance.GetActiveSettings();
             if (activeSettings)
             {
                 if (m_arenaOverhaulMaterial)

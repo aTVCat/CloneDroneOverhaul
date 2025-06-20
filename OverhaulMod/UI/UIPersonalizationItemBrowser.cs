@@ -592,7 +592,7 @@ namespace OverhaulMod.UI
                 {
                     ModUIUtils.MessagePopup(true, LocalizationManager.Instance.GetTranslatedString("enter_ceditor_dialog_header"), LocalizationManager.Instance.GetTranslatedString("enter_ceditor_dialog_text"), 150f, MessageMenu.ButtonLayout.EnableDisableButtons, "ok", "Yes", "No", null, delegate
                     {
-                        ModCore.EnterCustomizationEditor = true;
+                        ModCore.ShouldStartCustomizationEditor = true;
                         SceneTransitionManager.Instance.DisconnectAndExitToMainMenu();
                     });
                 });
