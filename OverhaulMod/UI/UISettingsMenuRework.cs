@@ -782,7 +782,7 @@ namespace OverhaulMod.UI
                 colorBlindnessOptions[0].text = LocalizationManager.Instance.GetTranslatedString("settings_option_normal_vision");
                 colorBlindnessOptions[1].text = LocalizationManager.Instance.GetTranslatedString("settings_option_protanopia");
                 colorBlindnessOptions[2].text = LocalizationManager.Instance.GetTranslatedString("settings_option_deuteranopia");
-                colorBlindnessOptions[0].text = LocalizationManager.Instance.GetTranslatedString("settings_option_tritanopia");
+                colorBlindnessOptions[3].text = LocalizationManager.Instance.GetTranslatedString("settings_option_tritanopia");
 
                 _ = pageBuilder.Dropdown(PostEffectsManager.ColorBlindnessOptions, ModSettingsManager.GetIntValue(ModSettingsConstants.COLOR_BLINDNESS_MODE), delegate (int value)
                 {

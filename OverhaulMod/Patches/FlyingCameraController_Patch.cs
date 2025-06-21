@@ -27,11 +27,8 @@ namespace OverhaulMod.Patches
                 InputManager inputManager = InputManager.Instance;
                 inputManager.SetCursorEnabled(!rmbHeld);
 
-                if (!rmbHeld && UIManager.Instance.IsMouseOverUIElement())
-                {
-                    inputManager.SetCursorEnabled(true);
+                if (!rmbHeld)
                     return false;
-                }
             }
             return true;
         }

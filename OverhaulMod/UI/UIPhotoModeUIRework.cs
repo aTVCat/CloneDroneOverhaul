@@ -163,6 +163,8 @@ namespace OverhaulMod.UI
 
         public override bool closeOnEscapeButtonPress => false;
 
+        public override bool enableCursor => true;
+
         protected override void OnInitialized()
         {
             RectTransform lightingPanel = m_lightingPanel;

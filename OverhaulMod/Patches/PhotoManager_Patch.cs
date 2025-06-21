@@ -16,7 +16,7 @@ namespace OverhaulMod.Patches
         {
             if (__instance._isInPhotoMode)
             {
-                if (UIManager.Instance.IsMouseOverUIElement())
+                if (UIManager.Instance.IsMouseOverUIElement() && TimeManager.Instance.IsGamePaused())
                 {
                     if (Input.GetKeyDown(KeyCode.BackQuote))
                         __instance.TriggerPhotoModeOnOff(false);
