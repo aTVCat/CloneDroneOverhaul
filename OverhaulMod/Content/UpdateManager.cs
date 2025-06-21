@@ -51,7 +51,7 @@ namespace OverhaulMod.Content
             set;
         }
 
-        public bool GetUpdatesFromTestFolder = true;
+        public bool GetUpdatesFromTestFolder = false;
 
         private UnityWebRequest m_webRequest;
 
