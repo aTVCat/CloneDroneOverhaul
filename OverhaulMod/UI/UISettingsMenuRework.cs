@@ -521,7 +521,13 @@ namespace OverhaulMod.UI
             PageBuilder pageBuilder = new PageBuilder(this);
             _ = pageBuilder.Header1("Game interface");
             _ = pageBuilder.Header3("Cursor skin");
-            _ = pageBuilder.DropdownWithImage(ModConstants.CursorSkinOptions, ModSettingsManager.GetIntValue(ModSettingsConstants.CURSOR_SKIN), delegate (int value)
+
+            List<Dropdown.OptionData> cursorSkinOptions = ModConstants.CursorSkinOptions;
+            cursorSkinOptions[0].text = LocalizationManager.Instance.GetTranslatedString("settings_option_default");
+            cursorSkinOptions[1].text = LocalizationManager.Instance.GetTranslatedString("settings_option_skin_1");
+            cursorSkinOptions[2].text = LocalizationManager.Instance.GetTranslatedString("settings_option_skin_2");
+
+            _ = pageBuilder.DropdownWithImage(cursorSkinOptions, ModSettingsManager.GetIntValue(ModSettingsConstants.CURSOR_SKIN), delegate (int value)
             {
                 ModSettingsManager.SetIntValue(ModSettingsConstants.CURSOR_SKIN, value, true);
             });
@@ -771,6 +777,13 @@ namespace OverhaulMod.UI
             if (ModFeatures.IsEnabled(ModFeatures.FeatureType.ColorBlindnessOptions))
             {
                 _ = pageBuilder.Header3("Color blindness mode");
+
+                List<Dropdown.OptionData> colorBlindnessOptions = PostEffectsManager.ColorBlindnessOptions;
+                colorBlindnessOptions[0].text = LocalizationManager.Instance.GetTranslatedString("settings_option_normal_vision");
+                colorBlindnessOptions[1].text = LocalizationManager.Instance.GetTranslatedString("settings_option_protanopia");
+                colorBlindnessOptions[2].text = LocalizationManager.Instance.GetTranslatedString("settings_option_deuteranopia");
+                colorBlindnessOptions[0].text = LocalizationManager.Instance.GetTranslatedString("settings_option_tritanopia");
+
                 _ = pageBuilder.Dropdown(PostEffectsManager.ColorBlindnessOptions, ModSettingsManager.GetIntValue(ModSettingsConstants.COLOR_BLINDNESS_MODE), delegate (int value)
                 {
                     ModSettingsManager.SetIntValue(ModSettingsConstants.COLOR_BLINDNESS_MODE, value, true);

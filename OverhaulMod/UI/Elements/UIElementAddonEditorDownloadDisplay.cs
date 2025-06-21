@@ -73,14 +73,14 @@ namespace OverhaulMod.UI
 
         private void refreshImageEntries()
         {
-            if(m_imageEntriesContainer.childCount != 0)
+            if (m_imageEntriesContainer.childCount != 0)
                 TransformUtils.DestroyAllChildren(m_imageEntriesContainer);
 
-            var list = m_addonDownloadInfo.Images;
+            System.Collections.Generic.List<string> list = m_addonDownloadInfo.Images;
             if (list.IsNullOrEmpty())
                 return;
 
-            for(int i = 0; i < list.Count; i++)
+            for (int i = 0; i < list.Count; i++)
             {
                 int index = i;
 

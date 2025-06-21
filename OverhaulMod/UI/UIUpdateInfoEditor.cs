@@ -1,7 +1,4 @@
-﻿using OverhaulMod.Content;
-using OverhaulMod.Utils;
-using System;
-using UnityEngine.UI;
+﻿using UnityEngine.UI;
 
 namespace OverhaulMod.UI
 {

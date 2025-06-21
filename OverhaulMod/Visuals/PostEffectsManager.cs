@@ -168,9 +168,11 @@ namespace OverhaulMod.Visuals
             List<ModSettingsPreset> list = new List<ModSettingsPreset>();
             m_graphicsPresets = list;
 
-            ModSettingsPreset lowest = new ModSettingsPreset(true);
-            lowest.QualityLevel = CloneDroneQualityLevels.Fast;
-            lowest.AntiAliasingMode = AntiAliasingMode.NoAntiAliasing;
+            ModSettingsPreset lowest = new ModSettingsPreset(true)
+            {
+                QualityLevel = CloneDroneQualityLevels.Fast,
+                AntiAliasingMode = AntiAliasingMode.NoAntiAliasing
+            };
             lowest.AddValue(ModSettingsConstants.ENABLE_SSAO, false);
             lowest.AddValue(ModSettingsConstants.ENABLE_GLOBAL_ILLUMINATION, false);
             lowest.AddValue(ModSettingsConstants.ENABLE_CHROMATIC_ABERRATION, false);
@@ -181,9 +183,11 @@ namespace OverhaulMod.Visuals
             lowest.AddValue(ModSettingsConstants.ENABLE_SUN_SHAFTS, false);
             list.Add(lowest);
 
-            ModSettingsPreset low = new ModSettingsPreset(true);
-            low.QualityLevel = CloneDroneQualityLevels.Fast;
-            low.AntiAliasingMode = AntiAliasingMode.NoAntiAliasing;
+            ModSettingsPreset low = new ModSettingsPreset(true)
+            {
+                QualityLevel = CloneDroneQualityLevels.Fast,
+                AntiAliasingMode = AntiAliasingMode.NoAntiAliasing
+            };
             low.AddValue(ModSettingsConstants.ENABLE_SSAO, false);
             low.AddValue(ModSettingsConstants.ENABLE_GLOBAL_ILLUMINATION, false);
             low.AddValue(ModSettingsConstants.ENABLE_CHROMATIC_ABERRATION, false);
@@ -194,9 +198,11 @@ namespace OverhaulMod.Visuals
             low.AddValue(ModSettingsConstants.ENABLE_SUN_SHAFTS, false);
             list.Add(low);
 
-            ModSettingsPreset mid = new ModSettingsPreset(true);
-            mid.QualityLevel = CloneDroneQualityLevels.Good;
-            mid.AntiAliasingMode = AntiAliasingMode.MSAA2X;
+            ModSettingsPreset mid = new ModSettingsPreset(true)
+            {
+                QualityLevel = CloneDroneQualityLevels.Good,
+                AntiAliasingMode = AntiAliasingMode.MSAA2X
+            };
             mid.AddValue(ModSettingsConstants.ENABLE_SSAO, false);
             mid.AddValue(ModSettingsConstants.ENABLE_GLOBAL_ILLUMINATION, false);
             mid.AddValue(ModSettingsConstants.ENABLE_CHROMATIC_ABERRATION, false);
@@ -207,9 +213,11 @@ namespace OverhaulMod.Visuals
             mid.AddValue(ModSettingsConstants.ENABLE_SUN_SHAFTS, false);
             list.Add(mid);
 
-            ModSettingsPreset standardVanilla = new ModSettingsPreset(true);
-            standardVanilla.QualityLevel = CloneDroneQualityLevels.Beautiful;
-            standardVanilla.AntiAliasingMode = AntiAliasingMode.MSAA4X;
+            ModSettingsPreset standardVanilla = new ModSettingsPreset(true)
+            {
+                QualityLevel = CloneDroneQualityLevels.Beautiful,
+                AntiAliasingMode = AntiAliasingMode.MSAA4X
+            };
             standardVanilla.AddValue(ModSettingsConstants.ENABLE_SSAO, false);
             standardVanilla.AddValue(ModSettingsConstants.ENABLE_GLOBAL_ILLUMINATION, false);
             standardVanilla.AddValue(ModSettingsConstants.ENABLE_CHROMATIC_ABERRATION, false);
@@ -220,9 +228,11 @@ namespace OverhaulMod.Visuals
             standardVanilla.AddValue(ModSettingsConstants.ENABLE_SUN_SHAFTS, false);
             list.Add(standardVanilla);
 
-            ModSettingsPreset standardOverhaul = new ModSettingsPreset(true);
-            standardOverhaul.QualityLevel = CloneDroneQualityLevels.Beautiful;
-            standardOverhaul.AntiAliasingMode = AntiAliasingMode.MSAA8X;
+            ModSettingsPreset standardOverhaul = new ModSettingsPreset(true)
+            {
+                QualityLevel = CloneDroneQualityLevels.Beautiful,
+                AntiAliasingMode = AntiAliasingMode.MSAA8X
+            };
             standardOverhaul.AddValue(ModSettingsConstants.ENABLE_SSAO, true);
             standardOverhaul.AddValue(ModSettingsConstants.ENABLE_GLOBAL_ILLUMINATION, false);
             standardOverhaul.AddValue(ModSettingsConstants.ENABLE_CHROMATIC_ABERRATION, false);
@@ -233,9 +243,11 @@ namespace OverhaulMod.Visuals
             standardOverhaul.AddValue(ModSettingsConstants.ENABLE_SUN_SHAFTS, false);
             list.Add(standardOverhaul);
 
-            ModSettingsPreset high = new ModSettingsPreset(true);
-            high.QualityLevel = CloneDroneQualityLevels.Beautiful;
-            high.AntiAliasingMode = AntiAliasingMode.MSAA8X;
+            ModSettingsPreset high = new ModSettingsPreset(true)
+            {
+                QualityLevel = CloneDroneQualityLevels.Beautiful,
+                AntiAliasingMode = AntiAliasingMode.MSAA8X
+            };
             high.AddValue(ModSettingsConstants.ENABLE_SSAO, true);
             high.AddValue(ModSettingsConstants.ENABLE_GLOBAL_ILLUMINATION, false);
             high.AddValue(ModSettingsConstants.ENABLE_CHROMATIC_ABERRATION, true);
@@ -246,9 +258,11 @@ namespace OverhaulMod.Visuals
             high.AddValue(ModSettingsConstants.ENABLE_SUN_SHAFTS, false);
             list.Add(high);
 
-            ModSettingsPreset veryHigh = new ModSettingsPreset(true);
-            veryHigh.QualityLevel = CloneDroneQualityLevels.Beautiful;
-            veryHigh.AntiAliasingMode = AntiAliasingMode.MSAA8X;
+            ModSettingsPreset veryHigh = new ModSettingsPreset(true)
+            {
+                QualityLevel = CloneDroneQualityLevels.Beautiful,
+                AntiAliasingMode = AntiAliasingMode.MSAA8X
+            };
             veryHigh.AddValue(ModSettingsConstants.ENABLE_SSAO, true);
             veryHigh.AddValue(ModSettingsConstants.ENABLE_GLOBAL_ILLUMINATION, false);
             veryHigh.AddValue(ModSettingsConstants.ENABLE_CHROMATIC_ABERRATION, true);
@@ -259,9 +273,11 @@ namespace OverhaulMod.Visuals
             veryHigh.AddValue(ModSettingsConstants.ENABLE_SUN_SHAFTS, true);
             list.Add(veryHigh);
 
-            ModSettingsPreset extreme = new ModSettingsPreset(true);
-            extreme.QualityLevel = CloneDroneQualityLevels.Beautiful;
-            extreme.AntiAliasingMode = AntiAliasingMode.MSAA8X;
+            ModSettingsPreset extreme = new ModSettingsPreset(true)
+            {
+                QualityLevel = CloneDroneQualityLevels.Beautiful,
+                AntiAliasingMode = AntiAliasingMode.MSAA8X
+            };
             extreme.AddValue(ModSettingsConstants.ENABLE_SSAO, true);
             extreme.AddValue(ModSettingsConstants.ENABLE_GLOBAL_ILLUMINATION, true);
             extreme.AddValue(ModSettingsConstants.ENABLE_CHROMATIC_ABERRATION, true);

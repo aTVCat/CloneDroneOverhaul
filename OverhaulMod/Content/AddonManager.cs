@@ -364,7 +364,7 @@ namespace OverhaulMod.Content
         /// <returns>-1 if addon is not installed, otherwise the installed addon version</returns>
         public int GetAddonVersion(string uniqueId)
         {
-            var info = GetAddonInfo(uniqueId);
+            AddonInfo info = GetAddonInfo(uniqueId);
             if (info == null)
                 return -1;
 
@@ -451,14 +451,18 @@ namespace OverhaulMod.Content
                         if (newId.IsNullOrEmpty())
                             continue;
 
-                        AddonInfo addonInfo = new AddonInfo();
-                        addonInfo.DisplayName = new Dictionary<string, string>();
-                        addonInfo.DisplayName.Add("en", contentInfo.DisplayName);
-                        addonInfo.Description = new Dictionary<string, string>();
-                        addonInfo.Version = -1;
-                        addonInfo.UniqueID = newId;
-                        addonInfo.FolderPath = folder;
-                        addonInfo.MinModVersion = ModBuildInfo.version;
+                        AddonInfo addonInfo = new AddonInfo
+                        {
+                            DisplayName = new Dictionary<string, string>
+                            {
+                                { "en", contentInfo.DisplayName }
+                            },
+                            Description = new Dictionary<string, string>(),
+                            Version = -1,
+                            UniqueID = newId,
+                            FolderPath = folder,
+                            MinModVersion = ModBuildInfo.version
+                        };
                         list.Add(addonInfo);
                     }
                     catch

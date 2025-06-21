@@ -84,8 +84,8 @@ namespace OverhaulMod.UI
             if (UpdateManager.UpdatesLastCheckedDate.IsNullOrEmpty() || !DateTime.TryParse(UpdateManager.UpdatesLastCheckedDate, out dateTime))
                 dateTime = DateTime.MinValue;
 
-            m_idleHeaderText.text = "Overhaul mod is up-to-date!";
-            m_idleDescriptionText.text = $"Last checked: {(dateTime == DateTime.MinValue ? "unknown" : dateTime.ToShortDateString())}";
+            m_idleHeaderText.text = LocalizationManager.Instance.GetTranslatedString("updates_text_overhaul_mod_is_up_to_date");
+            m_idleDescriptionText.text = $"{LocalizationManager.Instance.GetTranslatedString("updates_tooltip_last_checked")} {(dateTime == DateTime.MinValue ? "unknown" : dateTime.ToShortDateString())}";
         }
 
         public void OnCheckUpdatesOnStartToggled(bool value)

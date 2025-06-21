@@ -632,7 +632,7 @@ namespace OverhaulMod.Utils
 
         public static UIUpdateDetailsWindow ShowUpdateDetailsWindow(Transform transform, UpdateInfo updateInfo, string branch)
         {
-            var detailsWindow = ModUIManager.Instance.Show<UIUpdateDetailsWindow>(AssetBundleConstants.UI, UI_UPDATE_DETAILS_WINDOW, transform);
+            UIUpdateDetailsWindow detailsWindow = ModUIManager.Instance.Show<UIUpdateDetailsWindow>(AssetBundleConstants.UI, UI_UPDATE_DETAILS_WINDOW, transform);
             detailsWindow.Populate(updateInfo, branch);
             return detailsWindow;
         }

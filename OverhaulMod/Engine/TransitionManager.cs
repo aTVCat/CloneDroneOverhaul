@@ -46,7 +46,7 @@ namespace OverhaulMod.Engine
 
         public void DoTransition(TransitionArgs transitionArgs)
         {
-            if(transitionArgs == null)
+            if (transitionArgs == null)
                 throw new ArgumentNullException(nameof(transitionArgs));
 
             if (m_transitionBehaviour)

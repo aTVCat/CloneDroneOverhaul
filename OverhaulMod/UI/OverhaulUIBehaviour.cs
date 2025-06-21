@@ -136,7 +136,7 @@ namespace OverhaulMod.UI
                         showTooltipOnHightLight.textIsLocalizationId = showTooltipHighLightAttribute.TextIsLocalizationID;
                     }
 
-                    if(buttonWithSoundAttribute != null && ModFeatures.IsEnabled(ModFeatures.FeatureType.UISounds))
+                    if (buttonWithSoundAttribute != null && ModFeatures.IsEnabled(ModFeatures.FeatureType.UISounds))
                     {
                         ButtonWithSound buttonWithSound = elementObject.AddComponent<ButtonWithSound>();
                         buttonWithSound.Sound = buttonWithSoundAttribute.SoundType;

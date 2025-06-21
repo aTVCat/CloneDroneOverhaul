@@ -25,25 +25,25 @@ namespace OverhaulMod.UI
         protected override void OnInitialized()
         {
             AddSection(LocalizationManager.Instance.GetTranslatedString("credits_header_author"), "FFFFFF");
-            AddUser("A TVCat", "hi", "https://steamcommunity.com/profiles/76561199028311109");
+            AddUser("A TVCat", "", "https://steamcommunity.com/profiles/76561199028311109");
 
             AddSection(LocalizationManager.Instance.GetTranslatedString("credits_header_playtested_by"), "FFECD9");
-            AddUser("SonicGleb", LocalizationManager.Instance.GetTranslatedString("credits_tooltip_playtested_by_sonicgleb"), "https://steamcommunity.com/id/sonicgleb");
-            AddUser("Electrified_CyberKick", "", "https://steamcommunity.com/id/Lexium-Rosewarne");
+            AddUser("SonicGleb", "", "https://steamcommunity.com/profiles/76561198965865454");
+            AddUser("Electrified_CyberKick", "", "https://steamcommunity.com/profiles/76561198436511165");
             AddUser("ッizanami", "", "https://steamcommunity.com/profiles/76561198258900316");
-            AddUser("bow1__", "", "https://steamcommunity.com/id/EggRolly");
+            AddUser("bow1__", "", "https://steamcommunity.com/profiles/76561199177742030");
 
             AddSection(LocalizationManager.Instance.GetTranslatedString("credits_header_special_thanks"), "D9E0FF");
-            AddUser("SonicGleb", LocalizationManager.Instance.GetTranslatedString("credits_tooltip_special_thanks_sonicgleb"), "https://steamcommunity.com/id/sonicgleb");
+            AddUser("SonicGleb", LocalizationManager.Instance.GetTranslatedString("credits_tooltip_special_thanks_sonicgleb"), "https://steamcommunity.com/profiles/76561198965865454");
             AddUser("Igrok_x_xp", LocalizationManager.Instance.GetTranslatedString("credits_tooltip_special_thanks_igrok_x_xp"), "https://steamcommunity.com/profiles/76561199014733748");
             AddUser("Pharawill-MK2 (Water)", LocalizationManager.Instance.GetTranslatedString("credits_tooltip_special_thanks_water"), "https://steamcommunity.com/profiles/76561198995153570");
 
-            AddSection("Libraries used in the mod", "6FE5FF");
-            AddLibrary("Amplify Occlusion", "This post-effect adds cool shadows.\nMade by Amplify Creations", "https://assetstore.unity.com/packages/vfx/shaders/fullscreen-camera-effects/amplify-occlusion-56739", false);
-            AddLibrary("SEGI", "The Global Illumination post effect.\nMade by Stanislav Denisov", "https://github.com/sonicether/SEGI", false);
-            AddLibrary("Custom robot model editor", "Some of its code is used in this mod to import .cvm models.\nMade by X606", "https://modbot.org/modPreview.html?modID=de731a6b-0a96-4882-a02b-a336904f9853", false);
+            AddSection(LocalizationManager.Instance.GetTranslatedString("credits_header_libraries_used_in_the_mod"), "6FE5FF");
+            AddLibrary("Amplify Occlusion", LocalizationManager.Instance.GetTranslatedString("credits_tooltip_libraries_used_in_the_mod_amplify_occlusion"), "https://assetstore.unity.com/packages/vfx/shaders/fullscreen-camera-effects/amplify-occlusion-56739", false);
+            AddLibrary("SEGI", LocalizationManager.Instance.GetTranslatedString("credits_tooltip_libraries_used_in_the_mod_segi"), "https://github.com/sonicether/SEGI", false);
+            AddLibrary("Custom robot model editor", LocalizationManager.Instance.GetTranslatedString("credits_tooltip_libraries_used_in_the_mod_custom_robot_model_editor"), "https://modbot.org/modPreview.html?modID=de731a6b-0a96-4882-a02b-a336904f9853", false);
             //AddLibrary("Mesh Serializer", "The utility to save meshes on the disk and read them.\nMade by BUNNY83", "https://pastebin.com/yW91qEQh", false); // this isn't used yet
-            AddLibrary("Discord RPC", "The library used to display custom statuses in Discord.\nMade by Discord", "https://discord.com/developers/docs/topics/rpc", false);
+            AddLibrary("Discord RPC", LocalizationManager.Instance.GetTranslatedString("credits_tooltip_libraries_used_in_the_mod_discord_rpc"), "https://discord.com/developers/docs/topics/rpc", false);
         }
 
         public void AddLibrary(string libraryName, string description, string hyperlink, bool openInSteamOverlay)

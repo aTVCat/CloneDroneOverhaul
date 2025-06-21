@@ -594,7 +594,8 @@ namespace OverhaulMod.UI
             if (item == null || item.IsDisposed())
                 return;
 
-            bool hasVotedDownBefore = !m_voteDownButton.interactable;
+            bool shouldDecreaseDownvotes = !m_voteDownButton.interactable;
+            bool shouldIncreaseTheCounter = m_voteUpButton.interactable;
 
             m_voteUpButton.interactable = false;
             ModSteamUGCUtils.SetUserVote(item.ItemID, true, delegate (SetUserItemVoteResult_t t, bool ioError)
@@ -607,11 +608,11 @@ namespace OverhaulMod.UI
                     ModUIUtils.MessagePopupOK("Vote error", $"Error code: {t.m_eResult} (ioError: {ioError})", 150f, true);
                 else
                 {
-                    if (hasVotedDownBefore)
-                    {
-                        item.UpVotes++;
+                    if (shouldDecreaseDownvotes)
                         item.DownVotes--;
-                    }
+
+                    if (shouldIncreaseTheCounter)
+                        item.UpVotes++;
 
                     refreshUserVoteCounters(item);
 
@@ -630,7 +631,8 @@ namespace OverhaulMod.UI
             if (item == null || item.IsDisposed())
                 return;
 
-            bool hasVotedUpBefore = !m_voteUpButton.interactable;
+            bool shouldDecreaseUpvotes = !m_voteUpButton.interactable;
+            bool shouldIncreaseTheCounter = m_voteDownButton.interactable;
 
             m_voteDownButton.interactable = false;
             ModSteamUGCUtils.SetUserVote(item.ItemID, false, delegate (SetUserItemVoteResult_t t, bool ioError)
@@ -643,11 +645,11 @@ namespace OverhaulMod.UI
                     ModUIUtils.MessagePopupOK("Vote error", $"Error code: {t.m_eResult} (ioError: {ioError})", 150f, true);
                 else
                 {
-                    if (hasVotedUpBefore)
-                    {
+                    if (shouldDecreaseUpvotes)
                         item.UpVotes--;
+
+                    if (shouldIncreaseTheCounter)
                         item.DownVotes++;
-                    }
 
                     refreshUserVoteCounters(item);
 

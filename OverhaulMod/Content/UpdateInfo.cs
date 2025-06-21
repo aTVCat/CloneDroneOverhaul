@@ -1,6 +1,5 @@
 ﻿using OverhaulMod.Utils;
 using System;
-using System.Collections.Generic;
 
 namespace OverhaulMod.Content
 {

@@ -1,6 +1,4 @@
 ﻿using HarmonyLib;
-using OverhaulMod.Content.Personalization;
-using OverhaulMod.Engine;
 using OverhaulMod.UI;
 using OverhaulMod.Utils;
 using UnityEngine;

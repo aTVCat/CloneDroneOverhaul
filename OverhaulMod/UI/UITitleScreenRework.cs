@@ -450,7 +450,7 @@ namespace OverhaulMod.UI
 
         private void refreshSkinButtonLabel()
         {
-            var skinType = skin;
+            TitleScreenSkinType skinType = skin;
             string displayString;
             switch (skinType)
             {

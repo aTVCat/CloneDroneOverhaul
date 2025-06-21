@@ -32,7 +32,27 @@ namespace OverhaulMod.Visuals
             List<Dropdown.OptionData> list = new List<Dropdown.OptionData>();
             foreach (object enumValue in typeof(ShadowResolution).GetEnumValues())
             {
-                list.Add(new Dropdown.OptionData(StringUtils.AddSpacesToCamelCasedString(((ShadowResolution)enumValue).ToString())));
+                string str;
+                switch ((ShadowResolution)enumValue)
+                {
+                    case ShadowResolution.Low:
+                        str = LocalizationManager.Instance.GetTranslatedString("settings_option_low");
+                        break;
+                    case ShadowResolution.Medium:
+                        str = LocalizationManager.Instance.GetTranslatedString("settings_option_medium");
+                        break;
+                    case ShadowResolution.High:
+                        str = LocalizationManager.Instance.GetTranslatedString("settings_option_high");
+                        break;
+                    case ShadowResolution.VeryHigh:
+                        str = LocalizationManager.Instance.GetTranslatedString("settings_option_very_high");
+                        break;
+                    default:
+                        str = StringUtils.AddSpacesToCamelCasedString(((ShadowResolution)enumValue).ToString());
+                        break;
+                }
+
+                list.Add(new Dropdown.OptionData(str));
             }
             return list;
         }

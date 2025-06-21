@@ -69,10 +69,12 @@ namespace OverhaulMod.UI
             m_isProcessingInput = true;
             m_timeLeftToProcessInput = TimeToProcessInput;
 
-            FileNameProcessResult fileNameProcessResult = new FileNameProcessResult();
-            fileNameProcessResult.IsNotResult = true;
-            fileNameProcessResult.DisplayColor = Color.gray;
-            fileNameProcessResult.Message = "Please wait...";
+            FileNameProcessResult fileNameProcessResult = new FileNameProcessResult
+            {
+                IsNotResult = true,
+                DisplayColor = Color.gray,
+                Message = "Please wait..."
+            };
             OnProcessedName.Invoke(fileNameProcessResult);
         }
 

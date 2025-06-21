@@ -273,7 +273,7 @@ namespace OverhaulMod.UI
         private IEnumerator restartCoroutine()
         {
             float timeOut = Time.unscaledTime + 10f;
-            while(AddonManager.Instance.IsLoadingAddons() && Time.unscaledTime < timeOut)
+            while (AddonManager.Instance.IsLoadingAddons() && Time.unscaledTime < timeOut)
                 yield return null;
 
             _ = Process.Start("steam://rungameid/" + 597170U.ToString());

@@ -202,11 +202,13 @@ namespace OverhaulMod.UI
             string folderPath = Path.Combine(ModCore.addonsFolder, folderName);
             Directory.CreateDirectory(folderPath);
 
-            AddonInfo addonInfo = new AddonInfo();
-            addonInfo.DisplayName = new System.Collections.Generic.Dictionary<string, string>();
-            addonInfo.Description = new System.Collections.Generic.Dictionary<string, string>();
-            addonInfo.MinModVersion = ModBuildInfo.version;
-            addonInfo.FolderPath = folderPath;
+            AddonInfo addonInfo = new AddonInfo
+            {
+                DisplayName = new System.Collections.Generic.Dictionary<string, string>(),
+                Description = new System.Collections.Generic.Dictionary<string, string>(),
+                MinModVersion = ModBuildInfo.version,
+                FolderPath = folderPath
+            };
             addonInfo.GenerateUniqueID();
 
             ModJsonUtils.WriteStream(Path.Combine(folderPath, AddonManager.ADDON_INFO_FILE), addonInfo);

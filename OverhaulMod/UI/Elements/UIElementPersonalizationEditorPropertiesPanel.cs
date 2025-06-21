@@ -663,7 +663,7 @@ namespace OverhaulMod.UI
                     propertiesPanel.Refresh();
                 }
 
-                var isWeaponSkin = objectBehaviour.ControllerInfo.ItemInfo.Category == PersonalizationCategory.WeaponSkins;
+                bool isWeaponSkin = objectBehaviour.ControllerInfo.ItemInfo.Category == PersonalizationCategory.WeaponSkins;
 
                 PersonalizationEditorObjectVolume volume = objectBehaviour.GetComponent<PersonalizationEditorObjectVolume>();
 

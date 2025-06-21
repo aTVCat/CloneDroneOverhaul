@@ -169,7 +169,7 @@ namespace OverhaulMod.Content
                     }
                 }
 
-                if(maxVersion != null)
+                if (maxVersion != null)
                 {
                     ModSettingsManager.SetStringValue(ModSettingsConstants.SAVED_NEW_VERSION, maxVersion.ToString());
                 }

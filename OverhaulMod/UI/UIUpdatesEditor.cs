@@ -2,7 +2,6 @@
 using OverhaulMod.Utils;
 using System;
 using System.IO;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -165,7 +164,7 @@ namespace OverhaulMod.UI
                 return;
 
             Version version;
-            if(!Version.TryParse(m_buildVersionField.text, out version))
+            if (!Version.TryParse(m_buildVersionField.text, out version))
                 version = new Version(0, 0, 0, 0);
 
             OnRefreshChangelogButtonClicked();

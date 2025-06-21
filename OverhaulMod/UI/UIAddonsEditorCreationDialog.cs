@@ -26,12 +26,14 @@ namespace OverhaulMod.UI
 
         protected override void OnInitialized()
         {
-            FileCreationDialogController controller = new FileCreationDialogController();
-            controller.TargetDirectory = ModCore.addonsFolder;
-            controller.CreateFolder = true;
-            controller.RestrictWhiteSpaces = true;
-            controller.TimeToProcessInput = 0.5f;
-            controller.SuccessMessage = "You can create the addon.";
+            FileCreationDialogController controller = new FileCreationDialogController
+            {
+                TargetDirectory = ModCore.addonsFolder,
+                CreateFolder = true,
+                RestrictWhiteSpaces = true,
+                TimeToProcessInput = 0.5f,
+                SuccessMessage = "You can create the addon."
+            };
             controller.OnProcessedName.AddListener(onProcessedInput);
             controller.Initialize(m_nameField);
             m_controller = controller;
