@@ -140,8 +140,10 @@ namespace OverhaulMod.UI
                     return;
                 }
 
+                bool showBuildsAnyway = ExclusivePerkManager.Instance.HasUnlockedPerk(ExclusivePerkType.SpecialRole);
+
                 UpdateInfoList updateInfoList = result.Updates;
-                if (updateInfoList.HasAnyNewBuildAvailable())
+                if (showBuildsAnyway || updateInfoList.HasAnyNewBuildAvailable())
                 {
                     m_resultElements.SetActive(true);
 
@@ -150,7 +152,7 @@ namespace OverhaulMod.UI
 
                     foreach (System.Collections.Generic.KeyValuePair<string, UpdateInfo> build in updateInfoList.Builds)
                     {
-                        if (build.Value.IsOlderBuild() || !build.Value.CanBeInstalledByLocalUser())
+                        if ((build.Value.IsOlderBuild() || !build.Value.CanBeInstalledByLocalUser()) && !showBuildsAnyway)
                             continue;
 
                         instantiateBuildDisplay(build.Key, build.Value);
