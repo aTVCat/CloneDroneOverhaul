@@ -135,12 +135,11 @@ namespace OverhaulMod.Engine
             }
         }
 
-        public void Initialize(CameraManager cameraManager, FirstPersonMover owner, PlayerCameraMover playerCameraMover, Animator animator, Transform transformToFollow)
+        public void Initialize(CameraManager cameraManager, FirstPersonMover owner, PlayerCameraMover playerCameraMover, Animator animator)
         {
             m_owner = owner;
             m_cameraMover = playerCameraMover;
             m_cameraAnimator = animator;
-            m_targetTransform = transformToFollow;
             m_cameraManager = cameraManager;
             RefreshOffset();
         }
@@ -166,7 +165,12 @@ namespace OverhaulMod.Engine
 
         public void RefreshOffset()
         {
-            if (!m_targetTransform && m_owner && m_owner.IsMindSpaceCharacter)
+            if (!m_targetTransform)
+            {
+                m_targetTransform = getTargetTransform();
+            }
+
+            if (!m_targetTransform || (m_owner && m_owner.IsMindSpaceCharacter))
             {
                 m_offset = Vector3.up * 0.575f;
                 return;
@@ -209,6 +213,20 @@ namespace OverhaulMod.Engine
                     renderer.enabled = value;
                 }
             }
+        }
+
+        private Transform getTargetTransform()
+        {
+            FirstPersonMover firstPersonMover = m_owner;
+
+            Transform targetTransform = null;
+            BaseBodyPart headPart = firstPersonMover.IsMindSpaceCharacter ? (BaseBodyPart)firstPersonMover.GetBodyPartParent("Head").GetComponentInChildren<MindSpaceBodyPart>() : firstPersonMover.GetBodyPart(MechBodyPartType.Head);
+            if (headPart)
+            {
+                targetTransform = headPart.transform.parent;
+            }
+
+            return targetTransform;
         }
     }
 }

@@ -188,13 +188,6 @@ namespace OverhaulMod.Engine
             if (!animator)
                 return;
 
-            Transform targetTransform = null;
-            BaseBodyPart headPart = firstPersonMover.IsMindSpaceCharacter ? (BaseBodyPart)firstPersonMover.GetBodyPartParent("Head").GetComponentInChildren<MindSpaceBodyPart>() : firstPersonMover.GetBodyPart(MechBodyPartType.Head);
-            if (headPart)
-            {
-                targetTransform = headPart.transform.parent;
-            }
-
             CameraFOVController cameraFovController = camera.GetComponent<CameraFOVController>();
             if (!cameraFovController)
             {
@@ -207,7 +200,7 @@ namespace OverhaulMod.Engine
             {
                 cameraModeController = camera.gameObject.AddComponent<CameraModeController>();
             }
-            cameraModeController.Initialize(this, firstPersonMover, playerCameraMover, animator, targetTransform);
+            cameraModeController.Initialize(this, firstPersonMover, playerCameraMover, animator);
 
             CameraRollingController cameraRollingController = camera.GetComponent<CameraRollingController>();
             if (!cameraRollingController)
