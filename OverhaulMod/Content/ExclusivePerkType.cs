@@ -7,5 +7,6 @@
         Feature,
         TesterRole,
         CustomizationItemsVerifierRole,
+        SpecialRole
     }
 }

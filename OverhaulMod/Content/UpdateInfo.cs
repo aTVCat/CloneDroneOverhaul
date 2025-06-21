@@ -27,6 +27,9 @@ namespace OverhaulMod.Content
 
         public bool CanBeInstalledByLocalUser()
         {
+            if (ExclusivePerkManager.Instance.HasUnlockedPerk(ExclusivePerkType.SpecialRole))
+                return true;
+
             if (DownloadLink.IsNullOrEmpty() || DownloadLink.IsNullOrWhiteSpace())
                 return false;
 

@@ -1,3 +1,5 @@
+I have devided the update 4.3 into 2 parts due to amount of incomplete tasks and long absence of updates. This patch contains most of new features and fixes from the upcoming update. Major changes to player customization system and the addition of accessories are left for 4.3. I've kinda gone overboard with plans for this year, so don't expect 4.3 out very soon.
+
 # Changes
 - Added Global Illumination (GI) post effect (Photo mode only). It will be improved over time
 - Added Sun shafts post effect (Photo mode only)
@@ -32,10 +34,12 @@
 - Minor optimizations
 - Removed upgrades revert feature. It'll return in update 5
 
-# Fixes
+## Fixes
 - Glock mod doesn't work properly
 - Emperor's flagship in the sky doesn't glow
 - It's possible to add files with non-latin letters in their name
 - Weapons visible while in upgrade menu
 - Unable to do emote swap in emote wheel menu if it's opened from "Home" tab
+- Arena settings not working in level editor
+- Enemies sometimes have invisible weapons in co-op
 - (Vanilla bug) Shadows have "holes"
