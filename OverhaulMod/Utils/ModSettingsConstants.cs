@@ -104,7 +104,7 @@ namespace OverhaulMod.Utils
         /// <summary>
         /// <see cref="Engine.TitleScreenCustomizationManager"/>
         /// </summary>
-        public const string INTRODUCE_TITLE_SCREEN_CUSTOMIZATION = "IntroduceTitleScreenCustomization";
+        public const string INTRODUCE_TITLE_SCREEN_CUSTOMIZATION = "IntroduceTitleScreenCustomizationV2";
 
         /// <summary>
         /// <see cref="ModManagers"/>

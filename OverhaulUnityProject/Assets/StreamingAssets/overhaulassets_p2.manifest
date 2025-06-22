@@ -1,12 +1,12 @@
 ManifestFileVersion: 0
-CRC: 3679982516
+CRC: 2871175396
 Hashes:
   AssetFileHash:
     serializedVersion: 2
     Hash: 4c4a75218f5b5aeed131eebfa6b4d370
   TypeTreeHash:
     serializedVersion: 2
-    Hash: a6f1b802d5256eeabf231280534bc6b8
+    Hash: 4aac33ac915a7d024ad35fc42a89f277
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -34,6 +34,8 @@ ClassTypes:
 - Class: 115
   Script: {instanceID: 0}
 - Class: 213
+  Script: {instanceID: 0}
+- Class: 687078895
   Script: {instanceID: 0}
 Assets:
 - Assets/Sprites/Glyphs/HQ-Question-256x256.png
