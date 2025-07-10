@@ -655,5 +655,10 @@ namespace OverhaulMod.Utils
         /// <see cref="Visuals.QualityManager"/>
         /// </summary>
         public const string UNLIMITED_LIGHT_SOURCES = "UnlimitedLightSources";
+
+        /// <summary>
+        /// <see cref="Visuals.ParticleManager"/>
+        /// </summary>
+        public const string REDUCE_FLASHES = "ReduceFlashes";
     }
 }

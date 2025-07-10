@@ -43,22 +43,22 @@ namespace OverhaulMod.Engine
             MakePooledPrefab(id, ModResources.Prefab(bundle, asset, startPath), lifeTime, limit);
         }
 
-        public void SpawnObject(string id, Vector3 position, Vector3 rotation, Vector3 scale)
+        public Transform SpawnObject(string id, Vector3 position, Vector3 rotation, Vector3 scale)
         {
             if (m_pooledPrefabs.IsNullOrEmpty() || !m_pooledPrefabs.TryGetValue(id, out PooledPrefabInfo pooledPrefabInfo))
-                return;
+                return null;
 
-            pooledPrefabInfo.SpawnObject(position, rotation, scale);
+            return pooledPrefabInfo.SpawnObject(position, rotation, scale);
         }
 
-        public void SpawnObject(string id, Vector3 position, Vector3 rotation)
+        public Transform SpawnObject(string id, Vector3 position, Vector3 rotation)
         {
-            SpawnObject(id, position, rotation, Vector3.one);
+            return SpawnObject(id, position, rotation, Vector3.one);
         }
 
-        public void SpawnObject(string id, Vector3 position)
+        public Transform SpawnObject(string id, Vector3 position)
         {
-            SpawnObject(id, position, Vector3.zero, Vector3.one);
+            return SpawnObject(id, position, Vector3.zero, Vector3.one);
         }
     }
 }

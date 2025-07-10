@@ -14,8 +14,29 @@ namespace OverhaulMod.Patches
             if (!ParticleManager.EnableParticles)
                 return true;
 
-            ParticleManager.Instance.SpawnSparksParticles(position);
+            ParticleManager.Instance.SpawnSwordBlockParticles(position);
             return false;
+        }
+
+        [HarmonyPrefix]
+        [HarmonyPatch(nameof(AttackManager.CreateEmperorWeaponEnvironmentImpactVFX))]
+        private static bool CreateEmperorWeaponEnvironmentImpactVFX_Prefix(Vector3 position)
+        {
+            if (!ParticleManager.EnableParticles)
+                return true;
+
+            ParticleManager.Instance.SpawnBlueGrenadeExplosionParticles(position);
+            return false;
+        }
+
+        [HarmonyPostfix]
+        [HarmonyPatch(nameof(AttackManager.CreateHammerHitEffectVFX))]
+        private static void CreateHammerHitEffectVFX_Prefix(Vector3 position)
+        {
+            if (!ParticleManager.EnableParticles)
+                return;
+
+            ParticleManager.Instance.SpawnHammerHitParticles(position);
         }
 
         [HarmonyPostfix]

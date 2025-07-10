@@ -14,5 +14,12 @@ namespace OverhaulMod.Patches
             if (ParticleManager.EnableParticles && UnityEngine.Random.value >= 0.95f)
                 ParticleManager.Instance.SpawnFireParticles(worldPos);
         }
+
+        [HarmonyPostfix]
+        [HarmonyPatch(nameof(GlobalFireParticleSystem.CreateGroundImpactVFX))]
+        private static void CreateGroundImpactVFX_Postfix(Vector3 positon)
+        {
+            ParticleManager.Instance.SpawnFireSwordBlockParticles(positon);
+        }
     }
 }

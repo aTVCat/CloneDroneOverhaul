@@ -57,7 +57,7 @@ namespace OverhaulMod.Engine
                 return null;
 
             int l = limit;
-            if (l != -1f && m_instantiatedObjects.Count >= l)
+            if (l != -1 && m_instantiatedObjects.Count >= l)
                 return null;
 
             GameObject gameObject = Object.Instantiate(obj);
@@ -66,14 +66,14 @@ namespace OverhaulMod.Engine
             return behaviour;
         }
 
-        public void SpawnObject(Vector3 position, Vector3 rotation, Vector3 scale)
+        public Transform SpawnObject(Vector3 position, Vector3 rotation, Vector3 scale)
         {
             PooledPrefabBehaviour behaviour = getInstantiatedNonActiveObject();
             if (!behaviour)
             {
                 behaviour = instantiateNewObject();
                 if (!behaviour)
-                    return;
+                    return null;
             }
 
             Transform transform = behaviour.transform;
@@ -81,6 +81,8 @@ namespace OverhaulMod.Engine
             transform.eulerAngles = rotation;
             transform.localScale = scale;
             behaviour.Activate(lifeTime);
+
+            return transform;
         }
     }
 }

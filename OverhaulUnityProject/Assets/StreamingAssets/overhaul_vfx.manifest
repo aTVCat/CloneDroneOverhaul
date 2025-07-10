@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 1877577704
+CRC: 484536228
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 6ac76321f5c8ffaceb8e36e35e3de070
+    Hash: 1304540480e2d6462eecc06a40615c70
   TypeTreeHash:
     serializedVersion: 2
     Hash: 969a72331f48c95269bbb0f5e0c64e42
@@ -27,14 +27,17 @@ ClassTypes:
   Script: {instanceID: 0}
 Assets:
 - Assets/VFX/Weather/WeatherVFX_Rain.prefab
+- Assets/VFX/VFX_CutFire.prefab
+- Assets/VFX/VFX_BlueGrenadeExplosion.prefab
+- Assets/VFX/VFX_HammerHit.prefab
 - Assets/VFX/FloatingDust/FloatingDust_Mindspace0.prefab
 - Assets/VFX/FloatingDust/FloatingDust_Normal.prefab
 - Assets/VFX/FloatingDust/FloatingDust_Mindspace1.prefab
-- Assets/VFX/VFX_CutFire.prefab
+- Assets/VFX/VFX_RedGrenadeExplosion.prefab
 - Assets/VFX/VFX_CutLaser.prefab
 - Assets/VFX/VFX_FireSwordBlock.prefab
-- Assets/VFX/VFX_Sparks.prefab
 - Assets/VFX/VFX_FireParticles.prefab
 - Assets/VFX/VFX_SwordBlock.prefab
+- Assets/VFX/VFX_Sparks.prefab
 - Assets/VFX/Weather/WeatherVFX_Snow.prefab
 Dependencies: []

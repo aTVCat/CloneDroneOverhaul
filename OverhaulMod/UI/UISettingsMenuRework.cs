@@ -370,14 +370,26 @@ namespace OverhaulMod.UI
             }, "Adjust bloom settings");
 
             _ = pageBuilder.Header3("Particle effects");
-            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_PARTICLES), delegate (bool value)
-            {
-                ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_PARTICLES, value, true);
-            }, "Enable particles");
             _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_GARBAGE_PARTICLES), delegate (bool value)
             {
                 ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_GARBAGE_PARTICLES, value, true);
             }, "Enable sparks");
+            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_PARTICLES), delegate (bool value)
+            {
+                ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_PARTICLES, value, true);
+                PopulatePage("setup");
+            }, "Enable particles");
+            if (ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_PARTICLES))
+            {
+                _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.REDUCE_FLASHES), delegate (bool value)
+                {
+                    ModSettingsManager.SetBoolValue(ModSettingsConstants.REDUCE_FLASHES, value, true);
+                }, "Reduce flashes");
+                _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.NEW_EXPLOSION_PARTICLES), delegate (bool value)
+                {
+                    ModSettingsManager.SetBoolValue(ModSettingsConstants.NEW_EXPLOSION_PARTICLES, value, true);
+                }, "New explosion particles");
+            }
 
             _ = pageBuilder.Header3("Voxel engine");
             _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_VOXEL_FIRE_FADING), delegate (bool value)
@@ -907,13 +919,17 @@ namespace OverhaulMod.UI
             _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_PARTICLES), delegate (bool value)
             {
                 ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_PARTICLES, value, true);
+                PopulatePage("Graphics");
             }, "Enable particles");
             if (ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_PARTICLES))
             {
+                _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.REDUCE_FLASHES), delegate (bool value)
+                {
+                    ModSettingsManager.SetBoolValue(ModSettingsConstants.REDUCE_FLASHES, value, true);
+                }, "Reduce flashes");
                 _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.NEW_EXPLOSION_PARTICLES), delegate (bool value)
                 {
                     ModSettingsManager.SetBoolValue(ModSettingsConstants.NEW_EXPLOSION_PARTICLES, value, true);
-                    PopulatePage("Graphics");
                 }, "New explosion particles");
             }
 

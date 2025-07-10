@@ -498,6 +498,7 @@
     <Compile Include="Content\NewsInfoList.cs" />
     <Compile Include="ModUserInfo.cs" />
     <Compile Include="Patches\ArenaCameraManager_Patch.cs" />
+    <Compile Include="Patches\ProjectileManager_Patch.cs" />
     <Compile Include="Patches\BaseBodyPart_Patch.cs" />
     <Compile Include="Patches\ControlsHintPanel_Patch.cs" />
     <Compile Include="Patches\ExplodeWhenCut_Patch.cs" />
