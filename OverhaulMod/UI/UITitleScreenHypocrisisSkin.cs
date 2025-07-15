@@ -1,5 +1,6 @@
 ﻿using InternalModBot;
 using OverhaulMod.Content;
+using OverhaulMod.Engine;
 using OverhaulMod.Utils;
 using Steamworks;
 using System.Collections;
@@ -14,11 +15,11 @@ namespace OverhaulMod.UI
     {
         public static readonly PublishedFileId_t LEVEL_STEAM_ID = new PublishedFileId_t(3494951054);
 
-        public static readonly PublishedFileId_t MAIN_MENU_LEVEL_STEAM_ID = new PublishedFileId_t(3449524730);
+        public static readonly PublishedFileId_t MAIN_MENU_LEVEL_STEAM_ID = new PublishedFileId_t(3522164720);
 
         public const string LEVEL_AUTHOR_STEAM_PROFILE_PAGE = "https://steamcommunity.com/profiles/76561198886409131";
 
-        public const string LEVEL_AUTHOR_DISCORD_SERVER = "https://discord.gg/MNQMANtzXe";
+        public const string LEVEL_AUTHOR_DISCORD_SERVER = "https://discord.gg/79r26pu7MC";
 
         [UIElementAction(nameof(OnStartButtonClicked))]
         [UIElement("StartButton")]
@@ -55,6 +56,10 @@ namespace OverhaulMod.UI
         [UIElement("ModsButton")]
         private readonly Button m_modsButton;
 
+        [UIElementAction(nameof(OnCloseButtonClicked))]
+        [UIElement("CloseButton")]
+        private readonly Button m_closeButton;
+
         [UIElementAction(nameof(OnModsButtonClicked))]
         [UIElement("ModsButton2", false)]
         private readonly Button m_modsButton2;
@@ -83,7 +88,7 @@ namespace OverhaulMod.UI
         {
             m_startButton.interactable = true;
 
-            ModActionUtils.DoInFrames(checkMods, 60);
+            ModActionUtils.DoInFrames(doChecks, 60);
         }
 
         public override void Start()
@@ -162,6 +167,36 @@ namespace OverhaulMod.UI
                     startChallenge();
                 }
             }
+        }
+
+        private void doChecks()
+        {
+            waitUntilSteamInitializedThenSwapMenuLevel();
+            checkMods();
+        }
+
+        private void waitUntilSteamInitializedThenSwapMenuLevel()
+        {
+            waitUntilSteamInitializedThenSwapMenuLevelCoroutine().Run();
+        }
+
+        private IEnumerator waitUntilSteamInitializedThenSwapMenuLevelCoroutine()
+        {
+            WorkshopLevelManager workshopLevelManager = WorkshopLevelManager.Instance;
+            SteamManager steamManager = SteamManager.Instance;
+            if (!steamManager || !workshopLevelManager)
+                yield break;
+
+            float timeOut = Time.unscaledTime + 10f;
+            while ((!steamManager.Initialized || workshopLevelManager.GetAllWorkShopEndlessLevels() == null) && Time.unscaledTime < timeOut)
+                yield return null;
+
+            if (Time.unscaledTime >= timeOut)
+                yield break;
+
+            TitleScreenCustomizationManager.Instance.SetHypocrisisBackgroundLevel();
+
+            yield break;
         }
 
         private void checkMods()
@@ -257,6 +292,12 @@ namespace OverhaulMod.UI
                 SteamFriends.ActivateGameOverlayToWebPage(LEVEL_AUTHOR_STEAM_PROFILE_PAGE);
             else
                 Application.OpenURL(LEVEL_AUTHOR_STEAM_PROFILE_PAGE);
+        }
+
+        public void OnCloseButtonClicked()
+        {
+            m_disabledModsPanel.SetActive(false);
+            m_modsButton2.gameObject.SetActive(true);
         }
 
         public void OnModsButtonClicked()

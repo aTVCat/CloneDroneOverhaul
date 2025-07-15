@@ -1,5 +1,7 @@
 ﻿using OverhaulMod.Content.Personalization;
+using OverhaulMod.UI;
 using OverhaulMod.Utils;
+using Steamworks;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -25,6 +27,8 @@ namespace OverhaulMod.Engine
         private GameObject m_levelIsLoadingBg;
 
         private float m_timeToRefreshMusicTrack;
+
+        private bool m_isWaitingForSoundpackToLoad;
 
         public LevelDescription overrideLevelDescription
         {
@@ -52,13 +56,15 @@ namespace OverhaulMod.Engine
             if (m_timeToRefreshMusicTrack != -1f && Time.unscaledTime >= m_timeToRefreshMusicTrack)
             {
                 m_timeToRefreshMusicTrack = -1f;
-                RefreshMusicTrack();
+
+                if (!m_isWaitingForSoundpackToLoad)
+                    RefreshMusicTrack();
             }
         }
 
         public void OnGameLoaded()
         {
-            RefreshMusicTrack();
+            waitUntilSoundpackIsLoadedThenPlayMusic();
 
             GlobalEventManager.Instance.AddEventListener(GlobalEvents.LevelEditorStarted, StopTitleScreenMusic);
             GlobalEventManager.Instance.AddEventListener(PersonalizationEditorManager.EDITOR_STARTED_EVENT, StopTitleScreenMusic);
@@ -72,9 +78,57 @@ namespace OverhaulMod.Engine
                 camera.farClipPlane = 10000f;
         }
 
+        public bool ShouldLockUserCustomization()
+        {
+            return ModSpecialUtils.IsModEnabled("hypocrisis-mod");
+        }
+
         public void StopTitleScreenMusic()
         {
             ModGameUtils.FadeThenStopMusic(0.3f);
+        }
+
+        public void SetHypocrisisBackgroundLevel()
+        {
+            if (m_customizationInfo.StaticBackgroundInfo.Level != null && m_customizationInfo.StaticBackgroundInfo.Level.WorkshopItem != null && m_customizationInfo.StaticBackgroundInfo.Level.WorkshopItem.WorkshopItemID == UITitleScreenHypocrisisSkin.MAIN_MENU_LEVEL_STEAM_ID)
+                return;
+
+            if (ModSteamUGCUtils.IsItemInstalled(UITitleScreenHypocrisisSkin.MAIN_MENU_LEVEL_STEAM_ID) && SteamUGC.GetItemInstallInfo(UITitleScreenHypocrisisSkin.MAIN_MENU_LEVEL_STEAM_ID, out _, out string folder, ModSteamUGCUtils.cchFolderSize, out _))
+            {
+                SteamWorkshopItem workshopItem = null;
+
+                List<LevelDescription> list = WorkshopLevelManager.Instance.GetAllWorkShopEndlessLevels();
+                if (list != null && list.Count != 0)
+                {
+                    foreach (LevelDescription levelDescription in list)
+                        if (levelDescription.WorkshopItem != null && levelDescription.WorkshopItem.WorkshopItemID == UITitleScreenHypocrisisSkin.MAIN_MENU_LEVEL_STEAM_ID)
+                        {
+                            workshopItem = levelDescription.WorkshopItem;
+                        }
+                }
+
+                if (workshopItem == null)
+                {
+                    workshopItem = new SteamWorkshopItem()
+                    {
+                        Title = "ARCHONETHER",
+                        CreatorName = "Archaeologist",
+                        WorkshopItemID = UITitleScreenHypocrisisSkin.MAIN_MENU_LEVEL_STEAM_ID,
+                        Folder = folder,
+                    };
+                }
+
+                LevelDescription level = new LevelDescription()
+                {
+                    LevelID = CUSTOM_LEVEL_ID,
+                    LevelJSONPath = Path.Combine(folder, "LevelData.json"),
+                    LevelTags = new List<LevelTags>(),
+                    WorkshopItem = workshopItem
+                };
+                m_customizationInfo.StaticBackgroundInfo.Level = level;
+                SpawnStaticBackground();
+                SaveCustomizationInfo();
+            }
         }
 
         public void LoadCustomizationInfo()
@@ -91,43 +145,7 @@ namespace OverhaulMod.Engine
                 titleScreenCustomizationInfo.FixValues();
             }
             m_customizationInfo = titleScreenCustomizationInfo;
-
-            if (PlayerPrefs.GetInt("hypocrisis-mod", 1) == 1)
-            {
-                string folder = Path.Combine(new string[]
-                {
-                    Application.dataPath,
-                    "..",
-                    "..",
-                    "..",
-                    "workshop",
-                    "content",
-                    "597170",
-                    "3449524730"
-                });
-                Debug.Log(folder);
-
-                if (Directory.Exists(folder))
-                {
-                    if (!File.Exists(Path.Combine(folder, "TitleScreenLevel.json")))
-                    {
-                        ExportedChallengeLevel exportedChallengeLevel = ModJsonUtils.DeserializeStream<ExportedChallengeLevel>(Path.Combine(folder, "level0.json"));
-                        ModFileUtils.WriteText(ModJsonUtils.Serialize(exportedChallengeLevel.LevelData), Path.Combine(folder, "TitleScreenLevel.json"));
-                    }
-
-                    overrideLevelDescription = new LevelDescription()
-                    {
-                        LevelID = CUSTOM_LEVEL_ID,
-                        LevelJSONPath = Path.Combine(folder, "TitleScreenLevel.json"),
-                        LevelTags = new List<LevelTags>()
-                    };
-                    titleScreenCustomizationInfo.StaticBackgroundInfo.Level = overrideLevelDescription;
-                }
-            }
-            else
-            {
-                overrideLevelDescription = titleScreenCustomizationInfo.StaticBackgroundInfo.Level;
-            }
+            overrideLevelDescription = titleScreenCustomizationInfo.StaticBackgroundInfo.Level;
         }
 
         public void SaveCustomizationInfo()
@@ -218,6 +236,26 @@ namespace OverhaulMod.Engine
             return list;
         }
 
+        private void waitUntilSoundpackIsLoadedThenPlayMusic()
+        {
+            if (m_isWaitingForSoundpackToLoad)
+                return;
+
+            m_isWaitingForSoundpackToLoad = true;
+            waitUntilSoundpackIsLoadedThenPlayMusicCoroutine().Run();
+        }
+
+        private IEnumerator waitUntilSoundpackIsLoadedThenPlayMusicCoroutine()
+        {
+            while (!ModIntegrationUtils.SoundpackMod.HasLoadedSoundpack())
+                yield return null;
+
+            m_isWaitingForSoundpackToLoad = false;
+            RefreshMusicTrack();
+
+            yield break;
+        }
+
         public void RefreshMusicTrackDelayed(float time)
         {
             m_timeToRefreshMusicTrack = Time.unscaledTime + time;
@@ -244,7 +282,7 @@ namespace OverhaulMod.Engine
             }
 
             AudioClipDefinition audioClip = AudioLibrary.Instance.GetAudioClip(isHcModEnabled ? "Chapter4VictoryMusic" : ((list[MusicTrackIndex] as DropdownStringOptionData).StringValue));
-            if (audioClip != null && audioClip.Clip)
+            if (audioClip != null)
             {
                 AudioManager.Instance.PlayMusicClip(audioClip, true, true);
                 AudioManager.Instance.FadeInMusic(2f);

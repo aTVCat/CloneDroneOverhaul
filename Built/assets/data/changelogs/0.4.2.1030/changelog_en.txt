@@ -34,7 +34,7 @@ I have devided the update 4.3 into 2 parts due to amount of incomplete tasks and
 - Minor optimizations
 - Removed upgrades revert feature. It'll return in update 5
 
-## Fixes
+# Fixes
 - Glock mod doesn't work properly
 - Emperor's flagship in the sky doesn't glow
 - It's possible to add files with non-latin letters in their name

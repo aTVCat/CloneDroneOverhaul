@@ -31,6 +31,9 @@ namespace OverhaulMod.UI
         [UIElement("Panel", true)]
         private readonly GameObject m_panel;
 
+        [UIElement("LockedOverlay", false)]
+        private readonly GameObject m_lockedOverlay;
+
         private bool m_isPreviewing;
 
         public override bool hideTitleScreen => true;
@@ -71,6 +74,7 @@ namespace OverhaulMod.UI
         {
             base.Show();
             m_volumeSlider.value = SettingsManager.Instance.GetMusicVolume();
+            m_lockedOverlay.SetActive(TitleScreenCustomizationManager.Instance.ShouldLockUserCustomization());
         }
 
         private void startPreviewing()
