@@ -150,7 +150,7 @@ SpriteAtlas:
     - {fileID: 2800000, guid: 7d0ec5def4220fb4a94e998aac6d1467, type: 3}
     - {fileID: 2800000, guid: bf4ea3315e5986142a91b3fff2ad53d7, type: 3}
     - {fileID: 2800000, guid: f2c1f53f66047b6489c535e5c57d6648, type: 3}
-    totalSpriteSurfaceArea: 35776
+    totalSpriteSurfaceArea: 100800
     bindAsDefault: 1
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
@@ -213,6 +213,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 32bef57737c8ff24393a566588c3ba56, type: 3}
   - {fileID: 21300000, guid: 802ff8a721d76424393c606cfcbcc281, type: 3}
   - {fileID: 21300000, guid: 40cb39e7d93fc7546b5479d1ae92cec1, type: 3}
+  - {fileID: 21300000, guid: 32e2d3f7a9403dc49a045d953c3d1f96, type: 3}
   - {fileID: 21300000, guid: 44ab5958e98acf44097bc5d8f6e2e357, type: 3}
   - {fileID: 21300000, guid: d92569c8e580e654d9886781986f3164, type: 3}
   - {fileID: 21300000, guid: 5b2905e819930a84c873405dcf26b797, type: 3}
@@ -257,6 +258,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 3c10453f444292c41b1f06b9eedc6e72, type: 3}
   - {fileID: 21300000, guid: f2c1f53f66047b6489c535e5c57d6648, type: 3}
   - {fileID: 21300000, guid: bd4b02cf3e70329499f1af12994c3fbd, type: 3}
+  - {fileID: 21300000, guid: fa1d0fcfe6cdab445bf1e6ebbbc4109d, type: 3}
   - {fileID: 21300000, guid: d74208df44747964bb5c994a7bf17e3d, type: 3}
   - {fileID: 21300000, guid: d6b188dfd617a8242af19b77594c92b5, type: 3}
   - {fileID: 21300000, guid: 41b20adfd79cd204caa7e7c240d04d1d, type: 3}
@@ -320,6 +322,7 @@ SpriteAtlas:
   - CanvasDark-SQ-16x16_0
   - Minus-16x16
   - Close-14x14
+  - CanvasDark-SQ-NGO_0
   - PixelGlow-16x16
   - QuestionMark16x16
   - Warn-16x16
@@ -364,6 +367,7 @@ SpriteAtlas:
   - Move16x16
   - WhiteFrame256x256_0
   - Popular-16x16
+  - CanvasBright-SQ-NGO_0
   - Trending-16x16
   - FrameBGDark-Simple-Right-16x16_0
   - Folder-Mini-16x16

@@ -125,6 +125,7 @@ namespace OverhaulMod.Engine
                     LevelTags = new List<LevelTags>(),
                     WorkshopItem = workshopItem
                 };
+                overrideLevelDescription = level;
                 m_customizationInfo.StaticBackgroundInfo.Level = level;
                 SpawnStaticBackground();
                 SaveCustomizationInfo();
