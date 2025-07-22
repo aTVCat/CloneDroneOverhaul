@@ -1,0 +1,97 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>LevelEditorPatch</name>
+    </assembly>
+    <members>
+        <member name="T:LevelEditorPatch.CustomObjectsList">
+            <summary>
+            This is where custom objects are stored
+            </summary>
+        </member>
+        <member name="T:LevelEditorPatch.JsonUtils">
+            <summary>
+            Better optimized json functions (probably)
+            </summary>
+        </member>
+        <member name="T:LevelEditorPatch.Extensions">
+            <summary>
+            Some extensions related to level editor
+            </summary>
+        </member>
+        <member name="T:LevelEditorPatch.ObjectManager">
+            <summary>
+            Add new objects here
+            </summary>
+        </member>
+        <member name="M:LevelEditorPatch.Patch.Apply">
+            <summary>
+            Call this method in <see cref="M:ModLibrary.Mod.OnModLoaded"/>.
+            </summary>
+        </member>
+        <member name="M:LevelEditorPatch.Patch.AddObject(System.String,System.String,System.String,UnityEngine.Transform,System.Type[],System.String)">
+            <summary>
+            Add an object to level editor library.
+            </summary>
+            <param name="name"></param>
+            <param name="modName"></param>
+            <param name="folder"></param>
+            <param name="transform"></param>
+            <param name="components"></param>
+            <param name="previewImageFilePath"></param>
+        </member>
+        <member name="M:LevelEditorPatch.Patch.OverrideObjectPath(LevelEditorPatch.PathOverrideParameters)">
+            <summary>
+            Define that the object has been moved to a different path for compatibility reasons. Make sure you've updated <see cref="M:LevelEditorPatch.Patch.AddObject(System.String,System.String,System.String,UnityEngine.Transform,System.Type[],System.String)"/> parameters before doing this.
+            </summary>
+            <param name="parameters"></param>
+        </member>
+        <member name="M:LevelEditorPatch.Patch.OverrideObjectPath(System.String,System.String)">
+            <summary>
+            Define that the object has been moved to a different path for compatibility reasons. Make sure you've updated <see cref="M:LevelEditorPatch.Patch.AddObject(System.String,System.String,System.String,UnityEngine.Transform,System.Type[],System.String)"/> parameters before doing this.<br></br><seealso cref="M:LevelEditorPatch.Patch.OverrideObjectPath(LevelEditorPatch.PathOverrideParameters)"/> is recommended to use.
+            </summary>
+            <param name="parameters"></param>
+        </member>
+        <member name="M:LevelEditorPatch.Patch.HasOverridenObjectPath(System.String,System.String,System.String)">
+            <summary>
+            Get if object path has been overriden.
+            </summary>
+            <param name="oldName"></param>
+            <param name="oldModName"></param>
+            <param name="oldFolder"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LevelEditorPatch.Patch.HasOverridenObjectPath(System.String,System.Boolean)">
+            <summary>
+            Get if object path has been overriden.
+            </summary>
+            <param name="oldPath"></param>
+            <param name="mainFolderIncludedInPath"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LevelEditorPatch.Patch.GetOverridenObjectPath(System.String,System.String,System.String)">
+            <summary>
+            Get new path using the old one.
+            </summary>
+            <param name="oldName"></param>
+            <param name="oldModName"></param>
+            <param name="oldFolder"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LevelEditorPatch.Patch.GetOverridenObjectPath(System.String,System.Boolean)">
+            <summary>
+            Get new path using the old one.
+            </summary>
+            <param name="oldPath"></param>
+            <param name="mainFolderIncludedInPath"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LevelEditorPatch.Patch.GetResourceObject(System.String)">
+            <summary>
+            Must be called in <see cref="M:ModLibrary.Mod.OnResourcesLoad(System.String)"/> to make your custom objects actually work.
+            </summary>
+            <param name="oldPath"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

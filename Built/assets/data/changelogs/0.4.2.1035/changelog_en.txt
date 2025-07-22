@@ -1,0 +1,10 @@
+# Changes
+- Reworked all particles added by mod and added new ones:
+img=images/particles_1.png
+img=images/particles_2.png
+img=images/particles_3.png
+- Renamed "Enable particles" option to "Enable new particles" (Graphics -> Voxel engine)
+- Added option: "Disable flashes" (Graphics -> Voxel engine)
+
+# Fixes
+- Fixed exclsuive perk not enabling mod features

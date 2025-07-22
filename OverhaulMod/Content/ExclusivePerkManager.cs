@@ -20,6 +20,7 @@ namespace OverhaulMod.Content
         {
             base.Awake();
             LoadDataFromDisk();
+            ModFeatures.CacheValues();
 
             ScheduledActionsManager scheduledActionsManager = ScheduledActionsManager.Instance;
             if (!ModUserInfo.isDeveloper && (m_perksData.List.Count == 0 || scheduledActionsManager.ShouldExecuteAction(ScheduledActionType.RefreshExclusivePerks)))
@@ -27,6 +28,7 @@ namespace OverhaulMod.Content
                 LoadDataFromRepository(delegate (string error)
                 {
                     m_error = error;
+                    ModFeatures.CacheValues();
                 });
             }
         }
