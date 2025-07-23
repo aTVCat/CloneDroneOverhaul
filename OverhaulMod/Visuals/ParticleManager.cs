@@ -106,8 +106,7 @@ namespace OverhaulMod.Visuals
 
         public void SpawnSparksParticles(Vector3 position)
         {
-            Transform t = PooledPrefabManager.Instance.SpawnObject(SPARKS_PARTICLES_ID, position);
-            t.GetChild(0).gameObject.SetActive(!ReduceFlases);
+            PooledPrefabManager.Instance.SpawnObject(SPARKS_PARTICLES_ID, position);
         }
 
         public void SpawnLogoExplosionParticles(Vector3 position)
