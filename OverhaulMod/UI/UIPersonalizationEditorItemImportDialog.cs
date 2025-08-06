@@ -59,7 +59,7 @@ namespace OverhaulMod.UI
         public void OnDoneButtonClicked()
         {
             string folderName = m_changeFolderNameToggle.isOn ? $"{Path.GetFileName(FilePath).Replace("PersonalizationItem_", string.Empty).Remove(8)}_{m_itemFolderNameField.text.Replace(" ", string.Empty)}" : null;
-            PersonalizationEditorManager.Instance.ImportItem(FilePath, out string error, true, folderName);
+            PersonalizationEditorManager.Instance.ImportItem(FilePath, folderName, out string error, true);
             if (!string.IsNullOrEmpty(error))
             {
                 ModUIUtils.MessagePopupOK("Import error", error, true);

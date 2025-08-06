@@ -97,7 +97,7 @@ namespace OverhaulMod.UI
 
         private void refreshTaskProgressBar()
         {
-            m_progressFill.fillAmount = m_currentItemIndex / (float)m_files.Count;
+            m_progressFill.fillAmount = (m_currentItemIndex + 1) / (float)m_files.Count;
             m_progressText.text = $"{m_currentItemIndex + 1}/{m_files.Count}";
         }
 
@@ -126,7 +126,10 @@ namespace OverhaulMod.UI
 
         private void importAndEditCurrentItem()
         {
-            PersonalizationEditorManager.Instance.ImportItem(m_files[m_currentItemIndex], out string error, true, null);
+            string path = m_files[m_currentItemIndex];
+            string folderName = Path.GetFileName(path).Replace("PersonalizationItem_", string.Empty).Remove(8);
+
+            PersonalizationEditorManager.Instance.ImportItem(m_files[m_currentItemIndex], folderName, out string error, true);
             if (!string.IsNullOrEmpty(error))
             {
                 ModUIUtils.MessagePopupOK("Import error", error, true);

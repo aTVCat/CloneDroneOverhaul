@@ -80,6 +80,12 @@ namespace OverhaulMod.UI
                 folder = ExportFolderPath;
             }
 
+            if (string.IsNullOrEmpty(folder) || !Directory.Exists(folder))
+            {
+                ModUIUtils.MessagePopupOK("Error", "Export directory not found");
+                return;
+            }
+
             FastZip fastZip = new FastZip();
             fastZip.CreateZip(Path.Combine(folder, "customization.zip"), ModCore.customizationFolder, true, string.Empty);
 

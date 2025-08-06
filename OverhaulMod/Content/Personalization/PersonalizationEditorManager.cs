@@ -399,19 +399,11 @@ namespace OverhaulMod.Content.Personalization
             return true;
         }
 
-        public void ImportItem(string path, out string error, bool editItem = false, string itemFolderName = null)
+        public void ImportItem(string path, string itemFolderName, out string error, bool editItem = false)
         {
             error = null;
 
-            string folderPath;
-            if (string.IsNullOrEmpty(itemFolderName))
-            {
-                folderPath = Path.Combine(ModCore.customizationFolder, Path.GetFileNameWithoutExtension(path));
-            }
-            else
-            {
-                folderPath = Path.Combine(ModCore.customizationFolder, itemFolderName);
-            }
+            string folderPath = Path.Combine(ModCore.customizationFolder, itemFolderName);
             _ = Directory.CreateDirectory(folderPath);
 
             FastZip fastZip = new FastZip();

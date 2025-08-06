@@ -207,13 +207,13 @@ namespace OverhaulMod.UI
                 m_loadingIndicator.SetActive(false);
 
                 RefreshButtonAndStatusText(personalizationItemInfo);
-                ModUIUtils.MessagePopupOK("Success", "It usually takes few hours or days to verify items.\nI'm not a robot :D", true);
+                ModUIUtils.MessagePopupOK("Success", "It can take few hours or days to verify items.", true);
             }, delegate (string error)
             {
                 m_exitButton.interactable = true;
                 m_sendButton.interactable = true;
                 m_loadingIndicator.SetActive(true);
-                ModUIUtils.MessagePopupOK("Could not send item to verification", $"If the error doesn't get fixed, it'll probably get fixed in the next mod update.\n\nError details:\n{error}", 200f, true);
+                ModUIUtils.MessagePopupOK("Could not send item to verification", $"Try again later.\n\nIf the error doesn't get fixed, it'll probably get fixed in the next mod update.", 200f, true);
             });
         }
     }
