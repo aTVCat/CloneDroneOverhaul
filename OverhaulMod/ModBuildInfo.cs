@@ -1,4 +1,4 @@
-﻿#define OVERRIDE_VER
+﻿//#define OVERRIDE_VER
 //#define DEVELOPER_BUILD
 
 using OverhaulMod.Utils;
@@ -11,7 +11,7 @@ namespace OverhaulMod
     {
         public const bool VERSION_4_2_PATCH = true;
 
-        public const bool VERSION_4_3 = false;
+        public const bool VERSION_4_3 = true;
 
         public const bool VERSION_4_4 = false;
 

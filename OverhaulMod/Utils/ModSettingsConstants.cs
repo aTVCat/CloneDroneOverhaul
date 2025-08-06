@@ -660,5 +660,10 @@ namespace OverhaulMod.Utils
         /// <see cref="Visuals.ParticleManager"/>
         /// </summary>
         public const string REDUCE_FLASHES = "ReduceFlashes";
+
+        /// <summary>
+        /// <see cref="Content.Personalization.PersonalizationEditorGuideManager"/>
+        /// </summary>
+        public const string NEVER_SHOW_INTRODUCTION_GUIDE = "NeverShowIntroductionGuide";
     }
 }

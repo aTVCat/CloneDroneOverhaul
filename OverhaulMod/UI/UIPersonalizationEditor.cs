@@ -122,6 +122,8 @@ namespace OverhaulMod.UI
             m_toolbarUploadButton.interactable = false;
             m_saveButton.interactable = false;
 
+            if (PersonalizationEditorGuideManager.NeverShowIntroductionGuide) return;
+
             DelegateScheduler.Instance.Schedule(delegate
             {
                 Guide();

@@ -1,9 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using OverhaulMod.Engine;
+using OverhaulMod.UI;
+using OverhaulMod.Utils;
+using System.Collections.Generic;
 
 namespace OverhaulMod.Content.Personalization
 {
     public class PersonalizationEditorGuideManager : Singleton<PersonalizationEditorGuideManager>
     {
+        [ModSetting(ModSettingsConstants.NEVER_SHOW_INTRODUCTION_GUIDE, false)]
+        public static bool NeverShowIntroductionGuide;
+
         private List<PersonalizationEditorGuide> m_guides;
 
         private void Start()
@@ -12,7 +18,10 @@ namespace OverhaulMod.Content.Personalization
             {
                 new PersonalizationEditorGuide("getting_started", new List<PersonalizationEditorGuideStage>()
                 {
-                    new PersonalizationEditorGuideStage("Introduction", "This guide will help you in making a simple weapon skin.\n\n(Everything is still in development, so there might be mistakes)", null),
+                    new PersonalizationEditorGuideStage("Introduction", "This guide will help you in making a simple weapon skin.\n\n(Everything is still in development, so there might be mistakes)", new List<KeyValuePair<string, UnityEngine.Events.UnityAction>>()
+                    {
+                        new KeyValuePair<string, UnityEngine.Events.UnityAction>("Never show this again", setNeverShowIntroductionGuide)
+                    }),
                     new PersonalizationEditorGuideStage("Introduction", "Click on \"File\" at the top left, then on \"Open\".\nClick on \"New\", name your item then click on \"Done\".", null),
                     new PersonalizationEditorGuideStage("Introduction", "Some windows will popup. You can drag, minimize/maximize and close them.\nTo display them again, click on \"Windows\" at top left.", null),
                     new PersonalizationEditorGuideStage("Introduction", "\"Edit item info\" is the panel you can change your item properties with.", null),
@@ -45,6 +54,12 @@ namespace OverhaulMod.Content.Personalization
                     return guide;
 
             return null;
+        }
+
+        private void setNeverShowIntroductionGuide()
+        {
+            ModSettingsManager.SetBoolValue(ModSettingsConstants.NEVER_SHOW_INTRODUCTION_GUIDE, true, true);
+            ModUIManager.Instance.Get<UIPersonalizationEditor>(AssetBundleConstants.UI, ModUIConstants.UI_PERSONALIZATION_EDITOR).GuideWindow.FinishGuide();
         }
     }
 }
