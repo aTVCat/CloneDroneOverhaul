@@ -81,8 +81,24 @@ namespace OverhaulMod.Utils
                 fileExplorer.currentFolder = initialFolder;
 
             fileExplorer.searchPattern = searchPattern;
-            fileExplorer.callback = callback;
+            fileExplorer.singleFileCallback = callback;
             fileExplorer.selectFolder = selectFolder;
+            fileExplorer.selectMany = false;
+        }
+
+        public static void FileExplorer(Transform parent, bool selectMode, Action<List<string>> callback, string initialFolder, string searchPattern = null, bool selectFolder = false)
+        {
+            UIFileExplorer fileExplorer = ModUIConstants.ShowFileExplorer(parent);
+
+            if (initialFolder.IsNullOrEmpty() || !Directory.Exists(initialFolder))
+                fileExplorer.OnDownloadsFolderButtonClicked();
+            else
+                fileExplorer.currentFolder = initialFolder;
+
+            fileExplorer.searchPattern = searchPattern;
+            fileExplorer.multipleFilesCallback = callback;
+            fileExplorer.selectFolder = selectFolder;
+            fileExplorer.selectMany = true;
         }
 
         public static void Tooltip(string text, float duration = 2f)

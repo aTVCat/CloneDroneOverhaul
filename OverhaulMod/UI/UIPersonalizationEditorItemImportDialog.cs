@@ -1,9 +1,6 @@
-﻿using ICSharpCode.SharpZipLib.Zip;
+﻿using BestHTTP.SocketIO;
 using OverhaulMod.Content.Personalization;
-using OverhaulMod.Engine;
 using OverhaulMod.Utils;
-using System;
-using System.Collections.Generic;
 using System.IO;
 using UnityEngine.UI;
 
@@ -61,94 +58,16 @@ namespace OverhaulMod.UI
 
         public void OnDoneButtonClicked()
         {
-            Hide();
-            string folderName = m_changeFolderNameToggle.isOn ? $"{Path.GetFileName(FilePath).Replace("PersonalizationItem_", string.Empty).Remove(8)}_{m_itemFolderNameField.text.Replace(" ", string.Empty)}" : Path.GetFileNameWithoutExtension(FilePath);
-            string folderPath = Path.Combine(ModCore.customizationFolder, folderName);
-            _ = Directory.CreateDirectory(folderPath);
-
-            FastZip fastZip = new FastZip();
-            fastZip.ExtractZip(FilePath, folderPath, null);
-
-            PersonalizationItemList itemList = PersonalizationManager.Instance.itemList;
-            PersonalizationItemInfo info;
-            try
+            string folderName = m_changeFolderNameToggle.isOn ? $"{Path.GetFileName(FilePath).Replace("PersonalizationItem_", string.Empty).Remove(8)}_{m_itemFolderNameField.text.Replace(" ", string.Empty)}" : null;
+            PersonalizationEditorManager.Instance.ImportItem(FilePath, out string error, true, folderName);
+            if (!string.IsNullOrEmpty(error))
             {
-                info = itemList.LoadItemInfo(folderPath);
-            }
-            catch (Exception exc)
-            {
-                ModUIUtils.MessagePopupOK("Import error", exc.ToString(), true);
+                ModUIUtils.MessagePopupOK("Import error", error, true);
                 return;
             }
 
-            foreach (PersonalizationEditorObjectInfo child in info.RootObject.Children)
-            {
-                if (child.Path == "Volume")
-                {
-                    if (child.PropertyValues.TryGetValue(nameof(PersonalizationEditorObjectVolume.volumeSettingPresets), out object obj) && obj is Dictionary<WeaponVariant, VolumeSettingsPreset> dictionary && !dictionary.IsNullOrEmpty())
-                    {
-                        foreach (VolumeSettingsPreset value in dictionary.Values)
-                        {
-                            string voxFilePath = value.VoxFilePath;
-                            if (!voxFilePath.IsNullOrEmpty() && !voxFilePath.StartsWith(folderName))
-                            {
-                                string sub = voxFilePath.Substring(voxFilePath.IndexOf(Path.DirectorySeparatorChar) + 1);
-                                voxFilePath = $"{folderName}{Path.DirectorySeparatorChar}{sub}";
-                                value.VoxFilePath = voxFilePath;
-                            }
-                        }
-                    }
-                }
-                else if (child.Path == "CvmModel")
-                {
-                    if (child.PropertyValues.TryGetValue(nameof(PersonalizationEditorObjectCVMModel.presets), out object obj) && obj is Dictionary<WeaponVariant, CVMModelPreset> dictionary && !dictionary.IsNullOrEmpty())
-                    {
-                        foreach (CVMModelPreset value in dictionary.Values)
-                        {
-                            string cvmFilePath = value.CvmFilePath;
-                            if (!cvmFilePath.IsNullOrEmpty() && !cvmFilePath.StartsWith(folderName))
-                            {
-                                string sub = cvmFilePath.Substring(cvmFilePath.IndexOf(Path.DirectorySeparatorChar) + 1);
-                                cvmFilePath = $"{folderName}{Path.DirectorySeparatorChar}{sub}";
-                                value.CvmFilePath = cvmFilePath;
-                            }
-                        }
-                    }
-                }
-            }
-
-            void finalAction()
-            {
-                itemList.Items.Add(info);
-
-                UIPersonalizationEditor.instance.ShowEverything();
-                PersonalizationEditorManager.Instance.EditItem(info, info.FolderPath);
-
-                Hide();
-                ItemBrowser.Hide();
-            }
-
-            PersonalizationItemInfo existingItem = itemList.GetItem(info.ItemID);
-            if (existingItem != null)
-            {
-                ModUIUtils.MessagePopup(true, "An item with the same ID has been already imported!", "Do you want to replace the old version with the new one?", 150f, MessageMenu.ButtonLayout.EnableDisableButtons, "Ok", "Yes", "No", null, delegate
-                {
-                    if (Path.GetFullPath(existingItem.FolderPath) == Path.GetFullPath(info.FolderPath))
-                    {
-                        ModUIUtils.MessagePopupOK("Both items have been in the same folder", "Just a notification");
-                    }
-                    else
-                    {
-                        Directory.Delete(existingItem.FolderPath, true);
-                    }
-                    _ = itemList.Items.Remove(existingItem);
-                    finalAction();
-                });
-            }
-            else
-            {
-                finalAction();
-            }
+            Hide();
+            ItemBrowser.Hide();
         }
     }
 }

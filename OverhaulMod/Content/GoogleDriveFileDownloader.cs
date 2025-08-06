@@ -189,7 +189,7 @@ public class GoogleDriveFileDownloader : IDisposable
         {
             webClient.DownloadFile(downloadAddress, downloadPath);
 
-            // This callback isn't triggered for synchronous downloads, manually trigger it
+            // This singleFileCallback isn't triggered for synchronous downloads, manually trigger it
             DownloadFileCompletedCallback(webClient, new AsyncCompletedEventArgs(null, false, null));
         }
         else if (userToken == null)

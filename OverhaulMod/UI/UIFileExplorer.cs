@@ -65,6 +65,8 @@ namespace OverhaulMod.UI
 
         private bool m_populateNextFrame;
 
+        private List<string> m_selectedEntries;
+
         private string m_selectedEntryPath;
 
         private GameObject m_prevSelectedIndicator;
@@ -73,11 +75,18 @@ namespace OverhaulMod.UI
 
         public override bool enableCursor => true;
 
-        public Action<string> callback
+        public Action<string> singleFileCallback
         {
             get;
             set;
         }
+
+        public Action<List<string>> multipleFilesCallback
+        {
+            get;
+            set;
+        }
+
         public DirectoryInfo currentFolderInfo { get; private set; }
 
         public string currentFolder
@@ -142,8 +151,16 @@ namespace OverhaulMod.UI
             set => m_selectFolder = value;
         }
 
+        private bool m_selectMany;
+        public bool selectMany
+        {
+            get => m_selectMany;
+            set => m_selectMany = value;
+        }
+
         protected override void OnInitialized()
         {
+            m_selectedEntries = new List<string>();
             m_cachedInstantiatedDisplays = new Dictionary<string, GameObject>();
 
             m_doneButton.interactable = false;
@@ -164,7 +181,8 @@ namespace OverhaulMod.UI
 
             m_doneButton.interactable = false;
             m_selectedEntryPath = null;
-            callback = null;
+            m_selectedEntries.Clear();
+            singleFileCallback = null;
         }
 
         public override void Show()
@@ -286,12 +304,30 @@ namespace OverhaulMod.UI
             if (itemDisplay.isFolder != selectFolder)
                 return;
 
-            if (m_prevSelectedIndicator)
+            if (!selectMany && m_prevSelectedIndicator)
                 m_prevSelectedIndicator.SetActive(false);
 
             m_prevSelectedIndicator = itemDisplay.moddedObjectReference.GetObject<GameObject>(3);
-            m_prevSelectedIndicator.SetActive(true);
             m_selectedEntryPath = itemDisplay.fullName;
+
+            if (selectMany)
+            {
+                if (m_selectedEntries.Contains(itemDisplay.fullName))
+                {
+                    m_selectedEntries.Remove(itemDisplay.fullName);
+                    m_prevSelectedIndicator.SetActive(false);
+                }
+                else
+                {
+                    m_selectedEntries.Add(itemDisplay.fullName);
+                    m_prevSelectedIndicator.SetActive(true);
+                }
+            }
+            else
+            {
+                m_prevSelectedIndicator.SetActive(true);
+            }
+
             m_doneButton.interactable = true;
         }
 
@@ -301,7 +337,7 @@ namespace OverhaulMod.UI
             {
                 currentFolder = itemDisplay.fullName;
             }
-            else if(!selectFolder)
+            else if (!selectFolder && !selectMany)
             {
                 OnDoneButtonClicked();
             }
@@ -338,8 +374,16 @@ namespace OverhaulMod.UI
 
         public void OnDoneButtonClicked()
         {
-            callback?.Invoke(m_selectedEntryPath);
-            callback = null;
+            if (selectMany)
+            {
+                multipleFilesCallback?.Invoke(m_selectedEntries);
+                multipleFilesCallback = null;
+            }
+            else
+            {
+                singleFileCallback?.Invoke(m_selectedEntryPath);
+                singleFileCallback = null;
+            }
             Hide();
         }
 
@@ -351,8 +395,16 @@ namespace OverhaulMod.UI
 
         public void OnCancelButtonClicked()
         {
-            callback?.Invoke(null);
-            callback = null;
+            if (selectMany)
+            {
+                multipleFilesCallback?.Invoke(null);
+                multipleFilesCallback = null;
+            }
+            else
+            {
+                singleFileCallback?.Invoke(null);
+                singleFileCallback = null;
+            }
             Hide();
         }
 
