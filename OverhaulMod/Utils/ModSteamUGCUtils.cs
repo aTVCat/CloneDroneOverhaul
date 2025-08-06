@@ -382,7 +382,7 @@ namespace OverhaulMod.Utils
 
             DelegateScheduler.Instance.Schedule(delegate
             {
-                if (callResult != null && !callResult.m_bDisposed)
+                if (callResult != null)
                     callResult.Dispose();
 
                 if (!done)

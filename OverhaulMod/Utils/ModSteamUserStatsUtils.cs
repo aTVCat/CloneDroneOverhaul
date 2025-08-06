@@ -21,7 +21,7 @@ namespace OverhaulMod.Utils
             Callback<UserStatsReceived_t> cb = null;
             DelegateScheduler.Instance.Schedule(delegate
             {
-                if (cb != null && !cb.m_bDisposed)
+                if (cb != null)
                     cb.Dispose();
 
                 if (!isCompleted)
@@ -64,7 +64,7 @@ namespace OverhaulMod.Utils
             CallResult<GlobalAchievementPercentagesReady_t> cr = null;
             DelegateScheduler.Instance.Schedule(delegate
             {
-                if (cr != null && !cr.m_bDisposed)
+                if (cr != null)
                     cr.Dispose();
 
                 if (!isCompleted)

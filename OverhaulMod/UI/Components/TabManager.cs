@@ -126,7 +126,7 @@ namespace OverhaulMod.UI
         public void SelectTab(string tabId)
         {
             if (m_instantiatedTabs.TryGetValue(tabId, out UIElementTab tab))
-                tab.GetButton().Press();
+                tab.GetButton().OnPointerClick(new UnityEngine.EventSystems.PointerEventData(null));
         }
 
         public void DeselectAllTabs()

@@ -139,7 +139,7 @@ namespace OverhaulMod.UI
             }
 
             if (firstButton)
-                firstButton.Press();
+                firstButton.OnPointerClick(new UnityEngine.EventSystems.PointerEventData(null));
         }
 
         public override void Hide()
@@ -220,7 +220,7 @@ namespace OverhaulMod.UI
         public void ClickOnFirstButton()
         {
             if (m_firstButton)
-                m_firstButton.Press();
+                m_firstButton.OnPointerClick(new UnityEngine.EventSystems.PointerEventData(null));
         }
 
         public void PopulateChangelog(string header, string folderName)
