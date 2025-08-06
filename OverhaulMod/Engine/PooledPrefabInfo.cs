@@ -7,6 +7,13 @@ namespace OverhaulMod.Engine
     {
         private List<PooledPrefabBehaviour> m_instantiatedObjects;
 
+        public Transform container
+        {
+            get;
+            set;
+
+        }
+
         public GameObject prefab
         {
             get;
@@ -60,7 +67,7 @@ namespace OverhaulMod.Engine
             if (l != -1 && m_instantiatedObjects.Count >= l)
                 return null;
 
-            GameObject gameObject = Object.Instantiate(obj);
+            GameObject gameObject = Object.Instantiate(obj, container, false);
             PooledPrefabBehaviour behaviour = gameObject.AddComponent<PooledPrefabBehaviour>();
             m_instantiatedObjects.Add(behaviour);
             return behaviour;

@@ -8,6 +8,17 @@ namespace OverhaulMod.Engine
     {
         private Dictionary<string, PooledPrefabInfo> m_pooledPrefabs;
 
+        private Transform m_container;
+
+        public override void Awake()
+        {
+            base.Awake();
+
+            Transform container = new GameObject("Pooled prefabs").transform;
+            container.SetParent(base.transform, false);
+            m_container = container;
+        }
+
         private void Start()
         {
             m_pooledPrefabs = new Dictionary<string, PooledPrefabInfo>();
@@ -18,8 +29,12 @@ namespace OverhaulMod.Engine
             if (m_pooledPrefabs == null || m_pooledPrefabs.ContainsKey(id))
                 return;
 
+            Transform container = new GameObject(id).transform;
+            container.SetParent(m_container, false);
+
             PooledPrefabInfo pooledPrefabInfo = new PooledPrefabInfo()
             {
+                container = container,
                 prefab = prefab,
                 lifeTime = lifeTime,
                 limit = limit
