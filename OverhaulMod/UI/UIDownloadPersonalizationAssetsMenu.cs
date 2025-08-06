@@ -99,13 +99,13 @@ namespace OverhaulMod.UI
             }
 
             PersonalizationAssetsInfo personalizationAssetsInfo = personalizationManager.localAssetsInfo;
-            if (personalizationAssetsInfo == null || personalizationAssetsInfo.AssetsVersion == null)
+            if (personalizationAssetsInfo == null || personalizationAssetsInfo.AssetVersionNumber == -1)
             {
                 m_versionText.text = "None";
             }
             else
             {
-                m_versionText.text = personalizationAssetsInfo.AssetsVersion.ToString();
+                m_versionText.text = personalizationAssetsInfo.AssetVersionNumber.ToString();
             }
         }
 

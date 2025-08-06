@@ -48,7 +48,7 @@ namespace OverhaulMod.Content.Personalization
             {
                 if (m_assetsVersionFile == null)
                 {
-                    m_assetsVersionFile = Path.Combine(ModCore.customizationFolder, ASSETS_VERSION_FILE);
+                    m_assetsVersionFile = Path.Combine(ModCore.contentFolder, ASSETS_VERSION_FILE);
                 }
                 return m_assetsVersionFile;
             }
@@ -61,7 +61,7 @@ namespace OverhaulMod.Content.Personalization
             {
                 if (m_remoteAssetsVersionFile == null)
                 {
-                    m_remoteAssetsVersionFile = Path.Combine(ModCore.customizationFolder, REMOTE_ASSETS_VERSION_FILE);
+                    m_remoteAssetsVersionFile = Path.Combine(ModCore.contentFolder, REMOTE_ASSETS_VERSION_FILE);
                 }
                 return m_remoteAssetsVersionFile;
             }
@@ -101,7 +101,7 @@ namespace OverhaulMod.Content.Personalization
             LoadLocalCustomizationAssetsVersion();
 
             ScheduledActionsManager scheduledActionsManager = ScheduledActionsManager.Instance;
-            if (!scheduledActionsManager.ShouldExecuteAction(ScheduledActionType.RefreshExclusivePerks))
+            if (!scheduledActionsManager.ShouldExecuteAction(ScheduledActionType.RefreshCustomizationAssetsRemoteVersion))
                 LoadRemoteCustomizationAssetsVersion();
             else
                 RefreshRemoteCustomizationAssetsVersion(null);
@@ -224,7 +224,6 @@ namespace OverhaulMod.Content.Personalization
                 {
                     personalizationAssetsInfo = new PersonalizationAssetsInfo();
                 }
-                personalizationAssetsInfo.FixValues();
                 localAssetsInfo = personalizationAssetsInfo;
             }
         }
@@ -245,7 +244,6 @@ namespace OverhaulMod.Content.Personalization
                 {
                     personalizationAssetsInfo = new PersonalizationAssetsInfo();
                 }
-                personalizationAssetsInfo.FixValues();
 
                 remoteAssetsInfo = personalizationAssetsInfo;
             }
@@ -262,12 +260,10 @@ namespace OverhaulMod.Content.Personalization
                 try
                 {
                     personalizationAssetsInfo = ModJsonUtils.Deserialize<PersonalizationAssetsInfo>(result);
-                    personalizationAssetsInfo.FixValues();
                 }
                 catch
                 {
                     personalizationAssetsInfo = new PersonalizationAssetsInfo();
-                    personalizationAssetsInfo.FixValues();
                 }
 
                 remoteAssetsInfo = personalizationAssetsInfo;
@@ -288,7 +284,7 @@ namespace OverhaulMod.Content.Personalization
             if (localInfo == null)
                 return PersonalizationAssetsState.NotInstalled;
 
-            if (remoteInfo == null || remoteInfo.AssetsVersion <= localInfo.AssetsVersion)
+            if (remoteInfo == null || remoteInfo.AssetVersionNumber <= localInfo.AssetVersionNumber)
                 return PersonalizationAssetsState.Installed;
 
             return PersonalizationAssetsState.NeedUpdate;
@@ -301,31 +297,34 @@ namespace OverhaulMod.Content.Personalization
 
         public bool SetLocalAssetsVersion(string versionString)
         {
-            if (!System.Version.TryParse(versionString, out System.Version version))
+            if (!int.TryParse(versionString, out int versionNumber))
                 return false;
 
-            return SetLocalAssetsVersion(version);
+            return SetLocalAssetsVersion(versionNumber);
         }
 
-        public bool SetLocalAssetsVersion(System.Version version)
+        public bool SetLocalAssetsVersion(int versionNumber)
         {
             PersonalizationAssetsInfo personalizationAssetsInfo = localAssetsInfo;
             if (personalizationAssetsInfo == null)
             {
                 personalizationAssetsInfo = new PersonalizationAssetsInfo
                 {
-                    AssetsVersion = version
+                    AssetVersionNumber = versionNumber
                 };
-                personalizationAssetsInfo.FixValues();
                 localAssetsInfo = personalizationAssetsInfo;
             }
             ModJsonUtils.WriteStream(assetsVersionFile, personalizationAssetsInfo);
             return true;
         }
 
-        public System.Version GetLocalAssetsVersion()
+        public int GetLocalAssetsVersion()
         {
-            return localAssetsInfo?.AssetsVersion;
+            var assetsInfo = localAssetsInfo;
+            if (assetsInfo == null)
+                return -1;
+
+            return assetsInfo.AssetVersionNumber;
         }
 
         private void loadUserInfoFile()

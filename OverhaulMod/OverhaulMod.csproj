@@ -481,6 +481,7 @@
     <Compile Include="UI\UIAutoBuildSelectionMenu.cs" />
     <Compile Include="UI\UIIntro.cs" />
     <Compile Include="UI\UIFeaturesMenu.cs" />
+    <Compile Include="UI\UIPersonalizationEditorExportAllMenu.cs" />
     <Compile Include="UI\UITitleScreenHypocrisisSkin.cs" />
     <Compile Include="UI\UIUpdateDetailsWindow.cs" />
     <Compile Include="UI\UIUpdatesEditor.cs" />

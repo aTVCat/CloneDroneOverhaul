@@ -93,6 +93,10 @@ namespace OverhaulMod.UI
             {
                 new UIElementPersonalizationEditorDropdown.OptionData("Open", "Redirect-16x16", instance.OnSelectItemButtonClicked),
                 new UIElementPersonalizationEditorDropdown.OptionData("Save (Ctrl+S)", "Save16x16", instance.OnSaveButtonClicked),
+                new UIElementPersonalizationEditorDropdown.OptionData("Export all", "Export-16x16", instance.OnExportAllButtonClicked)
+                {
+                    DisplayedForVerifiers = true
+                },
                 new UIElementPersonalizationEditorDropdown.OptionData(true),
                 new UIElementPersonalizationEditorDropdown.OptionData("Exit", "Exit-V2-16x16", instance.OnExitButtonClicked),
             };
@@ -260,6 +264,12 @@ namespace OverhaulMod.UI
                 ShowSaveErrorMessage(error);
             else
                 ShowNotification("Success", $"Saved the item ({PersonalizationEditorManager.Instance.currentEditingItemInfo.Name})", UIElementPersonalizationEditorNotification.SuccessColor);
+        }
+
+        public void OnExportAllButtonClicked()
+        {
+            Dropdown.Hide();
+            _ = ModUIConstants.ShowPersonalizationEditorExportAllMenu(base.transform);
         }
 
         public void OnPlaytestButtonClicked()

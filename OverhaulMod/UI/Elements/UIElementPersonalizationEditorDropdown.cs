@@ -1,4 +1,5 @@
-﻿using OverhaulMod.Utils;
+﻿using OverhaulMod.Content.Personalization;
+using OverhaulMod.Utils;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -58,13 +59,17 @@ namespace OverhaulMod.UI
             }
             entiriesList.Clear();
 
+            bool canVerifyItems = PersonalizationEditorManager.Instance.canVerifyItems;
             foreach (OptionData od in list)
             {
+                if (od.DisplayedForVerifiers && !canVerifyItems)
+                    continue;
+
                 GameObject gameObject = null;
-                if (od.isToggleOption)
+                if (od.IsToggleOption)
                 {
                 }
-                else if (od.isSeparator)
+                else if (od.IsSeparator)
                 {
                     gameObject = Instantiate(m_separatorPrefab, base.transform);
                 }
@@ -73,12 +78,12 @@ namespace OverhaulMod.UI
                     Sprite sprite = null;
                     try
                     {
-                        sprite = ModResources.Sprite(AssetBundleConstants.UI, od.imageName);
+                        sprite = ModResources.Sprite(AssetBundleConstants.UI, od.ImageName);
                     }
                     catch { }
 
                     Button button = Instantiate(m_buttonPrefab, base.transform);
-                    button.onClick.AddListener(od.action);
+                    button.onClick.AddListener(od.Action);
                     ModdedObject moddedObject = button.GetComponent<ModdedObject>();
                     moddedObject.GetObject<Text>(0).text = od.text;
                     Image image = moddedObject.GetObject<Image>(1);
@@ -98,35 +103,17 @@ namespace OverhaulMod.UI
 
         public class OptionData : Dropdown.OptionData
         {
-            public bool isToggleOption
-            {
-                get;
-                set;
-            }
+            public bool IsToggleOption;
 
-            public bool isSeparator
-            {
-                get;
-                set;
-            }
+            public bool IsSeparator;
 
-            public string imageName
-            {
-                get;
-                set;
-            }
+            public string ImageName;
 
-            public UnityAction action
-            {
-                get;
-                set;
-            }
+            public bool DisplayedForVerifiers;
 
-            public UnityAction<bool> actionBoolean
-            {
-                get;
-                set;
-            }
+            public UnityAction Action;
+
+            public UnityAction<bool> ActionBoolean;
 
             public OptionData()
             {
@@ -135,22 +122,22 @@ namespace OverhaulMod.UI
 
             public OptionData(bool isSeparator)
             {
-                this.isSeparator = isSeparator;
+                this.IsSeparator = isSeparator;
             }
 
             public OptionData(string text, string sprite, UnityAction unityAction)
             {
                 this.text = text;
-                imageName = sprite;
-                action = unityAction;
+                ImageName = sprite;
+                Action = unityAction;
             }
 
             public OptionData(string text, string sprite, UnityAction<bool> unityAction)
             {
                 this.text = text;
-                imageName = sprite;
-                actionBoolean = unityAction;
-                isToggleOption = true;
+                ImageName = sprite;
+                ActionBoolean = unityAction;
+                IsToggleOption = true;
             }
         }
     }

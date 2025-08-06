@@ -57,28 +57,17 @@ namespace OverhaulMod.UI
         [UIElement("SearchBox")]
         private readonly InputField m_searchBox;
 
-        [UIElement("ExportVersionField")]
-        private readonly InputField m_exportVersionField;
-
-        [UIElementAction(nameof(OnExportAllButtonClicked))]
-        [UIElement("ExportAllButton")]
-        private readonly Button m_exportAllButton;
-
         private Dictionary<string, GameObject> m_cachedInstantiatedDisplays;
 
         protected override void OnInitialized()
         {
-            bool isDev = PersonalizationEditorManager.Instance.canVerifyItems;
+            bool canVerifyItems = PersonalizationEditorManager.Instance.canVerifyItems;
 
             m_cachedInstantiatedDisplays = new Dictionary<string, GameObject>();
             m_viewAllItemsToggle.gameObject.SetActive(PersonalizationEditorManager.Instance.canEditNonOwnItems);
-            m_usePersistentDirectoryToggle.gameObject.SetActive(isDev);
+            m_usePersistentDirectoryToggle.gameObject.SetActive(canVerifyItems);
             m_usePersistentDirectoryToggle.isOn = true;
-            m_importButton.interactable = isDev;
-            m_exportAllButton.gameObject.SetActive(isDev);
-            m_exportVersionField.gameObject.SetActive(isDev);
-            if (isDev)
-                m_exportVersionField.text = PersonalizationManager.Instance.localAssetsInfo.AssetsVersion.ToString();
+            m_importButton.interactable = canVerifyItems;
         }
 
         public override void Show()
@@ -258,27 +247,6 @@ namespace OverhaulMod.UI
                 dialog.ItemBrowser = this;
                 dialog.FilePath = path;
             }, null, "*.zip");
-        }
-
-        public void OnExportAllButtonClicked()
-        {
-            if (!Version.TryParse(m_exportVersionField.text, out Version version))
-            {
-                ModUIUtils.MessagePopupOK("Error", "Could not parse text from version input field");
-                return;
-            }
-
-            FastZip fastZip = new FastZip();
-            fastZip.CreateZip(Path.Combine(ModCore.savesFolder, "customization.zip"), ModCore.customizationFolder, true, string.Empty);
-
-            PersonalizationAssetsInfo personalizationAssetsInfo = new PersonalizationAssetsInfo
-            {
-                AssetsVersion = version
-            };
-            _ = PersonalizationManager.Instance.SetLocalAssetsVersion(version);
-            ModJsonUtils.WriteStream(Path.Combine(ModCore.savesFolder, PersonalizationManager.ASSETS_VERSION_FILE), personalizationAssetsInfo);
-
-            _ = ModFileUtils.OpenFileExplorer(ModCore.savesFolder);
         }
     }
 }

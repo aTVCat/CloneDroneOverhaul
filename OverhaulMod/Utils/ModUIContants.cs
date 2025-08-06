@@ -100,6 +100,7 @@ namespace OverhaulMod.Utils
         public const string UI_UPDATES_EDITOR = "UI_UpdatesEditor";
         public const string UI_UPDATE_DETAILS_WINDOW = "UI_UpdateDetailsWindow";
         public const string UI_TITLE_SCREEN_HYPOCRISIS_SKIN = "UI_TitleScreenHypocrisisSkin";
+        public const string UI_PERSONALIZATION_EDITOR_EXPORT_ALL_MENU = "UI_PersonalizationEditorExportAllMenu";
 
         public static UIVersionLabel ShowVersionLabel()
         {
@@ -640,6 +641,11 @@ namespace OverhaulMod.Utils
         public static UITitleScreenHypocrisisSkin ShowTitleScreenHypocrisisSkin(Transform transform)
         {
             return ModUIManager.Instance.Show<UITitleScreenHypocrisisSkin>(AssetBundleConstants.HYPOCRISIS, UI_TITLE_SCREEN_HYPOCRISIS_SKIN, transform);
+        }
+
+        public static UIPersonalizationEditorExportAllMenu ShowPersonalizationEditorExportAllMenu(Transform transform)
+        {
+            return ModUIManager.Instance.Show<UIPersonalizationEditorExportAllMenu>(AssetBundleConstants.UI, UI_PERSONALIZATION_EDITOR_EXPORT_ALL_MENU, transform);
         }
     }
 }

@@ -1,13 +1,17 @@
-﻿namespace OverhaulMod.Content.Personalization
+﻿using System;
+
+namespace OverhaulMod.Content.Personalization
 {
     public class PersonalizationAssetsInfo
     {
-        public System.Version AssetsVersion;
+        [Obsolete]
+        public Version AssetsVersion;
 
-        public void FixValues()
+        public int AssetVersionNumber = -1;
+
+        public void SetAssetVersionForOldBuilds()
         {
-            if (AssetsVersion == null)
-                AssetsVersion = new System.Version(1, 0, 0, 0);
+            AssetsVersion = new Version(2, 0, 2, AssetVersionNumber);
         }
     }
 }
