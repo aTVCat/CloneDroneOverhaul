@@ -65,7 +65,7 @@ namespace OverhaulMod.UI
 
         private bool m_populateNextFrame;
 
-        private string m_selectedFile;
+        private string m_selectedEntryPath;
 
         private GameObject m_prevSelectedIndicator;
 
@@ -135,6 +135,13 @@ namespace OverhaulMod.UI
             }
         }
 
+        private bool m_selectFolder;
+        public bool selectFolder
+        {
+            get => m_selectFolder;
+            set => m_selectFolder = value;
+        }
+
         protected override void OnInitialized()
         {
             m_cachedInstantiatedDisplays = new Dictionary<string, GameObject>();
@@ -156,7 +163,7 @@ namespace OverhaulMod.UI
             base.Hide();
 
             m_doneButton.interactable = false;
-            m_selectedFile = null;
+            m_selectedEntryPath = null;
             callback = null;
         }
 
@@ -225,7 +232,7 @@ namespace OverhaulMod.UI
                 return;
 
             bool isFolder = fileSystemInfo is DirectoryInfo;
-            bool isSelected = fileSystemInfo.FullName == m_selectedFile;
+            bool isSelected = fileSystemInfo.FullName == m_selectedEntryPath;
 
             ModdedObject moddedObject = Instantiate(m_itemDisplayPrefab, m_itemDisplayContainer);
             moddedObject.gameObject.SetActive(true);
@@ -276,7 +283,7 @@ namespace OverhaulMod.UI
 
         private void onItemClicked(UIElementFileExplorerItemDisplay itemDisplay)
         {
-            if (itemDisplay.isFolder)
+            if (itemDisplay.isFolder != selectFolder)
                 return;
 
             if (m_prevSelectedIndicator)
@@ -284,7 +291,7 @@ namespace OverhaulMod.UI
 
             m_prevSelectedIndicator = itemDisplay.moddedObjectReference.GetObject<GameObject>(3);
             m_prevSelectedIndicator.SetActive(true);
-            m_selectedFile = itemDisplay.fullName;
+            m_selectedEntryPath = itemDisplay.fullName;
             m_doneButton.interactable = true;
         }
 
@@ -294,7 +301,7 @@ namespace OverhaulMod.UI
             {
                 currentFolder = itemDisplay.fullName;
             }
-            else
+            else if(!selectFolder)
             {
                 OnDoneButtonClicked();
             }
@@ -331,7 +338,7 @@ namespace OverhaulMod.UI
 
         public void OnDoneButtonClicked()
         {
-            callback?.Invoke(m_selectedFile);
+            callback?.Invoke(m_selectedEntryPath);
             callback = null;
             Hide();
         }

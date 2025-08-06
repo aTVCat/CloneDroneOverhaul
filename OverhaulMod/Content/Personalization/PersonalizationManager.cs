@@ -314,13 +314,17 @@ namespace OverhaulMod.Content.Personalization
                 };
                 localAssetsInfo = personalizationAssetsInfo;
             }
+            else
+            {
+                personalizationAssetsInfo.AssetVersionNumber = versionNumber;
+            }
             ModJsonUtils.WriteStream(assetsVersionFile, personalizationAssetsInfo);
             return true;
         }
 
         public int GetLocalAssetsVersion()
         {
-            var assetsInfo = localAssetsInfo;
+            PersonalizationAssetsInfo assetsInfo = localAssetsInfo;
             if (assetsInfo == null)
                 return -1;
 
@@ -337,19 +341,17 @@ namespace OverhaulMod.Content.Personalization
                 if (!File.Exists(path))
                 {
                     personalizationUserInfo = new PersonalizationUserInfo();
-                    personalizationUserInfo.FixValues();
                 }
                 else
                 {
                     personalizationUserInfo = ModDataManager.Instance.DeserializeFile<PersonalizationUserInfo>(USER_INFO_FILE, false);
-                    personalizationUserInfo.FixValues();
                 }
             }
             catch
             {
                 personalizationUserInfo = new PersonalizationUserInfo();
-                personalizationUserInfo.FixValues();
             }
+            personalizationUserInfo.FixValues();
 
             /*if (personalizationUserInfo.DiscoveredItems.Count == 0)
                 personalizationUserInfo.DiscoverAllItems();*/

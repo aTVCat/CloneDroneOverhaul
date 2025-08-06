@@ -665,5 +665,10 @@ namespace OverhaulMod.Utils
         /// <see cref="Content.Personalization.PersonalizationEditorGuideManager"/>
         /// </summary>
         public const string NEVER_SHOW_INTRODUCTION_GUIDE = "NeverShowIntroductionGuide";
+
+        /// <summary>
+        /// <see cref="Content.Personalization.PersonalizationEditorGuideManager"/>
+        /// </summary>
+        public const string PERSONALIZATION_ITEMS_EXPORT_PATH = "PersonalizationItemsExportPath";
     }
 }

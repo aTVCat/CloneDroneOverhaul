@@ -71,7 +71,7 @@ namespace OverhaulMod.Utils
             imageExplorer.Populate(imagePaths, customLinks);
         }
 
-        public static void FileExplorer(Transform parent, bool selectMode, Action<string> callback, string initialFolder, string searchPattern = null)
+        public static void FileExplorer(Transform parent, bool selectMode, Action<string> callback, string initialFolder, string searchPattern = null, bool selectFolder = false)
         {
             UIFileExplorer fileExplorer = ModUIConstants.ShowFileExplorer(parent);
 
@@ -82,6 +82,7 @@ namespace OverhaulMod.Utils
 
             fileExplorer.searchPattern = searchPattern;
             fileExplorer.callback = callback;
+            fileExplorer.selectFolder = selectFolder;
         }
 
         public static void Tooltip(string text, float duration = 2f)
