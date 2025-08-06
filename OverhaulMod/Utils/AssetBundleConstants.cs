@@ -14,5 +14,6 @@
         public const string GLOBAL_ILLUMINATION = "overhaul_globalillumination";
         public const string PERK_ICONS = "overhaul_perkicons";
         public const string HYPOCRISIS = "overhaul_hypocrisis";
+        public const string MISCELLANEOUS = "overhaul_miscellaneous";
     }
 }

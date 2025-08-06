@@ -6,11 +6,11 @@ namespace OverhaulMod.Content.Personalization
     {
         public static bool IsControllingTheCamera;
 
+        public bool IsScreenshotStageCamera;
+
         private UIManager m_uiManager;
 
         private InputManager m_inputManager;
-
-        private Camera m_camera;
 
         private bool m_wasMouseButtonDownPrevFrame;
         private bool m_prevValue;
@@ -19,7 +19,6 @@ namespace OverhaulMod.Content.Personalization
         {
             m_uiManager = UIManager.Instance;
             m_inputManager = InputManager.Instance;
-            m_camera = base.GetComponent<Camera>();
             m_inputManager.SetCursorEnabled(true);
         }
 

@@ -33,11 +33,15 @@ namespace OverhaulMod.Content.Personalization
 
         private bool m_hasConfiguredGameData;
 
+        private bool m_isInScreenshotMode;
+
         private GreatSwordPreviewController m_greatSwordPreviewController;
 
         private FirstPersonMover m_bot;
 
         private PersonalizationEditorCamera m_camera;
+
+        private PersonalizationEditorScreenshotOverlay m_screenshotOverlay;
 
         public PersonalizationController currentPersonalizationController
         {
@@ -702,6 +706,56 @@ namespace OverhaulMod.Content.Personalization
 
             FastZip fastZip = new FastZip();
             fastZip.CreateZip(destination, personalizationItemInfo.FolderPath, true, null);
+        }
+
+        public void EnterScreenshotMode()
+        {
+            if (m_isInScreenshotMode) return;
+
+            m_isInScreenshotMode = true;
+
+            m_camera.gameObject.SetActive(false);
+
+            PersonalizationEditorScreenshotManager manager = PersonalizationEditorScreenshotManager.Instance;
+            manager.SpawnItemInHolder(currentEditingItemInfo);
+
+            GameObject stage = manager.GetStage();
+            stage.SetActive(true);
+            PersonalizationEditorCamera cameraController = manager.GetCameraController();
+            cameraController.gameObject.SetActive(true);
+
+            if (!m_screenshotOverlay)
+            {
+                GameObject gameObject = Instantiate(ModResources.Prefab(AssetBundleConstants.UI, "PersonalizationItemScreenshotOverlay"), null, false);
+                m_screenshotOverlay = gameObject.AddComponent<PersonalizationEditorScreenshotOverlay>();
+            }
+            m_screenshotOverlay.Show();
+        }
+
+        public void ExitScreenshotStage()
+        {
+            if (!m_isInScreenshotMode) return;
+
+            m_isInScreenshotMode = false;
+
+            m_camera.gameObject.SetActive(true);
+
+            PersonalizationEditorScreenshotManager manager = PersonalizationEditorScreenshotManager.Instance;
+
+            GameObject stage = manager.GetStage();
+            stage.SetActive(false);
+            PersonalizationEditorCamera cameraController = manager.GetCameraController();
+            cameraController.gameObject.SetActive(false);
+
+            if (m_screenshotOverlay)
+            {
+                m_screenshotOverlay.Hide();
+            }
+        }
+
+        public bool IsInScreenshotMode()
+        {
+            return m_isInScreenshotMode;
         }
 
         public void WelcomeMessage()

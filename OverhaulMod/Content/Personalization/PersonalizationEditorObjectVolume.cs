@@ -169,7 +169,7 @@ namespace OverhaulMod.Content.Personalization
 
         private IEnumerator refreshVolumeCoroutine() // this fixes weird crash
         {
-            while (!m_isDestroyed && (!objectBehaviour || objectBehaviour.ControllerInfo == null))
+            while (!m_isDestroyed && !PersonalizationEditorManager.IsInEditor() && (!objectBehaviour || objectBehaviour.ControllerInfo == null))
                 yield return null;
 
             if (m_isDestroyed)
@@ -215,10 +215,21 @@ namespace OverhaulMod.Content.Personalization
                 if (voxFilePath == null)
                     voxFilePath = string.Empty;
 
-                string path = Path.Combine(objectBehaviour.ControllerInfo.ItemInfo.RootFolderPath, voxFilePath);
+                bool inEditor = PersonalizationEditorManager.IsInEditor();
+
+                PersonalizationItemInfo itemInfo;
+                if (inEditor)
+                {
+                    itemInfo = PersonalizationEditorManager.Instance.currentEditingItemInfo;
+                }
+                else
+                {
+                    itemInfo = objectBehaviour.ControllerInfo.ItemInfo;
+                }
+
+                string path = Path.Combine(itemInfo.RootFolderPath, voxFilePath);
 
                 volumeComponent.AddFrame(0);
-                bool inEditor = PersonalizationEditorManager.IsInEditor();
                 if (inEditor || !PersonalizationCacheManager.Instance.TryGet(path, out byte[] array))
                 {
                     if (!File.Exists(path))
@@ -274,8 +285,19 @@ namespace OverhaulMod.Content.Personalization
                 }
                 else
                 {
-                    Color favoriteColor = objectBehaviour.ControllerInfo.Reference.owner.GetCharacterModel().GetFavouriteColor();
-                    List<ColorPairFloat> list = PersonalizationEditorManager.Instance.GetColorPairsFromString(cr);
+                    bool isInScreenshotMode = inEditor && PersonalizationEditorManager.Instance.IsInScreenshotMode();
+
+                    Color favoriteColor;
+                    if (isInScreenshotMode)
+                    {
+                        favoriteColor = UIPersonalizationEditor.instance.Utilities.GetFavoriteColor();
+                    }
+                    else
+                    {
+                        favoriteColor = objectBehaviour.ControllerInfo.Reference.owner.GetCharacterModel().GetFavouriteColor();
+                    }
+
+                        List<ColorPairFloat> list = PersonalizationEditorManager.Instance.GetColorPairsFromString(cr);
                     if (!list.IsNullOrEmpty())
                     {
                         foreach (ColorPairFloat cp in list)
