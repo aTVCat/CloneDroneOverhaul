@@ -102,6 +102,7 @@ namespace OverhaulMod.UI
                     DisplayedForVerifiers = true
                 },
                 new UIElementPersonalizationEditorDropdown.OptionData(true),
+                new UIElementPersonalizationEditorDropdown.OptionData("Screenshot mode", "Exit-V2-16x16", PersonalizationEditorManager.Instance.EnterScreenshotMode),
                 new UIElementPersonalizationEditorDropdown.OptionData("Exit", "Exit-V2-16x16", instance.OnExitButtonClicked),
             };
 
@@ -123,7 +124,7 @@ namespace OverhaulMod.UI
                 new UIElementPersonalizationEditorDropdown.OptionData("Welcome message", "Redirect-16x16", PersonalizationEditorManager.Instance.WelcomeMessage),
                 new UIElementPersonalizationEditorDropdown.OptionData("Guide: Introduction", "Redirect-16x16", DropdownGuide),
             };
-            if (ModFeatures.IsEnabled(ModFeatures.FeatureType.PersonalizationEditorTutorialVideo)) s_helpOptions.Add(new UIElementPersonalizationEditorDropdown.OptionData("Tutorial video", "Redirect-16x16", PersonalizationEditorManager.Instance.TutorialVideo));
+            if (ModFeatures.IsEnabled(ModFeatures.FeatureType.PersonalizationEditorTutorialVideo)) s_helpOptions.Add(new UIElementPersonalizationEditorDropdown.OptionData("Tutorial video", "Redirect-16x16", TutorialVideo));
             s_helpOptions.Add(new UIElementPersonalizationEditorDropdown.OptionData("About", "Redirect-16x16", OnAboutButtonClicked));
 
             m_toolbarWindowButton.interactable = false;
@@ -249,6 +250,18 @@ namespace OverhaulMod.UI
             }
         }
 
+        public void ShowWindows()
+        {
+            foreach (var window in ModUIManager.Instance.windowManager.GetWindows())
+                window.Show();
+        }
+
+        public void HideWindows()
+        {
+            foreach (var window in ModUIManager.Instance.windowManager.GetWindows())
+                window.Hide();
+        }
+
         public void OnExitButtonClicked()
         {
             Dropdown.Hide();
@@ -324,6 +337,12 @@ namespace OverhaulMod.UI
         public void OnHelpButtonClicked()
         {
             Dropdown.ShowWithOptions(s_helpOptions, m_toolbarHelpButton.transform as RectTransform);
+        }
+
+        public void TutorialVideo()
+        {
+            UIPersonalizationEditor.instance.Dropdown.Hide();
+            Application.OpenURL("https://youtu.be/xdbdb-WizSo");
         }
     }
 }

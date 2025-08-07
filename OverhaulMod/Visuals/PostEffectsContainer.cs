@@ -1,4 +1,5 @@
 ﻿using AmplifyOcclusion;
+using OverhaulMod.Content.Personalization;
 using OverhaulMod.Engine;
 using OverhaulMod.Utils;
 using OverhaulMod.Visuals.ImageEffects;
@@ -117,6 +118,15 @@ namespace OverhaulMod.Visuals
 
             if (bloom)
             {
+                if(PersonalizationEditorManager.IsInEditor() && PersonalizationEditorManager.Instance.IsInScreenshotMode())
+                {
+                    bloom.bloomBlurIterations = 10;
+                    bloom.bloomIntensity = 1.5f;
+                    bloom.bloomThreshold = 1f;
+                    bloom.enabled = enable;
+                    return;
+                }
+
                 if (PostEffectsManager.TweakBloom)
                 {
                     bloom.bloomBlurIterations = 4;
@@ -135,6 +145,11 @@ namespace OverhaulMod.Visuals
 
         private void refreshAmplifyOcclusion(bool enable, GameObject cameraObject)
         {
+            if (PersonalizationEditorManager.IsInEditor() && PersonalizationEditorManager.Instance.IsInScreenshotMode())
+            {
+                enable = true;
+            }
+
             AmplifyOcclusionEffect amplifyOcclusionEffect = AmplifyOcclusion;
             if (!amplifyOcclusionEffect)
             {

@@ -1,7 +1,11 @@
 ﻿using OverhaulMod.Content.Personalization;
 using OverhaulMod.Utils;
+using System.Collections;
+using System.IO;
+using System.Net;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Networking;
 using UnityEngine.UI;
 
 namespace OverhaulMod.UI
@@ -40,6 +44,10 @@ namespace OverhaulMod.UI
         [UIElement("UpdatedIndicator")]
         private readonly GameObject m_wasUpdatedIndicator;
 
+        [UIElementIgnoreIfMissing]
+        [UIElement("PreviewImage")]
+        private readonly RawImage m_previewImage;
+
         private Button m_button;
 
         private Image m_bg;
@@ -47,6 +55,10 @@ namespace OverhaulMod.UI
         private UIPersonalizationItemBrowser m_browser;
 
         private RectTransform m_rectTransform;
+
+        private UnityWebRequest m_webRequest;
+
+        private Texture2D m_texture;
 
         public PersonalizationItemInfo ItemInfo;
 
@@ -61,6 +73,7 @@ namespace OverhaulMod.UI
 
             GlobalEventManager.Instance.AddEventListener(PersonalizationManager.ITEM_EQUIPPED_OR_UNEQUIPPED_EVENT, RefreshDisplays);
             RefreshDisplays();
+            LoadIcon();
 
             m_refreshNameHolderNextFrame = true;
         }
@@ -82,6 +95,16 @@ namespace OverhaulMod.UI
         {
             base.OnDestroy();
             GlobalEventManager.Instance.RemoveEventListener(PersonalizationManager.ITEM_EQUIPPED_OR_UNEQUIPPED_EVENT, RefreshDisplays);
+
+            Texture2D texture = m_texture;
+            if (texture)
+                Destroy(texture);
+
+            try
+            {
+                m_webRequest.Abort();
+            }
+            catch { }
         }
 
         public void SetBrowserUI(UIPersonalizationItemBrowser itemsBrowser)
@@ -124,6 +147,34 @@ namespace OverhaulMod.UI
             m_bg.color = bgColor;
             m_nameBg.color = nameBgColor;
             m_frame.color = nameBgColor;
+        }
+
+        public void LoadIcon()
+        {
+            string path = PersonalizationItemInfo.GetPreviewFileFullPath(ItemInfo);
+            if (!File.Exists(path))
+                return;
+
+            loadIconCoroutine(path).Run();
+        }
+
+        private IEnumerator loadIconCoroutine(string path)
+        {
+            using (UnityWebRequest unityWebRequest = UnityWebRequestTexture.GetTexture($"file://{path}"))
+            {
+                m_webRequest = unityWebRequest;
+                yield return unityWebRequest.SendWebRequest();
+                m_webRequest = null;
+                if (!unityWebRequest.isHttpError && !unityWebRequest.isNetworkError && unityWebRequest.isDone)
+                {
+                    Texture2D texture = (unityWebRequest.downloadHandler as DownloadHandlerTexture).texture;
+                    texture.filterMode = FilterMode.Bilinear;
+                    m_texture = texture;
+                    m_previewImage.texture = texture;
+                    m_previewImage.color = Color.white;
+                }
+            }
+            yield break;
         }
 
         private void onClicked()

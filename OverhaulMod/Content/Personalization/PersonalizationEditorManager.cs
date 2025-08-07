@@ -26,12 +26,16 @@ namespace OverhaulMod.Content.Personalization
 
         public const string PRESET_PREVIEW_CHANGED_EVENT = "PersonalizationEditorPresetPreviewChanged";
 
+        public const GameMode GAME_MODE_VALUE = (GameMode)2500;
+
         [ModSetting(ModSettingsConstants.CUSTOMIZATION_EDITOR_AMBIANCE, true)]
         public static bool EditorAmbiance;
 
         public readonly GameData GameData = new GameData();
 
         private bool m_hasConfiguredGameData;
+
+        private bool m_isInPlaytestMode;
 
         private bool m_isInScreenshotMode;
 
@@ -137,11 +141,6 @@ namespace OverhaulMod.Content.Personalization
             }
         }
 
-        public static bool IsInEditor()
-        {
-            return GameFlowManager.Instance._gameMode == (GameMode)2500;
-        }
-
         public void StartEditorGameMode(bool noTransition = false)
         {
             if (noTransition || !TransitionManager.OverhaulNonSceneTransitions)
@@ -186,7 +185,10 @@ namespace OverhaulMod.Content.Personalization
             previewPresetKey = WeaponVariant.Normal;
             originalModelsEnabled = false;
 
-            GameFlowManager.Instance._gameMode = (GameMode)2500;
+            m_isInScreenshotMode = false;
+            m_isInPlaytestMode = false;
+
+            GameFlowManager.Instance._gameMode = GAME_MODE_VALUE;
 
             LevelManager.Instance.CleanUpLevelThisFrame();
             GameFlowManager.Instance.HideTitleScreen(false);
@@ -213,57 +215,6 @@ namespace OverhaulMod.Content.Personalization
                 _ = base.StartCoroutine(spawnLevelCoroutine(useTransitionManager, levelEditorLevelData));
             });
             yield break;
-        }
-
-        public FirstPersonMover GetBot()
-        {
-            return m_bot;
-        }
-
-        public void RefreshGreatswordPreview()
-        {
-            if (m_greatSwordPreviewController)
-                m_greatSwordPreviewController.SetPreviewActivate(originalModelsEnabled && (previewPresetKey == WeaponVariant.NormalMultiplayer || previewPresetKey == WeaponVariant.OnFireMultiplayer));
-        }
-
-        public List<Dropdown.OptionData> GetConditionOptions()
-        {
-            if (ModAdvancedCache.TryGet("DropdownShowConditionOptions", out List<Dropdown.OptionData> list))
-                return list;
-
-            list = new List<Dropdown.OptionData>
-            {
-                new DropdownWeaponVariantOptionData(WeaponVariant.Normal),
-                new DropdownWeaponVariantOptionData(WeaponVariant.OnFire),
-                new DropdownWeaponVariantOptionData(WeaponVariant.NormalMultiplayer),
-                new DropdownWeaponVariantOptionData(WeaponVariant.OnFireMultiplayer)
-            };
-            ModAdvancedCache.Add("DropdownShowConditionOptions", list);
-            return list;
-        }
-
-        public List<Dropdown.OptionData> GetConditionOptionsDependingOnEditingWeapon(bool includeNone = false)
-        {
-            WeaponType weaponType = currentEditingItemInfo.Weapon;
-
-            List<Dropdown.OptionData> list = new List<Dropdown.OptionData>();
-            if (includeNone)
-                list.Add(new DropdownWeaponVariantOptionData(WeaponVariant.None));
-
-            list.Add(new DropdownWeaponVariantOptionData(WeaponVariant.Normal));
-
-            if (weaponType == WeaponType.Sword)
-            {
-                list.Add(new DropdownWeaponVariantOptionData(WeaponVariant.OnFire));
-                list.Add(new DropdownWeaponVariantOptionData(WeaponVariant.NormalMultiplayer));
-                list.Add(new DropdownWeaponVariantOptionData(WeaponVariant.OnFireMultiplayer));
-            }
-            else if (weaponType == WeaponType.Hammer || weaponType == WeaponType.Spear || weaponType == ModWeaponsManager.SCYTHE_TYPE)
-            {
-                list.Add(new DropdownWeaponVariantOptionData(WeaponVariant.OnFire));
-            }
-
-            return list;
         }
 
         public bool CreateItem(string directoryName, string name, bool usePersistentFolder, PersonalizationItemInfo templateSource, out PersonalizationItemInfo personalizationItem)
@@ -495,6 +446,19 @@ namespace OverhaulMod.Content.Personalization
             }
         }
 
+        public void ExportItem(PersonalizationItemInfo personalizationItemInfo, out string destination, string overrideDirectoryPath = null, string overrideFn = null)
+        {
+            string fn = overrideFn.IsNullOrEmpty() ? $"PersonalizationItem_{personalizationItemInfo.ItemID.ToString().Replace("-", string.Empty)}.zip" : overrideFn;
+            string folder = overrideDirectoryPath.IsNullOrEmpty() ? ModDataManager.savesFolder : overrideDirectoryPath;
+            destination = Path.Combine(folder, fn);
+
+            if (File.Exists(destination))
+                File.Delete(destination);
+
+            FastZip fastZip = new FastZip();
+            fastZip.CreateZip(destination, personalizationItemInfo.FolderPath, true, null);
+        }
+
         public void SerializeRoot()
         {
             currentEditingItemInfo.RootObject = currentEditingRoot.Serialize();
@@ -566,6 +530,11 @@ namespace OverhaulMod.Content.Personalization
             yield break;
         }
 
+        public FirstPersonMover GetBot()
+        {
+            return m_bot;
+        }
+
         private IEnumerator spawnLevelCoroutine(bool useTransitionManager, LevelEditorLevelData levelEditorLevelData)
         {
             yield return null;
@@ -635,6 +604,10 @@ namespace OverhaulMod.Content.Personalization
 
         public void EnterPlaytestMode()
         {
+            if (m_isInPlaytestMode) return;
+
+            m_isInPlaytestMode = true;
+
             FirstPersonMover firstPersonMover = m_bot;
             if (firstPersonMover)
             {
@@ -653,6 +626,10 @@ namespace OverhaulMod.Content.Personalization
 
         public void ExitPlaytestMode()
         {
+            if (!m_isInPlaytestMode) return;
+
+            m_isInPlaytestMode = false;
+
             FirstPersonMover firstPersonMover = m_bot;
             if (firstPersonMover)
             {
@@ -695,17 +672,9 @@ namespace OverhaulMod.Content.Personalization
             yield break;
         }
 
-        public void ExportItem(PersonalizationItemInfo personalizationItemInfo, out string destination, string overrideDirectoryPath = null, string overrideFn = null)
+        public bool IsInPlaytestMode()
         {
-            string fn = overrideFn.IsNullOrEmpty() ? $"PersonalizationItem_{personalizationItemInfo.ItemID.ToString().Replace("-", string.Empty)}.zip" : overrideFn;
-            string folder = overrideDirectoryPath.IsNullOrEmpty() ? ModDataManager.savesFolder : overrideDirectoryPath;
-            destination = Path.Combine(folder, fn);
-
-            if (File.Exists(destination))
-                File.Delete(destination);
-
-            FastZip fastZip = new FastZip();
-            fastZip.CreateZip(destination, personalizationItemInfo.FolderPath, true, null);
+            return m_isInPlaytestMode;
         }
 
         public void EnterScreenshotMode()
@@ -715,6 +684,8 @@ namespace OverhaulMod.Content.Personalization
             m_isInScreenshotMode = true;
 
             m_camera.gameObject.SetActive(false);
+
+            UIPersonalizationEditor.instance.HideWindows();
 
             PersonalizationEditorScreenshotManager manager = PersonalizationEditorScreenshotManager.Instance;
             manager.SpawnItemInHolder(currentEditingItemInfo);
@@ -740,6 +711,8 @@ namespace OverhaulMod.Content.Personalization
 
             m_camera.gameObject.SetActive(true);
 
+            UIPersonalizationEditor.instance.ShowWindows();
+
             PersonalizationEditorScreenshotManager manager = PersonalizationEditorScreenshotManager.Instance;
 
             GameObject stage = manager.GetStage();
@@ -758,6 +731,52 @@ namespace OverhaulMod.Content.Personalization
             return m_isInScreenshotMode;
         }
 
+        public void RefreshGreatswordPreview()
+        {
+            if (m_greatSwordPreviewController)
+                m_greatSwordPreviewController.SetPreviewActivate(originalModelsEnabled && (previewPresetKey == WeaponVariant.NormalMultiplayer || previewPresetKey == WeaponVariant.OnFireMultiplayer));
+        }
+
+        public List<Dropdown.OptionData> GetConditionOptions()
+        {
+            if (ModAdvancedCache.TryGet("DropdownShowConditionOptions", out List<Dropdown.OptionData> list))
+                return list;
+
+            list = new List<Dropdown.OptionData>
+            {
+                new DropdownWeaponVariantOptionData(WeaponVariant.Normal),
+                new DropdownWeaponVariantOptionData(WeaponVariant.OnFire),
+                new DropdownWeaponVariantOptionData(WeaponVariant.NormalMultiplayer),
+                new DropdownWeaponVariantOptionData(WeaponVariant.OnFireMultiplayer)
+            };
+            ModAdvancedCache.Add("DropdownShowConditionOptions", list);
+            return list;
+        }
+
+        public List<Dropdown.OptionData> GetConditionOptionsDependingOnEditingWeapon(bool includeNone = false)
+        {
+            WeaponType weaponType = currentEditingItemInfo.Weapon;
+
+            List<Dropdown.OptionData> list = new List<Dropdown.OptionData>();
+            if (includeNone)
+                list.Add(new DropdownWeaponVariantOptionData(WeaponVariant.None));
+
+            list.Add(new DropdownWeaponVariantOptionData(WeaponVariant.Normal));
+
+            if (weaponType == WeaponType.Sword)
+            {
+                list.Add(new DropdownWeaponVariantOptionData(WeaponVariant.OnFire));
+                list.Add(new DropdownWeaponVariantOptionData(WeaponVariant.NormalMultiplayer));
+                list.Add(new DropdownWeaponVariantOptionData(WeaponVariant.OnFireMultiplayer));
+            }
+            else if (weaponType == WeaponType.Hammer || weaponType == WeaponType.Spear || weaponType == ModWeaponsManager.SCYTHE_TYPE)
+            {
+                list.Add(new DropdownWeaponVariantOptionData(WeaponVariant.OnFire));
+            }
+
+            return list;
+        }
+
         public void WelcomeMessage()
         {
             UIPersonalizationEditor.instance.Dropdown.Hide();
@@ -768,12 +787,6 @@ namespace OverhaulMod.Content.Personalization
                 "\nTo upload your project, click on 'File' at the top left and click on 'Upload'." +
                 "\nOnce you upload an item, you'll have to wait until it's verified and when it is, customization assets will get an update." +
                 "\n\n<color=#FFCB23>This editor is still in development, so you can experience issues while editing!</color>", 400f, true);
-        }
-
-        public void TutorialVideo()
-        {
-            UIPersonalizationEditor.instance.Dropdown.Hide();
-            Application.OpenURL("https://youtu.be/xdbdb-WizSo");
         }
 
         public List<ColorPairFloat> GetColorPairsFromString(string dataString)
@@ -822,6 +835,11 @@ namespace OverhaulMod.Content.Personalization
                 index++;
             }
             return stringBuilder.ToString();
+        }
+
+        public static bool IsInEditor()
+        {
+            return GameModeManager.Is(GAME_MODE_VALUE);
         }
     }
 }

@@ -1,7 +1,9 @@
-﻿using OverhaulMod.Utils;
+﻿using BestHTTP.SocketIO;
+using OverhaulMod.Utils;
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityStandardAssets.ImageEffects;
 
 namespace OverhaulMod.Content.Personalization
 {
@@ -28,13 +30,30 @@ namespace OverhaulMod.Content.Personalization
 
             ModdedObject moddedObject = stageObject.GetComponent<ModdedObject>();
             m_holder = moddedObject.GetObject<Transform>(0);
-            m_blackCamera = moddedObject.GetObject<Camera>(1);
-            m_whiteCamera = moddedObject.GetObject<Camera>(2);
-            m_camerasObject = moddedObject.GetObject<GameObject>(3);
+            m_camerasObject = moddedObject.GetObject<GameObject>(1);
+            m_blackCamera = createCamera(m_camerasObject.transform, false);
+            m_whiteCamera = createCamera(m_camerasObject.transform, true);
+            m_whiteCamera.enabled = false;
             m_screenshotCameraController = m_camerasObject.AddComponent<PersonalizationEditorCamera>();
             m_screenshotCameraController.IsScreenshotStageCamera = true;
 
             m_stageObject = stageObject;
+        }
+
+        private Camera createCamera(Transform parent, bool white)
+        {
+            Camera camera = Instantiate(PlayerCameraManager.Instance.DefaultGameCameraPrefab, parent, false);
+            Transform cameraTransform = camera.transform;
+            cameraTransform.localPosition = Vector3.zero;
+            cameraTransform.localEulerAngles = Vector3.zero;
+            cameraTransform.localScale = Vector3.one;
+
+            camera.farClipPlane = 100f;
+            camera.fieldOfView = 30f;
+            camera.clearFlags = CameraClearFlags.SolidColor;
+            camera.backgroundColor = white ? Color.white : Color.black;
+            camera.allowMSAA = true;
+            return camera;
         }
 
         public GameObject GetStage()
@@ -46,6 +65,15 @@ namespace OverhaulMod.Content.Personalization
         public PersonalizationEditorCamera GetCameraController()
         {
             return m_screenshotCameraController;
+        }
+
+        public Camera GetCamera(bool white)
+        {
+            if (white)
+            {
+                return m_whiteCamera;
+            }
+            return m_blackCamera;
         }
 
         public void SpawnItemInHolder(PersonalizationItemInfo personalizationItemInfo)
@@ -65,7 +93,7 @@ namespace OverhaulMod.Content.Personalization
             Texture2D whiteTexture = takeScreenshotOfCameraView(m_whiteCamera, width, height);
             Texture2D blackTexture = takeScreenshotOfCameraView(m_blackCamera, width, height);
 
-            Texture2D outputTexture = calculateOutputTexture(whiteTexture, blackTexture, width, height);
+            Texture2D outputTexture = calculateOutputTexture(whiteTexture, blackTexture, width, height, 4);
 
             DestroyImmediate(whiteTexture);
             DestroyImmediate(blackTexture);
@@ -92,24 +120,23 @@ namespace OverhaulMod.Content.Personalization
             return texture2D;
         }
 
-        private Texture2D calculateOutputTexture(Texture2D whiteTexture, Texture2D blackTexture, int width, int height)
+        private Texture2D calculateOutputTexture(Texture2D whiteTexture, Texture2D blackTexture, int width, int height, int resizeAmount)
         {
-            Texture2D texture2D = new Texture2D(width, height);
+            Texture2D texture2D = new Texture2D(width / resizeAmount, height / resizeAmount);
             for (int x = 0; x < width; x++)
             {
                 for (int y = 0; y < height; y++)
                 {
                     Color pixelA = whiteTexture.GetPixel(x, y);
-                    float pixelAMagnitude = pixelA.r + pixelA.g + pixelA.b;
+                    float pixelAMagnitude = (pixelA.r + pixelA.g + pixelA.b) / 3f;
 
                     Color pixelB = blackTexture.GetPixel(x, y);
-                    float pixelBMagnitude = pixelB.r + pixelB.g + pixelB.b;
+                    float pixelBMagnitude = (pixelB.r + pixelB.g + pixelB.b) / 3f;
 
-                    float difference = pixelAMagnitude - pixelBMagnitude;
-                    difference = 1f - difference;
+                    float difference = 1f - (pixelAMagnitude - pixelBMagnitude);
 
                     Color color;
-                    if (Mathf.Abs(difference) < 0.01f)
+                    if (Mathf.Abs(difference) == 0f)
                     {
                         color = Color.clear;
                     }
@@ -119,7 +146,7 @@ namespace OverhaulMod.Content.Personalization
                     }
                     color.a = difference;
 
-                    texture2D.SetPixel(x, y, color);
+                    texture2D.SetPixel(Mathf.FloorToInt(x / (float)resizeAmount), Mathf.FloorToInt(y / (float)resizeAmount), color);
                 }
             }
             texture2D.Apply();

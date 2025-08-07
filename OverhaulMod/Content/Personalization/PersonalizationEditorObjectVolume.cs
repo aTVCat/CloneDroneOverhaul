@@ -285,10 +285,8 @@ namespace OverhaulMod.Content.Personalization
                 }
                 else
                 {
-                    bool isInScreenshotMode = inEditor && PersonalizationEditorManager.Instance.IsInScreenshotMode();
-
                     Color favoriteColor;
-                    if (isInScreenshotMode)
+                    if (inEditor)
                     {
                         favoriteColor = UIPersonalizationEditor.instance.Utilities.GetFavoriteColor();
                     }
@@ -297,7 +295,7 @@ namespace OverhaulMod.Content.Personalization
                         favoriteColor = objectBehaviour.ControllerInfo.Reference.owner.GetCharacterModel().GetFavouriteColor();
                     }
 
-                        List<ColorPairFloat> list = PersonalizationEditorManager.Instance.GetColorPairsFromString(cr);
+                    List<ColorPairFloat> list = PersonalizationEditorManager.Instance.GetColorPairsFromString(cr);
                     if (!list.IsNullOrEmpty())
                     {
                         foreach (ColorPairFloat cp in list)

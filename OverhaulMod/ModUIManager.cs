@@ -474,6 +474,11 @@ namespace OverhaulMod
             {
                 _ = m_windows.Remove(windowId);
             }
+
+            public List<WindowBehaviour> GetWindows()
+            {
+                return new List<WindowBehaviour>(m_windows.Values);
+            }
         }
 
         public class WindowBehaviour : OverhaulUIBehaviour

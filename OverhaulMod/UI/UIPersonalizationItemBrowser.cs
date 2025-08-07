@@ -117,6 +117,12 @@ namespace OverhaulMod.UI
         [UIElement("CameraRotationTutorial")]
         private readonly GameObject m_cameraRotationTutorial;
 
+        [UIElement("ItemsLine", false)]
+        private readonly Transform m_cardsLine;
+
+        [UIElement("ItemCardDisplay", false)]
+        private readonly ModdedObject m_itemCardDisplay;
+
         private RectTransform m_rectTransform;
 
         private bool m_allowUICallbacks;
@@ -129,7 +135,7 @@ namespace OverhaulMod.UI
 
         private Dictionary<string, UIElementPersonalizationItemDisplay> m_cachedDisplays;
 
-        private bool m_isOpen, m_isPopulating, m_showContents, m_use43Variant, m_hasEverShown;
+        private bool m_isOpen, m_isPopulating, m_showContents, m_hasEverShown, m_useCardsLayout;
 
         private float m_transitionProgress, m_prevTransitionProgress;
 
@@ -145,8 +151,8 @@ namespace OverhaulMod.UI
 
         protected override void OnInitialized()
         {
-            m_use43Variant = ModFeatures.IsEnabled(ModFeatures.FeatureType.CustomizationMenuUpdates);
-            m_loadingIndicator.gameObject.SetActive(m_use43Variant);
+            m_useCardsLayout = ModFeatures.IsEnabled(ModFeatures.FeatureType.CustomizationItemCards);
+            m_loadingIndicator.gameObject.SetActive(true);
 
             m_cachedDisplays = new Dictionary<string, UIElementPersonalizationItemDisplay>();
             m_rectTransform = base.GetComponent<RectTransform>();
@@ -238,18 +244,15 @@ namespace OverhaulMod.UI
                 m_scrollbarVerticalCanvasGroup.alpha = progress;
                 m_loadingIndicator.alpha = 1f - progress;
 
-                if (m_use43Variant)
-                {
-                    Color color2 = m_scrollRectImage.color;
-                    color2.r = Mathf.Lerp(0.05f, 0.15f, progress);
-                    color2.g = Mathf.Lerp(0.05f, 0.15f, progress);
-                    color2.b = Mathf.Lerp(0.05f, 0.15f, progress);
-                    m_scrollRectImage.color = color2;
+                Color color2 = m_scrollRectImage.color;
+                color2.r = Mathf.Lerp(0.05f, 0.15f, progress);
+                color2.g = Mathf.Lerp(0.05f, 0.15f, progress);
+                color2.b = Mathf.Lerp(0.05f, 0.15f, progress);
+                m_scrollRectImage.color = color2;
 
-                    Vector2 offsetMax = m_viewportTransform.offsetMax;
-                    offsetMax.y = -50f * (1f - progress);
-                    m_viewportTransform.offsetMax = offsetMax;
-                }
+                Vector2 offsetMax = m_viewportTransform.offsetMax;
+                offsetMax.y = -50f * (1f - progress);
+                m_viewportTransform.offsetMax = offsetMax;
             }
 
             Transform holder = m_cameraHolderTransform;
@@ -568,6 +571,9 @@ namespace OverhaulMod.UI
                     else
                         utilsPanel.GetObject<Text>(2).text = LocalizationManager.Instance.GetTranslatedString("customization_button_update");
 
+                    int spawnedCards = 0;
+                    Transform lastCardsLine = null;
+
                     List<PersonalizationItemInfo> list = PersonalizationManager.Instance.itemList.GetItems(m_selectedCategory, PersonalizationItemsSortType.Alphabet);
                     for (int i = 0; i < list.Count; i++)
                     {
@@ -578,6 +584,17 @@ namespace OverhaulMod.UI
                         if (item.Weapon != weaponType || (item.HideInBrowser && !isDeveloper))
                             continue;
 
+                        if (m_useCardsLayout)
+                        {
+                            if (spawnedCards % 3 == 0)
+                            {
+                                lastCardsLine = Instantiate(m_cardsLine, m_container);
+                                lastCardsLine.gameObject.SetActive(true);
+                            }
+                            instantiateItemEntryDisplay(item, true, lastCardsLine);
+                            spawnedCards++;
+                            continue;
+                        }
                         instantiateItemEntryDisplay(item);
                     }
                 }
@@ -617,7 +634,7 @@ namespace OverhaulMod.UI
             yield break;
         }
 
-        private void instantiateItemEntryDisplay(PersonalizationItemInfo item)
+        private void instantiateItemEntryDisplay(PersonalizationItemInfo item, bool spawnCard = false, Transform parent = null)
         {
             bool isExclusive = item.IsExclusive();
             bool isVerified = item.IsVerified;
@@ -678,7 +695,7 @@ namespace OverhaulMod.UI
             }
             glowColor.a = !isExclusive && isVerified ? 0.1f : 0.35f;
 
-            ModdedObject moddedObject = Instantiate(m_itemDisplay, m_container);
+            ModdedObject moddedObject = Instantiate(spawnCard ? m_itemCardDisplay : m_itemDisplay, parent ? parent : m_container);
             moddedObject.gameObject.SetActive(true);
 
             Text itemNameText = moddedObject.GetObject<Text>(0);

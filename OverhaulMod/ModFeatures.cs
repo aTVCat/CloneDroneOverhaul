@@ -169,6 +169,9 @@ namespace OverhaulMod
                 case FeatureType.TransitionTips:
                     result = false;
                     break;
+                case FeatureType.CustomizationItemCards:
+                    result = ModBuildInfo.VERSION_4_3;
+                    break;
                 default:
                     return false;
             }
@@ -277,6 +280,8 @@ namespace OverhaulMod
             UISounds,
 
             TransitionTips,
+
+            CustomizationItemCards
         }
     }
 }

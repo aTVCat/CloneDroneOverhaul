@@ -210,6 +210,11 @@ namespace OverhaulMod.Content.Personalization
             return Path.Combine(GetImportedFilesFolder(personalizationItemInfo), fileName);
         }
 
+        public static string GetPreviewFileFullPath(PersonalizationItemInfo personalizationItemInfo)
+        {
+            return Path.Combine(personalizationItemInfo.FolderPath, "preview.png");
+        }
+
         public static string GetCategoryString(PersonalizationCategory personalizationCategory, bool many = false)
         {
             switch (personalizationCategory)
