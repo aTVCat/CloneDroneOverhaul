@@ -2,13 +2,16 @@
 using OverhaulMod.Utils;
 using System;
 using System.Collections;
+using System.IO;
 using UnityEngine;
 using UnityStandardAssets.ImageEffects;
 
 namespace OverhaulMod.Content.Personalization
 {
-    public class PersonalizationEditorScreenshotManager : Singleton<PersonalizationEditorScreenshotManager>
+    public class PersonalizationEditorScreenshotStage : Singleton<PersonalizationEditorScreenshotStage>
     {
+        public const string CAMERA_ANGLES_FILE = "cessCameraAngles.json"; // customization editor screenshot stage camera angles
+
         private GameObject m_stageObject;
 
         private Transform m_holder;
@@ -20,6 +23,46 @@ namespace OverhaulMod.Content.Personalization
         private Camera m_whiteCamera;
 
         private PersonalizationEditorCamera m_screenshotCameraController;
+
+        private PersonalizationEditorScreenshotCameraAnglesInfo m_anglesInfo;
+
+        private void Start()
+        {
+            readCameraAnglesFromDisk();
+        }
+
+        private void readCameraAnglesFromDisk()
+        {
+            string path = Path.Combine(ModCore.dataFolder, CAMERA_ANGLES_FILE);
+
+            PersonalizationEditorScreenshotCameraAnglesInfo info;
+            try
+            {
+                info = ModJsonUtils.DeserializeStream<PersonalizationEditorScreenshotCameraAnglesInfo>(path);
+            }
+            catch
+            {
+                info = new PersonalizationEditorScreenshotCameraAnglesInfo();
+            }
+            info.FixValues();
+            m_anglesInfo = info;
+        }
+
+        private void saveCameraAnglesToDisk()
+        {
+            string path = Path.Combine(ModCore.dataFolder, CAMERA_ANGLES_FILE);
+            ModJsonUtils.WriteStream(path, m_anglesInfo);
+        }
+
+        public PersonalizationEditorScreenshotCameraAnglesInfo GetCameraAnglesInfo()
+        {
+            return m_anglesInfo;
+        }
+
+        public void SaveCameraAnglesInfo()
+        {
+            saveCameraAnglesToDisk();
+        }
 
         private void instatiateStageIfHavent()
         {
@@ -86,14 +129,14 @@ namespace OverhaulMod.Content.Personalization
             personalizationItemInfo.RootObject.Deserialize(m_holder, null);
         }
 
-        public Texture2D TakeScreenshotOfObject(int width, int height)
+        public Texture2D TakeScreenshotOfObject(int width, int height, int resizeAmount)
         {
             instatiateStageIfHavent();
 
             Texture2D whiteTexture = takeScreenshotOfCameraView(m_whiteCamera, width, height);
             Texture2D blackTexture = takeScreenshotOfCameraView(m_blackCamera, width, height);
 
-            Texture2D outputTexture = calculateOutputTexture(whiteTexture, blackTexture, width, height, 4);
+            Texture2D outputTexture = calculateOutputTexture(whiteTexture, blackTexture, width, height, resizeAmount);
 
             DestroyImmediate(whiteTexture);
             DestroyImmediate(blackTexture);
@@ -109,7 +152,7 @@ namespace OverhaulMod.Content.Personalization
             cameraToRender.Render();
             RenderTexture.active = renderTexture;
 
-            Texture2D texture2D = new Texture2D(width, height, TextureFormat.RGB24, false);
+            Texture2D texture2D = new Texture2D(width, height, TextureFormat.RGBA32, false);
             texture2D.ReadPixels(new Rect(0f, 0f, width, height), 0, 0);
 
             cameraToRender.targetTexture = null;

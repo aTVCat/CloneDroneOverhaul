@@ -205,7 +205,9 @@
     <Compile Include="Content\Personalization\PersonalizationEditorObjectCVMModel.cs" />
     <Compile Include="Content\Personalization\PersonalizationEditorObjectFireParticles.cs" />
     <Compile Include="Content\Personalization\PersonalizationEditorObjectInfo.cs" />
-    <Compile Include="Content\Personalization\PersonalizationEditorScreenshotManager.cs" />
+    <Compile Include="Content\Personalization\PersonalizationEditorScreenshotCameraAngle.cs" />
+    <Compile Include="Content\Personalization\PersonalizationEditorScreenshotCameraAnglesInfo.cs" />
+    <Compile Include="Content\Personalization\PersonalizationEditorScreenshotStage.cs" />
     <Compile Include="Content\Personalization\PersonalizationEditorScreenshotOverlay.cs" />
     <Compile Include="Content\Personalization\PersonalizationEditorTemplateManager.cs" />
     <Compile Include="Content\Personalization\PersonalizationItemLockInfo.cs" />

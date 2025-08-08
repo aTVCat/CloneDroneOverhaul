@@ -47,6 +47,11 @@ namespace OverhaulMod.UI
             return HumanFactsManager.Instance.FavouriteColors[Mathf.Max(0, m_favoriteColorPreviewDropdown.value - 1)].ColorValue;
         }
 
+        public void SetRandomFavoriteColor()
+        {
+            m_favoriteColorPreviewDropdown.value = Random.Range(0, m_favoriteColorPreviewDropdown.options.Count);
+        }
+
         public void SetConditionOptions(List<Dropdown.OptionData> options)
         {
             m_presetPreviewDropdown.options = options;

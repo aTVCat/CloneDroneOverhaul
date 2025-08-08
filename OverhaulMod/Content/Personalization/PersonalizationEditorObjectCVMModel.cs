@@ -143,7 +143,17 @@ namespace OverhaulMod.Content.Personalization
             if (preset == null || preset.CvmFilePath.IsNullOrEmpty())
                 return;
 
-            string path = Path.Combine(objectBehaviour.ControllerInfo.ItemInfo.RootFolderPath, preset.CvmFilePath);
+            PersonalizationItemInfo itemInfo;
+            if (PersonalizationEditorManager.IsInEditor())
+            {
+                itemInfo = PersonalizationEditorManager.Instance.currentEditingItemInfo;
+            }
+            else
+            {
+                itemInfo = objectBehaviour.ControllerInfo.ItemInfo;
+            }
+
+            string path = Path.Combine(itemInfo.RootFolderPath, preset.CvmFilePath);
             if (m_loadedModel == null)
             {
                 m_loadedModel = CVMImporter.LoadModel(path);

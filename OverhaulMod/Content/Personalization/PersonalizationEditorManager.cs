@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.UI;
 
 namespace OverhaulMod.Content.Personalization
@@ -38,6 +39,10 @@ namespace OverhaulMod.Content.Personalization
         private bool m_isInPlaytestMode;
 
         private bool m_isInScreenshotMode;
+
+        private Color m_ambientColorBeforeScreenshotMode;
+
+        private AmbientMode m_ambientModeBeforeScreenshotMode;
 
         private GreatSwordPreviewController m_greatSwordPreviewController;
 
@@ -683,11 +688,17 @@ namespace OverhaulMod.Content.Personalization
 
             m_isInScreenshotMode = true;
 
+            m_ambientColorBeforeScreenshotMode = RenderSettings.ambientLight;
+            m_ambientModeBeforeScreenshotMode = RenderSettings.ambientMode;
+
+            RenderSettings.ambientLight = Color.white * 0.8f;
+            RenderSettings.ambientMode = AmbientMode.Flat;
+
             m_camera.gameObject.SetActive(false);
 
             UIPersonalizationEditor.instance.HideWindows();
 
-            PersonalizationEditorScreenshotManager manager = PersonalizationEditorScreenshotManager.Instance;
+            PersonalizationEditorScreenshotStage manager = PersonalizationEditorScreenshotStage.Instance;
             manager.SpawnItemInHolder(currentEditingItemInfo);
 
             GameObject stage = manager.GetStage();
@@ -703,17 +714,20 @@ namespace OverhaulMod.Content.Personalization
             m_screenshotOverlay.Show();
         }
 
-        public void ExitScreenshotStage()
+        public void ExitScreenshotMode()
         {
             if (!m_isInScreenshotMode) return;
 
             m_isInScreenshotMode = false;
 
+            RenderSettings.ambientLight = m_ambientColorBeforeScreenshotMode;
+            RenderSettings.ambientMode = m_ambientModeBeforeScreenshotMode;
+
             m_camera.gameObject.SetActive(true);
 
             UIPersonalizationEditor.instance.ShowWindows();
 
-            PersonalizationEditorScreenshotManager manager = PersonalizationEditorScreenshotManager.Instance;
+            PersonalizationEditorScreenshotStage manager = PersonalizationEditorScreenshotStage.Instance;
 
             GameObject stage = manager.GetStage();
             stage.SetActive(false);

@@ -62,8 +62,17 @@ namespace OverhaulMod.Content.Personalization
             bool up = Input.GetKey(KeyCode.Space);
             bool down = Input.GetKey(KeyCode.LeftControl);
 
+            bool rollLeft = false;
+            bool rollRight = false;
+            if (IsScreenshotStageCamera)
+            {
+                rollLeft = Input.GetKey(KeyCode.Q);
+                rollRight = Input.GetKey(KeyCode.E);
+            }
+
             float y = Input.GetAxis("Mouse X");
             float x = -Input.GetAxis("Mouse Y");
+            float z = (rollRight ? 45f : (rollLeft ? -45f : 0f)) * Time.unscaledDeltaTime;
 
             if (forward)
                 vector += base.transform.forward;
@@ -86,6 +95,7 @@ namespace OverhaulMod.Content.Personalization
             Vector3 currentEulerAngles = base.transform.eulerAngles;
             float newX = currentEulerAngles.x + x;
             float newY = currentEulerAngles.y + y;
+            float newZ = currentEulerAngles.z + z;
 
             if (newX > 180f)
                 newX -= 360f;
@@ -95,7 +105,7 @@ namespace OverhaulMod.Content.Personalization
             newX = Mathf.Min(90f, newX);
 
             base.transform.position += vector * deltaTime;
-            base.transform.eulerAngles = new Vector3(newX, newY, 0f);
+            base.transform.eulerAngles = new Vector3(newX, newY, newZ);
         }
     }
 }

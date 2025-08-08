@@ -102,7 +102,8 @@ namespace OverhaulMod.UI
                     DisplayedForVerifiers = true
                 },
                 new UIElementPersonalizationEditorDropdown.OptionData(true),
-                new UIElementPersonalizationEditorDropdown.OptionData("Screenshot mode", "Exit-V2-16x16", PersonalizationEditorManager.Instance.EnterScreenshotMode),
+                new UIElementPersonalizationEditorDropdown.OptionData("Enter screenshot mode", "Exit-V2-16x16", instance.EnterScreenshotMode),
+                new UIElementPersonalizationEditorDropdown.OptionData("Exit screenshot mode", "Exit-V2-16x16",instance.ExitScreenshotMode),
                 new UIElementPersonalizationEditorDropdown.OptionData("Exit", "Exit-V2-16x16", instance.OnExitButtonClicked),
             };
 
@@ -113,19 +114,19 @@ namespace OverhaulMod.UI
 
             s_windowOptions = new List<UIElementPersonalizationEditorDropdown.OptionData>()
             {
-                new UIElementPersonalizationEditorDropdown.OptionData("Show item info editor", "Redirect-16x16", ShowInspector),
-                new UIElementPersonalizationEditorDropdown.OptionData("Show object editor", "Redirect-16x16", ShowObjectProperties),
+                new UIElementPersonalizationEditorDropdown.OptionData("Show item info editor", "Redirect-16x16", instance.ShowInspector),
+                new UIElementPersonalizationEditorDropdown.OptionData("Show object editor", "Redirect-16x16", instance.ShowObjectProperties),
                 new UIElementPersonalizationEditorDropdown.OptionData(true),
-                new UIElementPersonalizationEditorDropdown.OptionData("Show item moderator", "Redirect-16x16", ShowItemModerator),
+                new UIElementPersonalizationEditorDropdown.OptionData("Show item moderator", "Redirect-16x16", instance.ShowItemModerator),
             };
 
             s_helpOptions = new List<UIElementPersonalizationEditorDropdown.OptionData>
             {
                 new UIElementPersonalizationEditorDropdown.OptionData("Welcome message", "Redirect-16x16", PersonalizationEditorManager.Instance.WelcomeMessage),
-                new UIElementPersonalizationEditorDropdown.OptionData("Guide: Introduction", "Redirect-16x16", DropdownGuide),
+                new UIElementPersonalizationEditorDropdown.OptionData("Guide: Introduction", "Redirect-16x16", instance.DropdownGuide),
             };
             if (ModFeatures.IsEnabled(ModFeatures.FeatureType.PersonalizationEditorTutorialVideo)) s_helpOptions.Add(new UIElementPersonalizationEditorDropdown.OptionData("Tutorial video", "Redirect-16x16", TutorialVideo));
-            s_helpOptions.Add(new UIElementPersonalizationEditorDropdown.OptionData("About", "Redirect-16x16", OnAboutButtonClicked));
+            s_helpOptions.Add(new UIElementPersonalizationEditorDropdown.OptionData("About", "Redirect-16x16", instance.OnAboutButtonClicked));
 
             m_toolbarWindowButton.interactable = false;
             m_toolbarUploadButton.interactable = false;
@@ -252,13 +253,13 @@ namespace OverhaulMod.UI
 
         public void ShowWindows()
         {
-            foreach (var window in ModUIManager.Instance.windowManager.GetWindows())
+            foreach (ModUIManager.WindowBehaviour window in ModUIManager.Instance.windowManager.GetWindows())
                 window.Show();
         }
 
         public void HideWindows()
         {
-            foreach (var window in ModUIManager.Instance.windowManager.GetWindows())
+            foreach (ModUIManager.WindowBehaviour window in ModUIManager.Instance.windowManager.GetWindows())
                 window.Hide();
         }
 
@@ -341,8 +342,20 @@ namespace OverhaulMod.UI
 
         public void TutorialVideo()
         {
-            UIPersonalizationEditor.instance.Dropdown.Hide();
+            Dropdown.Hide();
             Application.OpenURL("https://youtu.be/xdbdb-WizSo");
+        }
+
+        public void EnterScreenshotMode()
+        {
+            Dropdown.Hide();
+            PersonalizationEditorManager.Instance.EnterScreenshotMode();
+        }
+
+        public void ExitScreenshotMode()
+        {
+            Dropdown.Hide();
+            PersonalizationEditorManager.Instance.ExitScreenshotMode();
         }
     }
 }
