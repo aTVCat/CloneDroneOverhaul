@@ -1,0 +1,8 @@
+# Changes
+- Added an option to never show customization editor guide again
+- Changed personalization assets version format
+- Updated floating dust particles
+
+# Fixes
+- Particles stop working after a while
+- Particles with flashes crash the game after a while
