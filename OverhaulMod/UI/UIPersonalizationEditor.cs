@@ -102,8 +102,14 @@ namespace OverhaulMod.UI
                     DisplayedForVerifiers = true
                 },
                 new UIElementPersonalizationEditorDropdown.OptionData(true),
-                new UIElementPersonalizationEditorDropdown.OptionData("Enter screenshot mode", "Exit-V2-16x16", instance.EnterScreenshotMode),
-                new UIElementPersonalizationEditorDropdown.OptionData("Exit screenshot mode", "Exit-V2-16x16",instance.ExitScreenshotMode),
+                new UIElementPersonalizationEditorDropdown.OptionData("Enter screenshot mode", "Exit-V2-16x16", instance.EnterScreenshotMode)
+                {
+                    DisplayedForVerifiers = true
+                },
+                new UIElementPersonalizationEditorDropdown.OptionData("Exit screenshot mode", "Exit-V2-16x16",instance.ExitScreenshotMode)
+                {
+                    DisplayedForVerifiers = true
+                },
                 new UIElementPersonalizationEditorDropdown.OptionData("Exit", "Exit-V2-16x16", instance.OnExitButtonClicked),
             };
 

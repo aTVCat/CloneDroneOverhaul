@@ -2,7 +2,6 @@
 using OverhaulMod.Utils;
 using System.Collections;
 using System.IO;
-using System.Net;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Networking;
@@ -48,6 +47,8 @@ namespace OverhaulMod.UI
         [UIElement("PreviewImage")]
         private readonly RawImage m_previewImage;
 
+        public bool HasCardVisuals;
+
         private Button m_button;
 
         private Image m_bg;
@@ -73,7 +74,9 @@ namespace OverhaulMod.UI
 
             GlobalEventManager.Instance.AddEventListener(PersonalizationManager.ITEM_EQUIPPED_OR_UNEQUIPPED_EVENT, RefreshDisplays);
             RefreshDisplays();
-            LoadIcon();
+
+            if (HasCardVisuals)
+                LoadIcon();
 
             m_refreshNameHolderNextFrame = true;
         }

@@ -288,8 +288,6 @@ namespace OverhaulMod.UI
                     m_socialButtonPopoutHolder.anchoredPosition = overhaul ? m_newSocialButtonPopoutHolderPosition : m_initialSocialButtonPopoutHolderPosition;
                 }
 
-                m_hypocrisisSkinHolder.gameObject.SetActive(hypocrisis);
-
                 if (hypocrisis && !m_hasSpawnedHypocrisisSkin)
                 {
                     ModUIConstants.ShowTitleScreenHypocrisisSkin(m_hypocrisisSkinHolder);
@@ -360,6 +358,7 @@ namespace OverhaulMod.UI
             bool flag = reworkEnabled && shouldBeActive;
             m_container.SetActive(flag);
             m_miscElementsObject.SetActive(flag);
+            m_hypocrisisSkinHolder.gameObject.SetActive(shouldBeActive && skin == TitleScreenSkinType.Hypocrisis3);
 
             if (Time.frameCount % 20 == 0)
             {

@@ -711,6 +711,7 @@ namespace OverhaulMod.UI
 
             UIElementPersonalizationItemDisplay personalizationItemDisplay = moddedObject.gameObject.AddComponent<UIElementPersonalizationItemDisplay>();
             personalizationItemDisplay.ItemInfo = item;
+            personalizationItemDisplay.HasCardVisuals = spawnCard;
             personalizationItemDisplay.SetBrowserUI(this);
             personalizationItemDisplay.InitializeElement();
 

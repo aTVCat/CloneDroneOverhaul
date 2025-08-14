@@ -1,4 +1,5 @@
-﻿//#define OVERRIDE_VER
+﻿#define OVERRIDE_VER
+//#define DISABLE_EXCLUSIVE_PERKS
 //#define DEVELOPER_BUILD
 
 using OverhaulMod.Utils;
@@ -11,7 +12,7 @@ namespace OverhaulMod
     {
         public const bool VERSION_4_2_PATCH = true;
 
-        public const bool VERSION_4_3 = true;
+        public const bool VERSION_4_3 = false;
 
         public const bool VERSION_4_4 = false;
 
@@ -20,7 +21,7 @@ namespace OverhaulMod
         public const string EXTRA_INFO_FILE_PATH = "buildInfo.json";
 
 #if OVERRIDE_VER
-        public const string OVERRIDE_VERSION = "0.4.2.1036";
+        public const string OVERRIDE_VERSION = "0.4.2.1037";
 #endif
 
         private static bool s_loaded;
@@ -155,11 +156,15 @@ namespace OverhaulMod
             }
         }
 
-        public static bool isHyperdomeBuild
+        public static bool disableExclusivePerks
         {
             get
             {
+#if DISABLE_EXCLUSIVE_PERKS
+                return true;
+#else
                 return false;
+#endif
             }
         }
 
