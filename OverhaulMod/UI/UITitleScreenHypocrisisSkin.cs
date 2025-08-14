@@ -203,7 +203,6 @@ namespace OverhaulMod.UI
         {
             string[] ids = new string[]
             {
-                "level-editor-ref-objects-nch",
                 "level-editor-custom-level-sounds",
                 "11C6A601-560B-4547-9614-149970671EEB",
                 "more-level-editor-objects",
@@ -224,27 +223,24 @@ namespace OverhaulMod.UI
                     switch (i)
                     {
                         case 0:
-                            stringBuilder.AppendLine("- Textured Level Objects");
-                            break;
-                        case 1:
                             stringBuilder.AppendLine("- Custom Level Sounds");
                             break;
-                        case 2:
+                        case 1:
                             stringBuilder.AppendLine("- Soundpacks Mod");
                             break;
-                        case 3:
+                        case 2:
                             stringBuilder.AppendLine("- Level Editor Extended");
                             break;
-                        case 4:
+                        case 3:
                             stringBuilder.AppendLine("- Level Editor Custom Models");
                             break;
-                        case 5:
+                        case 4:
                             stringBuilder.AppendLine("- Level Assets Directory API");
                             break;
-                        case 6:
+                        case 5:
                             stringBuilder.AppendLine("- Glock-18 Mod");
                             break;
-                        case 7:
+                        case 6:
                             stringBuilder.AppendLine("- Custom robot model editor");
                             break;
                         default:
