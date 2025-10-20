@@ -13,7 +13,7 @@ namespace OverhaulMod.UI
 {
     public class UITitleScreenHypocrisisSkin : OverhaulUIBehaviour
     {
-        public static readonly PublishedFileId_t LEVEL_STEAM_ID = new PublishedFileId_t(3494951054);
+        public static readonly PublishedFileId_t LEVEL_STEAM_ID = new PublishedFileId_t(3557418313);
 
         public static readonly PublishedFileId_t MAIN_MENU_LEVEL_STEAM_ID = new PublishedFileId_t(3522164720);
 
@@ -405,7 +405,7 @@ namespace OverhaulMod.UI
                     Author = "Archaeologist",
                     AuthorID = (CSteamID)76561198886409131,
                     ItemID = LEVEL_STEAM_ID,
-                    Name = "HYPOCRISIS: Chapter 3, The Deserters Saga",
+                    Name = "HYPOCRISIS: Chapter 3, Pack 1, The Deserters Saga",
                     Description = string.Empty
                 };
             }

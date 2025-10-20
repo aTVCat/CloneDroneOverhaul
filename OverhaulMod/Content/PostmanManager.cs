@@ -245,6 +245,56 @@ namespace OverhaulMod
             });
         }
 
+        public void SendDeletionRequest(PersonalizationItemInfo personalizationItem, Action successCallback, Action<string> errorCallback)
+        {
+            string weaponString;
+            switch (personalizationItem.Weapon)
+            {
+                case Combat.ModWeaponsManager.SCYTHE_TYPE:
+                    weaponString = "Scythe";
+                    break;
+                default:
+                    weaponString = personalizationItem.Weapon.ToString();
+                    break;
+            }
+
+            int color = int.Parse("ff0000", System.Globalization.NumberStyles.HexNumber);
+            string userInfo = $"- **User:** {SteamFriends.GetPersonaName()} [[Profile]](<https://steamcommunity.com/profiles/{ModUserInfo.localPlayerSteamID}>)\n- **PlayFab ID:** {ModUserInfo.localPlayerPlayFabID}";
+            string itemInfo = $"- **Name:** {personalizationItem.Name}\n- **Author:** {personalizationItem.GetAuthorsString()}\n- **Category:** {personalizationItem.Category}\n- **Weapon:** {weaponString}\n- **Version:** {personalizationItem.Version}";
+
+            WebhookObject obj1 = new WebhookObject()
+            {
+                content = $"## __DELETION REQUEST. v{ModBuildInfo.version}__\nid: {personalizationItem.ItemID}",
+                embeds = new Embed[]
+                {
+                    new Embed()
+                    {
+                        title = "**Information**",
+                        description = itemInfo,
+                        color = color,
+                    },
+
+                    new Embed()
+                    {
+                        title = "**Details**",
+                        description = $"{userInfo}",
+                        color = color,
+                    },
+                },
+            };
+
+            DownloadDestinations(delegate (Destinations destinations)
+            {
+                if (destinations == null)
+                {
+                    errorCallback?.Invoke("Could not get the link");
+                    return;
+                }
+
+                SendMessage(obj1, destinations.VerificationRequest, successCallback, errorCallback);
+            });
+        }
+
         public async void SendMessage(WebhookObject webhookObject, string url, Action successCallback, Action<string> errorCallback)
         {
             try
