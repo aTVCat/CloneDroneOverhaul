@@ -404,7 +404,7 @@ namespace OverhaulMod.UI
 
         public void SetSkinAccordingToSettings()
         {
-            bool hypocrisisModEnabled = ModSpecialUtils.IsModEnabled("hypocrisis-mod");
+            bool hypocrisisModEnabled = ModBuildInfo.ShouldShowHypocrisis3Special();
             if (hypocrisisModEnabled)
             {
                 skin = TitleScreenSkinType.Hypocrisis3;
@@ -633,7 +633,7 @@ namespace OverhaulMod.UI
                     skin = TitleScreenSkinType.Overhaul;
                     break;
                 case TitleScreenSkinType.Overhaul:
-                    if (ModSpecialUtils.IsModEnabled("hypocrisis-mod"))
+                    if (ModBuildInfo.ShouldShowHypocrisis3Special())
                     {
                         skin = TitleScreenSkinType.Hypocrisis3;
                     }

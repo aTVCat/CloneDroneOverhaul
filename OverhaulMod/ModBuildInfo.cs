@@ -21,7 +21,7 @@ namespace OverhaulMod
         public const string EXTRA_INFO_FILE_PATH = "buildInfo.json";
 
 #if OVERRIDE_VER
-        public const string OVERRIDE_VERSION = "0.4.2.1038";
+        public const string OVERRIDE_VERSION = "0.4.2.1039";
 #endif
 
         private static bool s_loaded;
@@ -220,6 +220,11 @@ namespace OverhaulMod
                 extraInfo = loadedExtraInfo;
             }
             catch { }
+        }
+
+        public static bool ShouldShowHypocrisis3Special()
+        {
+            return ModFeatures.IsEnabled(ModFeatures.FeatureType.Hypocrisis3Special) && ModSpecialUtils.IsModEnabled("hypocrisis-mod");
         }
 
         public static void GenerateExtraInfo()

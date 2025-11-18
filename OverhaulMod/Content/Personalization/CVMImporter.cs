@@ -11,7 +11,7 @@ namespace OverhaulMod.Content.Personalization
     // most of the code is from Custom robot model editor mod by X606
     public static class CVMImporter
     {
-        public static bool InstantiateModel(SaveClass saveClass, WeaponType type, WeaponVariant variant, bool replaceColors, bool showFireParticles, Transform parent, out string error)
+        public static bool InstantiateModel(SaveClass saveClass, WeaponType type, WeaponVariant2 variant, bool replaceColors, bool showFireParticles, Transform parent, out string error)
         {
             WeaponSpecialType weaponSpecialType = GetWeaponSpecialType(type, variant);
             if (weaponSpecialType != (WeaponSpecialType)(-1))
@@ -186,20 +186,20 @@ namespace OverhaulMod.Content.Personalization
             return t;
         }
 
-        public static WeaponSpecialType GetWeaponSpecialType(WeaponType weaponType, WeaponVariant weaponVariant)
+        public static WeaponSpecialType GetWeaponSpecialType(WeaponType weaponType, WeaponVariant2 weaponVariant)
         {
             if (weaponType == WeaponType.Sword)
             {
-                if (weaponVariant == WeaponVariant.NormalMultiplayer)
+                if (weaponVariant == WeaponVariant2.NormalMultiplayer)
                     return WeaponSpecialType.GreatSword;
-                else if (weaponVariant == WeaponVariant.OnFireMultiplayer)
+                else if (weaponVariant == WeaponVariant2.OnFireMultiplayer)
                     return WeaponSpecialType.GreatFireSword;
-                else if (weaponVariant == WeaponVariant.OnFire)
+                else if (weaponVariant == WeaponVariant2.OnFire)
                     return WeaponSpecialType.FireSword;
             }
             else if (weaponType == WeaponType.Hammer)
             {
-                if (weaponVariant == WeaponVariant.OnFire)
+                if (weaponVariant == WeaponVariant2.OnFire)
                     return WeaponSpecialType.FireHammer;
             }
             return (WeaponSpecialType)(-1);

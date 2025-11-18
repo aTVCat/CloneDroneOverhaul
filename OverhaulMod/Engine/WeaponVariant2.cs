@@ -1,6 +1,6 @@
 ﻿namespace OverhaulMod.Engine
 {
-    public enum WeaponVariant
+    public enum WeaponVariant2
     {
         None,
 

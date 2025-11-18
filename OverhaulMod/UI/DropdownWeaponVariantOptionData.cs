@@ -5,9 +5,9 @@ namespace OverhaulMod.UI
 {
     public class DropdownWeaponVariantOptionData : Dropdown.OptionData
     {
-        public WeaponVariant Value;
+        public WeaponVariant2 Value;
 
-        public DropdownWeaponVariantOptionData(WeaponVariant value)
+        public DropdownWeaponVariantOptionData(WeaponVariant2 value)
         {
             text = WeaponVariantManager.GetWeaponVariantString(value);
             Value = value;

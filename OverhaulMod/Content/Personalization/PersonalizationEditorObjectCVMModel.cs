@@ -22,12 +22,12 @@ namespace OverhaulMod.Content.Personalization
             }
         }
 
-        public Dictionary<WeaponVariant, CVMModelPreset> presets
+        public Dictionary<WeaponVariant2, CVMModelPreset> presets
         {
             get
             {
                 PersonalizationEditorObjectBehaviour ob = objectBehaviour;
-                return ob.GetPropertyValue<Dictionary<WeaponVariant, CVMModelPreset>>(nameof(presets), null);
+                return ob.GetPropertyValue<Dictionary<WeaponVariant2, CVMModelPreset>>(nameof(presets), null);
             }
             set
             {
@@ -57,7 +57,7 @@ namespace OverhaulMod.Content.Personalization
         private void Start()
         {
             if (presets == null)
-                presets = new Dictionary<WeaponVariant, CVMModelPreset>();
+                presets = new Dictionary<WeaponVariant2, CVMModelPreset>();
 
             if (PersonalizationEditorManager.IsInEditor())
             {
@@ -78,35 +78,35 @@ namespace OverhaulMod.Content.Personalization
             }
         }
 
-        public WeaponVariant GetUnusedShowCondition()
+        public WeaponVariant2 GetUnusedShowCondition()
         {
             WeaponType weaponType = objectBehaviour.ControllerInfo.ItemInfo.Weapon;
-            if (!presets.ContainsKey(WeaponVariant.Normal))
-                return WeaponVariant.Normal;
-            else if (!presets.ContainsKey(WeaponVariant.OnFire) && weaponType != WeaponType.Bow)
-                return WeaponVariant.OnFire;
-            else if (!presets.ContainsKey(WeaponVariant.NormalMultiplayer) && weaponType == WeaponType.Sword)
-                return WeaponVariant.NormalMultiplayer;
-            else if (!presets.ContainsKey(WeaponVariant.OnFireMultiplayer) && weaponType == WeaponType.Sword)
-                return WeaponVariant.OnFireMultiplayer;
+            if (!presets.ContainsKey(WeaponVariant2.Normal))
+                return WeaponVariant2.Normal;
+            else if (!presets.ContainsKey(WeaponVariant2.OnFire) && weaponType != WeaponType.Bow)
+                return WeaponVariant2.OnFire;
+            else if (!presets.ContainsKey(WeaponVariant2.NormalMultiplayer) && weaponType == WeaponType.Sword)
+                return WeaponVariant2.NormalMultiplayer;
+            else if (!presets.ContainsKey(WeaponVariant2.OnFireMultiplayer) && weaponType == WeaponType.Sword)
+                return WeaponVariant2.OnFireMultiplayer;
 
-            return WeaponVariant.None;
+            return WeaponVariant2.None;
         }
 
-        public WeaponVariant GetCurrentShowCondition()
+        public WeaponVariant2 GetCurrentShowCondition()
         {
             if (PersonalizationEditorManager.IsInEditor())
             {
                 return PersonalizationEditorManager.Instance.previewPresetKey;
             }
-            visibilityController.GetWeaponVariant(out WeaponVariant showConditions);
+            visibilityController.GetWeaponVariant(out WeaponVariant2 showConditions);
             return showConditions;
         }
 
         public CVMModelPreset GetCurrentPreset()
         {
-            WeaponVariant condition = GetCurrentShowCondition();
-            Dictionary<WeaponVariant, CVMModelPreset> d = presets;
+            WeaponVariant2 condition = GetCurrentShowCondition();
+            Dictionary<WeaponVariant2, CVMModelPreset> d = presets;
             if (d == null || d.Count == 0)
                 return null;
 
@@ -117,10 +117,10 @@ namespace OverhaulMod.Content.Personalization
                     return null;
                 }
 
-                if (condition == WeaponVariant.OnFireMultiplayer && d.ContainsKey(WeaponVariant.OnFire))
-                    return d[WeaponVariant.OnFire];
-                else if (condition == WeaponVariant.NormalMultiplayer && d.ContainsKey(WeaponVariant.Normal))
-                    return d[WeaponVariant.Normal];
+                if (condition == WeaponVariant2.OnFireMultiplayer && d.ContainsKey(WeaponVariant2.OnFire))
+                    return d[WeaponVariant2.OnFire];
+                else if (condition == WeaponVariant2.NormalMultiplayer && d.ContainsKey(WeaponVariant2.Normal))
+                    return d[WeaponVariant2.Normal];
 
                 foreach (CVMModelPreset value in d.Values)
                     return value;

@@ -42,7 +42,8 @@ namespace OverhaulMod.Content.Personalization
             {
                 if (!m_greatSwordModel)
                 {
-                    m_greatSwordModel = Instantiate(WeaponManager.Instance.GetWeaponModelReplacementPrefab(WeaponType.Sword, false, true, false), m_weaponModel.transform, false).gameObject;
+                    PhysicalWeaponModelType weaponModelType = WeaponManager.Instance.GetWeaponModelReplacementPrefab(WeaponType.Sword, false, true, false);
+                    m_greatSwordModel = Instantiate(WeaponManager.Instance.GetDefaultWeaponModel(weaponModelType), m_weaponModel.transform, false).gameObject;
                     m_greatSwordModel.transform.localScale = Vector3.one * 1.01f;
                 }
                 m_greatSwordModel.SetActive(true);

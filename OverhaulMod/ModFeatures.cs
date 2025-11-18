@@ -172,6 +172,12 @@ namespace OverhaulMod
                 case FeatureType.CustomizationItemCards:
                     result = ModBuildInfo.VERSION_4_3;
                     break;
+                case FeatureType.TitleScreenLevelCustomization:
+                    result = false;
+                    break;
+                case FeatureType.Hypocrisis3Special:
+                    result = false;
+                    break;
                 default:
                     return false;
             }
@@ -281,7 +287,11 @@ namespace OverhaulMod
 
             TransitionTips,
 
-            CustomizationItemCards
+            CustomizationItemCards,
+            
+            TitleScreenLevelCustomization,
+
+            Hypocrisis3Special,
         }
     }
 }

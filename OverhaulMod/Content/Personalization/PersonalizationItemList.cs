@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using UnityEngine;
 
 namespace OverhaulMod.Content.Personalization
 {
@@ -109,14 +110,14 @@ namespace OverhaulMod.Content.Personalization
                     _ = Directory.CreateDirectory(filesDirectory);
 
                 string rawData = ModFileUtils.ReadText(infoFilePath);
-                if (personalizationItemMetaData.CustomizationSystemVersion < 1) // meta data files update, renamed OverhaulMod.Content.Personalization.PersonalizationEditorObjectShowConditions to OverhaulMod.Engine.WeaponVariant
+                if (personalizationItemMetaData.CustomizationSystemVersion < 1) // meta data files update, renamed OverhaulMod.Content.Personalization.PersonalizationEditorObjectShowConditions to OverhaulMod.Engine.WeaponVariant2
                 {
                     updateMetaDataFile = true;
                     updateInfoFile = true;
 
                     rawData = rawData.Replace("OverhaulMod.Content.Personalization.PersonalizationEditorObjectShowConditions", "OverhaulMod.Engine.WeaponVariant");
                 }
-                if (personalizationItemMetaData.CustomizationSystemVersion < 2) // removed "Is" from every value name in WeaponVariant enum
+                if (personalizationItemMetaData.CustomizationSystemVersion < 2) // removed "Is" from every value name in WeaponVariant2 enum
                 {
                     updateMetaDataFile = true;
                     updateInfoFile = true;
@@ -125,6 +126,13 @@ namespace OverhaulMod.Content.Personalization
                     rawData = rawData.Replace("\"IsOnFire\"", "\"OnFire\"");
                     rawData = rawData.Replace("\"IsNormalMultiplayer\"", "\"NormalMultiplayer\"");
                     rawData = rawData.Replace("\"IsOnFireMultiplayer\"", "\"OnFireMultiplayer\"");
+                }
+                if (personalizationItemMetaData.CustomizationSystemVersion < 3) // renamed WeaponVariant to OverhaulWeaponVariant, because the game has similar enum now
+                {
+                    updateMetaDataFile = true;
+                    updateInfoFile = true;
+
+                    rawData = rawData.Replace("OverhaulMod.Engine.WeaponVariant", "OverhaulMod.Engine.WeaponVariant2");
                 }
                 personalizationItemMetaData.CustomizationSystemVersion = PersonalizationItemMetaData.CurrentCustomizationSystemVersion;
 

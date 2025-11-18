@@ -521,7 +521,7 @@ namespace OverhaulMod.UI
             _ = pageBuilder.Header3("Player");
             _ = pageBuilder.DropdownWithImage(settingsMenu.MultiplayerCharacterModelDropdown.options, settingsMenu.MultiplayerCharacterModelDropdown.value, OnCharacterModelChanged);
             _ = pageBuilder.DropdownWithImage(settingsMenu.MultiplayerFavoriteColorDropdown.options, settingsMenu.MultiplayerFavoriteColorDropdown.value, OnMultiplayerFavoriteColorDropdownChanged);
-            _ = pageBuilder.Toggle(settingsMenu.UseSkinInSinglePlayer.isOn, OnUseSkinInSinglePlayerToggleChanged, "Use skin in singleplayer");
+            //_ = pageBuilder.Toggle(settingsMenu.UseSkinInSinglePlayer.isOn, OnUseSkinInSinglePlayerToggleChanged, "Use skin in singleplayer");
             _ = pageBuilder.Button("Select emotes", delegate
             {
                 ModCache.gameUIRoot.EmoteSettingsUI.Show();
@@ -1062,7 +1062,7 @@ namespace OverhaulMod.UI
             _ = pageBuilder.Header3("Skin");
             _ = pageBuilder.DropdownWithImage(settingsMenu.MultiplayerCharacterModelDropdown.options, settingsMenu.MultiplayerCharacterModelDropdown.value, OnCharacterModelChanged);
             _ = pageBuilder.DropdownWithImage(settingsMenu.MultiplayerFavoriteColorDropdown.options, settingsMenu.MultiplayerFavoriteColorDropdown.value, OnMultiplayerFavoriteColorDropdownChanged);
-            _ = pageBuilder.Toggle(settingsMenu.UseSkinInSinglePlayer.isOn, OnUseSkinInSinglePlayerToggleChanged, "Use skin in singleplayer");
+            //_ = pageBuilder.Toggle(settingsMenu.UseSkinInSinglePlayer.isOn, OnUseSkinInSinglePlayerToggleChanged, "Use skin in singleplayer");
 
             _ = pageBuilder.Header3("Personalization");
             _ = pageBuilder.Button("Select emotes", delegate
@@ -1942,14 +1942,14 @@ namespace OverhaulMod.UI
             }
         }
 
-        public void OnUseSkinInSinglePlayerToggleChanged(bool value)
+        /*public void OnUseSkinInSinglePlayerToggleChanged(bool value)
         {
             SettingsMenu settingsMenu = ModCache.settingsMenu;
             if (settingsMenu)
             {
                 settingsMenu.UseSkinInSinglePlayer.isOn = value;
             }
-        }
+        }*/
 
         public void OnRelayToggleChanged(bool value)
         {

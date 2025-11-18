@@ -149,7 +149,7 @@ namespace OverhaulMod.UI
                 }
 
                 CharacterModelCustomizationEntry characterModelCustomizationEntry = getCharacterModelUnlockedByChallenge(challengeDefinition.ChallengeID);
-                Sprite sprite = characterModelCustomizationEntry != null ? characterModelCustomizationEntry.ImageSprite : challengeDefinition.ImageSprite;
+                Sprite sprite = characterModelCustomizationEntry != null ? characterModelCustomizationEntry.GetSprite() : challengeDefinition.UnlockedImageSprite;
 
                 string rewardText = string.Empty;
                 UpgradeDescription upgradeUnlockedByChallenge = UpgradeManager.Instance.GetUpgradeUnlockedByChallenge(challengeDefinition.ChallengeID);

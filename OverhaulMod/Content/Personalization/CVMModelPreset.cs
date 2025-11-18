@@ -8,7 +8,7 @@ namespace OverhaulMod.Content.Personalization
 
         public WeaponType Weapon;
 
-        public WeaponVariant Variant;
+        public WeaponVariant2 Variant;
 
         public bool ReplaceColors = true;
 
@@ -24,7 +24,7 @@ namespace OverhaulMod.Content.Personalization
             if (defaultValues)
             {
                 Weapon = WeaponType.Sword;
-                Variant = WeaponVariant.Normal;
+                Variant = WeaponVariant2.Normal;
             }
         }
     }

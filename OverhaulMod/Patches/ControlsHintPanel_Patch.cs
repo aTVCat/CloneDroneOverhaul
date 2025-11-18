@@ -11,7 +11,7 @@ namespace OverhaulMod.Patches
         {
             if (PhotoManager.Instance.IsInPhotoMode())
             {
-                __instance.RaptorInstructions.SetActive(false);
+                __instance.DefaultMountControlInstructions.SetActive(false);
                 __instance.LaserInstructions.SetActive(false);
                 return false;
             }

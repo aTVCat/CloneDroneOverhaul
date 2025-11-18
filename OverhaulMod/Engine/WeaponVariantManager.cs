@@ -26,42 +26,42 @@ namespace OverhaulMod.Engine
             }
         }
 
-        public static void GetWeaponVariant(FirstPersonMover firstPersonMover, WeaponType weaponType, out WeaponVariant showConditions)
+        public static void GetWeaponVariant(FirstPersonMover firstPersonMover, WeaponType weaponType, out WeaponVariant2 showConditions)
         {
             GetWeaponVariant(firstPersonMover, weaponType, out bool of, out bool gs);
             if (!of && !gs)
             {
-                showConditions = WeaponVariant.Normal;
+                showConditions = WeaponVariant2.Normal;
             }
             else if (of && !gs)
             {
-                showConditions = WeaponVariant.OnFire;
+                showConditions = WeaponVariant2.OnFire;
             }
             else if (!of && gs)
             {
-                showConditions = WeaponVariant.NormalMultiplayer;
+                showConditions = WeaponVariant2.NormalMultiplayer;
             }
             else if (of && gs)
             {
-                showConditions = WeaponVariant.OnFireMultiplayer;
+                showConditions = WeaponVariant2.OnFireMultiplayer;
             }
             else
             {
-                showConditions = WeaponVariant.None;
+                showConditions = WeaponVariant2.None;
             }
         }
 
-        public static string GetWeaponVariantString(WeaponVariant weaponVariant)
+        public static string GetWeaponVariantString(WeaponVariant2 weaponVariant)
         {
             switch (weaponVariant)
             {
-                case WeaponVariant.Normal:
+                case WeaponVariant2.Normal:
                     return "Normal";
-                case WeaponVariant.OnFire:
+                case WeaponVariant2.OnFire:
                     return "Fire";
-                case WeaponVariant.NormalMultiplayer:
+                case WeaponVariant2.NormalMultiplayer:
                     return "Normal (Multiplayer)";
-                case WeaponVariant.OnFireMultiplayer:
+                case WeaponVariant2.OnFireMultiplayer:
                     return "Fire (Multiplayer)";
             }
             return weaponVariant.ToString();

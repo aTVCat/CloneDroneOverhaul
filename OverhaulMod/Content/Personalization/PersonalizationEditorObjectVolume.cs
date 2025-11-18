@@ -13,7 +13,7 @@ namespace OverhaulMod.Content.Personalization
     {
         public static readonly MeshingMode VolumeMeshingMode = MeshingMode.Culled;
 
-        private static readonly Dictionary<WeaponVariant, VolumeSettingsPreset> s_emptySettingsDictionary = new Dictionary<WeaponVariant, VolumeSettingsPreset>();
+        private static readonly Dictionary<WeaponVariant2, VolumeSettingsPreset> s_emptySettingsDictionary = new Dictionary<WeaponVariant2, VolumeSettingsPreset>();
 
         private PersonalizationEditorObjectVisibilityController m_visibilityController;
         public PersonalizationEditorObjectVisibilityController visibilityController
@@ -41,12 +41,12 @@ namespace OverhaulMod.Content.Personalization
             }
         }
 
-        public Dictionary<WeaponVariant, VolumeSettingsPreset> volumeSettingPresets
+        public Dictionary<WeaponVariant2, VolumeSettingsPreset> volumeSettingPresets
         {
             get
             {
                 PersonalizationEditorObjectBehaviour ob = objectBehaviour;
-                return ob.GetPropertyValue<Dictionary<WeaponVariant, VolumeSettingsPreset>>(nameof(volumeSettingPresets), null);
+                return ob.GetPropertyValue<Dictionary<WeaponVariant2, VolumeSettingsPreset>>(nameof(volumeSettingPresets), null);
             }
             set
             {
@@ -80,7 +80,7 @@ namespace OverhaulMod.Content.Personalization
             m_hasStarted = true;
 
             if (volumeSettingPresets == null)
-                volumeSettingPresets = new Dictionary<WeaponVariant, VolumeSettingsPreset>();
+                volumeSettingPresets = new Dictionary<WeaponVariant2, VolumeSettingsPreset>();
             else
             {
                 foreach (VolumeSettingsPreset value in volumeSettingPresets.Values)
@@ -108,35 +108,35 @@ namespace OverhaulMod.Content.Personalization
             }
         }
 
-        public WeaponVariant GetUnusedShowCondition()
+        public WeaponVariant2 GetUnusedShowCondition()
         {
             WeaponType weaponType = objectBehaviour.ControllerInfo.ItemInfo.Weapon;
-            if (!volumeSettingPresets.ContainsKey(WeaponVariant.Normal))
-                return WeaponVariant.Normal;
-            else if (!volumeSettingPresets.ContainsKey(WeaponVariant.OnFire) && weaponType != WeaponType.Bow)
-                return WeaponVariant.OnFire;
-            else if (!volumeSettingPresets.ContainsKey(WeaponVariant.NormalMultiplayer) && weaponType == WeaponType.Sword)
-                return WeaponVariant.NormalMultiplayer;
-            else if (!volumeSettingPresets.ContainsKey(WeaponVariant.OnFireMultiplayer) && weaponType == WeaponType.Sword)
-                return WeaponVariant.OnFireMultiplayer;
+            if (!volumeSettingPresets.ContainsKey(WeaponVariant2.Normal))
+                return WeaponVariant2.Normal;
+            else if (!volumeSettingPresets.ContainsKey(WeaponVariant2.OnFire) && weaponType != WeaponType.Bow)
+                return WeaponVariant2.OnFire;
+            else if (!volumeSettingPresets.ContainsKey(WeaponVariant2.NormalMultiplayer) && weaponType == WeaponType.Sword)
+                return WeaponVariant2.NormalMultiplayer;
+            else if (!volumeSettingPresets.ContainsKey(WeaponVariant2.OnFireMultiplayer) && weaponType == WeaponType.Sword)
+                return WeaponVariant2.OnFireMultiplayer;
 
-            return WeaponVariant.None;
+            return WeaponVariant2.None;
         }
 
-        public WeaponVariant GetCurrentShowCondition()
+        public WeaponVariant2 GetCurrentShowCondition()
         {
             if (PersonalizationEditorManager.IsInEditor())
             {
                 return PersonalizationEditorManager.Instance.previewPresetKey;
             }
-            visibilityController.GetWeaponVariant(out WeaponVariant showConditions);
+            visibilityController.GetWeaponVariant(out WeaponVariant2 showConditions);
             return showConditions;
         }
 
         public VolumeSettingsPreset GetCurrentPreset()
         {
-            WeaponVariant condition = GetCurrentShowCondition();
-            Dictionary<WeaponVariant, VolumeSettingsPreset> d = volumeSettingPresets;
+            WeaponVariant2 condition = GetCurrentShowCondition();
+            Dictionary<WeaponVariant2, VolumeSettingsPreset> d = volumeSettingPresets;
             if (d == null || d.Count == 0)
                 return null;
 
@@ -147,10 +147,10 @@ namespace OverhaulMod.Content.Personalization
                     return null;
                 }
 
-                if (condition == WeaponVariant.OnFireMultiplayer && d.ContainsKey(WeaponVariant.OnFire))
-                    return d[WeaponVariant.OnFire];
-                else if (condition == WeaponVariant.NormalMultiplayer && d.ContainsKey(WeaponVariant.Normal))
-                    return d[WeaponVariant.Normal];
+                if (condition == WeaponVariant2.OnFireMultiplayer && d.ContainsKey(WeaponVariant2.OnFire))
+                    return d[WeaponVariant2.OnFire];
+                else if (condition == WeaponVariant2.NormalMultiplayer && d.ContainsKey(WeaponVariant2.Normal))
+                    return d[WeaponVariant2.Normal];
 
                 foreach (VolumeSettingsPreset value in d.Values)
                     return value;

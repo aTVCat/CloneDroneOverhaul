@@ -69,9 +69,12 @@ namespace OverhaulMod.Engine
             GlobalEventManager.Instance.AddEventListener(GlobalEvents.LevelEditorStarted, StopTitleScreenMusic);
             GlobalEventManager.Instance.AddEventListener(PersonalizationEditorManager.EDITOR_STARTED_EVENT, StopTitleScreenMusic);
 
-            Transform transform = ArenaCameraManager.Instance?.ArenaCameraTransform?.parent;
-            if (transform)
-                transform.SetParent(WorldRoot.Instance?.transform);
+            if (ModFeatures.IsEnabled(ModFeatures.FeatureType.TitleScreenLevelCustomization))
+            {
+                Transform transform = ArenaCameraManager.Instance?.ArenaCameraTransform?.parent;
+                if (transform)
+                    transform.SetParent(WorldRoot.Instance?.transform);
+            }
 
             Camera camera = ArenaCameraManager.Instance?.TitleScreenLevelCamera;
             if (camera)
@@ -80,7 +83,7 @@ namespace OverhaulMod.Engine
 
         public bool ShouldLockUserCustomization()
         {
-            return ModSpecialUtils.IsModEnabled("hypocrisis-mod");
+            return ModBuildInfo.ShouldShowHypocrisis3Special();
         }
 
         public void StopTitleScreenMusic()
@@ -195,7 +198,10 @@ namespace OverhaulMod.Engine
                 return;
 
             titleScreenCustomizationInfo.FixValues();
-            _ = ModActionUtils.RunCoroutine(spawnStaticBackgroundCoroutine());
+
+            if (!ModFeatures.IsEnabled(ModFeatures.FeatureType.TitleScreenLevelCustomization)) return;
+
+                _ = ModActionUtils.RunCoroutine(spawnStaticBackgroundCoroutine());
         }
 
         public void SetLevelIsLoadingBG(GameObject gameObject)
@@ -275,7 +281,7 @@ namespace OverhaulMod.Engine
             if (list.IsNullOrEmpty() || MusicTrackIndex < 0 || MusicTrackIndex >= list.Count)
                 return;
 
-            bool isHcModEnabled = ModSpecialUtils.IsModEnabled("hypocrisis-mod");
+            bool isHcModEnabled = ModBuildInfo.ShouldShowHypocrisis3Special();
             if (!isHcModEnabled && MusicTrackIndex == 0)
             {
                 AudioManager.Instance.StopMusic();

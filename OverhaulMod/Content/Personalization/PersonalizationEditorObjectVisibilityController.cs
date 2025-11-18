@@ -4,12 +4,12 @@ namespace OverhaulMod.Content.Personalization
 {
     public class PersonalizationEditorObjectVisibilityController : PersonalizationEditorObjectComponentBase
     {
-        public WeaponVariant enableIfWeaponVariant
+        public WeaponVariant2 enableIfWeaponVariant
         {
             get
             {
                 PersonalizationEditorObjectBehaviour ob = objectBehaviour;
-                return (WeaponVariant)ob.GetPropertyValue(nameof(enableIfWeaponVariant), 0);
+                return (WeaponVariant2)ob.GetPropertyValue(nameof(enableIfWeaponVariant), 0);
             }
             set
             {
@@ -48,10 +48,10 @@ namespace OverhaulMod.Content.Personalization
 
         public bool MustShowTheObject()
         {
-            if (enableIfWeaponVariant == WeaponVariant.None)
+            if (enableIfWeaponVariant == WeaponVariant2.None)
                 return true;
 
-            WeaponVariant weaponVariant1;
+            WeaponVariant2 weaponVariant1;
             if (PersonalizationEditorManager.IsInEditor())
                 weaponVariant1 = PersonalizationEditorManager.Instance.previewPresetKey;
             else
@@ -60,7 +60,7 @@ namespace OverhaulMod.Content.Personalization
             return enableIfWeaponVariant == weaponVariant1;
         }
 
-        public void GetWeaponVariant(out WeaponVariant showConditions)
+        public void GetWeaponVariant(out WeaponVariant2 showConditions)
         {
             WeaponVariantManager.GetWeaponVariant(objectBehaviour.ControllerInfo.Reference.owner, objectBehaviour.ControllerInfo.ItemInfo.Weapon, out showConditions);
         }

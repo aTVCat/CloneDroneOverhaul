@@ -311,10 +311,10 @@ namespace OverhaulMod.UI
                     GlobalEventManager.Instance.Dispatch(PersonalizationEditorManager.OBJECT_EDITED_EVENT);
                 });
 
-                Dictionary<WeaponVariant, CVMModelPreset> presets = model.presets;
+                Dictionary<WeaponVariant2, CVMModelPreset> presets = model.presets;
                 if (presets != null && presets.Count != 0)
                 {
-                    foreach (KeyValuePair<WeaponVariant, CVMModelPreset> keyValue in presets)
+                    foreach (KeyValuePair<WeaponVariant2, CVMModelPreset> keyValue in presets)
                     {
                         CVMModelPreset preset = keyValue.Value;
 
@@ -355,7 +355,7 @@ namespace OverhaulMod.UI
 
                         // conditions dropdown
                         bool allowCallback = true;
-                        WeaponVariant prevCondition = keyValue.Key;
+                        WeaponVariant2 prevCondition = keyValue.Key;
                         Dropdown conditionsDropdown = display.GetObject<Dropdown>(0);
                         conditionsDropdown.options = PersonalizationEditorManager.Instance.GetConditionOptionsDependingOnEditingWeapon();
 
@@ -382,7 +382,7 @@ namespace OverhaulMod.UI
                             if (!allowCallback)
                                 return;
 
-                            WeaponVariant condition = (conditionsDropdown.options[value] as DropdownWeaponVariantOptionData).Value;
+                            WeaponVariant2 condition = (conditionsDropdown.options[value] as DropdownWeaponVariantOptionData).Value;
                             if (presets.ContainsKey(condition))
                             {
                                 allowCallback = false;
@@ -400,7 +400,7 @@ namespace OverhaulMod.UI
                                 GlobalEventManager.Instance.Dispatch(PersonalizationEditorManager.OBJECT_EDITED_EVENT);
                             }
                         });
-                        conditionsDropdown.interactable = model.GetUnusedShowCondition() != WeaponVariant.None;
+                        conditionsDropdown.interactable = model.GetUnusedShowCondition() != WeaponVariant2.None;
 
                         // active frame
                         void refreshActiveFrameAction()
@@ -463,16 +463,16 @@ namespace OverhaulMod.UI
                         variantDropdown.options = s_variants;
                         switch (preset.Variant)
                         {
-                            case WeaponVariant.Normal:
+                            case WeaponVariant2.Normal:
                                 variantDropdown.value = 0;
                                 break;
-                            case WeaponVariant.OnFire:
+                            case WeaponVariant2.OnFire:
                                 variantDropdown.value = 1;
                                 break;
-                            case WeaponVariant.NormalMultiplayer:
+                            case WeaponVariant2.NormalMultiplayer:
                                 variantDropdown.value = 2;
                                 break;
-                            case WeaponVariant.OnFireMultiplayer:
+                            case WeaponVariant2.OnFireMultiplayer:
                                 variantDropdown.value = 3;
                                 break;
                         }
@@ -481,16 +481,16 @@ namespace OverhaulMod.UI
                             switch (value)
                             {
                                 case 0:
-                                    preset.Variant = WeaponVariant.Normal;
+                                    preset.Variant = WeaponVariant2.Normal;
                                     break;
                                 case 1:
-                                    preset.Variant = WeaponVariant.OnFire;
+                                    preset.Variant = WeaponVariant2.OnFire;
                                     break;
                                 case 2:
-                                    preset.Variant = WeaponVariant.NormalMultiplayer;
+                                    preset.Variant = WeaponVariant2.NormalMultiplayer;
                                     break;
                                 case 3:
-                                    preset.Variant = WeaponVariant.OnFireMultiplayer;
+                                    preset.Variant = WeaponVariant2.OnFireMultiplayer;
                                     break;
                             }
                             GlobalEventManager.Instance.Dispatch(PersonalizationEditorManager.OBJECT_EDITED_EVENT);
@@ -516,7 +516,7 @@ namespace OverhaulMod.UI
                     }
                 }
 
-                if (model.GetUnusedShowCondition() != WeaponVariant.None)
+                if (model.GetUnusedShowCondition() != WeaponVariant2.None)
                 {
                     Button newPresetButton = Instantiate(propertiesPanel.m_addVolumeSettingsPresetButton, container);
                     newPresetButton.gameObject.SetActive(true);
@@ -647,7 +647,7 @@ namespace OverhaulMod.UI
                 dropdown.value = conditionDropdownValueToSet;
                 dropdown.onValueChanged.AddListener(delegate (int value)
                 {
-                    WeaponVariant weaponVariant = (dropdown.options[value] as DropdownWeaponVariantOptionData).Value;
+                    WeaponVariant2 weaponVariant = (dropdown.options[value] as DropdownWeaponVariantOptionData).Value;
                     visibilityController.enableIfWeaponVariant = weaponVariant;
                     visibilityController.RefreshVisibility();
                 });
@@ -680,10 +680,10 @@ namespace OverhaulMod.UI
                     });
                 }
 
-                Dictionary<WeaponVariant, VolumeSettingsPreset> volumePresets = volume.volumeSettingPresets;
+                Dictionary<WeaponVariant2, VolumeSettingsPreset> volumePresets = volume.volumeSettingPresets;
                 if (volumePresets != null && volumePresets.Count != 0)
                 {
-                    foreach (KeyValuePair<WeaponVariant, VolumeSettingsPreset> preset in volumePresets)
+                    foreach (KeyValuePair<WeaponVariant2, VolumeSettingsPreset> preset in volumePresets)
                     {
                         VolumeSettingsPreset settingsPreset = preset.Value;
 
@@ -742,7 +742,7 @@ namespace OverhaulMod.UI
 
                         // conditions dropdown
                         bool allowCallback = true;
-                        WeaponVariant prevCondition = preset.Key;
+                        WeaponVariant2 prevCondition = preset.Key;
                         Dropdown conditionsDropdown = display.GetObject<Dropdown>(0);
                         conditionsDropdown.options = PersonalizationEditorManager.Instance.GetConditionOptionsDependingOnEditingWeapon();
 
@@ -769,7 +769,7 @@ namespace OverhaulMod.UI
                             if (!allowCallback)
                                 return;
 
-                            WeaponVariant condition = (conditionsDropdown.options[value] as DropdownWeaponVariantOptionData).Value;
+                            WeaponVariant2 condition = (conditionsDropdown.options[value] as DropdownWeaponVariantOptionData).Value;
                             if (volumePresets.ContainsKey(condition))
                             {
                                 allowCallback = false;
@@ -787,7 +787,7 @@ namespace OverhaulMod.UI
                                 GlobalEventManager.Instance.Dispatch(PersonalizationEditorManager.OBJECT_EDITED_EVENT);
                             }
                         });
-                        conditionsDropdown.interactable = volume.GetUnusedShowCondition() != WeaponVariant.None;
+                        conditionsDropdown.interactable = volume.GetUnusedShowCondition() != WeaponVariant2.None;
 
                         // active frame
                         void refreshActiveFrameAction()
@@ -848,7 +848,7 @@ namespace OverhaulMod.UI
                     }
                 }
 
-                if ((isWeaponSkin || volumePresets.Count == 0) && volume.GetUnusedShowCondition() != WeaponVariant.None)
+                if ((isWeaponSkin || volumePresets.Count == 0) && volume.GetUnusedShowCondition() != WeaponVariant2.None)
                 {
                     Button newPresetButton = Instantiate(propertiesPanel.m_addVolumeSettingsPresetButton, container);
                     newPresetButton.gameObject.SetActive(true);

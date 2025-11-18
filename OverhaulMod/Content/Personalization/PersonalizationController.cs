@@ -82,7 +82,7 @@ namespace OverhaulMod.Content.Personalization
 
         private Dictionary<PersonalizationItemInfo, PersonalizationEditorObjectBehaviour> m_spawnedItems;
 
-        private Dictionary<WeaponType, WeaponVariant> m_weaponTypeToVariant;
+        private Dictionary<WeaponType, WeaponVariant2> m_weaponTypeToVariant;
 
         private bool m_isEnemy;
 
@@ -99,7 +99,7 @@ namespace OverhaulMod.Content.Personalization
         private void Awake()
         {
             m_weaponTypeToParts = new Dictionary<WeaponType, Transform[]>();
-            m_weaponTypeToVariant = new Dictionary<WeaponType, WeaponVariant>();
+            m_weaponTypeToVariant = new Dictionary<WeaponType, WeaponVariant2>();
             m_spawnedItems = new Dictionary<PersonalizationItemInfo, PersonalizationEditorObjectBehaviour>();
 
             if (PersonalizationEditorManager.IsInEditor())
@@ -195,8 +195,8 @@ namespace OverhaulMod.Content.Personalization
 
                     if (inEditor && weaponType == WeaponType.Sword)
                     {
-                        WeaponVariant wv = PersonalizationEditorManager.Instance.previewPresetKey;
-                        SetWeaponPartsVisible(WeaponType.Sword, showOriginalModel || (!hasSpawnedSkinForWeapon && !(wv == WeaponVariant.NormalMultiplayer || wv == WeaponVariant.OnFireMultiplayer)), false);
+                        WeaponVariant2 wv = PersonalizationEditorManager.Instance.previewPresetKey;
+                        SetWeaponPartsVisible(WeaponType.Sword, showOriginalModel || (!hasSpawnedSkinForWeapon && !(wv == WeaponVariant2.NormalMultiplayer || wv == WeaponVariant2.OnFireMultiplayer)), false);
                     }
                     else
                     {
@@ -305,8 +305,8 @@ namespace OverhaulMod.Content.Personalization
 
         public void RefreshWeaponVariantOfSpawnedSkin(WeaponType weaponType)
         {
-            Dictionary<WeaponType, WeaponVariant> d = m_weaponTypeToVariant;
-            WeaponVariantManager.GetWeaponVariant(owner, weaponType, out WeaponVariant weaponVariant);
+            Dictionary<WeaponType, WeaponVariant2> d = m_weaponTypeToVariant;
+            WeaponVariantManager.GetWeaponVariant(owner, weaponType, out WeaponVariant2 weaponVariant);
 
             if (d.ContainsKey(weaponType))
                 d[weaponType] = weaponVariant;
@@ -314,18 +314,18 @@ namespace OverhaulMod.Content.Personalization
                 d.Add(weaponType, weaponVariant);
         }
 
-        public WeaponVariant GetWeaponVariantOfSpawnedSkin(WeaponType weaponType)
+        public WeaponVariant2 GetWeaponVariantOfSpawnedSkin(WeaponType weaponType)
         {
-            Dictionary<WeaponType, WeaponVariant> d = m_weaponTypeToVariant;
+            Dictionary<WeaponType, WeaponVariant2> d = m_weaponTypeToVariant;
             if (d.ContainsKey(weaponType))
                 return d[weaponType];
 
-            return WeaponVariant.None;
+            return WeaponVariant2.None;
         }
 
-        public WeaponVariant GetWeaponVariant(WeaponType weaponType)
+        public WeaponVariant2 GetWeaponVariant(WeaponType weaponType)
         {
-            WeaponVariantManager.GetWeaponVariant(owner, weaponType, out WeaponVariant weaponVariant);
+            WeaponVariantManager.GetWeaponVariant(owner, weaponType, out WeaponVariant2 weaponVariant);
             return weaponVariant;
         }
 

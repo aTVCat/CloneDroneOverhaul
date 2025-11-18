@@ -10,7 +10,7 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(LevelManager.GetCurrentLevelDescription))]
         private static bool GetCurrentLevelDescription_Prefix(ref LevelDescription __result)
         {
-            if (GameModeManager.IsOnTitleScreen())
+            if (ModFeatures.IsEnabled(ModFeatures.FeatureType.TitleScreenLevelCustomization) && GameModeManager.IsOnTitleScreen())
             {
                 TitleScreenCustomizationManager titleScreenCustomizationManager = TitleScreenCustomizationManager.Instance;
                 if (titleScreenCustomizationManager && titleScreenCustomizationManager.overrideLevelDescription != null)

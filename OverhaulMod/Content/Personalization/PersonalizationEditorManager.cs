@@ -92,8 +92,8 @@ namespace OverhaulMod.Content.Personalization
             }
         }
 
-        private WeaponVariant m_previewPresetKey;
-        public WeaponVariant previewPresetKey
+        private WeaponVariant2 m_previewPresetKey;
+        public WeaponVariant2 previewPresetKey
         {
             get
             {
@@ -187,7 +187,7 @@ namespace OverhaulMod.Content.Personalization
 
             currentEditingItemInfo = null;
             currentEditingRoot = null;
-            previewPresetKey = WeaponVariant.Normal;
+            previewPresetKey = WeaponVariant2.Normal;
             originalModelsEnabled = false;
 
             m_isInScreenshotMode = false;
@@ -385,7 +385,7 @@ namespace OverhaulMod.Content.Personalization
             {
                 if (child.Path == "Volume")
                 {
-                    if (child.PropertyValues.TryGetValue(nameof(PersonalizationEditorObjectVolume.volumeSettingPresets), out object obj) && obj is Dictionary<WeaponVariant, VolumeSettingsPreset> dictionary && !dictionary.IsNullOrEmpty())
+                    if (child.PropertyValues.TryGetValue(nameof(PersonalizationEditorObjectVolume.volumeSettingPresets), out object obj) && obj is Dictionary<WeaponVariant2, VolumeSettingsPreset> dictionary && !dictionary.IsNullOrEmpty())
                     {
                         foreach (VolumeSettingsPreset value in dictionary.Values)
                         {
@@ -401,7 +401,7 @@ namespace OverhaulMod.Content.Personalization
                 }
                 else if (child.Path == "CvmModel")
                 {
-                    if (child.PropertyValues.TryGetValue(nameof(PersonalizationEditorObjectCVMModel.presets), out object obj) && obj is Dictionary<WeaponVariant, CVMModelPreset> dictionary && !dictionary.IsNullOrEmpty())
+                    if (child.PropertyValues.TryGetValue(nameof(PersonalizationEditorObjectCVMModel.presets), out object obj) && obj is Dictionary<WeaponVariant2, CVMModelPreset> dictionary && !dictionary.IsNullOrEmpty())
                     {
                         foreach (CVMModelPreset value in dictionary.Values)
                         {
@@ -748,7 +748,7 @@ namespace OverhaulMod.Content.Personalization
         public void RefreshGreatswordPreview()
         {
             if (m_greatSwordPreviewController)
-                m_greatSwordPreviewController.SetPreviewActivate(originalModelsEnabled && (previewPresetKey == WeaponVariant.NormalMultiplayer || previewPresetKey == WeaponVariant.OnFireMultiplayer));
+                m_greatSwordPreviewController.SetPreviewActivate(originalModelsEnabled && (previewPresetKey == WeaponVariant2.NormalMultiplayer || previewPresetKey == WeaponVariant2.OnFireMultiplayer));
         }
 
         public List<Dropdown.OptionData> GetConditionOptions()
@@ -758,10 +758,10 @@ namespace OverhaulMod.Content.Personalization
 
             list = new List<Dropdown.OptionData>
             {
-                new DropdownWeaponVariantOptionData(WeaponVariant.Normal),
-                new DropdownWeaponVariantOptionData(WeaponVariant.OnFire),
-                new DropdownWeaponVariantOptionData(WeaponVariant.NormalMultiplayer),
-                new DropdownWeaponVariantOptionData(WeaponVariant.OnFireMultiplayer)
+                new DropdownWeaponVariantOptionData(WeaponVariant2.Normal),
+                new DropdownWeaponVariantOptionData(WeaponVariant2.OnFire),
+                new DropdownWeaponVariantOptionData(WeaponVariant2.NormalMultiplayer),
+                new DropdownWeaponVariantOptionData(WeaponVariant2.OnFireMultiplayer)
             };
             ModAdvancedCache.Add("DropdownShowConditionOptions", list);
             return list;
@@ -773,19 +773,19 @@ namespace OverhaulMod.Content.Personalization
 
             List<Dropdown.OptionData> list = new List<Dropdown.OptionData>();
             if (includeNone)
-                list.Add(new DropdownWeaponVariantOptionData(WeaponVariant.None));
+                list.Add(new DropdownWeaponVariantOptionData(WeaponVariant2.None));
 
-            list.Add(new DropdownWeaponVariantOptionData(WeaponVariant.Normal));
+            list.Add(new DropdownWeaponVariantOptionData(WeaponVariant2.Normal));
 
             if (weaponType == WeaponType.Sword)
             {
-                list.Add(new DropdownWeaponVariantOptionData(WeaponVariant.OnFire));
-                list.Add(new DropdownWeaponVariantOptionData(WeaponVariant.NormalMultiplayer));
-                list.Add(new DropdownWeaponVariantOptionData(WeaponVariant.OnFireMultiplayer));
+                list.Add(new DropdownWeaponVariantOptionData(WeaponVariant2.OnFire));
+                list.Add(new DropdownWeaponVariantOptionData(WeaponVariant2.NormalMultiplayer));
+                list.Add(new DropdownWeaponVariantOptionData(WeaponVariant2.OnFireMultiplayer));
             }
             else if (weaponType == WeaponType.Hammer || weaponType == WeaponType.Spear || weaponType == ModWeaponsManager.SCYTHE_TYPE)
             {
-                list.Add(new DropdownWeaponVariantOptionData(WeaponVariant.OnFire));
+                list.Add(new DropdownWeaponVariantOptionData(WeaponVariant2.OnFire));
             }
 
             return list;

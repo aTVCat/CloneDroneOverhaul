@@ -233,7 +233,7 @@
     <Compile Include="Engine\ScheduledActionsManager.cs" />
     <Compile Include="Engine\ScheduledActionType.cs" />
     <Compile Include="Engine\WeaponInvisibilityFixer.cs" />
-    <Compile Include="Engine\WeaponVariant.cs" />
+    <Compile Include="Engine\WeaponVariant2.cs" />
     <Compile Include="Content\Personalization\PersonalizationEditorObjectVisibilityController.cs" />
     <Compile Include="Content\Personalization\PersonalizationEditorObjectSpawnInfo.cs" />
     <Compile Include="Content\Personalization\PersonalizationEditorObjectManager.cs" />
@@ -332,6 +332,7 @@
     <Compile Include="Content\NewsInfoList.cs" />
     <Compile Include="ModUserInfo.cs" />
     <Compile Include="Patches\ArenaCameraManager_Patch.cs" />
+    <Compile Include="Patches\CustomizationUIButtonRow_Patch.cs" />
     <Compile Include="Patches\ProjectileManager_Patch.cs" />
     <Compile Include="Patches\BaseBodyPart_Patch.cs" />
     <Compile Include="Patches\ControlsHintPanel_Patch.cs" />

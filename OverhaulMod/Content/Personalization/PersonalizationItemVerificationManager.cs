@@ -8,7 +8,7 @@ namespace OverhaulMod.Content.Personalization
 {
     public class PersonalizationItemVerificationManager : Singleton<PersonalizationItemVerificationManager>
     {
-        public bool DoesWeaponSkinSupportWeaponVariant(PersonalizationEditorObjectBehaviour root, WeaponVariant weaponVariant, out bool weaponDoesHaveThisVariant)
+        public bool DoesWeaponSkinSupportWeaponVariant(PersonalizationEditorObjectBehaviour root, WeaponVariant2 weaponVariant, out bool weaponDoesHaveThisVariant)
         {
             weaponDoesHaveThisVariant = false;
             if (!root)
@@ -20,19 +20,19 @@ namespace OverhaulMod.Content.Personalization
                     weaponDoesHaveThisVariant = true;
                     break;
                 case WeaponType.Bow:
-                    weaponDoesHaveThisVariant = weaponVariant == WeaponVariant.Normal;
+                    weaponDoesHaveThisVariant = weaponVariant == WeaponVariant2.Normal;
                     break;
                 case WeaponType.Hammer:
                 case WeaponType.Spear:
                 case ModWeaponsManager.SCYTHE_TYPE:
-                    weaponDoesHaveThisVariant = weaponVariant == WeaponVariant.Normal || weaponVariant == WeaponVariant.OnFire;
+                    weaponDoesHaveThisVariant = weaponVariant == WeaponVariant2.Normal || weaponVariant == WeaponVariant2.OnFire;
                     break;
             }
 
             PersonalizationEditorObjectCVMModel[] cvmModels = root.GetComponentsInChildren<PersonalizationEditorObjectCVMModel>(true);
             foreach (PersonalizationEditorObjectCVMModel cvmModel in cvmModels)
             {
-                System.Collections.Generic.Dictionary<WeaponVariant, CVMModelPreset> d = cvmModel.presets;
+                System.Collections.Generic.Dictionary<WeaponVariant2, CVMModelPreset> d = cvmModel.presets;
                 if (d.IsNullOrEmpty())
                     continue;
 
@@ -49,7 +49,7 @@ namespace OverhaulMod.Content.Personalization
             PersonalizationEditorObjectVolume[] volumes = root.GetComponentsInChildren<PersonalizationEditorObjectVolume>(true);
             foreach (PersonalizationEditorObjectVolume volume in volumes)
             {
-                System.Collections.Generic.Dictionary<WeaponVariant, VolumeSettingsPreset> d = volume.volumeSettingPresets;
+                System.Collections.Generic.Dictionary<WeaponVariant2, VolumeSettingsPreset> d = volume.volumeSettingPresets;
                 if (d.IsNullOrEmpty())
                     continue;
 

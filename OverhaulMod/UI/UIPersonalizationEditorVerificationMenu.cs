@@ -67,12 +67,12 @@ namespace OverhaulMod.UI
             m_currentItemIsNotFullyCompleted = false;
             string bgColor = ALL_WEAPON_VARIANTS_PRESENT_COLOR;
 
-            Dictionary<WeaponVariant, bool> supportedVariants = new Dictionary<WeaponVariant, bool>();
+            Dictionary<WeaponVariant2, bool> supportedVariants = new Dictionary<WeaponVariant2, bool>();
 
             PersonalizationItemVerificationManager personalizationItemVerificationManager = PersonalizationItemVerificationManager.Instance;
-            foreach (WeaponVariant weaponVariant in typeof(WeaponVariant).GetEnumValues())
+            foreach (WeaponVariant2 weaponVariant in typeof(WeaponVariant2).GetEnumValues())
             {
-                if (weaponVariant == WeaponVariant.None)
+                if (weaponVariant == WeaponVariant2.None)
                     continue;
 
                 bool value = personalizationItemVerificationManager.DoesWeaponSkinSupportWeaponVariant(objectBehaviour, weaponVariant, out bool weaponDoesHaveThisVariant);
@@ -101,7 +101,7 @@ namespace OverhaulMod.UI
             if (ModFeatures.IsEnabled(ModFeatures.FeatureType.RequireNormalAndFireVariantsForSwordAndSpearSkins))
             {
                 WeaponType weaponType = objectBehaviour.ControllerInfo.ItemInfo.Weapon;
-                if (((weaponType == WeaponType.Sword || weaponType == WeaponType.Spear) && !supportedVariants[WeaponVariant.Normal]) || !supportedVariants[WeaponVariant.OnFire])
+                if (((weaponType == WeaponType.Sword || weaponType == WeaponType.Spear) && !supportedVariants[WeaponVariant2.Normal]) || !supportedVariants[WeaponVariant2.OnFire])
                 {
                     m_currentItemIsFullyIncomplete = true;
                 }
