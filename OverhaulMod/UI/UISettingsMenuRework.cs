@@ -518,9 +518,9 @@ namespace OverhaulMod.UI
             _ = pageBuilder.Header1("Multiplayer settings");
             _ = pageBuilder.Header3("Preferred region");
             _ = pageBuilder.Dropdown(settingsMenu.RegionDropdown.options, settingsMenu.RegionDropdown.value, OnRegionChanged);
-            _ = pageBuilder.Header3("Player");
-            _ = pageBuilder.DropdownWithImage(settingsMenu.MultiplayerCharacterModelDropdown.options, settingsMenu.MultiplayerCharacterModelDropdown.value, OnCharacterModelChanged);
-            _ = pageBuilder.DropdownWithImage(settingsMenu.MultiplayerFavoriteColorDropdown.options, settingsMenu.MultiplayerFavoriteColorDropdown.value, OnMultiplayerFavoriteColorDropdownChanged);
+            //_ = pageBuilder.Header3("Player");
+            //_ = pageBuilder.DropdownWithImage(settingsMenu.MultiplayerCharacterModelDropdown.options, settingsMenu.MultiplayerCharacterModelDropdown.value, OnCharacterModelChanged);
+            //_ = pageBuilder.DropdownWithImage(settingsMenu.MultiplayerFavoriteColorDropdown.options, settingsMenu.MultiplayerFavoriteColorDropdown.value, OnMultiplayerFavoriteColorDropdownChanged);
             //_ = pageBuilder.Toggle(settingsMenu.UseSkinInSinglePlayer.isOn, OnUseSkinInSinglePlayerToggleChanged, "Use skin in singleplayer");
             _ = pageBuilder.Button("Select emotes", delegate
             {
@@ -570,7 +570,7 @@ namespace OverhaulMod.UI
             }, "Show Overhaul mod version");
 
             _ = pageBuilder.Header1("Energy bar enhancements");
-            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENERGY_UI_REWORK), delegate (bool value)
+            if(ModFeatures.IsEnabled(ModFeatures.FeatureType.EnergyUIRedesign)) _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENERGY_UI_REWORK), delegate (bool value)
             {
                 ModSettingsManager.SetBoolValue(ModSettingsConstants.ENERGY_UI_REWORK, value, true);
             }, "Energy bar redesign");
@@ -1059,12 +1059,12 @@ namespace OverhaulMod.UI
             });
 
             _ = pageBuilder.Header1("Player");
-            _ = pageBuilder.Header3("Skin");
-            _ = pageBuilder.DropdownWithImage(settingsMenu.MultiplayerCharacterModelDropdown.options, settingsMenu.MultiplayerCharacterModelDropdown.value, OnCharacterModelChanged);
-            _ = pageBuilder.DropdownWithImage(settingsMenu.MultiplayerFavoriteColorDropdown.options, settingsMenu.MultiplayerFavoriteColorDropdown.value, OnMultiplayerFavoriteColorDropdownChanged);
+            //_ = pageBuilder.Header3("Skin");
+            //_ = pageBuilder.DropdownWithImage(settingsMenu.MultiplayerCharacterModelDropdown.options, settingsMenu.MultiplayerCharacterModelDropdown.value, OnCharacterModelChanged);
+            //_ = pageBuilder.DropdownWithImage(settingsMenu.MultiplayerFavoriteColorDropdown.options, settingsMenu.MultiplayerFavoriteColorDropdown.value, OnMultiplayerFavoriteColorDropdownChanged);
             //_ = pageBuilder.Toggle(settingsMenu.UseSkinInSinglePlayer.isOn, OnUseSkinInSinglePlayerToggleChanged, "Use skin in singleplayer");
 
-            _ = pageBuilder.Header3("Personalization");
+            //_ = pageBuilder.Header3("Personalization");
             _ = pageBuilder.Button("Select emotes", delegate
             {
                 ModCache.gameUIRoot.EmoteSettingsUI.Show();
@@ -1276,7 +1276,7 @@ namespace OverhaulMod.UI
             });
 
             _ = pageBuilder.Header1("Energy bar enhancements");
-            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENERGY_UI_REWORK), delegate (bool value)
+            if (ModFeatures.IsEnabled(ModFeatures.FeatureType.EnergyUIRedesign)) _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENERGY_UI_REWORK), delegate (bool value)
             {
                 ModSettingsManager.SetBoolValue(ModSettingsConstants.ENERGY_UI_REWORK, value, true);
             }, "Energy bar redesign");
@@ -1778,7 +1778,7 @@ namespace OverhaulMod.UI
             }
         }
 
-        public void OnCharacterModelChanged(int value)
+        /*public void OnCharacterModelChanged(int value)
         {
             SettingsMenu settingsMenu = ModCache.settingsMenu;
             if (settingsMenu)
@@ -1796,7 +1796,7 @@ namespace OverhaulMod.UI
                 settingsMenu.MultiplayerFavoriteColorDropdown.value = value;
             }
             m_hasMultiplayerCustomizationChanges = true;
-        }
+        }*/
 
         public void OnStoryDifficultyIndexChanged(int value)
         {

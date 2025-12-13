@@ -282,7 +282,7 @@ namespace OverhaulMod.Utils
         public const string RPC_DISPLAY_LEVEL_FILE_NAME = "RPCDisplayLevelFileName";
 
         /// <summary>
-        /// <see cref="Patches.Behaviours.EnergyUIPatchBehaviour"/>
+        /// <see cref="Patches.Behaviours.EnergyBarPatchBehaviour"/>
         /// </summary>
         public const string ENERGY_UI_REWORK = "EnergyUIRework";
 

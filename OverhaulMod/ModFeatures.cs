@@ -140,7 +140,7 @@ namespace OverhaulMod
                     result = false;
                     break;
                 case FeatureType.ReflectionProbe:
-                    result = ModBuildInfo.VERSION_4_2_PATCH;
+                    result = false;
                     break;
                 case FeatureType.Accessories:
                     result = ModBuildInfo.VERSION_4_3;
@@ -173,9 +173,12 @@ namespace OverhaulMod
                     result = ModBuildInfo.VERSION_4_3;
                     break;
                 case FeatureType.TitleScreenLevelCustomization:
-                    result = false;
+                    result = true;
                     break;
                 case FeatureType.Hypocrisis3Special:
+                    result = false;
+                    break;
+                case FeatureType.EnergyUIRedesign:
                     result = false;
                     break;
                 default:
@@ -292,6 +295,8 @@ namespace OverhaulMod
             TitleScreenLevelCustomization,
 
             Hypocrisis3Special,
+
+            EnergyUIRedesign,
         }
     }
 }

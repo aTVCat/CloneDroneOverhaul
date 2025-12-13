@@ -253,9 +253,9 @@ namespace OverhaulMod
             {
                 ModActionUtils.DoInFrame(delegate
                 {
-                    EnergyUIPatchBehaviour energyUIPatch = GamePatchBehaviour.GetBehaviour<EnergyUIPatchBehaviour>();
+                    EnergyBarPatchBehaviour energyUIPatch = GamePatchBehaviour.GetBehaviour<EnergyBarPatchBehaviour>();
                     if (energyUIPatch)
-                        energyUIPatch.RefreshPatch();
+                        energyUIPatch.PatchEnergyUI();
                 });
             }, ModSettingsConstants.ENERGY_UI_REWORK);
         }

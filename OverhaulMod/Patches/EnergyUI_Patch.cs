@@ -13,10 +13,10 @@ namespace OverhaulMod.Patches
         {
             ModActionUtils.DoInFrame(delegate
             {
-                EnergyUIPatchBehaviour energyUIPatch = GamePatchBehaviour.GetBehaviour<EnergyUIPatchBehaviour>();
+                EnergyBarPatchBehaviour energyUIPatch = GamePatchBehaviour.GetBehaviour<EnergyBarPatchBehaviour>();
                 if (energyUIPatch)
                 {
-                    energyUIPatch.RefreshPatch();
+                    energyUIPatch.PatchEnergyUI();
                 }
             });
         }

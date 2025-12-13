@@ -19,10 +19,11 @@ namespace OverhaulMod.Patches.Behaviours
                 typeof(ColorsPatchBehaviour),
                 typeof(MinorPatchBehaviour),
                 typeof(LocalizationManagerPatchBehaviour),
-                typeof(EnergyUIPatchBehaviour),
+                typeof(EnergyBarPatchBehaviour),
                 typeof(MenuButtonsPatchBehaviour),
                 typeof(SubtitleTextFieldPatchBehaviour),
-                typeof(ChallengeManagerPatchBehaviour)
+                typeof(ChallengeManagerPatchBehaviour),
+                typeof(CustomizationButtonPatchBehaviour)
             });
             gameObject.transform.SetParent(ModManagers.Instance.transform);
             s_gameObject = gameObject;

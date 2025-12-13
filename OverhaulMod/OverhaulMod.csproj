@@ -332,6 +332,7 @@
     <Compile Include="Content\NewsInfoList.cs" />
     <Compile Include="ModUserInfo.cs" />
     <Compile Include="Patches\ArenaCameraManager_Patch.cs" />
+    <Compile Include="Patches\Behaviours\CustomizationButtonPatchBehaviour.cs" />
     <Compile Include="Patches\CustomizationUIButtonRow_Patch.cs" />
     <Compile Include="Patches\ProjectileManager_Patch.cs" />
     <Compile Include="Patches\BaseBodyPart_Patch.cs" />
@@ -340,7 +341,7 @@
     <Compile Include="Patches\AttackManager_Patch.cs" />
     <Compile Include="Patches\AudioManager_Patch.cs" />
     <Compile Include="Patches\AudienceManager_Patch.cs" />
-    <Compile Include="Patches\Behaviours\EnergyUIPatchBehaviour.cs" />
+    <Compile Include="Patches\Behaviours\EnergyBarPatchBehaviour.cs" />
     <Compile Include="Patches\Behaviours\LocalizationManagerPatchBehaviour.cs" />
     <Compile Include="Patches\Behaviours\ColorsPatchBehaviour.cs" />
     <Compile Include="Patches\Behaviours\MenuButtonsPatchBehaviour.cs" />

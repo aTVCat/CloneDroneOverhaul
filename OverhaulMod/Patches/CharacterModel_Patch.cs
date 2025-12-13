@@ -8,7 +8,7 @@ namespace OverhaulMod.Patches
     internal static class CharacterModel_Patch
     {
         [HarmonyPrefix]
-        [HarmonyPatch(nameof(CharacterModel.OverridePatternColor))]
+        [HarmonyPatch(nameof(CharacterModel.OverridePatternColor), new System.Type[] { typeof(Color), typeof(bool) })]
         private static void OverridePatternColor_Prefix(CharacterModel __instance, ref Color newColor, bool forceMultiplayerHSBReplacement = false)
         {
             FirstPersonMover firstPersonMover = __instance.GetOwner();

@@ -38,7 +38,7 @@ namespace OverhaulMod.UI
         protected override void OnInitialized()
         {
             m_favoriteColorPreviewDropdown.options = HumanFactsManager.Instance.GetColorDropdownOptions();
-            m_favoriteColorPreviewDropdown.value = SettingsManager.Instance.GetMultiplayerFavColorIndex();
+            m_favoriteColorPreviewDropdown.value = SettingsManager.Instance.GetCurrentOrCreateMultiplayerHumanSlot(out _).RootModel.ColorIndex;
             m_favoriteColorPreviewDropdown.onValueChanged.AddListener(OnFavoriteColorPreviewDropdownChanged);
         }
 
