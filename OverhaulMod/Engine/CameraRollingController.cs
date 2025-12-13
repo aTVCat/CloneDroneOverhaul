@@ -43,7 +43,7 @@ namespace OverhaulMod.Engine
                     return true;
 
                 FirstPersonMover owner = m_owner;
-                return Cursor.visible || !owner || owner.IsAimingBow() || !owner.IsPlayerInputEnabled() || owner._isGrabbedForUpgrade;
+                return Cursor.visible || !owner || owner.IsAimingBow() || owner.IsRidingOtherCharacter() || !owner.IsPlayerInputEnabled() || owner._isGrabbedForUpgrade;
             }
         }
 
@@ -66,6 +66,7 @@ namespace OverhaulMod.Engine
             bool forceZero = forceInitialRotation;
 
             FirstPersonMover firstPersonMover = m_owner;
+            float x = 0f;
             float z = 0f;
             if (!forceZero)
             {
@@ -77,11 +78,7 @@ namespace OverhaulMod.Engine
                     z = moveLeft ? HORIZONTAL_TILT : -HORIZONTAL_TILT;
                 if (getBool(leftLegDamaged, rightLegDamaged))
                     z += leftLegDamaged ? ONE_LEG_TILT : -ONE_LEG_TILT;
-            }
 
-            float x = 0f;
-            if (!forceZero)
-            {
                 bool moveForward = firstPersonMover._isMovingForward;
                 bool moveBackward = firstPersonMover._isMovingBack;
                 if (getBool(moveForward, moveBackward))

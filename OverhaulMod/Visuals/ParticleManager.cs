@@ -50,11 +50,11 @@ namespace OverhaulMod.Visuals
             pooledPrefabManager.MakePooledPrefab(FIRE_CUT_PARTICLES_ID, AssetBundleConstants.VFX, "VFX_CutFire", 0.5f, 50);
             pooledPrefabManager.MakePooledPrefab(LASER_CUT_PARTICLES_ID, AssetBundleConstants.VFX, "VFX_CutLaser", 0.5f, 20);
             pooledPrefabManager.MakePooledPrefab(SPARKS_PARTICLES_ID, AssetBundleConstants.VFX, "VFX_Sparks", 0.3f, 20);
-            pooledPrefabManager.MakePooledPrefab(SWORD_BLOCK_PARTICLES_ID, AssetBundleConstants.VFX, "VFX_SwordBlock", 0.3f, 20);
-            pooledPrefabManager.MakePooledPrefab(FIRE_SWORD_BLOCK_PARTICLES_ID, AssetBundleConstants.VFX, "VFX_FireSwordBlock", 0.5f, -1);
+            pooledPrefabManager.MakePooledPrefab(SWORD_BLOCK_PARTICLES_ID, AssetBundleConstants.VFX, "VFX_SwordBlock", 0.45f, 20);
+            pooledPrefabManager.MakePooledPrefab(FIRE_SWORD_BLOCK_PARTICLES_ID, AssetBundleConstants.VFX, "VFX_FireSwordBlock", 0.45f, -1);
             pooledPrefabManager.MakePooledPrefab(HAMMER_HIT_ID, AssetBundleConstants.VFX, "VFX_HammerHit", 0.6f, 20);
-            pooledPrefabManager.MakePooledPrefab(RED_GRENADE_EXPLOSION, AssetBundleConstants.VFX, "VFX_RedGrenadeExplosion", 0.6f, 20);
-            pooledPrefabManager.MakePooledPrefab(BLUE_GRENADE_EXPLOSION, AssetBundleConstants.VFX, "VFX_BlueGrenadeExplosion", 0.6f, 20);
+            pooledPrefabManager.MakePooledPrefab(RED_GRENADE_EXPLOSION, AssetBundleConstants.VFX, "VFX_RedGrenadeExplosion", 1.25f, 20);
+            pooledPrefabManager.MakePooledPrefab(BLUE_GRENADE_EXPLOSION, AssetBundleConstants.VFX, "VFX_BlueGrenadeExplosion", 1.25f, 20);
             pooledPrefabManager.MakePooledPrefab(LOGO_EXPLOSION_PARTICLES_ID, GetCloneDroneLogoExplosionParticles(), 2.5f, 20);
         }
 
