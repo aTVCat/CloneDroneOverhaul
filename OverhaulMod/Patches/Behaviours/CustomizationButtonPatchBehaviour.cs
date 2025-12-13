@@ -25,7 +25,9 @@ namespace OverhaulMod.Patches.Behaviours
 
         private void onLevelSpawned()
         {
-            m_customizeButton.gameObject.SetActive(TitleScreenCustomizationManager.Instance.overrideLevelDescription == null);
+            if (!GameModeManager.IsOnTitleScreen()) return;
+
+            m_customizeButton.gameObject.SetActive(FindObjectOfType<CustomizationPlayerPreview>());
         }
     }
 }
