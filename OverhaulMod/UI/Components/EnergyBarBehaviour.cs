@@ -17,6 +17,8 @@ namespace OverhaulMod.UI
 
         public Image GlowFill;
 
+        public RectTransform GlowFillTransform;
+
         public bool IsMountEnergyBar;
 
         private CanvasGroup m_canvasGroup;
@@ -53,8 +55,15 @@ namespace OverhaulMod.UI
                 if (GlowFill)
                 {
                     Color color = GlowFill.color;
-                    color.a = Mathf.Clamp01(amount / 4f);
+                    color.a = Mathf.Clamp01(amount / 2f);
                     GlowFill.color = color;
+                }
+
+                if (GlowFillTransform)
+                {
+                    Vector2 offsetMin = GlowFillTransform.offsetMin;
+                    offsetMin.x = Mathf.Lerp(-25f, -50f, amount / 4f);
+                    GlowFillTransform.offsetMin = offsetMin;
                 }
             }
         }

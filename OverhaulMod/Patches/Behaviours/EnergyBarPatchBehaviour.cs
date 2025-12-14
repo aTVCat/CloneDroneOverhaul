@@ -106,7 +106,11 @@ namespace OverhaulMod.Patches.Behaviours
             color.a = 1f;
             image.color = color;
 
-            if (behaviour) behaviour.GlowFill = image;
+            if (behaviour)
+            {
+                behaviour.GlowFill = image;
+                behaviour.GlowFillTransform = glowFillTransform;
+            }
         }
     }
 }
