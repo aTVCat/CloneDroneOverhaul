@@ -633,17 +633,8 @@ namespace OverhaulMod.UI
                 }, "Enable title bar changes");
             }
 
-            if (ModFeatures.IsEnabled(ModFeatures.FeatureType.AdditionalGraphicsSettings))
-            {
-                _ = pageBuilder.Button("Additional settings", delegate
-                {
-                    ClearPageContents();
-                    populateAdditionalGraphicsPage(settingsMenu);
-                });
-            }
-
             bool vsyncToggleValue = settingsMenu.VsyncOnToggle.isOn;
-            _ = pageBuilder.Header3("FPS settings");
+            //_ = pageBuilder.Header3("FPS settings");
             _ = pageBuilder.Toggle(vsyncToggleValue, delegate (bool value)
             {
                 OnVSyncChanged(value);
@@ -681,6 +672,15 @@ namespace OverhaulMod.UI
             _ = pageBuilder.Header3("Render");
             _ = pageBuilder.Dropdown(settingsMenu.QualityDropDown.options, settingsMenu.QualityDropDown.value, OnQualityDropdownChanged);
             _ = pageBuilder.Dropdown(settingsMenu.AntiAliasingDropdown.options, settingsMenu.AntiAliasingDropdown.value, OnAntiAliasingDropdownChanged);
+
+            if (ModFeatures.IsEnabled(ModFeatures.FeatureType.AdditionalGraphicsSettings))
+            {
+                _ = pageBuilder.Button("Additional settings", delegate
+                {
+                    ClearPageContents();
+                    populateAdditionalGraphicsPage(settingsMenu);
+                });
+            }
 
             bool moreEffectsEnabled = ModFeatures.IsEnabled(ModFeatures.FeatureType.MoreImageEffects);
             bool showExperimentalSettings = ModFeatures.IsEnabled(ModFeatures.FeatureType.DisplayNewGraphicsOptionsInSettings);

@@ -53,9 +53,13 @@ namespace OverhaulMod.Patches.Behaviours
             if (!energyBarComponent) return;
 
             Transform barTransform = energyBarComponent.transform;
-            EnergyUIBehaviour behaviour = barTransform.GetComponent<EnergyUIBehaviour>();
+            EnergyBarBehaviour behaviour = barTransform.GetComponent<EnergyBarBehaviour>();
             if (!behaviour)
-                behaviour = barTransform.gameObject.AddComponent<EnergyUIBehaviour>();
+            {
+                behaviour = barTransform.gameObject.AddComponent<EnergyBarBehaviour>();
+                behaviour.IsMountEnergyBar = false;
+                behaviour.EnergyUI = energyBarComponent;
+            }
 
             patchGlowFill(energyBarComponent, behaviour);
 
@@ -79,10 +83,19 @@ namespace OverhaulMod.Patches.Behaviours
             EnergyUI energyBarComponent = mountEnergyBar;
             if (!energyBarComponent) return;
 
-            patchGlowFill(energyBarComponent, null);
+            Transform barTransform = energyBarComponent.transform;
+            EnergyBarBehaviour behaviour = barTransform.GetComponent<EnergyBarBehaviour>();
+            if (!behaviour)
+            {
+                behaviour = barTransform.gameObject.AddComponent<EnergyBarBehaviour>();
+                behaviour.IsMountEnergyBar = true;
+                behaviour.EnergyUI = energyBarComponent;
+            }
+
+            patchGlowFill(energyBarComponent, behaviour);
         }
 
-        private void patchGlowFill(EnergyUI energyUI, EnergyUIBehaviour behaviour)
+        private void patchGlowFill(EnergyUI energyUI, EnergyBarBehaviour behaviour)
         {
             RectTransform glowFillTransform = energyUI.GlowFill;
             glowFillTransform.offsetMax = new Vector2(25f, 25f);

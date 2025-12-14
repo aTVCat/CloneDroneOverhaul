@@ -9,7 +9,7 @@ namespace OverhaulMod.Engine
 {
     public class UseKeyTriggerManager : Singleton<UseKeyTriggerManager>
     {
-        [ModSetting(ModSettingsConstants.ENABLE_PRESS_BUTTON_TRIGGER_DESCRIPTION_REWORK, true)]
+        [ModSetting(ModSettingsConstants.ENABLE_PRESS_BUTTON_TRIGGER_DESCRIPTION_REWORK, false)]
         public static bool EnablePressButtonTriggerDescriptionRework;
 
         public static readonly Color BGGlowColor = new Color(0.65f, 0.75f, 1f, 0.3f);

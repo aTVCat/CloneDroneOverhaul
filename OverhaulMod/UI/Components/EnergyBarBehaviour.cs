@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 namespace OverhaulMod.UI
 {
-    public class EnergyUIBehaviour : MonoBehaviour
+    public class EnergyBarBehaviour : MonoBehaviour
     {
         [ModSetting(ModSettingsConstants.ENERGY_UI_FADE_OUT_IF_FULL, true)]
         public static bool EnableBehaviour;
@@ -13,31 +13,38 @@ namespace OverhaulMod.UI
         [ModSetting(ModSettingsConstants.ENERGY_UI_FADE_OUT_INTENSITY, 0.9f)]
         public static float FadeOutIntensity;
 
+        public EnergyUI EnergyUI;
+
         public Image GlowFill;
 
-        private EnergyUI m_energyUI;
+        public bool IsMountEnergyBar;
+
         private CanvasGroup m_canvasGroup;
 
         private CharacterTracker m_characterTracker;
 
         private void Start()
         {
-            m_energyUI = ModCache.gameUIRoot.EnergyUI;
-            m_canvasGroup = m_energyUI.gameObject.AddComponent<CanvasGroup>();
+            m_canvasGroup = EnergyUI.gameObject.AddComponent<CanvasGroup>();
             m_characterTracker = CharacterTracker.Instance;
         }
 
         private void Update()
         {
-            EnergyUI energyUI = m_energyUI;
+            EnergyUI energyUI = EnergyUI;
             CanvasGroup canvasGroup = m_canvasGroup;
             if (energyUI && canvasGroup)
             {
-                FirstPersonMover player = m_characterTracker.GetPlayerRobot();
+                FirstPersonMover target = m_characterTracker.GetPlayerRobot();
+                if (IsMountEnergyBar)
+                {
+                    FirstPersonMover mount = target.GetCharacterWeAreRiding();
+                    target = mount;
+                }
 
                 float amount = energyUI._lastAmount;
                 float maxAmount = energyUI._lastRenderedMaxEnergy;
-                bool shouldhighlightTheBar = !EnableBehaviour || amount < maxAmount || energyUI.InsufficientEnergyText.gameObject.activeSelf || (player && player.IsRidingOtherCharacter());
+                bool shouldhighlightTheBar = IsMountEnergyBar || !EnableBehaviour || amount < maxAmount || energyUI.InsufficientEnergyText.gameObject.activeSelf || (target && target.IsRidingOtherCharacter());
 
                 float deltaTime = (shouldhighlightTheBar ? 1f : -1f) * 2.5f * Time.unscaledDeltaTime;
                 float targetAlpha = canvasGroup.alpha = Mathf.Clamp(canvasGroup.alpha + deltaTime, Mathf.Clamp01(1f - FadeOutIntensity), 1f);

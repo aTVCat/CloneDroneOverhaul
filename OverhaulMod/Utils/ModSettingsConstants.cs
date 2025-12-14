@@ -287,12 +287,12 @@ namespace OverhaulMod.Utils
         public const string ENERGY_UI_REWORK = "EnergyUIRework";
 
         /// <summary>
-        /// <see cref="EnergyUIBehaviour"/>
+        /// <see cref="EnergyBarBehaviour"/>
         /// </summary>
         public const string ENERGY_UI_FADE_OUT_IF_FULL = "EnergyUIFadeOutIfFull";
 
         /// <summary>
-        /// <see cref="EnergyUIBehaviour"/>
+        /// <see cref="EnergyBarBehaviour"/>
         /// </summary>
         public const string ENERGY_UI_FADE_OUT_INTENSITY = "EnergyUIFadeOutIntensity";
 

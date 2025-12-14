@@ -416,7 +416,7 @@
     <Compile Include="UI\Attributes\TabManagerAttribute.cs" />
     <Compile Include="UI\Components\ButtonWithSound.cs" />
     <Compile Include="UI\Components\DraggablePanel.cs" />
-    <Compile Include="UI\Components\EnergyUIBehaviour.cs" />
+    <Compile Include="UI\Components\EnergyBarBehaviour.cs" />
     <Compile Include="UI\Components\EventController.cs" />
     <Compile Include="UI\Components\FileCreationDialogController.cs" />
     <Compile Include="UI\Components\SliderFillText.cs" />
