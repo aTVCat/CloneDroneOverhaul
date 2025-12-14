@@ -2,7 +2,6 @@
 using OverhaulMod.UI;
 using OverhaulMod.Utils;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace OverhaulMod.Patches.Behaviours

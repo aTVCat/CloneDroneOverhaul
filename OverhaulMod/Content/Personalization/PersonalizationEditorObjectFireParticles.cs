@@ -1,5 +1,4 @@
-﻿using OverhaulMod.UI;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace OverhaulMod.Content.Personalization
 {
@@ -123,15 +122,7 @@ namespace OverhaulMod.Content.Personalization
             Color colorToApply;
             if (applyFavoriteColor)
             {
-                Color favoriteColor;
-                if (PersonalizationEditorManager.IsInEditor())
-                {
-                    favoriteColor = UIPersonalizationEditor.instance.Utilities.GetFavoriteColor();
-                }
-                else
-                {
-                    favoriteColor = objectBehaviour.ControllerInfo.Reference.owner.GetCharacterModel().GetFavouriteColor();
-                }
+                Color favoriteColor = objectBehaviour.ControllerInfo.GetFavoriteColor();
 
                 HSBColor hsb = new HSBColor(favoriteColor)
                 {

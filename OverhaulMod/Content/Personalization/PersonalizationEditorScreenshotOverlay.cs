@@ -91,7 +91,7 @@ namespace OverhaulMod.Content.Personalization
                 PersonalizationEditorScreenshotStage manager = PersonalizationEditorScreenshotStage.Instance;
 
                 PersonalizationEditorScreenshotCameraAngle angle = manager.GetCameraAnglesInfo().GetAngle(str);
-                if(angle == null)
+                if (angle == null)
                 {
                     angle = new PersonalizationEditorScreenshotCameraAngle()
                     {
@@ -118,7 +118,7 @@ namespace OverhaulMod.Content.Personalization
             System.Collections.Generic.List<PersonalizationItemInfo> items = PersonalizationManager.Instance.itemList.GetItems();
             PersonalizationEditorScreenshotStage stage = PersonalizationEditorScreenshotStage.Instance;
             PersonalizationCategory personalizationCategory = (PersonalizationCategory)(m_categoryDropdown.options[m_categoryDropdown.value] as DropdownIntOptionData).IntValue;
-            WeaponType weaponType = (WeaponType)(m_weaponTypeDropdown.options[m_weaponTypeDropdown  .value] as DropdownIntOptionData).IntValue;
+            WeaponType weaponType = (WeaponType)(m_weaponTypeDropdown.options[m_weaponTypeDropdown.value] as DropdownIntOptionData).IntValue;
             PersonalizationEditorScreenshotCameraAnglesInfo angles = stage.GetCameraAnglesInfo();
             Transform cameraTransform = stage.GetCameraController().transform;
 

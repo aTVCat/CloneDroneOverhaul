@@ -1,6 +1,7 @@
 ﻿#define OVERRIDE_VER
 //#define DISABLE_EXCLUSIVE_PERKS
 //#define DEVELOPER_BUILD
+//#define PRE_RELEASE_BUILD
 
 using OverhaulMod.Utils;
 using System;
@@ -21,7 +22,7 @@ namespace OverhaulMod
         public const string EXTRA_INFO_FILE_PATH = "buildInfo.json";
 
 #if OVERRIDE_VER
-        public const string OVERRIDE_VERSION = "0.4.2.1043";
+        public const string OVERRIDE_VERSION = "0.4.2.1044";
 #endif
 
         private static bool s_loaded;
@@ -140,7 +141,11 @@ namespace OverhaulMod
         {
             get
             {
+#if PRE_RELEASE_BUILD
                 return true;
+#else
+                return false;
+#endif
             }
         }
 

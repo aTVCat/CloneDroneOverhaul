@@ -1,6 +1,5 @@
 ﻿using HarmonyLib;
 using OverhaulMod.Content;
-using UnityEngine;
 using static CharacterModel;
 
 namespace OverhaulMod.Patches

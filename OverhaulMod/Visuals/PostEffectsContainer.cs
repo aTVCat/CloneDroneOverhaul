@@ -118,7 +118,7 @@ namespace OverhaulMod.Visuals
 
             if (bloom)
             {
-                if(PersonalizationEditorManager.IsInEditor() && PersonalizationEditorManager.Instance.IsInScreenshotMode())
+                if (PersonalizationEditorManager.IsInEditor() && PersonalizationEditorManager.Instance.IsInScreenshotMode())
                 {
                     bloom.bloomBlurIterations = 10;
                     bloom.bloomIntensity = 1f;

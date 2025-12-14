@@ -64,7 +64,7 @@ namespace OverhaulMod.UI
                 return;
             }
 
-            if(versionNumber < 0)
+            if (versionNumber < 0)
             {
                 ModUIUtils.MessagePopupOK("Error", "Version number must be greater than zero");
                 return;

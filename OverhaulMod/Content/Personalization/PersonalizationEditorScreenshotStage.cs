@@ -1,10 +1,6 @@
-﻿using BestHTTP.SocketIO;
-using OverhaulMod.Utils;
-using System;
-using System.Collections;
+﻿using OverhaulMod.Utils;
 using System.IO;
 using UnityEngine;
-using UnityStandardAssets.ImageEffects;
 
 namespace OverhaulMod.Content.Personalization
 {

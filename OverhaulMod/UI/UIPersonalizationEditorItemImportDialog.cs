@@ -1,5 +1,4 @@
-﻿using BestHTTP.SocketIO;
-using OverhaulMod.Content.Personalization;
+﻿using OverhaulMod.Content.Personalization;
 using OverhaulMod.Utils;
 using System.IO;
 using UnityEngine.UI;

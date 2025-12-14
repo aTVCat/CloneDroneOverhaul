@@ -291,7 +291,7 @@ namespace OverhaulMod
             TransitionTips,
 
             CustomizationItemCards,
-            
+
             TitleScreenLevelCustomization,
 
             Hypocrisis3Special,

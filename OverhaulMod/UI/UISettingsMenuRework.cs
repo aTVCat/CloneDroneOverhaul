@@ -570,7 +570,7 @@ namespace OverhaulMod.UI
             }, "Show Overhaul mod version");
 
             _ = pageBuilder.Header1("Energy bar enhancements");
-            if(ModFeatures.IsEnabled(ModFeatures.FeatureType.EnergyUIRedesign)) _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENERGY_UI_REWORK), delegate (bool value)
+            if (ModFeatures.IsEnabled(ModFeatures.FeatureType.EnergyUIRedesign)) _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENERGY_UI_REWORK), delegate (bool value)
             {
                 ModSettingsManager.SetBoolValue(ModSettingsConstants.ENERGY_UI_REWORK, value, true);
             }, "Energy bar redesign");

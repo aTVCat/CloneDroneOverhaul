@@ -201,7 +201,7 @@ namespace OverhaulMod.Engine
 
             if (!ModFeatures.IsEnabled(ModFeatures.FeatureType.TitleScreenLevelCustomization)) return;
 
-                _ = ModActionUtils.RunCoroutine(spawnStaticBackgroundCoroutine());
+            _ = ModActionUtils.RunCoroutine(spawnStaticBackgroundCoroutine());
         }
 
         public void SetLevelIsLoadingBG(GameObject gameObject)
