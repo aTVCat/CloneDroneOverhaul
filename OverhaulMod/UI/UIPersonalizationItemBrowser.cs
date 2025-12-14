@@ -760,7 +760,7 @@ namespace OverhaulMod.UI
             if (!value)
             {
                 refreshCameraRect();
-                cameraManager.ResetCameraHolderPosition(firstPersonMover);
+                if (!firstPersonMover.IsRidingOtherCharacter()) cameraManager.ResetCameraHolderPosition(firstPersonMover);
                 cameraManager.ResetCameraHolderEulerAngles(firstPersonMover);
                 cameraManager.enableForceFOVOffset = false;
                 cameraManager.enableThirdPerson = false;
@@ -769,7 +769,7 @@ namespace OverhaulMod.UI
             }
 
             refreshCameraRect();
-            cameraManager.SetCameraHolderPosition(new Vector3(0f, 0f, 0.75f), firstPersonMover);
+            if (!firstPersonMover.IsRidingOtherCharacter()) cameraManager.SetCameraHolderPosition(new Vector3(0f, 0f, 0.75f), firstPersonMover);
             cameraManager.SetCameraHolderEulerAngles(Vector3.up * 220f, firstPersonMover);
             cameraManager.enableForceFOVOffset = true;
             cameraManager.enableThirdPerson = true;

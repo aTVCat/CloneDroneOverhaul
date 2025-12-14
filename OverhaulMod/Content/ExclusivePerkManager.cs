@@ -158,38 +158,31 @@ namespace OverhaulMod.Content
             return list;
         }
 
-        public void GetOverrideRobotColor(FirstPersonMover firstPersonMover, Color oldColor, out Color newColor)
+        public Color GetOverrideRobotColor(FirstPersonMover firstPersonMover, Color oldColor)
         {
-            newColor = oldColor;
-            if (!firstPersonMover)
-                return;
+            if (!firstPersonMover) return oldColor;
 
             string robotPlayFabId = GameModeManager.IsSinglePlayer() ? ModUserInfo.localPlayerPlayFabID : firstPersonMover.GetPlayFabID();
-            if (robotPlayFabId.IsNullOrEmpty())
-                return;
+            if (robotPlayFabId.IsNullOrEmpty()) return oldColor;
 
             foreach (ExclusivePerkInfo exclusiveContentInfo in GetPerksOfType(ExclusivePerkType.Color))
             {
-                if (exclusiveContentInfo.PlayFabID == robotPlayFabId)
-                {
-                    object deserializedData = exclusiveContentInfo.DeserializeData();
-                    if (deserializedData != null && deserializedData is ExclusivePerkColor perkColor)
-                    {
-                        int index = -1;
-                        foreach (HumanFavouriteColor favColor in HumanFactsManager.Instance.FavouriteColors)
-                        {
-                            index++;
-                            if (favColor.ColorValue == oldColor)
-                                break;
-                        }
+                if (exclusiveContentInfo.PlayFabID != robotPlayFabId) continue;
 
-                        if (index == perkColor.Index)
-                        {
-                            newColor = perkColor.NewColor;
-                        }
+                object deserializedData = exclusiveContentInfo.DeserializeData();
+                if (deserializedData != null && deserializedData is ExclusivePerkColor perkColor)
+                {
+                    int index = -1;
+                    foreach (HumanFavouriteColor favColor in HumanFactsManager.Instance.FavouriteColors)
+                    {
+                        index++;
+                        if (favColor.ColorValue == oldColor) break;
                     }
+
+                    if (index == perkColor.Index) return perkColor.NewColor;
                 }
             }
+            return oldColor;
         }
 
         public bool IsFeatureUnlocked(ModFeatures.FeatureType featureType)

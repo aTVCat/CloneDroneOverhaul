@@ -1,0 +1,6 @@
+# Changes
+- Added support for Clone Drone 1.7
+- Adjusted energy bar glow
+- Adjusted new particles
+- Removed energy bar redesign
+- Removed mod news
