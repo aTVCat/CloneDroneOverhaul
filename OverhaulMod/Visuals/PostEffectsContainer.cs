@@ -96,12 +96,15 @@ namespace OverhaulMod.Visuals
 
             GameObject cameraObject = m_camera.gameObject;
 
+            LevelLightSettings activeLightSettings = LevelEditorLightManager.Instance.GetActiveLightSettings();
+            float cameraExposure = activeLightSettings ? activeLightSettings.CameraExposure : 1f;
+
             refreshBloom(PostEffectsManager.EnableBloom, cameraObject);
             refreshAmplifyOcclusion(shouldEnableEffects && (overrideSettings ? AdvancedPhotoModeManager.Settings.EnableSSAO : PostEffectsManager.EnableSSAO), cameraObject);
             refreshGlobalIllumination(shouldEnableEffects && (overrideSettings ? AdvancedPhotoModeManager.Settings.EnableGlobalIllumination : PostEffectsManager.EnableGlobalIllumination), cameraObject);
             refreshDoF(shouldEnableEffects && (overrideSettings ? AdvancedPhotoModeManager.Settings.EnableDoF : PostEffectsManager.EnableDoF), cameraObject);
             refreshSunShafts(shouldEnableEffects && (overrideSettings ? AdvancedPhotoModeManager.Settings.EnableSunShafts : PostEffectsManager.EnableSunShafts), cameraObject);
-            refreshChromaticAberration(shouldEnableEffects && (overrideSettings ? AdvancedPhotoModeManager.Settings.EnableCA : PostEffectsManager.EnableChromaticAberration), cameraObject);
+            refreshChromaticAberration(shouldEnableEffects && (overrideSettings ? AdvancedPhotoModeManager.Settings.EnableCA : PostEffectsManager.EnableChromaticAberration), cameraExposure, cameraObject);
             refreshDithering(shouldEnableEffects && (overrideSettings ? AdvancedPhotoModeManager.Settings.EnableDithering : PostEffectsManager.EnableDithering), cameraObject);
             refreshVignette(shouldEnableEffects && (overrideSettings ? AdvancedPhotoModeManager.Settings.EnableVignette : PostEffectsManager.EnableVignette), cameraObject);
             refreshColorBlindness(!PostEffectsManager.ColorBlindnessAffectUI && PostEffectsManager.ColorBlindnessMode >= 1 && PostEffectsManager.ColorBlindnessMode <= 3, cameraObject);
@@ -250,7 +253,7 @@ namespace OverhaulMod.Visuals
                 sunShafts.enabled = enable;
         }
 
-        private void refreshChromaticAberration(bool enable, GameObject cameraObject)
+        private void refreshChromaticAberration(bool enable, float cameraExposure, GameObject cameraObject)
         {
             OverhaulChromaticAberration chromaticAberration = ChromaticAberration;
             if (!chromaticAberration)
@@ -264,11 +267,14 @@ namespace OverhaulMod.Visuals
                 ChromaticAberration = chromaticAberration;
             }
 
+            float minExposureLossToDisableCA = 0.25f;
+            float multiplier = Mathf.Clamp01(1f - ((1f - cameraExposure) / minExposureLossToDisableCA));
+
             if (chromaticAberration)
             {
-                chromaticAberration.power = PostEffectsManager.ChromaticAberrationIntensity;
+                chromaticAberration.power = PostEffectsManager.ChromaticAberrationIntensity * multiplier;
                 chromaticAberration.center = PostEffectsManager.ChromaticAberrationOnScreenEdges ? 0.5f : 0f;
-                chromaticAberration.enabled = enable;
+                chromaticAberration.enabled = enable && multiplier != 0f;
             }
         }
 

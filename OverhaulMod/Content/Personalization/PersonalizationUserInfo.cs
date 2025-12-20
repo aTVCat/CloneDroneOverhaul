@@ -1,10 +1,37 @@
-﻿using System;
+﻿using OverhaulMod.Combat;
+using OverhaulMod.Engine;
+using OverhaulMod.Utils;
+using System;
 using System.Collections.Generic;
 
 namespace OverhaulMod.Content.Personalization
 {
     public class PersonalizationUserInfo
     {
+        [ModSetting(ModSettingsConstants.SWORD_SKIN, null)]
+        public static string SwordSkin;
+
+        [ModSetting(ModSettingsConstants.BOW_SKIN, null)]
+        public static string BowSkin;
+
+        [ModSetting(ModSettingsConstants.HAMMER_SKIN, null)]
+        public static string HammerSkin;
+
+        [ModSetting(ModSettingsConstants.SPEAR_SKIN, null)]
+        public static string SpearSkin;
+
+        [ModSetting(ModSettingsConstants.SHIELD_SKIN, null)]
+        public static string ShieldSkin;
+
+        [ModSetting(ModSettingsConstants.SCYTHE_SKIN, null)]
+        public static string ScytheSkin;
+
+        [ModSetting(ModSettingsConstants.ACCESSORIES, "")]
+        public static string Accessories;
+
+        [ModSetting(ModSettingsConstants.ALLOW_ENEMIES_USE_WEAPON_SKINS, true)]
+        public static bool AllowEnemiesUseSkins;
+
         public List<string> DiscoveredItems;
 
         public List<string> FavoriteItems;
@@ -185,6 +212,81 @@ namespace OverhaulMod.Content.Personalization
                 return ItemVersions[itemId];
 
             return 0;
+        }
+
+        public static void SetWeaponSkin(WeaponType weaponType, string itemId)
+        {
+            switch (weaponType)
+            {
+                case WeaponType.Sword:
+                    ModSettingsManager.SetStringValue(ModSettingsConstants.SWORD_SKIN, itemId);
+                    break;
+                case WeaponType.Bow:
+                    ModSettingsManager.SetStringValue(ModSettingsConstants.BOW_SKIN, itemId);
+                    break;
+                case WeaponType.Hammer:
+                    ModSettingsManager.SetStringValue(ModSettingsConstants.HAMMER_SKIN, itemId);
+                    break;
+                case WeaponType.Spear:
+                    ModSettingsManager.SetStringValue(ModSettingsConstants.SPEAR_SKIN, itemId);
+                    break;
+                case WeaponType.Shield:
+                    ModSettingsManager.SetStringValue(ModSettingsConstants.SHIELD_SKIN, itemId);
+                    break;
+                case ModWeaponsManager.SCYTHE_TYPE:
+                    ModSettingsManager.SetStringValue(ModSettingsConstants.SCYTHE_SKIN, itemId);
+                    break;
+            }
+        }
+
+        public static string GetWeaponSkin(WeaponType weaponType)
+        {
+            switch (weaponType)
+            {
+                case WeaponType.Sword:
+                    return SwordSkin;
+                case WeaponType.Bow:
+                    return BowSkin;
+                case WeaponType.Hammer:
+                    return HammerSkin;
+                case WeaponType.Spear:
+                    return SpearSkin;
+                case WeaponType.Shield:
+                    return ShieldSkin;
+                case ModWeaponsManager.SCYTHE_TYPE:
+                    return ScytheSkin;
+            }
+            return null;
+        }
+
+        public static void SetAccessoryEquipped(string itemId, bool value)
+        {
+            string stringValue = PersonalizationUserInfo.Accessories;
+            if (stringValue == null)
+                stringValue = string.Empty;
+
+            string formattedValue = $"{itemId},";
+
+            if (value && !stringValue.Contains(itemId))
+            {
+                stringValue += formattedValue;
+            }
+            else if (!value && stringValue.Contains(formattedValue))
+            {
+                stringValue = stringValue.Replace(formattedValue, string.Empty);
+            }
+
+            ModSettingsManager.SetStringValue(ModSettingsConstants.ACCESSORIES, stringValue);
+        }
+
+        public static bool IsAccessoryEquipped(string itemId)
+        {
+            return !Accessories.IsNullOrEmpty() && Accessories.Contains(itemId);
+        }
+
+        public static List<string> GetEquippedAccessories()
+        {
+            return new List<string>(StringUtils.GetNonEmptySplitOfCommaSeparatedString(Accessories));
         }
     }
 }

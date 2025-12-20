@@ -11,30 +11,6 @@ namespace OverhaulMod.Content.Personalization
 {
     public class PersonalizationController : MonoBehaviour
     {
-        [ModSetting(ModSettingsConstants.SWORD_SKIN, null)]
-        public static string SwordSkin;
-
-        [ModSetting(ModSettingsConstants.BOW_SKIN, null)]
-        public static string BowSkin;
-
-        [ModSetting(ModSettingsConstants.HAMMER_SKIN, null)]
-        public static string HammerSkin;
-
-        [ModSetting(ModSettingsConstants.SPEAR_SKIN, null)]
-        public static string SpearSkin;
-
-        [ModSetting(ModSettingsConstants.SHIELD_SKIN, null)]
-        public static string ShieldSkin;
-
-        [ModSetting(ModSettingsConstants.SCYTHE_SKIN, null)]
-        public static string ScytheSkin;
-
-        [ModSetting(ModSettingsConstants.ACCESSORIES, "")]
-        public static string Accessories;
-
-        [ModSetting(ModSettingsConstants.ALLOW_ENEMIES_USE_WEAPON_SKINS, true)]
-        public static bool AllowEnemiesUseSkins;
-
         private FirstPersonMover m_owner;
         public FirstPersonMover owner
         {
@@ -150,58 +126,59 @@ namespace OverhaulMod.Content.Personalization
                 if (!firstPersonMover.IsAlive())
                     m_hasRefreshedAfterDeath = true;
 
+                if (m_isMindSpace) return;
+
                 bool inEditor = PersonalizationEditorManager.IsInEditor();
+                bool showOriginalModel = inEditor && PersonalizationEditorManager.Instance.originalModelsEnabled;
 
-                if (!m_isMindSpace)
+                WeaponType weaponType = firstPersonMover.GetEquippedWeaponType();
+                string skin = GetWeaponSkinDependingOnOwner(weaponType);
+                bool noSkin = skin.IsNullOrEmpty() || skin == "_";
+
+                PersonalizationEditorObjectBehaviour behaviour = null;
+                PersonalizationItemInfo personalizationItemInfo = null;
+                bool hasSpawnedSkinForWeapon = false;
+                foreach (KeyValuePair<PersonalizationItemInfo, PersonalizationEditorObjectBehaviour> kv in m_spawnedItems)
                 {
-                    WeaponType weaponType = firstPersonMover.GetEquippedWeaponType();
-                    string skin = GetWeaponSkinDependingOnOwner(weaponType);
-                    bool noSkin = skin.IsNullOrEmpty() || skin == "_";
+                    PersonalizationItemInfo key = kv.Key;
+                    if (key.Category != PersonalizationCategory.WeaponSkins) continue;
 
-                    PersonalizationEditorObjectBehaviour behaviour = null;
-                    PersonalizationItemInfo personalizationItemInfo = null;
-                    bool hasSpawnedSkinForWeapon = false;
-                    foreach (KeyValuePair<PersonalizationItemInfo, PersonalizationEditorObjectBehaviour> kv in m_spawnedItems)
+                    behaviour = kv.Value;
+                    if (key.Weapon == weaponType)
                     {
-                        PersonalizationItemInfo key = kv.Key;
-                        if (key.Category != PersonalizationCategory.WeaponSkins)
-                            continue;
-
-                        behaviour = kv.Value;
-                        if (key.Weapon == weaponType)
-                        {
-                            personalizationItemInfo = key;
-                            hasSpawnedSkinForWeapon = behaviour;
-                        }
+                        personalizationItemInfo = key;
+                        hasSpawnedSkinForWeapon = behaviour;
                     }
+                }
 
-                    if (!noSkin && !hasSpawnedSkinForWeapon)
+                if (!noSkin && !hasSpawnedSkinForWeapon)
+                {
+                    //Debug.Log("Spawned an item because we didnt earlier");
+                    behaviour = SpawnItem(skin);
+                    if (behaviour)
                     {
-                        //Debug.Log("Spawned an item because we didnt earlier");
-
-                        behaviour = SpawnItem(skin);
-                        if (behaviour)
-                        {
-                            personalizationItemInfo = behaviour.ControllerInfo?.ItemInfo;
-                            hasSpawnedSkinForWeapon = true;
-                        }
-                        else
-                        {
-                            hasSpawnedSkinForWeapon = false;
-                        }
-                    }
-
-                    bool showOriginalModel = inEditor && PersonalizationEditorManager.Instance.originalModelsEnabled;
-
-                    if (inEditor && weaponType == WeaponType.Sword)
-                    {
-                        WeaponVariant2 wv = PersonalizationEditorManager.Instance.previewPresetKey;
-                        SetWeaponPartsVisible(WeaponType.Sword, showOriginalModel || (!hasSpawnedSkinForWeapon && !(wv == WeaponVariant2.NormalMultiplayer || wv == WeaponVariant2.OnFireMultiplayer)), false);
+                        personalizationItemInfo = behaviour.ControllerInfo?.ItemInfo;
+                        hasSpawnedSkinForWeapon = true;
                     }
                     else
                     {
-                        SetWeaponPartsVisible(weaponType, showOriginalModel || !hasSpawnedSkinForWeapon, (personalizationItemInfo != null && personalizationItemInfo.HideBowStrings));
+                        hasSpawnedSkinForWeapon = false;
                     }
+                }
+                else if (noSkin && hasSpawnedSkinForWeapon)
+                {
+                    DestroyItem(personalizationItemInfo);
+                    hasSpawnedSkinForWeapon = false;
+                }
+
+                if (inEditor && weaponType == WeaponType.Sword)
+                {
+                    WeaponVariant2 wv = PersonalizationEditorManager.Instance.previewPresetKey;
+                    SetWeaponPartsVisible(WeaponType.Sword, showOriginalModel || (!hasSpawnedSkinForWeapon && !(wv == WeaponVariant2.NormalMultiplayer || wv == WeaponVariant2.OnFireMultiplayer)), false);
+                }
+                else
+                {
+                    SetWeaponPartsVisible(weaponType, showOriginalModel || !hasSpawnedSkinForWeapon, (personalizationItemInfo != null && personalizationItemInfo.HideBowStrings));
                 }
             }
 
@@ -244,6 +221,52 @@ namespace OverhaulMod.Content.Personalization
             m_timeLeftToRefreshSkins = 0f;
         }
 
+        public void RefreshOwnerInfo()
+        {
+            FirstPersonMover firstPersonMover = m_owner;
+            if (!firstPersonMover) return;
+
+            /*if (GameModeManager.IsMultiplayer())
+            {
+                m_isMultiplayer = true;
+                if (firstPersonMover.state.IsAIControlled)
+                {
+                    m_isEnemy = true;
+                    m_isPlayer = false;
+                    m_isMainPlayer = false;
+                }
+                else
+                {
+                    m_isEnemy = false;
+                    m_isPlayer = true;
+                    m_isMainPlayer = firstPersonMover.IsMainPlayer();
+                }
+            }
+            else
+            {
+                m_isMultiplayer = false;
+                m_isEnemy = !firstPersonMover.IsMainPlayer();
+                m_isPlayer = !m_isEnemy;
+                m_isMainPlayer = !m_isEnemy;
+            }*/
+
+            m_isMultiplayer = GameModeManager.IsMultiplayer();
+            if (firstPersonMover.state.IsAIControlled)
+            {
+                m_isEnemy = true;
+                m_isPlayer = false;
+                m_isMainPlayer = false;
+            }
+            else
+            {
+                m_isEnemy = false;
+                m_isPlayer = true;
+                m_isMainPlayer = firstPersonMover.IsMainPlayer();
+            }
+
+            m_isMindSpace = firstPersonMover.IsMindSpaceCharacter;
+        }
+
         private IEnumerator initializeCoroutine(FirstPersonMover firstPersonMover)
         {
             yield return null;
@@ -259,32 +282,13 @@ namespace OverhaulMod.Content.Personalization
                 yield break;
             }
 
-            if (GameModeManager.IsMultiplayer())
-            {
-                m_isMultiplayer = true;
-                if (firstPersonMover.state.IsAIControlled)
-                {
-                    m_isEnemy = true;
-                    m_isPlayer = false;
-                }
-                else
-                {
-                    m_isEnemy = false;
-                    m_isPlayer = true;
-                    m_isMainPlayer = firstPersonMover.IsMainPlayer();
+            RefreshOwnerInfo();
 
-                    float timeOut = Time.time + 3f;
-                    while (Time.time < timeOut && firstPersonMover.GetPlayFabID().IsNullOrEmpty())
-                        yield return null;
-                }
-            }
-            else
+            if (m_isMultiplayer && !m_isEnemy)
             {
-                m_isMultiplayer = false;
-                m_isEnemy = !firstPersonMover.IsMainPlayer();
-                m_isPlayer = !m_isEnemy;
-                m_isMainPlayer = !m_isEnemy;
-                m_isMindSpace = firstPersonMover.IsMindSpaceCharacter;
+                float timeOut = Time.time + 3f;
+                while (Time.time < timeOut && firstPersonMover.GetPlayFabID().IsNullOrEmpty())
+                    yield return null;
             }
 
             GlobalEventManager.Instance.AddEventListener(PersonalizationManager.ITEM_EQUIPPED_OR_UNEQUIPPED_EVENT, onItemEquippedOrUnequipped);
@@ -583,10 +587,10 @@ namespace OverhaulMod.Content.Personalization
 
             DestroyItemsOfCategory(PersonalizationCategory.Accessories);
 
-            if (!owner.IsMainPlayer() && (!AllowEnemiesUseSkins || GameModeManager.IsMultiplayer()))
+            if (!owner.IsMainPlayer() && (!PersonalizationUserInfo.AllowEnemiesUseSkins || GameModeManager.IsMultiplayer()))
                 return;
 
-            List<string> accessories = GetEquippedAccessories();
+            List<string> accessories = PersonalizationUserInfo.GetEquippedAccessories();
             foreach (string item in accessories)
             {
                 _ = SpawnItem(item);
@@ -678,15 +682,15 @@ namespace OverhaulMod.Content.Personalization
 
         public string GetWeaponSkinDependingOnOwner(WeaponType weaponType)
         {
-            if (!m_hasInitialized || PersonalizationEditorManager.IsInEditor())
-                return string.Empty;
+            if (!m_hasInitialized || PersonalizationEditorManager.IsInEditor()) return string.Empty;
 
-            if (m_isMainPlayer && UIPersonalizationItemBrowser.IsPreviewing)
-                return GetWeaponSkin(weaponType);
+            if (m_isEnemy) return PersonalizationUserInfo.AllowEnemiesUseSkins ? PersonalizationUserInfo.GetWeaponSkin(weaponType) : string.Empty;
 
-            if ((m_isEnemy && AllowEnemiesUseSkins) || (m_isPlayer && !m_isMultiplayer))
-                return GetWeaponSkin(weaponType);
-            else if (m_isMultiplayer)
+            if (m_isMainPlayer && UIPersonalizationItemBrowser.IsPreviewing) return PersonalizationUserInfo.GetWeaponSkin(weaponType);
+
+            if (!m_isPlayer) return string.Empty;
+
+            if (m_isMultiplayer)
             {
                 PersonalizationMultiplayerPlayerInfo multiplayerPlayerInfo = playerInfo;
                 if (multiplayerPlayerInfo == null)
@@ -708,95 +712,18 @@ namespace OverhaulMod.Content.Personalization
                         return multiplayerPlayerInfo.ScytheSkin;
                 }
             }
-            return string.Empty;
+            return PersonalizationUserInfo.GetWeaponSkin(weaponType);
         }
 
-        public static void DestroyWeaponSkin(WeaponType weaponType)
+        public static void DestroyWeaponSkinOnMainPlayer(WeaponType weaponType)
         {
-            Character character = CharacterTracker.Instance.GetPlayer();
-            if (character)
-            {
-                PersonalizationController personalizationController = character.GetComponent<PersonalizationController>();
-                if (personalizationController)
-                {
-                    personalizationController.DestroyItem(personalizationController.GetItem(weaponType));
-                }
-            }
-        }
+            FirstPersonMover player = CharacterTracker.Instance.GetPlayerRobot();
+            if (!player || !player.IsAttachedAndAlive()) return;
 
-        public static void SetWeaponSkin(WeaponType weaponType, string itemId)
-        {
-            switch (weaponType)
-            {
-                case WeaponType.Sword:
-                    ModSettingsManager.SetStringValue(ModSettingsConstants.SWORD_SKIN, itemId);
-                    break;
-                case WeaponType.Bow:
-                    ModSettingsManager.SetStringValue(ModSettingsConstants.BOW_SKIN, itemId);
-                    break;
-                case WeaponType.Hammer:
-                    ModSettingsManager.SetStringValue(ModSettingsConstants.HAMMER_SKIN, itemId);
-                    break;
-                case WeaponType.Spear:
-                    ModSettingsManager.SetStringValue(ModSettingsConstants.SPEAR_SKIN, itemId);
-                    break;
-                case WeaponType.Shield:
-                    ModSettingsManager.SetStringValue(ModSettingsConstants.SHIELD_SKIN, itemId);
-                    break;
-                case ModWeaponsManager.SCYTHE_TYPE:
-                    ModSettingsManager.SetStringValue(ModSettingsConstants.SCYTHE_SKIN, itemId);
-                    break;
-            }
-        }
+            PersonalizationController personalizationController = player.GetComponent<PersonalizationController>();
+            if (!personalizationController) return;
 
-        public static string GetWeaponSkin(WeaponType weaponType)
-        {
-            switch (weaponType)
-            {
-                case WeaponType.Sword:
-                    return SwordSkin;
-                case WeaponType.Bow:
-                    return BowSkin;
-                case WeaponType.Hammer:
-                    return HammerSkin;
-                case WeaponType.Spear:
-                    return SpearSkin;
-                case WeaponType.Shield:
-                    return ShieldSkin;
-                case ModWeaponsManager.SCYTHE_TYPE:
-                    return ScytheSkin;
-            }
-            return null;
-        }
-
-        public static void SetAccessoryEquipped(string itemId, bool value)
-        {
-            string stringValue = Accessories;
-            if (stringValue == null)
-                stringValue = string.Empty;
-
-            string formattedValue = $"{itemId},";
-
-            if (value && !stringValue.Contains(itemId))
-            {
-                stringValue += formattedValue;
-            }
-            else if (!value && stringValue.Contains(formattedValue))
-            {
-                stringValue = stringValue.Replace(formattedValue, string.Empty);
-            }
-
-            ModSettingsManager.SetStringValue(ModSettingsConstants.ACCESSORIES, stringValue);
-        }
-
-        public static bool IsAccessoryEquipped(string itemId)
-        {
-            return !Accessories.IsNullOrEmpty() && Accessories.Contains(itemId);
-        }
-
-        public static List<string> GetEquippedAccessories()
-        {
-            return new List<string>(StringUtils.GetNonEmptySplitOfCommaSeparatedString(Accessories));
+            personalizationController.DestroyItem(personalizationController.GetItem(weaponType));
         }
     }
 }

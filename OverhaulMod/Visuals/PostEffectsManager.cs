@@ -61,14 +61,6 @@ namespace OverhaulMod.Visuals
 
         private CameraManager m_cameraManager;
 
-        private float m_timeLeftToRefreshReflectionProbe;
-
-        private bool m_reflectionProbeCreated;
-
-        private ReflectionProbe m_reflectionProbe;
-
-        private Transform m_reflectionProbeTransform;
-
         public static List<Dropdown.OptionData> ColorBlindnessOptions = new List<Dropdown.OptionData>()
         {
             new Dropdown.OptionData("Normal vision"),
@@ -100,38 +92,6 @@ namespace OverhaulMod.Visuals
         {
             m_cameraManager = CameraManager.Instance;
             createGraphicsPresets();
-
-            if (!ModFeatures.IsEnabled(ModFeatures.FeatureType.ReflectionProbe) || !ModFeatures.IsEnabled(ModFeatures.FeatureType.MoreImageEffects))
-                return;
-
-            createReflectionProbe();
-            m_reflectionProbeCreated = true;
-        }
-
-        private void Update()
-        {
-            if (!m_reflectionProbeCreated)
-                return;
-
-            m_timeLeftToRefreshReflectionProbe -= Time.unscaledDeltaTime;
-            if (m_timeLeftToRefreshReflectionProbe > 0f)
-                return;
-
-            m_timeLeftToRefreshReflectionProbe = 1f;
-
-            ReflectionProbe reflectionProbe = m_reflectionProbe;
-            if (reflectionProbe && reflectionProbe.enabled)
-            {
-                Transform rp = m_reflectionProbeTransform;
-                if (rp)
-                {
-                    Camera camera = m_cameraManager.mainCamera;
-                    if (camera)
-                    {
-                        rp.position = camera.transform.position;
-                    }
-                }
-            }
         }
 
         private void OnDestroy()
@@ -144,23 +104,6 @@ namespace OverhaulMod.Visuals
         {
             ModSettingsPreset modSettingsPreset = m_graphicsPresets[index];
             modSettingsPreset.Apply();
-        }
-
-        public void RefreshReflectionProbeNextFrame()
-        {
-            m_timeLeftToRefreshReflectionProbe = 0f;
-        }
-
-        private void createReflectionProbe()
-        {
-            GameObject reflectionProbe = new GameObject("Reflection Probe");
-            reflectionProbe.transform.SetParent(base.transform);
-            m_reflectionProbe = reflectionProbe.AddComponent<ReflectionProbe>();
-            m_reflectionProbe.size = Vector3.one * 500f;
-            m_reflectionProbe.mode = UnityEngine.Rendering.ReflectionProbeMode.Realtime;
-            m_reflectionProbe.refreshMode = UnityEngine.Rendering.ReflectionProbeRefreshMode.EveryFrame;
-            m_reflectionProbe.enabled = false;
-            m_reflectionProbeTransform = reflectionProbe.transform;
         }
 
         private void createGraphicsPresets()
@@ -302,17 +245,7 @@ namespace OverhaulMod.Visuals
 
         public void AddPostEffectsToCamera(Camera camera)
         {
-            if (!camera)
-                return;
-
-            if (m_reflectionProbeCreated)
-            {
-                ReflectionProbe reflectionProbe = m_reflectionProbe;
-                if (reflectionProbe)
-                {
-                    reflectionProbe.enabled = AdvancedPhotoModeManager.Settings.overrideSettings ? AdvancedPhotoModeManager.Settings.EnableReflectionProbe : EnableReflectionProbe;
-                }
-            }
+            if (!camera) return;
 
             PostEffectsContainer postEffectsContainer = camera.GetComponent<PostEffectsContainer>();
             if (!postEffectsContainer)

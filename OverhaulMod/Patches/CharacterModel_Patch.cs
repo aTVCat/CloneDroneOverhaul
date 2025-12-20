@@ -12,8 +12,7 @@ namespace OverhaulMod.Patches
         private static void OverridePatternColor_Prefix(CharacterModel __instance, ref PatternColorSet newColor, bool forceMultiplayerHSBReplacement = false)
         {
             FirstPersonMover firstPersonMover = __instance.GetOwner();
-            if (!firstPersonMover)
-                return;
+            if (!firstPersonMover || (firstPersonMover.IsDetached() && firstPersonMover.CharacterType != EnemyType.None) || firstPersonMover.IsAIControlled()) return;
 
             ExclusivePerkManager exclusivePerkManager = ExclusivePerkManager.Instance;
             newColor.SwordColor = exclusivePerkManager.GetOverrideRobotColor(firstPersonMover, newColor.SwordColor);

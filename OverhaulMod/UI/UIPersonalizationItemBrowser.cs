@@ -165,7 +165,7 @@ namespace OverhaulMod.UI
 
             m_descriptionBox.SetBrowserUI(this);
             m_sortDropdown.value = 1;
-            m_allowEnemiesUseWeaponSkinsToggle.isOn = PersonalizationController.AllowEnemiesUseSkins;
+            m_allowEnemiesUseWeaponSkinsToggle.isOn = PersonalizationUserInfo.AllowEnemiesUseSkins;
 
             GlobalEventManager.Instance.AddEventListener(PersonalizationManager.CUSTOMIZATION_ASSETS_FILE_DOWNLOADED_EVENT, onCustomizationAssetsFileDownloaded);
             GlobalEventManager.Instance.AddEventListener(GlobalEvents.PlayerDied, tryHide);
@@ -556,11 +556,11 @@ namespace OverhaulMod.UI
                     defaultSkinButton.onClick.AddListener(delegate
                     {
                         defaultSkinButton.interactable = false;
-                        PersonalizationController.SetWeaponSkin(weaponType, null);
-                        PersonalizationController.DestroyWeaponSkin(weaponType);
+                        PersonalizationUserInfo.SetWeaponSkin(weaponType, null);
+                        PersonalizationController.DestroyWeaponSkinOnMainPlayer(weaponType);
                         GlobalEventManager.Instance.Dispatch(PersonalizationManager.ITEM_EQUIPPED_OR_UNEQUIPPED_EVENT);
                     });
-                    defaultSkinButton.interactable = !PersonalizationController.GetWeaponSkin(weaponType).IsNullOrEmpty();
+                    defaultSkinButton.interactable = !PersonalizationUserInfo.GetWeaponSkin(weaponType).IsNullOrEmpty();
                     m_defaultSkinButton = defaultSkinButton;
 
                     utilsPanel.GetObject<Button>(1).onClick.AddListener(OnUpdateButtonClicked);

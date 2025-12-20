@@ -29,12 +29,12 @@ namespace OverhaulMod.Content.Personalization
 
         public void SendPlayerCustomizationDataEvent(bool sendForRecentlyConnectedPlayer)
         {
-            string swordSkin = normalizeId(PersonalizationController.SwordSkin);
-            string bowSkin = normalizeId(PersonalizationController.BowSkin);
-            string hammerSkin = normalizeId(PersonalizationController.HammerSkin);
-            string spearSkin = normalizeId(PersonalizationController.SpearSkin);
-            string shieldSkin = normalizeId(PersonalizationController.ShieldSkin);
-            string scytheSkin = normalizeId(PersonalizationController.ScytheSkin);
+            string swordSkin = normalizeId(PersonalizationUserInfo.SwordSkin);
+            string bowSkin = normalizeId(PersonalizationUserInfo.BowSkin);
+            string hammerSkin = normalizeId(PersonalizationUserInfo.HammerSkin);
+            string spearSkin = normalizeId(PersonalizationUserInfo.SpearSkin);
+            string shieldSkin = normalizeId(PersonalizationUserInfo.ShieldSkin);
+            string scytheSkin = normalizeId(PersonalizationUserInfo.ScytheSkin);
 
             StringBuilder stringBuilder = m_stringBuilder;
             _ = stringBuilder.Clear();

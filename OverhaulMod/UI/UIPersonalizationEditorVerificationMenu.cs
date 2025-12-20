@@ -187,6 +187,9 @@ namespace OverhaulMod.UI
 
             if (!personalizationEditorManager.SaveItem(out string error2, true))
             {
+                if (error2.Length > 512)
+                    error2 = error2.Remove(512);
+
                 UIPersonalizationEditor.instance.ShowSaveErrorMessage(error2);
                 return;
             }
@@ -197,10 +200,9 @@ namespace OverhaulMod.UI
 
             PersonalizationItemVerificationManager.Instance.SendItemToVerification(personalizationItemInfo, delegate
             {
-                if (personalizationItemInfo.IsSentForVerification)
-                    personalizationItemInfo.ReuploadedTheItem = true;
-
+                if (personalizationItemInfo.IsSentForVerification) personalizationItemInfo.ReuploadedTheItem = true;
                 personalizationItemInfo.IsSentForVerification = true;
+
                 _ = personalizationEditorManager.SaveItem(out _, true);
 
                 m_exitButton.interactable = true;

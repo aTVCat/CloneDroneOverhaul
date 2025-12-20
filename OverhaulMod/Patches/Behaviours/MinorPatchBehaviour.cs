@@ -59,6 +59,8 @@ namespace OverhaulMod.Patches.Behaviours
                 {
                     ModUIManager.Instance.RefreshUIVisibility();
                 });
+
+                gameUIRoot.CurrentlySpectatingUI.transform.SetSiblingIndex(gameUIRoot.EndlessResultScreen.transform.GetSiblingIndex());
             }
 
             /*

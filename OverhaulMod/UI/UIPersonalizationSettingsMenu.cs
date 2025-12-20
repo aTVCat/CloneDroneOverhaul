@@ -20,7 +20,7 @@ namespace OverhaulMod.UI
         protected override void OnInitialized()
         {
             m_disallowCallbacks = true;
-            m_allowEnemiesUseWeaponSkinsToggle.isOn = PersonalizationController.AllowEnemiesUseSkins;
+            m_allowEnemiesUseWeaponSkinsToggle.isOn = PersonalizationUserInfo.AllowEnemiesUseSkins;
             m_disallowCallbacks = false;
         }
 

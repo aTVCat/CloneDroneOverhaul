@@ -215,7 +215,6 @@ namespace OverhaulMod
                 refreshCameraPostEffects(obj);
                 GlobalEventManager.Instance.Dispatch(CameraManager.FIRST_PERSON_MODE_SWITCHED_EVENT);
             }, ModSettingsConstants.ENABLE_FIRST_PERSON_MODE);
-            modSettingsManager.AddSettingValueChangedListener(refreshReflectionProbe, ModSettingsConstants.ENABLE_REFLECTION_PROBE);
             modSettingsManager.AddSettingValueChangedListener(refreshFPSCap, ModSettingsConstants.FPS_CAP);
             modSettingsManager.AddSettingValueChangedListener(ModCore.RefreshCursor, ModSettingsConstants.CURSOR_SKIN);
             modSettingsManager.AddSettingValueChangedListener(delegate (object obj)
@@ -258,11 +257,6 @@ namespace OverhaulMod
                         energyUIPatch.PatchEnergyUI();
                 });
             }, ModSettingsConstants.ENERGY_UI_REWORK);
-        }
-
-        private static void refreshReflectionProbe(object obj)
-        {
-            PostEffectsManager.Instance.RefreshReflectionProbeNextFrame();
         }
 
         private static void refreshCameraPostEffects(object obj)

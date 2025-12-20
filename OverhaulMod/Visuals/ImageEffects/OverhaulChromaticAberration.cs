@@ -43,12 +43,8 @@ namespace OverhaulMod.Visuals.ImageEffects
 
         private void Start()
         {
-            if (!SystemInfo.supportsImageEffects)
-                return;
-
             m_shader = ModResources.Shader(AssetBundleConstants.IMAGE_EFFECTS, "ChromaticAberration");
-            if (!m_shader || !m_shader.isSupported)
-                return;
+            if (!m_shader || !m_shader.isSupported) return;
 
             m_material = new Material(m_shader);
             m_supported = true;

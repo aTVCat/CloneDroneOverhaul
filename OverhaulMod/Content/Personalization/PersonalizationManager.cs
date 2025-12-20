@@ -393,14 +393,13 @@ namespace OverhaulMod.Content.Personalization
                 List<FirstPersonMover> clones = CloneManager.Instance._clones;
 
                 List<FirstPersonMover> allPlayers = new List<FirstPersonMover>(clones);
-                if (firstPersonMover)
+                if (firstPersonMover && firstPersonMover.IsAttachedAndAlive())
                     allPlayers.Add(firstPersonMover);
 
                 SetIsItemEquipped(item, true);
                 foreach (FirstPersonMover clone in allPlayers)
                 {
-                    if (!clone)
-                        continue;
+                    if (!clone || !clone.IsAttachedAndAlive()) continue;
 
                     PersonalizationController personalizationController = clone.GetComponent<PersonalizationController>();
                     if (personalizationController)
@@ -421,10 +420,10 @@ namespace OverhaulMod.Content.Personalization
             switch (item.Category)
             {
                 case PersonalizationCategory.WeaponSkins:
-                    PersonalizationController.SetWeaponSkin(item.Weapon, id);
+                    PersonalizationUserInfo.SetWeaponSkin(item.Weapon, id);
                     break;
                 case PersonalizationCategory.Accessories:
-                    PersonalizationController.SetAccessoryEquipped(item.ItemID, value);
+                    PersonalizationUserInfo.SetAccessoryEquipped(item.ItemID, value);
                     break;
             }
 
@@ -440,21 +439,21 @@ namespace OverhaulMod.Content.Personalization
                     switch (item.Weapon)
                     {
                         case WeaponType.Sword:
-                            return PersonalizationController.SwordSkin == itemId;
+                            return PersonalizationUserInfo.SwordSkin == itemId;
                         case WeaponType.Bow:
-                            return PersonalizationController.BowSkin == itemId;
+                            return PersonalizationUserInfo.BowSkin == itemId;
                         case WeaponType.Hammer:
-                            return PersonalizationController.HammerSkin == itemId;
+                            return PersonalizationUserInfo.HammerSkin == itemId;
                         case WeaponType.Spear:
-                            return PersonalizationController.SpearSkin == itemId;
+                            return PersonalizationUserInfo.SpearSkin == itemId;
                         case WeaponType.Shield:
-                            return PersonalizationController.ShieldSkin == itemId;
+                            return PersonalizationUserInfo.ShieldSkin == itemId;
                         case ModWeaponsManager.SCYTHE_TYPE:
-                            return PersonalizationController.ScytheSkin == itemId;
+                            return PersonalizationUserInfo.ScytheSkin == itemId;
                     }
                     return false;
                 case PersonalizationCategory.Accessories:
-                    return !itemId.IsNullOrEmpty() && PersonalizationController.Accessories.Contains(itemId);
+                    return !itemId.IsNullOrEmpty() && PersonalizationUserInfo.Accessories.Contains(itemId);
             }
             return false;
         }
