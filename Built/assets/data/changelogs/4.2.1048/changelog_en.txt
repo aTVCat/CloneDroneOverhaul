@@ -1,5 +1,6 @@
 # Changes
 - Added bloom mode settings to replace adjusting settings
+- Changed version format from Major.Minor.Build.Revision to Major.Minor.Build
 
 # Fixes
 - Chromatic aberration makes everything visible when camera exposure is very low

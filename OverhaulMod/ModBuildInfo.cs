@@ -22,7 +22,7 @@ namespace OverhaulMod
         public const string EXTRA_INFO_FILE_PATH = "buildInfo.json";
 
 #if OVERRIDE_VER
-        public const string OVERRIDE_VERSION = "0.4.2.1047";
+        public const string OVERRIDE_VERSION = "4.2.1048";
 #endif
 
         private static bool s_loaded;
@@ -55,12 +55,6 @@ namespace OverhaulMod
             private set;
         }
 
-        public static int versionRevision
-        {
-            get;
-            private set;
-        }
-
         private static Version s_version;
         public static Version version
         {
@@ -68,7 +62,7 @@ namespace OverhaulMod
             {
                 if (s_version == null)
                 {
-                    s_version = new Version(versionMajor, versionMinor, versionBuild, versionRevision);
+                    s_version = new Version(versionMajor, versionMinor, versionBuild);
                 }
                 return s_version;
             }
@@ -81,7 +75,7 @@ namespace OverhaulMod
             {
                 if (s_versionStringNoBranch == null)
                 {
-                    s_versionStringNoBranch = $"{versionMajor}.{versionMinor}.{versionBuild}.{versionRevision}";
+                    s_versionStringNoBranch = $"{versionMajor}.{versionMinor}.{versionBuild}";
                 }
                 return s_versionStringNoBranch;
             }
@@ -95,9 +89,9 @@ namespace OverhaulMod
                 if (s_versionString == null)
                 {
                     if (isPrereleaseBuild)
-                        s_versionString = $"{versionMajor}.{versionMinor}.{versionBuild}.{versionRevision} {branchName}";
+                        s_versionString = $"{versionMajor}.{versionMinor}.{versionBuild} {branchName}";
                     else
-                        s_versionString = $"{versionMajor}.{versionMinor}.{versionBuild}.{versionRevision}";
+                        s_versionString = $"{versionMajor}.{versionMinor}.{versionBuild}";
                 }
                 return s_versionString;
             }
@@ -206,12 +200,10 @@ namespace OverhaulMod
             int major = version.Major;
             int minor = version.Minor;
             int build = version.Build;
-            int revision = version.Revision;
 
             versionMajor = major;
             versionMinor = minor;
             versionBuild = build;
-            versionRevision = revision;
         }
 
         private static void loadExtraInfo()

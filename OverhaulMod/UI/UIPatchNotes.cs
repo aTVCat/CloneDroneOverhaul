@@ -26,11 +26,11 @@ namespace OverhaulMod.UI
         [UIElement("VersionDisplay", false)]
         private readonly ModdedObject m_versionDisplay;
 
+        [UIElement("Separator", false)]
+        private readonly ModdedObject m_separator;
+
         [UIElement("Content")]
         private readonly Transform m_container;
-
-        [UIElement("Separator", false)]
-        private readonly GameObject m_separator;
 
         [UIElement("Header")]
         private readonly Text m_headerText;
@@ -75,47 +75,51 @@ namespace OverhaulMod.UI
             m_textLine.gameObject.AddComponent<BetterOutline>().effectColor = Color.black;
 
             string path = Path.Combine(ModCore.dataFolder, "changelogs");
-            if (!Directory.Exists(path))
-                return;
+            if (!Directory.Exists(path)) return;
 
             List<Version> versions = new List<Version>();
             foreach (string directory in Directory.GetDirectories(path))
             {
                 string dirName = ModFileUtils.GetDirectoryName(directory);
+                if (!Version.TryParse(dirName, out Version version)) version = new Version(0, 0, 0);
 
-                if (!Version.TryParse(dirName, out Version version))
-                    version = new Version(0, 0, 0, 0);
-
-                if (ModBuildInfo.version < version)
-                    continue;
+                if (ModBuildInfo.version < version) continue;
 
                 versions.Add(version);
             }
 
-            if (versions.IsNullOrEmpty())
-                return;
+            if (versions.IsNullOrEmpty()) return;
 
             Button firstButton = null;
 
             versions.Sort(CompareByVersion);
 
-            int minorVersion = ModBuildInfo.versionMinor;
-            int buildVersion = ModBuildInfo.versionBuild;
+            int majorVersion = ModBuildInfo.versionMinor;
+            int minorVersion = ModBuildInfo.versionBuild;
             foreach (Version version in versions)
             {
-                if ((version.Minor != minorVersion || version.Build != buildVersion) && firstButton)
+                string updateString;
+                if ((version.Major != majorVersion || version.Minor != minorVersion) || !firstButton)
                 {
-                    GameObject separator = Instantiate(m_separator, m_container);
-                    separator.SetActive(true);
+                    majorVersion = version.Major;
                     minorVersion = version.Minor;
-                    buildVersion = version.Build;
+                    updateString = $"{LocalizationManager.Instance.GetTranslatedString("changelog_update")} {majorVersion}.{minorVersion}";
+
+                    ModdedObject separator = Instantiate(m_separator, m_container);
+                    separator.gameObject.SetActive(true);
+                    separator.GetObject<Text>(0).text = updateString;
+                }
+                else
+                {
+                    updateString = $"{LocalizationManager.Instance.GetTranslatedString("changelog_update")} {majorVersion}.{minorVersion}";
                 }
 
                 ModdedObject display = Instantiate(m_versionDisplay, m_container);
                 display.gameObject.SetActive(true);
 
                 string verString = version.ToString();
-                string verHeader = getBuildDisplayVersion(verString);
+                string detailsString = getBuildDetails(verString);
+                string verHeader = detailsString.IsNullOrEmpty() ? verString : $"{detailsString} ({verString})";
                 display.GetObject<Text>(0).text = verHeader;
 
                 Button button = display.GetComponent<Button>();
@@ -128,7 +132,7 @@ namespace OverhaulMod.UI
                     button.interactable = false;
                     m_previousButtonClicked = button;
 
-                    PopulateChangelog(verHeader, verString);
+                    PopulateChangelog(updateString, verHeader, verString);
                 });
 
                 if (!firstButton)
@@ -223,7 +227,7 @@ namespace OverhaulMod.UI
                 m_firstButton.OnPointerClick(new UnityEngine.EventSystems.PointerEventData(null));
         }
 
-        public void PopulateChangelog(string header, string folderName)
+        public void PopulateChangelog(string updateString, string header, string folderName)
         {
             string path = Path.Combine(ModCore.dataFolder, "changelogs", folderName);
             string langCode = LocalizationManager.Instance.GetCurrentLanguageCode();
@@ -256,7 +260,7 @@ namespace OverhaulMod.UI
                 }
             }
 
-            PopulateText(header, text);
+            PopulateText($"{updateString} · {header}", text);
         }
 
         public void Clear()
@@ -324,52 +328,47 @@ namespace OverhaulMod.UI
             }
         }
 
-        private string getBuildDisplayVersion(string folder)
+        private string getBuildDetails(string folder)
         {
+            string patch = LocalizationManager.Instance.GetTranslatedString("word_patch");
+
             switch (folder)
             {
-                case "0.2.0.13":
-                    return $"{LocalizationManager.Instance.GetTranslatedString("changelog_update")} 2 (0.2.0.13)";
-                case "0.2.0.22":
-                    return $"{LocalizationManager.Instance.GetTranslatedString("changelog_update")} 2 {LocalizationManager.Instance.GetTranslatedString("word_patch")} (0.2.0.22)";
-                case "0.2.10.22":
-                    return $"{LocalizationManager.Instance.GetTranslatedString("changelog_update")} 2 HotFix (0.2.10.22)";
-                case "0.3.0.345":
-                    return $"{LocalizationManager.Instance.GetTranslatedString("changelog_update")} 3 (0.3.0.345)";
-                case "0.3.1.0":
-                    return $"{LocalizationManager.Instance.GetTranslatedString("changelog_update")} 3.1 (0.3.1.0)";
-                case "0.3.1.8":
-                    return $"{LocalizationManager.Instance.GetTranslatedString("changelog_update")} 3.1 HotFix (0.3.1.8)";
-                case "0.4.0.200":
-                    return $"{LocalizationManager.Instance.GetTranslatedString("changelog_update")} 4 Test (0.4.0.200)";
-                case "0.4.0.227":
-                    return $"{LocalizationManager.Instance.GetTranslatedString("changelog_update")} 4 (0.4.0.227)";
-                case "0.4.1.13":
-                    return $"{LocalizationManager.Instance.GetTranslatedString("changelog_update")} 4.1 (0.4.1.13)";
-                case "0.4.2.32":
-                    return $"{LocalizationManager.Instance.GetTranslatedString("changelog_update")} 4.2 (0.4.2.32)";
-                case "0.4.2.46":
-                    return $"{LocalizationManager.Instance.GetTranslatedString("changelog_update")} 4.2 {LocalizationManager.Instance.GetTranslatedString("word_patch")} (0.4.2.46)";
-                case "0.4.2.52":
-                    return $"{LocalizationManager.Instance.GetTranslatedString("changelog_update")} 4.2 {LocalizationManager.Instance.GetTranslatedString("word_patch")} 2 (0.4.2.52)";
-                case "0.4.2.54":
-                    return $"{LocalizationManager.Instance.GetTranslatedString("changelog_update")} 4.2 {LocalizationManager.Instance.GetTranslatedString("word_patch")} 3 (0.4.2.54)";
-                case "0.4.2.1017":
-                    return $"{LocalizationManager.Instance.GetTranslatedString("changelog_update")} 4.2 {LocalizationManager.Instance.GetTranslatedString("word_patch")} 4 Test (0.4.2.1017)";
-                case "0.4.2.1030":
-                    return $"{LocalizationManager.Instance.GetTranslatedString("changelog_update")} 4.2 {LocalizationManager.Instance.GetTranslatedString("word_patch")} 4 (0.4.2.1030)";
-                case "0.4.2.1036":
-                    return $"{LocalizationManager.Instance.GetTranslatedString("changelog_update")} 4.2 {LocalizationManager.Instance.GetTranslatedString("word_patch")} 5 (0.4.2.1036)";
-                case "0.4.2.1037":
-                    return $"{LocalizationManager.Instance.GetTranslatedString("changelog_update")} 4.2 {LocalizationManager.Instance.GetTranslatedString("word_patch")} 6 (0.4.2.1037)";
-                case "0.4.2.1038":
-                    return $"{LocalizationManager.Instance.GetTranslatedString("changelog_update")} 4.2 {LocalizationManager.Instance.GetTranslatedString("word_patch")} 7 (0.4.2.1038)";
-                case "0.4.2.1045":
-                    return $"{LocalizationManager.Instance.GetTranslatedString("changelog_update")} 4.2 {LocalizationManager.Instance.GetTranslatedString("word_patch")} 8 (0.4.2.1045)";
-                case "0.4.3.0":
-                    return $"{LocalizationManager.Instance.GetTranslatedString("changelog_update")} 4.3 Preview 1 (0.4.3.0)";
+                // releases
+                case "3.0.345":
+                case "3.1.0":
+                case "4.0.227":
+                case "4.1.13":
+                case "4.2.32":
+                    return LocalizationManager.Instance.GetTranslatedString("initial_release");
+
+                // single patches
+                case "3.1.8":
+                case "4.1.14":
+                    return patch;
+
+                // series of patches
+                case "4.2.46":
+                    return $"{patch} 1";
+                case "4.2.52":
+                    return $"{patch} 2";
+                case "4.2.54":
+                    return $"{patch} 3";
+                case "4.2.1030":
+                    return $"{patch} 4";
+                case "4.2.1036":
+                    return $"{patch} 5";
+                case "4.2.1037":
+                    return $"{patch} 6";
+                case "4.2.1038":
+                    return $"{patch} 7";
+                case "4.2.1045":
+                    return $"{patch} 8";
+                case "4.2.1048":
+                    return $"{patch} 9";
+
                 default:
-                    return folder;
+                    return string.Empty;
             }
         }
 
@@ -385,14 +384,9 @@ namespace OverhaulMod.UI
 
         public static int CompareByVersion(Version a, Version b)
         {
-            if (b > a)
-            {
-                return 1;
-            }
-            if (b < a)
-            {
-                return -1;
-            }
+            if (b > a) return 1;
+            else if (b < a) return -1;
+
             return 0;
         }
 

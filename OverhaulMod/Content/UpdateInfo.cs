@@ -17,7 +17,7 @@ namespace OverhaulMod.Content
         public void FixValues()
         {
             if (ModVersion == null)
-                ModVersion = new Version(ModBuildInfo.versionMajor, ModBuildInfo.versionMinor, ModBuildInfo.versionBuild, ModBuildInfo.versionRevision);
+                ModVersion = new Version(ModBuildInfo.versionMajor, ModBuildInfo.versionMinor, ModBuildInfo.versionBuild);
         }
 
         public override string ToString()
