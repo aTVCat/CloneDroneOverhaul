@@ -670,5 +670,10 @@ namespace OverhaulMod.Utils
         /// <see cref="Content.Personalization.PersonalizationEditorGuideManager"/>
         /// </summary>
         public const string PERSONALIZATION_ITEMS_EXPORT_PATH = "PersonalizationItemsExportPath";
+
+        /// <summary>
+        /// <see cref="Visuals.PostEffectsManager"/>
+        /// </summary>
+        public const string BLOOM_MODE = "BloomMode";
     }
 }

@@ -55,6 +55,8 @@ namespace OverhaulMod.UI
         public Dropdown DropdownWithImagePrefab;
         [UIElement("DropdownImage169Prefab", false)]
         public Dropdown DropdownWithImage169Prefab;
+        [UIElement("DropdownWithText", false)]
+        public ModdedObject DropdownWithTextPrefab;
 
         [UIElement("SliderPrefab", false)]
         public Slider SliderPrefab;
@@ -354,6 +356,10 @@ namespace OverhaulMod.UI
                 pageBuilder.AddDescriptionBoxToRecentElement(ModSettingsConstants.ENABLE_CHROMATIC_ABERRATION);
             }
 
+            _ = pageBuilder.DropdownWithText(PostEffectsManager.BloomOptions, "Bloom", true, ModSettingsManager.GetIntValue(ModSettingsConstants.BLOOM_MODE), delegate (int value)
+            {
+                ModSettingsManager.SetIntValue(ModSettingsConstants.BLOOM_MODE, value, true);
+            });
             _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_DITHERING), delegate (bool value)
             {
                 ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_DITHERING, value, true);
@@ -364,10 +370,6 @@ namespace OverhaulMod.UI
                 ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_VIGNETTE, value, true);
             }, "Vignette");
             pageBuilder.AddDescriptionBoxToRecentElement(ModSettingsConstants.ENABLE_VIGNETTE);
-            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.TWEAK_BLOOM), delegate (bool value)
-            {
-                ModSettingsManager.SetBoolValue(ModSettingsConstants.TWEAK_BLOOM, value, true);
-            }, "Adjust bloom settings");
 
             _ = pageBuilder.Header3("Particle effects");
             _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_GARBAGE_PARTICLES), delegate (bool value)
@@ -682,11 +684,10 @@ namespace OverhaulMod.UI
                 });
             }
 
-            bool moreEffectsEnabled = ModFeatures.IsEnabled(ModFeatures.FeatureType.MoreImageEffects);
             bool showExperimentalSettings = ModFeatures.IsEnabled(ModFeatures.FeatureType.DisplayNewGraphicsOptionsInSettings);
 
             _ = pageBuilder.Header3("Post effects");
-            if (moreEffectsEnabled && showExperimentalSettings)
+            if (showExperimentalSettings)
             {
                 _ = pageBuilder.Dropdown(PostEffectsManager.PresetOptions, 0, delegate (int value)
                 {
@@ -709,43 +710,23 @@ namespace OverhaulMod.UI
             });
             pageBuilder.AddDescriptionBoxToRecentElement(ModSettingsConstants.ENABLE_SSAO);
 
-            if (moreEffectsEnabled)
+            if (showExperimentalSettings || ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_GLOBAL_ILLUMINATION))
             {
-                if (showExperimentalSettings || ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_GLOBAL_ILLUMINATION))
+                _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_GLOBAL_ILLUMINATION), delegate (bool value)
                 {
-                    _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_GLOBAL_ILLUMINATION), delegate (bool value)
-                    {
-                        ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_GLOBAL_ILLUMINATION, value, true);
-                    }, "Global Illumination".AddColor(Color.yellow));
-                    pageBuilder.AddDescriptionBoxToRecentElement(ModSettingsConstants.ENABLE_GLOBAL_ILLUMINATION);
-                }
-
-                /*if (ModFeatures.IsEnabled(ModFeatures.FeatureType.ReflectionProbe))
-                {
-                    _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_REFLECTION_PROBE), delegate (bool value)
-                    {
-                        ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_REFLECTION_PROBE, value, true);
-                    }, "Reflection Probe");
-                    pageBuilder.AddDescriptionBoxToRecentElement(ModSettingsConstants.ENABLE_REFLECTION_PROBE);
-                }*/
-
-                _ = pageBuilder.ToggleWithOptions(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_CHROMATIC_ABERRATION), delegate (bool value)
-                {
-                    ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_CHROMATIC_ABERRATION, value, true);
-                }, "Chromatic aberration", delegate
-                {
-                    populateCASettingsPage(m_selectedTabId);
-                });
-                pageBuilder.AddDescriptionBoxToRecentElement(ModSettingsConstants.ENABLE_CHROMATIC_ABERRATION);
+                    ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_GLOBAL_ILLUMINATION, value, true);
+                }, "Global Illumination".AddColor(Color.yellow));
+                pageBuilder.AddDescriptionBoxToRecentElement(ModSettingsConstants.ENABLE_GLOBAL_ILLUMINATION);
             }
 
-            if (ModFeatures.IsEnabled(ModFeatures.FeatureType.ReflectionProbe))
+            _ = pageBuilder.ToggleWithOptions(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_CHROMATIC_ABERRATION), delegate (bool value)
             {
-                _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_REFLECTION_PROBE), delegate (bool value)
-                {
-                    ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_REFLECTION_PROBE, value, true);
-                }, "Reflection probe");
-            }
+                ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_CHROMATIC_ABERRATION, value, true);
+            }, "Chromatic aberration", delegate
+            {
+                populateCASettingsPage(m_selectedTabId);
+            });
+            pageBuilder.AddDescriptionBoxToRecentElement(ModSettingsConstants.ENABLE_CHROMATIC_ABERRATION);
 
             _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_DITHERING), delegate (bool value)
             {
@@ -757,42 +738,37 @@ namespace OverhaulMod.UI
                 ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_VIGNETTE, value, true);
             }, "Vignette");
             pageBuilder.AddDescriptionBoxToRecentElement(ModSettingsConstants.ENABLE_VIGNETTE);
-            _ = pageBuilder.ToggleWithOptions(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_BLOOM), delegate (bool value)
+
+            _ = pageBuilder.ToggleWithOptions(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_DOF), delegate (bool value)
             {
-                ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_BLOOM, value, true);
-            }, "Bloom", delegate
+                ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_DOF, value, true);
+            }, "Depth of field (DoF)", delegate
             {
-                populateBloomSettingsPage(m_selectedTabId);
+                populateCASettingsPage(m_selectedTabId);
             });
-            pageBuilder.AddDescriptionBoxToRecentElement(ModSettingsConstants.ENABLE_BLOOM);
+            pageBuilder.AddDescriptionBoxToRecentElement(ModSettingsConstants.ENABLE_DOF);
 
-            if (moreEffectsEnabled)
+            if (showExperimentalSettings || ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_SUN_SHAFTS))
             {
-                _ = pageBuilder.ToggleWithOptions(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_DOF), delegate (bool value)
+                _ = pageBuilder.ToggleWithOptions(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_SUN_SHAFTS), delegate (bool value)
                 {
-                    ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_DOF, value, true);
-                }, "Depth of field (DoF)", delegate
+                    ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_SUN_SHAFTS, value, true);
+                }, "Sun shafts", delegate
                 {
-                    populateCASettingsPage(m_selectedTabId);
+                    populateSSAOSettingsPage(m_selectedTabId);
                 });
-                pageBuilder.AddDescriptionBoxToRecentElement(ModSettingsConstants.ENABLE_DOF);
+                pageBuilder.AddDescriptionBoxToRecentElement(ModSettingsConstants.ENABLE_SUN_SHAFTS);
+            }
 
-                if (showExperimentalSettings || ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_SUN_SHAFTS))
-                {
-                    _ = pageBuilder.ToggleWithOptions(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_SUN_SHAFTS), delegate (bool value)
-                    {
-                        ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_SUN_SHAFTS, value, true);
-                    }, "Sun shafts", delegate
-                    {
-                        populateSSAOSettingsPage(m_selectedTabId);
-                    });
-                    pageBuilder.AddDescriptionBoxToRecentElement(ModSettingsConstants.ENABLE_SUN_SHAFTS);
-                }
-            }
-            else
+            List<Dropdown.OptionData> bloomOptions = PostEffectsManager.BloomOptions;
+            bloomOptions[0].text = LocalizationManager.Instance.GetTranslatedString("settings_option_disabled");
+            bloomOptions[1].text = LocalizationManager.Instance.GetTranslatedString("settings_option_vanilla");
+            bloomOptions[2].text = LocalizationManager.Instance.GetTranslatedString("settings_option_fancy");
+            bloomOptions[3].text = LocalizationManager.Instance.GetTranslatedString("settings_option_fanciest");
+            _ = pageBuilder.DropdownWithText(bloomOptions, "Bloom", true, ModSettingsManager.GetIntValue(ModSettingsConstants.BLOOM_MODE), delegate (int value)
             {
-                _ = pageBuilder.Header4("New post effects coming in update 4.3!");
-            }
+                ModSettingsManager.SetIntValue(ModSettingsConstants.BLOOM_MODE, value, true);
+            });
 
             if (ModFeatures.IsEnabled(ModFeatures.FeatureType.ColorBlindnessOptions))
             {
@@ -1554,36 +1530,6 @@ namespace OverhaulMod.UI
             });
         }
 
-        private void populateBloomSettingsPage(string initialPage)
-        {
-            PageBuilder pageBuilder = new PageBuilder(this);
-            _ = pageBuilder.Button("Go back", delegate
-            {
-                ClearPageContents();
-                PopulatePage(initialPage);
-            });
-
-            _ = pageBuilder.Header1("Bloom settings");
-            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_BLOOM), delegate (bool value)
-            {
-                ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_BLOOM, value, true);
-            }, "Enable");
-
-            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.TWEAK_BLOOM), delegate (bool value)
-            {
-                ModSettingsManager.SetBoolValue(ModSettingsConstants.TWEAK_BLOOM, value, true);
-            }, "Adjust bloom settings");
-
-            _ = pageBuilder.Button("Reset settings", delegate
-            {
-                ModSettingsManager.ResetValue(ModSettingsConstants.ENABLE_BLOOM, true);
-                ModSettingsManager.ResetValue(ModSettingsConstants.TWEAK_BLOOM, true);
-
-                ClearPageContents();
-                populateBloomSettingsPage(initialPage);
-            });
-        }
-
         private void populateMuteSoundPage(string initialPage)
         {
             PageBuilder pageBuilder = new PageBuilder(this);
@@ -2018,6 +1964,30 @@ namespace OverhaulMod.UI
                 return dropdown;
             }
 
+            private Dropdown instantiateDropdownWithText(List<Dropdown.OptionData> list, string text, bool localize, int value, UnityAction<int> callback, ModdedObject prefab, Transform parentOverride = null)
+            {
+                if (callback == null)
+                    callback = delegate { ModUIUtils.MessagePopupNotImplemented(); };
+
+                if (list == null)
+                    list = new List<Dropdown.OptionData>();
+
+                ModdedObject moddedObject = Instantiate(prefab, parentOverride ? parentOverride : SettingsMenu.PageContentsTransform);
+                moddedObject.gameObject.SetActive(true);
+
+                Dropdown dropdown = moddedObject.GetObject<Dropdown>(0);
+                dropdown.options = list;
+                dropdown.value = value;
+                if (callback != null)
+                    dropdown.onValueChanged.AddListener(callback);
+
+                Text textComponent = moddedObject.GetObject<Text>(1);
+                textComponent.text = text;
+                addLocalizedTextField(textComponent, localize ? $"settings_subheader_{text.ToLower().Replace(' ', '_')}" : null);
+
+                return dropdown;
+            }
+
             public Text Header1(string text, bool localize = true, Transform parentOverride = null)
             {
                 return instantiateHeader(text, localize ? $"settings_header_{text.ToLower().Replace(' ', '_')}" : null, SettingsMenu.Header1Prefab, parentOverride);
@@ -2051,6 +2021,11 @@ namespace OverhaulMod.UI
             public Dropdown DropdownWithImage169(List<Dropdown.OptionData> list, int value, UnityAction<int> callback, Transform parentOverride = null)
             {
                 return instantiateDropdown(list, value, callback, SettingsMenu.DropdownWithImage169Prefab, parentOverride);
+            }
+
+            public Dropdown DropdownWithText(List<Dropdown.OptionData> list, string text, bool localize, int value, UnityAction<int> callback, Transform parentOverride = null)
+            {
+                return instantiateDropdownWithText(list, text, localize, value, callback, SettingsMenu.DropdownWithTextPrefab, parentOverride);
             }
 
             public Slider Slider(float min, float max, bool wholeNumbers, float value, UnityAction<float> callback, bool noBetterSlider = false, Func<float, string> fillTextFunc = null, Transform parentOverride = null)

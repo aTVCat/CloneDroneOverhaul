@@ -99,7 +99,7 @@ namespace OverhaulMod.Visuals
             LevelLightSettings activeLightSettings = LevelEditorLightManager.Instance.GetActiveLightSettings();
             float cameraExposure = activeLightSettings ? activeLightSettings.CameraExposure : 1f;
 
-            refreshBloom(PostEffectsManager.EnableBloom, cameraObject);
+            refreshBloom((BloomMode)PostEffectsManager.Bloom, cameraObject);
             refreshAmplifyOcclusion(shouldEnableEffects && (overrideSettings ? AdvancedPhotoModeManager.Settings.EnableSSAO : PostEffectsManager.EnableSSAO), cameraObject);
             refreshGlobalIllumination(shouldEnableEffects && (overrideSettings ? AdvancedPhotoModeManager.Settings.EnableGlobalIllumination : PostEffectsManager.EnableGlobalIllumination), cameraObject);
             refreshDoF(shouldEnableEffects && (overrideSettings ? AdvancedPhotoModeManager.Settings.EnableDoF : PostEffectsManager.EnableDoF), cameraObject);
@@ -110,7 +110,7 @@ namespace OverhaulMod.Visuals
             refreshColorBlindness(!PostEffectsManager.ColorBlindnessAffectUI && PostEffectsManager.ColorBlindnessMode >= 1 && PostEffectsManager.ColorBlindnessMode <= 3, cameraObject);
         }
 
-        private void refreshBloom(bool enable, GameObject cameraObject)
+        private void refreshBloom(BloomMode mode, GameObject cameraObject)
         {
             Bloom bloom = Bloom;
             if (!bloom)
@@ -119,29 +119,37 @@ namespace OverhaulMod.Visuals
                 Bloom = bloom;
             }
 
+            bool enable = mode != BloomMode.Disabled;
+
             if (bloom)
             {
-                if (PersonalizationEditorManager.IsInEditor() && PersonalizationEditorManager.Instance.IsInScreenshotMode())
+                if (PersonalizationEditorManager.IsInEditor() && PersonalizationEditorManager.Instance.IsInScreenshotMode()) mode = BloomMode.Neonish;
+
+                switch (mode)
                 {
-                    bloom.bloomBlurIterations = 10;
-                    bloom.bloomIntensity = 1f;
-                    bloom.bloomThreshold = 1f;
-                    bloom.enabled = enable;
-                    return;
+                    case BloomMode.Fancy:
+                        bloom.bloomBlurIterations = 4;
+                        bloom.bloomIntensity = 0.5f;
+                        bloom.bloomThreshold = 1f;
+                        break;
+                    case BloomMode.Fanciest:
+                        bloom.bloomBlurIterations = 10;
+                        bloom.bloomIntensity = 0.5f;
+                        bloom.bloomThreshold = 1f;
+
+                        break;
+                    case BloomMode.Neonish:
+                        bloom.bloomBlurIterations = 10;
+                        bloom.bloomIntensity = 1f;
+                        bloom.bloomThreshold = 1f;
+                        break;
+                    default:
+                        bloom.bloomBlurIterations = 2;
+                        bloom.bloomIntensity = 0.5f;
+                        bloom.bloomThreshold = 0.9f;
+                        break;
                 }
 
-                if (PostEffectsManager.TweakBloom)
-                {
-                    bloom.bloomBlurIterations = 4;
-                    bloom.bloomIntensity = 0.5f;
-                    bloom.bloomThreshold = 1f;
-                }
-                else
-                {
-                    bloom.bloomBlurIterations = 2;
-                    bloom.bloomIntensity = 0.5f;
-                    bloom.bloomThreshold = 0.9f;
-                }
                 bloom.enabled = enable;
             }
         }

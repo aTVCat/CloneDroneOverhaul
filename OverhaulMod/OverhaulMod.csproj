@@ -576,6 +576,7 @@
     <Compile Include="Visuals\AmplifyOcclusion\AmplifyOcclusion.cs" />
     <Compile Include="Visuals\AmplifyOcclusion\AmplifyOcclusionCamera.cs" />
     <Compile Include="Visuals\ArrowModelRefresher.cs" />
+    <Compile Include="Visuals\BloomMode.cs" />
     <Compile Include="Visuals\Environment\FloatingDustManager.cs" />
     <Compile Include="Visuals\Environment\SeveredBodyPartSparks.cs" />
     <Compile Include="Visuals\Environment\WeatherInfo.cs" />
