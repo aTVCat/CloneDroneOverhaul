@@ -1,0 +1,13 @@
+# Changes
+- Changed version format from Major.Minor.Build.Revision to Major.Minor.Build
+- Added bloom modes
+- Adjusted global illumination settings
+
+# Fixes
+- Chromatic aberration makes everything visible when camera exposure is very low
+- Clones don't use player's skins
+- Enemies don't unequip player's skins
+- Text overflow crash when sending customization item to verification
+- Exclusive colors apply on enemies in singleplayer
+- VCR OSD Mono font is invisible
+- [Vanilla bug] Spectator UI overlaps menus which it shouldn't
