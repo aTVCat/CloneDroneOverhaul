@@ -162,9 +162,9 @@ namespace OverhaulMod.Content
 
                     if (build.Key == UpdateInfoList.RELEASE_BRANCH || NotifyAboutNewTestBuilds)
                     {
-                        if (maxVersion == null || build.Value.ModVersion > maxVersion)
+                        if (maxVersion == null || build.Value.DisplayVersion > maxVersion)
                         {
-                            maxVersion = build.Value.ModVersion;
+                            maxVersion = build.Value.DisplayVersion;
                         }
                     }
                 }
@@ -175,7 +175,7 @@ namespace OverhaulMod.Content
                 }
                 else
                 {
-                    ModSettingsManager.SetStringValue(ModSettingsConstants.SAVED_NEW_VERSION, "0.0.0.0");
+                    ModSettingsManager.SetStringValue(ModSettingsConstants.SAVED_NEW_VERSION, "0.0.0");
                 }
                 ModSettingsDataManager.Instance.Save();
 

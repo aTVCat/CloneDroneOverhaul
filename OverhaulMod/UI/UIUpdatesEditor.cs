@@ -116,19 +116,9 @@ namespace OverhaulMod.UI
 
             foreach (System.Collections.Generic.KeyValuePair<string, UpdateInfo> update in m_updatesList.Builds)
             {
-                string displayName;
-                if (update.Value.ModVersion == null)
-                {
-                    displayName = "NULL";
-                }
-                else
-                {
-                    displayName = update.Value.ModVersion.ToString();
-                }
-
                 ModdedObject moddedObject = Instantiate(m_branchDisplay, m_content);
                 moddedObject.gameObject.SetActive(true);
-                moddedObject.GetObject<Text>(0).text = displayName;
+                moddedObject.GetObject<Text>(0).text = $"{update.Value.ModVersion} ({update.Value.DisplayVersion})";
                 moddedObject.GetObject<Text>(1).text = update.Key.ToUpper();
 
                 Button button = moddedObject.GetComponent<Button>();
@@ -173,6 +163,7 @@ namespace OverhaulMod.UI
             m_editingUpdate.RequireExclusivePerk = (ExclusivePerkType)m_exclusivePerkRequirementDropdown.value;
             m_editingUpdate.DownloadLink = m_buildFileURLField.text;
             m_editingUpdate.IsGoogleDriveLink = m_isGoogleDriveLinkToggle.isOn;
+            m_editingUpdate.FixValues();
         }
 
         public void OnSaveButtonClicked()
@@ -258,7 +249,7 @@ namespace OverhaulMod.UI
                 ShrinkPanel = true,
                 HideVersionList = true,
             });
-            patchNotes.PopulateText($"{m_editingUpdate.ModVersion} [{m_editingBranch}]", m_editingUpdate.Changelog);
+            patchNotes.PopulateText($"{m_editingUpdate.DisplayVersion} [{m_editingBranch}]", m_editingUpdate.Changelog);
         }
 
         public void OnVersionFieldChanged(string value)
@@ -268,9 +259,10 @@ namespace OverhaulMod.UI
 
             Version version;
             if (!Version.TryParse(m_buildVersionField.text, out version))
-                version = new Version(0, 0, 0, 0);
+                version = new Version(0, 0, 0);
 
             m_editingUpdate.ModVersion = version;
+            m_editingUpdate.FixValues();
 
             m_needsSaveIcon.SetActive(true);
             populateBranches();

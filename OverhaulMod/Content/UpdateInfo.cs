@@ -14,10 +14,15 @@ namespace OverhaulMod.Content
         public string AllowedUsers;
         public ExclusivePerkType RequireExclusivePerk;
 
+        [NonSerialized]
+        public Version DisplayVersion;
+
         public void FixValues()
         {
             if (ModVersion == null)
-                ModVersion = new Version(ModBuildInfo.versionMajor, ModBuildInfo.versionMinor, ModBuildInfo.versionBuild);
+                ModVersion = new Version(0, ModBuildInfo.versionMajor, ModBuildInfo.versionMinor, ModBuildInfo.versionBuild);
+
+            DisplayVersion = new Version(ModVersion.Minor, ModVersion.Build, ModVersion.Revision);
         }
 
         public override string ToString()
@@ -38,17 +43,17 @@ namespace OverhaulMod.Content
 
         public bool IsCurrentBuild()
         {
-            return ModBuildInfo.version == ModVersion;
+            return ModBuildInfo.version == DisplayVersion;
         }
 
         public bool IsNewerBuild()
         {
-            return ModBuildInfo.version < ModVersion;
+            return ModBuildInfo.version < DisplayVersion;
         }
 
         public bool IsOlderBuild()
         {
-            return ModBuildInfo.version > ModVersion;
+            return ModBuildInfo.version > DisplayVersion;
         }
     }
 }

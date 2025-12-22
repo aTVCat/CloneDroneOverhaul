@@ -36,6 +36,9 @@ namespace OverhaulMod.Content
         {
             if (Builds == null)
                 Builds = new Dictionary<string, UpdateInfo>();
+            else
+                foreach (UpdateInfo updateInfo in Builds.Values)
+                    updateInfo.FixValues();
         }
 
         public bool HasAnyNewBuildAvailable()

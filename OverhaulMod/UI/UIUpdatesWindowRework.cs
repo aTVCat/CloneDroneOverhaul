@@ -174,7 +174,7 @@ namespace OverhaulMod.UI
         {
             ModdedObject moddedObject = Instantiate(m_buildDisplay, m_content);
             moddedObject.gameObject.SetActive(true);
-            moddedObject.GetObject<Text>(0).text = updateInfo.ModVersion?.ToString();
+            moddedObject.GetObject<Text>(0).text = updateInfo.DisplayVersion?.ToString();
             moddedObject.GetObject<Text>(1).text = branch.ToUpper();
             moddedObject.GetObject<GameObject>(2).SetActive(branch != UpdateInfoList.RELEASE_BRANCH && branch != UpdateInfoList.PREVIEW_BRANCH);
 
