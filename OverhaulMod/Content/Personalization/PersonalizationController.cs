@@ -151,24 +151,27 @@ namespace OverhaulMod.Content.Personalization
                     }
                 }
 
-                if (!noSkin && !hasSpawnedSkinForWeapon)
+                if (!PersonalizationEditorManager.IsInEditor())
                 {
-                    //Debug.Log("Spawned an item because we didnt earlier");
-                    behaviour = SpawnItem(skin);
-                    if (behaviour)
+                    if (!noSkin && !hasSpawnedSkinForWeapon)
                     {
-                        personalizationItemInfo = behaviour.ControllerInfo?.ItemInfo;
-                        hasSpawnedSkinForWeapon = true;
+                        //Debug.Log("Spawned an item because we didnt earlier");
+                        behaviour = SpawnItem(skin);
+                        if (behaviour)
+                        {
+                            personalizationItemInfo = behaviour.ControllerInfo?.ItemInfo;
+                            hasSpawnedSkinForWeapon = true;
+                        }
+                        else
+                        {
+                            hasSpawnedSkinForWeapon = false;
+                        }
                     }
-                    else
+                    else if (noSkin && hasSpawnedSkinForWeapon)
                     {
+                        DestroyItem(personalizationItemInfo);
                         hasSpawnedSkinForWeapon = false;
                     }
-                }
-                else if (noSkin && hasSpawnedSkinForWeapon)
-                {
-                    DestroyItem(personalizationItemInfo);
-                    hasSpawnedSkinForWeapon = false;
                 }
 
                 if (inEditor && weaponType == WeaponType.Sword)
@@ -447,7 +450,6 @@ namespace OverhaulMod.Content.Personalization
                     SetBowStringsWidth(Mathf.Clamp(itemInfo.BowStringsWidth, 0.1f, 1f));
                 }
                 RefreshWeaponSkinsNextFrame();
-
             }
             else if (itemInfo.Category == PersonalizationCategory.Accessories)
             {
