@@ -1,0 +1,1 @@
+- Fixed weapon skins not appearing in customization editor
