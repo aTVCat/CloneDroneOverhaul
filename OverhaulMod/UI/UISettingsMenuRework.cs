@@ -658,7 +658,7 @@ namespace OverhaulMod.UI
 
             if (!vsyncToggleValue && fpsCapValue == 0)
             {
-                Slider fpsCapSlider = pageBuilder.Slider(2, 100, true, Mathf.RoundToInt(ModSettingsManager.GetIntValue(ModSettingsConstants.FPS_CAP) / 5f), delegate (float value)
+                Slider fpsCapSlider = pageBuilder.Slider(2, 200, true, Mathf.RoundToInt(ModSettingsManager.GetIntValue(ModSettingsConstants.FPS_CAP) / 5f), delegate (float value)
                 {
                     ModSettingsManager.SetIntValue(ModSettingsConstants.FPS_CAP, Mathf.RoundToInt(value * 5f), true);
                 }, true, (float val) =>
@@ -830,7 +830,7 @@ namespace OverhaulMod.UI
 
             if (CameraFOVController.EnableFOVOverride)
             {
-                _ = pageBuilder.Slider(-10f, 40f, true, ModSettingsManager.GetFloatValue(ModSettingsConstants.CAMERA_FOV_OFFSET), delegate (float value)
+                _ = pageBuilder.Slider(-10f, CameraFOVController.FOV_MAX_POSITIVE_OFFSET, true, ModSettingsManager.GetFloatValue(ModSettingsConstants.CAMERA_FOV_OFFSET), delegate (float value)
                 {
                     ModSettingsManager.SetFloatValue(ModSettingsConstants.CAMERA_FOV_OFFSET, value, true);
                 }, true, (float val) =>

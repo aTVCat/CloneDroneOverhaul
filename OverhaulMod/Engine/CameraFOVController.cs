@@ -5,6 +5,8 @@ namespace OverhaulMod.Engine
 {
     public class CameraFOVController : MonoBehaviour
     {
+        public const float FOV_MAX_POSITIVE_OFFSET = 55F;
+
         [ModSetting(ModSettingsConstants.ENABLE_FOV_OVERRIDE, false)]
         public static bool EnableFOVOverride;
 
@@ -88,7 +90,7 @@ namespace OverhaulMod.Engine
         {
             bool fovOverrideEnabled = EnableFOVOverride;
             CameraManager cameraManager = m_cameraManager;
-            return cameraManager.enableForceFOVOffset ? cameraManager.forceFOVOffset : (CameraManager.EnableFirstPersonMode ? Mathf.Min(fovOverrideEnabled ? FOVOffset + 15f : 15f, 40f) : (fovOverrideEnabled ? FOVOffset : 0));
+            return cameraManager.enableForceFOVOffset ? cameraManager.forceFOVOffset : (CameraManager.EnableFirstPersonMode ? Mathf.Min(fovOverrideEnabled ? FOVOffset + 15f : 15f, FOV_MAX_POSITIVE_OFFSET) : (fovOverrideEnabled ? FOVOffset : 0));
         }
     }
 }

@@ -16,7 +16,9 @@ namespace OverhaulMod.Visuals
             new DropdownIntOptionData() { IntValue = 100, text = "Custom FPS" },
             new DropdownIntOptionData() { IntValue = -1, text = "Unlimited FPS" },
             new DropdownIntOptionData() { IntValue = 30, text = "30 FPS" },
+            new DropdownIntOptionData() { IntValue = 50, text = "50 FPS" },
             new DropdownIntOptionData() { IntValue = 60, text = "60 FPS" },
+            new DropdownIntOptionData() { IntValue = 75, text = "75 FPS" },
             new DropdownIntOptionData() { IntValue = 90, text = "90 FPS" },
             new DropdownIntOptionData() { IntValue = 120, text = "120 FPS" },
             new DropdownIntOptionData() { IntValue = 144, text = "144 FPS" },
@@ -24,6 +26,8 @@ namespace OverhaulMod.Visuals
             new DropdownIntOptionData() { IntValue = 240, text = "240 FPS" },
             new DropdownIntOptionData() { IntValue = 300, text = "300 FPS" },
             new DropdownIntOptionData() { IntValue = 360, text = "360 FPS" },
+            new DropdownIntOptionData() { IntValue = 480, text = "480 FPS" },
+            new DropdownIntOptionData() { IntValue = 540, text = "540 FPS" },
         };
 
         private void Start()
