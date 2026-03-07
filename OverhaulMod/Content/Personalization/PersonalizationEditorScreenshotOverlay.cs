@@ -129,10 +129,13 @@ namespace OverhaulMod.Content.Personalization
 
                 if (item.Category == PersonalizationCategory.WeaponSkins && item.Weapon != weaponType) continue;
 
+                if (File.Exists(Path.Combine(item.FolderPath, "preview.png"))) continue;
+
                 UIPersonalizationEditor.instance.Utilities.SetRandomFavoriteColor();
+                PersonalizationEditorManager.Instance.currentEditingItemInfo = item;
 
                 m_overrideItemFolder = item.FolderPath;
-                stage.SpawnItemInHolder(items[i]);
+                stage.SpawnItemInHolder(item);
 
                 PersonalizationEditorScreenshotCameraAngle angle = angles.GetAngle(weaponType == ModWeaponsManager.SCYTHE_TYPE ? "Scythe" : weaponType.ToString());
                 angle.ApplyToTransform(cameraTransform);
@@ -154,7 +157,7 @@ namespace OverhaulMod.Content.Personalization
 
             int antiAliasingBefore = QualitySettings.antiAliasing;
             QualitySettings.antiAliasing = 8;
-            Texture2D texture = PersonalizationEditorScreenshotStage.Instance.TakeScreenshotOfObject(256, 256, 1);
+            Texture2D texture = PersonalizationEditorScreenshotStage.Instance.TakeScreenshotOfObject(128, 128, 1);
             QualitySettings.antiAliasing = antiAliasingBefore;
             m_resultImageFrame.SetActive(true);
             m_resultImage.texture = texture;

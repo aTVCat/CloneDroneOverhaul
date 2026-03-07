@@ -26,6 +26,11 @@ namespace OverhaulMod.Utils
             return !ulong.TryParse(@string, out ulong result) ? defaultValue : result;
         }
 
+        public static Color TryParseToColor(string @string)
+        {
+            return TryParseToColor(@string, Color.white);
+        }
+
         public static Color TryParseToColor(string @string, Color defaultValue)
         {
             if (!@string.StartsWith("#"))

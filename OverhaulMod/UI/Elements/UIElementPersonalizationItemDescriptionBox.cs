@@ -1,4 +1,5 @@
 ﻿using OverhaulMod.Content.Personalization;
+using OverhaulMod.Utils;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,12 +13,6 @@ namespace OverhaulMod.UI
         [UIElement("ItemDescription")]
         private readonly Text m_itemDescriptionText;
 
-        [UIElement("EquipButton")]
-        private readonly GameObject m_unequippedIndicatorObject;
-
-        [UIElement("EquippedLabel")]
-        private readonly GameObject m_equippedIndicatorObject;
-
         [UIElement("LockedOverlay")]
         private readonly GameObject m_lockedOverlay;
 
@@ -27,15 +22,10 @@ namespace OverhaulMod.UI
         [UIElement("LockedNonVerifiedOverlay")]
         private readonly GameObject m_lockedNonVerifiedOverlay;
 
-        [UIElement("DescriptionBox")]
-        private readonly RectTransform m_boxTransform;
-
-        [UIElementAction(nameof(OnEquipButtonClicked))]
-        [UIElement("EquipButton")]
-        private readonly Button m_equipButton;
-
         [UIElement("NameHolder")]
         private readonly RectTransform m_nameHolder;
+
+        private RectTransform m_boxTransform;
 
         private PersonalizationItemInfo m_selectedItemInfo;
 
@@ -49,6 +39,7 @@ namespace OverhaulMod.UI
 
         protected override void OnInitialized()
         {
+            m_boxTransform = base.transform as RectTransform;
             m_mouseEvents = base.gameObject.AddComponent<UIElementMouseEventsComponent>();
             m_animator = base.GetComponent<Animator>();
         }
@@ -64,7 +55,7 @@ namespace OverhaulMod.UI
             {
                 m_refreshBoxNextFrame = false;
 
-                float initialHeight = 75f - (m_lockedOverlay.activeSelf || m_lockedNonVerifiedOverlay.activeSelf || m_nonVerifiedOverlay.activeSelf ? 0f : 20f);
+                float initialHeight = 95f - (m_lockedOverlay.activeSelf || m_lockedNonVerifiedOverlay.activeSelf || m_nonVerifiedOverlay.activeSelf ? 0f : 20f);
                 float preferredTextHeight = m_itemDescriptionText.preferredHeight + 10f;
 
                 RectTransform t = m_boxTransform;
@@ -104,19 +95,39 @@ namespace OverhaulMod.UI
             m_animator.Play(string.Empty);
             m_selectedItemInfo = itemInfo;
 
+            bool noSpecificAuthor = false;
+            string authorsString = itemInfo.GetAuthorsString(true);
+            string prefix;
+            if (authorsString == "vanilla")
+            {
+                noSpecificAuthor = true;
+                prefix = LocalizationManager.Instance.GetTranslatedString("customization_vanilla");
+            }
+            else if (authorsString == "vanilla-hd")
+            {
+                noSpecificAuthor = true;
+                prefix = LocalizationManager.Instance.GetTranslatedString("customization_vanilla_hd");
+            }
+            else
+                prefix = $"{((itemInfo.Authors.IsNullOrEmpty() || itemInfo.Authors.Count <= 1) ? LocalizationManager.Instance.GetTranslatedString("customization_author") : LocalizationManager.Instance.GetTranslatedString("customization_authors"))} ";
+
+            string authorsStringToDisplay;
+            if (noSpecificAuthor)
+            {
+                authorsStringToDisplay = prefix;
+            }
+            else
+            {
+                authorsStringToDisplay = $"{prefix}{authorsString.AddColor(Color.white)}";
+            }
+
             m_itemNameText.text = itemInfo.Name;
             m_itemDescriptionText.text = itemInfo.Description;
-
-            /*
-            bool equipped = itemInfo.IsEquipped();
-            m_unequippedIndicatorObject.SetActive(!equipped);
-            m_equippedIndicatorObject.SetActive(equipped);*/
 
             bool isLocked = !itemInfo.IsUnlocked();
             m_lockedOverlay.SetActive(isLocked && itemInfo.IsVerified);
             m_nonVerifiedOverlay.SetActive(!itemInfo.IsVerified && !isLocked);
             m_lockedNonVerifiedOverlay.SetActive(!itemInfo.IsVerified && isLocked);
-            m_equipButton.interactable = !isLocked;
 
             Transform transform = base.transform;
             Vector3 vector = transform.position;
@@ -124,10 +135,6 @@ namespace OverhaulMod.UI
             transform.position = vector;
 
             m_refreshBoxNextFrame = true;
-        }
-
-        public void OnEquipButtonClicked()
-        {
         }
     }
 }

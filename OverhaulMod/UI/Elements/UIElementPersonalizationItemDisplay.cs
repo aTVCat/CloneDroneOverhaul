@@ -11,25 +11,17 @@ namespace OverhaulMod.UI
 {
     public class UIElementPersonalizationItemDisplay : OverhaulUIBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
-        public const string ITEM_UNEQUIPPED_BG_COLOR = "#404040";
-        public const string ITEM_UNEQUIPPED_BG_COLOR2 = "#4D4D4D";
-        public const string ITEM_EQUIPPED_BG_COLOR = "#305EE0";
-
-        public const string ITEM_UNEQUIPPED_NAME_BG_COLOR = "#272727";
-        public const string ITEM_UNEQUIPPED_NAME_BG_COLOR2 = "#333333";
-        public const string ITEM_EQUIPPED_NAME_BG_COLOR = "#10204F";
-
-        [UIElement("NameBG")]
-        private readonly Image m_nameBg;
+        public const string ITEM_DEFAULT_FRAME_COLOR = "#333333";
+        public const string ITEM_UNVERIFIED_FRAME_COLOR = "#00AAFF";
+        public const string ITEM_UNVERIFIED_EXCLUSIVE_FRAME_COLOR = "#CC5500";
+        public const string ITEM_EXCLUSIVE_FRAME_COLOR = "#FFBF00";
+        public const string ITEM_SELECTED_FRAME_COLOR = "#02CC00";
 
         [UIElement("Frame")]
         private readonly Image m_frame;
 
-        [UIElement("ItemName")]
-        private readonly Text m_nameText;
-
-        [UIElement("NameHolder")]
-        private readonly RectTransform m_nameHolder;
+        [UIElement("Glow")]
+        private readonly Image m_glow;
 
         [UIElement("NewIndicator")]
         private readonly GameObject m_newIndicator;
@@ -43,15 +35,10 @@ namespace OverhaulMod.UI
         [UIElement("UpdatedIndicator")]
         private readonly GameObject m_wasUpdatedIndicator;
 
-        [UIElementIgnoreIfMissing]
-        [UIElement("PreviewImage")]
+        [UIElement("PreviewImage", true)]
         private readonly RawImage m_previewImage;
 
-        public bool HasCardVisuals;
-
         private Button m_button;
-
-        private Image m_bg;
 
         private UIPersonalizationItemBrowser m_browser;
 
@@ -63,35 +50,16 @@ namespace OverhaulMod.UI
 
         public PersonalizationItemInfo ItemInfo;
 
-        private bool m_refreshNameHolderNextFrame;
-
         protected override void OnInitialized()
         {
             m_rectTransform = base.GetComponent<RectTransform>();
-            m_bg = base.GetComponent<Image>();
             m_button = base.GetComponent<Button>();
             m_button.onClick.AddListener(onClicked);
 
             GlobalEventManager.Instance.AddEventListener(PersonalizationManager.ITEM_EQUIPPED_OR_UNEQUIPPED_EVENT, RefreshDisplays);
             RefreshDisplays();
 
-            if (HasCardVisuals)
-                LoadIcon();
-
-            m_refreshNameHolderNextFrame = true;
-        }
-
-        public override void Update()
-        {
-            if (m_refreshNameHolderNextFrame)
-            {
-                m_refreshNameHolderNextFrame = false;
-
-                RectTransform rectTransform = m_nameHolder;
-                Vector2 sizeDelta = rectTransform.sizeDelta;
-                sizeDelta.x = Mathf.Min(m_nameText.preferredWidth + 1f, 175f);
-                rectTransform.sizeDelta = sizeDelta;
-            }
+            LoadIcon();
         }
 
         public override void OnDestroy()
@@ -118,8 +86,7 @@ namespace OverhaulMod.UI
         public void RefreshDisplays()
         {
             PersonalizationItemInfo itemInfo = ItemInfo;
-            if (itemInfo == null)
-                return;
+            if (itemInfo == null) return;
 
             PersonalizationUserInfo personalizationUserInfo = PersonalizationManager.Instance.userInfo;
 
@@ -128,36 +95,51 @@ namespace OverhaulMod.UI
             bool isDiscovered = personalizationUserInfo.IsItemDiscovered(itemInfo);
             bool isFavorite = personalizationUserInfo.IsItemFavorite(itemInfo);
 
-            RefreshBG();
-
             m_favoriteIndicator.SetActive(isFavorite);
             m_newIndicator.SetActive(!isDiscovered && !wasVerified && !wasUpdated);
             m_wasVerifiedIndicator.SetActive(wasVerified);
             m_wasUpdatedIndicator.SetActive(wasUpdated && !wasVerified && isDiscovered);
+
+            RefreshColor();
         }
 
-        public void RefreshBG()
+        public void RefreshColor()
         {
             PersonalizationItemInfo itemInfo = ItemInfo;
             if (itemInfo == null)
                 return;
 
             bool equipped = itemInfo.IsEquipped();
+            bool isExclusive = itemInfo.IsExclusive();
+            bool isVerified = itemInfo.IsVerified;
 
-            Color bgColor = ModParseUtils.TryParseToColor(equipped ? ITEM_EQUIPPED_BG_COLOR : ITEM_UNEQUIPPED_BG_COLOR, Color.white);
-            Color nameBgColor = ModParseUtils.TryParseToColor(equipped ? ITEM_EQUIPPED_NAME_BG_COLOR : ITEM_UNEQUIPPED_NAME_BG_COLOR, Color.white);
+            string colorString;
+            if (equipped)
+            {
+                colorString = ITEM_SELECTED_FRAME_COLOR;
+            }
+            else
+            {
+                if (isExclusive && isVerified) colorString = ITEM_EXCLUSIVE_FRAME_COLOR;
+                else if (isExclusive) colorString = ITEM_UNVERIFIED_EXCLUSIVE_FRAME_COLOR;
+                else if (isVerified) colorString = ITEM_DEFAULT_FRAME_COLOR;
+                else colorString = ITEM_UNVERIFIED_FRAME_COLOR;
+            }
 
-            m_bg.color = bgColor;
-            m_nameBg.color = nameBgColor;
-            m_frame.color = nameBgColor;
+            Color frameColor = ModParseUtils.TryParseToColor(colorString);
+
+            m_frame.color = frameColor;
+            m_glow.color = frameColor;
         }
 
         public void LoadIcon()
         {
             string path = PersonalizationItemInfo.GetPreviewFileFullPath(ItemInfo);
             if (!File.Exists(path))
+            {
+                // todo: placeholder image
                 return;
-
+            }
             loadIconCoroutine(path).Run();
         }
 
@@ -183,8 +165,7 @@ namespace OverhaulMod.UI
         private void onClicked()
         {
             PersonalizationItemInfo itemInfo = ItemInfo;
-            if (itemInfo == null || !itemInfo.IsUnlocked())
-                return;
+            if (itemInfo == null || !itemInfo.IsUnlocked()) return;
 
             updateItemUserInfo();
 
@@ -229,10 +210,7 @@ namespace OverhaulMod.UI
             if (itemInfo == null)
                 return;
 
-            if (!itemInfo.IsUnlocked())
-            {
-                updateItemUserInfo();
-            }
+            if (!itemInfo.IsUnlocked()) updateItemUserInfo();
 
             m_browser.ShowDescriptionBox(itemInfo, m_rectTransform);
         }

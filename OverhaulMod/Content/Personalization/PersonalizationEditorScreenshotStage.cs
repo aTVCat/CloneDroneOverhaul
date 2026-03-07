@@ -122,7 +122,7 @@ namespace OverhaulMod.Content.Personalization
             if (m_holder.childCount != 0)
                 TransformUtils.DestroyAllChildren(m_holder);
 
-            personalizationItemInfo.RootObject.Deserialize(m_holder, null);
+            if(personalizationItemInfo != null) personalizationItemInfo.RootObject.Deserialize(m_holder, null);
         }
 
         public Texture2D TakeScreenshotOfObject(int width, int height, int resizeAmount)

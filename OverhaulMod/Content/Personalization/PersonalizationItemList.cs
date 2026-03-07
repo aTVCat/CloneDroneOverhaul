@@ -192,21 +192,43 @@ namespace OverhaulMod.Content.Personalization
 
         public List<PersonalizationItemInfo> GetItems(PersonalizationCategory personalizationCategory, PersonalizationItemsSortType sort)
         {
+            return sortItems(GetItems(personalizationCategory), sort);
+        }
+
+        public List<PersonalizationItemInfo> GetWeaponSkins(WeaponType weaponType)
+        {
+            List<PersonalizationItemInfo> list = new List<PersonalizationItemInfo>();
+            foreach (PersonalizationItemInfo item in GetItems())
+            {
+                if (item.Category == PersonalizationCategory.WeaponSkins && item.Weapon == weaponType)
+                {
+                    list.Add(item);
+                }
+            }
+            return list;
+        }
+
+        public List<PersonalizationItemInfo> GetWeaponSkins(WeaponType weaponType, PersonalizationItemsSortType sort)
+        {
+            return sortItems(GetWeaponSkins(weaponType), sort);
+        }
+
+        private List<PersonalizationItemInfo> sortItems(List<PersonalizationItemInfo> list, PersonalizationItemsSortType sort)
+        {
             List<PersonalizationItemInfo> result;
-            List<PersonalizationItemInfo> list = GetItems(personalizationCategory);
             switch (sort)
             {
                 case PersonalizationItemsSortType.Alphabet:
-                    result = GetItems(personalizationCategory).OrderBy(f => f.Name).ToList();
+                    result = list.OrderBy(f => f.Name).ToList();
                     break;
                 case PersonalizationItemsSortType.AlphabetReverse:
-                    result = GetItems(personalizationCategory).OrderBy(f => f.Name).Reverse().ToList();
+                    result = list.OrderBy(f => f.Name).Reverse().ToList();
                     break;
                 case PersonalizationItemsSortType.Exclusivity:
-                    result = GetItems(personalizationCategory).OrderBy(f => f.Name).OrderBy(f => !f.IsExclusive()).ToList();
+                    result = list.OrderBy(f => f.Name).OrderBy(f => !f.IsExclusive()).ToList();
                     break;
                 case PersonalizationItemsSortType.ExclusivityReverse:
-                    result = GetItems(personalizationCategory).OrderBy(f => f.Name).OrderBy(f => f.IsExclusive()).ToList();
+                    result = list.OrderBy(f => f.Name).OrderBy(f => f.IsExclusive()).ToList();
                     break;
                 default:
                     result = list;

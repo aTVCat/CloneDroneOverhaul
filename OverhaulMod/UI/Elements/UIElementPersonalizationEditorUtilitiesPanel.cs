@@ -142,7 +142,7 @@ namespace OverhaulMod.UI
 
         public void OnFavoriteColorPreviewDropdownChanged(int value)
         {
-            PersonalizationEditorManager.Instance.SerializeRotAndRespawnBot();
+            if (!PersonalizationEditorManager.Instance.IsInScreenshotMode()) PersonalizationEditorManager.Instance.SerializeRotAndRespawnBot();
         }
     }
 }

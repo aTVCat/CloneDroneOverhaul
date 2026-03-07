@@ -170,7 +170,7 @@ namespace OverhaulMod
                     result = false;
                     break;
                 case FeatureType.CustomizationItemCards:
-                    result = ModBuildInfo.VERSION_4_3;
+                    result = true;
                     break;
                 case FeatureType.TitleScreenLevelCustomization:
                     result = true;

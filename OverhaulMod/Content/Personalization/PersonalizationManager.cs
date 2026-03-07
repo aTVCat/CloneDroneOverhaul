@@ -22,6 +22,15 @@ namespace OverhaulMod.Content.Personalization
 
         public const string USER_INFO_FILE = "PersonalizationUserInfo.json";
 
+        public static readonly WeaponType[] SupportedWeapons = new WeaponType[]
+        {
+            WeaponType.Sword,
+            WeaponType.Bow,
+            WeaponType.Hammer,
+            WeaponType.Spear,
+            ModWeaponsManager.SCYTHE_TYPE,
+        };
+
         public static readonly string[] SupportedBodyParts = new string[]
         {
             "Head",

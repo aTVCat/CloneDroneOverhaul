@@ -13,8 +13,6 @@ namespace OverhaulMod.Content.Personalization
     {
         public static readonly MeshingMode VolumeMeshingMode = MeshingMode.Culled;
 
-        private static readonly Dictionary<WeaponVariant2, VolumeSettingsPreset> s_emptySettingsDictionary = new Dictionary<WeaponVariant2, VolumeSettingsPreset>();
-
         private PersonalizationEditorObjectVisibilityController m_visibilityController;
         public PersonalizationEditorObjectVisibilityController visibilityController
         {
@@ -188,133 +186,132 @@ namespace OverhaulMod.Content.Personalization
             VolumeSettingsPreset preset = GetCurrentPreset();
 
             Volume volumeComponent = volume;
-            if (volumeComponent)
+            if (!volumeComponent) return;
+
+            volumeComponent.MeshingMode = VolumeMeshingMode;
+            //volumeComponent.CollisionMode = CollisionMode.None;
+
+            base.transform.localScale = Vector3.one;
+
+            if (volumeComponent.NumFrames > 0)
             {
-                volumeComponent.MeshingMode = VolumeMeshingMode;
-                //volumeComponent.CollisionMode = CollisionMode.None;
+                System.Collections.Generic.List<Frame> list = volumeComponent.Frames;
+                for (int i = 0; i < volumeComponent.NumFrames; i++)
+                    Destroy(list[i].gameObject);
 
-                base.transform.localScale = Vector3.one;
+                list.Clear();
+            }
 
-                if (volumeComponent.NumFrames > 0)
-                {
-                    System.Collections.Generic.List<Frame> list = volumeComponent.Frames;
-                    for (int i = 0; i < volumeComponent.NumFrames; i++)
-                        Destroy(list[i].gameObject);
+            if (preset == null)
+            {
+                volumeComponent.GenerateBasic(FillMode.None);
+                base.transform.localScale = objectBehaviour.SerializedScale;
+                return;
+            }
 
-                    list.Clear();
-                }
+            string voxFilePath = preset.VoxFilePath;
+            if (voxFilePath == null)
+                voxFilePath = string.Empty;
 
-                if (preset == null)
+            bool inEditor = PersonalizationEditorManager.IsInEditor();
+
+            PersonalizationItemInfo itemInfo;
+            if (inEditor)
+            {
+                itemInfo = PersonalizationEditorManager.Instance.currentEditingItemInfo;
+            }
+            else
+            {
+                itemInfo = objectBehaviour.ControllerInfo.ItemInfo;
+            }
+
+            string path = Path.Combine(itemInfo.RootFolderPath, voxFilePath);
+
+            volumeComponent.AddFrame(0);
+            if (inEditor || !PersonalizationCacheManager.Instance.TryGet(path, out byte[] array))
+            {
+                if (!File.Exists(path))
                 {
                     volumeComponent.GenerateBasic(FillMode.None);
                     base.transform.localScale = objectBehaviour.SerializedScale;
                     return;
                 }
-
-                string voxFilePath = preset.VoxFilePath;
-                if (voxFilePath == null)
-                    voxFilePath = string.Empty;
-
-                bool inEditor = PersonalizationEditorManager.IsInEditor();
-
-                PersonalizationItemInfo itemInfo;
-                if (inEditor)
-                {
-                    itemInfo = PersonalizationEditorManager.Instance.currentEditingItemInfo;
-                }
                 else
                 {
-                    itemInfo = objectBehaviour.ControllerInfo.ItemInfo;
-                }
-
-                string path = Path.Combine(itemInfo.RootFolderPath, voxFilePath);
-
-                volumeComponent.AddFrame(0);
-                if (inEditor || !PersonalizationCacheManager.Instance.TryGet(path, out byte[] array))
-                {
-                    if (!File.Exists(path))
+                    MagicaVoxelImporter.ImportModel(base.gameObject, path, "Import", preset.VoxelSize, preset.CenterPivot);
+                    if (inEditor)
                     {
-                        volumeComponent.GenerateBasic(FillMode.None);
-                        base.transform.localScale = objectBehaviour.SerializedScale;
-                        return;
-                    }
-                    else
-                    {
-                        MagicaVoxelImporter.ImportModel(base.gameObject, path, "Import", preset.VoxelSize, preset.CenterPivot);
-                        if (inEditor)
+                        Frame frame = volumeComponent.GetCurrentFrame();
+                        int allDimensions = frame.XSize + frame.YSize + frame.ZSize;
+                        if (allDimensions > 150)
                         {
-                            Frame frame = volumeComponent.GetCurrentFrame();
-                            int allDimensions = frame.XSize + frame.YSize + frame.ZSize;
-                            if (allDimensions > 150)
-                            {
-                                UIPersonalizationEditor.instance.ShowNotification("Performance warning", "This model is very huge and it can cause lags.\nIt's recommended to simplify this model.", ModParseUtils.TryParseToColor("#4C3D00", Color.yellow), 30f);
-                            }
+                            UIPersonalizationEditor.instance.ShowNotification("Performance warning", "This model is very huge and it can cause lags.\nIt's recommended to simplify this model.", ModParseUtils.TryParseToColor("#4C3D00", Color.yellow), 30f);
                         }
                     }
                 }
-                else
-                {
-                    ModDebug.Log("Loaded the model from memory");
-
-                    MagicaVoxelImporter.ImportModelFromMemory(base.gameObject, array, "Import", preset.VoxelSize, preset.CenterPivot);
-                }
-
-                string cr = preset.ColorReplacements;
-
-                if (cr.IsNullOrEmpty())
-                {
-                    List<Color32> colors = new List<Color32>();
-                    Frame frame = volumeComponent.GetCurrentFrame();
-                    int i = 0;
-                    do
-                    {
-                        Voxel voxel = frame.Voxels[i];
-                        Color32 color32 = voxel.Color;
-                        if (voxel.Active && !colors.Contains(color32))
-                        {
-                            colors.Add(color32);
-                        }
-                        i++;
-                    } while (i < frame.Voxels.Length);
-
-                    List<ColorPairFloat> colorPairs = new List<ColorPairFloat>();
-                    foreach (Color32 color in colors)
-                        colorPairs.Add(new ColorPairFloat(color, color));
-
-                    preset.ColorReplacements = PersonalizationEditorManager.Instance.GetStringFromColorPairs(colorPairs);
-                }
-                else
-                {
-                    Color favoriteColor = objectBehaviour.ControllerInfo.GetFavoriteColor();
-
-                    List<ColorPairFloat> list = PersonalizationEditorManager.Instance.GetColorPairsFromString(cr);
-                    if (!list.IsNullOrEmpty())
-                    {
-                        foreach (ColorPairFloat cp in list)
-                        {
-                            Color colorB;
-                            if (preset.ReplaceWithFavoriteColors != null && preset.ReplaceWithFavoriteColors.TryGetValue(ColorUtility.ToHtmlStringRGBA(cp.ColorA), out FavoriteColorSettings favoriteColorSettings))
-                            {
-                                HSBColor hsbcolor = new HSBColor(favoriteColor)
-                                {
-                                    s = favoriteColorSettings.SaturationMultiplier,
-                                    b = favoriteColorSettings.BrightnessMultiplier
-                                };
-                                colorB = hsbcolor.ToColor();
-                                colorB.a = Mathf.Clamp01(1f - favoriteColorSettings.GlowPercent);
-                            }
-                            else
-                            {
-                                colorB = cp.ColorB;
-                            }
-
-                            ReplaceVoxelColor.ReplaceColors(volumeComponent, cp.ColorA, colorB, false);
-                        }
-                    }
-                }
-
-                base.transform.localScale = objectBehaviour.SerializedScale;
             }
+            else
+            {
+                ModDebug.Log("Loaded the model from memory");
+
+                MagicaVoxelImporter.ImportModelFromMemory(base.gameObject, array, "Import", preset.VoxelSize, preset.CenterPivot);
+            }
+
+            string cr = preset.ColorReplacements;
+
+            if (cr.IsNullOrEmpty())
+            {
+                List<Color32> colors = new List<Color32>();
+                Frame frame = volumeComponent.GetCurrentFrame();
+                int i = 0;
+                do
+                {
+                    Voxel voxel = frame.Voxels[i];
+                    Color32 color32 = voxel.Color;
+                    if (voxel.Active && !colors.Contains(color32))
+                    {
+                        colors.Add(color32);
+                    }
+                    i++;
+                } while (i < frame.Voxels.Length);
+
+                List<ColorPairFloat> colorPairs = new List<ColorPairFloat>();
+                foreach (Color32 color in colors)
+                    colorPairs.Add(new ColorPairFloat(color, color));
+
+                preset.ColorReplacements = PersonalizationEditorManager.Instance.GetStringFromColorPairs(colorPairs);
+            }
+            else
+            {
+                Color favoriteColor = objectBehaviour.ControllerInfo == null ? UIPersonalizationEditor.instance.Utilities.GetFavoriteColor() : objectBehaviour.ControllerInfo.GetFavoriteColor();
+
+                List<ColorPairFloat> list = PersonalizationEditorManager.Instance.GetColorPairsFromString(cr);
+                if (!list.IsNullOrEmpty())
+                {
+                    foreach (ColorPairFloat cp in list)
+                    {
+                        Color colorB;
+                        if (preset.ReplaceWithFavoriteColors != null && preset.ReplaceWithFavoriteColors.TryGetValue(ColorUtility.ToHtmlStringRGBA(cp.ColorA), out FavoriteColorSettings favoriteColorSettings))
+                        {
+                            HSBColor hsbcolor = new HSBColor(favoriteColor)
+                            {
+                                s = favoriteColorSettings.SaturationMultiplier,
+                                b = favoriteColorSettings.BrightnessMultiplier
+                            };
+                            colorB = hsbcolor.ToColor();
+                            colorB.a = Mathf.Clamp01(1f - favoriteColorSettings.GlowPercent);
+                        }
+                        else
+                        {
+                            colorB = cp.ColorB;
+                        }
+
+                        ReplaceVoxelColor.ReplaceColors(volumeComponent, cp.ColorA, colorB, false);
+                    }
+                }
+            }
+
+            base.transform.localScale = objectBehaviour.SerializedScale;
         }
     }
 }
