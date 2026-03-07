@@ -40,9 +40,11 @@ namespace OverhaulMod.UI
                     InitializeSubcategoryDisplay("Multiplayer settings", false);
                     break;
                 case "Gameplay":
-                    InitializeSubcategoryDisplay("Gameplay settings", false);
-                    InitializeSubcategoryDisplay("Camera", false);
+                    InitializeSubcategoryDisplay("Difficulty", false);
+                    InitializeSubcategoryDisplay("Endless levels", false);
                     InitializeSubcategoryDisplay("Twitch", false);
+                    InitializeSubcategoryDisplay("Player", false);
+                    InitializeSubcategoryDisplay("Camera", false);
                     break;
                 case "Sounds":
                     InitializeSubcategoryDisplay("Volume", false);
@@ -55,27 +57,27 @@ namespace OverhaulMod.UI
                     break;
                 case "Advanced":
                     InitializeSubcategoryDisplay("Mod-bot", false);
-                    InitializeSubcategoryDisplay("Transitions", false);
                     InitializeSubcategoryDisplay("Rich presence", false);
-                    InitializeSubcategoryDisplay("Multiplayer settings", false);
-                    InitializeSubcategoryDisplay("Misc.", false);
                     InitializeSubcategoryDisplay("Reset settings", false);
                     break;
                 case "Graphics":
-                    InitializeSubcategoryDisplay("Window", true);
-                    //InitializeSubcategoryDisplay("FPS settings", true);
-                    InitializeSubcategoryDisplay("Render", true);
-                    InitializeSubcategoryDisplay("Post effects", true);
-                    if (ModFeatures.IsEnabled(ModFeatures.FeatureType.MoreImageEffects)) InitializeSubcategoryDisplay("Color blindness mode", true);
-                    InitializeSubcategoryDisplay("Robots", false);
-                    InitializeSubcategoryDisplay("Camera", false);
-                    InitializeSubcategoryDisplay("Environment", false);
+                    InitializeSubcategoryDisplay("Window", false);
+                    InitializeSubcategoryDisplay("Render", false);
+                    InitializeSubcategoryDisplay("Post effects", false);
+                    if (ModFeatures.IsEnabled(ModFeatures.FeatureType.MoreImageEffects)) InitializeSubcategoryDisplay("Color blindness mode", false);
+                    break;
+                case "Effects":
+                    InitializeSubcategoryDisplay("Particles", false);
                     InitializeSubcategoryDisplay("Voxel engine", false);
+                    InitializeSubcategoryDisplay("Robots", false);
+                    InitializeSubcategoryDisplay("Environment", false);
                     InitializeSubcategoryDisplay("Garbage", false);
+                    InitializeSubcategoryDisplay("Transitions", false);
                     break;
                 case "Interface":
                     InitializeSubcategoryDisplay("Game interface", false);
                     InitializeSubcategoryDisplay("Energy bar enhancements", false);
+                    InitializeSubcategoryDisplay("Photo mode", false);
                     InitializeSubcategoryDisplay("Labels", false);
                     break;
             }
