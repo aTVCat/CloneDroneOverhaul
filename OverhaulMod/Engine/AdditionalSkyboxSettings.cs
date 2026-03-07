@@ -10,6 +10,12 @@ namespace OverhaulMod.Engine
         [IncludeInLevelEditor]
         public string Skybox;
 
+        [IncludeInLevelEditor]
+        public Color Tint = new Color(0.5f, 0.5f, 0.5f, 0.5f);
+
+        [IncludeInLevelEditor]
+        public float Rotation = 0f;
+
         private void Start()
         {
             if (GameModeManager.IsInLevelEditor())
@@ -19,10 +25,7 @@ namespace OverhaulMod.Engine
                 {
                     objectPlacedInLevel.AddValueChangedListener(delegate (string value)
                     {
-                        if (value == nameof(Skybox))
-                        {
-                            SkyBoxManager.Instance.RefreshSkyboxAmbientLightAndFog(LevelEditorLightManager.Instance.GetActiveLightSettings());
-                        }
+                        SkyBoxManager.Instance.RefreshSkyboxAmbientLightAndFog(LevelEditorLightManager.Instance.GetActiveLightSettings());
                     });
                 }
             }
@@ -32,6 +35,8 @@ namespace OverhaulMod.Engine
                 if (realisticLightingInfo != null)
                 {
                     Skybox = realisticLightingInfo.SkyboxName;
+                    Tint = realisticLightingInfo.Tint;
+                    Rotation = realisticLightingInfo.Rotation;
                 }
             }
         }

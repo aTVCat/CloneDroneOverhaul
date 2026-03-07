@@ -33,6 +33,20 @@ namespace OverhaulMod.Engine
             }
         }
 
+        public void SetTint(Color color)
+        {
+            Material material = RenderSettings.skybox;
+            if (material && material.HasProperty("_Tint"))
+                material.SetColor("_Tint", color);
+        }
+
+        public void SetRotation(float rotation)
+        {
+            Material material = RenderSettings.skybox;
+            if (material && material.HasProperty("_Rotation"))
+                material.SetFloat("_Rotation", rotation);
+        }
+
         public static string GetSkyboxKey(string bundle, string skyboxName)
         {
             return $"{bundle}.{skyboxName}";

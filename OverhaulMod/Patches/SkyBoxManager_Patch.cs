@@ -18,7 +18,10 @@ namespace OverhaulMod.Patches
             if (!realisticLightSettings)
                 return;
 
-            AdditionalSkyboxesManager.Instance.SetSkybox(realisticLightSettings.Skybox);
+            AdditionalSkyboxesManager manager = AdditionalSkyboxesManager.Instance;
+            manager.SetSkybox(realisticLightSettings.Skybox);
+            manager.SetTint(realisticLightSettings.Tint);
+            manager.SetRotation(realisticLightSettings.Rotation);
         }
     }
 }
