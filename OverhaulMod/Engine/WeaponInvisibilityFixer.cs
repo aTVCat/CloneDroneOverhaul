@@ -8,7 +8,7 @@ namespace OverhaulMod.Engine
 
         private void Update()
         {
-            if (!ModTime.Instance.HasFixedUpdated())
+            if (!ModTime.Instance.HasFixedUpdatedThisFrame())
                 return;
 
             FirstPersonMover firstPersonMover = m_owner;

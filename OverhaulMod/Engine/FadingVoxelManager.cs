@@ -53,7 +53,7 @@ namespace OverhaulMod.Engine
         private void Update()
         {
             ModTime modTime = m_modTime;
-            if (modTime.HasFixedUpdated() && modTime.GetFixedFrameCount() % 10 == 0)
+            if (modTime.HasFixedUpdatedThisFrame() && modTime.GetFixedFrameCount() % 10 == 0)
             {
                 UpdateFading();
             }

@@ -44,7 +44,7 @@ namespace OverhaulMod.Engine
                 HideDescription();
             }
 
-            if (!EnablePressButtonTriggerDescriptionRework || !ModTime.Instance.HasFixedUpdated())
+            if (!EnablePressButtonTriggerDescriptionRework || !ModTime.Instance.HasFixedUpdatedThisFrame())
                 return;
 
             List<LevelEditorUseButtonTrigger> list = m_triggers;

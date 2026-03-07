@@ -1,6 +1,7 @@
 ﻿using HarmonyLib;
 using OverhaulMod.Combat;
 using OverhaulMod.Combat.Weapons;
+using OverhaulMod.Engine;
 using OverhaulMod.Utils;
 using UnityEngine;
 
@@ -9,6 +10,14 @@ namespace OverhaulMod.Patches
     [HarmonyPatch(typeof(FirstPersonMover))]
     internal static class FirstPersonMover_Patch
     {
+        [HarmonyPostfix]
+        [HarmonyPatch(nameof(FirstPersonMover.OnMindTransferFinished))]
+        private static void OnMindTransferFinished_Postfix(FirstPersonMover __instance)
+        {
+            if (__instance.HasCharacterModel() && __instance._playerCamera)
+                CameraManager.Instance.AddControllers(__instance._playerCamera, __instance);
+        }
+
         [HarmonyPrefix]
         [HarmonyPatch(nameof(FirstPersonMover.tryRenderAttack))]
         private static void tryRenderAttack_Prefix(FirstPersonMover __instance, int attackServerFrame, ref AttackDirection attackDirection)

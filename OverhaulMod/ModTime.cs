@@ -22,7 +22,7 @@
             return m_fixedFrameCount;
         }
 
-        public bool HasFixedUpdated()
+        public bool HasFixedUpdatedThisFrame()
         {
             return m_hasFixedUpdated;
         }

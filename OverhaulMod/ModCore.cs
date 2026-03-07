@@ -378,8 +378,11 @@ namespace OverhaulMod
             _ = firstPersonMover.gameObject.AddComponent<CharacterExtension>();
             _ = firstPersonMover.gameObject.AddComponent<PersonalizationController>();
 
-            if (ModFeatures.IsEnabled(ModFeatures.FeatureType.WeaponBag) && !firstPersonMover.IsMindSpaceCharacter && ((!GameModeManager.IsMultiplayerDuel() && !GameModeManager.IsBattleRoyale()) || firstPersonMover.IsMainPlayer()))
-                _ = firstPersonMover.gameObject.AddComponent<RobotWeaponBag>();
+            if (ModFeatures.IsEnabled(ModFeatures.FeatureType.WeaponBag))
+            {
+                if (!firstPersonMover.IsMindSpaceCharacter && ((!GameModeManager.IsMultiplayerDuel() && !GameModeManager.IsBattleRoyale()) || firstPersonMover.IsMainPlayer()))
+                    _ = firstPersonMover.gameObject.AddComponent<RobotWeaponBag>();
+            }
 
             if (GameModeManager.IsCoop())
             {
@@ -389,7 +392,7 @@ namespace OverhaulMod
             if (XRSettings.enabled)
                 yield break;
 
-            while (firstPersonMover && !firstPersonMover._playerCamera && (GameModeManager.IsMultiplayerDuel() || GameModeManager.IsBattleRoyale()) && !firstPersonMover.HasConstructionFinished())
+            while (firstPersonMover && !firstPersonMover._playerCamera || ((GameModeManager.IsMultiplayerDuel() || GameModeManager.IsBattleRoyale()) && !firstPersonMover.HasConstructionFinished()))
                 yield return null;
 
             if (firstPersonMover && firstPersonMover.HasCharacterModel() && firstPersonMover._playerCamera)
