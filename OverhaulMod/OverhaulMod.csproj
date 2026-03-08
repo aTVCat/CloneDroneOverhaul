@@ -533,7 +533,7 @@
     <Compile Include="UI\Elements\UIElementAdvancementDisplay.cs" />
     <Compile Include="UI\UIAdvancementProgress.cs" />
     <Compile Include="UI\UIAdvancementsMenu.cs" />
-    <Compile Include="UI\UIChapterSectionSelectMenu.cs" />
+    <Compile Include="UI\UIReplayEncounterMenu.cs" />
     <Compile Include="UI\UIPersonalizationEditorItemBrowser.cs" />
     <Compile Include="UI\UIExclusivePerkEditor.cs" />
     <Compile Include="UI\UILoadingScreenRework.cs" />

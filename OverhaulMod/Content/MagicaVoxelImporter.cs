@@ -163,8 +163,7 @@ namespace PicaVoxel
                     }
 
                     voxelVolume.SetFrame(0);
-                    voxelVolume.CreateChunks();
-                    voxelVolume.SaveForSerialize();
+                    voxelVolume.UpdateAllChunks();
                 }
             }
         }

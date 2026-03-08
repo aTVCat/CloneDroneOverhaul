@@ -810,7 +810,7 @@ GameObject:
   - component: {fileID: 2156105924821518807}
   - component: {fileID: 2904824557302898208}
   m_Layer: 5
-  m_Name: UI_ChapterLevelSelectionMenu
+  m_Name: UI_ReplayEncounterMenu
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

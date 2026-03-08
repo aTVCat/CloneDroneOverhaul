@@ -189,7 +189,7 @@ namespace OverhaulMod.Content.Personalization
             if (!volumeComponent) return;
 
             volumeComponent.MeshingMode = VolumeMeshingMode;
-            //volumeComponent.CollisionMode = CollisionMode.None;
+            //volumeComponent.CollisionMode = CollisionMode.MeshColliderConvex;
 
             base.transform.localScale = Vector3.one;
 

@@ -175,12 +175,12 @@ namespace OverhaulMod.Engine
                 OldTransferredToEnemyType = EnemyType.Spear1,
                 OldAllyTransferredToEnemyType = EnemyType.Swordsman5,
                 NumConsciousnessTransfersLeft = 5,
-                PlayerUpgrades = UpgradeManager.Instance.CreateDefaultPlayerUpgrades(),
                 AvailableSkillPoints = chapterSectionInfo.Order,
                 LevelIDsBeatenThisPlaythrough = fakeLevelIds,
                 HumanFacts = HumanFactsManager.Instance.GetRandomFactSet(),
                 _isDirty = true
             };
+            gameDataManager._storyModeData.RepairAnyMissingFields(true);
 
             metagameProgressManager._data.FirstEscapedHumansData = new EscapedHumanData
             {

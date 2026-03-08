@@ -73,6 +73,18 @@ namespace OverhaulMod.Engine
             }
         }
 
+        private List<Renderer> _tieRenderers;
+        public List<Renderer> tieRenderers
+        {
+            get
+            {
+                if (_tieRenderers == null)
+                    _tieRenderers = _owner.GetRenderersOfBodyPart("Tie");
+
+                return _tieRenderers;
+            }
+        }
+
         private void Start()
         {
             _lerp = CameraManager.EnableFirstPersonMode ? 0f : 1f;
@@ -144,11 +156,12 @@ namespace OverhaulMod.Engine
             RefreshOffset();
         }
 
-        public void SetHeadRenderersActive(bool value)
+        public void SetBodyRenderersActive(bool value)
         {
             setRenderersActive(headRenderers, value);
             setRenderersActive(jawRenderers, value);
             setRenderersActive(shieldRenderers, value);
+            setRenderersActive(tieRenderers, value);
             setRenderersActive(torsoRenderers, (_owner ? _owner.IsMindSpaceCharacter : false) || value || _owner._isOnFloorFromKick);
         }
 
@@ -160,7 +173,7 @@ namespace OverhaulMod.Engine
 
         public void ForceEnableHeadRenderers()
         {
-            SetHeadRenderersActive(true);
+            SetBodyRenderersActive(true);
         }
 
         public void RefreshOffset()
@@ -197,7 +210,7 @@ namespace OverhaulMod.Engine
         public void RefreshHeadVisibility(float lerpValue)
         {
             Animator animator = _cameraAnimator;
-            SetHeadRenderersActive(lerpValue > 0.1f || !animator || !animator.enabled || !_owner.IsAlive() || PhotoManager.Instance.IsInPhotoMode());
+            SetBodyRenderersActive(lerpValue > 0.1f || !animator || !animator.enabled || !_owner.IsAlive() || PhotoManager.Instance.IsInPhotoMode());
         }
 
         private void setRenderersActive(List<Renderer> list, bool value)

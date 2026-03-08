@@ -17,9 +17,9 @@ namespace OverhaulMod.Content.Personalization
 {
     public class PersonalizationEditorManager : Singleton<PersonalizationEditorManager>
     {
-        public const string ITE_INFO_FILE = "itemInfo.json";
+        public const string ITEM_INFO_FILE = "itemInfo.json";
 
-        public const string ITE_META_DATA_FILE = "metaData.json";
+        public const string ITEM_META_DATA_FILE = "metaData.json";
 
         public const string EDITOR_STARTED_EVENT = "PersonalizationEditorStarted";
 
@@ -291,8 +291,8 @@ namespace OverhaulMod.Content.Personalization
             personalizationItem.SetAuthor(SteamFriends.GetPersonaName());
             PersonalizationManager.Instance.itemList.Items.Add(personalizationItem);
 
-            ModJsonUtils.WriteStream(Path.Combine(directoryPath, ITE_INFO_FILE), personalizationItem);
-            ModJsonUtils.WriteStream(Path.Combine(directoryPath, ITE_META_DATA_FILE), personalizationItem.MetaData);
+            ModJsonUtils.WriteStream(Path.Combine(directoryPath, ITEM_INFO_FILE), personalizationItem);
+            ModJsonUtils.WriteStream(Path.Combine(directoryPath, ITEM_META_DATA_FILE), personalizationItem.MetaData);
             return true;
         }
 
@@ -347,8 +347,8 @@ namespace OverhaulMod.Content.Personalization
             SerializeRoot();
             try
             {
-                ModJsonUtils.WriteStream(Path.Combine(folder, ITE_INFO_FILE), currentEditingItemInfo);
-                ModJsonUtils.WriteStream(Path.Combine(folder, ITE_META_DATA_FILE), personalizationItemMetaData);
+                ModJsonUtils.WriteStream(Path.Combine(folder, ITEM_INFO_FILE), currentEditingItemInfo);
+                ModJsonUtils.WriteStream(Path.Combine(folder, ITEM_META_DATA_FILE), personalizationItemMetaData);
             }
             catch (Exception exc)
             {

@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 namespace OverhaulMod.UI
 {
-    public class UIChapterSectionSelectMenu : OverhaulUIBehaviour
+    public class UIReplayEncounterMenu : OverhaulUIBehaviour
     {
         [UIElementAction(nameof(Hide))]
         [UIElement("CloseButton")]
@@ -99,7 +99,6 @@ namespace OverhaulMod.UI
 
                     _ = ModLevelManager.Instance.SetStoryModeLevelProgress(chapterSection);
                     GameFlowManager.Instance.StartStoryModeGame(false);
-                    GameDataManager.Instance.SetCurrentLevelID(chapterSection.LevelID);
                 });
             }
         }

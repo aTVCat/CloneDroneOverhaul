@@ -235,11 +235,11 @@ namespace OverhaulMod.Engine
             {
                 if (value)
                 {
-                    energyUI.SetErrorLabelVisible(LocalizationManager.Instance.GetTranslatedString("fp_enabled"));
+                    energyUI.SetErrorLabelVisible(LocalizationManager.Instance.GetTranslatedString("fpm_enabled"));
                 }
                 else
                 {
-                    energyUI.SetErrorLabelVisible(LocalizationManager.Instance.GetTranslatedString("fp_disabled"));
+                    energyUI.SetErrorLabelVisible(LocalizationManager.Instance.GetTranslatedString("fpm_disabled"));
                 }
             }
         }

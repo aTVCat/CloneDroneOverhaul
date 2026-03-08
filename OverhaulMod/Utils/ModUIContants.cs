@@ -21,7 +21,7 @@ namespace OverhaulMod.Utils
         public const string UI_COMMUNITY_HUB = "UI_CommunityHub";
         public const string UI_PAUSE_MENU = "UI_PauseMenuRework";
         public const string UI_CHAPTER_SELECT_MENU = "UI_ChapterSelectionMenu";
-        public const string UI_CHAPTER_LEVEL_SELECT_MENU = "UI_ChapterLevelSelectionMenu";
+        public const string UI_REPLAY_ENCOUNTER_MENU = "UI_ReplayEncounterMenu";
         public const string UI_LOADING_SCREEN = "UI_LoadingScreen";
         public const string UI_EXCLUSIVE_PERKS_MENU = "UI_ExclusivePerksMenu";
         public const string UI_EXCLUSIVE_PERKS_EDITOR = "UI_ExclusivePerksEditor";
@@ -195,9 +195,9 @@ namespace OverhaulMod.Utils
             return ModUIManager.Instance.Show<UIChapterSelectMenuRework>(AssetBundleConstants.UI, UI_CHAPTER_SELECT_MENU, ModUIManager.UILayer.AfterTitleScreen);
         }
 
-        public static UIChapterSectionSelectMenu ShowChapterLevelSelectMenu(Transform parent, int chapterIndex)
+        public static UIReplayEncounterMenu ShowChapterLevelSelectMenu(Transform parent, int chapterIndex)
         {
-            UIChapterSectionSelectMenu chapterLevelSelectMenu = ModUIManager.Instance.Show<UIChapterSectionSelectMenu>(AssetBundleConstants.UI, UI_CHAPTER_LEVEL_SELECT_MENU, parent);
+            UIReplayEncounterMenu chapterLevelSelectMenu = ModUIManager.Instance.Show<UIReplayEncounterMenu>(AssetBundleConstants.UI, UI_REPLAY_ENCOUNTER_MENU, parent);
             chapterLevelSelectMenu.PopulateChapter(chapterIndex);
             return chapterLevelSelectMenu;
         }

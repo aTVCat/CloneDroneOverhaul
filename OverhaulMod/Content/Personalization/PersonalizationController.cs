@@ -5,6 +5,7 @@ using OverhaulMod.UI;
 using OverhaulMod.Utils;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace OverhaulMod.Content.Personalization
@@ -70,7 +71,7 @@ namespace OverhaulMod.Content.Personalization
 
         private float _timeLeftToRefreshSkins, _timeLeftToRefreshSkinVisibility;
 
-        private bool _hasRefreshedAfterDeath;
+        private bool _hasOwnerDied;
 
         private void Awake()
         {
@@ -82,10 +83,29 @@ namespace OverhaulMod.Content.Personalization
                 PersonalizationEditorManager.Instance.currentPersonalizationController = this;
         }
 
+        private void Start()
+        {
+            FirstPersonMover firstPersonMover = owner;
+            if (!firstPersonMover || !firstPersonMover.IsAlive())
+            {
+                _hasOwnerDied = true;
+                return;
+            }
+
+            _hasOwnerDied = !firstPersonMover.IsAlive();
+            if (!_hasOwnerDied)
+            {
+                firstPersonMover.AddDeathListener(delegate
+                {
+                    _hasOwnerDied = true;
+                });
+            }
+        }
+
         private void OnEnable()
         {
             FirstPersonMover firstPersonMover = owner;
-            if (!firstPersonMover || !firstPersonMover.IsAttachedAndAlive())
+            if (!firstPersonMover || !firstPersonMover.IsAlive())
             {
                 base.enabled = false;
                 return;
@@ -109,12 +129,11 @@ namespace OverhaulMod.Content.Personalization
 
         private void Update()
         {
-            if (_hasRefreshedAfterDeath || !_hasInitialized)
+            if (_hasOwnerDied || !_hasInitialized)
                 return;
 
             FirstPersonMover firstPersonMover = owner;
-            if (!firstPersonMover)
-                return;
+            if (!firstPersonMover) return;
 
             float d = Time.deltaTime;
 
@@ -122,9 +141,6 @@ namespace OverhaulMod.Content.Personalization
             if (_timeLeftToRefreshSkins <= 0f)
             {
                 _timeLeftToRefreshSkins = 0.5f;
-
-                if (!firstPersonMover.IsAlive())
-                    _hasRefreshedAfterDeath = true;
 
                 if (_isMindSpace) return;
 
@@ -229,30 +245,6 @@ namespace OverhaulMod.Content.Personalization
             FirstPersonMover firstPersonMover = _owner;
             if (!firstPersonMover) return;
 
-            /*if (GameModeManager.IsMultiplayer())
-            {
-                _isMultiplayer = true;
-                if (firstPersonMover.state.IsAIControlled)
-                {
-                    _isEnemy = true;
-                    _isPlayer = false;
-                    _isMainPlayer = false;
-                }
-                else
-                {
-                    _isEnemy = false;
-                    _isPlayer = true;
-                    _isMainPlayer = firstPersonMover.IsMainPlayer();
-                }
-            }
-            else
-            {
-                _isMultiplayer = false;
-                _isEnemy = !firstPersonMover.IsMainPlayer();
-                _isPlayer = !_isEnemy;
-                _isMainPlayer = !_isEnemy;
-            }*/
-
             _isMultiplayer = GameModeManager.IsMultiplayer();
             if (firstPersonMover.state.IsAIControlled)
             {
@@ -310,7 +302,7 @@ namespace OverhaulMod.Content.Personalization
             return GetWeaponVariantOfSpawnedSkin(weaponType) != GetWeaponVariant(weaponType);
         }
 
-        public void RefreshWeaponVariantOfSpawnedSkin(WeaponType weaponType)
+        public void RefreshVariantOfWeapon(WeaponType weaponType)
         {
             Dictionary<WeaponType, WeaponVariant2> d = _weaponTypeToVariant;
             WeaponVariantManager.GetWeaponVariant(owner, weaponType, out WeaponVariant2 weaponVariant);
@@ -398,7 +390,7 @@ namespace OverhaulMod.Content.Personalization
                 return null;
 
             if (itemInfo.Category == PersonalizationCategory.WeaponSkins)
-                RefreshWeaponVariantOfSpawnedSkin(itemInfo.Weapon);
+                RefreshVariantOfWeapon(itemInfo.Weapon);
 
             if (!inEditor)
             {
@@ -443,8 +435,17 @@ namespace OverhaulMod.Content.Personalization
             }
             _spawnedItems.Add(itemInfo, behaviour);
 
+
             if (itemInfo.Category == PersonalizationCategory.WeaponSkins)
             {
+                WeaponModel weaponModel = owner.GetCharacterModel().GetWeaponModel(itemInfo.Weapon);
+                if (weaponModel && !weaponModel.PartsToDrop.Contains(behaviour.transform))
+                {
+                    List<Transform> list = weaponModel.PartsToDrop.ToList();
+                    list.Add(behaviour.transform);
+                    weaponModel.PartsToDrop = list.ToArray();
+                }
+
                 if (itemInfo.Weapon == WeaponType.Bow)
                 {
                     SetBowStringsWidth(Mathf.Clamp(itemInfo.BowStringsWidth, 0.1f, 1f));
@@ -467,20 +468,32 @@ namespace OverhaulMod.Content.Personalization
             if (personalizationItemInfo == null || !HasSpawnedItem(personalizationItemInfo))
                 return;
 
+            PersonalizationEditorObjectBehaviour behaviour = _spawnedItems[personalizationItemInfo];
+            if (!behaviour) return;
+
             if (personalizationItemInfo.Category == PersonalizationCategory.WeaponSkins)
                 RefreshWeaponSkinsNextFrame();
 
-            PersonalizationEditorObjectBehaviour b = _spawnedItems[personalizationItemInfo];
-            if (b)
-                Destroy(b.gameObject);
+            if (personalizationItemInfo.Category == PersonalizationCategory.WeaponSkins)
+            {
+                WeaponModel weaponModel = owner.GetCharacterModel().GetWeaponModel(behaviour.ControllerInfo.ItemInfo.Weapon);
+                if (weaponModel && weaponModel.PartsToDrop.Contains(behaviour.transform))
+                {
+                    List<Transform> list = weaponModel.PartsToDrop.ToList();
+                    list.Remove(behaviour.transform);
+                    weaponModel.PartsToDrop = list.ToArray();
+                }
+
+                if (personalizationItemInfo.Weapon == WeaponType.Bow)
+                {
+                    SetBowStringsWidth(1f);
+                }
+            }
+
+            Destroy(behaviour.gameObject);
 
             if (editCollection)
                 _ = _spawnedItems.Remove(personalizationItemInfo);
-
-            if (personalizationItemInfo.Category == PersonalizationCategory.WeaponSkins && personalizationItemInfo.Weapon == WeaponType.Bow)
-            {
-                SetBowStringsWidth(1f);
-            }
         }
 
         public void DestroyAllItems()
