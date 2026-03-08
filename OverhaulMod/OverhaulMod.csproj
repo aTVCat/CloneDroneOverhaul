@@ -453,7 +453,7 @@
     <Compile Include="UI\Elements\UIElementTitleScreenBackgroundConfig.cs" />
     <Compile Include="UI\Elements\UIElementTab.cs" />
     <Compile Include="UI\Components\TabManager.cs" />
-    <Compile Include="UI\Elements\UIElementTitleScreenContentButton.cs" />
+    <Compile Include="UI\Elements\UIElementTitleScreenAddonsButton.cs" />
     <Compile Include="UI\Elements\UIElementVector3Field.cs" />
     <Compile Include="UI\Elements\UIElementWorkshopItemDisplay.cs" />
     <Compile Include="UI\Elements\UIElementPersonalizationEditorItemConfigPanel.cs" />

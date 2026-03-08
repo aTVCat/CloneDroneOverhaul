@@ -159,7 +159,7 @@ namespace OverhaulMod.Utils
 
         public static string GetSpeakerNameText(SpeakerNames speakerName)
         {
-            return $"{LocalizationManager.Instance.GetTranslatedString($"enu_{speakerName}")}:";
+            return $"{LocalizationManager.Instance.GetTranslatedString($"enum_{speakerName}")}:";
         }
 
         public static List<Renderer> GetRenderersOfBodyPart(this FirstPersonMover firstPersonMover, MechBodyPartType bodyPartType)

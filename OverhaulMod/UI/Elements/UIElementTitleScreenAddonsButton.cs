@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace OverhaulMod.UI
 {
-    public class UIElementTitleScreenContentButton : OverhaulUIBehaviour
+    public class UIElementTitleScreenAddonsButton : OverhaulUIBehaviour
     {
         [UIElement("LoadingIndicator", false)]
         private readonly GameObject _loadingIndicator;

@@ -79,9 +79,9 @@ namespace OverhaulMod.UI
         private readonly Button _setupButton;
 
         [ButtonWithSound(ButtonWithSound.SoundType.Click)]
-        [UIElementAction(nameof(OnContentButtonClicked))]
-        [UIElement("ContentButton")]
-        private readonly Button _contentButton;
+        [UIElementAction(nameof(OnAddonsButtonClicked))]
+        [UIElement("AddonsButton", typeof(UIElementTitleScreenAddonsButton))]
+        private readonly Button _addonsButton;
 
         [ButtonWithSound(ButtonWithSound.SoundType.Choose)]
         [UIElementAction(nameof(OnLevelEditorButtonClicked))]
@@ -436,7 +436,7 @@ namespace OverhaulMod.UI
             _ = ModUIConstants.ShowExclusivePerksMenu();
         }
 
-        public void OnContentButtonClicked()
+        public void OnAddonsButtonClicked()
         {
             _ = ModUIConstants.ShowAddonsMenu();
         }

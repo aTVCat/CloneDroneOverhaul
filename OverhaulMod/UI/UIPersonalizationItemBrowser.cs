@@ -394,7 +394,7 @@ namespace OverhaulMod.UI
                 case PersonalizationCategory.Accessories:
                     populatePage = ModFeatures.IsEnabled(ModFeatures.FeatureType.Accessories);
                     _notImplementedTextObject.SetActive(!populatePage);
-                    if(populatePage) items = PersonalizationManager.Instance.itemList.GetItems(PersonalizationCategory.Accessories, PersonalizationItemsSortType.Alphabet);
+                    if (populatePage) items = PersonalizationManager.Instance.itemList.GetItems(PersonalizationCategory.Accessories, PersonalizationItemsSortType.Alphabet);
                     break;
                 case PersonalizationCategory.Pets:
                     populatePage = ModFeatures.IsEnabled(ModFeatures.FeatureType.Pets);

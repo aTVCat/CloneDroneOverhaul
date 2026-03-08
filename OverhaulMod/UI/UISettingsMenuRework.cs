@@ -772,7 +772,7 @@ namespace OverhaulMod.UI
             {
                 ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_ARENA_REMODEL, value, true);
             }, "Arena remodel");
-            _ = pageBuilder.Header4("Made by @water2977/@nooky_man1");
+            _ = pageBuilder.Header4("arena_rework");
             _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_LIGHTING_TRANSITION), delegate (bool value)
             {
                 ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_LIGHTING_TRANSITION, value, true);
@@ -866,7 +866,6 @@ namespace OverhaulMod.UI
             {
                 ModSettingsManager.SetBoolValue(ModSettingsConstants.DISABLE_SCREEN_SHAKING, value, true);
             }, "Disable shaking effects");
-            _ = pageBuilder.Header3("Field of view");
             _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_FOV_OVERRIDE), delegate (bool value)
             {
                 ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_FOV_OVERRIDE, value, true);
@@ -973,7 +972,7 @@ namespace OverhaulMod.UI
                 {
                     ModCache.gameUIRoot.BlockListSettingsUI.Hide();
                 });
-            }); 
+            });
 
 
             _ = pageBuilder.Header1("Player");
