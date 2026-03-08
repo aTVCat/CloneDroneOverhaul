@@ -235,7 +235,7 @@ namespace OverhaulMod.Content.Personalization
                 SpawnItemInHolder(item);
                 AdjustCameraPositionForCurrentItem();
 
-                for (int j = 0; j < 15; j++) yield return null;
+                for (int j = 0; j < 30; j++) yield return null;
 
                 TakeAndSaveScreenshot();
 
@@ -272,7 +272,7 @@ namespace OverhaulMod.Content.Personalization
         public void TakeAndSaveScreenshot(bool destroyTexture, out Texture2D texture)
         {
             int antiAliasingBefore = QualitySettings.antiAliasing;
-            QualitySettings.antiAliasing = 0;
+            QualitySettings.antiAliasing = 8;
             texture = TakeScreenshot(128, 128, 1);
             QualitySettings.antiAliasing = antiAliasingBefore;
 

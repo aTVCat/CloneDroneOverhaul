@@ -50,7 +50,10 @@ namespace OverhaulMod
                     result = ModBuildInfo.VERSION_4_3;
                     break;
                 case FeatureType.UISounds:
-                    result = ModBuildInfo.VERSION_4_4;
+                    result = false;
+                    break;
+                case FeatureType.HyperdomeSounds:
+                    result = false;
                     break;
                 case FeatureType.Hypocrisis3Special:
                     result = false;
@@ -94,6 +97,8 @@ namespace OverhaulMod
             WorkshopBrowserHistoryAndCheckpoints,
 
             UISounds,
+
+            HyperdomeSounds,
 
             Hypocrisis3Special,
 

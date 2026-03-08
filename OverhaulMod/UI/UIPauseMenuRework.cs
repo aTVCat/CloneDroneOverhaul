@@ -193,7 +193,7 @@ namespace OverhaulMod.UI
             base.Show();
             TimeManager.Instance.OnGamePaused();
 
-            if (ModFeatures.IsEnabled(ModFeatures.FeatureType.UISounds))
+            if (ModFeatures.IsEnabled(ModFeatures.FeatureType.HyperdomeSounds))
             {
                 _ = AudioManager.Instance.PlayClipGlobal(ModAudioLibrary.Instance.HyperdomeUIPause);
             }
@@ -214,7 +214,7 @@ namespace OverhaulMod.UI
             base.Hide();
             TimeManager.Instance.OnGameUnPaused();
 
-            if (ModFeatures.IsEnabled(ModFeatures.FeatureType.UISounds))
+            if (ModFeatures.IsEnabled(ModFeatures.FeatureType.HyperdomeSounds))
             {
                 _ = AudioManager.Instance.PlayClipGlobal(ModAudioLibrary.Instance.HyperdomeUIResume);
             }
