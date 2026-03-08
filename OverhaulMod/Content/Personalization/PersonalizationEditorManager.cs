@@ -50,7 +50,7 @@ namespace OverhaulMod.Content.Personalization
 
         private PersonalizationEditorCamera _camera;
 
-        private PersonalizationEditorScreenshotOverlay _screenshotOverlay;
+        private PersonalizationItemInfo _editingItemBeforeScreenshoting;
 
         public PersonalizationController currentPersonalizationController
         {
@@ -122,29 +122,7 @@ namespace OverhaulMod.Content.Personalization
             }
         }
 
-        public bool canVerifyItems
-        {
-            get
-            {
-                return ExclusivePerkManager.Instance.IsLocalUserAbleToVerifyItems();
-            }
-        }
-
-        public bool canEditNonOwnItems
-        {
-            get
-            {
-                return ExclusivePerkManager.Instance.IsLocalUserAbleToVerifyItems();
-            }
-        }
-
-        public bool canEditItemSpecialInfo
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public bool canVerifyItems => ExclusivePerkManager.Instance.IsLocalUserAbleToVerifyItems();
 
         public void StartEditorGameMode(bool noTransition = false)
         {
@@ -296,18 +274,26 @@ namespace OverhaulMod.Content.Personalization
             return true;
         }
 
-        public void EditItem(PersonalizationItemInfo personalizationItemInfo, string folder)
+        public void EditItem(PersonalizationItemInfo personalizationItemInfo)
         {
             currentEditingItemInfo = personalizationItemInfo;
 
-            UIElementPersonalizationEditorUtilitiesPanel utils = UIPersonalizationEditor.instance.Utilities;
-            utils.Show();
-            utils.SetConditionOptions(GetConditionOptionsDependingOnEditingWeapon());
+            if (personalizationItemInfo != null)
+            {
+                UIElementPersonalizationEditorUtilitiesPanel utils = UIPersonalizationEditor.instance.Utilities;
+                utils.Show();
+                utils.SetConditionOptions(GetConditionOptionsDependingOnEditingWeapon());
 
-            UIPersonalizationEditor.instance.Inspector.Populate(personalizationItemInfo);
-            SpawnRootObject();
+                UIPersonalizationEditor.instance.Inspector.Populate(personalizationItemInfo);
+                SpawnRootObject();
 
-            UIPersonalizationEditor.instance.ShowNotification("Success", $"Loaded the item ({personalizationItemInfo.Name})", UIElementPersonalizationEditorNotification.SuccessColor);
+                UIPersonalizationEditor.instance.ShowNotification("Success", $"Loaded the item ({personalizationItemInfo.Name})", UIElementPersonalizationEditorNotification.SuccessColor);
+            }
+            else
+            {
+                PersonalizationController personalizationController = currentPersonalizationController;
+                if (personalizationController) personalizationController.DestroyAllItems();
+            }
         }
 
         public bool SaveItem(out string error, bool ignoreDevPanel = false)
@@ -425,7 +411,7 @@ namespace OverhaulMod.Content.Personalization
                 if (editItem)
                 {
                     UIPersonalizationEditor.instance.ShowEverything();
-                    EditItem(info, info.FolderPath);
+                    EditItem(info);
                 }
             };
 
@@ -604,6 +590,7 @@ namespace OverhaulMod.Content.Personalization
                 return;
 
             personalizationController.DestroyAllItems();
+
             currentEditingRoot = personalizationController.SpawnItem(currentEditingItemInfo);
             PersonalizationEditorObjectManager.Instance.SetCurrentRootNextUniqueIndex(rootInfo.NextUniqueIndex);
         }
@@ -653,6 +640,7 @@ namespace OverhaulMod.Content.Personalization
                 camera.gameObject.SetActive(true);
 
                 UIPersonalizationEditor.instance.Show();
+                ModUIConstants.HidePersonalizationEditorPlaytestHUD();
 
                 _ = base.StartCoroutine(exitPlaytestModeCoroutine(firstPersonMover));
             }
@@ -687,38 +675,43 @@ namespace OverhaulMod.Content.Personalization
         {
             if (_isInScreenshotMode) return;
 
+            if (currentEditingItemInfo != null && !SaveItem(out string error))
+            {
+                UIPersonalizationEditor.instance.ShowSaveErrorMessage(error);
+                return;
+            }
+
             _isInScreenshotMode = true;
+
+            _editingItemBeforeScreenshoting = currentEditingItemInfo;
+            EditItem(null);
 
             _ambientColorBeforeScreenshotMode = RenderSettings.ambientLight;
             _ambientModeBeforeScreenshotMode = RenderSettings.ambientMode;
-
             RenderSettings.ambientLight = Color.white * 0.8f;
             RenderSettings.ambientMode = AmbientMode.Flat;
 
             _camera.gameObject.SetActive(false);
 
-            UIPersonalizationEditor.instance.HideWindows();
+            UIPersonalizationEditor.instance.Hide();
 
-            PersonalizationEditorScreenshotStage manager = PersonalizationEditorScreenshotStage.Instance;
-            manager.SpawnItemInHolder(currentEditingItemInfo);
+            PersonalizationEditorScreenshotManager stage = PersonalizationEditorScreenshotManager.Instance;
+            stage.ShowStage();
+            stage.ShowOverlay();
+            stage.SpawnItemInHolder(_editingItemBeforeScreenshoting);
+            stage.AdjustCameraPositionForCurrentItem();
 
-            GameObject stage = manager.GetStage();
-            stage.SetActive(true);
-            PersonalizationEditorCamera cameraController = manager.GetCameraController();
+            ModUIConstants.ShowPersonalizationEditorScreenshotControls();
+
+            PersonalizationEditorCamera cameraController = stage.GetCameraController();
             cameraController.gameObject.SetActive(true);
 
-            if (!_screenshotOverlay)
-            {
-                GameObject gameObject = Instantiate(ModResources.Prefab(AssetBundleConstants.UI, "PersonalizationItemScreenshotOverlay"), null, false);
-                _screenshotOverlay = gameObject.AddComponent<PersonalizationEditorScreenshotOverlay>();
-            }
-            _screenshotOverlay.Show();
+            _ = ModUIConstants.ShowPersonalizationEditorPlaytestHUD();
         }
 
         public void ExitScreenshotMode()
         {
             if (!_isInScreenshotMode) return;
-
             _isInScreenshotMode = false;
 
             RenderSettings.ambientLight = _ambientColorBeforeScreenshotMode;
@@ -726,19 +719,21 @@ namespace OverhaulMod.Content.Personalization
 
             _camera.gameObject.SetActive(true);
 
-            UIPersonalizationEditor.instance.ShowWindows();
+            UIPersonalizationEditor.instance.Show();
 
-            PersonalizationEditorScreenshotStage manager = PersonalizationEditorScreenshotStage.Instance;
+            PersonalizationEditorScreenshotManager stage = PersonalizationEditorScreenshotManager.Instance;
+            stage.DestroyStageItem();
+            stage.HideStage();
+            stage.HideOverlay();
 
-            GameObject stage = manager.GetStage();
-            stage.SetActive(false);
-            PersonalizationEditorCamera cameraController = manager.GetCameraController();
+            ModUIConstants.HidePersonalizationEditorScreenshotControls();
+
+            EditItem(_editingItemBeforeScreenshoting);
+
+            PersonalizationEditorCamera cameraController = stage.GetCameraController();
             cameraController.gameObject.SetActive(false);
 
-            if (_screenshotOverlay)
-            {
-                _screenshotOverlay.Hide();
-            }
+            ModUIConstants.HidePersonalizationEditorPlaytestHUD();
         }
 
         public bool IsInScreenshotMode()

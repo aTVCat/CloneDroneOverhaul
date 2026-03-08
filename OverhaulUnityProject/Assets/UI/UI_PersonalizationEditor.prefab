@@ -4826,7 +4826,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: IMAGE
+  m_Text: SCREESHOT
 --- !u!114 &2924876773652045266
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12645,6 +12645,7 @@ MonoBehaviour:
   - {fileID: 5630117745885128313}
   - {fileID: 1838960662338723064}
   - {fileID: 2109614925942113797}
+  - {fileID: 7660859877620447856}
 --- !u!114 &5563561694039917222
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14827,7 +14828,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 45, y: 0}
+  m_SizeDelta: {x: 65, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &8465077462119863231
 MonoBehaviour:

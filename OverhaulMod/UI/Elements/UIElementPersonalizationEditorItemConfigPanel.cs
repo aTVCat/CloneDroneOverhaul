@@ -91,7 +91,7 @@ namespace OverhaulMod.UI
         [UIElement("ImportedFilesGroup", typeof(UIElementPersonalizationEditorFileImportPanel))]
         private readonly UIElementPersonalizationEditorFileImportPanel _filesPanel;
 
-        [UIElement("SpecialInfoGroup", false)]
+        [UIElement("SpecialInfoGroup")]
         private readonly GameObject _specialInfoPanel;
 
         [UIElement("GenericInfoGroup")]
@@ -159,8 +159,6 @@ namespace OverhaulMod.UI
                 typeList.Add(new DropdownIntOptionData() { text = "Pet", IntValue = (int)PersonalizationCategory.Pets });
             _typeDropdown.RefreshShownValue();
             _typeDropdown.interactable = typeList.Count > 1;
-
-            _specialInfoPanel.SetActive(PersonalizationEditorManager.Instance.canEditItemSpecialInfo);
         }
 
         public void Populate(PersonalizationItemInfo personalizationItemInfo)

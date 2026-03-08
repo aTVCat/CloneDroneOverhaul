@@ -32,6 +32,8 @@ namespace OverhaulMod.UI
 
         public override bool refreshOnlyCursor => true;
 
+        public override bool enableCursor => true;
+
         public Action<string> doneAction
         {
             get;

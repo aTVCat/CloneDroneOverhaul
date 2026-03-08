@@ -68,6 +68,10 @@ namespace OverhaulMod.UI
         [UIElement("UploadButton")]
         private readonly Button _toolbarUploadButton;
 
+        [UIElementAction(nameof(OnScreenshotButtonClicked))]
+        [UIElement("ScreenshotButton")]
+        private readonly Button _toolbarScreenshotButton;
+
         public string InspectorWindowID, DeveloperWindowID, ObjectPropertiesWindowID;
 
         public override bool enableCursor => true;
@@ -85,6 +89,7 @@ namespace OverhaulMod.UI
             instance = this;
             tryInitializeOptions();
 
+            _toolbarScreenshotButton.gameObject.SetActive(PersonalizationEditorManager.Instance.canVerifyItems);
             _toolbarWindowButton.interactable = false;
             _toolbarUploadButton.interactable = false;
             _saveButton.interactable = false;
@@ -142,14 +147,6 @@ namespace OverhaulMod.UI
                     DisplayedForVerifiers = true
                 },
                 new UIElementPersonalizationEditorDropdown.OptionData(true),
-                new UIElementPersonalizationEditorDropdown.OptionData("Enter screenshot mode", "Exit-V2-16x16", instance.EnterScreenshotMode)
-                {
-                    DisplayedForVerifiers = true
-                },
-                new UIElementPersonalizationEditorDropdown.OptionData("Exit screenshot mode", "Exit-V2-16x16", instance.ExitScreenshotMode)
-                {
-                    DisplayedForVerifiers = true
-                },
                 new UIElementPersonalizationEditorDropdown.OptionData("Exit", "Exit-V2-16x16", instance.OnExitButtonClicked),
             };
 
@@ -172,6 +169,11 @@ namespace OverhaulMod.UI
                 new UIElementPersonalizationEditorDropdown.OptionData("Guide: Introduction", "Redirect-16x16", instance.DropdownGuide),
                 new UIElementPersonalizationEditorDropdown.OptionData("Tutorial video", "Redirect-16x16", instance.TutorialVideo),
                 new UIElementPersonalizationEditorDropdown.OptionData("About", "Redirect-16x16", instance.OnAboutButtonClicked)
+            };
+
+            s_screenshotOptions = new List<UIElementPersonalizationEditorDropdown.OptionData>
+            {
+                new UIElementPersonalizationEditorDropdown.OptionData("Enter screenshot mode", "Exit-V2-16x16", instance.EnterScreenshotMode),
             };
         }
 
@@ -343,6 +345,12 @@ namespace OverhaulMod.UI
             Dropdown.ShowWithOptions(s_helpOptions, _toolbarHelpButton.transform as RectTransform);
         }
 
+        public void OnScreenshotButtonClicked()
+        {
+            EnterScreenshotMode();
+            //Dropdown.ShowWithOptions(s_screenshotOptions, _toolbarScreenshotButton.transform as RectTransform);
+        }
+
         public void TutorialVideo()
         {
             Dropdown.Hide();
@@ -353,12 +361,6 @@ namespace OverhaulMod.UI
         {
             Dropdown.Hide();
             PersonalizationEditorManager.Instance.EnterScreenshotMode();
-        }
-
-        public void ExitScreenshotMode()
-        {
-            Dropdown.Hide();
-            PersonalizationEditorManager.Instance.ExitScreenshotMode();
         }
     }
 }

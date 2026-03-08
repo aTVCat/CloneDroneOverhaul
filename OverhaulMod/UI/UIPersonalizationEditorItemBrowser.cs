@@ -62,7 +62,7 @@ namespace OverhaulMod.UI
             bool canVerifyItems = PersonalizationEditorManager.Instance.canVerifyItems;
 
             _cachedInstantiatedDisplays = new Dictionary<string, GameObject>();
-            _viewAllItemsToggle.gameObject.SetActive(PersonalizationEditorManager.Instance.canEditNonOwnItems);
+            _viewAllItemsToggle.gameObject.SetActive(canVerifyItems);
             _usePersistentDirectoryToggle.gameObject.SetActive(canVerifyItems);
             _usePersistentDirectoryToggle.isOn = true;
             _importButton.interactable = canVerifyItems;
@@ -88,7 +88,7 @@ namespace OverhaulMod.UI
 
             if (!itemList.Items.IsNullOrEmpty())
             {
-                bool getAll = _viewAllItemsToggle.isOn && PersonalizationEditorManager.Instance.canEditNonOwnItems;
+                bool getAll = _viewAllItemsToggle.isOn && PersonalizationEditorManager.Instance.canVerifyItems;
                 List<PersonalizationItemInfo> nonPersistent = new List<PersonalizationItemInfo>();
                 List<PersonalizationItemInfo> persistent = new List<PersonalizationItemInfo>();
                 foreach (PersonalizationItemInfo item in itemList.Items)
@@ -147,7 +147,7 @@ namespace OverhaulMod.UI
                     button.onClick.AddListener(delegate
                     {
                         UIPersonalizationEditor.instance.ShowEverything();
-                        PersonalizationEditorManager.Instance.EditItem(item, item.FolderPath);
+                        PersonalizationEditorManager.Instance.EditItem(item);
                         Hide();
                     });
 

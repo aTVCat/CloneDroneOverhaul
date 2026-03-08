@@ -209,7 +209,7 @@
     <Compile Include="Content\Personalization\PersonalizationEditorObjectInfo.cs" />
     <Compile Include="Content\Personalization\PersonalizationEditorScreenshotCameraAngle.cs" />
     <Compile Include="Content\Personalization\PersonalizationEditorScreenshotCameraAnglesInfo.cs" />
-    <Compile Include="Content\Personalization\PersonalizationEditorScreenshotStage.cs" />
+    <Compile Include="Content\Personalization\PersonalizationEditorScreenshotManager.cs" />
     <Compile Include="Content\Personalization\PersonalizationEditorScreenshotOverlay.cs" />
     <Compile Include="Content\Personalization\PersonalizationEditorTemplateManager.cs" />
     <Compile Include="Content\Personalization\PersonalizationItemLockInfo.cs" />
@@ -481,6 +481,7 @@
     <Compile Include="UI\UIIntro.cs" />
     <Compile Include="UI\UIPersonalizationEditorExportAllMenu.cs" />
     <Compile Include="UI\UIPersonalizationEditorItemImportHelper.cs" />
+    <Compile Include="UI\UIPersonalizationEditorScreenshotControls.cs" />
     <Compile Include="UI\UITitleScreenHypocrisisSkin.cs" />
     <Compile Include="UI\UIUpdateDetailsWindow.cs" />
     <Compile Include="UI\UIUpdatesEditor.cs" />

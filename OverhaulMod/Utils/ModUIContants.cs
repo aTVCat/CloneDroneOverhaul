@@ -36,7 +36,7 @@ namespace OverhaulMod.Utils
         public const string UI_NEWS_DETAILS_PANEL = "UI_NewsDetailsPanel";
         public const string UI_INFORMATION_SELECT_WINDOW = "UI_InformationSelectWindow";
         public const string UI_OVERHAUL_MOD_INFO_WINDOW = "UI_OverhaulModInfoWindow";
-        public const string UI_WORKSHOP_ITE_PAGE_WINDOW = "UI_WorkshopItemPageWindow";
+        public const string UI_WORKSHOP_ITEM_PAGE_WINDOW = "UI_WorkshopItemPageWindow";
         public const string UI_MESSAGE_POPUP_FULL_SCREEN = "UI_MessagePopupFullScreen";
         public const string UI_OVERHAUL_UI_MANAGEMENT_PANEL = "UI_OverhaulUIsManagementPanel";
         public const string UI_LEVEL_DESCRIPTION_LIST_EDITOR = "UI_LevelDescriptionListEditor";
@@ -81,18 +81,18 @@ namespace OverhaulMod.Utils
         public const string UI_PERSONALIZATION_EDITOR_ABOUT_DIALOG = "UI_PersonalizationEditorAboutDialog";
         public const string UI_ASSET_BUNDLE_ASSETS_BROWSER = "UI_AssetBundleAssetsBrowser";
         public const string UI_PATCH_NOTES = "UI_PatchNotes";
-        public const string UI_PERSONALIZATION_EDITOR_ITE_CREATION_DIALOG = "UI_PersonalizationEditorItemCreationDialog";
+        public const string UI_PERSONALIZATION_EDITOR_ITEM_CREATION_DIALOG = "UI_PersonalizationEditorItemCreationDialog";
         public const string UI_PRESS_ACTION_KEY_DESCRIPTION = "UI_PressActionKeyDescription";
         public const string UI_SUBTITLE_TEXT_FIELD_REWORK = "UI_SubtitleTextFieldRework";
         public const string UI_AUTO_BUILD_SELECTION_MENU = "UI_AutoBuildSelectionMenu";
         public const string UI_PERSONALIZATION_EDITOR_PLAYTEST_HUD = "UI_PersonalizationEditorPlaytestHUD";
-        public const string UI_PERSONALIZATION_EDITOR_ITE_IMPORT_DIALOG = "UI_PersonalizationEditorItemImportDialog";
+        public const string UI_PERSONALIZATION_EDITOR_ITEM_IMPORT_DIALOG = "UI_PersonalizationEditorItemImportDialog";
         public const string UI_UPDATES_WINDOW_REWORK = "UI_UpdatesWindowRework";
         public const string UI_PERSONALIZATION_EDITOR_MAGICA_VOXEL_TIP = "UI_PersonalizationEditorMagicaVoxelTip";
         public const string UI_INTRO = "UI_Intro";
         public const string UI_SETTINGS_IMPORT_EXPORT_MENU = "UI_SettingsImportExportMenu";
         public const string UI_FEATURES_MENU = "UI_FeaturesMenu";
-        public const string UI_WORKSHOP_ITE_PAGE_PLAY_OPTIONS = "UI_WorkshopItemPagePlayOptions";
+        public const string UI_WORKSHOP_ITEM_PAGE_PLAY_OPTIONS = "UI_WorkshopItemPagePlayOptions";
         public const string UI_WORKSHOP_BROWSER_HISTORY_PANEL = "UI_WorkshopBrowserHistoryPanel";
         public const string UI_ADDONS_EDITOR_CREATION_DIALOG = "UI_AddonsEditorCreationDialog";
         public const string UI_ADDON_DETAILS_MENU = "UI_AddonsDetailsMenu";
@@ -100,7 +100,8 @@ namespace OverhaulMod.Utils
         public const string UI_UPDATE_DETAILS_WINDOW = "UI_UpdateDetailsWindow";
         public const string UI_TITLE_SCREEN_HYPOCRISIS_SKIN = "UI_TitleScreenHypocrisisSkin";
         public const string UI_PERSONALIZATION_EDITOR_EXPORT_ALL_MENU = "UI_PersonalizationEditorExportAllMenu";
-        public const string UI_PERSONALIZATION_EDITOR_ITE_IMPORT_HELPER = "UI_PersonalizationEditorItemImportHelper";
+        public const string UI_PERSONALIZATION_EDITOR_ITEM_IMPORT_HELPER = "UI_PersonalizationEditorItemImportHelper";
+        public const string UI_PERSONALIZATION_EDITOR_SCREENSHOT_CONTROLS = "UI_PersonalizationEditorScreenshotControls";
 
         public static UIVersionLabel ShowVersionLabel()
         {
@@ -256,7 +257,7 @@ namespace OverhaulMod.Utils
 
         public static UIWorkshopItemPageWindow ShowWorkshopItemPageWindow(Transform parent)
         {
-            return ModUIManager.Instance.Show<UIWorkshopItemPageWindow>(AssetBundleConstants.UI, UI_WORKSHOP_ITE_PAGE_WINDOW, parent);
+            return ModUIManager.Instance.Show<UIWorkshopItemPageWindow>(AssetBundleConstants.UI, UI_WORKSHOP_ITEM_PAGE_WINDOW, parent);
         }
 
         public static UIOverhaulUIManagementPanel ShowOverhaulUIManagementPanel(Transform parent)
@@ -496,7 +497,7 @@ namespace OverhaulMod.Utils
 
         public static UIPersonalizationEditorItemCreationDialog ShowPersonalizationEditorItemCreationDialog(Transform transform)
         {
-            return ModUIManager.Instance.Show<UIPersonalizationEditorItemCreationDialog>(AssetBundleConstants.UI, UI_PERSONALIZATION_EDITOR_ITE_CREATION_DIALOG, transform);
+            return ModUIManager.Instance.Show<UIPersonalizationEditorItemCreationDialog>(AssetBundleConstants.UI, UI_PERSONALIZATION_EDITOR_ITEM_CREATION_DIALOG, transform);
         }
 
         public static UIPressActionKeyDescription ShowPressActionKeyDescription()
@@ -519,9 +520,14 @@ namespace OverhaulMod.Utils
             return ModUIManager.Instance.Show<UIPersonalizationEditorPlaytestHUD>(AssetBundleConstants.UI, UI_PERSONALIZATION_EDITOR_PLAYTEST_HUD, ModUIManager.UILayer.AfterEnergyUI);
         }
 
+        public static void HidePersonalizationEditorPlaytestHUD()
+        {
+            _ = ModUIManager.Instance.Hide(AssetBundleConstants.UI, UI_PERSONALIZATION_EDITOR_PLAYTEST_HUD);
+        }
+
         public static UIPersonalizationEditorItemImportDialog ShowPersonalizationEditorItemImportDialog(Transform transform)
         {
-            return ModUIManager.Instance.Show<UIPersonalizationEditorItemImportDialog>(AssetBundleConstants.UI, UI_PERSONALIZATION_EDITOR_ITE_IMPORT_DIALOG, transform);
+            return ModUIManager.Instance.Show<UIPersonalizationEditorItemImportDialog>(AssetBundleConstants.UI, UI_PERSONALIZATION_EDITOR_ITEM_IMPORT_DIALOG, transform);
         }
 
         public static UIUpdatesWindowRework ShowUpdatesWindowRework()
@@ -546,7 +552,7 @@ namespace OverhaulMod.Utils
 
         public static UIWorkshopItemPagePlayOptions ShowWorkshopItemPagePlayOptions(Transform transform)
         {
-            return ModUIManager.Instance.Show<UIWorkshopItemPagePlayOptions>(AssetBundleConstants.UI, UI_WORKSHOP_ITE_PAGE_PLAY_OPTIONS, transform);
+            return ModUIManager.Instance.Show<UIWorkshopItemPagePlayOptions>(AssetBundleConstants.UI, UI_WORKSHOP_ITEM_PAGE_PLAY_OPTIONS, transform);
         }
 
         public static UIWorkshopBrowserHistoryPanel ShowWorkshopBrowserHistoryPanel(Transform transform)
@@ -588,7 +594,17 @@ namespace OverhaulMod.Utils
 
         public static UIPersonalizationEditorItemImportHelper ShowPersonalizationEditorItemImportHelper(Transform transform)
         {
-            return ModUIManager.Instance.Show<UIPersonalizationEditorItemImportHelper>(AssetBundleConstants.UI, UI_PERSONALIZATION_EDITOR_ITE_IMPORT_HELPER, transform);
+            return ModUIManager.Instance.Show<UIPersonalizationEditorItemImportHelper>(AssetBundleConstants.UI, UI_PERSONALIZATION_EDITOR_ITEM_IMPORT_HELPER, transform);
+        }
+
+        public static UIPersonalizationEditorScreenshotControls ShowPersonalizationEditorScreenshotControls()
+        {
+            return ModUIManager.Instance.Show<UIPersonalizationEditorScreenshotControls>(AssetBundleConstants.UI, UI_PERSONALIZATION_EDITOR_SCREENSHOT_CONTROLS, ModUIManager.UILayer.BeforeEscMenu);
+        }
+
+        public static void HidePersonalizationEditorScreenshotControls()
+        {
+            ModUIManager.Instance.Hide(AssetBundleConstants.UI, UI_PERSONALIZATION_EDITOR_SCREENSHOT_CONTROLS);
         }
     }
 }

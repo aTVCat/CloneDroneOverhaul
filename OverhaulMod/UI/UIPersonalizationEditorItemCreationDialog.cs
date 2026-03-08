@@ -172,7 +172,7 @@ namespace OverhaulMod.UI
             if (PersonalizationEditorManager.Instance.CreateItem(_folderName, _itemNameField.text, _generatedGuid, UsePersistentFolder, template, out PersonalizationItemInfo personalizationItem))
             {
                 UIPersonalizationEditor.instance.ShowEverything();
-                PersonalizationEditorManager.Instance.EditItem(personalizationItem, personalizationItem.FolderPath);
+                PersonalizationEditorManager.Instance.EditItem(personalizationItem);
                 Hide();
                 if (ItemCreatedCallback != null)
                 {

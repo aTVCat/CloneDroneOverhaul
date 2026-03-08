@@ -1,4 +1,5 @@
 ﻿using HarmonyLib;
+using OverhaulMod.Content.Personalization;
 using OverhaulMod.UI;
 using OverhaulMod.Utils;
 using UnityEngine;
@@ -67,6 +68,22 @@ namespace OverhaulMod.Patches
 
             if (!uiCancelDown || !flag)
             {
+                if (PersonalizationEditorManager.IsInEditor())
+                {
+                    PersonalizationEditorManager personalizationEditorManager = PersonalizationEditorManager.Instance;
+                    if (personalizationEditorManager.IsInPlaytestMode())
+                    {
+                        personalizationEditorManager.ExitPlaytestMode();
+                        return false;
+                    }
+
+                    if (personalizationEditorManager.IsInScreenshotMode())
+                    {
+                        personalizationEditorManager.ExitScreenshotMode();
+                        return false;
+                    }
+                }
+
                 ModUIManager modUIManager = ModUIManager.Instance;
                 if (!modUIManager || modUIManager.skipHidingCustomUIs)
                     return true;
