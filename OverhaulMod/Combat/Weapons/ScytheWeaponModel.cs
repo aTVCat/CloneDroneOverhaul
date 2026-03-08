@@ -10,37 +10,13 @@ namespace OverhaulMod.Combat.Weapons
 
         private GameObject _fireVfx;
 
-        public override float attackSpeed
-        {
-            get
-            {
-                return 0.9f;
-            }
-        }
+        public override float attackSpeed => 1.3f;
 
-        public override float disableAttacksForSeconds
-        {
-            get
-            {
-                return 1.1f;
-            }
-        }
+        public override float disableAttacksForSeconds => 0.65f;
 
-        public override AttackDirection attackDirections
-        {
-            get
-            {
-                return base.attackDirections | AttackDirection.Right;
-            }
-        }
+        public override AttackDirection attackDirections => AttackDirection.Left | AttackDirection.Forward | AttackDirection.Right;
 
-        public override RuntimeAnimatorController animatorControllerOverride
-        {
-            get
-            {
-                return WeaponManager.Instance.Multiplayer_DefaultUpperBodyAnimator;
-            }
-        }
+        public override RuntimeAnimatorController animatorControllerOverride => WeaponManager.Instance.Multiplayer_DefaultUpperBodyAnimator;
 
         public override void OnInstantiated(FirstPersonMover owner)
         {

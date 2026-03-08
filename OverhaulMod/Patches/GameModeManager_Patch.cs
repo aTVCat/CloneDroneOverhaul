@@ -1,28 +1,19 @@
-﻿namespace OverhaulMod.Patches
+﻿using HarmonyLib;
+using OverhaulMod.Combat;
+
+namespace OverhaulMod.Patches
 {
-    /*[HarmonyPatch(typeof(GameModeManager))]
+    [HarmonyPatch(typeof(GameModeManager))]
     internal static class GameModeManager_Patch
     {
         [HarmonyPostfix]
         [HarmonyPatch(nameof(GameModeManager.UsesMultiplayerSpeedMultiplier))]
         private static void UsesMultiplayerSpeedMultiplier_Postfix(ref bool __result)
         {
-            if (ModFeatures.IsEnabled(ModFeatures.FeatureType.StoryModeModifiers) && GameModeManager.Is(GameMode.Story))
+            if (GameModeManager.Is(GameMode.Story) && LevelManager.Instance.GetCurrentLevelID() != "StoryC5_5")
             {
-                __result = ModGameModifiersManager.Instance.forceEnableGreatSwords && LevelManager.Instance.GetCurrentLevelID() != "StoryC5_5";
+                __result = ModGameModifiersManager.Instance.forceEnableGreatSwords;
             }
         }
-
-#if DEBUG
-        [HarmonyPostfix]
-        [HarmonyPatch(nameof(GameModeManager.CanLevelsModifyTimeScale))]
-        private static void CanLevelsModifyTimeScale_Postfix(ref bool __result)
-        {
-            if (!__result && GameModeManager.IsLevelPlaytest())
-            {
-                __result = true;
-            }
-        }
-#endif
-    }*/
+    }
 }

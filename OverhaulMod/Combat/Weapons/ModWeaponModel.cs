@@ -8,45 +8,15 @@ namespace OverhaulMod.Combat.Weapons
 
         public bool IsModelActive;
 
-        public virtual float attackSpeed
-        {
-            get
-            {
-                return 1f;
-            }
-        }
+        public virtual float attackSpeed => 1f;
 
-        public virtual float disableAttacksForSeconds
-        {
-            get
-            {
-                return 1.5f;
-            }
-        }
+        public virtual float disableAttacksForSeconds => 1f;
 
-        public virtual AttackDirection attackDirections
-        {
-            get
-            {
-                return AttackDirection.Left | AttackDirection.Forward;
-            }
-        }
+        public virtual AttackDirection attackDirections => AttackDirection.Forward;
 
-        public virtual AttackDirection defaultAttackDirection
-        {
-            get
-            {
-                return AttackDirection.Forward;
-            }
-        }
+        public virtual AttackDirection defaultAttackDirection => AttackDirection.Forward;
 
-        public virtual RuntimeAnimatorController animatorControllerOverride
-        {
-            get
-            {
-                return null;
-            }
-        }
+        public virtual RuntimeAnimatorController animatorControllerOverride => null;
 
         public virtual void Awake()
         {
@@ -55,11 +25,6 @@ namespace OverhaulMod.Combat.Weapons
 
         public virtual void OnInstantiated(FirstPersonMover owner)
         {
-        }
-
-        public virtual void OnExecuteAttackCommands(FirstPersonMover owner, IFPMoveCommandInput input)
-        {
-
         }
 
         public virtual void OnRefreshWeaponAnimatorProperties(FirstPersonMover owner)

@@ -5,31 +5,12 @@ using System.Collections;
 
 namespace OverhaulMod.Content
 {
+    /// <summary>
+    /// out of order for now
+    /// </summary>
     public class NewsManager : Singleton<NewsManager>
     {
         public const string REPOSITORY_FILE = "NewsInfo.json";
-
-        public const string DATA_FILE = "NewsUserData.json";
-
-        [ModSetting(ModSettingsConstants.PREV_NEWS_COUNT, 0, ModSetting.Tag.IgnoreExport)]
-        public static int PrevNewsCount;
-
-        [ModSetting(ModSettingsConstants.DOWNLOADED_NEWS_COUNT, 0, ModSetting.Tag.IgnoreExport)]
-        public static int DownloadedNewsCount;
-
-        private NewsUserData _userData;
-
-        public static float timeToToClearCache
-        {
-            get;
-            set;
-        }
-
-        private void Start()
-        {
-            LoadUserData();
-            _ = ModActionUtils.RunCoroutine(retrieveDataOnStartCoroutine());
-        }
 
         private IEnumerator retrieveDataOnStartCoroutine()
         {
@@ -42,83 +23,6 @@ namespace OverhaulMod.Content
                 scheduledActionsManager.SetActionExecuted(ScheduledActionType.RefreshNews);
             }, null);
             yield break;
-        }
-
-        public void LoadUserData()
-        {
-            if (_userData != null)
-                return;
-
-            NewsUserData newsUserData;
-            try
-            {
-                newsUserData = ModDataManager.Instance.DeserializeFile<NewsUserData>(DATA_FILE, false);
-                newsUserData.FixValues();
-            }
-            catch
-            {
-                newsUserData = new NewsUserData();
-                newsUserData.FixValues();
-            }
-            _userData = newsUserData;
-        }
-
-        public void SaveUserData()
-        {
-            NewsUserData newsUserData = _userData;
-            if (newsUserData == null)
-            {
-                newsUserData = new NewsUserData();
-                _userData = newsUserData;
-            }
-
-            newsUserData.FixValues();
-
-            try
-            {
-                ModDataManager.Instance.SerializeToFile(DATA_FILE, newsUserData, false);
-            }
-            catch { }
-        }
-
-        public bool ShouldHighlightNewsButton()
-        {
-            return DownloadedNewsCount != PrevNewsCount;
-        }
-
-        public void SetHasSeenNews()
-        {
-            NewsUserData newsUserData = _userData;
-            if (newsUserData == null)
-            {
-                newsUserData = new NewsUserData();
-                _userData = newsUserData;
-            }
-            newsUserData.FixValues();
-
-            SaveUserData();
-        }
-
-        public bool HasAnsweredSurvey(string title)
-        {
-            return _userData != null && _userData.HasAnswered(title);
-        }
-
-        public void SetHasAnsweredSurvey(string title)
-        {
-            NewsUserData newsUserData = _userData;
-            if (newsUserData == null)
-            {
-                newsUserData = new NewsUserData();
-                _userData = newsUserData;
-            }
-
-            newsUserData.FixValues();
-
-            if (!newsUserData.AnsweredSurveys.Contains(title))
-                newsUserData.AnsweredSurveys.Add(title);
-
-            SaveUserData();
         }
 
         public void DownloadNewsInfoFile(Action<NewsInfoList> callback, Action<string> errorCallback)

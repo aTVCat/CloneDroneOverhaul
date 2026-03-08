@@ -41,21 +41,20 @@ namespace OverhaulMod.Utils
         public static void InvokePlayerInputUpdateAction(IFPMoveCommandInput fpmoveCommand)
         {
             List<Action<IFPMoveCommandInput>> list = _playerInputUpdateActions;
-            if (list.IsNullOrEmpty())
-                return;
+            if (list.IsNullOrEmpty()) return;
 
-            foreach (Action<IFPMoveCommandInput> action in list)
+            for (int i = 0; i < list.Count; i++)
             {
                 try
                 {
-                    action(fpmoveCommand);
+                    list[i](fpmoveCommand);
                 }
                 catch { }
             }
             list.Clear();
         }
 
-        public static bool SyncSteamAchievements()
+        public static bool SyncSteamAchievements() // todo: sync game with steam or steam with game
         {
             GameplayAchievementManager gameplayAchievementManager = GameplayAchievementManager.Instance;
             if (!gameplayAchievementManager)

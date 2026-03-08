@@ -58,21 +58,9 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(FirstPersonMover.SimulateController))]
         private static void SimulateController_Postfix(FirstPersonMover __instance)
         {
-            if (!__instance.IsMainPlayer())
-                return;
+            if (!__instance.IsMainPlayer()) return;
 
             ModGameUtils.InvokePlayerInputUpdateAction(__instance._moveCommandInput);
-        }
-
-        [HarmonyPostfix]
-        [HarmonyPatch(nameof(FirstPersonMover.executeAttackCommands))]
-        private static void executeAttackCommands_Postfix(FirstPersonMover __instance, FPMoveCommand moveCommand, bool isImmobile, bool isFirstExecution, bool isOwner)
-        {
-            WeaponModel wm = __instance._currentWeaponModel;
-            if (wm && wm.WeaponType == ModWeaponsManager.SCYTHE_TYPE && wm is ModWeaponModel modWeaponModel)
-            {
-                modWeaponModel.OnExecuteAttackCommands(__instance, moveCommand.Input);
-            }
         }
 
         [HarmonyPostfix]
@@ -113,18 +101,19 @@ namespace OverhaulMod.Patches
             }
         }
 
-        [HarmonyPostfix]
+        [HarmonyPrefix]
         [HarmonyPatch(nameof(FirstPersonMover.GetAttackSpeed))]
-        private static void GetAttackSpeed_Postfix(FirstPersonMover __instance, ref float __result)
+        private static bool GetAttackSpeed_Prefix(FirstPersonMover __instance, ref float __result)
         {
-            if (GameModeManager.UsesMultiplayerSpeedMultiplier())
-                return;
-
             WeaponModel wm = __instance._currentWeaponModel;
             if (wm && wm.WeaponType == ModWeaponsManager.SCYTHE_TYPE && wm is ModWeaponModel modWeaponModel)
             {
                 __result = modWeaponModel.attackSpeed;
+                if (GameModeManager.UsesMultiplayerSpeedMultiplier()) __result *= AttackManager.Instance.MultiplayerAttackSpeedMultiplier;
+
+                return false;
             }
+            return true;
         }
 
         [HarmonyPostfix]

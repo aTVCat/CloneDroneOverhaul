@@ -184,7 +184,6 @@
     <Compile Include="Content\GoogleDriveManager.cs" />
     <Compile Include="Content\LevelEditor\LevelEditorWeatherSettingsOverride.cs" />
     <Compile Include="Content\MagicaVoxelImporter.cs" />
-    <Compile Include="Content\NewsUserData.cs" />
     <Compile Include="Content\Personalization\BowPartType.cs" />
     <Compile Include="Content\Personalization\CVMImporter.cs" />
     <Compile Include="Content\Personalization\CVMModelPreset.cs" />
@@ -449,7 +448,6 @@
     <Compile Include="UI\Elements\UIElementExpandButton.cs" />
     <Compile Include="UI\Elements\UIElementShowTooltipOnHightLight.cs" />
     <Compile Include="UI\Elements\UIElementPlayerInfoDisplay.cs" />
-    <Compile Include="UI\Elements\UIElementTitleScreenButtonWithWarn.cs" />
     <Compile Include="UI\Elements\UIElementTitleScreenBackgroundConfig.cs" />
     <Compile Include="UI\Elements\UIElementTab.cs" />
     <Compile Include="UI\Components\TabManager.cs" />
