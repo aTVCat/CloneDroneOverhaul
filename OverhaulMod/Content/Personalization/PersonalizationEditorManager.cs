@@ -222,7 +222,7 @@ namespace OverhaulMod.Content.Personalization
             yield break;
         }
 
-        public bool CreateItem(string directoryName, string name, bool usePersistentFolder, PersonalizationItemInfo templateSource, out PersonalizationItemInfo personalizationItem)
+        public bool CreateItem(string directoryName, string name, string uniqueId, bool usePersistentFolder, PersonalizationItemInfo templateSource, out PersonalizationItemInfo personalizationItem)
         {
             string rootDirectory = usePersistentFolder ? ModCore.customizationPersistentFolder : ModCore.customizationFolder;
             string directoryPath = Path.Combine(rootDirectory, directoryName);
@@ -248,7 +248,7 @@ namespace OverhaulMod.Content.Personalization
                     personalizationItem.Description = "No description provided.";
                     personalizationItem.IsVerified = false;
                     personalizationItem.EditorID = Instance.editorId;
-                    personalizationItem.ItemID = Guid.NewGuid().ToString();
+                    personalizationItem.ItemID = uniqueId;
                     personalizationItem.FolderPath = directoryPath;
                     personalizationItem.RootFolderPath = rootDirectory;
                     personalizationItem.RootFolderName = usePersistentFolder ? ModCore.CUSTOMIZATION_PERSISTENT_FOLDER_NAME : ModCore.CUSTOMIZATION_FOLDER_NAME;
@@ -275,7 +275,7 @@ namespace OverhaulMod.Content.Personalization
                     IsVerified = false,
                     Category = PersonalizationCategory.WeaponSkins,
                     EditorID = Instance.editorId,
-                    ItemID = Guid.NewGuid().ToString(),
+                    ItemID = uniqueId,
                     FolderPath = directoryPath,
                     RootFolderPath = rootDirectory,
                     RootFolderName = usePersistentFolder ? ModCore.CUSTOMIZATION_PERSISTENT_FOLDER_NAME : ModCore.CUSTOMIZATION_FOLDER_NAME,
@@ -381,6 +381,7 @@ namespace OverhaulMod.Content.Personalization
                 return;
             }
 
+            /*
             foreach (PersonalizationEditorObjectInfo child in info.RootObject.Children)
             {
                 if (child.Path == "Volume")
@@ -415,9 +416,9 @@ namespace OverhaulMod.Content.Personalization
                         }
                     }
                 }
-            }
+            }*/
 
-            void finalAction()
+            Action finalAction = delegate
             {
                 itemList.Items.Add(info);
 
@@ -426,7 +427,7 @@ namespace OverhaulMod.Content.Personalization
                     UIPersonalizationEditor.instance.ShowEverything();
                     EditItem(info, info.FolderPath);
                 }
-            }
+            };
 
             PersonalizationItemInfo existingItem = itemList.GetItem(info.ItemID);
             if (existingItem != null)
@@ -453,7 +454,7 @@ namespace OverhaulMod.Content.Personalization
 
         public void ExportItem(PersonalizationItemInfo personalizationItemInfo, out string destination, string overrideDirectoryPath = null, string overrideFn = null)
         {
-            string fn = overrideFn.IsNullOrEmpty() ? $"PersonalizationItem_{personalizationItemInfo.ItemID.ToString().Replace("-", string.Empty)}.zip" : overrideFn;
+            string fn = overrideFn.IsNullOrEmpty() ? $"{Path.GetFileName(personalizationItemInfo.FolderPath)}.zip" : overrideFn;
             string folder = overrideDirectoryPath.IsNullOrEmpty() ? ModDataManager.savesFolder : overrideDirectoryPath;
             destination = Path.Combine(folder, fn);
 

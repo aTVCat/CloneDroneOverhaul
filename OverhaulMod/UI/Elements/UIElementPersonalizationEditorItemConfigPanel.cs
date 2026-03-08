@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 namespace OverhaulMod.UI
 {
-    public class UIElementPersonalizationEditorInspector : OverhaulUIBehaviour
+    public class UIElementPersonalizationEditorItemConfigPanel : OverhaulUIBehaviour
     {
         [UIElement("NameField")]
         private readonly InputField m_nameField;

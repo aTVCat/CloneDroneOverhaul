@@ -22,11 +22,6 @@ namespace OverhaulMod.UI
         [UIElement("ItemNameField")]
         private readonly InputField m_itemNameField;
 
-        [UIElementAction(nameof(OnItemFolderNameChanged))]
-        [UIElement("ItemFolderNameField")]
-        private readonly InputField m_itemFolderNameField;
-
-        [UIElementAction(nameof(OnTemplateDropdownChanged))]
         [UIElement("TemplateDropdown")]
         private readonly Dropdown m_templateDropdown;
 
@@ -41,7 +36,9 @@ namespace OverhaulMod.UI
 
         private float m_timeLeftToRefreshStatus;
 
-        private bool m_hasToRefreshStatus;
+        private string m_generatedGuid;
+
+        private string m_folderName;
 
         protected override void OnInitialized()
         {
@@ -65,75 +62,73 @@ namespace OverhaulMod.UI
         {
             base.Show();
 
+            m_generatedGuid = Guid.NewGuid().ToString().Remove(8);
+
             m_templateDropdown.value = 0;
             m_itemNameField.text = string.Empty;
 
-            m_timeLeftToRefreshStatus = 0f;
-            m_hasToRefreshStatus = true;
+            ScheduleRefreshingStatus();
         }
 
         public override void Update()
         {
-            if (m_hasToRefreshStatus)
-            {
-                m_timeLeftToRefreshStatus -= Time.unscaledDeltaTime;
-                if (m_timeLeftToRefreshStatus <= 0f)
-                {
-                    m_hasToRefreshStatus = false;
-                    m_timeLeftToRefreshStatus = 0f;
+            if (m_timeLeftToRefreshStatus == -1f) return;
 
-                    RefreshStatus();
-                }
+            m_timeLeftToRefreshStatus = Mathf.Max(0f, m_timeLeftToRefreshStatus - Time.unscaledDeltaTime);
+            if (m_timeLeftToRefreshStatus == 0f)
+            {
+                m_timeLeftToRefreshStatus = -1f;
+
+                RefreshStatus();
             }
         }
 
-        public void StartRefreshingStatus()
+        public void ScheduleRefreshingStatus()
         {
-            SetStatusText("Please wait...", Color.gray);
+            SetStatusText("Checking...", Color.gray);
             m_doneButton.interactable = false;
 
             m_timeLeftToRefreshStatus = 1f;
-            m_hasToRefreshStatus = true;
         }
 
         public void RefreshStatus()
         {
             if (m_itemNameField.text.IsNullOrEmpty())
             {
-                SetStatusText("Item name is empty.", Color.red);
+                SetStatusText("The name is empty.", Color.red);
                 m_doneButton.interactable = false;
                 return;
             }
 
             if (m_itemNameField.text.IsNullOrWhiteSpace())
             {
-                SetStatusText("Folder name is whitespace.", Color.red);
+                SetStatusText("The name is whitespace.", Color.red);
                 m_doneButton.interactable = false;
                 return;
             }
 
             if (m_itemNameField.text.EndsWith(" "))
             {
-                SetStatusText("Item name ends with whitespace.", Color.red);
+                SetStatusText("The name ends with whitespace.", Color.red);
                 m_doneButton.interactable = false;
                 return;
             }
 
-            if (m_itemFolderNameField.text.IsNullOrEmpty())
+            if (m_folderName.IsNullOrEmpty())
             {
                 SetStatusText("Folder name is empty.", Color.red);
                 m_doneButton.interactable = false;
                 return;
             }
 
-            if (m_itemFolderNameField.text.IsNullOrWhiteSpace())
+            if (m_folderName.IsNullOrWhiteSpace())
             {
                 SetStatusText("Folder name is a whitespace.", Color.red);
                 m_doneButton.interactable = false;
                 return;
             }
 
-            if (m_itemFolderNameField.text.Contains(" "))
+            if (m_folderName.Contains(" "))
             {
                 SetStatusText("Folder name contains whitespaces.", Color.red);
                 m_doneButton.interactable = false;
@@ -141,14 +136,14 @@ namespace OverhaulMod.UI
             }
 
             foreach (char c in Path.GetInvalidFileNameChars())
-                if (m_itemFolderNameField.text.Contains(c))
+                if (m_folderName.Contains(c))
                 {
-                    SetStatusText($"Folder name contains invalid character: {c}", Color.red);
+                    SetStatusText($"The name contains invalid character: {c}", Color.red);
                     m_doneButton.interactable = false;
                     return;
                 }
 
-            string path = Path.Combine(TargetDirectory, m_itemFolderNameField.text);
+            string path = Path.Combine(TargetDirectory, m_folderName);
             if (Directory.Exists(path))
             {
                 SetStatusText("A folder with the same name already exists.", Color.red);
@@ -174,7 +169,7 @@ namespace OverhaulMod.UI
             if (m_templateDropdown.options[m_templateDropdown.value] is DropdownPersonalizationItemInfo dropdownPersonalizationItemInfo)
                 template = dropdownPersonalizationItemInfo.ItemInfo;
 
-            if (PersonalizationEditorManager.Instance.CreateItem(m_itemFolderNameField.text, m_itemNameField.text, UsePersistentFolder, template, out PersonalizationItemInfo personalizationItem))
+            if (PersonalizationEditorManager.Instance.CreateItem(m_folderName, m_itemNameField.text, m_generatedGuid, UsePersistentFolder, template, out PersonalizationItemInfo personalizationItem))
             {
                 UIPersonalizationEditor.instance.ShowEverything();
                 PersonalizationEditorManager.Instance.EditItem(personalizationItem, personalizationItem.FolderPath);
@@ -193,7 +188,7 @@ namespace OverhaulMod.UI
 
         public void OnItemNameChanged(string value)
         {
-            StartRefreshingStatus();
+            ScheduleRefreshingStatus();
             string itemName = value;
 
             bool isDone = false;
@@ -213,17 +208,7 @@ namespace OverhaulMod.UI
                     }
                 }
             }
-            m_itemFolderNameField.text = itemName;
-        }
-
-        public void OnItemFolderNameChanged(string value)
-        {
-            StartRefreshingStatus();
-        }
-
-        public void OnTemplateDropdownChanged(int value)
-        {
-
+            m_folderName = $"{m_generatedGuid}_{itemName}";
         }
     }
 }

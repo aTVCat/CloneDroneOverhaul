@@ -9,7 +9,7 @@ using UnityEngine.UI;
 
 namespace OverhaulMod.UI
 {
-    public class UIElementPersonalizationEditorPropertiesPanel : OverhaulUIBehaviour
+    public class UIElementPersonalizationEditorInspectorPanel : OverhaulUIBehaviour
     {
         public static readonly List<Dropdown.OptionData> s_weapons = new List<Dropdown.OptionData>()
         {
@@ -284,7 +284,7 @@ namespace OverhaulMod.UI
 
         public class ObjectPropertiesController
         {
-            public virtual void PopulateFields(UIElementPersonalizationEditorPropertiesPanel propertiesPanel, Transform container, PersonalizationEditorObjectBehaviour objectBehaviour)
+            public virtual void PopulateFields(UIElementPersonalizationEditorInspectorPanel propertiesPanel, Transform container, PersonalizationEditorObjectBehaviour objectBehaviour)
             {
 
             }
@@ -292,7 +292,7 @@ namespace OverhaulMod.UI
 
         public class CvmModelPropertiesController : ObjectPropertiesController
         {
-            public override void PopulateFields(UIElementPersonalizationEditorPropertiesPanel propertiesPanel, Transform container, PersonalizationEditorObjectBehaviour objectBehaviour)
+            public override void PopulateFields(UIElementPersonalizationEditorInspectorPanel propertiesPanel, Transform container, PersonalizationEditorObjectBehaviour objectBehaviour)
             {
                 void populateFieldsAction()
                 {
@@ -324,7 +324,7 @@ namespace OverhaulMod.UI
                         // voxel model file
                         ModdedObject voxelModelFileField = display.GetObject<ModdedObject>(1);
                         InputField voxelModelFileFieldText = voxelModelFileField.GetObject<InputField>(0);
-                        voxelModelFileFieldText.text = preset.CvmFilePath;
+                        voxelModelFileFieldText.text = Path.GetFileName(preset.CvmFilePath);
                         voxelModelFileField.GetObject<Button>(1).onClick.AddListener(delegate
                         {
                             ModUIUtils.FileExplorer(UIPersonalizationEditor.instance.transform, true, delegate (string filePath)
@@ -343,7 +343,7 @@ namespace OverhaulMod.UI
                                     if (preset.CvmFilePath == path)
                                         return;
 
-                                    voxelModelFileFieldText.text = path;
+                                    voxelModelFileFieldText.text = fileName;
                                     preset.CvmFilePath = path;
 
                                     UIPersonalizationEditor.instance.Utilities.SetPresetPreview(keyValue.Key);
@@ -531,7 +531,7 @@ namespace OverhaulMod.UI
 
         public class FireParticlesPropertiesController : ObjectPropertiesController
         {
-            public override void PopulateFields(UIElementPersonalizationEditorPropertiesPanel propertiesPanel, Transform container, PersonalizationEditorObjectBehaviour objectBehaviour)
+            public override void PopulateFields(UIElementPersonalizationEditorInspectorPanel propertiesPanel, Transform container, PersonalizationEditorObjectBehaviour objectBehaviour)
             {
                 PersonalizationEditorObjectFireParticles fireParticles = objectBehaviour.GetComponent<PersonalizationEditorObjectFireParticles>();
 
@@ -618,7 +618,7 @@ namespace OverhaulMod.UI
 
         public class VisibilityPropertiesController : ObjectPropertiesController
         {
-            public override void PopulateFields(UIElementPersonalizationEditorPropertiesPanel propertiesPanel, Transform container, PersonalizationEditorObjectBehaviour objectBehaviour)
+            public override void PopulateFields(UIElementPersonalizationEditorInspectorPanel propertiesPanel, Transform container, PersonalizationEditorObjectBehaviour objectBehaviour)
             {
                 ModdedObject enableIfPresetDropdown = Instantiate(propertiesPanel.m_enableIfPresetDropdown, container);
                 enableIfPresetDropdown.gameObject.SetActive(true);
@@ -656,7 +656,7 @@ namespace OverhaulMod.UI
 
         public class VolumePropertiesController : ObjectPropertiesController
         {
-            public override void PopulateFields(UIElementPersonalizationEditorPropertiesPanel propertiesPanel, Transform container, PersonalizationEditorObjectBehaviour objectBehaviour)
+            public override void PopulateFields(UIElementPersonalizationEditorInspectorPanel propertiesPanel, Transform container, PersonalizationEditorObjectBehaviour objectBehaviour)
             {
                 void populateFieldsAction()
                 {
@@ -693,7 +693,7 @@ namespace OverhaulMod.UI
                         // voxel model file
                         ModdedObject voxelModelFileField = display.GetObject<ModdedObject>(1);
                         InputField voxelModelFileFieldText = voxelModelFileField.GetObject<InputField>(0);
-                        voxelModelFileFieldText.text = settingsPreset.VoxFilePath;
+                        voxelModelFileFieldText.text = Path.GetFileName(settingsPreset.VoxFilePath);
                         voxelModelFileField.GetObject<Button>(1).onClick.AddListener(delegate
                         {
                             ModUIUtils.FileExplorer(UIPersonalizationEditor.instance.transform, true, delegate (string filePath)
@@ -721,7 +721,7 @@ namespace OverhaulMod.UI
                                             d.Clear();
                                     }
 
-                                    voxelModelFileFieldText.text = path;
+                                    voxelModelFileFieldText.text = fileName;
                                     settingsPreset.VoxFilePath = path;
 
                                     UIPersonalizationEditor.instance.Utilities.SetPresetPreview(preset.Key);

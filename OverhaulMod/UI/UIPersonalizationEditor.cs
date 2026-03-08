@@ -36,14 +36,14 @@ namespace OverhaulMod.UI
         [UIElement("ToolBar")]
         public RectTransform ToolBarTransform;
 
-        [UIElement("InspectorWindow", typeof(UIElementPersonalizationEditorInspector), false)]
-        public readonly UIElementPersonalizationEditorInspector Inspector;
+        [UIElement("InspectorWindow", typeof(UIElementPersonalizationEditorItemConfigPanel), false)]
+        public readonly UIElementPersonalizationEditorItemConfigPanel Inspector;
 
         [UIElement("BottomBar", typeof(UIElementPersonalizationEditorUtilitiesPanel), false)]
         public readonly UIElementPersonalizationEditorUtilitiesPanel Utilities;
 
-        [UIElement("ObjectPropertiesWindow", typeof(UIElementPersonalizationEditorPropertiesPanel), false)]
-        public readonly UIElementPersonalizationEditorPropertiesPanel PropertiesPanel;
+        [UIElement("ObjectPropertiesWindow", typeof(UIElementPersonalizationEditorInspectorPanel), false)]
+        public readonly UIElementPersonalizationEditorInspectorPanel PropertiesPanel;
 
         [UIElement("Dropdown", typeof(UIElementPersonalizationEditorDropdown), false)]
         public readonly UIElementPersonalizationEditorDropdown Dropdown;

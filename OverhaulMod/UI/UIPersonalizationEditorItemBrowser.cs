@@ -1,6 +1,7 @@
 ﻿using OverhaulMod.Content.Personalization;
 using OverhaulMod.Utils;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -240,9 +241,15 @@ namespace OverhaulMod.UI
         {
             ModUIUtils.FileExplorer(base.transform, true, delegate (string path)
             {
-                UIPersonalizationEditorItemImportDialog dialog = ModUIConstants.ShowPersonalizationEditorItemImportDialog(base.transform);
-                dialog.ItemBrowser = this;
-                dialog.FilePath = path;
+                string folderName = Path.GetFileNameWithoutExtension(path);
+                PersonalizationEditorManager.Instance.ImportItem(path, folderName, out string error, true);
+                if (!string.IsNullOrEmpty(error))
+                {
+                    ModUIUtils.MessagePopupOK("Import error", error, true);
+                    return;
+                }
+
+                Hide();
             }, null, "*.zip");
         }
     }
