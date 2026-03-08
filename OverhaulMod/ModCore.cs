@@ -237,11 +237,7 @@ namespace OverhaulMod
 
             ModSpecialUtils.SetTitleBarStateDependingOnSettings();
 
-            if (ModFeatures.IsEnabled(ModFeatures.FeatureType.TitleScreenRework))
-            {
-                if (GameModeManager.IsOnTitleScreen())
-                    _ = ModUIConstants.ShowTitleScreenReworkIfHaventBefore();
-            }
+            if (GameModeManager.IsOnTitleScreen()) _ = ModUIConstants.ShowTitleScreenReworkIfHaventBefore();
         }
 
         public override void OnModDeactivated()

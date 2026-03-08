@@ -304,7 +304,6 @@
     <Compile Include="Engine\RichPresenceBase.cs" />
     <Compile Include="Engine\RichPresenceDiscord.cs" />
     <Compile Include="Engine\RichPresenceManager.cs" />
-    <Compile Include="Engine\QuickResetManager.cs" />
     <Compile Include="Engine\TitleScreenBackgroundInfo.cs" />
     <Compile Include="Engine\TitleScreenCustomizationInfo.cs" />
     <Compile Include="Engine\TitleScreenCustomizationManager.cs" />
@@ -355,17 +354,14 @@
     <Compile Include="Patches\CharacterModel_Patch.cs" />
     <Compile Include="Patches\CustomUpgradeManager_Patch.cs" />
     <Compile Include="Patches\EndlessModeManager_Patch.cs" />
-    <Compile Include="Patches\EndlessResultScreen_Patch.cs" />
     <Compile Include="Patches\EnergyUI_Patch.cs" />
     <Compile Include="Patches\ErrorManager_Patch.cs" />
     <Compile Include="Patches\ErrorWindow_Patch.cs" />
     <Compile Include="Patches\EscMenu_Patch.cs" />
     <Compile Include="Patches\FirstPersonMover_Patch.cs" />
     <Compile Include="Patches\FlyingCameraController_Patch.cs" />
-    <Compile Include="Patches\GameDataManager_Patch.cs" />
     <Compile Include="Patches\GameFlowManager_Patch.cs" />
     <Compile Include="Patches\GameModeManager_Patch.cs" />
-    <Compile Include="Patches\GameModeSelectScreen_Patch.cs" />
     <Compile Include="Patches\GameplayAchievementManager_Patch.cs" />
     <Compile Include="Patches\GameUIRoot_Patch.cs" />
     <Compile Include="Patches\LevelEditorCinematicCamera_Patch.cs" />
@@ -380,8 +376,6 @@
     <Compile Include="Patches\LoadingScreen_Patch.cs" />
     <Compile Include="Patches\LocalizedTextField_Patch.cs" />
     <Compile Include="Patches\MechBodyPart_Patch.cs" />
-    <Compile Include="Patches\MetagameLevelTrigger_Patch.cs" />
-    <Compile Include="Patches\MultiplayerMatchManager_Patch.cs" />
     <Compile Include="Patches\MultiplayerErrorPopupBubble_Patch.cs" />
     <Compile Include="Patches\PhotoManager_Patch.cs" />
     <Compile Include="Patches\PhotoModeControlsDisplay_Patch.cs" />
@@ -472,13 +466,10 @@
     <Compile Include="UI\UIAddonsDownloadEditor.cs" />
     <Compile Include="UI\UIAddonsEditorCreationDialog.cs" />
     <Compile Include="UI\UICrashScreen.cs" />
-    <Compile Include="UI\UIEndlessGameLossWindow.cs" />
     <Compile Include="UI\UIGenericImageViewer.cs" />
     <Compile Include="UI\UIDevelopmentGallery.cs" />
     <Compile Include="UI\UIDebugMenu.cs" />
-    <Compile Include="UI\UIDamageIndicator.cs" />
     <Compile Include="UI\UIGenericColorPicker.cs" />
-    <Compile Include="UI\UIGameLossWindow.cs" />
     <Compile Include="UI\UIDuelInviteMenuRework.cs" />
     <Compile Include="UI\UIFileExplorer.cs" />
     <Compile Include="UI\UICinematicEffects.cs" />
@@ -489,7 +480,6 @@
     <Compile Include="UI\UIAssetBundleAssetsBrowser.cs" />
     <Compile Include="UI\UIAutoBuildSelectionMenu.cs" />
     <Compile Include="UI\UIIntro.cs" />
-    <Compile Include="UI\UIFeaturesMenu.cs" />
     <Compile Include="UI\UIPersonalizationEditorExportAllMenu.cs" />
     <Compile Include="UI\UIPersonalizationEditorItemImportHelper.cs" />
     <Compile Include="UI\UITitleScreenHypocrisisSkin.cs" />
@@ -521,7 +511,6 @@
     <Compile Include="UI\UILocalizationEditor.cs" />
     <Compile Include="UI\UIAddonsEditor.cs" />
     <Compile Include="UI\UIGenericInputFieldWindow.cs" />
-    <Compile Include="UI\UIMultiplayerGameModeSelectScreen.cs" />
     <Compile Include="UI\UICreditsMenu.cs" />
     <Compile Include="UI\UIAddonsMenu.cs" />
     <Compile Include="UI\UIChallengesMenuRework.cs" />
@@ -532,7 +521,6 @@
     <Compile Include="UI\UIOverhaulUIManagementPanel.cs" />
     <Compile Include="UI\UIOverhaulInfoWindow.cs" />
     <Compile Include="UI\UINewsInfoEditor.cs" />
-    <Compile Include="UI\UINewsDetailsPanel.cs" />
     <Compile Include="UI\UIInformationSelectWindow.cs" />
     <Compile Include="UI\UIRestartRequiredScreen.cs" />
     <Compile Include="UI\UILevelDescriptionListEditor.cs" />
@@ -548,16 +536,11 @@
     <Compile Include="UI\UIAdvancementsMenu.cs" />
     <Compile Include="UI\UIChapterSectionSelectMenu.cs" />
     <Compile Include="UI\UIPersonalizationEditorItemBrowser.cs" />
-    <Compile Include="UI\UIUpdatesWindow.cs" />
-    <Compile Include="UI\UIContentDownloadWindow.cs" />
-    <Compile Include="UI\UINewsPanel.cs" />
-    <Compile Include="UI\UIMultiplayerConnectScreen.cs" />
     <Compile Include="UI\UIExclusivePerkEditor.cs" />
     <Compile Include="UI\UILoadingScreenRework.cs" />
     <Compile Include="UI\UIChapterSelectMenuRework.cs" />
     <Compile Include="UI\UIExclusivePerkMenu.cs" />
     <Compile Include="UI\UIPauseMenuRework.cs" />
-    <Compile Include="UI\UICommunityHub.cs" />
     <Compile Include="UI\UIFeedbackMenu.cs" />
     <Compile Include="UI\UISettingsMenuRework.cs" />
     <Compile Include="UI\UITitleScreenRework.cs" />
@@ -607,7 +590,6 @@
     <Compile Include="UI\UIEndlessModeMenu.cs" />
     <Compile Include="UI\OverhaulUIBehaviour.cs" />
     <Compile Include="ModBehaviour.cs" />
-    <Compile Include="UI\UIOtherMods.cs" />
     <Compile Include="Utils\ModUIContants.cs" />
     <Compile Include="UI\Attributes\UIElementActionAttribute.cs" />
     <Compile Include="UI\Attributes\UIElementAttribute.cs" />

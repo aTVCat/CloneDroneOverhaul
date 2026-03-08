@@ -78,7 +78,7 @@ namespace OverhaulMod
             m_instantiatedUIs = new Dictionary<string, GameObject>();
             m_shownUIs = new List<OverhaulUIBehaviour>();
 
-            if (ModFeatures.IsEnabled(ModFeatures.FeatureType.Intro) && Time.timeSinceLevelLoad < 3f)
+            if (Time.timeSinceLevelLoad < 3f)
                 ModUIConstants.ShowIntro();
         }
 
@@ -120,12 +120,7 @@ namespace OverhaulMod
 
             _ = ModUIConstants.ShowVersionLabel();
             _ = ModUIConstants.ShowCinematicEffects();
-            //_ = ModUIConstants.ShowImageEffects();
-
-            if (ModFeatures.IsEnabled(ModFeatures.FeatureType.Tooltips))
-                _ = ModUIConstants.ShowTooltips();
-            if (ModFeatures.IsEnabled(ModFeatures.FeatureType.SubtitleTextFieldRework))
-                _ = ModUIConstants.ShowSubtitleTextFieldRework();
+            _ = ModUIConstants.ShowSubtitleTextFieldRework();
         }
 
         public bool HasInstantiatedUI(string assetKey)
@@ -246,7 +241,7 @@ namespace OverhaulMod
         public bool Hide(string assetBundle, string assetKey)
         {
             OverhaulUIBehaviour overhaulUIBehaviour = Get<OverhaulUIBehaviour>(assetBundle, assetKey);
-            if (overhaulUIBehaviour && overhaulUIBehaviour.visible && !overhaulUIBehaviour.forceCancelHide)
+            if (overhaulUIBehaviour && overhaulUIBehaviour.isVisible && !overhaulUIBehaviour.forceCancelHide)
             {
                 overhaulUIBehaviour.Hide();
                 return true;

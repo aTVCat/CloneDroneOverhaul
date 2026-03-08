@@ -52,11 +52,6 @@ namespace OverhaulMod.UI
             m_tabs.SelectTab("local addons");
 
             GlobalEventManager.Instance.AddEventListener<string>(AddonManager.ADDON_DOWNLOADED_EVENT, onContentDownloaded);
-
-            if (TitleScreenCustomizationManager.IntroduceCustomization)
-            {
-                ModSettingsManager.SetBoolValue(ModSettingsConstants.INTRODUCE_TITLE_SCREEN_CUSTOMIZATION, false);
-            }
         }
 
         public override void Show()

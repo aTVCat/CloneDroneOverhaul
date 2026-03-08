@@ -31,7 +31,7 @@ namespace OverhaulMod.Engine
 
         public static Color GetBlackScreenColor()
         {
-            return ModParseUtils.TryParseToColor(ModFeatures.IsEnabled(ModFeatures.FeatureType.UpdatedTransitions) ? TransitionBehaviour.POST_43_BG_COLOR : TransitionBehaviour.PRE_43_BG_COLOR, Color.black);
+            return ModParseUtils.TryParseToColor("#050D1A", Color.black);
         }
 
         public bool IsDoingTransition()
@@ -39,9 +39,9 @@ namespace OverhaulMod.Engine
             return m_transitionBehaviour;
         }
 
-        public void DoNonSceneTransition(IEnumerator coroutine, bool showTip = true)
+        public void DoNonSceneTransition(IEnumerator coroutine)
         {
-            DoTransition(TransitionArgs.NonSceneTransition(coroutine, showTip));
+            DoTransition(TransitionArgs.NonSceneTransition(coroutine));
         }
 
         public void DoTransition(TransitionArgs transitionArgs)
@@ -59,20 +59,20 @@ namespace OverhaulMod.Engine
             transform.localScale = Vector2.one;
             transform.SetSiblingIndex(ModUIManager.Instance.GetSiblingIndex(ModUIManager.UILayer.BeforeCrashScreen));
             TransitionBehaviour transitionBehaviour = gameObject.AddComponent<TransitionBehaviour>();
-            transitionBehaviour.fadeOut = transitionArgs.FadeOut;
-            transitionBehaviour.deltaTimeMultiplier = transitionArgs.DeltaTimeMultiplier;
-            transitionBehaviour.waitBeforeFadeOut = transitionArgs.WaitBeforeFadeOut;
-            transitionBehaviour.SetBackgroundColor(transitionArgs.BGColor);
-            transitionBehaviour.SetElementsVisible(transitionArgs.ShowText, transitionArgs.ShowTip);
+            transitionBehaviour.FadeOut = transitionArgs.FadeOut;
+            transitionBehaviour.DeltaTimeMultiplier = transitionArgs.DeltaTimeMultiplier;
+            transitionBehaviour.WaitBeforeFadeOut = transitionArgs.WaitBeforeFadeOut;
+            transitionBehaviour.SetColor(transitionArgs.BGColor);
+            transitionBehaviour.SetLoadingIndicatorActive(transitionArgs.ShowIndicator);
             transitionBehaviour.RunCoroutine(transitionArgs.Coroutine);
-            transitionBehaviour.Refresh();
+            transitionBehaviour.StartFading();
             m_transitionBehaviour = transitionBehaviour;
         }
 
         public void EndTransition()
         {
             if (m_transitionBehaviour)
-                m_transitionBehaviour.fadeOut = true;
+                m_transitionBehaviour.FadeOut = true;
         }
 
         public static IEnumerator SceneTransitionCoroutine(SceneTransitionManager sceneTransitionManager)
@@ -123,9 +123,7 @@ namespace OverhaulMod.Engine
 
             public Color BGColor;
 
-            public bool ShowText;
-
-            public bool ShowTip;
+            public bool ShowIndicator;
 
             public bool FadeOut;
 
@@ -138,31 +136,30 @@ namespace OverhaulMod.Engine
 
             }
 
-            public TransitionArgs(IEnumerator coroutine, Color bgColor, bool showText, bool showTip, bool fadeOut)
+            public TransitionArgs(IEnumerator coroutine, Color bgColor, bool showIndicator, bool fadeOut)
             {
                 Coroutine = coroutine;
                 BGColor = bgColor;
-                ShowText = showText;
-                ShowTip = showTip;
+                ShowIndicator = showIndicator;
                 FadeOut = fadeOut;
             }
 
             public static TransitionArgs StartupTransition()
             {
-                return new TransitionArgs(null, Color.white, false, false, true)
+                return new TransitionArgs(null, Color.white, false, true)
                 {
                     DeltaTimeMultiplier = 3f
                 };
             }
 
-            public static TransitionArgs NonSceneTransition(IEnumerator coroutine, bool showTip)
+            public static TransitionArgs NonSceneTransition(IEnumerator coroutine)
             {
-                return new TransitionArgs(coroutine, GetBlackScreenColor(), true, showTip, false);
+                return new TransitionArgs(coroutine, GetBlackScreenColor(), true, false);
             }
 
             public static TransitionArgs SceneTransition(IEnumerator coroutine)
             {
-                return new TransitionArgs(coroutine, GetBlackScreenColor(), true, true, false);
+                return new TransitionArgs(coroutine, GetBlackScreenColor(), true, false);
             }
         }
     }

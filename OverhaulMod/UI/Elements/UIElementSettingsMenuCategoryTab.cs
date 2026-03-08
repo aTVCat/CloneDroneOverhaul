@@ -64,7 +64,7 @@ namespace OverhaulMod.UI
                     InitializeSubcategoryDisplay("Window", false);
                     InitializeSubcategoryDisplay("Render", false);
                     InitializeSubcategoryDisplay("Post effects", false);
-                    if (ModFeatures.IsEnabled(ModFeatures.FeatureType.MoreImageEffects)) InitializeSubcategoryDisplay("Color blindness mode", false);
+                    InitializeSubcategoryDisplay("Color blindness mode", false);
                     break;
                 case "Effects":
                     InitializeSubcategoryDisplay("Particles", false);

@@ -34,7 +34,7 @@ namespace OverhaulMod.Visuals
         public static bool NewExplosionParticles;
 
         [ModSetting(ModSettingsConstants.REDUCE_FLASHES, false)]
-        public static bool ReduceFlases;
+        public static bool ReduceFlashes;
 
         private GameObject m_logoParticles;
 
@@ -122,13 +122,15 @@ namespace OverhaulMod.Visuals
         public void SpawnSwordBlockParticles(Vector3 position)
         {
             Transform t = PooledPrefabManager.Instance.SpawnObject(SWORD_BLOCK_PARTICLES_ID, position);
-            t.GetChild(0).gameObject.SetActive(!ReduceFlases);
+
+            toggleFlashesForParticles(t, 1);
         }
 
         public void SpawnFireSwordBlockParticles(Vector3 position)
         {
             Transform t = PooledPrefabManager.Instance.SpawnObject(FIRE_SWORD_BLOCK_PARTICLES_ID, position);
-            t.GetChild(0).gameObject.SetActive(!ReduceFlases);
+
+            toggleFlashesForParticles(t, 1);
         }
 
         public void SpawnHammerHitParticles(Vector3 position)
@@ -139,15 +141,25 @@ namespace OverhaulMod.Visuals
         public void SpawnRedGrenadeExplosionParticles(Vector3 position)
         {
             Transform t = PooledPrefabManager.Instance.SpawnObject(RED_GRENADE_EXPLOSION, position);
-            t.GetChild(0).gameObject.SetActive(!ReduceFlases);
-            t.GetChild(1).gameObject.SetActive(!ReduceFlases);
+
+            toggleFlashesForParticles(t, 2);
         }
 
         public void SpawnBlueGrenadeExplosionParticles(Vector3 position)
         {
             Transform t = PooledPrefabManager.Instance.SpawnObject(BLUE_GRENADE_EXPLOSION, position);
-            t.GetChild(0).gameObject.SetActive(!ReduceFlases);
-            t.GetChild(1).gameObject.SetActive(!ReduceFlases);
+        }
+
+        // to be extra sure that the game dont crash here
+        private void toggleFlashesForParticles(Transform particlesTransform, int flashesCount)
+        {
+            Transform c0 = particlesTransform.GetChild(0);
+            if (c0) c0.gameObject.SetActive(!ReduceFlashes);
+
+            if (flashesCount < 2) return;
+
+            Transform c1 = particlesTransform.GetChild(1);
+            if (c1) c1.gameObject.SetActive(!ReduceFlashes);
         }
     }
 }

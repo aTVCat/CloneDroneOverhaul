@@ -17,19 +17,11 @@ namespace OverhaulMod.UI
 
         protected bool m_initialized;
 
-        public bool visible
+        public bool isVisible
         {
             get
             {
-                return gameObject.activeSelf;
-            }
-        }
-
-        public bool visibleInHierarchy
-        {
-            get
-            {
-                return gameObject.activeInHierarchy;
+                return isActiveAndEnabled;
             }
         }
 
@@ -391,7 +383,7 @@ namespace OverhaulMod.UI
 
         public virtual void ToggleVisibility()
         {
-            if (visible)
+            if (isVisible)
                 Hide();
             else
                 Show();

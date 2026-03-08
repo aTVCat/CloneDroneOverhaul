@@ -48,11 +48,6 @@ namespace OverhaulMod.UI
 
             m_staticBgConfig.refreshWhenEdited = true;
             m_staticBgConfig.levelIsLoadingBG = m_loadingLevelBg;
-
-            if (TitleScreenCustomizationManager.IntroduceCustomization)
-            {
-                ModSettingsManager.SetBoolValue(ModSettingsConstants.INTRODUCE_TITLE_SCREEN_CUSTOMIZATION, false);
-            }
         }
 
         public override void OnDisable()

@@ -120,8 +120,7 @@ namespace OverhaulMod.UI
             weaponList.Add(new DropdownWeaponTypeOptionData(WeaponType.Spear));
             if (ModFeatures.IsEnabled(ModFeatures.FeatureType.ShieldSkins))
                 weaponList.Add(new DropdownWeaponTypeOptionData(WeaponType.Shield));
-            if (ModFeatures.IsEnabled(ModFeatures.FeatureType.ScytheSkins))
-                weaponList.Add(new DropdownWeaponTypeOptionData(ModWeaponsManager.SCYTHE_TYPE));
+            weaponList.Add(new DropdownWeaponTypeOptionData(ModWeaponsManager.SCYTHE_TYPE));
             m_weaponDropdown.RefreshShownValue();
 
             List<Dropdown.OptionData> overrideParentList = m_overrideParentDropdown.options;

@@ -43,5 +43,19 @@ namespace OverhaulMod.Patches
                 intro.StartFadingOut();
             }
         }
+
+        [HarmonyPostfix]
+        [HarmonyPatch(nameof(TitleScreenUI.Show))]
+        private static void Show_Postfix(TitleScreenUI __instance)
+        {
+            ModUIConstants.ShowTitleScreenRework();
+        }
+
+        [HarmonyPostfix]
+        [HarmonyPatch(nameof(TitleScreenUI.Hide))]
+        private static void Hide_Postfix(TitleScreenUI __instance)
+        {
+            ModUIConstants.HideTitleScreenRework();
+        }
     }
 }

@@ -19,9 +19,6 @@ namespace OverhaulMod.Engine
         [ModSetting(ModSettingsConstants.TITLE_SCREEN_MUSIC_TRACK_INDEX, 0)]
         public static int MusicTrackIndex;
 
-        [ModSetting(ModSettingsConstants.INTRODUCE_TITLE_SCREEN_CUSTOMIZATION, true)]
-        public static bool IntroduceCustomization;
-
         private TitleScreenCustomizationInfo m_customizationInfo;
 
         private GameObject m_levelIsLoadingBg;
@@ -69,12 +66,9 @@ namespace OverhaulMod.Engine
             GlobalEventManager.Instance.AddEventListener(GlobalEvents.LevelEditorStarted, StopTitleScreenMusic);
             GlobalEventManager.Instance.AddEventListener(PersonalizationEditorManager.EDITOR_STARTED_EVENT, StopTitleScreenMusic);
 
-            if (ModFeatures.IsEnabled(ModFeatures.FeatureType.TitleScreenLevelCustomization))
-            {
-                Transform transform = ArenaCameraManager.Instance?.ArenaCameraTransform?.parent;
-                if (transform)
-                    transform.SetParent(WorldRoot.Instance?.transform);
-            }
+            Transform transform = ArenaCameraManager.Instance?.ArenaCameraTransform?.parent;
+            if (transform)
+                transform.SetParent(WorldRoot.Instance?.transform);
 
             Camera camera = ArenaCameraManager.Instance?.TitleScreenLevelCamera;
             if (camera)
@@ -198,8 +192,6 @@ namespace OverhaulMod.Engine
                 return;
 
             titleScreenCustomizationInfo.FixValues();
-
-            if (!ModFeatures.IsEnabled(ModFeatures.FeatureType.TitleScreenLevelCustomization)) return;
 
             _ = ModActionUtils.RunCoroutine(spawnStaticBackgroundCoroutine());
         }

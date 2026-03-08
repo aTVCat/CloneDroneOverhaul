@@ -98,15 +98,6 @@ namespace OverhaulMod.UI
                 }
             }
 
-            if (ModFeatures.IsEnabled(ModFeatures.FeatureType.RequireNormalAndFireVariantsForSwordAndSpearSkins))
-            {
-                WeaponType weaponType = objectBehaviour.ControllerInfo.ItemInfo.Weapon;
-                if (((weaponType == WeaponType.Sword || weaponType == WeaponType.Spear) && !supportedVariants[WeaponVariant2.Normal]) || !supportedVariants[WeaponVariant2.OnFire])
-                {
-                    m_currentItemIsFullyIncomplete = true;
-                }
-            }
-
             if (m_currentItemIsFullyIncomplete)
             {
                 bgColor = ALL_WEAPON_VARIANTS_NOT_PRESENT_COLOR;

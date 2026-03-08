@@ -27,85 +27,77 @@ namespace OverhaulMod.Patches.Behaviours
             m_lastBotStandingEvent = multiplayerDatas[2].ClickedCallback;
             m_duelEvent = multiplayerDatas[3].ClickedCallback;
 
-            if (ModFeatures.IsEnabled(ModFeatures.FeatureType.ChapterSelectMenuRework))
+            UnityEvent storyModeEvent = new UnityEvent();
+            storyModeEvent.AddListener(delegate
             {
-                UnityEvent storyModeEvent = new UnityEvent();
-                storyModeEvent.AddListener(delegate
+                if (!ModUIManager.ShowChapterSelectionMenuRework)
                 {
-                    if (!ModUIManager.ShowChapterSelectionMenuRework)
-                    {
-                        ModCache.titleScreenUI.OnPlayStoryButtonClicked();
-                        return;
-                    }
-                    _ = ModUIConstants.ShowChapterSelectMenu();
-                });
-                singleplayerDatas[0].ClickedCallback = storyModeEvent;
-            }
-            if (ModFeatures.IsEnabled(ModFeatures.FeatureType.EndlessModeMenu))
+                    ModCache.titleScreenUI.OnPlayStoryButtonClicked();
+                    return;
+                }
+                _ = ModUIConstants.ShowChapterSelectMenu();
+            });
+            singleplayerDatas[0].ClickedCallback = storyModeEvent;
+
+            UnityEvent endlessModeEvent = new UnityEvent();
+            endlessModeEvent.AddListener(delegate
             {
-                UnityEvent endlessModeEvent = new UnityEvent();
-                endlessModeEvent.AddListener(delegate
+                if (!ModUIManager.ShowEndlessModeMenu)
                 {
-                    if (!ModUIManager.ShowEndlessModeMenu)
-                    {
-                        ModCache.titleScreenUI.OnPlayEndlessButtonClicked();
-                        return;
-                    }
-                    _ = ModUIConstants.ShowEndlessModeMenu();
-                });
-                singleplayerDatas[1].ClickedCallback = endlessModeEvent;
-            }
+                    ModCache.titleScreenUI.OnPlayEndlessButtonClicked();
+                    return;
+                }
+                _ = ModUIConstants.ShowEndlessModeMenu();
+            });
+            singleplayerDatas[1].ClickedCallback = endlessModeEvent;
 
-            if (ModFeatures.IsEnabled(ModFeatures.FeatureType.DuelInviteMenuRework))
+            UnityEvent coopEndlessModeEvent = new UnityEvent();
+            coopEndlessModeEvent.AddListener(delegate
             {
-                UnityEvent coopEndlessModeEvent = new UnityEvent();
-                coopEndlessModeEvent.AddListener(delegate
+                if (!ModUIManager.ShowDuelInviteMenuRework)
                 {
-                    if (!ModUIManager.ShowDuelInviteMenuRework)
-                    {
-                        ModCache.titleScreenUI.OnPlayCoopButtonClicked();
-                        return;
-                    }
-                    _ = ModUIConstants.ShowDuelInviteMenuRework(GameMode.EndlessCoop);
-                });
-                multiplayerDatas[0].ClickedCallback = coopEndlessModeEvent;
+                    ModCache.titleScreenUI.OnPlayCoopButtonClicked();
+                    return;
+                }
+                _ = ModUIConstants.ShowDuelInviteMenuRework(GameMode.EndlessCoop);
+            });
+            multiplayerDatas[0].ClickedCallback = coopEndlessModeEvent;
 
-                UnityEvent coopChallengesModeEvent = new UnityEvent();
-                coopChallengesModeEvent.AddListener(delegate
+            UnityEvent coopChallengesModeEvent = new UnityEvent();
+            coopChallengesModeEvent.AddListener(delegate
+            {
+                if (!ModUIManager.ShowDuelInviteMenuRework)
                 {
-                    if (!ModUIManager.ShowDuelInviteMenuRework)
-                    {
-                        ModCache.titleScreenUI.OnPlayCoopChallengesButtonClicked();
-                        return;
-                    }
-                    _ = ModUIConstants.ShowDuelInviteMenuRework(GameMode.CoopChallenge);
-                });
-                multiplayerDatas[1].ClickedCallback = coopChallengesModeEvent;
+                    ModCache.titleScreenUI.OnPlayCoopChallengesButtonClicked();
+                    return;
+                }
+                _ = ModUIConstants.ShowDuelInviteMenuRework(GameMode.CoopChallenge);
+            });
+            multiplayerDatas[1].ClickedCallback = coopChallengesModeEvent;
 
-                UnityEvent battleRoyaleModeEvent = new UnityEvent();
-                battleRoyaleModeEvent.AddListener(delegate
+            UnityEvent battleRoyaleModeEvent = new UnityEvent();
+            battleRoyaleModeEvent.AddListener(delegate
+            {
+                if (!ModUIManager.ShowDuelInviteMenuRework)
                 {
-                    if (!ModUIManager.ShowDuelInviteMenuRework)
-                    {
-                        ModCache.titleScreenUI.OnPlayBattleRoyaleButtonClicked();
-                        return;
-                    }
-                    _ = ModUIConstants.ShowDuelInviteMenuRework(GameMode.BattleRoyale);
-                });
-                multiplayerDatas[2].ClickedCallback = battleRoyaleModeEvent;
+                    ModCache.titleScreenUI.OnPlayBattleRoyaleButtonClicked();
+                    return;
+                }
+                _ = ModUIConstants.ShowDuelInviteMenuRework(GameMode.BattleRoyale);
+            });
+            multiplayerDatas[2].ClickedCallback = battleRoyaleModeEvent;
 
-                UnityEvent duelModeEvent = new UnityEvent();
-                duelModeEvent.AddListener(delegate
+            UnityEvent duelModeEvent = new UnityEvent();
+            duelModeEvent.AddListener(delegate
+            {
+                if (!ModUIManager.ShowDuelInviteMenuRework)
                 {
-                    if (!ModUIManager.ShowDuelInviteMenuRework)
-                    {
-                        ModCache.titleScreenUI.OnDuelInviteMenuClicked();
-                        return;
-                    }
-                    _ = ModUIConstants.ShowDuelInviteMenuRework(GameMode.MultiplayerDuel);
-                });
-                multiplayerDatas[3].ClickedCallback = duelModeEvent;
-            }
+                    ModCache.titleScreenUI.OnDuelInviteMenuClicked();
+                    return;
+                }
+                _ = ModUIConstants.ShowDuelInviteMenuRework(GameMode.MultiplayerDuel);
+            });
+            multiplayerDatas[3].ClickedCallback = duelModeEvent;
 
             UnityEvent spChallengesEvent = new UnityEvent();
             spChallengesEvent.AddListener(delegate

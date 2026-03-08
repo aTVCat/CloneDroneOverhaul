@@ -337,18 +337,14 @@ namespace OverhaulMod.UI
             });
             pageBuilder.AddDescriptionBoxToRecentElement(ModSettingsConstants.ENABLE_SSAO);
 
-            bool moreEffectsEnabled = ModFeatures.IsEnabled(ModFeatures.FeatureType.MoreImageEffects);
-            if (moreEffectsEnabled)
+            _ = pageBuilder.ToggleWithOptions(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_CHROMATIC_ABERRATION), delegate (bool value)
             {
-                _ = pageBuilder.ToggleWithOptions(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_CHROMATIC_ABERRATION), delegate (bool value)
-                {
-                    ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_CHROMATIC_ABERRATION, value, true);
-                }, "Chromatic aberration", delegate
-                {
-                    populateCASettingsPage(m_selectedTabId);
-                });
-                pageBuilder.AddDescriptionBoxToRecentElement(ModSettingsConstants.ENABLE_CHROMATIC_ABERRATION);
-            }
+                ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_CHROMATIC_ABERRATION, value, true);
+            }, "Chromatic aberration", delegate
+            {
+                populateCASettingsPage(m_selectedTabId);
+            });
+            pageBuilder.AddDescriptionBoxToRecentElement(ModSettingsConstants.ENABLE_CHROMATIC_ABERRATION);
 
             _ = pageBuilder.DropdownWithText(PostEffectsManager.BloomOptions, "Bloom", true, ModSettingsManager.GetIntValue(ModSettingsConstants.BLOOM_MODE), delegate (int value)
             {
@@ -491,7 +487,7 @@ namespace OverhaulMod.UI
             }, "Show Overhaul mod version");
 
             _ = pageBuilder.Header1("Energy bar enhancements");
-            if (ModFeatures.IsEnabled(ModFeatures.FeatureType.EnergyUIRedesign)) _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENERGY_UI_REWORK), delegate (bool value)
+            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENERGY_UI_REWORK), delegate (bool value)
             {
                 ModSettingsManager.SetBoolValue(ModSettingsConstants.ENERGY_UI_REWORK, value, true);
             }, "Energy bar redesign");
@@ -612,14 +608,11 @@ namespace OverhaulMod.UI
             _ = pageBuilder.Dropdown(settingsMenu.QualityDropDown.options, settingsMenu.QualityDropDown.value, OnQualityDropdownChanged);
             _ = pageBuilder.Dropdown(settingsMenu.AntiAliasingDropdown.options, settingsMenu.AntiAliasingDropdown.value, OnAntiAliasingDropdownChanged);
 
-            if (ModFeatures.IsEnabled(ModFeatures.FeatureType.AdditionalGraphicsSettings))
+            _ = pageBuilder.Button("Additional settings", delegate
             {
-                _ = pageBuilder.Button("Additional settings", delegate
-                {
-                    ClearPageContents();
-                    populateAdditionalGraphicsPage(settingsMenu);
-                });
-            }
+                ClearPageContents();
+                populateAdditionalGraphicsPage(settingsMenu);
+            });
 
             bool showExperimentalSettings = ModFeatures.IsEnabled(ModFeatures.FeatureType.DisplayNewGraphicsOptionsInSettings);
 
@@ -707,25 +700,22 @@ namespace OverhaulMod.UI
                 ModSettingsManager.SetIntValue(ModSettingsConstants.BLOOM_MODE, value, true);
             });
 
-            if (ModFeatures.IsEnabled(ModFeatures.FeatureType.ColorBlindnessOptions))
+            _ = pageBuilder.Header1("Color blindness mode");
+
+            List<Dropdown.OptionData> colorBlindnessOptions = PostEffectsManager.ColorBlindnessOptions;
+            colorBlindnessOptions[0].text = LocalizationManager.Instance.GetTranslatedString("settings_option_normal_vision");
+            colorBlindnessOptions[1].text = LocalizationManager.Instance.GetTranslatedString("settings_option_protanopia");
+            colorBlindnessOptions[2].text = LocalizationManager.Instance.GetTranslatedString("settings_option_deuteranopia");
+            colorBlindnessOptions[3].text = LocalizationManager.Instance.GetTranslatedString("settings_option_tritanopia");
+
+            _ = pageBuilder.Dropdown(PostEffectsManager.ColorBlindnessOptions, ModSettingsManager.GetIntValue(ModSettingsConstants.COLOR_BLINDNESS_MODE), delegate (int value)
             {
-                _ = pageBuilder.Header1("Color blindness mode");
-
-                List<Dropdown.OptionData> colorBlindnessOptions = PostEffectsManager.ColorBlindnessOptions;
-                colorBlindnessOptions[0].text = LocalizationManager.Instance.GetTranslatedString("settings_option_normal_vision");
-                colorBlindnessOptions[1].text = LocalizationManager.Instance.GetTranslatedString("settings_option_protanopia");
-                colorBlindnessOptions[2].text = LocalizationManager.Instance.GetTranslatedString("settings_option_deuteranopia");
-                colorBlindnessOptions[3].text = LocalizationManager.Instance.GetTranslatedString("settings_option_tritanopia");
-
-                _ = pageBuilder.Dropdown(PostEffectsManager.ColorBlindnessOptions, ModSettingsManager.GetIntValue(ModSettingsConstants.COLOR_BLINDNESS_MODE), delegate (int value)
-                {
-                    ModSettingsManager.SetIntValue(ModSettingsConstants.COLOR_BLINDNESS_MODE, value, true);
-                });
-                _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.COLOR_BLINDNESS_AFFECT_UI), delegate (bool value)
-                {
-                    ModSettingsManager.SetBoolValue(ModSettingsConstants.COLOR_BLINDNESS_AFFECT_UI, value, true);
-                }, "Affect UI");
-            }
+                ModSettingsManager.SetIntValue(ModSettingsConstants.COLOR_BLINDNESS_MODE, value, true);
+            });
+            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.COLOR_BLINDNESS_AFFECT_UI), delegate (bool value)
+            {
+                ModSettingsManager.SetBoolValue(ModSettingsConstants.COLOR_BLINDNESS_AFFECT_UI, value, true);
+            }, "Affect UI");
         }
 
         private void populateEffectsPage(SettingsMenu settingsMenu)
@@ -772,13 +762,10 @@ namespace OverhaulMod.UI
                     ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_WEAPON_BAG, value, true);
                 }, "Show equipped weapons");
             }
-            if (ModFeatures.IsEnabled(ModFeatures.FeatureType.ArrowModelRefresh))
+            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_ARROW_REWORK), delegate (bool value)
             {
-                _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_ARROW_REWORK), delegate (bool value)
-                {
-                    ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_ARROW_REWORK, value, true);
-                }, "New arrow model");
-            }
+                ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_ARROW_REWORK, value, true);
+            }, "New arrow model");
 
             _ = pageBuilder.Header1("Environment");
             _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_ARENA_REMODEL), delegate (bool value)
@@ -826,13 +813,10 @@ namespace OverhaulMod.UI
             {
                 ModSettingsManager.SetBoolValue(ModSettingsConstants.OVERHAUL_NON_SCENE_TRANSITIONS, value, true);
             }, "Better in-game transitions");
-            if (ModFeatures.IsEnabled(ModFeatures.FeatureType.UpdatedTransitions))
+            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.TRANSITION_SOUND), delegate (bool value)
             {
-                _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.TRANSITION_SOUND), delegate (bool value)
-                {
-                    ModSettingsManager.SetBoolValue(ModSettingsConstants.TRANSITION_SOUND, value, true);
-                }, "Transition sound");
-            }
+                ModSettingsManager.SetBoolValue(ModSettingsConstants.TRANSITION_SOUND, value, true);
+            }, "Transition sound");
             _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.TRANSITION_ON_STARTUP), delegate (bool value)
             {
                 ModSettingsManager.SetBoolValue(ModSettingsConstants.TRANSITION_ON_STARTUP, value, true);
@@ -852,10 +836,10 @@ namespace OverhaulMod.UI
             Button button = pageBuilder.Button("Get more levels", delegate
             {
                 Hide();
-                if (!ModFeatures.IsEnabled(ModFeatures.FeatureType.WorkshopBrowserRework))
-                    ModCache.titleScreenUI.OnWorkshopBrowserButtonClicked();
-                else
+                if (ModUIManager.ShowWorkshopBrowserRework)
                     _ = ModUIConstants.ShowWorkshopBrowserRework();
+                else
+                    ModCache.titleScreenUI.OnWorkshopBrowserButtonClicked();
             });
             button.interactable = GameModeManager.IsOnTitleScreen();
 
@@ -2126,9 +2110,6 @@ namespace OverhaulMod.UI
 
             public void AddDescriptionBoxToRecentElement(string settingId)
             {
-                if (!ModFeatures.IsEnabled(ModFeatures.FeatureType.SettingDescriptionBox))
-                    return;
-
                 Transform transform = SettingsMenu.PageContentsTransform.GetChild(SettingsMenu.PageContentsTransform.childCount - 1);
 
                 UIElementMouseEventsComponent mouseEventsComponent = transform.gameObject.AddComponent<UIElementMouseEventsComponent>();

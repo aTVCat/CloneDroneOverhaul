@@ -263,18 +263,15 @@ namespace OverhaulMod.Visuals
                 postEffectsContainer.RefreshEffects();
             }
 
-            if (ModFeatures.IsEnabled(ModFeatures.FeatureType.ColorBlindnessOptions))
-            {
-                Camera uiCamera = ModCache.gameUIRootCamera;
-                OverhaulColorBlindness overhaulColorBlindnessOverUI = uiCamera.GetComponent<OverhaulColorBlindness>();
-                if (!overhaulColorBlindnessOverUI && ColorBlindnessAffectUI && ColorBlindnessMode >= 1 && ColorBlindnessMode <= 3)
-                    overhaulColorBlindnessOverUI = uiCamera.gameObject.AddComponent<OverhaulColorBlindness>();
+            Camera uiCamera = ModCache.gameUIRootCamera;
+            OverhaulColorBlindness overhaulColorBlindnessOverUI = uiCamera.GetComponent<OverhaulColorBlindness>();
+            if (!overhaulColorBlindnessOverUI && ColorBlindnessAffectUI && ColorBlindnessMode >= 1 && ColorBlindnessMode <= 3)
+                overhaulColorBlindnessOverUI = uiCamera.gameObject.AddComponent<OverhaulColorBlindness>();
 
-                if (overhaulColorBlindnessOverUI)
-                {
-                    overhaulColorBlindnessOverUI.type = ColorBlindnessMode;
-                    overhaulColorBlindnessOverUI.enabled = ColorBlindnessAffectUI && ColorBlindnessMode >= 1 && ColorBlindnessMode <= 3;
-                }
+            if (overhaulColorBlindnessOverUI)
+            {
+                overhaulColorBlindnessOverUI.type = ColorBlindnessMode;
+                overhaulColorBlindnessOverUI.enabled = ColorBlindnessAffectUI && ColorBlindnessMode >= 1 && ColorBlindnessMode <= 3;
             }
         }
 

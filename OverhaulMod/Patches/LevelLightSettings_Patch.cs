@@ -10,6 +10,8 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(LevelLightSettings.Start))]
         private static void Start_Prefix(LevelLightSettings __instance)
         {
+            if (!LevelManager.Instance.IsChildOfPrimaryLevelRoot(__instance.transform)) return; // change the lighting only of main level
+
             RealisticLightingInfo realisticLightingInfo = RealisticLightingManager.Instance.GetCurrentRealisticLightingInfo();
             if (realisticLightingInfo != null && realisticLightingInfo.Lighting != null)
             {

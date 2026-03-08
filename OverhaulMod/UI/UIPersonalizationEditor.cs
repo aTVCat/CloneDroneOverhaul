@@ -8,11 +8,9 @@ namespace OverhaulMod.UI
 {
     public class UIPersonalizationEditor : OverhaulUIBehaviour
     {
-        private static List<UIElementPersonalizationEditorDropdown.OptionData> s_fileOptions, s_viewOptions, s_windowOptions, s_helpOptions;
+        private static List<UIElementPersonalizationEditorDropdown.OptionData> s_fileOptions, s_viewOptions, s_windowOptions, s_helpOptions, s_screenshotOptions;
 
-        [UIElementAction(nameof(OnExitButtonClicked))]
-        [UIElement("CloseButton")]
-        private readonly Button m_exitButton;
+        private static bool s_hasInitializedOptions;
 
         [UIElementAction(nameof(OnSelectItemButtonClicked))]
         [UIElement("SelectItemButton")]
@@ -89,50 +87,7 @@ namespace OverhaulMod.UI
         protected override void OnInitialized()
         {
             instance = this;
-            s_fileOptions = new List<UIElementPersonalizationEditorDropdown.OptionData>()
-            {
-                new UIElementPersonalizationEditorDropdown.OptionData("Open", "Redirect-16x16", instance.OnSelectItemButtonClicked),
-                new UIElementPersonalizationEditorDropdown.OptionData("Save (Ctrl+S)", "Save16x16", instance.OnSaveButtonClicked),
-                new UIElementPersonalizationEditorDropdown.OptionData("Import items", "Import-16x16", instance.OnImportItemsButtonClicked)
-                {
-                    DisplayedForVerifiers = true
-                },
-                new UIElementPersonalizationEditorDropdown.OptionData("Export items", "Export-16x16", instance.OnExportItemsButtonClicked)
-                {
-                    DisplayedForVerifiers = true
-                },
-                new UIElementPersonalizationEditorDropdown.OptionData(true),
-                new UIElementPersonalizationEditorDropdown.OptionData("Enter screenshot mode", "Exit-V2-16x16", instance.EnterScreenshotMode)
-                {
-                    DisplayedForVerifiers = true
-                },
-                new UIElementPersonalizationEditorDropdown.OptionData("Exit screenshot mode", "Exit-V2-16x16",instance.ExitScreenshotMode)
-                {
-                    DisplayedForVerifiers = true
-                },
-                new UIElementPersonalizationEditorDropdown.OptionData("Exit", "Exit-V2-16x16", instance.OnExitButtonClicked),
-            };
-
-            s_viewOptions = new List<UIElementPersonalizationEditorDropdown.OptionData>()
-            {
-                new UIElementPersonalizationEditorDropdown.OptionData("Welcome message", "Redirect-16x16", PersonalizationEditorManager.Instance.WelcomeMessage),
-            };
-
-            s_windowOptions = new List<UIElementPersonalizationEditorDropdown.OptionData>()
-            {
-                new UIElementPersonalizationEditorDropdown.OptionData("Show item info editor", "Redirect-16x16", instance.ShowInspector),
-                new UIElementPersonalizationEditorDropdown.OptionData("Show object editor", "Redirect-16x16", instance.ShowObjectProperties),
-                new UIElementPersonalizationEditorDropdown.OptionData(true),
-                new UIElementPersonalizationEditorDropdown.OptionData("Show item moderator", "Redirect-16x16", instance.ShowItemModerator),
-            };
-
-            s_helpOptions = new List<UIElementPersonalizationEditorDropdown.OptionData>
-            {
-                new UIElementPersonalizationEditorDropdown.OptionData("Welcome message", "Redirect-16x16", PersonalizationEditorManager.Instance.WelcomeMessage),
-                new UIElementPersonalizationEditorDropdown.OptionData("Guide: Introduction", "Redirect-16x16", instance.DropdownGuide),
-            };
-            if (ModFeatures.IsEnabled(ModFeatures.FeatureType.PersonalizationEditorTutorialVideo)) s_helpOptions.Add(new UIElementPersonalizationEditorDropdown.OptionData("Tutorial video", "Redirect-16x16", TutorialVideo));
-            s_helpOptions.Add(new UIElementPersonalizationEditorDropdown.OptionData("About", "Redirect-16x16", instance.OnAboutButtonClicked));
+            tryInitializeOptions();
 
             m_toolbarWindowButton.interactable = false;
             m_toolbarUploadButton.interactable = false;
@@ -171,6 +126,57 @@ namespace OverhaulMod.UI
         public override void Hide()
         {
             base.Hide();
+        }
+
+        private void tryInitializeOptions()
+        {
+            if (s_hasInitializedOptions) return;
+            s_hasInitializedOptions = true;
+
+            s_fileOptions = new List<UIElementPersonalizationEditorDropdown.OptionData>()
+            {
+                new UIElementPersonalizationEditorDropdown.OptionData("Open", "Redirect-16x16", instance.OnSelectItemButtonClicked),
+                new UIElementPersonalizationEditorDropdown.OptionData("Save (Ctrl+S)", "Save16x16", instance.OnSaveButtonClicked),
+                new UIElementPersonalizationEditorDropdown.OptionData("Import items", "Import-16x16", instance.OnImportItemsButtonClicked)
+                {
+                    DisplayedForVerifiers = true
+                },
+                new UIElementPersonalizationEditorDropdown.OptionData("Export items", "Export-16x16", instance.OnExportItemsButtonClicked)
+                {
+                    DisplayedForVerifiers = true
+                },
+                new UIElementPersonalizationEditorDropdown.OptionData(true),
+                new UIElementPersonalizationEditorDropdown.OptionData("Enter screenshot mode", "Exit-V2-16x16", instance.EnterScreenshotMode)
+                {
+                    DisplayedForVerifiers = true
+                },
+                new UIElementPersonalizationEditorDropdown.OptionData("Exit screenshot mode", "Exit-V2-16x16", instance.ExitScreenshotMode)
+                {
+                    DisplayedForVerifiers = true
+                },
+                new UIElementPersonalizationEditorDropdown.OptionData("Exit", "Exit-V2-16x16", instance.OnExitButtonClicked),
+            };
+
+            s_viewOptions = new List<UIElementPersonalizationEditorDropdown.OptionData>()
+            {
+                new UIElementPersonalizationEditorDropdown.OptionData("Welcome message", "Redirect-16x16", PersonalizationEditorManager.Instance.WelcomeMessage),
+            };
+
+            s_windowOptions = new List<UIElementPersonalizationEditorDropdown.OptionData>()
+            {
+                new UIElementPersonalizationEditorDropdown.OptionData("Show item info editor", "Redirect-16x16", instance.ShowInspector),
+                new UIElementPersonalizationEditorDropdown.OptionData("Show object editor", "Redirect-16x16", instance.ShowObjectProperties),
+                new UIElementPersonalizationEditorDropdown.OptionData(true),
+                new UIElementPersonalizationEditorDropdown.OptionData("Show item moderator", "Redirect-16x16", instance.ShowItemModerator),
+            };
+
+            s_helpOptions = new List<UIElementPersonalizationEditorDropdown.OptionData>
+            {
+                new UIElementPersonalizationEditorDropdown.OptionData("Welcome message", "Redirect-16x16", PersonalizationEditorManager.Instance.WelcomeMessage),
+                new UIElementPersonalizationEditorDropdown.OptionData("Guide: Introduction", "Redirect-16x16", instance.DropdownGuide),
+                new UIElementPersonalizationEditorDropdown.OptionData("Tutorial video", "Redirect-16x16", instance.TutorialVideo),
+                new UIElementPersonalizationEditorDropdown.OptionData("About", "Redirect-16x16", instance.OnAboutButtonClicked)
+            };
         }
 
         public void DropdownGuide()

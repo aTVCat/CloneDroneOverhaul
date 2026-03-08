@@ -341,9 +341,6 @@ namespace OverhaulMod.Visuals
 
         private void refreshColorBlindness(bool enable, GameObject cameraObject)
         {
-            if (!ModFeatures.IsEnabled(ModFeatures.FeatureType.ColorBlindnessOptions))
-                return;
-
             OverhaulColorBlindness overhaulColorBlindness = ColorBlindness;
             if (!overhaulColorBlindness)
             {

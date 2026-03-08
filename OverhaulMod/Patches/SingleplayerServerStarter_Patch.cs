@@ -12,7 +12,6 @@ namespace OverhaulMod.Patches
         private static void StartServerThenCall_Postfix()
         {
             TitleScreenCustomizationManager.Instance.StopTitleScreenMusic();
-            ModUIConstants.HideTitleScreenRework();
         }
     }
 }

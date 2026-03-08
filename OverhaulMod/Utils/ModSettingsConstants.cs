@@ -102,11 +102,6 @@ namespace OverhaulMod.Utils
         public const string CHECK_FOR_UPDATES_ON_STARTUP = "CheckForUpdatesOnStartup";
 
         /// <summary>
-        /// <see cref="Engine.TitleScreenCustomizationManager"/>
-        /// </summary>
-        public const string INTRODUCE_TITLE_SCREEN_CUSTOMIZATION = "IntroduceTitleScreenCustomizationV2";
-
-        /// <summary>
         /// <see cref="ModManagers"/>
         /// </summary>
         public const string SHOW_MOD_SETUP_SCREEN_ON_START = "ShowModSetupScreenOnStart";

@@ -17,7 +17,7 @@ namespace OverhaulMod.Patches
             if (!GameModeManager.TimeScaleChangesAllowed())
                 return;
 
-            Rigidbody rigidBody = __result.gameObject.GetComponent<Rigidbody>();
+            Rigidbody rigidBody = __result.gameObject.GetComponent<Rigidbody>(); // todo: interpolate garbage only for a few seconds
             if (rigidBody)
             {
                 rigidBody.interpolation = RigidbodyInterpolation.Interpolate;

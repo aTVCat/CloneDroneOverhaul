@@ -314,7 +314,7 @@ namespace OverhaulMod.UI
                 if (ModFeatures.IsEnabled(ModFeatures.FeatureType.ShieldSkins))
                     m_subcategoryTabs.AddTab("Shield");
 
-                if (ModFeatures.IsEnabled(ModFeatures.FeatureType.ScytheSkins) && BoltNetwork.IsServer)
+                if (BoltNetwork.IsServer)
                     m_subcategoryTabs.AddTab(ModWeaponsManager.SCYTHE_TYPE.ToString());
 
                 selectSubcategoryOfCurrentWeapon();

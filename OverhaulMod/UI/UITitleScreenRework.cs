@@ -26,11 +26,6 @@ namespace OverhaulMod.UI
         [UIElement("PlayMultiplayerButton")]
         private readonly Button m_playMultiPlayerButton;
 
-        [ButtonWithSound(ButtonWithSound.SoundType.Choose)]
-        [UIElementAction(nameof(OnPlayExpMultiPlayerButtonClicked))]
-        [UIElement("ExpPlayMultiplayerButton")]
-        private readonly Button m_playExpMultiPlayerButton;
-
         [ButtonWithSound(ButtonWithSound.SoundType.Click)]
         [UIElementAction(nameof(OnViewMultiplayerErrorButtonClicked))]
         [UIElement("ViewMultiplayerErrorButton")]
@@ -42,37 +37,6 @@ namespace OverhaulMod.UI
         private readonly Button m_modsButton;
 
         [ButtonWithSound(ButtonWithSound.SoundType.Click)]
-        [UIElementAction(nameof(OnInfoButtonClicked))]
-        [UIElement("InfoButton")]
-        private readonly Button m_infoButton;
-
-        [ButtonWithSound(ButtonWithSound.SoundType.Click)]
-        [UIElementAction(nameof(OnFeedbackButtonClicked))]
-        [UIElement("FeedbackButton")]
-        private readonly Button m_feedbackButton;
-
-        [UIElement("BottomSection", true)]
-        private readonly GameObject m_bottomSection;
-
-        [ButtonWithSound(ButtonWithSound.SoundType.Click)]
-        [UIElementAction(nameof(OnExcContentMenuButtonClicked))]
-        [UIElement("ExclusiveContentMenuButton")]
-        private readonly Button m_excContentMenuButton;
-
-        [ButtonWithSound(ButtonWithSound.SoundType.Click)]
-        [UIElementAction(nameof(OnUpdatesButtonClicked))]
-        [UIElement("UpdatesButton")]
-        private readonly Button m_updatesButton;
-
-        [ButtonWithSound(ButtonWithSound.SoundType.Click)]
-        [UIElementAction(nameof(OnNewsButtonClicked))]
-        [UIElement("NewsButton")]
-        private readonly Button m_newsButton;
-
-        [UIElement("NewBottomSection", false)]
-        private readonly GameObject m_newBottomSection;
-
-        [ButtonWithSound(ButtonWithSound.SoundType.Click)]
         [UIElementAction(nameof(OnExcContentMenuButtonClicked))]
         [UIElement("NewExclusiveContentMenuButton")]
         private readonly Button m_newExcContentMenuButton;
@@ -81,11 +45,6 @@ namespace OverhaulMod.UI
         [UIElementAction(nameof(OnUpdatesButtonClicked))]
         [UIElement("NewUpdatesButton")]
         private readonly Button m_newUpdatesButton;
-
-        [ButtonWithSound(ButtonWithSound.SoundType.Click)]
-        [UIElementAction(nameof(OnNewsButtonClicked))]
-        [UIElement("NewNewsButton")]
-        private readonly Button m_newNewsButton;
 
         [ButtonWithSound(ButtonWithSound.SoundType.Click)]
         [UIElementAction(nameof(OnOptionsButtonClicked))]
@@ -101,11 +60,6 @@ namespace OverhaulMod.UI
         [UIElementAction(nameof(OnWorkshopBrowserButtonClicked))]
         [UIElement("WorkshopBrowserButton")]
         private readonly Button m_workshopBrowserButton;
-
-        [ButtonWithSound(ButtonWithSound.SoundType.Click)]
-        [UIElementAction(nameof(OnHubButtonClicked))]
-        [UIElement("HubButton")]
-        private readonly Button m_hubButton;
 
         [UIElementAction(nameof(OnLevelDescriptionsEditorButtonClicked))]
         [UIElement("LevelDescriptionsEditorButton")]
@@ -162,18 +116,6 @@ namespace OverhaulMod.UI
         [UIElement("SkinNameLabel")]
         private readonly Text m_skinNameLabelButton;
 
-        [UIElementAction(nameof(OnRobotEditorButtonClicked))]
-        [UIElement("RobotEditorButton")]
-        private readonly Button m_robotEditorButton;
-
-        [UIElementAction(nameof(OnWeaponEditorButtonClicked))]
-        [UIElement("WeaponEditorButton")]
-        private readonly Button m_weaponEditorButton;
-
-        [UIElementAction(nameof(OnStoryReworkButtonClicked))]
-        [UIElement("StoryReworkButton")]
-        private readonly Button m_storyReworkButton;
-
         [ButtonWithSound(ButtonWithSound.SoundType.Click)]
         [UIElementAction(nameof(OnBehindTheScenesButtonClicked))]
         [UIElement("BehindTheScenesButton")]
@@ -189,16 +131,8 @@ namespace OverhaulMod.UI
         [UIElement("PatchNotesButton")]
         private readonly Button m_patchNotesButton;
 
-        [ButtonWithSound(ButtonWithSound.SoundType.Click)]
-        [UIElementAction(nameof(OnFeaturesButtonClicked))]
-        [UIElement("FeaturesButton")]
-        private readonly Button m_featuresButton;
-
         [UIElement("MiscElements")]
         private readonly GameObject m_miscElementsObject;
-
-        [UIElement("Tutorial", false)]
-        private readonly GameObject m_tutorialObject;
 
         [UIElement("ModBotLogonText")]
         private readonly Text m_modBotLogonText;
@@ -208,15 +142,6 @@ namespace OverhaulMod.UI
 
         [UIElement("ViewMultiplayerErrorButton", typeof(UIElementMultiplayerMessageButton))]
         public UIElementMultiplayerMessageButton ErrorMessageButton;
-
-        [UIElement("ContentButton", typeof(UIElementTitleScreenContentButton))]
-        public UIElementTitleScreenContentButton ContentButtonController;
-
-        [UIElement("NewsButton", typeof(UIElementTitleScreenButtonWithWarn))]
-        public UIElementTitleScreenButtonWithWarn NewsButtonWarnController;
-
-        [UIElement("UpdatesButton", typeof(UIElementTitleScreenButtonWithWarn))]
-        public UIElementTitleScreenButtonWithWarn UpdatesButtonWarnController;
 
         [UIElement("AdvancementsProgressImage")]
         private readonly Image m_advancementsProgressImage;
@@ -301,19 +226,12 @@ namespace OverhaulMod.UI
             bool debug = ModBuildInfo.debug;
 
             m_modBotLogonText.text = "Not logged in";
-            NewsButtonWarnController.isNewsButton = true;
-            UpdatesButtonWarnController.isUpdatesButton = true;
             m_debugButtonsObject.SetActive(debug);
-            m_featuresButton.gameObject.SetActive(false);
 
             float fraction = GameplayAchievementManager.Instance.GetFractionOfAchievementsCompleted();
             m_advancementsProgressImage.fillAmount = fraction;
             m_advancementsProgressText.text = $"{ModGameUtils.GetNumOfAchievementsCompleted()}/{ModGameUtils.GetNumOfAchievements()}";
             m_advancementsProgressPercentageText.text = $"({Mathf.FloorToInt(fraction * 100f)}%)";
-
-            bool updateBottomSection = ModFeatures.IsEnabled(ModFeatures.FeatureType.TitleScreenModdedSectionRework);
-            m_bottomSection.SetActive(!updateBottomSection);
-            m_newBottomSection.SetActive(updateBottomSection);
 
             TitleScreenUI titleScreenUI = ModCache.titleScreenUI;
             if (titleScreenUI)
@@ -362,9 +280,6 @@ namespace OverhaulMod.UI
 
             if (Time.frameCount % 20 == 0)
             {
-                //m_excContentMenuButton.interactable = ExclusiveContentManager.Instance.HasDownloadedContent();
-                m_tutorialObject.SetActive(TitleScreenCustomizationManager.IntroduceCustomization);
-
                 if (m_mobBotUsernameAvailable)
                 {
                     string userName = ModIntegrationUtils.ModBot.GetModBotUsername();
@@ -431,7 +346,6 @@ namespace OverhaulMod.UI
         public void SetMultiplayerButtonActive(bool value)
         {
             m_playMultiPlayerButton.interactable = value;
-            m_playExpMultiPlayerButton.interactable = value;
         }
 
         private IEnumerator levelEditorTransitionCoroutine()
@@ -482,11 +396,6 @@ namespace OverhaulMod.UI
             m_titleScreenUI.MultiplayerModeSelectScreen.SetMainScreenVisible(true);
         }
 
-        public void OnPlayExpMultiPlayerButtonClicked()
-        {
-            _ = ModUIConstants.ShowMultiplayerGameModeSelectScreen();
-        }
-
         public void OnModBotLogInButtonClicked()
         {
             ModBotUIRoot.Instance.ModBotSignInUI.OpenSignInForm();
@@ -500,26 +409,6 @@ namespace OverhaulMod.UI
         public void OnModsButtonClicked()
         {
             ModsPanelManager.Instance.openModsMenu();
-        }
-
-        public void OnInfoButtonClicked()
-        {
-            ModUIUtils.MessagePopupNotImplemented();
-        }
-
-        public void OnNewsButtonClicked()
-        {
-            _ = ModUIConstants.ShowNewsPanel();
-        }
-
-        public void OnFeedbackButtonClicked()
-        {
-            _ = ModUIConstants.ShowFeedbackUIRework(false);
-        }
-
-        public void OnHubButtonClicked()
-        {
-            _ = ModUIConstants.ShowCommunityHub();
         }
 
         public void OnLevelDescriptionsEditorButtonClicked()
@@ -549,12 +438,7 @@ namespace OverhaulMod.UI
 
         public void OnUpdatesButtonClicked()
         {
-            if (ModFeatures.IsEnabled(ModFeatures.FeatureType.UpdatesMenuRework))
-            {
-                _ = ModUIConstants.ShowUpdatesWindowRework();
-                return;
-            }
-            _ = ModUIConstants.ShowUpdatesWindow();
+            _ = ModUIConstants.ShowUpdatesWindowRework();
         }
 
         public void OnAdvancementsButtonClicked()
@@ -569,7 +453,7 @@ namespace OverhaulMod.UI
 
         public void OnWorkshopBrowserButtonClicked()
         {
-            if (!ModFeatures.IsEnabled(ModFeatures.FeatureType.WorkshopBrowserRework) || !ModUIManager.ShowWorkshopBrowserRework)
+            if (!ModUIManager.ShowWorkshopBrowserRework)
             {
                 ModCache.titleScreenUI.OnWorkshopBrowserButtonClicked();
                 return;
@@ -587,7 +471,7 @@ namespace OverhaulMod.UI
                 m_titleScreenUI.OnLevelEditorButtonClicked();
                 return;
             }
-            TransitionManager.Instance.DoNonSceneTransition(levelEditorTransitionCoroutine(), false);
+            TransitionManager.Instance.DoNonSceneTransition(levelEditorTransitionCoroutine());
         }
 
         public void OnOptionsButtonClicked()
@@ -649,23 +533,6 @@ namespace OverhaulMod.UI
             refreshSkinButtonLabel();
         }
 
-        public void OnRobotEditorButtonClicked()
-        {
-            ModUIUtils.MessagePopupNotImplemented();
-        }
-
-        public void OnWeaponEditorButtonClicked()
-        {
-            ModUIUtils.MessagePopupNotImplemented();
-        }
-
-        public void OnStoryReworkButtonClicked()
-        {
-            MetagameProgressManager.Instance.SetProgress(MetagameProgress.P1_EmperorArrived);
-            GameDataManager.Instance._storyModeData.CurentLevelID = "Story10_Rework";
-            GameFlowManager.Instance.StartStoryModeGame(false);
-        }
-
         public void OnBehindTheScenesButtonClicked()
         {
             _ = ModUIConstants.ShowDevelopmentGallery(base.transform);
@@ -674,12 +541,6 @@ namespace OverhaulMod.UI
         public void OnDiscordServerButtonClicked()
         {
             _ = ModUIConstants.ShowDiscordServerMenu(base.transform);
-            /*
-            ModUIUtils.MessagePopup(true, "Join \"Modded Multiplayer\" Discord server?", null, 125f, MessageMenu.ButtonLayout.EnableDisableButtons, "ok", "Yes", "No", null, delegate
-            {
-                string link = "https://discord.gg/ezhvabY63m";
-                Application.OpenURL(link);
-            });*/
         }
 
         public void OnPatchNotesButtonClicked()
@@ -691,11 +552,6 @@ namespace OverhaulMod.UI
                 ShrinkPanel = false,
                 HideVersionList = false,
             });
-        }
-
-        public void OnFeaturesButtonClicked()
-        {
-            _ = ModUIConstants.ShowFeaturesMenu(base.transform);
         }
 
         public enum TitleScreenSkinType

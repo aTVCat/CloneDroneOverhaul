@@ -12,7 +12,7 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(EndlessModeManager.GetDifficultyTierDropdownOptions))]
         private static void GetDifficultyTierDropdownOptions_Postfix(EndlessModeManager __instance, ref List<Dropdown.OptionData> __result)
         {
-            if (!ModBuildInfo.VERSION_5_0)
+            if (!ModFeatures.IsEnabled(ModFeatures.FeatureType.NightmariumDifficultyTier))
                 return;
 
             __result = new List<Dropdown.OptionData>();

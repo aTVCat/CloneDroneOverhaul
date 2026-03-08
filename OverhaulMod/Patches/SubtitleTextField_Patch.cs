@@ -12,7 +12,7 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(SubtitleTextField.onSpeechSentenceStarted))]
         private static bool onSpeechSentenceStarted_Prefix(SubtitleTextField __instance)
         {
-            if (ModFeatures.IsEnabled(ModFeatures.FeatureType.SubtitleTextFieldRework) && UISubtitleTextFieldRework.EnableRework)
+            if (UISubtitleTextFieldRework.EnableRework)
                 return false;
 
             if (!ModCore.ShowSpeakerName)

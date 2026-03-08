@@ -15,7 +15,7 @@ namespace OverhaulMod.Patches
         private static void OnMindTransferFinished_Postfix(FirstPersonMover __instance)
         {
             if (__instance.HasCharacterModel() && __instance._playerCamera)
-                CameraManager.Instance.AddControllers(__instance._playerCamera, __instance);
+                CameraManager.Instance.AddControllers(__instance._playerCamera, __instance); // fix camera controllers not adding to enemies in story mode
         }
 
         [HarmonyPrefix]

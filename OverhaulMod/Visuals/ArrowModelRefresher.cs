@@ -75,7 +75,7 @@ namespace OverhaulMod.Visuals
             if (!m_arrowProjectile || !m_hasStarted)
                 return;
 
-            bool featureEnabled = ModCore.isEnabled && EnableArrowRework && ModFeatures.IsEnabled(ModFeatures.FeatureType.ArrowModelRefresh);
+            bool featureEnabled = ModCore.isEnabled && EnableArrowRework;
             if (!featureEnabled)
             {
                 SetDefaultVisuals(true);
@@ -125,7 +125,7 @@ namespace OverhaulMod.Visuals
 
         public void InstantiateNewModels()
         {
-            bool featureEnabled = ModCore.isEnabled && ModFeatures.IsEnabled(ModFeatures.FeatureType.ArrowModelRefresh);
+            bool featureEnabled = ModCore.isEnabled;
             if (!featureEnabled)
                 return;
 

@@ -10,36 +10,6 @@ namespace OverhaulMod.Utils
 {
     public static class ModGameUtils
     {
-        private static List<string> s_overrideActiveSections;
-        public static List<string> overrideActiveSections
-        {
-            get
-            {
-                List<string> list = s_overrideActiveSections;
-                s_overrideActiveSections = null;
-                return list;
-            }
-            set
-            {
-                s_overrideActiveSections = value;
-            }
-        }
-
-        private static string s_overrideCurrentLevelId;
-        public static string overrideCurrentLevelId
-        {
-            get
-            {
-                string list = s_overrideCurrentLevelId;
-                s_overrideCurrentLevelId = null;
-                return list;
-            }
-            set
-            {
-                s_overrideCurrentLevelId = value;
-            }
-        }
-
         private static readonly List<Action<IFPMoveCommandInput>> m_playerInputUpdateActions = new List<Action<IFPMoveCommandInput>>();
 
         public static int GetNumOfAchievements()

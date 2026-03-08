@@ -50,15 +50,8 @@ namespace OverhaulMod.Utils
                     {
                         MessagePopup(true, LocalizationManager.Instance.GetTranslatedString("update_available_header"), string.Format(LocalizationManager.Instance.GetTranslatedString("update_available_description"), newVersion), 150f, MessageMenu.ButtonLayout.EnableDisableButtons, "ok", "Yes", "No", null, delegate
                         {
-                            if (ModFeatures.IsEnabled(ModFeatures.FeatureType.UpdatesMenuRework))
-                            {
-                                UIUpdatesWindowRework windowNew = ModUIConstants.ShowUpdatesWindowRework();
-                                windowNew.OnCheckForUpdatesButtonClicked();
-                                return;
-                            }
-
-                            UI.UIUpdatesWindow window = ModUIConstants.ShowUpdatesWindow();
-                            window.SelectBranchAndSearchForUpdates(0);
+                            UIUpdatesWindowRework windowNew = ModUIConstants.ShowUpdatesWindowRework();
+                            windowNew.OnCheckForUpdatesButtonClicked();
                         });
                     }
                 }, delay);

@@ -46,7 +46,7 @@ namespace OverhaulMod.Combat
 
         public void AddWeaponsToRobot(FirstPersonMover firstPersonMover)
         {
-            if (GameModeManager.IsMultiplayer() || !firstPersonMover || !ModFeatures.IsEnabled(ModFeatures.FeatureType.NewWeapons))
+            if (GameModeManager.IsMultiplayer() || !firstPersonMover)
                 return;
 
             CharacterModel characterModel = firstPersonMover.GetCharacterModel();

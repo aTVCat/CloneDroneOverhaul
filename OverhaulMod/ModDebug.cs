@@ -1,5 +1,4 @@
-﻿using OverhaulMod.Utils;
-using System;
+﻿using System;
 using UnityEngine;
 using UnityStandardAssets.ImageEffects;
 
@@ -57,26 +56,6 @@ namespace OverhaulMod
             _ = camera.gameObject.AddComponent<DepthOfField>();
         }
 
-        public static void MessagePopupTest()
-        {
-            string desc = string.Empty;
-            for (int i = 0; i < 75; i++)
-            {
-                desc += "very long string ";
-            }
-
-            ModUIUtils.MessagePopupOK("hmm", desc, 175f, true);
-        }
-
-        public static void UpdatePopupTest()
-        {
-            ModUIUtils.MessagePopup(true, LocalizationManager.Instance.GetTranslatedString("update_available_header"), string.Format(LocalizationManager.Instance.GetTranslatedString("update_available_description"), new Version(10, 10, 10, 10)), 150f, MessageMenu.ButtonLayout.EnableDisableButtons, "ok", "Yes", "No", null, delegate
-            {
-                UI.UIUpdatesWindow window = ModUIConstants.ShowUpdatesWindow();
-                window.SelectBranchAndSearchForUpdates(1);
-            });
-        }
-
         public static void FileDownloadTest()
         {
             GoogleDriveFileDownloader fileDownloader = new GoogleDriveFileDownloader();
@@ -84,13 +63,13 @@ namespace OverhaulMod
             fileDownloader.DownloadFileCompleted += (sender, e) =>
             {
                 if (e.Cancelled)
-                    ModDebug.Log("Download cancelled");
+                    Log("Download cancelled");
                 else if (e.Error != null)
-                    ModDebug.Log("Download failed: " + e.Error);
+                    Log("Download failed: " + e.Error);
                 else
-                    ModDebug.Log("Download completed");
+                    Log("Download completed");
             };
-            fileDownloader.DownloadFileAsync("https://drive.google.com/file/d/1T_sWBJdpXe74dZrtN7pPZXjT4sVgq7-o/view?usp=drive_link", "D:\\CloneDroneBeta.zip");
+            fileDownloader.DownloadFileAsync("123", "D:\\123.zip");
         }
 
         private static void onDownloadProgress(object sender, GoogleDriveFileDownloader.DownloadProgress e)
@@ -99,7 +78,7 @@ namespace OverhaulMod
                 return;
 
             s_lastFrameDownloadProgressWasDisplayed = Time.frameCount;
-            ModDebug.Log("Progress changed " + e.BytesReceived + " " + e.TotalBytesToReceive);
+            Log("Progress changed " + e.BytesReceived + " " + e.TotalBytesToReceive);
         }
     }
 }

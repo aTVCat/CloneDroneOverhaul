@@ -33,9 +33,7 @@ namespace OverhaulMod.Utils
 
         public static Color TryParseToColor(string @string, Color defaultValue)
         {
-            if (!@string.StartsWith("#"))
-                @string = "#" + @string;
-
+            if (@string[0] != '#') @string = '#' + @string;
             return !ColorUtility.TryParseHtmlString(@string, out Color result) ? defaultValue : result;
         }
 

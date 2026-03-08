@@ -15,7 +15,7 @@ namespace OverhaulMod.Engine
 
         private List<ModSetting> m_settings;
         private Dictionary<string, ModSetting> m_nameToSetting;
-        private Dictionary<string, ModSettingSubDescription> m_idToSubDescription;
+        private Dictionary<string, ModSettingSubDescription> m_idToDescription;
 
         public override void Awake()
         {
@@ -23,19 +23,17 @@ namespace OverhaulMod.Engine
 
             m_settings = new List<ModSetting>();
             m_nameToSetting = new Dictionary<string, ModSetting>();
-            m_idToSubDescription = new Dictionary<string, ModSettingSubDescription>();
+            m_idToDescription = new Dictionary<string, ModSettingSubDescription>();
 
             loadSettings();
-
-            if (ModFeatures.IsEnabled(ModFeatures.FeatureType.SettingDescriptionBox))
-                loadSubDescriptions();
+            loadDescriptions();
         }
 
-        private void loadSubDescriptions()
+        private void loadDescriptions()
         {
-            m_idToSubDescription.Clear();
+            m_idToDescription.Clear();
 
-            string fn = Path.Combine(ModCore.dataFolder, "settingSubDescriptions.txt");
+            string fn = Path.Combine(ModCore.dataFolder, "settingDescriptions.txt");
             if (File.Exists(fn))
             {
                 string content;
@@ -67,7 +65,7 @@ namespace OverhaulMod.Engine
 
                                 if (int.TryParse(typeText, out int type) && int.TryParse(valueText, out int value))
                                 {
-                                    m_idToSubDescription.Add(settingId, new ModSettingSubDescription(type, value));
+                                    m_idToDescription.Add(settingId, new ModSettingSubDescription(type, value));
                                 }
                             }
                         }
@@ -94,9 +92,9 @@ namespace OverhaulMod.Engine
 
         public string GetSubDescription(string settingId)
         {
-            if (m_idToSubDescription.ContainsKey(settingId))
+            if (m_idToDescription.ContainsKey(settingId))
             {
-                ModSettingSubDescription modSettingSubDescription = m_idToSubDescription[settingId];
+                ModSettingSubDescription modSettingSubDescription = m_idToDescription[settingId];
                 if (modSettingSubDescription.Type == 0)
                 {
                     string postfix;

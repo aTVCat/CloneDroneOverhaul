@@ -81,11 +81,9 @@ namespace OverhaulMod.UI
         protected override void OnInitialized()
         {
             instance = this;
-
-            bool update = ModFeatures.IsEnabled(ModFeatures.FeatureType.VersionLabelUpdates);
-            m_gameplayVersionText.font = update ? ModResources.EditUndoFont() : ModResources.PiksieliProstoFont();
-            m_gameplayVersionText.fontSize = update ? 10 : 6;
-            m_gameplayWatermarkTransform.localScale = update ? Vector3.one * 0.9f : Vector3.one;
+            m_gameplayVersionText.font = ModResources.EditUndoFont();
+            m_gameplayVersionText.fontSize = 10;
+            m_gameplayWatermarkTransform.localScale = Vector3.one * 0.9f;
             RefreshLabels();
 
             ModSettingsManager.Instance.AddSettingValueChangedListener(onDevBuildLabelSettingChanged, ModSettingsConstants.SHOW_DEVELOPER_BUILD_LABEL);
@@ -93,7 +91,7 @@ namespace OverhaulMod.UI
 
             ModCache.titleScreenUI.VersionLabel.gameObject.SetActive(false);
 
-            if (ModFeatures.IsEnabled(ModFeatures.FeatureType.Intro) && GameModeManager.IsOnTitleScreen())
+            if (GameModeManager.IsOnTitleScreen())
                 m_watermarkCanvasGroup.alpha = UIIntro.HasEverShownIntro ? 1f : 0f;
         }
 
@@ -155,11 +153,6 @@ namespace OverhaulMod.UI
         private void onDevBuildLabelSettingChanged(object obj)
         {
             m_devBuildLabelObject.SetActive(obj is bool b && ModBuildInfo.isDeveloperBuild && ModBuildInfo.debug && b);
-        }
-
-        public void OnOtherModsButtonClicked()
-        {
-            _ = ModUIConstants.ShowOtherModsMenu();
         }
     }
 }

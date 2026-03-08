@@ -194,8 +194,6 @@ namespace OverhaulMod.Engine
             };
             metagameProgressManager.saveData();
 
-            ModGameUtils.overrideActiveSections = chapterSectionInfo.EnabledSections;
-            ModGameUtils.overrideCurrentLevelId = chapterSectionInfo.LevelID;
             return true;
         }
 

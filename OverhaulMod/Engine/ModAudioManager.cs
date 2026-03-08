@@ -150,7 +150,7 @@ namespace OverhaulMod.Engine
 
         public void PlayTransitionSound(float volumeOffset = 0f)
         {
-            if (!ModFeatures.IsEnabled(ModFeatures.FeatureType.UpdatedTransitions) || TransitionSoundBehaviour.Instance)
+            if (TransitionSoundBehaviour.Instance)
                 return;
 
             GameObject gameObject = Instantiate(m_loadingSoundSourcePrefab);

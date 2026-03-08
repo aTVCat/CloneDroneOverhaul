@@ -236,7 +236,7 @@ namespace OverhaulMod.UI
 
         private void refreshPlayersIfActive()
         {
-            if (visible)
+            if (isVisible)
             {
                 m_refreshPlayerListTime = Time.unscaledTime + 1f;
             }
@@ -345,9 +345,6 @@ namespace OverhaulMod.UI
                 {
                     continue;
                 }
-
-                if (playerInfoState.IsDisconnected && !ModFeatures.IsEnabled(ModFeatures.FeatureType.DisplayDisconnectedPlayers))
-                    continue;
 
                 ModdedObject playerDisplay = Instantiate(m_playerInfoDisplayPrefab, m_playerInfoDisplayContainer);
                 playerDisplay.gameObject.SetActive(true);

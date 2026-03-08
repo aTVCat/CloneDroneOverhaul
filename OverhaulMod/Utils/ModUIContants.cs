@@ -2,7 +2,6 @@
 using OverhaulMod.UI;
 using System.Collections.Generic;
 using UnityEngine;
-using static OverhaulMod.UI.UIPatchNotes;
 
 namespace OverhaulMod.Utils
 {
@@ -108,11 +107,6 @@ namespace OverhaulMod.Utils
             return ModUIManager.Instance.Show<UIVersionLabel>(AssetBundleConstants.UI, UI_VERSION_LABEL, ModUIManager.UILayer.BeforeCrashScreen);
         }
 
-        public static UIOtherMods ShowOtherModsMenu()
-        {
-            return ModUIManager.Instance.Show<UIOtherMods>(AssetBundleConstants.UI, UI_OTHER_MODS, ModUIManager.UILayer.AfterTitleScreen);
-        }
-
         public static UIEndlessModeMenu ShowEndlessModeMenu()
         {
             return ModUIManager.Instance.Show<UIEndlessModeMenu>(AssetBundleConstants.UI, UI_ENDLESS_MODE, ModUIManager.UILayer.AfterTitleScreen);
@@ -143,7 +137,7 @@ namespace OverhaulMod.Utils
         public static UITitleScreenRework ShowTitleScreenReworkIfHaventBefore()
         {
             UITitleScreenRework result = ModUIManager.Instance.Get<UITitleScreenRework>(AssetBundleConstants.UI, UI_TITLE_SCREEN);
-            if (result && result.visible)
+            if (result && result.isVisible)
                 return result;
 
             return ModUIManager.Instance.Show<UITitleScreenRework>(AssetBundleConstants.UI, UI_TITLE_SCREEN, ModUIManager.UILayer.AfterTitleScreen);
@@ -191,11 +185,6 @@ namespace OverhaulMod.Utils
             return feedbackMenu;
         }
 
-        public static UICommunityHub ShowCommunityHub()
-        {
-            return ModUIManager.Instance.Show<UICommunityHub>(AssetBundleConstants.UI, UI_COMMUNITY_HUB, ModUIManager.UILayer.AfterTitleScreen);
-        }
-
         public static UIPauseMenuRework ShowPauseMenuRework()
         {
             return ModUIManager.Instance.Show<UIPauseMenuRework>(AssetBundleConstants.UI, UI_PAUSE_MENU, ModUIManager.UILayer.AfterEscMenu);
@@ -233,26 +222,6 @@ namespace OverhaulMod.Utils
             _ = ModUIManager.Instance.Show<UIExclusivePerkEditor>(AssetBundleConstants.UI, UI_EXCLUSIVE_PERKS_EDITOR, parent);
         }
 
-        public static UIMultiplayerConnectScreen ShowMultiplayerConnectScreen()
-        {
-            return ModUIManager.Instance.Show<UIMultiplayerConnectScreen>(AssetBundleConstants.UI, UI_CONNECT_SCREEN, ModUIManager.UILayer.AfterMultiplayerConnectScreen);
-        }
-
-        public static UINewsPanel ShowNewsPanel()
-        {
-            return ModUIManager.Instance.Show<UINewsPanel>(AssetBundleConstants.UI, UI_NEWS_PANEL, ModUIManager.UILayer.AfterTitleScreen);
-        }
-
-        public static void ShowContentDownloadWindow()
-        {
-            _ = ModUIManager.Instance.Show<UIContentDownloadWindow>(AssetBundleConstants.UI, UI_CONTENT_DOWNLOAD_WINDOW, ModUIManager.UILayer.AfterTitleScreen);
-        }
-
-        public static UIUpdatesWindow ShowUpdatesWindow()
-        {
-            return ModUIManager.Instance.Show<UIUpdatesWindow>(AssetBundleConstants.UI, UI_UPDATES_WINDOW, ModUIManager.UILayer.AfterTitleScreen);
-        }
-
         public static UIPersonalizationItemBrowser ShowPersonalizationItemsBrowser()
         {
             return ModUIManager.Instance.Show<UIPersonalizationItemBrowser>(AssetBundleConstants.UI, UI_PERSONALIZATION_ITEMS_BROWSER, ModUIManager.UILayer.BeforeEscMenu);
@@ -273,13 +242,6 @@ namespace OverhaulMod.Utils
             UIRestartRequiredScreen screen = ModUIManager.Instance.Show<UIRestartRequiredScreen>(AssetBundleConstants.UI, UI_RESTART_REQUIRED_SCREEN, ModUIManager.UILayer.AfterCrashScreen);
             screen.SetAllowIgnoring(allowIgnoring);
             return screen;
-        }
-
-        public static UINewsDetailsPanel ShowNewsDetailsPanel(Transform parent, NewsInfo newsInfo)
-        {
-            UINewsDetailsPanel panel = ModUIManager.Instance.Show<UINewsDetailsPanel>(AssetBundleConstants.UI, UI_NEWS_DETAILS_PANEL, parent);
-            panel.Populate(newsInfo);
-            return panel;
         }
 
         public static UIInformationSelectWindow ShowInformationSelectMenu()
@@ -310,11 +272,6 @@ namespace OverhaulMod.Utils
         public static UIPersonalizationEditor ShowPersonalizationEditorUI()
         {
             return ModUIManager.Instance.Show<UIPersonalizationEditor>(AssetBundleConstants.UI, UI_PERSONALIZATION_EDITOR, ModUIManager.UILayer.BeforeEscMenu);
-        }
-
-        public static UIMultiplayerGameModeSelectScreen ShowMultiplayerGameModeSelectScreen()
-        {
-            return ModUIManager.Instance.Show<UIMultiplayerGameModeSelectScreen>(AssetBundleConstants.UI, UI_MULTIPLAYER_GAMEMODE_SELECT_SCREEN, ModUIManager.UILayer.AfterTitleScreen);
         }
 
         public static UICreditsMenu ShowCreditsMenu(Transform parent)
@@ -426,11 +383,6 @@ namespace OverhaulMod.Utils
             _ = ModUIManager.Instance.Hide(AssetBundleConstants.UI, UI_CRASH_SCREEN);
         }
 
-        public static UIDamageIndicator ShowDamageIndicator()
-        {
-            return ModUIManager.Instance.Show<UIDamageIndicator>(AssetBundleConstants.UI, UI_DAMAGE_INDICATOR, ModUIManager.UILayer.BeforeEscMenu);
-        }
-
         public static UIGenericColorPicker ShowGenericColorPicker(Transform parent)
         {
             return ModUIManager.Instance.Show<UIGenericColorPicker>(AssetBundleConstants.UI, UI_GENERIC_COLOR_PICKER, parent);
@@ -449,16 +401,6 @@ namespace OverhaulMod.Utils
         public static UIPersonalizationEditorAuthorsEditMenu ShowPersonalizationEditorAuthorsEditMenu(Transform parent)
         {
             return ModUIManager.Instance.Show<UIPersonalizationEditorAuthorsEditMenu>(AssetBundleConstants.UI, UI_PERSONALIZATION_EDITOR_AUTHORS_EDIT_MENU, parent);
-        }
-
-        public static UIGameLossWindow ShowGameLossWindow()
-        {
-            return ModUIManager.Instance.Show<UIGameLossWindow>(AssetBundleConstants.UI, UI_GAME_LOSS_WINDOW, ModUIManager.UILayer.BeforeEscMenu);
-        }
-
-        public static UIEndlessGameLossWindow ShowEndlessGameLossWindow()
-        {
-            return ModUIManager.Instance.Show<UIEndlessGameLossWindow>(AssetBundleConstants.UI, UI_ENDLESS_GAME_LOSS_WINDOW, ModUIManager.UILayer.BeforeEscMenu);
         }
 
         public static UIDuelInviteMenuRework ShowDuelInviteMenuRework(GameMode gameMode)
@@ -533,14 +475,14 @@ namespace OverhaulMod.Utils
             return ModUIManager.Instance.Show<UIAssetBundleAssetsBrowser>(AssetBundleConstants.UI, UI_ASSET_BUNDLE_ASSETS_BROWSER, transform);
         }
 
-        public static UIPatchNotes ShowPatchNotes(ShowArguments showArguments)
+        public static UIPatchNotes ShowPatchNotes(UIPatchNotes.ShowArguments showArguments)
         {
             UIPatchNotes patchNotes = ModUIManager.Instance.Show<UIPatchNotes>(AssetBundleConstants.UI, UI_PATCH_NOTES, ModUIManager.UILayer.AfterTitleScreen, 1);
             patchNotes.SetElementsViaArguments(showArguments);
             return patchNotes;
         }
 
-        public static UIPatchNotes ShowPatchNotes(Transform parent, ShowArguments showArguments)
+        public static UIPatchNotes ShowPatchNotes(Transform parent, UIPatchNotes.ShowArguments showArguments)
         {
             UIPatchNotes patchNotes = ModUIManager.Instance.Show<UIPatchNotes>(AssetBundleConstants.UI, UI_PATCH_NOTES, parent);
             patchNotes.SetElementsViaArguments(showArguments);
@@ -600,11 +542,6 @@ namespace OverhaulMod.Utils
         public static UISettingsImportExportMenu ShowSettingsImportExportMenu(Transform transform)
         {
             return ModUIManager.Instance.Show<UISettingsImportExportMenu>(AssetBundleConstants.UI, UI_SETTINGS_IMPORT_EXPORT_MENU, transform);
-        }
-
-        public static UIFeaturesMenu ShowFeaturesMenu(Transform transform)
-        {
-            return ModUIManager.Instance.Show<UIFeaturesMenu>(AssetBundleConstants.UI, UI_FEATURES_MENU, transform);
         }
 
         public static UIWorkshopItemPagePlayOptions ShowWorkshopItemPagePlayOptions(Transform transform)
