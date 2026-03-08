@@ -8,19 +8,19 @@ namespace OverhaulMod.Content.Personalization
     {
         public const string CAMERA_ANGLES_FILE = "cessCameraAngles.json"; // customization editor screenshot stage camera angles
 
-        private GameObject m_stageObject;
+        private GameObject _stageObject;
 
-        private Transform m_holder;
+        private Transform _holder;
 
-        private GameObject m_camerasObject;
+        private GameObject _camerasObject;
 
-        private Camera m_blackCamera;
+        private Camera _blackCamera;
 
-        private Camera m_whiteCamera;
+        private Camera _whiteCamera;
 
-        private PersonalizationEditorCamera m_screenshotCameraController;
+        private PersonalizationEditorCamera _screenshotCameraController;
 
-        private PersonalizationEditorScreenshotCameraAnglesInfo m_anglesInfo;
+        private PersonalizationEditorScreenshotCameraAnglesInfo _anglesInfo;
 
         private void Start()
         {
@@ -41,18 +41,18 @@ namespace OverhaulMod.Content.Personalization
                 info = new PersonalizationEditorScreenshotCameraAnglesInfo();
             }
             info.FixValues();
-            m_anglesInfo = info;
+            _anglesInfo = info;
         }
 
         private void saveCameraAnglesToDisk()
         {
             string path = Path.Combine(ModCore.dataFolder, CAMERA_ANGLES_FILE);
-            ModJsonUtils.WriteStream(path, m_anglesInfo);
+            ModJsonUtils.WriteStream(path, _anglesInfo);
         }
 
         public PersonalizationEditorScreenshotCameraAnglesInfo GetCameraAnglesInfo()
         {
-            return m_anglesInfo;
+            return _anglesInfo;
         }
 
         public void SaveCameraAnglesInfo()
@@ -62,21 +62,21 @@ namespace OverhaulMod.Content.Personalization
 
         private void instatiateStageIfHavent()
         {
-            if (m_stageObject) return;
+            if (_stageObject) return;
 
             GameObject stageObject = Instantiate(ModResources.Prefab(AssetBundleConstants.MISCELLANEOUS, "PersonalizationItemScreenshotStage"));
             stageObject.transform.position = Vector3.up * 1000f;
 
             ModdedObject moddedObject = stageObject.GetComponent<ModdedObject>();
-            m_holder = moddedObject.GetObject<Transform>(0);
-            m_camerasObject = moddedObject.GetObject<GameObject>(1);
-            m_blackCamera = createCamera(m_camerasObject.transform, false);
-            m_whiteCamera = createCamera(m_camerasObject.transform, true);
-            m_whiteCamera.enabled = false;
-            m_screenshotCameraController = m_camerasObject.AddComponent<PersonalizationEditorCamera>();
-            m_screenshotCameraController.IsScreenshotStageCamera = true;
+            _holder = moddedObject.GetObject<Transform>(0);
+            _camerasObject = moddedObject.GetObject<GameObject>(1);
+            _blackCamera = createCamera(_camerasObject.transform, false);
+            _whiteCamera = createCamera(_camerasObject.transform, true);
+            _whiteCamera.enabled = false;
+            _screenshotCameraController = _camerasObject.AddComponent<PersonalizationEditorCamera>();
+            _screenshotCameraController.IsScreenshotStageCamera = true;
 
-            m_stageObject = stageObject;
+            _stageObject = stageObject;
         }
 
         private Camera createCamera(Transform parent, bool white)
@@ -98,39 +98,39 @@ namespace OverhaulMod.Content.Personalization
         public GameObject GetStage()
         {
             instatiateStageIfHavent();
-            return m_stageObject;
+            return _stageObject;
         }
 
         public PersonalizationEditorCamera GetCameraController()
         {
-            return m_screenshotCameraController;
+            return _screenshotCameraController;
         }
 
         public Camera GetCamera(bool white)
         {
             if (white)
             {
-                return m_whiteCamera;
+                return _whiteCamera;
             }
-            return m_blackCamera;
+            return _blackCamera;
         }
 
         public void SpawnItemInHolder(PersonalizationItemInfo personalizationItemInfo)
         {
             instatiateStageIfHavent();
 
-            if (m_holder.childCount != 0)
-                TransformUtils.DestroyAllChildren(m_holder);
+            if (_holder.childCount != 0)
+                TransformUtils.DestroyAllChildren(_holder);
 
-            if(personalizationItemInfo != null) personalizationItemInfo.RootObject.Deserialize(m_holder, null);
+            if(personalizationItemInfo != null) personalizationItemInfo.RootObject.Deserialize(_holder, null);
         }
 
         public Texture2D TakeScreenshotOfObject(int width, int height, int resizeAmount)
         {
             instatiateStageIfHavent();
 
-            Texture2D whiteTexture = takeScreenshotOfCameraView(m_whiteCamera, width, height);
-            Texture2D blackTexture = takeScreenshotOfCameraView(m_blackCamera, width, height);
+            Texture2D whiteTexture = takeScreenshotOfCameraView(_whiteCamera, width, height);
+            Texture2D blackTexture = takeScreenshotOfCameraView(_blackCamera, width, height);
 
             Texture2D outputTexture = calculateOutputTexture(whiteTexture, blackTexture, width, height, resizeAmount);
 

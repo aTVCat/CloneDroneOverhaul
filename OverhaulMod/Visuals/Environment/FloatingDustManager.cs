@@ -9,10 +9,10 @@ namespace OverhaulMod.Visuals.Environment
         [ModSetting(ModSettingsConstants.ENABLE_FLOATING_DUST, true)]
         public static bool EnableFloatingDust;
 
-        private ParticleSystem[] m_normalSpaceDust;
-        private ParticleSystem[] m_mindSpaceDust;
+        private ParticleSystem[] _normalSpaceDust;
+        private ParticleSystem[] _mindSpaceDust;
 
-        private float m_timeToUpdate;
+        private float _timeToUpdate;
 
         public Transform floatingDustVFXHolder
         {
@@ -28,10 +28,10 @@ namespace OverhaulMod.Visuals.Environment
 
         private void Update()
         {
-            m_timeToUpdate -= Time.deltaTime;
-            if (m_timeToUpdate <= 0f)
+            _timeToUpdate -= Time.deltaTime;
+            if (_timeToUpdate <= 0f)
             {
-                m_timeToUpdate = 1f;
+                _timeToUpdate = 1f;
                 RefreshVFX();
             }
         }
@@ -49,17 +49,17 @@ namespace OverhaulMod.Visuals.Environment
 
         private void populateVFX()
         {
-            if (m_normalSpaceDust == null)
+            if (_normalSpaceDust == null)
             {
-                m_normalSpaceDust = new ParticleSystem[]
+                _normalSpaceDust = new ParticleSystem[]
                 {
                     Instantiate(ModResources.Prefab(AssetBundleConstants.VFX, "FloatingDust_Normal"), floatingDustVFXHolder).GetComponent<ParticleSystem>()
                 };
             }
 
-            if (m_mindSpaceDust == null)
+            if (_mindSpaceDust == null)
             {
-                m_mindSpaceDust = new ParticleSystem[]
+                _mindSpaceDust = new ParticleSystem[]
                 {
                     Instantiate(ModResources.Prefab(AssetBundleConstants.VFX, "FloatingDust_Mindspace0"), floatingDustVFXHolder).GetComponent<ParticleSystem>(),
                     Instantiate(ModResources.Prefab(AssetBundleConstants.VFX, "FloatingDust_Mindspace1"), floatingDustVFXHolder).GetComponent<ParticleSystem>()
@@ -82,8 +82,8 @@ namespace OverhaulMod.Visuals.Environment
             else
                 allowParticles = false;
 
-            SetParticlesActive(m_normalSpaceDust, !isMindspace && allowParticles);
-            SetParticlesActive(m_mindSpaceDust, isMindspace && allowParticles);
+            SetParticlesActive(_normalSpaceDust, !isMindspace && allowParticles);
+            SetParticlesActive(_mindSpaceDust, isMindspace && allowParticles);
             transform.position = allowParticles ? firstPersonMover.transform.position : Vector3.zero;
         }
 

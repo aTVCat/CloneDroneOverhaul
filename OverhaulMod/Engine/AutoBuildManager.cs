@@ -18,20 +18,20 @@ namespace OverhaulMod.Engine
         [ModSetting(ModSettingsConstants.AUTO_BUILD_INDEX_TO_USE_ON_MATCH_START, -1)]
         public static int AutoBuildIndexToUseOnMatchStart;
 
-        private bool m_hasSelectedUpgradesForMatch;
+        private bool _hasSelectedUpgradesForMatch;
 
-        private float m_timeLeftBeforeAutoActivationReset;
+        private float _timeLeftBeforeAutoActivationReset;
 
-        private UIAutoBuildSelectionMenu m_autoBuildSelectionMenu;
+        private UIAutoBuildSelectionMenu _autoBuildSelectionMenu;
         public UIAutoBuildSelectionMenu autoBuildSelectionMenu
         {
             get
             {
-                if (!m_autoBuildSelectionMenu)
+                if (!_autoBuildSelectionMenu)
                 {
-                    m_autoBuildSelectionMenu = ModUIConstants.ShowAutoBuildSelectionMenu();
+                    _autoBuildSelectionMenu = ModUIConstants.ShowAutoBuildSelectionMenu();
                 }
-                return m_autoBuildSelectionMenu;
+                return _autoBuildSelectionMenu;
             }
         }
 
@@ -47,7 +47,7 @@ namespace OverhaulMod.Engine
             set;
         }
 
-        private bool m_isApplyingBuild;
+        private bool _isApplyingBuild;
 
         private void Start()
         {
@@ -72,11 +72,11 @@ namespace OverhaulMod.Engine
                 autoBuildSelectionMenu.Hide();
             }
 
-            if (m_hasSelectedUpgradesForMatch)
+            if (_hasSelectedUpgradesForMatch)
             {
-                m_timeLeftBeforeAutoActivationReset -= Time.deltaTime;
-                if (m_timeLeftBeforeAutoActivationReset <= 0f)
-                    m_hasSelectedUpgradesForMatch = false;
+                _timeLeftBeforeAutoActivationReset -= Time.deltaTime;
+                if (_timeLeftBeforeAutoActivationReset <= 0f)
+                    _hasSelectedUpgradesForMatch = false;
                 else
                     return;
             }
@@ -92,10 +92,10 @@ namespace OverhaulMod.Engine
                     return;
 
                 int secondsLeft = battleRoyaleManager.GetSecondsToGameStart();
-                if (!m_hasSelectedUpgradesForMatch && secondsLeft > 7 && secondsLeft < 10)
+                if (!_hasSelectedUpgradesForMatch && secondsLeft > 7 && secondsLeft < 10)
                 {
-                    m_hasSelectedUpgradesForMatch = true;
-                    m_timeLeftBeforeAutoActivationReset = 15f;
+                    _hasSelectedUpgradesForMatch = true;
+                    _timeLeftBeforeAutoActivationReset = 15f;
                     ApplyBuild(AutoBuildIndexToUseOnMatchStart);
                 }
             }
@@ -166,7 +166,7 @@ namespace OverhaulMod.Engine
 
         public void ApplyBuild(int index)
         {
-            if (m_isApplyingBuild)
+            if (_isApplyingBuild)
                 return;
 
             FirstPersonMover firstPersonMover = CharacterTracker.Instance?.GetPlayerRobot();
@@ -185,7 +185,7 @@ namespace OverhaulMod.Engine
             if (autoBuildInfo == null || autoBuildInfo.Upgrades.IsNullOrEmpty())
                 return;
 
-            m_isApplyingBuild = true;
+            _isApplyingBuild = true;
             _ = base.StartCoroutine(applyBuildCoroutine(autoBuildInfo));
         }
 
@@ -217,7 +217,7 @@ namespace OverhaulMod.Engine
                 upgradeUI.OnExitButtonClicked();
             }
 
-            m_isApplyingBuild = false;
+            _isApplyingBuild = false;
             yield break;
         }
 

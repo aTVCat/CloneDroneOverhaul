@@ -6,7 +6,7 @@ namespace OverhaulMod.Engine
 {
     public class RichPresenceBase : ModBehaviour
     {
-        private float m_TimeToRefresh;
+        private float _TimeToRefresh;
 
         /// <summary>
         /// The gamemode player is playing right now
@@ -37,9 +37,9 @@ namespace OverhaulMod.Engine
         public override void Update()
         {
             float time = Time.unscaledTime;
-            if (time >= m_TimeToRefresh)
+            if (time >= _TimeToRefresh)
             {
-                m_TimeToRefresh = time + GetRefreshRate();
+                _TimeToRefresh = time + GetRefreshRate();
                 RefreshInformation();
             }
         }

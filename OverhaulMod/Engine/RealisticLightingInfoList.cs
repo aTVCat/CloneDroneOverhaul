@@ -9,15 +9,15 @@ namespace OverhaulMod.Engine
         public List<RealisticLightingInfo> LightingInfos;
 
         [NonSerialized]
-        private Dictionary<string, RealisticLightingInfo> m_prefabNameToInfo;
+        private Dictionary<string, RealisticLightingInfo> _prefabNameToInfo;
 
         public void FixValues()
         {
             if (LightingInfos == null)
                 LightingInfos = new List<RealisticLightingInfo>();
 
-            if (m_prefabNameToInfo == null)
-                m_prefabNameToInfo = new Dictionary<string, RealisticLightingInfo>();
+            if (_prefabNameToInfo == null)
+                _prefabNameToInfo = new Dictionary<string, RealisticLightingInfo>();
         }
 
         public RealisticLightingInfo GetLightingInfo(string prefabName)
@@ -25,13 +25,13 @@ namespace OverhaulMod.Engine
             if (prefabName.IsNullOrEmpty())
                 return null;
 
-            if (m_prefabNameToInfo.TryGetValue(prefabName, out RealisticLightingInfo info))
+            if (_prefabNameToInfo.TryGetValue(prefabName, out RealisticLightingInfo info))
                 return info;
 
             foreach (RealisticLightingInfo realisticLightingInfo in LightingInfos)
                 if (realisticLightingInfo.LevelPrefabName == prefabName)
                 {
-                    m_prefabNameToInfo.Add(prefabName, realisticLightingInfo);
+                    _prefabNameToInfo.Add(prefabName, realisticLightingInfo);
                     return realisticLightingInfo;
                 }
 

@@ -9,38 +9,38 @@ namespace OverhaulMod.UI
     {
         [UIElementAction(nameof(Hide))]
         [UIElement("CloseButton")]
-        private readonly Button m_exitButton;
+        private readonly Button _exitButton;
 
         [UIElementAction(nameof(OnModBotPageButtonClicked))]
         [UIElement("ModBotPageButton")]
-        private readonly Button m_modBotPageButton;
+        private readonly Button _modBotPageButton;
 
         [UIElementAction(nameof(OnAuthorButtonClicked))]
         [UIElement("authorNameButton")]
-        private readonly Button m_authorNameButton;
+        private readonly Button _authorNameButton;
 
         [UIElementAction(nameof(OnCreditsButtonClicked))]
         [UIElement("CreditsButton")]
-        private readonly Button m_creditsButton;
+        private readonly Button _creditsButton;
 
         [UIElement("ModVersionText")]
-        private readonly Text m_versionText;
+        private readonly Text _versionText;
 
         [UIElement("ModCompilationDateText")]
-        private readonly Text m_compilationTimeText;
+        private readonly Text _compilationTimeText;
 
         protected override void OnInitialized()
         {
-            m_versionText.text = ModBuildInfo.versionString;
+            _versionText.text = ModBuildInfo.versionString;
 
             ModBuildInfo.ExtraInfo extraInfo = ModBuildInfo.extraInfo;
             if (extraInfo != null && !ModBuildInfo.extraInfoError)
             {
-                m_compilationTimeText.text = extraInfo.CompileTime.ToShortDateString();
+                _compilationTimeText.text = extraInfo.CompileTime.ToShortDateString();
             }
             else
             {
-                m_compilationTimeText.text = "Unknown";
+                _compilationTimeText.text = "Unknown";
             }
         }
 

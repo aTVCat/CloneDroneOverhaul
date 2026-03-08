@@ -7,19 +7,19 @@ namespace OverhaulMod.Content.Personalization
 {
     public class PersonalizationCacheManager : Singleton<PersonalizationCacheManager>
     {
-        private Dictionary<string, byte[]> m_cachedFiles;
+        private Dictionary<string, byte[]> _cachedFiles;
 
-        private bool m_isCaching;
+        private bool _isCaching;
 
         public override void Awake()
         {
             base.Awake();
-            m_cachedFiles = new Dictionary<string, byte[]>();
+            _cachedFiles = new Dictionary<string, byte[]>();
         }
 
         public bool TryGet(string path, out byte[] array)
         {
-            Dictionary<string, byte[]> d = m_cachedFiles;
+            Dictionary<string, byte[]> d = _cachedFiles;
             if (!d.TryGetValue(path, out array))
                 return false;
 
@@ -28,25 +28,25 @@ namespace OverhaulMod.Content.Personalization
 
         public void Remove(string path)
         {
-            if (m_cachedFiles.ContainsKey(path))
+            if (_cachedFiles.ContainsKey(path))
             {
-                _ = m_cachedFiles[path];
-                _ = m_cachedFiles.Remove(path);
+                _ = _cachedFiles[path];
+                _ = _cachedFiles.Remove(path);
             }
         }
 
         public void CacheFiles(List<PersonalizationItemInfo> personalizationItemInfos)
         {
-            if (m_isCaching)
+            if (_isCaching)
                 return;
 
-            m_isCaching = true;
+            _isCaching = true;
             _ = base.StartCoroutine(cacheFilesCoroutine(personalizationItemInfos));
         }
 
         private IEnumerator cacheFilesCoroutine(List<PersonalizationItemInfo> personalizationItemInfos)
         {
-            Dictionary<string, byte[]> d = m_cachedFiles;
+            Dictionary<string, byte[]> d = _cachedFiles;
             d.Clear();
 
             int i = 0;
@@ -83,7 +83,7 @@ namespace OverhaulMod.Content.Personalization
                 i++;
             } while (i < personalizationItemInfos.Count);
 
-            m_isCaching = false;
+            _isCaching = false;
             yield break;
         }
     }

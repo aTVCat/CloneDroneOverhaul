@@ -12,153 +12,153 @@ namespace OverhaulMod.UI
     {
         [UIElementAction(nameof(OnLegacyUIButtonClicked))]
         [UIElement("LegacyUIButton")]
-        private readonly Button m_legacyUIButton;
+        private readonly Button _legacyUIButton;
 
         [UIElementAction(nameof(OnResumeButtonClicked))]
         [UIElement("ResumeButton")]
-        private readonly Button m_resumeButton;
+        private readonly Button _resumeButton;
 
         [UIElementAction(nameof(OnAchievementsButtonClicked))]
         [UIElement("AchievementsButton")]
-        private readonly Button m_achievementsButton;
+        private readonly Button _achievementsButton;
 
         [UIElementAction(nameof(OnCustomizationButtonClicked))]
         [UIElement("CustomizationButton")]
-        private readonly Button m_customizationButton;
+        private readonly Button _customizationButton;
 
         [UIElementAction(nameof(OnSettingsButtonClicked))]
         [UIElement("SettingsButton")]
-        private readonly Button m_settingsButton;
+        private readonly Button _settingsButton;
 
         [UIElementAction(nameof(OnModsButtonClicked))]
         [UIElement("ModsButton")]
-        private readonly Button m_modsButton;
+        private readonly Button _modsButton;
 
         [UIElementAction(nameof(OnGiveFeedbackButtonClicked))]
         [UIElement("FeedbackButton")]
-        private readonly Button m_feedbackButton;
+        private readonly Button _feedbackButton;
 
         [UIElement("LogoEn")]
-        private readonly GameObject m_logoEn;
+        private readonly GameObject _logoEn;
 
         [UIElement("LogoCh")]
-        private readonly GameObject m_logoCh;
+        private readonly GameObject _logoCh;
 
         [UIElement("LogoJa")]
-        private readonly GameObject m_logoJa;
+        private readonly GameObject _logoJa;
 
         [UIElement("LogoKo")]
-        private readonly GameObject m_logoKo;
+        private readonly GameObject _logoKo;
 
         [UIElement("ExitDialogue", false)]
-        private readonly GameObject m_exitDialogue;
+        private readonly GameObject _exitDialogue;
 
         [UIElementAction(nameof(OnExitGameButtonClicked), true)]
         [UIElement("ExitGameButton")]
-        private readonly Button m_exitGameButton;
+        private readonly Button _exitGameButton;
 
         [UIElementAction(nameof(OnMainMenuButtonClicked), true)]
         [UIElement("MainMenuButton")]
-        private readonly Button m_mainMenuButton;
+        private readonly Button _mainMenuButton;
 
         [UIElementAction(nameof(OnConfirmExitGameButtonClicked), false)]
         [UIElement("ConfirmExitGameButton")]
-        private readonly Button m_confirmExitGameButton;
+        private readonly Button _confirmExitGameButton;
 
         [UIElementAction(nameof(OnConfirmMainMenuButtonClicked), false)]
         [UIElement("ConfirmMainMenuButton")]
-        private readonly Button m_confirmMainMenuButton;
+        private readonly Button _confirmMainMenuButton;
 
         [UIElementAction(nameof(OnReturnToLevelEditorButtonClicked), false)]
         [UIElement("ReturnToLevelEditorButton")]
-        private readonly Button m_returnToLevelEditorButton;
+        private readonly Button _returnToLevelEditorButton;
 
         [UIElementAction(nameof(OnStartMatchButtonClicked), false)]
         [UIElement("StartMatchButton")]
-        private readonly Button m_startMatchButton;
+        private readonly Button _startMatchButton;
 
         [UIElement("StartMatchButtonText")]
-        private readonly Text m_startMatchButtonText;
+        private readonly Text _startMatchButtonText;
 
         [UIElementAction(nameof(OnSkipLevelButtonClicked), false)]
         [UIElement("SkipLevelButton")]
-        private readonly Button m_skipLevelButton;
+        private readonly Button _skipLevelButton;
 
         [UIElementAction(nameof(OnReconnectButtonClicked), false)]
         [UIElement("ReconnectButton")]
-        private readonly Button m_reconnectButton;
+        private readonly Button _reconnectButton;
 
         [UIElement("ConfirmExitGameText", false)]
-        private readonly GameObject m_confirmExitGameTextObject;
+        private readonly GameObject _confirmExitGameTextObject;
 
         [UIElement("ConfirmMainMenuText", false)]
-        private readonly GameObject m_confirmMainMenuTextObject;
+        private readonly GameObject _confirmMainMenuTextObject;
 
         [UIElement("WorkshopPanel")]
-        private readonly GameObject m_workshopPanelObject;
+        private readonly GameObject _workshopPanelObject;
 
         [UIElement("WorkshopPanel")]
-        private readonly RectTransform m_workshopPanelTransform;
+        private readonly RectTransform _workshopPanelTransform;
 
         [UIElement("LevelName")]
-        private readonly Text m_workshopLevelTitleText;
+        private readonly Text _workshopLevelTitleText;
 
         [UIElement("LevelCreator")]
-        private readonly Text m_workshopLevelCreatorText;
+        private readonly Text _workshopLevelCreatorText;
 
         [UIElementAction(nameof(OnWorkshopLevelUpVoteButtonClicked))]
         [UIElement("UpVoteButton")]
-        private readonly Button m_workshopLevelUpVoteButton;
+        private readonly Button _workshopLevelUpVoteButton;
 
         [UIElementAction(nameof(OnWorkshopLevelDownVoteButtonClicked))]
         [UIElement("DownVoteButton")]
-        private readonly Button m_workshopLevelDownVoteButton;
+        private readonly Button _workshopLevelDownVoteButton;
 
         [UIElementAction(nameof(OnWorkshopLevelInfoButtonClicked))]
         [UIElement("SteamPageButton")]
-        private readonly Button m_workshopLevelPageButton;
+        private readonly Button _workshopLevelPageButton;
 
         [UIElement("PlayerList", false)]
-        private readonly GameObject m_playerInfoListObject;
+        private readonly GameObject _playerInfoListObject;
 
         [UIElement("PlayerList", false)]
-        private readonly RectTransform m_playerInfoListTransform;
+        private readonly RectTransform _playerInfoListTransform;
 
         [UIElement("PlayerListScrollRect")]
-        private readonly RectTransform m_playerListScrollRectTransform;
+        private readonly RectTransform _playerListScrollRectTransform;
 
         [UIElement("PlayerSpecialStatLabel")]
-        private readonly Text m_playerInfoSpecialStatLabel;
+        private readonly Text _playerInfoSpecialStatLabel;
 
         [UIElement("PlayerInfoDisplay", false)]
-        private readonly ModdedObject m_playerInfoDisplayPrefab;
+        private readonly ModdedObject _playerInfoDisplayPrefab;
 
         [UIElement("PlayerInfoDisplayContainer")]
-        private readonly Transform m_playerInfoDisplayContainer;
+        private readonly Transform _playerInfoDisplayContainer;
 
         [UIElement("ExtrasContentDownload", typeof(UIElementAddonEmbed))]
-        private readonly UIElementAddonEmbed m_extrasAddonEmbed;
+        private readonly UIElementAddonEmbed _extrasAddonEmbed;
 
         [UIElement("CodePanel", false)]
-        private readonly GameObject m_codePanelObject;
+        private readonly GameObject _codePanelObject;
 
         [UIElement("CodeField")]
-        private readonly InputField m_codeField;
+        private readonly InputField _codeField;
 
         [UIElementAction(nameof(OnCopyCodeButtonClicked))]
         [UIElement("CopyCodeButton")]
-        private readonly Button m_copyCodeButton;
+        private readonly Button _copyCodeButton;
 
         [UIElementAction(nameof(OnRevealCodeButtonClicked))]
         [UIElement("RevealCodeButton")]
-        private readonly Button m_revealCodeButton;
+        private readonly Button _revealCodeButton;
 
         [UIElement("PlayerIconLabel")]
-        private readonly GameObject m_playerIconLabelObject;
+        private readonly GameObject _playerIconLabelObject;
 
-        private ulong m_refreshedWorkshopPanelForItem;
+        private ulong _refreshedWorkshopPanelForItem;
 
-        private float m_refreshPlayerListTime;
+        private float _refreshPlayerListTime;
 
         public override bool enableCursor
         {
@@ -172,12 +172,12 @@ namespace OverhaulMod.UI
 
         protected override void OnInitialized()
         {
-            m_refreshPlayerListTime = -1f;
+            _refreshPlayerListTime = -1f;
 
-            m_extrasAddonEmbed.AddonId = AddonManager.EXTRAS_ADDON_ID;
-            m_extrasAddonEmbed.Version = 0;
-            m_extrasAddonEmbed.RefreshDisplays();
-            m_extrasAddonEmbed.onContentDownloaded.AddListener(refreshPlayers);
+            _extrasAddonEmbed.AddonId = AddonManager.EXTRAS_ADDON_ID;
+            _extrasAddonEmbed.Version = 0;
+            _extrasAddonEmbed.RefreshDisplays();
+            _extrasAddonEmbed.onContentDownloaded.AddListener(refreshPlayers);
 
             GlobalEventManager.Instance.AddEventListener(GlobalEvents.NumMultiplayerPlayersChanged, refreshPlayersIfActive);
         }
@@ -227,9 +227,9 @@ namespace OverhaulMod.UI
         public override void Update()
         {
             base.Update();
-            if (m_refreshPlayerListTime != -1f && Time.unscaledTime >= m_refreshPlayerListTime)
+            if (_refreshPlayerListTime != -1f && Time.unscaledTime >= _refreshPlayerListTime)
             {
-                m_refreshPlayerListTime = -1f;
+                _refreshPlayerListTime = -1f;
                 refreshPlayers();
             }
         }
@@ -238,22 +238,22 @@ namespace OverhaulMod.UI
         {
             if (isVisible)
             {
-                m_refreshPlayerListTime = Time.unscaledTime + 1f;
+                _refreshPlayerListTime = Time.unscaledTime + 1f;
             }
         }
 
         private void refreshLogo()
         {
             string langId = LocalizationManager.Instance.GetCurrentLanguageCode();
-            m_logoEn.SetActive(langId != "ko" && langId != "ja" && langId != "zh-CN" && langId != "zh-TW");
-            m_logoCh.SetActive(langId == "zh-CN" || langId == "zh-TW");
-            m_logoKo.SetActive(langId == "ko");
-            m_logoJa.SetActive(langId == "ja");
+            _logoEn.SetActive(langId != "ko" && langId != "ja" && langId != "zh-CN" && langId != "zh-TW");
+            _logoCh.SetActive(langId == "zh-CN" || langId == "zh-TW");
+            _logoKo.SetActive(langId == "ko");
+            _logoJa.SetActive(langId == "ja");
         }
 
         private void refreshButtons()
         {
-            m_customizationButton.interactable = !GameModeManager.Is((GameMode)2500) && !GameModeManager.IsInLevelEditor() && CharacterTracker.Instance.GetPlayer();
+            _customizationButton.interactable = !GameModeManager.Is((GameMode)2500) && !GameModeManager.IsInLevelEditor() && CharacterTracker.Instance.GetPlayer();
 
             ArenaCoopManager arenaCoopManager = ArenaCoopManager.Instance;
             BattleRoyaleManager battleRoyaleManager = BattleRoyaleManager.Instance;
@@ -264,42 +264,42 @@ namespace OverhaulMod.UI
             bool isBattleRoyaleFightStarted = isBattleRoyale && battleRoyaleManager.IsProgress(BattleRoyaleMatchProgress.FightingStarted);
             bool isCoopMatchNotStarted = isCoop && !arenaCoopManager.IsMatchStarted();
 
-            m_startMatchButton.gameObject.SetActive(MultiplayerMatchmakingManager.Instance.IsLocalPlayerHostOfCustomMatch() && (isBattleRoyaleWaitingArea || isBattleRoyaleFightStarted || isCoopMatchNotStarted));
+            _startMatchButton.gameObject.SetActive(MultiplayerMatchmakingManager.Instance.IsLocalPlayerHostOfCustomMatch() && (isBattleRoyaleWaitingArea || isBattleRoyaleFightStarted || isCoopMatchNotStarted));
             if (isCoopMatchNotStarted || isBattleRoyaleWaitingArea)
-                m_startMatchButtonText.text = LocalizationManager.Instance.GetTranslatedString("Start Match!");
+                _startMatchButtonText.text = LocalizationManager.Instance.GetTranslatedString("Start Match!");
             else if (isBattleRoyaleFightStarted)
-                m_startMatchButtonText.text = LocalizationManager.Instance.GetTranslatedString("Final Zone!");
+                _startMatchButtonText.text = LocalizationManager.Instance.GetTranslatedString("Final Zone!");
 
-            m_skipLevelButton.gameObject.SetActive(GameModeManager.CanSkipCurrentLevel());
-            m_returnToLevelEditorButton.gameObject.SetActive(WorkshopLevelManager.Instance.IsPlaytestActive());
-            m_reconnectButton.gameObject.SetActive(GameModeManager.IsBattleRoyale() && MultiplayerMatchmakingManager.LastDuelRequest.GameType == GameRequestType.RandomBattleRoyale);
+            _skipLevelButton.gameObject.SetActive(GameModeManager.CanSkipCurrentLevel());
+            _returnToLevelEditorButton.gameObject.SetActive(WorkshopLevelManager.Instance.IsPlaytestActive());
+            _reconnectButton.gameObject.SetActive(GameModeManager.IsBattleRoyale() && MultiplayerMatchmakingManager.LastDuelRequest.GameType == GameRequestType.RandomBattleRoyale);
 
-            m_confirmExitGameTextObject.SetActive(false);
-            m_confirmMainMenuTextObject.SetActive(false);
-            m_confirmExitGameButton.gameObject.SetActive(false);
-            m_confirmMainMenuButton.gameObject.SetActive(false);
-            m_exitGameButton.gameObject.SetActive(true);
-            m_mainMenuButton.gameObject.SetActive(true);
+            _confirmExitGameTextObject.SetActive(false);
+            _confirmMainMenuTextObject.SetActive(false);
+            _confirmExitGameButton.gameObject.SetActive(false);
+            _confirmMainMenuButton.gameObject.SetActive(false);
+            _exitGameButton.gameObject.SetActive(true);
+            _mainMenuButton.gameObject.SetActive(true);
         }
 
         private void refreshPlayers()
         {
             bool isInMultiplayer = GameModeManager.IsMultiplayer();
-            m_playerInfoListObject.SetActive(isInMultiplayer);
+            _playerInfoListObject.SetActive(isInMultiplayer);
             if (!isInMultiplayer)
                 return;
 
             bool lostContentModEnabled = ModSpecialUtils.IsModEnabled("cool-hidden-content");
-            Vector2 sizeDelta = m_playerInfoListTransform.sizeDelta;
+            Vector2 sizeDelta = _playerInfoListTransform.sizeDelta;
             sizeDelta.y = lostContentModEnabled ? -145f : -110f;
-            m_playerInfoListTransform.sizeDelta = sizeDelta;
+            _playerInfoListTransform.sizeDelta = sizeDelta;
 
-            Vector2 sizeDelta2 = m_playerListScrollRectTransform.sizeDelta;
-            sizeDelta2.y = m_extrasAddonEmbed.ShouldBeHidden() ? -55f : -105f;
-            m_playerListScrollRectTransform.sizeDelta = sizeDelta2;
+            Vector2 sizeDelta2 = _playerListScrollRectTransform.sizeDelta;
+            sizeDelta2.y = _extrasAddonEmbed.ShouldBeHidden() ? -55f : -105f;
+            _playerListScrollRectTransform.sizeDelta = sizeDelta2;
 
-            if (m_playerInfoDisplayContainer.childCount != 0)
-                TransformUtils.DestroyAllChildren(m_playerInfoDisplayContainer);
+            if (_playerInfoDisplayContainer.childCount != 0)
+                TransformUtils.DestroyAllChildren(_playerInfoDisplayContainer);
 
             MultiplayerPlayerInfoManager multiplayerPlayerInfoManager = MultiplayerPlayerInfoManager.Instance;
             if (!multiplayerPlayerInfoManager)
@@ -309,12 +309,12 @@ namespace OverhaulMod.UI
             if (infoStates.IsNullOrEmpty())
                 return;
 
-            bool canShowIcons = m_extrasAddonEmbed.ShouldBeHidden();
+            bool canShowIcons = _extrasAddonEmbed.ShouldBeHidden();
             bool canShowWins = BattleRoyaleManager.Instance;
             Color killsColor = ModParseUtils.TryParseToColor("EC2711", Color.red);
             Color winsColor = Color.white;
 
-            Text specialStatLabel = m_playerInfoSpecialStatLabel;
+            Text specialStatLabel = _playerInfoSpecialStatLabel;
             if (canShowWins)
             {
                 specialStatLabel.color = winsColor;
@@ -327,7 +327,7 @@ namespace OverhaulMod.UI
             }
             specialStatLabel.enabled = GameModeManager.IsBattleRoyale() || GameModeManager.IsMultiplayerDuel();
 
-            m_playerIconLabelObject.SetActive(canShowIcons);
+            _playerIconLabelObject.SetActive(canShowIcons);
 
             int index = -1;
             foreach (MultiplayerPlayerInfoState infoState in infoStates)
@@ -346,7 +346,7 @@ namespace OverhaulMod.UI
                     continue;
                 }
 
-                ModdedObject playerDisplay = Instantiate(m_playerInfoDisplayPrefab, m_playerInfoDisplayContainer);
+                ModdedObject playerDisplay = Instantiate(_playerInfoDisplayPrefab, _playerInfoDisplayContainer);
                 playerDisplay.gameObject.SetActive(true);
                 playerDisplay.GetObject<Text>(0).text = playerInfoState.DisplayName;
                 Text countLabel = playerDisplay.GetObject<Text>(1);
@@ -388,20 +388,20 @@ namespace OverhaulMod.UI
             bool shouldShowPanel = item != null;
 
             bool lostContentModEnabled = ModSpecialUtils.IsModEnabled("cool-hidden-content");
-            Vector2 anchoredPosition = m_workshopPanelTransform.anchoredPosition;
+            Vector2 anchoredPosition = _workshopPanelTransform.anchoredPosition;
             anchoredPosition.y = lostContentModEnabled ? 50f : 15f;
-            m_workshopPanelTransform.anchoredPosition = anchoredPosition;
-            m_workshopPanelObject.SetActive(shouldShowPanel);
+            _workshopPanelTransform.anchoredPosition = anchoredPosition;
+            _workshopPanelObject.SetActive(shouldShowPanel);
 
             if (!shouldShowPanel)
                 return;
 
             ulong itemId = (ulong)item.WorkshopItemID;
-            if (itemId != m_refreshedWorkshopPanelForItem)
+            if (itemId != _refreshedWorkshopPanelForItem)
             {
-                m_refreshedWorkshopPanelForItem = itemId;
+                _refreshedWorkshopPanelForItem = itemId;
 
-                Text titleText = m_workshopLevelTitleText;
+                Text titleText = _workshopLevelTitleText;
                 titleText.text = item.Title;
                 if (item.Title.Contains("color="))
                     titleText.color = Color.white;
@@ -409,12 +409,12 @@ namespace OverhaulMod.UI
                     titleText.color = ModParseUtils.TryParseToColor("#FF4040", Color.red);
 
                 if (!item.CreatorName.IsNullOrEmpty() && item.CreatorName != "[unknown]")
-                    m_workshopLevelCreatorText.text = $"By {item.CreatorName}";
+                    _workshopLevelCreatorText.text = $"By {item.CreatorName}";
                 else
-                    m_workshopLevelCreatorText.text = $"By {item.CreatorID}";
+                    _workshopLevelCreatorText.text = $"By {item.CreatorID}";
 
-                m_workshopLevelUpVoteButton.gameObject.SetActive(false);
-                m_workshopLevelDownVoteButton.gameObject.SetActive(false);
+                _workshopLevelUpVoteButton.gameObject.SetActive(false);
+                _workshopLevelDownVoteButton.gameObject.SetActive(false);
 
                 ModSteamUGCUtils.GetUserVote(item.WorkshopItemID, delegate (WorkshopItemVote workshopItemVote)
                 {
@@ -422,17 +422,17 @@ namespace OverhaulMod.UI
                     if (item != item2)
                         return;
 
-                    m_workshopLevelUpVoteButton.gameObject.SetActive(true);
-                    m_workshopLevelDownVoteButton.gameObject.SetActive(true);
+                    _workshopLevelUpVoteButton.gameObject.SetActive(true);
+                    _workshopLevelDownVoteButton.gameObject.SetActive(true);
 
                     if (!workshopItemVote.HasVoted)
                     {
-                        m_workshopLevelUpVoteButton.interactable = true;
-                        m_workshopLevelDownVoteButton.interactable = true;
+                        _workshopLevelUpVoteButton.interactable = true;
+                        _workshopLevelDownVoteButton.interactable = true;
                         return;
                     }
-                    m_workshopLevelUpVoteButton.interactable = !workshopItemVote.VoteValue;
-                    m_workshopLevelDownVoteButton.interactable = workshopItemVote.VoteValue;
+                    _workshopLevelUpVoteButton.interactable = !workshopItemVote.VoteValue;
+                    _workshopLevelDownVoteButton.interactable = workshopItemVote.VoteValue;
                 });
             }
         }
@@ -441,13 +441,13 @@ namespace OverhaulMod.UI
         {
             if (MultiplayerMatchmakingManager.Instance.IsLocalPlayerHostOfCustomMatch())
             {
-                m_codePanelObject.SetActive(true);
-                m_revealCodeButton.gameObject.SetActive(true);
-                m_codeField.text = MultiplayerMatchmakingManager.Instance.GetLastInviteCode();
+                _codePanelObject.SetActive(true);
+                _revealCodeButton.gameObject.SetActive(true);
+                _codeField.text = MultiplayerMatchmakingManager.Instance.GetLastInviteCode();
             }
             else
             {
-                m_codePanelObject.SetActive(false);
+                _codePanelObject.SetActive(false);
             }
         }
 
@@ -495,12 +495,12 @@ namespace OverhaulMod.UI
                 return;
             }
 
-            m_confirmExitGameTextObject.SetActive(false);
-            m_confirmMainMenuTextObject.SetActive(true);
-            m_confirmExitGameButton.gameObject.SetActive(false);
-            m_confirmMainMenuButton.gameObject.SetActive(true);
-            m_mainMenuButton.gameObject.SetActive(false);
-            m_exitGameButton.gameObject.SetActive(true);
+            _confirmExitGameTextObject.SetActive(false);
+            _confirmMainMenuTextObject.SetActive(true);
+            _confirmExitGameButton.gameObject.SetActive(false);
+            _confirmMainMenuButton.gameObject.SetActive(true);
+            _mainMenuButton.gameObject.SetActive(false);
+            _exitGameButton.gameObject.SetActive(true);
         }
 
         public void OnConfirmMainMenuButtonClicked()
@@ -520,12 +520,12 @@ namespace OverhaulMod.UI
                 return;
             }
 
-            m_confirmExitGameTextObject.SetActive(true);
-            m_confirmMainMenuTextObject.SetActive(false);
-            m_confirmExitGameButton.gameObject.SetActive(true);
-            m_confirmMainMenuButton.gameObject.SetActive(false);
-            m_mainMenuButton.gameObject.SetActive(true);
-            m_exitGameButton.gameObject.SetActive(false);
+            _confirmExitGameTextObject.SetActive(true);
+            _confirmMainMenuTextObject.SetActive(false);
+            _confirmExitGameButton.gameObject.SetActive(true);
+            _confirmMainMenuButton.gameObject.SetActive(false);
+            _mainMenuButton.gameObject.SetActive(true);
+            _exitGameButton.gameObject.SetActive(false);
         }
 
         public void OnConfirmExitGameButtonClicked()
@@ -562,7 +562,7 @@ namespace OverhaulMod.UI
             if (item == null)
                 return;
 
-            m_workshopLevelUpVoteButton.interactable = false;
+            _workshopLevelUpVoteButton.interactable = false;
             ModSteamUGCUtils.SetUserVote(item.WorkshopItemID, true, delegate (SetUserItemVoteResult_t t, bool ioError)
             {
                 SteamWorkshopItem item2 = WorkshopLevelManager.Instance.GetCurrentLevelWorkshopItem();
@@ -573,12 +573,12 @@ namespace OverhaulMod.UI
                     ModUIUtils.MessagePopupOK("Vote error", $"Error code: {t.m_eResult} (ioError: {ioError})", 150f, true);
                 else
                 {
-                    m_workshopLevelDownVoteButton.interactable = t.m_bVoteUp;
-                    m_workshopLevelUpVoteButton.interactable = !t.m_bVoteUp;
+                    _workshopLevelDownVoteButton.interactable = t.m_bVoteUp;
+                    _workshopLevelUpVoteButton.interactable = !t.m_bVoteUp;
                     return;
                 }
 
-                m_workshopLevelUpVoteButton.interactable = true;
+                _workshopLevelUpVoteButton.interactable = true;
             });
         }
 
@@ -588,7 +588,7 @@ namespace OverhaulMod.UI
             if (item == null)
                 return;
 
-            m_workshopLevelDownVoteButton.interactable = false;
+            _workshopLevelDownVoteButton.interactable = false;
             ModSteamUGCUtils.SetUserVote(item.WorkshopItemID, false, delegate (SetUserItemVoteResult_t t, bool ioError)
             {
                 SteamWorkshopItem item2 = WorkshopLevelManager.Instance.GetCurrentLevelWorkshopItem();
@@ -599,12 +599,12 @@ namespace OverhaulMod.UI
                     ModUIUtils.MessagePopupOK("Vote error", $"Error code: {t.m_eResult} (ioError: {ioError})", 150f, true);
                 else
                 {
-                    m_workshopLevelDownVoteButton.interactable = t.m_bVoteUp;
-                    m_workshopLevelUpVoteButton.interactable = !t.m_bVoteUp;
+                    _workshopLevelDownVoteButton.interactable = t.m_bVoteUp;
+                    _workshopLevelUpVoteButton.interactable = !t.m_bVoteUp;
                     return;
                 }
 
-                m_workshopLevelDownVoteButton.interactable = true;
+                _workshopLevelDownVoteButton.interactable = true;
             });
         }
 
@@ -623,12 +623,12 @@ namespace OverhaulMod.UI
 
         public void OnRevealCodeButtonClicked()
         {
-            m_revealCodeButton.gameObject.SetActive(false);
+            _revealCodeButton.gameObject.SetActive(false);
         }
 
         public void OnCopyCodeButtonClicked()
         {
-            GUIUtility.systemCopyBuffer = m_codeField.text;
+            GUIUtility.systemCopyBuffer = _codeField.text;
         }
 
         public void OnReconnectButtonClicked()

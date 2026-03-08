@@ -46,34 +46,34 @@ namespace OverhaulMod.Utils
 
         protected class CacheForGetComponent<T>
         {
-            private readonly Dictionary<Transform, T> m_transformToObject;
+            private readonly Dictionary<Transform, T> _transformToObject;
 
             public CacheForGetComponent()
             {
-                m_transformToObject = new Dictionary<Transform, T>();
+                _transformToObject = new Dictionary<Transform, T>();
             }
 
             public T GetScript(Transform transform)
             {
-                if (m_transformToObject.ContainsKey(transform))
+                if (_transformToObject.ContainsKey(transform))
                 {
-                    T component1 = m_transformToObject[transform];
+                    T component1 = _transformToObject[transform];
                     if (component1 == null)
                     {
                         component1 = transform.GetComponent<T>();
-                        m_transformToObject[transform] = component1;
+                        _transformToObject[transform] = component1;
                     }
                     return component1;
                 }
 
                 T component = transform.GetComponent<T>();
-                m_transformToObject.Add(transform, component);
+                _transformToObject.Add(transform, component);
                 return component;
             }
 
             public void Clear()
             {
-                m_transformToObject.Clear();
+                _transformToObject.Clear();
             }
         }
     }

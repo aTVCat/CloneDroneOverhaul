@@ -6,16 +6,16 @@ namespace OverhaulMod
 {
     public class ModBehaviour : MonoBehaviour
     {
-        private ModdedObject m_moddedObject;
+        private ModdedObject _moddedObject;
         public ModdedObject moddedObjectReference
         {
             get
             {
-                if (!m_moddedObject)
+                if (!_moddedObject)
                 {
-                    m_moddedObject = base.GetComponent<ModdedObject>();
+                    _moddedObject = base.GetComponent<ModdedObject>();
                 }
-                return m_moddedObject;
+                return _moddedObject;
             }
         }
 

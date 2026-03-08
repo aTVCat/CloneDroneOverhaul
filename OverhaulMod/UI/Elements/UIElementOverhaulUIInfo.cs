@@ -8,42 +8,42 @@ namespace OverhaulMod.UI
     public class UIElementOverhaulUIInfo : OverhaulUIBehaviour
     {
         [UIElement("Name")]
-        private readonly Text m_uiNameText;
+        private readonly Text _uiNameText;
 
         [UIElement("MissingPreviewText", false)]
-        private readonly Text m_missingPreviewText;
+        private readonly Text _missingPreviewText;
 
         [UIElement("TextBG")]
-        private readonly RectTransform m_textBG;
+        private readonly RectTransform _textBG;
 
-        private RawImage m_image;
+        private RawImage _image;
 
-        private Texture2D m_loadedImage;
+        private Texture2D _loadedImage;
 
-        private UnityWebRequest m_webRequest;
+        private UnityWebRequest _webRequest;
 
         public string PreviewFile;
 
-        private bool m_destroyed;
+        private bool _destroyed;
 
         protected override void OnInitialized()
         {
-            m_image = GetComponent<RawImage>();
-            m_image.color = Color.black;
+            _image = GetComponent<RawImage>();
+            _image.color = Color.black;
             LoadPreview();
         }
 
         public override void OnDestroy()
         {
-            m_destroyed = true;
+            _destroyed = true;
 
-            Texture2D texture = m_loadedImage;
+            Texture2D texture = _loadedImage;
             if (texture)
             {
                 Destroy(texture);
             }
 
-            UnityWebRequest webRequest = m_webRequest;
+            UnityWebRequest webRequest = _webRequest;
             if (webRequest != null)
             {
                 try
@@ -63,29 +63,29 @@ namespace OverhaulMod.UI
         {
             yield return null;
 
-            RectTransform rectTransform = m_textBG;
+            RectTransform rectTransform = _textBG;
             Vector2 sd = rectTransform.sizeDelta;
-            sd.x = m_uiNameText.preferredWidth + 10f;
+            sd.x = _uiNameText.preferredWidth + 10f;
             rectTransform.sizeDelta = sd;
 
             using (UnityWebRequest unityWebRequest = UnityWebRequestTexture.GetTexture($"file://{PreviewFile}"))
             {
-                m_webRequest = unityWebRequest;
+                _webRequest = unityWebRequest;
                 yield return unityWebRequest.SendWebRequest();
-                if (m_destroyed)
+                if (_destroyed)
                     yield break;
 
                 if (unityWebRequest.isDone && !unityWebRequest.isHttpError && !unityWebRequest.isNetworkError)
                 {
                     Texture2D texture = (unityWebRequest.downloadHandler as DownloadHandlerTexture).texture;
-                    m_loadedImage = texture;
-                    m_image.texture = texture;
-                    m_image.color = Color.white;
+                    _loadedImage = texture;
+                    _image.texture = texture;
+                    _image.color = Color.white;
                 }
                 else
                 {
-                    m_missingPreviewText.gameObject.SetActive(true);
-                    m_missingPreviewText.text = $"Missing preview file:\n{PreviewFile}";
+                    _missingPreviewText.gameObject.SetActive(true);
+                    _missingPreviewText.text = $"Missing preview file:\n{PreviewFile}";
                 }
             }
             yield break;

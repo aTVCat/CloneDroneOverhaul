@@ -9,24 +9,24 @@ namespace OverhaulMod.UI
     {
         [UIElementAction(nameof(Hide))]
         [UIElement("CloseButton")]
-        private readonly Button m_exitButton;
+        private readonly Button _exitButton;
 
         [UIElementAction(nameof(OnEditorButtonClicked))]
         [UIElement("EditorButton")]
-        private readonly Button m_editorButton;
+        private readonly Button _editorButton;
 
         [UIElementAction(nameof(OnRefreshButtonClicked))]
         [UIElement("RetrieveDataButton")]
-        private readonly Button m_refreshButton;
+        private readonly Button _refreshButton;
 
         [UIElement("UnlockedPerkDisplay", false)]
-        private readonly ModdedObject m_unlockedPerkDisplay;
+        private readonly ModdedObject _unlockedPerkDisplay;
 
         [UIElement("Content")]
-        private readonly Transform m_container;
+        private readonly Transform _container;
 
         [UIElement("NothingIndicator")]
-        private readonly GameObject m_nothingIndicator;
+        private readonly GameObject _nothingIndicator;
 
         public override bool hideTitleScreen => true;
 
@@ -44,25 +44,25 @@ namespace OverhaulMod.UI
                 }, null);
             }
 
-            m_editorButton.gameObject.SetActive(ModUserInfo.isDeveloper);
+            _editorButton.gameObject.SetActive(ModUserInfo.isDeveloper);
         }
 
         public void Populate()
         {
-            if (m_container.childCount != 0)
-                TransformUtils.DestroyAllChildren(m_container);
+            if (_container.childCount != 0)
+                TransformUtils.DestroyAllChildren(_container);
 
             System.Collections.Generic.List<ExclusivePerkInfo> list = ExclusivePerkManager.Instance.GetUnlockedPerks();
             if (list.IsNullOrEmpty())
             {
-                m_nothingIndicator.SetActive(true);
+                _nothingIndicator.SetActive(true);
             }
             else
             {
-                m_nothingIndicator.SetActive(false);
+                _nothingIndicator.SetActive(false);
                 foreach (ExclusivePerkInfo perkInfo in list)
                 {
-                    ModdedObject moddedObject = Instantiate(m_unlockedPerkDisplay, m_container);
+                    ModdedObject moddedObject = Instantiate(_unlockedPerkDisplay, _container);
                     moddedObject.gameObject.SetActive(true);
                     moddedObject.GetObject<Text>(0).text = perkInfo.DisplayName;
                     moddedObject.GetObject<Image>(1).sprite = perkInfo.Icon.IsNullOrEmpty() ? null : ModResources.Sprite(AssetBundleConstants.PERK_ICONS, perkInfo.Icon);
@@ -77,10 +77,10 @@ namespace OverhaulMod.UI
 
         public void OnRefreshButtonClicked()
         {
-            m_refreshButton.interactable = false;
+            _refreshButton.interactable = false;
             ExclusivePerkManager.Instance.LoadDataFromRepository(delegate (string error)
             {
-                m_refreshButton.interactable = true;
+                _refreshButton.interactable = true;
 
                 if (!error.IsNullOrEmpty())
                     ModUIUtils.MessagePopupOK("Error", error, true);

@@ -15,33 +15,33 @@ namespace OverhaulMod.UI
 
         [UIElementAction(nameof(Hide))]
         [UIElement("CloseButton")]
-        private readonly Button m_exitButton;
+        private readonly Button _exitButton;
 
         [UIElementAction(nameof(OnSendButtonClicked))]
         [UIElement("SendButton")]
-        private readonly Button m_sendButton;
+        private readonly Button _sendButton;
 
         [UIElement("SendButtonText")]
-        private readonly Text m_sendButtonText;
+        private readonly Text _sendButtonText;
 
         [UIElement("StatusText")]
-        private readonly Text m_statusText;
+        private readonly Text _statusText;
 
         [UIElement("LoadingIndicator", false)]
-        private readonly GameObject m_loadingIndicator;
+        private readonly GameObject _loadingIndicator;
 
         [UIElement("ScrollRect")]
-        private readonly Image m_scrollRectBG;
+        private readonly Image _scrollRectBG;
 
         [UIElement("WeaponVariantDisplay", false)]
-        private readonly ModdedObject m_weaponVariantDisplay;
+        private readonly ModdedObject _weaponVariantDisplay;
 
         [UIElement("Content")]
-        private readonly Transform m_container;
+        private readonly Transform _container;
 
-        private bool m_currentItemIsNotFullyCompleted;
+        private bool _currentItemIsNotFullyCompleted;
 
-        private bool m_currentItemIsFullyIncomplete;
+        private bool _currentItemIsFullyIncomplete;
 
         public override void Show()
         {
@@ -60,11 +60,11 @@ namespace OverhaulMod.UI
 
         public void RefreshItemCompletion(PersonalizationEditorObjectBehaviour objectBehaviour)
         {
-            if (m_container.childCount != 0)
-                TransformUtils.DestroyAllChildren(m_container);
+            if (_container.childCount != 0)
+                TransformUtils.DestroyAllChildren(_container);
 
-            m_currentItemIsFullyIncomplete = true;
-            m_currentItemIsNotFullyCompleted = false;
+            _currentItemIsFullyIncomplete = true;
+            _currentItemIsNotFullyCompleted = false;
             string bgColor = ALL_WEAPON_VARIANTS_PRESENT_COLOR;
 
             Dictionary<WeaponVariant2, bool> supportedVariants = new Dictionary<WeaponVariant2, bool>();
@@ -80,82 +80,82 @@ namespace OverhaulMod.UI
                 {
                     supportedVariants.Add(weaponVariant, value);
 
-                    ModdedObject moddedObject = Instantiate(m_weaponVariantDisplay, m_container);
+                    ModdedObject moddedObject = Instantiate(_weaponVariantDisplay, _container);
                     moddedObject.gameObject.SetActive(true);
                     moddedObject.GetObject<Text>(0).text = WeaponVariantManager.GetWeaponVariantString(weaponVariant);
                     moddedObject.GetObject<GameObject>(1).SetActive(value);
                     moddedObject.GetObject<GameObject>(2).SetActive(!value);
                     if (!value)
                     {
-                        m_currentItemIsNotFullyCompleted = true;
+                        _currentItemIsNotFullyCompleted = true;
                         moddedObject.transform.SetAsFirstSibling();
                         bgColor = WEAPON_VARIANT_NOT_PRESENT_COLOR;
                     }
                     else
                     {
-                        m_currentItemIsFullyIncomplete = false;
+                        _currentItemIsFullyIncomplete = false;
                     }
                 }
             }
 
-            if (m_currentItemIsFullyIncomplete)
+            if (_currentItemIsFullyIncomplete)
             {
                 bgColor = ALL_WEAPON_VARIANTS_NOT_PRESENT_COLOR;
             }
 
-            m_scrollRectBG.color = ModParseUtils.TryParseToColor(bgColor, Color.gray);
+            _scrollRectBG.color = ModParseUtils.TryParseToColor(bgColor, Color.gray);
         }
 
         public void RefreshButtonAndStatusText(PersonalizationItemInfo personalizationItemInfo)
         {
             if (!personalizationItemInfo.IsSentForVerification && !personalizationItemInfo.IsVerified)
             {
-                m_statusText.text = "You haven't uploaded this item yet.";
+                _statusText.text = "You haven't uploaded this item yet.";
             }
             else if (personalizationItemInfo.IsSentForVerification && !personalizationItemInfo.IsVerified)
             {
-                m_statusText.text = "This item is being verified...";
+                _statusText.text = "This item is being verified...";
             }
             else if (personalizationItemInfo.IsSentForVerification && personalizationItemInfo.IsVerified)
             {
-                m_statusText.text = "This item's update is being verified...";
+                _statusText.text = "This item's update is being verified...";
             }
             else
             {
-                m_statusText.text = "This item is verified!\nYou can update it if you have made changes.";
+                _statusText.text = "This item is verified!\nYou can update it if you have made changes.";
             }
 
             if (personalizationItemInfo.IsVerified)
             {
                 if (personalizationItemInfo.IsSentForVerification)
                 {
-                    m_sendButtonText.text = "Reupload update";
+                    _sendButtonText.text = "Reupload update";
                 }
                 else
                 {
-                    m_sendButtonText.text = "Update item";
+                    _sendButtonText.text = "Update item";
                 }
             }
             else if (personalizationItemInfo.IsSentForVerification)
             {
-                m_sendButtonText.text = "Reupload item";
+                _sendButtonText.text = "Reupload item";
             }
             else
             {
-                m_sendButtonText.text = "Upload item";
+                _sendButtonText.text = "Upload item";
             }
 
-            m_sendButton.interactable = !m_currentItemIsFullyIncomplete && personalizationItemInfo != null && !personalizationItemInfo.ReuploadedTheItem;
+            _sendButton.interactable = !_currentItemIsFullyIncomplete && personalizationItemInfo != null && !personalizationItemInfo.ReuploadedTheItem;
         }
 
         public bool CanExit()
         {
-            return m_exitButton.interactable;
+            return _exitButton.interactable;
         }
 
         public void OnSendButtonClicked()
         {
-            if (m_currentItemIsNotFullyCompleted)
+            if (_currentItemIsNotFullyCompleted)
             {
                 ModUIUtils.MessagePopup(true, "Item not fully completed", "Your weapon skin doesn't support some of possible weapon variants.\nDo you still want to send the item to verification?", 150f, MessageMenu.ButtonLayout.EnableDisableButtons, null, "Yes", "No", null, sendItemToVerification);
                 return;
@@ -185,9 +185,9 @@ namespace OverhaulMod.UI
                 return;
             }
 
-            m_exitButton.interactable = false;
-            m_sendButton.interactable = false;
-            m_loadingIndicator.SetActive(true);
+            _exitButton.interactable = false;
+            _sendButton.interactable = false;
+            _loadingIndicator.SetActive(true);
 
             PersonalizationItemVerificationManager.Instance.SendItemToVerification(personalizationItemInfo, delegate
             {
@@ -196,16 +196,16 @@ namespace OverhaulMod.UI
 
                 _ = personalizationEditorManager.SaveItem(out _, true);
 
-                m_exitButton.interactable = true;
-                m_loadingIndicator.SetActive(false);
+                _exitButton.interactable = true;
+                _loadingIndicator.SetActive(false);
 
                 RefreshButtonAndStatusText(personalizationItemInfo);
                 ModUIUtils.MessagePopupOK("Success", "It can take few hours or days to verify items.", true);
             }, delegate (string error)
             {
-                m_exitButton.interactable = true;
-                m_sendButton.interactable = true;
-                m_loadingIndicator.SetActive(true);
+                _exitButton.interactable = true;
+                _sendButton.interactable = true;
+                _loadingIndicator.SetActive(true);
                 ModUIUtils.MessagePopupOK("Could not send item to verification", $"Try again later.\n\nIf the error doesn't get fixed, it'll probably get fixed in the next mod update.", 200f, true);
             });
         }

@@ -10,13 +10,13 @@ namespace OverhaulMod.UI
     public class UIElementWorkshopItemPreviewDisplay : OverhaulUIBehaviour
     {
         [UIElement("VideoIcon", false)]
-        private readonly GameObject m_videoIcon;
+        private readonly GameObject _videoIcon;
 
-        private RawImage m_image;
+        private RawImage _image;
 
-        private UnityWebRequest m_webRequest;
+        private UnityWebRequest _webRequest;
 
-        private Texture2D m_texture;
+        private Texture2D _texture;
 
         public string link
         {
@@ -50,8 +50,8 @@ namespace OverhaulMod.UI
 
         protected override void OnInitialized()
         {
-            m_image = base.GetComponent<RawImage>();
-            m_videoIcon.SetActive(isVideo);
+            _image = base.GetComponent<RawImage>();
+            _videoIcon.SetActive(isVideo);
             GetThumbnail();
 
             Button button = base.GetComponent<Button>();
@@ -60,20 +60,20 @@ namespace OverhaulMod.UI
 
         public override void OnDestroy()
         {
-            Texture2D texture = m_texture;
+            Texture2D texture = _texture;
             if (texture)
                 Destroy(texture);
 
             try
             {
-                m_webRequest.Abort();
+                _webRequest.Abort();
             }
             catch { }
         }
 
         public void GetThumbnail()
         {
-            m_image.enabled = false;
+            _image.enabled = false;
 
             UIElementWorkshopItemPreviewDisplay previewDisplay = this;
             RepositoryManager.Instance.GetCustomTexture(isVideo ? $"https://img.youtube.com/vi/{link}/sddefault.jpg" : link, delegate (Texture2D texture)
@@ -86,10 +86,10 @@ namespace OverhaulMod.UI
                     return;
                 }
 
-                m_texture = texture;
-                m_image.enabled = true;
-                m_image.texture = texture;
-                m_image.rectTransform.sizeDelta = new Vector2(57.5f * (texture.width / (float)texture.height), 57.5f);
+                _texture = texture;
+                _image.enabled = true;
+                _image.texture = texture;
+                _image.rectTransform.sizeDelta = new Vector2(57.5f * (texture.width / (float)texture.height), 57.5f);
             }, delegate
             {
                 if (previewDisplay && isVideo)
@@ -104,13 +104,13 @@ namespace OverhaulMod.UI
                             return;
                         }
 
-                        m_texture = texture;
-                        m_image.enabled = true;
-                        m_image.texture = texture;
-                        m_image.rectTransform.sizeDelta = new Vector2(57.5f * (texture.width / (float)texture.height), 57.5f);
-                    }, null, out m_webRequest, 60);
+                        _texture = texture;
+                        _image.enabled = true;
+                        _image.texture = texture;
+                        _image.rectTransform.sizeDelta = new Vector2(57.5f * (texture.width / (float)texture.height), 57.5f);
+                    }, null, out _webRequest, 60);
                 }
-            }, out m_webRequest, 60);
+            }, out _webRequest, 60);
         }
 
         private void onClicked()
@@ -119,12 +119,12 @@ namespace OverhaulMod.UI
                 Application.OpenURL($"https://youtu.be/{link}");
             else
             {
-                if (!m_texture)
+                if (!_texture)
                     return;
 
                 imageViewerOpenedCallback?.Invoke();
 
-                ModUIUtils.ImageViewer(m_texture, imageViewerParentTransform, imageViewerClosedCallback);
+                ModUIUtils.ImageViewer(_texture, imageViewerParentTransform, imageViewerClosedCallback);
             }
         }
     }

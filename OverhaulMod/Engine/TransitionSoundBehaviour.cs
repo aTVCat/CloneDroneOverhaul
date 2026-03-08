@@ -6,36 +6,36 @@ namespace OverhaulMod.Engine
     {
         public const float VOLUME_MULTIPLIER = 0.7f;
 
-        private AudioSource m_source;
+        private AudioSource _source;
 
-        private bool m_aboutToDestroy;
+        private bool _aboutToDestroy;
 
-        private float m_timeSpawned, m_timeLeftToDestroy;
+        private float _timeSpawned, _timeLeftToDestroy;
 
         private void Update()
         {
-            if (m_aboutToDestroy)
+            if (_aboutToDestroy)
             {
-                m_timeLeftToDestroy -= Mathf.Min(Time.unscaledDeltaTime, 0.02f) * 0.8f;
-                if (m_timeLeftToDestroy <= 0f)
+                _timeLeftToDestroy -= Mathf.Min(Time.unscaledDeltaTime, 0.02f) * 0.8f;
+                if (_timeLeftToDestroy <= 0f)
                 {
                     Destroy(base.gameObject);
                 }
             }
-            m_source.volume = VOLUME_MULTIPLIER * Mathf.Clamp01(m_aboutToDestroy ? m_timeLeftToDestroy : ((Time.unscaledTime - m_timeSpawned) * 2f));
+            _source.volume = VOLUME_MULTIPLIER * Mathf.Clamp01(_aboutToDestroy ? _timeLeftToDestroy : ((Time.unscaledTime - _timeSpawned) * 2f));
         }
 
         public void Initialize(float volumeOffset)
         {
-            m_source = GetComponent<AudioSource>();
-            m_source.volume = volumeOffset * VOLUME_MULTIPLIER;
-            m_timeSpawned = Time.unscaledTime - volumeOffset;
+            _source = GetComponent<AudioSource>();
+            _source.volume = volumeOffset * VOLUME_MULTIPLIER;
+            _timeSpawned = Time.unscaledTime - volumeOffset;
         }
 
         public void FadeOutSoundThenDestroySelf()
         {
-            m_aboutToDestroy = true;
-            m_timeLeftToDestroy = 1f;
+            _aboutToDestroy = true;
+            _timeLeftToDestroy = 1f;
         }
     }
 }

@@ -11,52 +11,52 @@ namespace OverhaulMod.UI
 {
     public class UIElementPersonalizationItemDisplay : OverhaulUIBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
-        public const string ITEM_DEFAULT_FRAME_COLOR = "#333333";
-        public const string ITEM_UNVERIFIED_FRAME_COLOR = "#00AAFF";
-        public const string ITEM_UNVERIFIED_EXCLUSIVE_FRAME_COLOR = "#CC5500";
-        public const string ITEM_EXCLUSIVE_FRAME_COLOR = "#FFBF00";
-        public const string ITEM_SELECTED_FRAME_COLOR = "#02CC00";
+        public const string ITE_DEFAULT_FRAME_COLOR = "#333333";
+        public const string ITE_UNVERIFIED_FRAME_COLOR = "#00AAFF";
+        public const string ITE_UNVERIFIED_EXCLUSIVE_FRAME_COLOR = "#CC5500";
+        public const string ITE_EXCLUSIVE_FRAME_COLOR = "#FFBF00";
+        public const string ITE_SELECTED_FRAME_COLOR = "#02CC00";
 
         [UIElement("Frame")]
-        private readonly Image m_frame;
+        private readonly Image _frame;
 
         [UIElement("Glow")]
-        private readonly Image m_glow;
+        private readonly Image _glow;
 
         [UIElement("NewIndicator")]
-        private readonly GameObject m_newIndicator;
+        private readonly GameObject _newIndicator;
 
         [UIElement("FavoriteIndicator")]
-        private readonly GameObject m_favoriteIndicator;
+        private readonly GameObject _favoriteIndicator;
 
         [UIElement("VerifiedIndicator")]
-        private readonly GameObject m_wasVerifiedIndicator;
+        private readonly GameObject _wasVerifiedIndicator;
 
         [UIElement("UpdatedIndicator")]
-        private readonly GameObject m_wasUpdatedIndicator;
+        private readonly GameObject _wasUpdatedIndicator;
 
         [UIElement("PreviewImage", true)]
-        private readonly RawImage m_previewImage;
+        private readonly RawImage _previewImage;
 
-        private Button m_button;
+        private Button _button;
 
-        private UIPersonalizationItemBrowser m_browser;
+        private UIPersonalizationItemBrowser _browser;
 
-        private RectTransform m_rectTransform;
+        private RectTransform _rectTransform;
 
-        private UnityWebRequest m_webRequest;
+        private UnityWebRequest _webRequest;
 
-        private Texture2D m_texture;
+        private Texture2D _texture;
 
         public PersonalizationItemInfo ItemInfo;
 
         protected override void OnInitialized()
         {
-            m_rectTransform = base.GetComponent<RectTransform>();
-            m_button = base.GetComponent<Button>();
-            m_button.onClick.AddListener(onClicked);
+            _rectTransform = base.GetComponent<RectTransform>();
+            _button = base.GetComponent<Button>();
+            _button.onClick.AddListener(onClicked);
 
-            GlobalEventManager.Instance.AddEventListener(PersonalizationManager.ITEM_EQUIPPED_OR_UNEQUIPPED_EVENT, RefreshDisplays);
+            GlobalEventManager.Instance.AddEventListener(PersonalizationManager.ITE_EQUIPPED_OR_UNEQUIPPED_EVENT, RefreshDisplays);
             RefreshDisplays();
 
             LoadIcon();
@@ -65,22 +65,22 @@ namespace OverhaulMod.UI
         public override void OnDestroy()
         {
             base.OnDestroy();
-            GlobalEventManager.Instance.RemoveEventListener(PersonalizationManager.ITEM_EQUIPPED_OR_UNEQUIPPED_EVENT, RefreshDisplays);
+            GlobalEventManager.Instance.RemoveEventListener(PersonalizationManager.ITE_EQUIPPED_OR_UNEQUIPPED_EVENT, RefreshDisplays);
 
-            Texture2D texture = m_texture;
+            Texture2D texture = _texture;
             if (texture)
                 Destroy(texture);
 
             try
             {
-                m_webRequest.Abort();
+                _webRequest.Abort();
             }
             catch { }
         }
 
         public void SetBrowserUI(UIPersonalizationItemBrowser itemsBrowser)
         {
-            m_browser = itemsBrowser;
+            _browser = itemsBrowser;
         }
 
         public void RefreshDisplays()
@@ -95,10 +95,10 @@ namespace OverhaulMod.UI
             bool isDiscovered = personalizationUserInfo.IsItemDiscovered(itemInfo);
             bool isFavorite = personalizationUserInfo.IsItemFavorite(itemInfo);
 
-            m_favoriteIndicator.SetActive(isFavorite);
-            m_newIndicator.SetActive(!isDiscovered && !wasVerified && !wasUpdated);
-            m_wasVerifiedIndicator.SetActive(wasVerified);
-            m_wasUpdatedIndicator.SetActive(wasUpdated && !wasVerified && isDiscovered);
+            _favoriteIndicator.SetActive(isFavorite);
+            _newIndicator.SetActive(!isDiscovered && !wasVerified && !wasUpdated);
+            _wasVerifiedIndicator.SetActive(wasVerified);
+            _wasUpdatedIndicator.SetActive(wasUpdated && !wasVerified && isDiscovered);
 
             RefreshColor();
         }
@@ -116,20 +116,20 @@ namespace OverhaulMod.UI
             string colorString;
             if (equipped)
             {
-                colorString = ITEM_SELECTED_FRAME_COLOR;
+                colorString = ITE_SELECTED_FRAME_COLOR;
             }
             else
             {
-                if (isExclusive && isVerified) colorString = ITEM_EXCLUSIVE_FRAME_COLOR;
-                else if (isExclusive) colorString = ITEM_UNVERIFIED_EXCLUSIVE_FRAME_COLOR;
-                else if (isVerified) colorString = ITEM_DEFAULT_FRAME_COLOR;
-                else colorString = ITEM_UNVERIFIED_FRAME_COLOR;
+                if (isExclusive && isVerified) colorString = ITE_EXCLUSIVE_FRAME_COLOR;
+                else if (isExclusive) colorString = ITE_UNVERIFIED_EXCLUSIVE_FRAME_COLOR;
+                else if (isVerified) colorString = ITE_DEFAULT_FRAME_COLOR;
+                else colorString = ITE_UNVERIFIED_FRAME_COLOR;
             }
 
             Color frameColor = ModParseUtils.TryParseToColor(colorString);
 
-            m_frame.color = frameColor;
-            m_glow.color = frameColor;
+            _frame.color = frameColor;
+            _glow.color = frameColor;
         }
 
         public void LoadIcon()
@@ -147,16 +147,16 @@ namespace OverhaulMod.UI
         {
             using (UnityWebRequest unityWebRequest = UnityWebRequestTexture.GetTexture($"file://{path}"))
             {
-                m_webRequest = unityWebRequest;
+                _webRequest = unityWebRequest;
                 yield return unityWebRequest.SendWebRequest();
-                m_webRequest = null;
+                _webRequest = null;
                 if (!unityWebRequest.isHttpError && !unityWebRequest.isNetworkError && unityWebRequest.isDone)
                 {
                     Texture2D texture = (unityWebRequest.downloadHandler as DownloadHandlerTexture).texture;
                     texture.filterMode = FilterMode.Bilinear;
-                    m_texture = texture;
-                    m_previewImage.texture = texture;
-                    m_previewImage.color = Color.white;
+                    _texture = texture;
+                    _previewImage.texture = texture;
+                    _previewImage.color = Color.white;
                 }
             }
             yield break;
@@ -172,7 +172,7 @@ namespace OverhaulMod.UI
             PersonalizationManager.Instance.EquipItem(itemInfo);
 
             if (itemInfo.Category == PersonalizationCategory.WeaponSkins)
-                m_browser.MakeDefaultSkinButtonInteractable();
+                _browser.MakeDefaultSkinButtonInteractable();
         }
 
         private void updateItemUserInfo()
@@ -188,19 +188,19 @@ namespace OverhaulMod.UI
             if (!userInfo.IsItemDiscovered(itemInfo))
             {
                 userInfo.SetIsItemDiscovered(itemInfo);
-                m_newIndicator.SetActive(false);
+                _newIndicator.SetActive(false);
             }
 
             if (userInfo.IsItemUnverified(itemInfo) && itemInfo.IsVerified)
             {
                 userInfo.SetIsItemUnverified(itemInfo, false);
-                m_wasVerifiedIndicator.SetActive(false);
+                _wasVerifiedIndicator.SetActive(false);
             }
 
             if (userInfo.GetItemVersion(itemInfo) != itemInfo.Version)
             {
                 userInfo.SetItemVersion(itemInfo, itemInfo.Version);
-                m_wasUpdatedIndicator.SetActive(false);
+                _wasUpdatedIndicator.SetActive(false);
             }
         }
 
@@ -212,12 +212,12 @@ namespace OverhaulMod.UI
 
             if (!itemInfo.IsUnlocked()) updateItemUserInfo();
 
-            m_browser.ShowDescriptionBox(itemInfo, m_rectTransform);
+            _browser.ShowDescriptionBox(itemInfo, _rectTransform);
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
-            m_browser.ShowDescriptionBox(null, null);
+            _browser.ShowDescriptionBox(null, null);
         }
     }
 }

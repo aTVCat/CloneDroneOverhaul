@@ -10,44 +10,44 @@ namespace OverhaulMod.UI
     {
         [UIElementAction(nameof(Hide))]
         [UIElement("CloseButton")]
-        private readonly Button m_exitButton;
+        private readonly Button _exitButton;
 
         [UIElementAction(nameof(OnDataFolderButtonClicked))]
         [UIElement("DataFolderButton")]
-        private readonly Button m_dataFolderButton;
+        private readonly Button _dataFolderButton;
 
         [UIElementAction(nameof(OnSaveButtonClicked))]
         [UIElement("SaveButton")]
-        private readonly Button m_saveButton;
+        private readonly Button _saveButton;
 
         [UIElementAction(nameof(OnCreateNewButtonClicked))]
         [UIElement("CreateNewButton")]
-        private readonly Button m_createNewButton;
+        private readonly Button _createNewButton;
 
         [UIElementAction(nameof(OnCreateNewFileButtonClicked))]
         [UIElement("CreateNewFileButton")]
-        private readonly Button m_createNewFileButton;
+        private readonly Button _createNewFileButton;
 
         [UIElement("EndlessLevelsText")]
-        private readonly Text m_endlessLevelIDsText;
+        private readonly Text _endlessLevelIDsText;
 
         [UIElementAction(nameof(OnLevelsDropdownEdited))]
         [UIElement("LevelsDropdown")]
-        private readonly Dropdown m_levelsDropdown;
+        private readonly Dropdown _levelsDropdown;
 
         [UIElement("LevelPath")]
-        private readonly InputField m_levelPathInputField;
+        private readonly InputField _levelPathInputField;
 
         [UIElement("LevelID")]
-        private readonly InputField m_levelIdField;
+        private readonly InputField _levelIdField;
 
         [UIElement("DifficultyIndex")]
-        private readonly InputField m_difficultyIndexInputField;
+        private readonly InputField _difficultyIndexInputField;
 
         [UIElement("DropdownPrefab")]
-        private readonly Dropdown m_difficultyDropdown;
+        private readonly Dropdown _difficultyDropdown;
 
-        private LevelDescription m_editingLevelDescription;
+        private LevelDescription _editingLevelDescription;
 
         public override bool hideTitleScreen => true;
 
@@ -59,7 +59,7 @@ namespace OverhaulMod.UI
 
             list.Add(new Dropdown.OptionData("Nightmarium"));
 
-            m_difficultyDropdown.options = list;
+            _difficultyDropdown.options = list;
             RefreshDisplays();
             OnLevelsDropdownEdited(0);
         }
@@ -70,13 +70,13 @@ namespace OverhaulMod.UI
             if (!modLevelManager || modLevelManager.modLevelDescriptionsLoadError != null || modLevelManager.modLevelDescriptions.LevelDescriptions.IsNullOrEmpty())
                 return;
 
-            List<Dropdown.OptionData> levelOptions = m_levelsDropdown.options ?? new List<Dropdown.OptionData>();
+            List<Dropdown.OptionData> levelOptions = _levelsDropdown.options ?? new List<Dropdown.OptionData>();
             levelOptions.Clear();
             foreach (LevelDescription desc in modLevelManager.modLevelDescriptions.LevelDescriptions)
             {
                 levelOptions.Add(new Dropdown.OptionData(desc.LevelID));
             }
-            m_levelsDropdown.options = levelOptions;
+            _levelsDropdown.options = levelOptions;
 
             /*
             StringBuilder stringBuilder = new StringBuilder();
@@ -85,18 +85,18 @@ namespace OverhaulMod.UI
                 _ = stringBuilder.Append(endlessLevel.LevelID);
                 _ = stringBuilder.Append("\n");
             }
-            m_endlessLevelIDsText.text = stringBuilder.ToString();
+            _endlessLevelIDsText.text = stringBuilder.ToString();
             _ = stringBuilder.Clear();*/
         }
 
         public void Populate(LevelDescription levelDescription)
         {
-            m_editingLevelDescription = levelDescription;
+            _editingLevelDescription = levelDescription;
 
-            m_levelPathInputField.text = levelDescription.LevelJSONPath;
-            m_levelIdField.text = levelDescription.LevelID;
-            m_difficultyDropdown.value = (int)levelDescription.DifficultyTier;
-            m_difficultyIndexInputField.text = levelDescription.LevelEditorDifficultyIndex.ToString();
+            _levelPathInputField.text = levelDescription.LevelJSONPath;
+            _levelIdField.text = levelDescription.LevelID;
+            _difficultyDropdown.value = (int)levelDescription.DifficultyTier;
+            _difficultyIndexInputField.text = levelDescription.LevelEditorDifficultyIndex.ToString();
         }
 
         public void OnDataFolderButtonClicked()
@@ -106,17 +106,17 @@ namespace OverhaulMod.UI
 
         public void OnSaveButtonClicked()
         {
-            LevelDescription levelDescription = m_editingLevelDescription;
+            LevelDescription levelDescription = _editingLevelDescription;
             if (levelDescription == null)
             {
                 ModUIUtils.MessagePopupOK("You're not editing any level description", "yes");
                 return;
             }
 
-            levelDescription.LevelJSONPath = m_levelPathInputField.text;
-            levelDescription.LevelID = m_levelIdField.text;
-            levelDescription.DifficultyTier = (DifficultyTier)m_difficultyDropdown.value;
-            levelDescription.LevelEditorDifficultyIndex = ModParseUtils.TryParseToInt(m_difficultyIndexInputField.text, 0);
+            levelDescription.LevelJSONPath = _levelPathInputField.text;
+            levelDescription.LevelID = _levelIdField.text;
+            levelDescription.DifficultyTier = (DifficultyTier)_difficultyDropdown.value;
+            levelDescription.LevelEditorDifficultyIndex = ModParseUtils.TryParseToInt(_difficultyIndexInputField.text, 0);
 
             ModFileUtils.WriteText(ModJsonUtils.Serialize(ModLevelManager.Instance.modLevelDescriptions), Path.Combine(ModLevelManager.Instance.levelsFolder, ModLevelManager.LEVEL_DESCRIPTIONS_FILE));
             RefreshDisplays();
@@ -132,7 +132,7 @@ namespace OverhaulMod.UI
             int index = list.Count;
             list.Add(new LevelDescription());
             RefreshDisplays();
-            m_levelsDropdown.value = index;
+            _levelsDropdown.value = index;
         }
 
         public void OnCreateNewFileButtonClicked()
@@ -148,7 +148,7 @@ namespace OverhaulMod.UI
 
         public void OnLevelsDropdownEdited(int value)
         {
-            if (m_editingLevelDescription != null)
+            if (_editingLevelDescription != null)
             {
                 OnSaveButtonClicked();
             }
@@ -157,8 +157,8 @@ namespace OverhaulMod.UI
             if (!modLevelManager || modLevelManager.modLevelDescriptionsLoadError != null || modLevelManager.modLevelDescriptions.LevelDescriptions.IsNullOrEmpty())
                 return;
 
-            m_editingLevelDescription = modLevelManager.modLevelDescriptions.LevelDescriptions[value];
-            Populate(m_editingLevelDescription);
+            _editingLevelDescription = modLevelManager.modLevelDescriptions.LevelDescriptions[value];
+            Populate(_editingLevelDescription);
         }
     }
 }

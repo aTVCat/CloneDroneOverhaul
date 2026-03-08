@@ -11,37 +11,37 @@ namespace OverhaulMod.Combat
     {
         public const WeaponType SCYTHE_TYPE = (WeaponType)51;
 
-        private Dictionary<WeaponType, (GameObject, Type)> m_Weapons;
-        private List<WeaponType> m_meleeWeapons;
+        private Dictionary<WeaponType, (GameObject, Type)> _Weapons;
+        private List<WeaponType> _meleeWeapons;
 
         public override void Awake()
         {
             base.Awake();
 
-            m_Weapons = new Dictionary<WeaponType, (GameObject, Type)>();
-            m_meleeWeapons = new List<WeaponType>();
+            _Weapons = new Dictionary<WeaponType, (GameObject, Type)>();
+            _meleeWeapons = new List<WeaponType>();
 
             AddWeapon<ScytheWeaponModel>(SCYTHE_TYPE, true, AssetBundleConstants.WEAPONS, "OverhaulScythe");
         }
 
         public void AddWeapon<T>(WeaponType weaponType, bool melee, string assetBundle, string assetName) where T : ModWeaponModel
         {
-            if (m_Weapons.ContainsKey(weaponType))
+            if (_Weapons.ContainsKey(weaponType))
                 return;
 
             GameObject model = null;
             if (!assetBundle.IsNullOrEmpty() && !assetName.IsNullOrEmpty())
                 model = ModResources.Prefab(assetBundle, assetName);
 
-            m_Weapons.Add(weaponType, (model, typeof(T)));
+            _Weapons.Add(weaponType, (model, typeof(T)));
 
             if (melee)
-                m_meleeWeapons.Add(weaponType);
+                _meleeWeapons.Add(weaponType);
         }
 
         public bool IsMeleeWeapon(WeaponType weaponType)
         {
-            return m_meleeWeapons.Contains(weaponType);
+            return _meleeWeapons.Contains(weaponType);
         }
 
         public void AddWeaponsToRobot(FirstPersonMover firstPersonMover)
@@ -65,9 +65,9 @@ namespace OverhaulMod.Combat
             }
 
             List<WeaponModel> list = characterModel.WeaponModels.ToList();
-            foreach (WeaponType weaponType in m_Weapons.Keys)
+            foreach (WeaponType weaponType in _Weapons.Keys)
             {
-                (GameObject, Type) tuple = m_Weapons[weaponType];
+                (GameObject, Type) tuple = _Weapons[weaponType];
 
                 GameObject model = tuple.Item1;
                 GameObject gameObject;

@@ -18,7 +18,7 @@ namespace OverhaulMod.Content.Personalization
             }
         }
 
-        private bool m_hasAddedEventListeners;
+        private bool _hasAddedEventListeners;
 
         private void Start()
         {
@@ -26,16 +26,16 @@ namespace OverhaulMod.Content.Personalization
             {
                 GlobalEventManager.Instance.AddEventListener(PersonalizationEditorManager.PRESET_PREVIEW_CHANGED_EVENT, RefreshVisibility);
                 GlobalEventManager.Instance.AddEventListener(PersonalizationEditorManager.OBJECT_EDITED_EVENT, RefreshVisibility);
-                m_hasAddedEventListeners = true;
+                _hasAddedEventListeners = true;
             }
             RefreshVisibility();
         }
 
         private void OnDestroy()
         {
-            if (m_hasAddedEventListeners)
+            if (_hasAddedEventListeners)
             {
-                m_hasAddedEventListeners = false;
+                _hasAddedEventListeners = false;
                 GlobalEventManager.Instance.RemoveEventListener(PersonalizationEditorManager.PRESET_PREVIEW_CHANGED_EVENT, RefreshVisibility);
                 GlobalEventManager.Instance.RemoveEventListener(PersonalizationEditorManager.OBJECT_EDITED_EVENT, RefreshVisibility);
             }

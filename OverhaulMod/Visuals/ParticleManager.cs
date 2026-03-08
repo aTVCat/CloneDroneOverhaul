@@ -36,7 +36,7 @@ namespace OverhaulMod.Visuals
         [ModSetting(ModSettingsConstants.REDUCE_FLASHES, false)]
         public static bool ReduceFlashes;
 
-        private GameObject m_logoParticles;
+        private GameObject _logoParticles;
 
         private void Start()
         {
@@ -67,7 +67,7 @@ namespace OverhaulMod.Visuals
 
         public GameObject GetCloneDroneLogoExplosionParticles()
         {
-            if (!m_logoParticles)
+            if (!_logoParticles)
             {
                 Transform transform = TransformUtils.FindChildRecursive(ArenaCameraManager.Instance.TitleScreenLogo.transform, "fireExplosion");
                 if (transform)
@@ -83,10 +83,10 @@ namespace OverhaulMod.Visuals
                     }
                     adjustParticleSettings(transform1.GetComponent<ParticleSystem>());
 
-                    m_logoParticles = transform1.gameObject;
+                    _logoParticles = transform1.gameObject;
                 }
             }
-            return m_logoParticles;
+            return _logoParticles;
         }
 
         public void SpawnFireParticles(Vector3 position)

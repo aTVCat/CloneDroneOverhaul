@@ -6,13 +6,13 @@ namespace OverhaulMod.UI
     public class UIElementTabWithText : UIElementTab
     {
         [UIElement("Text")]
-        private readonly Text m_text;
+        private readonly Text _text;
 
         public string LocalizationID;
 
         protected override void OnInitialized()
         {
-            m_text.text = LocalizationID.IsNullOrEmpty() ? tabId : LocalizationManager.Instance.GetTranslatedString(LocalizationID);
+            _text.text = LocalizationID.IsNullOrEmpty() ? tabId : LocalizationManager.Instance.GetTranslatedString(LocalizationID);
         }
     }
 }

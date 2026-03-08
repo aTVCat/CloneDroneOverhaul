@@ -16,13 +16,13 @@ namespace AmplifyOcclusion
         public static Material ApplyMaterial;
 
         public static readonly int PerPixelNormalSourceCount = 4;
-        public static readonly float[] m_temporalRotations = { 60.0f, 300.0f, 180.0f, 240.0f, 120.0f, 0.0f };
-        public static readonly float[] m_spatialOffsets = { 0.0f, 0.5f, 0.25f, 0.75f };
+        public static readonly float[] _temporalRotations = { 60.0f, 300.0f, 180.0f, 240.0f, 120.0f, 0.0f };
+        public static readonly float[] _spatialOffsets = { 0.0f, 0.5f, 0.25f, 0.75f };
 
         public static void CommandBuffer_TemporalFilterDirectionsOffsets(CommandBuffer cb, uint aSampleStep)
         {
-            float temporalRotation = AmplifyOcclusionCommon.m_temporalRotations[aSampleStep % 6];
-            float temporalOffset = AmplifyOcclusionCommon.m_spatialOffsets[aSampleStep / 6 % 4];
+            float temporalRotation = AmplifyOcclusionCommon._temporalRotations[aSampleStep % 6];
+            float temporalOffset = AmplifyOcclusionCommon._spatialOffsets[aSampleStep / 6 % 4];
 
             cb.SetGlobalFloat(PropertyID._AO_TemporalDirections, temporalRotation / 360.0f);
             cb.SetGlobalFloat(PropertyID._AO_TemporalOffsets, temporalOffset);
@@ -211,10 +211,10 @@ namespace AmplifyOcclusion
 
     public class AmplifyOcclusionViewProjMatrix
     {
-        private Matrix4x4 m_prevViewProjMatrixLeft = Matrix4x4.identity;
-        private Matrix4x4 m_prevInvViewProjMatrixLeft = Matrix4x4.identity;
-        private Matrix4x4 m_prevViewProjMatrixRight = Matrix4x4.identity;
-        private Matrix4x4 m_prevInvViewProjMatrixRight = Matrix4x4.identity;
+        private Matrix4x4 _prevViewProjMatrixLeft = Matrix4x4.identity;
+        private Matrix4x4 _prevInvViewProjMatrixLeft = Matrix4x4.identity;
+        private Matrix4x4 _prevViewProjMatrixRight = Matrix4x4.identity;
+        private Matrix4x4 _prevInvViewProjMatrixRight = Matrix4x4.identity;
 
         public void UpdateGlobalShaderConstants_Matrices(CommandBuffer cb, Camera aCamera, bool isUsingTemporalFilter)
         {
@@ -245,18 +245,18 @@ namespace AmplifyOcclusion
                     Matrix4x4 InvViewProjMatrixRight = Matrix4x4.Inverse(ViewProjMatrixRight);
 
                     cb.SetGlobalMatrix(PropertyID._AO_InvViewProjMatrixLeft, InvViewProjMatrixLeft);
-                    cb.SetGlobalMatrix(PropertyID._AO_PrevViewProjMatrixLeft, m_prevViewProjMatrixLeft);
-                    cb.SetGlobalMatrix(PropertyID._AO_PrevInvViewProjMatrixLeft, m_prevInvViewProjMatrixLeft);
+                    cb.SetGlobalMatrix(PropertyID._AO_PrevViewProjMatrixLeft, _prevViewProjMatrixLeft);
+                    cb.SetGlobalMatrix(PropertyID._AO_PrevInvViewProjMatrixLeft, _prevInvViewProjMatrixLeft);
 
                     cb.SetGlobalMatrix(PropertyID._AO_InvViewProjMatrixRight, InvViewProjMatrixRight);
-                    cb.SetGlobalMatrix(PropertyID._AO_PrevViewProjMatrixRight, m_prevViewProjMatrixRight);
-                    cb.SetGlobalMatrix(PropertyID._AO_PrevInvViewProjMatrixRight, m_prevInvViewProjMatrixRight);
+                    cb.SetGlobalMatrix(PropertyID._AO_PrevViewProjMatrixRight, _prevViewProjMatrixRight);
+                    cb.SetGlobalMatrix(PropertyID._AO_PrevInvViewProjMatrixRight, _prevInvViewProjMatrixRight);
 
-                    m_prevViewProjMatrixLeft = ViewProjMatrixLeft;
-                    m_prevInvViewProjMatrixLeft = InvViewProjMatrixLeft;
+                    _prevViewProjMatrixLeft = ViewProjMatrixLeft;
+                    _prevInvViewProjMatrixLeft = InvViewProjMatrixLeft;
 
-                    m_prevViewProjMatrixRight = ViewProjMatrixRight;
-                    m_prevInvViewProjMatrixRight = InvViewProjMatrixRight;
+                    _prevViewProjMatrixRight = ViewProjMatrixRight;
+                    _prevInvViewProjMatrixRight = InvViewProjMatrixRight;
                 }
             }
             else
@@ -273,11 +273,11 @@ namespace AmplifyOcclusion
                     Matrix4x4 InvViewProjMatrix = Matrix4x4.Inverse(ViewProjMatrix);
 
                     cb.SetGlobalMatrix(PropertyID._AO_InvViewProjMatrixLeft, InvViewProjMatrix);
-                    cb.SetGlobalMatrix(PropertyID._AO_PrevViewProjMatrixLeft, m_prevViewProjMatrixLeft);
-                    cb.SetGlobalMatrix(PropertyID._AO_PrevInvViewProjMatrixLeft, m_prevInvViewProjMatrixLeft);
+                    cb.SetGlobalMatrix(PropertyID._AO_PrevViewProjMatrixLeft, _prevViewProjMatrixLeft);
+                    cb.SetGlobalMatrix(PropertyID._AO_PrevInvViewProjMatrixLeft, _prevInvViewProjMatrixLeft);
 
-                    m_prevViewProjMatrixLeft = ViewProjMatrix;
-                    m_prevInvViewProjMatrixLeft = InvViewProjMatrix;
+                    _prevViewProjMatrixLeft = ViewProjMatrix;
+                    _prevInvViewProjMatrixLeft = InvViewProjMatrix;
                 }
             }
         }

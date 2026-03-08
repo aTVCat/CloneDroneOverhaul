@@ -7,9 +7,9 @@ namespace OverhaulMod.UI
 {
     public class UIElementFileExplorerItemDisplay : OverhaulUIBehaviour, IPointerClickHandler
     {
-        private float m_timeForDoubleClick;
+        private float _timeForDoubleClick;
 
-        private Button m_button;
+        private Button _button;
 
         public string fullName
         {
@@ -43,7 +43,7 @@ namespace OverhaulMod.UI
 
         protected override void OnInitialized()
         {
-            m_button = base.GetComponent<Button>();
+            _button = base.GetComponent<Button>();
         }
 
         public override void Start()
@@ -54,7 +54,7 @@ namespace OverhaulMod.UI
             showTooltipOnHightLight.tooltipShowDuration = 2f;
         }
 
-        public bool IsDoubleClicked() => Time.unscaledTime < m_timeForDoubleClick;
+        public bool IsDoubleClicked() => Time.unscaledTime < _timeForDoubleClick;
 
         private void onClicked()
         {
@@ -63,7 +63,7 @@ namespace OverhaulMod.UI
                 doubleClickAction?.Invoke(this);
                 return;
             }
-            m_timeForDoubleClick = Time.unscaledTime + 0.25f;
+            _timeForDoubleClick = Time.unscaledTime + 0.25f;
             clickAction?.Invoke(this);
         }
 

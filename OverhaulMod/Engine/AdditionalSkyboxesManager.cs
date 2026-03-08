@@ -7,22 +7,22 @@ namespace OverhaulMod.Engine
 {
     public class AdditionalSkyboxesManager : Singleton<AdditionalSkyboxesManager>
     {
-        private List<AdditionalSkyboxInfo> m_skyboxes;
+        private List<AdditionalSkyboxInfo> _skyboxes;
 
         public void AddSkybox(string assetBundleName, string skyboxName, Material skybox)
         {
-            if (m_skyboxes == null)
-                m_skyboxes = new List<AdditionalSkyboxInfo>() { { new AdditionalSkyboxInfo() { AssetBundle = assetBundleName, SkyboxName = skyboxName, SkyboxMaterial = skybox } } };
+            if (_skyboxes == null)
+                _skyboxes = new List<AdditionalSkyboxInfo>() { { new AdditionalSkyboxInfo() { AssetBundle = assetBundleName, SkyboxName = skyboxName, SkyboxMaterial = skybox } } };
             else
-                m_skyboxes.Add(new AdditionalSkyboxInfo() { AssetBundle = assetBundleName, SkyboxName = skyboxName, SkyboxMaterial = skybox });
+                _skyboxes.Add(new AdditionalSkyboxInfo() { AssetBundle = assetBundleName, SkyboxName = skyboxName, SkyboxMaterial = skybox });
         }
 
         public void SetSkybox(string skybox)
         {
-            if (skybox.IsNullOrEmpty() || m_skyboxes.IsNullOrEmpty())
+            if (skybox.IsNullOrEmpty() || _skyboxes.IsNullOrEmpty())
                 return;
 
-            foreach (AdditionalSkyboxInfo info in m_skyboxes)
+            foreach (AdditionalSkyboxInfo info in _skyboxes)
             {
                 if (info.GetKey() == skybox)
                 {
@@ -56,8 +56,8 @@ namespace OverhaulMod.Engine
         {
             List<Dropdown.OptionData> list = new List<Dropdown.OptionData>();
 
-            if (!m_skyboxes.IsNullOrEmpty())
-                foreach (AdditionalSkyboxInfo info in m_skyboxes)
+            if (!_skyboxes.IsNullOrEmpty())
+                foreach (AdditionalSkyboxInfo info in _skyboxes)
                 {
                     list.Add(new DropdownStringOptionData() { text = info.SkyboxName, StringValue = info.GetKey() });
                 }
@@ -70,8 +70,8 @@ namespace OverhaulMod.Engine
             bool foundOption = currentValue.IsNullOrEmpty();
 
             List<Dropdown.OptionData> list = new List<Dropdown.OptionData>() { new DropdownStringOptionData() { text = "Default", StringValue = string.Empty } };
-            if (!m_skyboxes.IsNullOrEmpty())
-                foreach (AdditionalSkyboxInfo info in m_skyboxes)
+            if (!_skyboxes.IsNullOrEmpty())
+                foreach (AdditionalSkyboxInfo info in _skyboxes)
                 {
                     list.Add(new DropdownStringOptionData() { text = info.SkyboxName, StringValue = info.GetKey() });
 

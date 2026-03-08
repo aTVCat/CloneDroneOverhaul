@@ -2,29 +2,29 @@
 {
     public class ModTime : Singleton<ModTime>
     {
-        private bool m_hasFixedUpdated;
+        private bool _hasFixedUpdated;
 
-        private int m_fixedFrameCount;
+        private int _fixedFrameCount;
 
         private void FixedUpdate()
         {
-            m_fixedFrameCount++;
-            m_hasFixedUpdated = true;
+            _fixedFrameCount++;
+            _hasFixedUpdated = true;
         }
 
         private void LateUpdate()
         {
-            m_hasFixedUpdated = false;
+            _hasFixedUpdated = false;
         }
 
         public int GetFixedFrameCount()
         {
-            return m_fixedFrameCount;
+            return _fixedFrameCount;
         }
 
         public bool HasFixedUpdatedThisFrame()
         {
-            return m_hasFixedUpdated;
+            return _hasFixedUpdated;
         }
     }
 }

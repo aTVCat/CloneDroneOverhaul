@@ -43,22 +43,22 @@ namespace OverhaulMod.Engine
             set;
         }
 
-        private List<Action<object>> m_valueChangedListeners;
+        private List<Action<object>> _valueChangedListeners;
         public event Action<object> valueChangedEvent
         {
             add
             {
-                if (m_valueChangedListeners == null)
-                    m_valueChangedListeners = new List<Action<object>>();
+                if (_valueChangedListeners == null)
+                    _valueChangedListeners = new List<Action<object>>();
 
-                m_valueChangedListeners.Add(value);
+                _valueChangedListeners.Add(value);
             }
             remove
             {
-                if (m_valueChangedListeners == null)
-                    m_valueChangedListeners = new List<Action<object>>();
+                if (_valueChangedListeners == null)
+                    _valueChangedListeners = new List<Action<object>>();
 
-                _ = m_valueChangedListeners.Remove(value);
+                _ = _valueChangedListeners.Remove(value);
             }
         }
 
@@ -129,9 +129,9 @@ namespace OverhaulMod.Engine
                     break;
             }
 
-            if (!m_valueChangedListeners.IsNullOrEmpty())
+            if (!_valueChangedListeners.IsNullOrEmpty())
             {
-                foreach (Action<object> a in m_valueChangedListeners)
+                foreach (Action<object> a in _valueChangedListeners)
                 {
                     try
                     {

@@ -24,13 +24,13 @@ namespace OverhaulMod.Visuals.Environment
             new Dropdown.OptionData("Snowy"),
         };
 
-        private bool m_hasAddedEventListeners;
+        private bool _hasAddedEventListeners;
 
-        private float m_timeToUpdate;
+        private float _timeToUpdate;
 
         public List<WeatherInfo> WeatherInfos;
 
-        private Dictionary<string, ParticleSystem> m_nameToVFX;
+        private Dictionary<string, ParticleSystem> _nameToVFX;
 
         public static Vector3 vectorOffset
         {
@@ -67,22 +67,22 @@ namespace OverhaulMod.Visuals.Environment
 
         private void OnDestroy()
         {
-            if (m_hasAddedEventListeners)
+            if (_hasAddedEventListeners)
             {
                 GlobalEventManager.Instance.RemoveEventListener(ModSettingsManager.SETTING_CHANGED_EVENT, refreshWeatherBasedOnLevel);
                 GlobalEventManager.Instance.RemoveEventListener(GlobalEvents.LevelSpawned, onLevelSpawned);
                 GlobalEventManager.Instance.RemoveEventListener(GlobalEvents.LevelEditorLevelOpened, onLevelSpawned);
-                m_hasAddedEventListeners = false;
+                _hasAddedEventListeners = false;
             }
         }
 
         private void Update()
         {
             float deltaTime = Time.deltaTime;
-            m_timeToUpdate -= deltaTime;
-            if (m_timeToUpdate < 0f)
+            _timeToUpdate -= deltaTime;
+            if (_timeToUpdate < 0f)
             {
-                m_timeToUpdate = 3f;
+                _timeToUpdate = 3f;
                 Transform transform = weatherVFXHolder;
                 if (transform)
                 {
@@ -152,10 +152,10 @@ namespace OverhaulMod.Visuals.Environment
             if (!holderTransform)
                 return;
 
-            if (m_nameToVFX == null)
-                m_nameToVFX = new Dictionary<string, ParticleSystem>();
+            if (_nameToVFX == null)
+                _nameToVFX = new Dictionary<string, ParticleSystem>();
             else
-                m_nameToVFX.Clear();
+                _nameToVFX.Clear();
 
             if (holderTransform.childCount != 0)
                 TransformUtils.DestroyAllChildren(holderTransform);
@@ -172,7 +172,7 @@ namespace OverhaulMod.Visuals.Environment
                 instantiatedObjectTransform.gameObject.SetActive(true);
                 ParticleSystem particleSystem = instantiatedObjectTransform.GetComponent<ParticleSystem>();
                 particleSystem.SetEmissionEnabled(false);
-                m_nameToVFX.Add(info.Name, particleSystem);
+                _nameToVFX.Add(info.Name, particleSystem);
             }
         }
 
@@ -250,10 +250,10 @@ namespace OverhaulMod.Visuals.Environment
 
         public void DeactivateAllParticles()
         {
-            if (m_nameToVFX == null || m_nameToVFX.Count == 0)
+            if (_nameToVFX == null || _nameToVFX.Count == 0)
                 return;
 
-            foreach (ParticleSystem value in m_nameToVFX.Values)
+            foreach (ParticleSystem value in _nameToVFX.Values)
             {
                 if (value)
                     value.SetEmissionEnabled(false);
@@ -262,9 +262,9 @@ namespace OverhaulMod.Visuals.Environment
 
         public void ActivateParticles(string name, float emissionRate, int maxParticles = 250)
         {
-            if (m_nameToVFX != null && m_nameToVFX.ContainsKey(name))
+            if (_nameToVFX != null && _nameToVFX.ContainsKey(name))
             {
-                ParticleSystem ps = m_nameToVFX[name];
+                ParticleSystem ps = _nameToVFX[name];
                 if (ps)
                 {
                     ParticleSystem.EmissionModule emission = ps.emission;
@@ -280,12 +280,12 @@ namespace OverhaulMod.Visuals.Environment
         {
             DeactivateAllParticles();
 
-            if (!m_hasAddedEventListeners)
+            if (!_hasAddedEventListeners)
             {
                 GlobalEventManager.Instance.AddEventListener(ModSettingsManager.SETTING_CHANGED_EVENT, refreshWeatherBasedOnLevel);
                 GlobalEventManager.Instance.AddEventListener(GlobalEvents.LevelSpawned, onLevelSpawned);
                 GlobalEventManager.Instance.AddEventListener(GlobalEvents.LevelEditorLevelOpened, onLevelSpawned);
-                m_hasAddedEventListeners = true;
+                _hasAddedEventListeners = true;
             }
         }
 

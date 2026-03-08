@@ -81,8 +81,8 @@ namespace OverhaulMod.Content.Personalization
             string rootDirectory = Directory.GetParent(directory).FullName;
             string rootDirectoryName = ModFileUtils.GetDirectoryName(rootDirectory);
 
-            string infoFilePath = Path.Combine(directory, PersonalizationEditorManager.ITEM_INFO_FILE);
-            string metaDataFilePath = Path.Combine(directory, PersonalizationEditorManager.ITEM_META_DATA_FILE);
+            string infoFilePath = Path.Combine(directory, PersonalizationEditorManager.ITE_INFO_FILE);
+            string metaDataFilePath = Path.Combine(directory, PersonalizationEditorManager.ITE_META_DATA_FILE);
 
             bool updateInfoFile = false;
             bool updateMetaDataFile = false;

@@ -18,7 +18,7 @@ namespace OverhaulMod.Content.Personalization
 
         public const string CUSTOMIZATION_ASSETS_FILE_DOWNLOADED_EVENT = "CustomizationAssetsFileDownloaded";
 
-        public const string ITEM_EQUIPPED_OR_UNEQUIPPED_EVENT = "PersonalizationItemEquippedOrUnequipped";
+        public const string ITE_EQUIPPED_OR_UNEQUIPPED_EVENT = "PersonalizationItemEquippedOrUnequipped";
 
         public const string USER_INFO_FILE = "PersonalizationUserInfo.json";
 
@@ -50,29 +50,29 @@ namespace OverhaulMod.Content.Personalization
             "FootL",
         };
 
-        private string m_assetsVersionFile;
+        private string _assetsVersionFile;
         public string assetsVersionFile
         {
             get
             {
-                if (m_assetsVersionFile == null)
+                if (_assetsVersionFile == null)
                 {
-                    m_assetsVersionFile = Path.Combine(ModCore.contentFolder, ASSETS_VERSION_FILE);
+                    _assetsVersionFile = Path.Combine(ModCore.contentFolder, ASSETS_VERSION_FILE);
                 }
-                return m_assetsVersionFile;
+                return _assetsVersionFile;
             }
         }
 
-        private string m_remoteAssetsVersionFile;
+        private string _remoteAssetsVersionFile;
         public string remoteAssetsVersionFile
         {
             get
             {
-                if (m_remoteAssetsVersionFile == null)
+                if (_remoteAssetsVersionFile == null)
                 {
-                    m_remoteAssetsVersionFile = Path.Combine(ModCore.contentFolder, REMOTE_ASSETS_VERSION_FILE);
+                    _remoteAssetsVersionFile = Path.Combine(ModCore.contentFolder, REMOTE_ASSETS_VERSION_FILE);
                 }
-                return m_remoteAssetsVersionFile;
+                return _remoteAssetsVersionFile;
             }
         }
 
@@ -92,7 +92,7 @@ namespace OverhaulMod.Content.Personalization
             private set;
         }
 
-        private UnityWebRequest m_webRequest;
+        private UnityWebRequest _webRequest;
 
         public override void Awake()
         {
@@ -135,7 +135,7 @@ namespace OverhaulMod.Content.Personalization
         {
             RepositoryManager.Instance.GetCustomFile($"https://github.com/aTVCat/Overhaul-Mod-Content/raw/main/content/customization.zip", delegate (byte[] bytes)
             {
-                m_webRequest = null;
+                _webRequest = null;
                 try
                 {
                     if (!Directory.Exists(ModCore.customizationFolder))
@@ -192,18 +192,18 @@ namespace OverhaulMod.Content.Personalization
                 callback?.Invoke(null);
             }, delegate
             {
-                string error = ModUnityUtils.GetWebRequestErrorString(m_webRequest);
-                m_webRequest = null;
+                string error = ModUnityUtils.GetWebRequestErrorString(_webRequest);
+                _webRequest = null;
 
                 callback?.Invoke(error);
             }, out UnityWebRequest unityWebRequest, -1);
-            m_webRequest = unityWebRequest;
+            _webRequest = unityWebRequest;
             yield break;
         }
 
         public float GetCustomizationFileDownloadProgress()
         {
-            UnityWebRequest unityWebRequest = m_webRequest;
+            UnityWebRequest unityWebRequest = _webRequest;
             if (unityWebRequest == null)
                 return 0f;
 
@@ -301,7 +301,7 @@ namespace OverhaulMod.Content.Personalization
 
         public bool IsDownloadingCustomizationFile()
         {
-            return m_webRequest != null;
+            return _webRequest != null;
         }
 
         public bool SetLocalAssetsVersion(string versionString)
@@ -436,7 +436,7 @@ namespace OverhaulMod.Content.Personalization
                     break;
             }
 
-            GlobalEventManager.Instance.Dispatch(ITEM_EQUIPPED_OR_UNEQUIPPED_EVENT);
+            GlobalEventManager.Instance.Dispatch(ITE_EQUIPPED_OR_UNEQUIPPED_EVENT);
         }
 
         public static bool GetIsItemEquipped(PersonalizationItemInfo item)

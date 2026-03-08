@@ -9,25 +9,25 @@ namespace OverhaulMod.UI
     public class UIElementPatchNotesImageEmbed : OverhaulUIBehaviour
     {
         [UIElement("Image", false)]
-        private RawImage m_image;
+        private RawImage _image;
 
         [UIElement("Image")]
-        private AspectRatioFitter m_imageARF;
+        private AspectRatioFitter _imageARF;
 
         [UIElementAction(nameof(OnClickedOnImage))]
         [UIElement("Image")]
-        private Button m_imageButton;
+        private Button _imageButton;
 
         [UIElement("NotAvailableLabel", false)]
-        private GameObject m_notAvailableLabelObject;
+        private GameObject _notAvailableLabelObject;
 
-        private Texture2D m_texture;
+        private Texture2D _texture;
 
-        private UnityWebRequest m_webRequest;
+        private UnityWebRequest _webRequest;
 
-        private LayoutElement m_layoutElement;
+        private LayoutElement _layoutElement;
 
-        private bool m_refreshSizeNextFrame;
+        private bool _refreshSizeNextFrame;
 
         public string URL;
 
@@ -35,57 +35,57 @@ namespace OverhaulMod.UI
 
         protected override void OnInitialized()
         {
-            m_layoutElement = GetComponent<LayoutElement>();
-            m_layoutElement.minHeight = 20f;
+            _layoutElement = GetComponent<LayoutElement>();
+            _layoutElement.minHeight = 20f;
 
             RepositoryManager.Instance.GetTexture(URL, delegate (Texture2D texture)
             {
-                m_webRequest = null;
+                _webRequest = null;
 
-                m_texture = texture;
-                m_image.gameObject.SetActive(true);
-                m_image.rectTransform.sizeDelta = new Vector2(Mathf.Min(400f, texture.width / 2f), 0f);
-                m_image.texture = texture;
-                m_imageARF.aspectRatio = texture.width / (float)texture.height;
-                m_refreshSizeNextFrame = true;
+                _texture = texture;
+                _image.gameObject.SetActive(true);
+                _image.rectTransform.sizeDelta = new Vector2(Mathf.Min(400f, texture.width / 2f), 0f);
+                _image.texture = texture;
+                _imageARF.aspectRatio = texture.width / (float)texture.height;
+                _refreshSizeNextFrame = true;
             }, delegate
             {
-                m_webRequest = null;
-                if (m_notAvailableLabelObject)
-                    m_notAvailableLabelObject.SetActive(true);
+                _webRequest = null;
+                if (_notAvailableLabelObject)
+                    _notAvailableLabelObject.SetActive(true);
             }, out UnityWebRequest unityWebRequest);
-            m_webRequest = unityWebRequest;
+            _webRequest = unityWebRequest;
         }
 
         public override void OnDestroy()
         {
             base.OnDestroy();
-            if (m_webRequest != null)
+            if (_webRequest != null)
             {
-                m_webRequest.Abort();
-                m_webRequest = null;
+                _webRequest.Abort();
+                _webRequest = null;
             }
 
-            if (m_texture)
+            if (_texture)
             {
-                Destroy(m_texture);
-                m_texture = null;
+                Destroy(_texture);
+                _texture = null;
             }
         }
 
         public override void Update()
         {
             base.Update();
-            if (m_refreshSizeNextFrame)
+            if (_refreshSizeNextFrame)
             {
-                m_refreshSizeNextFrame = false;
-                m_layoutElement.minHeight = m_image.rectTransform.rect.height;
+                _refreshSizeNextFrame = false;
+                _layoutElement.minHeight = _image.rectTransform.rect.height;
             }
         }
 
         public void OnClickedOnImage()
         {
-            ModUIUtils.ImageViewer(m_texture, PatchNotesTransform);
+            ModUIUtils.ImageViewer(_texture, PatchNotesTransform);
         }
     }
 }

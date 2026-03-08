@@ -5,9 +5,9 @@ namespace OverhaulMod.Content.Personalization
 {
     public class PersonalizationEditorObjectFireParticles : PersonalizationEditorObjectComponentBase
     {
-        private ParticleSystem m_particleSystem;
+        private ParticleSystem _particleSystem;
 
-        private bool m_hasStarted;
+        private bool _hasStarted;
 
         public Color color
         {
@@ -95,14 +95,14 @@ namespace OverhaulMod.Content.Personalization
 
         private void Start()
         {
-            m_particleSystem = GetComponent<ParticleSystem>();
-            m_hasStarted = true;
+            _particleSystem = GetComponent<ParticleSystem>();
+            _hasStarted = true;
             RefreshColor();
         }
 
         private void OnEnable()
         {
-            if (!m_hasStarted)
+            if (!_hasStarted)
                 return;
 
             refreshColor();
@@ -139,7 +139,7 @@ namespace OverhaulMod.Content.Personalization
                 colorToApply = color;
             }
 
-            ParticleSystem.MainModule main = m_particleSystem.main;
+            ParticleSystem.MainModule main = _particleSystem.main;
             main.startColor = colorToApply;
         }
     }

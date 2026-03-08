@@ -7,22 +7,22 @@ namespace OverhaulMod.UI
     public class UIElementSettingsMenuSettingDescriptionBox : OverhaulUIBehaviour
     {
         [UIElement("DescriptionText")]
-        public Text m_descriptionText;
+        public Text _descriptionText;
 
         [UIElement("SubDescriptionText")]
-        public Text m_subDescriptionText;
+        public Text _subDescriptionText;
 
         [UIElement("SubDescriptionText")]
-        public GameObject m_subDescriptionTextObject;
+        public GameObject _subDescriptionTextObject;
 
         [UIElement("Separator")]
-        public GameObject m_separatorObject;
+        public GameObject _separatorObject;
 
-        private VerticalLayoutGroup m_layoutGroup;
+        private VerticalLayoutGroup _layoutGroup;
 
         protected override void OnInitialized()
         {
-            m_layoutGroup = base.GetComponent<VerticalLayoutGroup>();
+            _layoutGroup = base.GetComponent<VerticalLayoutGroup>();
         }
 
         public void SetText(string description, string subDescription)
@@ -31,12 +31,12 @@ namespace OverhaulMod.UI
                 description = "No description provided.";
 
             bool subDescriptionIsEmpty = subDescription.IsNullOrEmpty();
-            m_layoutGroup.padding.bottom = subDescriptionIsEmpty ? 10 : 30;
-            m_subDescriptionTextObject.SetActive(!subDescriptionIsEmpty);
-            //m_separatorObject.SetActive(!subDescriptionIsEmpty);
+            _layoutGroup.padding.bottom = subDescriptionIsEmpty ? 10 : 30;
+            _subDescriptionTextObject.SetActive(!subDescriptionIsEmpty);
+            //_separatorObject.SetActive(!subDescriptionIsEmpty);
 
-            m_descriptionText.text = description;
-            m_subDescriptionText.text = subDescription;
+            _descriptionText.text = description;
+            _subDescriptionText.text = subDescription;
         }
 
         public void SetYPosition(float y)

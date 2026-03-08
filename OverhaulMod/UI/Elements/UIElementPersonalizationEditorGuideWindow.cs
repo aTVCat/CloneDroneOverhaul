@@ -10,36 +10,36 @@ namespace OverhaulMod.UI
     {
         [UIElementAction(nameof(Hide))]
         [UIElement("CloseButton")]
-        private readonly Button m_closeButton;
+        private readonly Button _closeButton;
 
         [UIElement("Header")]
-        private readonly Text m_header;
+        private readonly Text _header;
 
         [UIElement("Description")]
-        private readonly Text m_description;
+        private readonly Text _description;
 
         [UIElement("GuideWindow")]
-        private readonly CanvasGroup m_canvasGroup;
+        private readonly CanvasGroup _canvasGroup;
 
         [UIElement("Button", false)]
-        private readonly ModdedObject m_buttonPrefab;
+        private readonly ModdedObject _buttonPrefab;
 
         [UIElement("ButtonContainer")]
-        private readonly Transform m_buttonContainer;
+        private readonly Transform _buttonContainer;
 
-        private PersonalizationEditorGuide m_currentGuide;
+        private PersonalizationEditorGuide _currentGuide;
 
-        private int m_currentGuideStageIndex;
+        private int _currentGuideStageIndex;
 
         protected override void OnInitialized()
         {
-            m_currentGuideStageIndex = -1;
+            _currentGuideStageIndex = -1;
         }
 
         public override void Show()
         {
             base.Show();
-            m_canvasGroup.alpha = 0f;
+            _canvasGroup.alpha = 0f;
         }
 
         public override void Update()
@@ -47,7 +47,7 @@ namespace OverhaulMod.UI
             float d = Time.unscaledDeltaTime;
             float dMultiplied = d * 12.5f;
 
-            m_canvasGroup.alpha += Mathf.Lerp(m_canvasGroup.alpha, 1f, dMultiplied);
+            _canvasGroup.alpha += Mathf.Lerp(_canvasGroup.alpha, 1f, dMultiplied);
         }
 
         public void StartGuide(PersonalizationEditorGuide guide)
@@ -56,8 +56,8 @@ namespace OverhaulMod.UI
 
             Clear();
 
-            m_currentGuide = guide;
-            m_currentGuideStageIndex = 0;
+            _currentGuide = guide;
+            _currentGuideStageIndex = 0;
             if (guide.Stages.IsNullOrEmpty())
             {
                 SetTexts("Error", "This guide doesn't have any stages");
@@ -69,19 +69,19 @@ namespace OverhaulMod.UI
 
         public void FinishGuide()
         {
-            m_currentGuide = null;
-            m_currentGuideStageIndex = -1;
+            _currentGuide = null;
+            _currentGuideStageIndex = -1;
             Hide();
         }
 
         public void NextGuideStage()
         {
-            System.Collections.Generic.List<PersonalizationEditorGuideStage> list = m_currentGuide.Stages;
-            int index = m_currentGuideStageIndex + 1;
+            System.Collections.Generic.List<PersonalizationEditorGuideStage> list = _currentGuide.Stages;
+            int index = _currentGuideStageIndex + 1;
             if (index >= list.Count)
                 return;
 
-            m_currentGuideStageIndex = index;
+            _currentGuideStageIndex = index;
             PopulateGuideStage(list[index]);
         }
 
@@ -95,10 +95,10 @@ namespace OverhaulMod.UI
                 return;
             }
 
-            if (m_currentGuide.IsTranslated)
+            if (_currentGuide.IsTranslated)
             {
                 string header = LocalizationManager.Instance.GetTranslatedString($"ceditor_small_tutorial_header_{guideStage.Header.ToLower().Replace(' ', '_')}");
-                string description = LocalizationManager.Instance.GetTranslatedString($"ceditor_small_tutorial_text_page_{m_currentGuideStageIndex + 1}");
+                string description = LocalizationManager.Instance.GetTranslatedString($"ceditor_small_tutorial_text_page_{_currentGuideStageIndex + 1}");
                 SetTexts(header, description);
             }
             else
@@ -115,7 +115,7 @@ namespace OverhaulMod.UI
                 }
             }
 
-            if (m_currentGuideStageIndex >= m_currentGuide.Stages.Count - 1)
+            if (_currentGuideStageIndex >= _currentGuide.Stages.Count - 1)
             {
                 InstantiateButton("Finish", FinishGuide);
             }
@@ -128,19 +128,19 @@ namespace OverhaulMod.UI
 
         public void Clear()
         {
-            if (m_buttonContainer.childCount != 0)
-                TransformUtils.DestroyAllChildren(m_buttonContainer);
+            if (_buttonContainer.childCount != 0)
+                TransformUtils.DestroyAllChildren(_buttonContainer);
         }
 
         public void SetTexts(string header, string description)
         {
-            m_header.text = header;
-            m_description.text = description;
+            _header.text = header;
+            _description.text = description;
         }
 
         public void InstantiateButton(string text, UnityAction unityAction)
         {
-            ModdedObject moddedObject = Instantiate(m_buttonPrefab, m_buttonContainer);
+            ModdedObject moddedObject = Instantiate(_buttonPrefab, _buttonContainer);
             moddedObject.gameObject.SetActive(true);
             moddedObject.GetObject<Text>(0).text = text;
 

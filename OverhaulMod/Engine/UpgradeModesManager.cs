@@ -34,7 +34,7 @@ namespace OverhaulMod.Engine
             private set;
         }
 
-        private UpgradeModeButtonController m_buttonController;
+        private UpgradeModeButtonController _buttonController;
 
         public void OnGameLoaded()
         {
@@ -43,7 +43,7 @@ namespace OverhaulMod.Engine
 
         public void PlaceButton()
         {
-            if (!m_buttonController)
+            if (!_buttonController)
             {
                 RectTransform upgradeUITransform = ModCache.gameUIRoot.UpgradeUI.transform as RectTransform;
                 RectTransform centerHolderTransform = TransformUtils.FindChildRecursive(upgradeUITransform, "CenterHolder") as RectTransform;
@@ -59,7 +59,7 @@ namespace OverhaulMod.Engine
                 button.onClick.AddListener(ToggleMode);
                 UpgradeModeButtonController upgradeModeButtonController = spawnedButton.gameObject.AddComponent<UpgradeModeButtonController>();
                 upgradeModeButtonController.InitializeElement();
-                m_buttonController = upgradeModeButtonController;
+                _buttonController = upgradeModeButtonController;
             }
             SetMode(UpgradeModes.Upgrade);
         }
@@ -76,7 +76,7 @@ namespace OverhaulMod.Engine
             if (ModCache.gameUIRoot && ModCache.gameUIRoot.UpgradeUI && ModCache.gameUIRoot.UpgradeUI.gameObject.activeSelf)
                 ModCache.gameUIRoot.UpgradeUI.PopulateIcons();
 
-            UpgradeModeButtonController controller = m_buttonController;
+            UpgradeModeButtonController controller = _buttonController;
             if (!controller)
                 return;
 

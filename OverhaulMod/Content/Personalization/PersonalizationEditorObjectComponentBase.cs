@@ -4,16 +4,16 @@ namespace OverhaulMod.Content.Personalization
 {
     public class PersonalizationEditorObjectComponentBase : MonoBehaviour
     {
-        private PersonalizationEditorObjectBehaviour m_objectBehaviour;
+        private PersonalizationEditorObjectBehaviour _objectBehaviour;
         public PersonalizationEditorObjectBehaviour objectBehaviour
         {
             get
             {
-                if (!m_objectBehaviour)
+                if (!_objectBehaviour)
                 {
-                    m_objectBehaviour = base.GetComponent<PersonalizationEditorObjectBehaviour>();
+                    _objectBehaviour = base.GetComponent<PersonalizationEditorObjectBehaviour>();
                 }
-                return m_objectBehaviour;
+                return _objectBehaviour;
             }
         }
     }

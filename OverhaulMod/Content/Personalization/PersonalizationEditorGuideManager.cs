@@ -10,11 +10,11 @@ namespace OverhaulMod.Content.Personalization
         [ModSetting(ModSettingsConstants.NEVER_SHOW_INTRODUCTION_GUIDE, false)]
         public static bool NeverShowIntroductionGuide;
 
-        private List<PersonalizationEditorGuide> m_guides;
+        private List<PersonalizationEditorGuide> _guides;
 
         private void Start()
         {
-            m_guides = new List<PersonalizationEditorGuide>()
+            _guides = new List<PersonalizationEditorGuide>()
             {
                 new PersonalizationEditorGuide("getting_started", new List<PersonalizationEditorGuideStage>()
                 {
@@ -49,7 +49,7 @@ namespace OverhaulMod.Content.Personalization
 
         public PersonalizationEditorGuide GetGuide(string name)
         {
-            foreach (PersonalizationEditorGuide guide in m_guides)
+            foreach (PersonalizationEditorGuide guide in _guides)
                 if (guide.Name == name)
                     return guide;
 

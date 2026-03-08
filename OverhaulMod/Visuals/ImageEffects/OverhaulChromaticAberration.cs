@@ -5,66 +5,66 @@ namespace OverhaulMod.Visuals.ImageEffects
 {
     public class OverhaulChromaticAberration : MonoBehaviour
     {
-        private float m_power;
+        private float _power;
         public float power
         {
             get
             {
-                return m_power;
+                return _power;
             }
             set
             {
-                m_power = value;
-                if (m_supported)
-                    m_material.SetFloat("_ChromaticAberration", 0.01f * value);
+                _power = value;
+                if (_supported)
+                    _material.SetFloat("_ChromaticAberration", 0.01f * value);
             }
         }
 
-        private float m_center;
+        private float _center;
         public float center
         {
             get
             {
-                return m_center;
+                return _center;
             }
             set
             {
-                m_center = value;
-                if (m_supported)
-                    m_material.SetFloat("_Center", value);
+                _center = value;
+                if (_supported)
+                    _material.SetFloat("_Center", value);
             }
         }
 
-        private Shader m_shader;
+        private Shader _shader;
 
-        private Material m_material;
+        private Material _material;
 
-        private bool m_supported;
+        private bool _supported;
 
         private void Start()
         {
-            m_shader = ModResources.Shader(AssetBundleConstants.IMAGE_EFFECTS, "ChromaticAberration");
-            if (!m_shader || !m_shader.isSupported) return;
+            _shader = ModResources.Shader(AssetBundleConstants.IMAGE_EFFECTS, "ChromaticAberration");
+            if (!_shader || !_shader.isSupported) return;
 
-            m_material = new Material(m_shader);
-            m_supported = true;
+            _material = new Material(_shader);
+            _supported = true;
         }
 
         private void OnDestroy()
         {
-            if (m_material)
+            if (_material)
             {
-                Destroy(m_material);
-                m_material = null;
-                m_shader = null;
+                Destroy(_material);
+                _material = null;
+                _shader = null;
             }
         }
 
         private void OnRenderImage(RenderTexture source, RenderTexture destination)
         {
-            if (m_supported)
+            if (_supported)
             {
-                Graphics.Blit(source, destination, m_material);
+                Graphics.Blit(source, destination, _material);
             }
             else
             {

@@ -12,9 +12,9 @@ namespace OverhaulMod.Content
     {
         public const string FILE_NAME = "ExclusivePerks.json";
 
-        private ExclusivePerkInfoList m_perksData;
+        private ExclusivePerkInfoList _perksData;
 
-        private string m_error;
+        private string _error;
 
         public override void Awake()
         {
@@ -23,11 +23,11 @@ namespace OverhaulMod.Content
             ModFeatures.CacheValues();
 
             ScheduledActionsManager scheduledActionsManager = ScheduledActionsManager.Instance;
-            if (!ModUserInfo.isDeveloper && (m_perksData.List.Count == 0 || scheduledActionsManager.ShouldExecuteAction(ScheduledActionType.RefreshExclusivePerks)))
+            if (!ModUserInfo.isDeveloper && (_perksData.List.Count == 0 || scheduledActionsManager.ShouldExecuteAction(ScheduledActionType.RefreshExclusivePerks)))
             {
                 LoadDataFromRepository(delegate (string error)
                 {
-                    m_error = error;
+                    _error = error;
                     ModFeatures.CacheValues();
                 });
             }
@@ -35,7 +35,7 @@ namespace OverhaulMod.Content
 
         public string GetError()
         {
-            return m_error;
+            return _error;
         }
 
         public void LoadDataFromDisk()
@@ -51,7 +51,7 @@ namespace OverhaulMod.Content
             }
             infoList.FixValues();
 
-            m_perksData = infoList;
+            _perksData = infoList;
         }
 
         public void LoadDataFromRepository(Action<string> callback)
@@ -73,7 +73,7 @@ namespace OverhaulMod.Content
                     return;
                 }
 
-                m_perksData = contentInfoList;
+                _perksData = contentInfoList;
                 callback?.Invoke(null);
 
                 ScheduledActionsManager.Instance.SetActionExecuted(ScheduledActionType.RefreshExclusivePerks);
@@ -85,19 +85,19 @@ namespace OverhaulMod.Content
 
         public ExclusivePerkInfoList GetPerkInfoList()
         {
-            return m_perksData;
+            return _perksData;
         }
 
         public List<ExclusivePerkInfo> GetPerks()
         {
-            return m_perksData?.List;
+            return _perksData?.List;
         }
 
         public List<ExclusivePerkInfo> GetUnlockedPerks()
         {
             List<ExclusivePerkInfo> list = new List<ExclusivePerkInfo>();
-            if (m_perksData != null && m_perksData.List != null && m_perksData.List.Count != 0)
-                foreach (ExclusivePerkInfo info in m_perksData.List)
+            if (_perksData != null && _perksData.List != null && _perksData.List.Count != 0)
+                foreach (ExclusivePerkInfo info in _perksData.List)
                 {
                     if (info.IsUnlocked())
                         list.Add(info);
@@ -109,8 +109,8 @@ namespace OverhaulMod.Content
         public List<ExclusivePerkInfo> GetUnlockedPerksForUser(string playFabId, CSteamID steamId)
         {
             List<ExclusivePerkInfo> list = new List<ExclusivePerkInfo>();
-            if (m_perksData != null && m_perksData.List != null && m_perksData.List.Count != 0)
-                foreach (ExclusivePerkInfo info in m_perksData.List)
+            if (_perksData != null && _perksData.List != null && _perksData.List.Count != 0)
+                foreach (ExclusivePerkInfo info in _perksData.List)
                 {
                     if (info.IsUnlockedForUser(playFabId, steamId))
                         list.Add(info);
@@ -122,8 +122,8 @@ namespace OverhaulMod.Content
         public List<ExclusivePerkInfo> GetPerksOfType(ExclusivePerkType perkType)
         {
             List<ExclusivePerkInfo> list = new List<ExclusivePerkInfo>();
-            if (m_perksData != null && m_perksData.List != null && m_perksData.List.Count != 0)
-                foreach (ExclusivePerkInfo info in m_perksData.List)
+            if (_perksData != null && _perksData.List != null && _perksData.List.Count != 0)
+                foreach (ExclusivePerkInfo info in _perksData.List)
                 {
                     if (info.PerkType == perkType)
                         list.Add(info);
@@ -135,8 +135,8 @@ namespace OverhaulMod.Content
         public List<ExclusivePerkInfo> GetUnlockedPerksOfType(ExclusivePerkType perkType)
         {
             List<ExclusivePerkInfo> list = new List<ExclusivePerkInfo>();
-            if (m_perksData != null && m_perksData.List != null && m_perksData.List.Count != 0)
-                foreach (ExclusivePerkInfo info in m_perksData.List)
+            if (_perksData != null && _perksData.List != null && _perksData.List.Count != 0)
+                foreach (ExclusivePerkInfo info in _perksData.List)
                 {
                     if (info.PerkType == perkType && info.IsUnlocked())
                         list.Add(info);
@@ -148,8 +148,8 @@ namespace OverhaulMod.Content
         public List<ExclusivePerkInfo> GetUnlockedPerksOfTypeForUser(ExclusivePerkType perkType, string playFabId, CSteamID steamId)
         {
             List<ExclusivePerkInfo> list = new List<ExclusivePerkInfo>();
-            if (m_perksData != null && m_perksData.List != null && m_perksData.List.Count != 0)
-                foreach (ExclusivePerkInfo info in m_perksData.List)
+            if (_perksData != null && _perksData.List != null && _perksData.List.Count != 0)
+                foreach (ExclusivePerkInfo info in _perksData.List)
                 {
                     if (info.PerkType == perkType && info.IsUnlockedForUser(playFabId, steamId))
                         list.Add(info);

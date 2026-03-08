@@ -8,29 +8,29 @@ namespace OverhaulMod.UI
     public class UIElementPersonalizationAuthorsField : OverhaulUIBehaviour
     {
         [UIElement("Text")]
-        private readonly Text m_text;
+        private readonly Text _text;
 
         [UIElementAction(nameof(OnEditButtonClicked))]
         [UIElement("EditButton")]
-        private readonly Button m_editButton;
+        private readonly Button _editButton;
 
-        private List<string> m_referenceList;
+        private List<string> _referenceList;
         public List<string> referenceList
         {
             get
             {
-                return m_referenceList;
+                return _referenceList;
             }
             set
             {
-                m_referenceList = value;
+                _referenceList = value;
                 refreshText();
             }
         }
 
         private void refreshText()
         {
-            m_text.text = PersonalizationEditorManager.Instance?.currentEditingItemInfo?.GetAuthorsString();
+            _text.text = PersonalizationEditorManager.Instance?.currentEditingItemInfo?.GetAuthorsString();
         }
 
         public void OnEditButtonClicked()

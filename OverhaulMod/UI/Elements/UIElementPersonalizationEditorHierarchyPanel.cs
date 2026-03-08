@@ -10,36 +10,36 @@ namespace OverhaulMod.UI
     {
         [UIElementAction(nameof(OnCreateButtonClicked))]
         [UIElement("CreateButton")]
-        private readonly Button m_createButton;
+        private readonly Button _createButton;
 
         [UIElement("ObjectDisplayPrefab", false)]
-        private readonly ModdedObject m_objectDisplayPrefab;
+        private readonly ModdedObject _objectDisplayPrefab;
 
         [UIElement("Content")]
-        private readonly Transform m_objectDisplayContainer;
+        private readonly Transform _objectDisplayContainer;
 
-        private PersonalizationItemInfo m_itemInfo;
+        private PersonalizationItemInfo _itemInfo;
         public PersonalizationItemInfo itemInfo
         {
             get
             {
-                return m_itemInfo;
+                return _itemInfo;
             }
             set
             {
-                m_itemInfo = value;
+                _itemInfo = value;
                 Populate();
             }
         }
 
         public void Populate()
         {
-            if (m_objectDisplayContainer.childCount != 0)
-                TransformUtils.DestroyAllChildren(m_objectDisplayContainer);
+            if (_objectDisplayContainer.childCount != 0)
+                TransformUtils.DestroyAllChildren(_objectDisplayContainer);
 
             foreach (PersonalizationEditorObjectInfo obj in itemInfo.RootObject.Children)
             {
-                ModdedObject moddedObject = Instantiate(m_objectDisplayPrefab, m_objectDisplayContainer);
+                ModdedObject moddedObject = Instantiate(_objectDisplayPrefab, _objectDisplayContainer);
                 moddedObject.gameObject.SetActive(true);
                 moddedObject.GetObject<Text>(1).text = obj.Name;
                 moddedObject.GetObject<Button>(2).onClick.AddListener(delegate

@@ -8,34 +8,34 @@ namespace OverhaulMod.UI
     {
         [UIElementAction(nameof(Hide))]
         [UIElement("CloseButton")]
-        private readonly Button m_exitButton;
+        private readonly Button _exitButton;
 
         [UIElement("Texture")]
-        private readonly RawImage m_image;
+        private readonly RawImage _image;
 
         [UIElement("Texture")]
-        private readonly RectTransform m_imageRectTransform;
+        private readonly RectTransform _imageRectTransform;
 
-        private Action m_closedCallback;
+        private Action _closedCallback;
 
         public override bool enableCursor => true;
 
         public override void Hide()
         {
             base.Hide();
-            Action action = m_closedCallback;
+            Action action = _closedCallback;
             if (action != null)
             {
                 action();
-                m_closedCallback = null;
+                _closedCallback = null;
             }
         }
 
         public void Populate(Texture2D texture, Action closedCallback)
         {
-            m_closedCallback = closedCallback;
-            m_imageRectTransform.sizeDelta = new Vector2(390f * (texture.width / (float)texture.height), 390f);
-            m_image.texture = texture;
+            _closedCallback = closedCallback;
+            _imageRectTransform.sizeDelta = new Vector2(390f * (texture.width / (float)texture.height), 390f);
+            _image.texture = texture;
         }
     }
 }

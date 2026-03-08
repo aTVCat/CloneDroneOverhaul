@@ -9,16 +9,16 @@ namespace OverhaulMod.UI
     public class UIElementImageDisplay : OverhaulUIBehaviour
     {
         [UIElement("Image", false)]
-        private readonly RawImage m_rawImage;
+        private readonly RawImage _rawImage;
 
         [UIElement("LoadingIndicator", true)]
-        private readonly GameObject m_loadingIndicatorObject;
+        private readonly GameObject _loadingIndicatorObject;
 
-        private Texture2D m_loadedTexture;
+        private Texture2D _loadedTexture;
 
-        private UnityWebRequest m_webRequest;
+        private UnityWebRequest _webRequest;
 
-        private bool m_isDestroyed;
+        private bool _isDestroyed;
 
         public Transform imageViewerParentTransform
         {
@@ -36,40 +36,40 @@ namespace OverhaulMod.UI
         {
             if (isCustomLink)
             {
-                RepositoryManager.Instance.GetCustomTexture(link, onGetTexture, onFailedToGetTexture, out m_webRequest);
+                RepositoryManager.Instance.GetCustomTexture(link, onGetTexture, onFailedToGetTexture, out _webRequest);
                 return;
             }
-            RepositoryManager.Instance.GetTexture(link, onGetTexture, onFailedToGetTexture, out m_webRequest);
+            RepositoryManager.Instance.GetTexture(link, onGetTexture, onFailedToGetTexture, out _webRequest);
         }
 
         private void onGetTexture(Texture2D texture)
         {
-            if (m_isDestroyed)
+            if (_isDestroyed)
                 return;
 
-            m_loadedTexture = texture;
-            m_rawImage.texture = texture;
-            m_rawImage.gameObject.SetActive(true);
-            m_loadingIndicatorObject.SetActive(false);
-            m_webRequest = null;
+            _loadedTexture = texture;
+            _rawImage.texture = texture;
+            _rawImage.gameObject.SetActive(true);
+            _loadingIndicatorObject.SetActive(false);
+            _webRequest = null;
         }
 
         private void onFailedToGetTexture(string error)
         {
-            if (m_isDestroyed)
+            if (_isDestroyed)
                 return;
 
-            m_rawImage.gameObject.SetActive(true);
-            m_loadingIndicatorObject.SetActive(false);
-            m_webRequest = null;
+            _rawImage.gameObject.SetActive(true);
+            _loadingIndicatorObject.SetActive(false);
+            _webRequest = null;
         }
 
         public override void OnDestroy()
         {
             base.OnDestroy();
-            m_isDestroyed = true;
+            _isDestroyed = true;
 
-            UnityWebRequest webRequest = m_webRequest;
+            UnityWebRequest webRequest = _webRequest;
             if (webRequest != null)
             {
                 try
@@ -79,14 +79,14 @@ namespace OverhaulMod.UI
                 catch { }
             }
 
-            Texture2D texture = m_loadedTexture;
+            Texture2D texture = _loadedTexture;
             if (texture)
                 Destroy(texture);
         }
 
         private void onClicked()
         {
-            Texture2D texture = m_loadedTexture;
+            Texture2D texture = _loadedTexture;
             if (!texture)
                 return;
 

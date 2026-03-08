@@ -9,54 +9,54 @@ namespace OverhaulMod.Engine
 
         public string classMemberName { get; }
 
-        private PropertyInfo m_propertyReference;
+        private PropertyInfo _propertyReference;
         public PropertyInfo propertyReference
         {
             get
             {
-                if (m_propertyReference == null)
+                if (_propertyReference == null)
                 {
-                    m_propertyReference = classType.GetProperty(classMemberName, BindingFlags.Public | BindingFlags.Static | BindingFlags.Instance);
+                    _propertyReference = classType.GetProperty(classMemberName, BindingFlags.Public | BindingFlags.Static | BindingFlags.Instance);
                 }
-                return m_propertyReference;
+                return _propertyReference;
             }
         }
 
-        private FieldInfo m_fieldReference;
+        private FieldInfo _fieldReference;
         public FieldInfo fieldReference
         {
             get
             {
-                if (m_fieldReference == null)
+                if (_fieldReference == null)
                 {
-                    m_fieldReference = classType.GetField(classMemberName, BindingFlags.Public | BindingFlags.Static | BindingFlags.Instance);
+                    _fieldReference = classType.GetField(classMemberName, BindingFlags.Public | BindingFlags.Static | BindingFlags.Instance);
                 }
-                return m_fieldReference;
+                return _fieldReference;
             }
         }
 
-        private Type m_valueType;
+        private Type _valueType;
         public Type valueType
         {
             get
             {
-                if (m_valueType == null)
+                if (_valueType == null)
                 {
                     FieldInfo fieldInfo = fieldReference;
                     if (fieldInfo != null)
                     {
-                        m_valueType = fieldInfo.FieldType;
+                        _valueType = fieldInfo.FieldType;
                     }
                     else
                     {
                         PropertyInfo propertyInfo = propertyReference;
                         if (propertyInfo != null)
                         {
-                            m_valueType = propertyInfo.PropertyType;
+                            _valueType = propertyInfo.PropertyType;
                         }
                     }
                 }
-                return m_valueType;
+                return _valueType;
             }
         }
 

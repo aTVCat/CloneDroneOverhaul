@@ -12,19 +12,19 @@ namespace OverhaulMod.Content.Personalization
 
         private static readonly string s_dataVersion = "0";
 
-        private string m_prefixTrue, m_prefixFalse;
+        private string _prefixTrue, _prefixFalse;
 
-        private StringBuilder m_stringBuilder;
+        private StringBuilder _stringBuilder;
 
-        private Dictionary<string, PersonalizationMultiplayerPlayerInfo> m_playerInfos;
+        private Dictionary<string, PersonalizationMultiplayerPlayerInfo> _playerInfos;
 
         public override void Awake()
         {
             base.Awake();
-            m_stringBuilder = new StringBuilder();
-            m_prefixTrue = getPrefix(true, false);
-            m_prefixFalse = getPrefix(false, false);
-            m_playerInfos = new Dictionary<string, PersonalizationMultiplayerPlayerInfo>();
+            _stringBuilder = new StringBuilder();
+            _prefixTrue = getPrefix(true, false);
+            _prefixFalse = getPrefix(false, false);
+            _playerInfos = new Dictionary<string, PersonalizationMultiplayerPlayerInfo>();
         }
 
         public void SendPlayerCustomizationDataEvent(bool sendForRecentlyConnectedPlayer)
@@ -36,7 +36,7 @@ namespace OverhaulMod.Content.Personalization
             string shieldSkin = normalizeId(PersonalizationUserInfo.ShieldSkin);
             string scytheSkin = normalizeId(PersonalizationUserInfo.ScytheSkin);
 
-            StringBuilder stringBuilder = m_stringBuilder;
+            StringBuilder stringBuilder = _stringBuilder;
             _ = stringBuilder.Clear();
             _ = stringBuilder.Append(getPrefix(sendForRecentlyConnectedPlayer));
             appendValue(stringBuilder, ModUserInfo.localPlayerPlayFabID, false);
@@ -55,14 +55,14 @@ namespace OverhaulMod.Content.Personalization
         public void OnEvent(GenericStringForModdingEvent evnt)
         {
             string eventData = evnt.EventData;
-            if (eventData.StartsWith(m_prefixFalse))
+            if (eventData.StartsWith(_prefixFalse))
             {
                 SendPlayerCustomizationDataEvent(true);
-                registerPlayerInfo(eventData.Substring(m_prefixFalse.Length));
+                registerPlayerInfo(eventData.Substring(_prefixFalse.Length));
             }
-            else if (eventData.StartsWith(m_prefixTrue))
+            else if (eventData.StartsWith(_prefixTrue))
             {
-                registerPlayerInfo(eventData.Substring(m_prefixTrue.Length));
+                registerPlayerInfo(eventData.Substring(_prefixTrue.Length));
             }
         }
 
@@ -71,7 +71,7 @@ namespace OverhaulMod.Content.Personalization
             if (playFaId == null)
                 return null;
 
-            if (!m_playerInfos.TryGetValue(playFaId, out PersonalizationMultiplayerPlayerInfo playerInfo))
+            if (!_playerInfos.TryGetValue(playFaId, out PersonalizationMultiplayerPlayerInfo playerInfo))
                 return null;
 
             return playerInfo;
@@ -85,13 +85,13 @@ namespace OverhaulMod.Content.Personalization
                 string playFabId = rawData.Remove(16);
                 ModDebug.Log(playFabId);
 
-                if (m_playerInfos.ContainsKey(playFabId))
+                if (_playerInfos.ContainsKey(playFabId))
                 {
-                    m_playerInfos[playFabId].SetData(rawData);
+                    _playerInfos[playFabId].SetData(rawData);
                 }
                 else
                 {
-                    m_playerInfos.Add(playFabId, new PersonalizationMultiplayerPlayerInfo(rawData));
+                    _playerInfos.Add(playFabId, new PersonalizationMultiplayerPlayerInfo(rawData));
                 }
                 GlobalEventManager.Instance.Dispatch(PLAYER_INFO_UPDATED_EVENT, playFabId);
             }
@@ -108,7 +108,7 @@ namespace OverhaulMod.Content.Personalization
         {
             if (useCache)
             {
-                return value ? m_prefixTrue : m_prefixFalse;
+                return value ? _prefixTrue : _prefixFalse;
             }
             return $"[OverhaulV4_{value.ToString().ToLower()}] ";
         }

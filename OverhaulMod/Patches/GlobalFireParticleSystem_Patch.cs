@@ -5,7 +5,7 @@ using UnityEngine;
 namespace OverhaulMod.Patches
 {
     [HarmonyPatch(typeof(GlobalFireParticleSystem))]
-    internal static class GlobalFireParticleSystem_Patch
+    internal static class GlobalFireParticleSyste_Patch
     {
         [HarmonyPostfix]
         [HarmonyPatch(nameof(GlobalFireParticleSystem.SpawnSingleBig), new System.Type[] { typeof(Vector3), typeof(Vector3), typeof(float) })]

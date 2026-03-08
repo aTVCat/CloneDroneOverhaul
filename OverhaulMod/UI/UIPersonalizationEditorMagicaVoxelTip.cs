@@ -7,11 +7,11 @@ namespace OverhaulMod.UI
     {
         [UIElementAction(nameof(Hide))]
         [UIElement("CloseButton")]
-        private readonly Button m_exitButton;
+        private readonly Button _exitButton;
 
         [UIElementAction(nameof(OnOkButtonClicked))]
         [UIElement("OKButton")]
-        private readonly Button m_okButton;
+        private readonly Button _okButton;
 
         public Action Callback;
 

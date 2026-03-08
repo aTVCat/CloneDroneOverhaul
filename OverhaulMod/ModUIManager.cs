@@ -36,20 +36,20 @@ namespace OverhaulMod
         [ModSetting(ModSettingsConstants.SHOW_DUEL_INVITE_MENU_REWORK, true, ModSetting.Tag.UISetting)]
         public static bool ShowDuelInviteMenuRework;
 
-        private Dictionary<string, GameObject> m_instantiatedUIs;
+        private Dictionary<string, GameObject> _instantiatedUIs;
 
-        private List<OverhaulUIBehaviour> m_shownUIs;
+        private List<OverhaulUIBehaviour> _shownUIs;
 
-        private Transform m_gameUIRootTransform;
+        private Transform _gameUIRootTransform;
         public Transform GameUIRootTransform
         {
             get
             {
-                if (!m_gameUIRootTransform)
+                if (!_gameUIRootTransform)
                 {
-                    m_gameUIRootTransform = ModCache.gameUIRoot.transform;
+                    _gameUIRootTransform = ModCache.gameUIRoot.transform;
                 }
-                return m_gameUIRootTransform;
+                return _gameUIRootTransform;
             }
         }
 
@@ -75,8 +75,8 @@ namespace OverhaulMod
         {
             base.Awake();
             windowManager = base.gameObject.AddComponent<WindowManager>();
-            m_instantiatedUIs = new Dictionary<string, GameObject>();
-            m_shownUIs = new List<OverhaulUIBehaviour>();
+            _instantiatedUIs = new Dictionary<string, GameObject>();
+            _shownUIs = new List<OverhaulUIBehaviour>();
 
             if (Time.timeSinceLevelLoad < 3f)
                 ModUIConstants.ShowIntro();
@@ -92,7 +92,7 @@ namespace OverhaulMod
 
         private void OnDestroy()
         {
-            Dictionary<string, GameObject> dictionary = m_instantiatedUIs;
+            Dictionary<string, GameObject> dictionary = _instantiatedUIs;
             if (!dictionary.IsNullOrEmpty())
             {
                 foreach (GameObject panel in dictionary.Values)
@@ -110,13 +110,13 @@ namespace OverhaulMod
         private void onGameInitialized()
         {
             List<string> keysToRemove = new List<string>();
-            foreach (KeyValuePair<string, GameObject> keyValue in m_instantiatedUIs)
+            foreach (KeyValuePair<string, GameObject> keyValue in _instantiatedUIs)
             {
                 if (!keyValue.Value)
                     keysToRemove.Add(keyValue.Key);
             }
             foreach (string key in keysToRemove)
-                _ = m_instantiatedUIs.Remove(key);
+                _ = _instantiatedUIs.Remove(key);
 
             _ = ModUIConstants.ShowVersionLabel();
             _ = ModUIConstants.ShowCinematicEffects();
@@ -125,13 +125,13 @@ namespace OverhaulMod
 
         public bool HasInstantiatedUI(string assetKey)
         {
-            return m_instantiatedUIs.ContainsKey(assetKey);
+            return _instantiatedUIs.ContainsKey(assetKey);
         }
 
         public bool IsUIVisible(string assetBundle, string assetKey)
         {
             string fullName = $"{assetBundle}.{assetKey}";
-            return HasInstantiatedUI(fullName) && m_instantiatedUIs[fullName].activeInHierarchy;
+            return HasInstantiatedUI(fullName) && _instantiatedUIs[fullName].activeInHierarchy;
         }
 
         public int GetSiblingIndex(UILayer layer)
@@ -176,7 +176,7 @@ namespace OverhaulMod
                 GameObject prefab = ModResources.Prefab(assetBundle, assetKey);
                 GameObject gameObject = Instantiate(prefab, GameUIRootTransform);
                 gameObject.SetActive(true);
-                m_instantiatedUIs.Add(fullName, gameObject);
+                _instantiatedUIs.Add(fullName, gameObject);
                 reparentUI(gameObject.transform as RectTransform, layer, siblingIndexOffset);
 
                 T result1 = gameObject.AddComponent<T>();
@@ -193,20 +193,20 @@ namespace OverhaulMod
                 result1.Show();
 
                 if (result1.closeOnEscapeButtonPress)
-                    m_shownUIs.Add(result1);
+                    _shownUIs.Add(result1);
 
                 return result1;
             }
             else
             {
-                reparentUI(m_instantiatedUIs[fullName].transform as RectTransform, layer, siblingIndexOffset);
+                reparentUI(_instantiatedUIs[fullName].transform as RectTransform, layer, siblingIndexOffset);
             }
 
-            T result = m_instantiatedUIs[fullName].GetComponent<T>();
+            T result = _instantiatedUIs[fullName].GetComponent<T>();
             result.Show();
 
             if (result.closeOnEscapeButtonPress)
-                m_shownUIs.Add(result);
+                _shownUIs.Add(result);
 
             return result;
         }
@@ -235,7 +235,7 @@ namespace OverhaulMod
         public T Get<T>(string assetBundle, string assetKey) where T : OverhaulUIBehaviour
         {
             string fullName = $"{assetBundle}.{assetKey}";
-            return m_instantiatedUIs.TryGetValue(fullName, out GameObject gameObject) ? (gameObject?.GetComponent<T>()) : null;
+            return _instantiatedUIs.TryGetValue(fullName, out GameObject gameObject) ? (gameObject?.GetComponent<T>()) : null;
         }
 
         public bool Hide(string assetBundle, string assetKey)
@@ -251,15 +251,15 @@ namespace OverhaulMod
 
         public OverhaulUIBehaviour GetLastShownUI()
         {
-            if (m_shownUIs.Count == 0)
+            if (_shownUIs.Count == 0)
                 return null;
 
-            return m_shownUIs[m_shownUIs.Count - 1];
+            return _shownUIs[_shownUIs.Count - 1];
         }
 
         public void RemoveUIFromLastShown(OverhaulUIBehaviour behaviour)
         {
-            _ = m_shownUIs.Remove(behaviour);
+            _ = _shownUIs.Remove(behaviour);
         }
 
         public void RefreshUI(bool refreshOnlyCursor)
@@ -305,7 +305,7 @@ namespace OverhaulMod
 
         public bool ShouldEnableCursor()
         {
-            foreach (GameObject gameObject in m_instantiatedUIs.Values)
+            foreach (GameObject gameObject in _instantiatedUIs.Values)
             {
                 if (!gameObject || !gameObject.activeInHierarchy)
                     continue;
@@ -319,7 +319,7 @@ namespace OverhaulMod
 
         public bool ShouldEnableUIOverLogoMode()
         {
-            foreach (GameObject gameObject in m_instantiatedUIs.Values)
+            foreach (GameObject gameObject in _instantiatedUIs.Values)
             {
                 if (!gameObject || !gameObject.activeInHierarchy)
                     continue;
@@ -333,7 +333,7 @@ namespace OverhaulMod
 
         public bool ShouldHideTitleScreen()
         {
-            foreach (GameObject gameObject in m_instantiatedUIs.Values)
+            foreach (GameObject gameObject in _instantiatedUIs.Values)
             {
                 if (!gameObject || !gameObject.activeInHierarchy)
                     continue;
@@ -347,7 +347,7 @@ namespace OverhaulMod
 
         internal void RemoveFromList(OverhaulUIBehaviour uIBehaviour)
         {
-            _ = m_instantiatedUIs.Remove(uIBehaviour.Name);
+            _ = _instantiatedUIs.Remove(uIBehaviour.Name);
         }
 
         public void RefreshUIVisibility()
@@ -400,20 +400,20 @@ namespace OverhaulMod
 
         public class WindowManager : MonoBehaviour
         {
-            private ModdedObject m_windowPrefab;
+            private ModdedObject _windowPrefab;
 
-            private Dictionary<string, WindowBehaviour> m_windows;
+            private Dictionary<string, WindowBehaviour> _windows;
 
             private void Awake()
             {
-                m_windows = new Dictionary<string, WindowBehaviour>();
-                m_windowPrefab = ModResources.Prefab(AssetBundleConstants.UI, "WindowPrefab").GetComponent<ModdedObject>();
+                _windows = new Dictionary<string, WindowBehaviour>();
+                _windowPrefab = ModResources.Prefab(AssetBundleConstants.UI, "WindowPrefab").GetComponent<ModdedObject>();
             }
 
             public string Window(Transform parent, Transform content, string title, Vector2 size, Vector2 position = default, bool destroyOnClose = false)
             {
                 string windowId = Guid.NewGuid().ToString();
-                ModdedObject moddedObject = Instantiate(m_windowPrefab, parent);
+                ModdedObject moddedObject = Instantiate(_windowPrefab, parent);
                 moddedObject.gameObject.SetActive(true);
                 WindowBehaviour windowBehaviour = moddedObject.gameObject.AddComponent<WindowBehaviour>();
                 windowBehaviour.InitializeElement();
@@ -423,13 +423,13 @@ namespace OverhaulMod
                 windowBehaviour.windowId = windowId;
                 windowBehaviour.destroyOnClose = destroyOnClose;
                 (windowBehaviour.transform as RectTransform).anchoredPosition = position;
-                m_windows.Add(windowId, windowBehaviour);
+                _windows.Add(windowId, windowBehaviour);
                 return windowId;
             }
 
             public void ShowWindow(string windowId)
             {
-                if (m_windows.TryGetValue(windowId, out WindowBehaviour windowBehaviour))
+                if (_windows.TryGetValue(windowId, out WindowBehaviour windowBehaviour))
                 {
                     if (windowBehaviour)
                         windowBehaviour.Show();
@@ -438,7 +438,7 @@ namespace OverhaulMod
 
             public void HideWindow(string windowId)
             {
-                if (m_windows.TryGetValue(windowId, out WindowBehaviour windowBehaviour))
+                if (_windows.TryGetValue(windowId, out WindowBehaviour windowBehaviour))
                 {
                     if (windowBehaviour)
                         windowBehaviour.Hide();
@@ -447,7 +447,7 @@ namespace OverhaulMod
 
             public bool IsWindowShown(string windowId)
             {
-                if (m_windows.TryGetValue(windowId, out WindowBehaviour windowBehaviour))
+                if (_windows.TryGetValue(windowId, out WindowBehaviour windowBehaviour))
                 {
                     if (windowBehaviour)
                         return windowBehaviour.gameObject.activeInHierarchy;
@@ -457,7 +457,7 @@ namespace OverhaulMod
 
             public WindowBehaviour GetWindow(string windowId)
             {
-                if (m_windows.TryGetValue(windowId, out WindowBehaviour windowBehaviour))
+                if (_windows.TryGetValue(windowId, out WindowBehaviour windowBehaviour))
                 {
                     if (windowBehaviour)
                         return windowBehaviour;
@@ -467,55 +467,55 @@ namespace OverhaulMod
 
             public void RemoveWindow(string windowId)
             {
-                _ = m_windows.Remove(windowId);
+                _ = _windows.Remove(windowId);
             }
 
             public List<WindowBehaviour> GetWindows()
             {
-                return new List<WindowBehaviour>(m_windows.Values);
+                return new List<WindowBehaviour>(_windows.Values);
             }
         }
 
         public class WindowBehaviour : OverhaulUIBehaviour
         {
             [UIElement("TitleBar")]
-            private readonly GameObject m_titleBar;
+            private readonly GameObject _titleBar;
 
             [UIElement("TitleBarFrame")]
-            private readonly GameObject m_titleBarFrame;
+            private readonly GameObject _titleBarFrame;
 
             [UIElement("TitleText")]
-            private readonly Text m_titleText;
+            private readonly Text _titleText;
 
             [UIElementAction(nameof(Close))]
             [UIElement("CloseButton")]
-            private readonly Button m_closeButton;
+            private readonly Button _closeButton;
 
             [UIElementAction(nameof(ToggleMinimized))]
             [UIElement("HideButton")]
-            private readonly Button m_hideButton;
+            private readonly Button _hideButton;
 
             [UIElement("Content")]
-            private readonly Transform m_content;
+            private readonly Transform _content;
 
-            private DraggablePanel m_draggablePanel;
+            private DraggablePanel _draggablePanel;
 
-            private UIElementMouseEventsComponent m_mouseEvents;
+            private UIElementMouseEventsComponent _mouseEvents;
 
-            private RectTransform m_rectTransform;
+            private RectTransform _rectTransform;
 
-            private float m_width, m_height;
+            private float _width, _height;
 
-            private bool m_minimized;
+            private bool _minimized;
             public bool minimized
             {
                 get
                 {
-                    return m_minimized;
+                    return _minimized;
                 }
                 set
                 {
-                    m_minimized = value;
+                    _minimized = value;
                     setMinimized(value);
                 }
             }
@@ -535,16 +535,16 @@ namespace OverhaulMod
             protected override void OnInitialized()
             {
                 RectTransform rectTransform = base.transform as RectTransform;
-                m_rectTransform = rectTransform;
+                _rectTransform = rectTransform;
 
-                DraggablePanel draggablePanel = m_titleBar.AddComponent<DraggablePanel>();
+                DraggablePanel draggablePanel = _titleBar.AddComponent<DraggablePanel>();
                 draggablePanel.SetTransform(rectTransform);
                 draggablePanel.SetGoToFront(true);
-                m_draggablePanel = draggablePanel;
+                _draggablePanel = draggablePanel;
 
-                UIElementMouseEventsComponent mouseEventsComponent = m_titleBar.AddComponent<UIElementMouseEventsComponent>();
+                UIElementMouseEventsComponent mouseEventsComponent = _titleBar.AddComponent<UIElementMouseEventsComponent>();
                 mouseEventsComponent.doubleClickCallback = ToggleMinimized;
-                m_mouseEvents = mouseEventsComponent;
+                _mouseEvents = mouseEventsComponent;
             }
 
             public override void OnDestroy()
@@ -555,16 +555,16 @@ namespace OverhaulMod
 
             private void setMinimized(bool value)
             {
-                Vector2 size = m_rectTransform.sizeDelta;
-                size.y = value ? 34f : m_height + 45f;
-                m_rectTransform.sizeDelta = size;
-                m_titleBarFrame.SetActive(!value);
-                m_content.gameObject.SetActive(!value);
+                Vector2 size = _rectTransform.sizeDelta;
+                size.y = value ? 34f : _height + 45f;
+                _rectTransform.sizeDelta = size;
+                _titleBarFrame.SetActive(!value);
+                _content.gameObject.SetActive(!value);
             }
 
             public void SetTitle(string text)
             {
-                m_titleText.text = text;
+                _titleText.text = text;
             }
 
             public void SetSize(Vector2 size, Transform content = null)
@@ -575,26 +575,26 @@ namespace OverhaulMod
                 else
                     sizeToSet = new Vector2(size.x, size.y);
 
-                m_width = sizeToSet.x;
-                m_height = sizeToSet.y;
-                m_rectTransform.sizeDelta = new Vector2(size.x + 30f, size.y + 45f);
+                _width = sizeToSet.x;
+                _height = sizeToSet.y;
+                _rectTransform.sizeDelta = new Vector2(size.x + 30f, size.y + 45f);
             }
 
             public void SetContents(Transform transform)
             {
                 transform.gameObject.SetActive(true);
-                transform.SetParent(m_content);
+                transform.SetParent(_content);
                 transform.localScale = Vector3.one;
                 transform.localEulerAngles = Vector3.zero;
                 transform.localPosition = Vector3.zero;
 
                 if (transform is RectTransform rectTransform)
                 {
-                    float widthToSet = m_width;
+                    float widthToSet = _width;
                     if (widthToSet == -1f)
                         widthToSet = rectTransform.sizeDelta.x;
 
-                    float hightToSet = m_height;
+                    float hightToSet = _height;
                     if (hightToSet == -1f)
                         hightToSet = rectTransform.sizeDelta.y;
 

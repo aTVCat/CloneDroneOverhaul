@@ -11,68 +11,68 @@ namespace OverhaulMod.UI
     {
         [UIElementAction(nameof(Hide))]
         [UIElement("CloseButton")]
-        private readonly Button m_exitButton;
+        private readonly Button _exitButton;
 
         [UIElementAction(nameof(OnCloseUpgradeUIButtonClicked))]
         [UIElement("CloseUpgradeUIButton", false)]
-        private readonly Button m_closeUpgradeUIButton;
+        private readonly Button _closeUpgradeUIButton;
 
         [UIElementAction(nameof(OnResetUpgradesButtonClicked))]
         [UIElement("ResetUpgradesButton", false)]
-        private readonly Button m_resetUpgradesButton;
+        private readonly Button _resetUpgradesButton;
 
         [UIElementAction(nameof(OnClearButtonClicked))]
         [UIElement("ClearButton")]
-        private readonly Button m_clearButton;
+        private readonly Button _clearButton;
 
         [UIElementAction(nameof(OnSelectBuildToUseOnMatchStartButtonClicked))]
         [UIElement("BuildToUseOnMatchStartButton")]
-        private readonly Button m_selectBuildToUseOnMatchStartButton;
+        private readonly Button _selectBuildToUseOnMatchStartButton;
 
         [UIElementAction(nameof(OnStopSelectingBuildToUseOnMatchStartButtonClicked))]
         [UIElement("DontSelectBuildToUseOnMatchStartButton", false)]
-        private readonly Button m_stopSelectingBuildToUseOnMatchStartButton;
+        private readonly Button _stopSelectingBuildToUseOnMatchStartButton;
 
         [UIElementAction(nameof(OnSelectNothingToUseOnMatchStartButtonClicked))]
         [UIElement("SelectNothingToUseOnMatchStartButton", false)]
-        private readonly Button m_selectNothingToUseOnMatchStartButton;
+        private readonly Button _selectNothingToUseOnMatchStartButton;
 
         [UIElementAction(nameof(OnSearchBoxChanged))]
         [UIElement("SearchBox")]
-        private readonly InputField m_searchBox;
+        private readonly InputField _searchBox;
 
         [KeyBindSetter(KeyCode.U)]
         [UIElementAction(nameof(OnKeyBindChanged))]
         [UIElement("KeyBind")]
-        private readonly UIElementKeyBindSetter m_keyBind;
+        private readonly UIElementKeyBindSetter _keyBind;
 
         [UIElement("Panel", true)]
-        private readonly GameObject m_panel;
+        private readonly GameObject _panel;
 
         [UIElement("NewBuildButtonPrefab", false)]
-        private readonly Button m_newBuildButtonPrefab;
+        private readonly Button _newBuildButtonPrefab;
 
         [UIElement("BuildDisplayPrefab", false)]
-        private readonly ModdedObject m_buildDisplayPrefab;
+        private readonly ModdedObject _buildDisplayPrefab;
 
         [UIElement("Content")]
-        private readonly Transform m_buildDisplayContainer;
+        private readonly Transform _buildDisplayContainer;
 
         [UIElement("BuildToUseOnMatchStartButton")]
-        private readonly Button m_buildToUseOnMatchStartButton;
+        private readonly Button _buildToUseOnMatchStartButton;
 
         [UIElement("BuildToUseOnMatchStartText")]
-        private readonly Text m_buildToUseOnMatchStartText;
+        private readonly Text _buildToUseOnMatchStartText;
 
-        private int m_upgradeUISiblingIndex;
+        private int _upgradeUISiblingIndex;
 
-        private bool m_selectingBuildToUseOnMatchStart;
+        private bool _selectingBuildToUseOnMatchStart;
 
-        private Dictionary<string, GameObject> m_searchEntries;
+        private Dictionary<string, GameObject> _searchEntries;
 
-        private AutoBuildInfo m_editingBuild;
+        private AutoBuildInfo _editingBuild;
 
-        private GameObject m_instantiatedNewButton;
+        private GameObject _instantiatedNewButton;
 
         public override bool refreshOnlyCursor => true;
 
@@ -90,8 +90,8 @@ namespace OverhaulMod.UI
 
         protected override void OnInitialized()
         {
-            m_searchEntries = new Dictionary<string, GameObject>();
-            m_keyBind.key = AutoBuildManager.AutoBuildKeyBind;
+            _searchEntries = new Dictionary<string, GameObject>();
+            _keyBind.key = AutoBuildManager.AutoBuildKeyBind;
         }
 
         public override void Show()
@@ -101,8 +101,8 @@ namespace OverhaulMod.UI
             PopulateBuilds();
             OnStopSelectingBuildToUseOnMatchStartButtonClicked();
 
-            m_clearButton.interactable = false;
-            m_searchBox.text = string.Empty;
+            _clearButton.interactable = false;
+            _searchBox.text = string.Empty;
         }
 
         public override void OnEnable()
@@ -129,10 +129,10 @@ namespace OverhaulMod.UI
 
         public void PopulateBuilds()
         {
-            m_searchEntries.Clear();
-            m_instantiatedNewButton = null;
-            if (m_buildDisplayContainer.childCount != 0)
-                TransformUtils.DestroyAllChildren(m_buildDisplayContainer);
+            _searchEntries.Clear();
+            _instantiatedNewButton = null;
+            if (_buildDisplayContainer.childCount != 0)
+                TransformUtils.DestroyAllChildren(_buildDisplayContainer);
 
             int i = -1;
             UpgradeManager upgradeManager = UpgradeManager.Instance;
@@ -143,14 +143,14 @@ namespace OverhaulMod.UI
                 i++;
                 int index = i;
 
-                ModdedObject moddedObject = Instantiate(m_buildDisplayPrefab, m_buildDisplayContainer);
+                ModdedObject moddedObject = Instantiate(_buildDisplayPrefab, _buildDisplayContainer);
                 moddedObject.gameObject.SetActive(true);
 
                 string searchEntryKey = build.Name.ToLower();
-                while (m_searchEntries.ContainsKey(searchEntryKey))
+                while (_searchEntries.ContainsKey(searchEntryKey))
                     searchEntryKey += "_1";
 
-                m_searchEntries.Add(searchEntryKey, moddedObject.gameObject);
+                _searchEntries.Add(searchEntryKey, moddedObject.gameObject);
 
                 Text buildNameText = moddedObject.GetObject<Text>(0);
                 buildNameText.text = AutoBuildManager.GetBuildDisplayName(build.Name);
@@ -180,7 +180,7 @@ namespace OverhaulMod.UI
                 Button editButton = moddedObject.GetObject<Button>(3);
                 editButton.onClick.AddListener(delegate
                 {
-                    if (m_selectingBuildToUseOnMatchStart)
+                    if (_selectingBuildToUseOnMatchStart)
                     {
                         ModSettingsManager.SetIntValue(ModSettingsConstants.AUTO_BUILD_INDEX_TO_USE_ON_MATCH_START, builds.IndexOf(build));
                         RefreshBuildToUseOnStartButton();
@@ -235,13 +235,13 @@ namespace OverhaulMod.UI
 
         public void RefreshNewBuildButton()
         {
-            if (!m_instantiatedNewButton)
+            if (!_instantiatedNewButton)
             {
-                Button newBuildButton = Instantiate(m_newBuildButtonPrefab, m_buildDisplayContainer);
+                Button newBuildButton = Instantiate(_newBuildButtonPrefab, _buildDisplayContainer);
                 newBuildButton.onClick.AddListener(OnNewButtonClicked);
-                m_instantiatedNewButton = newBuildButton.gameObject;
+                _instantiatedNewButton = newBuildButton.gameObject;
             }
-            m_instantiatedNewButton.gameObject.SetActive(m_searchBox.text.IsNullOrEmpty() && AutoBuildManager.Instance.buildList.Builds.Count < 10);
+            _instantiatedNewButton.gameObject.SetActive(_searchBox.text.IsNullOrEmpty() && AutoBuildManager.Instance.buildList.Builds.Count < 10);
         }
 
         public void RefreshBuildToUseOnStartButton()
@@ -252,29 +252,29 @@ namespace OverhaulMod.UI
             List<AutoBuildInfo> builds = autoBuildManager.buildList.Builds;
             if (builds.IsNullOrEmpty() || index < 0 || index >= builds.Count)
             {
-                m_buildToUseOnMatchStartText.text = "-";
+                _buildToUseOnMatchStartText.text = "-";
                 return;
             }
-            m_buildToUseOnMatchStartText.text = AutoBuildManager.GetBuildDisplayName(builds[index].Name);
+            _buildToUseOnMatchStartText.text = AutoBuildManager.GetBuildDisplayName(builds[index].Name);
         }
 
         public void SetUpgradeUISiblingIndex(bool initial)
         {
             if (initial)
             {
-                ModCache.gameUIRoot.UpgradeUI.transform.SetSiblingIndex(m_upgradeUISiblingIndex);
+                ModCache.gameUIRoot.UpgradeUI.transform.SetSiblingIndex(_upgradeUISiblingIndex);
             }
             else
             {
                 Transform transform = ModCache.gameUIRoot.UpgradeUI.transform;
-                m_upgradeUISiblingIndex = transform.GetSiblingIndex();
+                _upgradeUISiblingIndex = transform.GetSiblingIndex();
                 transform.SetSiblingIndex(ModUIManager.Instance.GetSiblingIndex(ModUIManager.UILayer.AfterTitleScreen) + 3);
             }
         }
 
         public void ConfigureBuild(AutoBuildInfo autoBuildInfo)
         {
-            m_editingBuild = autoBuildInfo;
+            _editingBuild = autoBuildInfo;
 
             AutoBuildManager autoBuildManager = AutoBuildManager.Instance;
             autoBuildManager.isInAutoBuildConfigurationMode = true;
@@ -287,9 +287,9 @@ namespace OverhaulMod.UI
 
             isShowingUpgradeUI = true;
 
-            m_panel.SetActive(false);
-            m_closeUpgradeUIButton.gameObject.SetActive(true);
-            m_resetUpgradesButton.gameObject.SetActive(true);
+            _panel.SetActive(false);
+            _closeUpgradeUIButton.gameObject.SetActive(true);
+            _resetUpgradesButton.gameObject.SetActive(true);
         }
 
         public void OnCloseUpgradeUIButtonClicked()
@@ -297,8 +297,8 @@ namespace OverhaulMod.UI
             AutoBuildManager autoBuildManager = AutoBuildManager.Instance;
             autoBuildManager.isInAutoBuildConfigurationMode = false;
 
-            m_editingBuild.SetUpgradesFromData(GameDataManager.Instance.GetAvailableSkillPoints());
-            m_editingBuild = null;
+            _editingBuild.SetUpgradesFromData(GameDataManager.Instance.GetAvailableSkillPoints());
+            _editingBuild = null;
 
             autoBuildManager.SaveBuildsInfo();
 
@@ -307,9 +307,9 @@ namespace OverhaulMod.UI
 
             isShowingUpgradeUI = false;
 
-            m_panel.SetActive(true);
-            m_closeUpgradeUIButton.gameObject.SetActive(false);
-            m_resetUpgradesButton.gameObject.SetActive(false);
+            _panel.SetActive(true);
+            _closeUpgradeUIButton.gameObject.SetActive(false);
+            _resetUpgradesButton.gameObject.SetActive(false);
             PopulateBuilds();
             RefreshNewBuildButton();
         }
@@ -322,7 +322,7 @@ namespace OverhaulMod.UI
 
         public void OnNewButtonClicked()
         {
-            ModUIUtils.InputFieldWindow(LocalizationManager.Instance.GetTranslatedString("auto_build_create"), LocalizationManager.Instance.GetTranslatedString("auto_build_create_desc"), m_searchBox.text.IsNullOrEmpty() ? "Unnamed build" : m_searchBox.text, 20, 125f, delegate (string name)
+            ModUIUtils.InputFieldWindow(LocalizationManager.Instance.GetTranslatedString("auto_build_create"), LocalizationManager.Instance.GetTranslatedString("auto_build_create_desc"), _searchBox.text.IsNullOrEmpty() ? "Unnamed build" : _searchBox.text, 20, 125f, delegate (string name)
             {
                 AutoBuildInfo autoBuildInfo = new AutoBuildInfo()
                 {
@@ -339,7 +339,7 @@ namespace OverhaulMod.UI
 
         public void OnClearButtonClicked()
         {
-            m_searchBox.text = string.Empty;
+            _searchBox.text = string.Empty;
         }
 
         public void OnSearchBoxChanged(string value)
@@ -347,9 +347,9 @@ namespace OverhaulMod.UI
             string lowerText = value.ToLower();
             bool forceSetEnabled = value.IsNullOrEmpty();
 
-            m_clearButton.interactable = !forceSetEnabled;
+            _clearButton.interactable = !forceSetEnabled;
 
-            foreach (KeyValuePair<string, GameObject> keyValue in m_searchEntries)
+            foreach (KeyValuePair<string, GameObject> keyValue in _searchEntries)
             {
                 if (forceSetEnabled)
                 {
@@ -374,19 +374,19 @@ namespace OverhaulMod.UI
 
         public void OnSelectBuildToUseOnMatchStartButtonClicked()
         {
-            m_selectingBuildToUseOnMatchStart = true;
-            m_stopSelectingBuildToUseOnMatchStartButton.gameObject.SetActive(true);
-            m_selectNothingToUseOnMatchStartButton.gameObject.SetActive(true);
+            _selectingBuildToUseOnMatchStart = true;
+            _stopSelectingBuildToUseOnMatchStartButton.gameObject.SetActive(true);
+            _selectNothingToUseOnMatchStartButton.gameObject.SetActive(true);
 
-            if (m_instantiatedNewButton)
-                m_instantiatedNewButton.SetActive(false);
+            if (_instantiatedNewButton)
+                _instantiatedNewButton.SetActive(false);
         }
 
         public void OnStopSelectingBuildToUseOnMatchStartButtonClicked()
         {
-            m_selectingBuildToUseOnMatchStart = false;
-            m_stopSelectingBuildToUseOnMatchStartButton.gameObject.SetActive(false);
-            m_selectNothingToUseOnMatchStartButton.gameObject.SetActive(false);
+            _selectingBuildToUseOnMatchStart = false;
+            _stopSelectingBuildToUseOnMatchStartButton.gameObject.SetActive(false);
+            _selectNothingToUseOnMatchStartButton.gameObject.SetActive(false);
 
             RefreshNewBuildButton();
         }
@@ -395,9 +395,9 @@ namespace OverhaulMod.UI
         {
             ModSettingsManager.SetIntValue(ModSettingsConstants.AUTO_BUILD_INDEX_TO_USE_ON_MATCH_START, -1, true);
 
-            m_selectingBuildToUseOnMatchStart = false;
-            m_stopSelectingBuildToUseOnMatchStartButton.gameObject.SetActive(false);
-            m_selectNothingToUseOnMatchStartButton.gameObject.SetActive(false);
+            _selectingBuildToUseOnMatchStart = false;
+            _stopSelectingBuildToUseOnMatchStartButton.gameObject.SetActive(false);
+            _selectNothingToUseOnMatchStartButton.gameObject.SetActive(false);
 
             RefreshBuildToUseOnStartButton();
             RefreshNewBuildButton();

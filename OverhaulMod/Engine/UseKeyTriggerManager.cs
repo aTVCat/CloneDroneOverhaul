@@ -18,36 +18,36 @@ namespace OverhaulMod.Engine
 
         public static readonly Color FramingBoxDeselectedColor = new Color(0.4f, 0.4f, 0.4f, 0.3f);
 
-        private List<LevelEditorUseButtonTrigger> m_triggers;
+        private List<LevelEditorUseButtonTrigger> _triggers;
 
-        private UIPressActionKeyDescription m_pressActionKeyDescription;
+        private UIPressActionKeyDescription _pressActionKeyDescription;
 
-        private LevelEditorUseButtonTrigger m_prevNearestTrigger;
+        private LevelEditorUseButtonTrigger _prevNearestTrigger;
 
-        private Coroutine m_coroutine;
+        private Coroutine _coroutine;
 
-        private float m_timeToHideText;
+        private float _timeToHideText;
 
         public override void Awake()
         {
             base.Awake();
 
-            m_triggers = new List<LevelEditorUseButtonTrigger>();
-            m_timeToHideText = -1f;
+            _triggers = new List<LevelEditorUseButtonTrigger>();
+            _timeToHideText = -1f;
         }
 
         private void Update()
         {
-            if (m_timeToHideText != -1f && Time.unscaledTime >= m_timeToHideText)
+            if (_timeToHideText != -1f && Time.unscaledTime >= _timeToHideText)
             {
-                m_timeToHideText = -1f;
+                _timeToHideText = -1f;
                 HideDescription();
             }
 
             if (!EnablePressButtonTriggerDescriptionRework || !ModTime.Instance.HasFixedUpdatedThisFrame())
                 return;
 
-            List<LevelEditorUseButtonTrigger> list = m_triggers;
+            List<LevelEditorUseButtonTrigger> list = _triggers;
             if (list.IsNullOrEmpty())
                 return;
 
@@ -69,23 +69,23 @@ namespace OverhaulMod.Engine
                 }
             }
 
-            if (m_prevNearestTrigger != nearestTrigger)
+            if (_prevNearestTrigger != nearestTrigger)
             {
-                if (m_coroutine != null)
+                if (_coroutine != null)
                 {
-                    StopCoroutine(m_coroutine);
-                    m_coroutine = null;
+                    StopCoroutine(_coroutine);
+                    _coroutine = null;
                 }
 
                 if (nearestTrigger == null)
                 {
                     HideDescription();
-                    m_prevNearestTrigger = null;
+                    _prevNearestTrigger = null;
                 }
                 else
                 {
-                    m_coroutine = StartCoroutine(processTriggerCoroutine(nearestTrigger, m_prevNearestTrigger));
-                    m_prevNearestTrigger = nearestTrigger;
+                    _coroutine = StartCoroutine(processTriggerCoroutine(nearestTrigger, _prevNearestTrigger));
+                    _prevNearestTrigger = nearestTrigger;
                 }
             }
         }
@@ -126,30 +126,30 @@ namespace OverhaulMod.Engine
             if (value && trigger.KeyboardHintPrefab)
                 SetFramingBoxSelectedColor(trigger.KeyboardHintPrefab.transform, !EnablePressButtonTriggerDescriptionRework);
 
-            if (value && !m_triggers.Contains(trigger))
-                m_triggers.Add(trigger);
+            if (value && !_triggers.Contains(trigger))
+                _triggers.Add(trigger);
             else if (!value)
-                _ = m_triggers.Remove(trigger);
+                _ = _triggers.Remove(trigger);
         }
 
         public void SetNearestTriggerNull()
         {
-            m_prevNearestTrigger = null;
+            _prevNearestTrigger = null;
         }
 
         public void ShowThenHideDescription(string description, float time)
         {
-            m_timeToHideText = Time.unscaledTime + time;
+            _timeToHideText = Time.unscaledTime + time;
             ShowDescription(description);
         }
 
         public void ShowDescription(string description)
         {
-            UIPressActionKeyDescription actionDescription = m_pressActionKeyDescription;
+            UIPressActionKeyDescription actionDescription = _pressActionKeyDescription;
             if (!actionDescription)
             {
                 actionDescription = ModUIConstants.ShowPressActionKeyDescription();
-                m_pressActionKeyDescription = actionDescription;
+                _pressActionKeyDescription = actionDescription;
             }
 
             if (actionDescription)
@@ -158,7 +158,7 @@ namespace OverhaulMod.Engine
 
         public void HideDescription()
         {
-            UIPressActionKeyDescription actionDescription = m_pressActionKeyDescription;
+            UIPressActionKeyDescription actionDescription = _pressActionKeyDescription;
             if (actionDescription)
                 actionDescription.HideText();
         }

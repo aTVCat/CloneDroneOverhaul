@@ -6,22 +6,22 @@ namespace OverhaulMod.UI
     {
         public static bool HasEverShownIntro;
 
-        private CanvasGroup m_canvasGroup;
+        private CanvasGroup _canvasGroup;
 
-        private bool m_fadeOut;
+        private bool _fadeOut;
 
-        private float m_timeout;
+        private float _timeout;
 
         protected override void OnInitialized()
         {
-            m_canvasGroup = base.GetComponent<CanvasGroup>();
+            _canvasGroup = base.GetComponent<CanvasGroup>();
         }
 
         public override void Show()
         {
             base.Show();
-            m_canvasGroup.alpha = 1f;
-            m_timeout = Time.unscaledTime + 15f;
+            _canvasGroup.alpha = 1f;
+            _timeout = Time.unscaledTime + 15f;
         }
 
         public override void Start()
@@ -31,15 +31,15 @@ namespace OverhaulMod.UI
 
         public override void Update()
         {
-            if (!m_fadeOut && Time.unscaledTime > m_timeout)
+            if (!_fadeOut && Time.unscaledTime > _timeout)
             {
-                m_fadeOut = true;
+                _fadeOut = true;
             }
 
-            if (m_fadeOut)
+            if (_fadeOut)
             {
-                m_canvasGroup.alpha -= Time.unscaledDeltaTime * 2.5f;
-                if (m_canvasGroup.alpha <= 0f)
+                _canvasGroup.alpha -= Time.unscaledDeltaTime * 2.5f;
+                if (_canvasGroup.alpha <= 0f)
                 {
                     DestroyThis();
                     UIVersionLabel versionLabel = UIVersionLabel.instance;
@@ -51,7 +51,7 @@ namespace OverhaulMod.UI
 
         public void StartFadingOut()
         {
-            m_fadeOut = true;
+            _fadeOut = true;
         }
     }
 }

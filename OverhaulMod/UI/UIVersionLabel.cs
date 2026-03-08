@@ -14,37 +14,37 @@ namespace OverhaulMod.UI
         public static bool ShowDeveloperBuildLabel;
 
         [UIElement("NewVersionLabel_TitleScreen")]
-        private readonly GameObject m_watermark;
+        private readonly GameObject _watermark;
 
         [UIElement("NewVersionLabel_TitleScreen")]
-        private readonly CanvasGroup m_watermarkCanvasGroup;
+        private readonly CanvasGroup _watermarkCanvasGroup;
 
         [UIElement("DebugLabel_TitleScreen")]
-        private readonly GameObject m_debugIcon;
+        private readonly GameObject _debugIcon;
 
         [UIElement("Watermark_TitleScreen")]
-        private readonly Text m_versionText;
+        private readonly Text _versionText;
 
         [UIElement("NewVersionLabel_Gameplay")]
-        private readonly GameObject m_gameplayWatermark;
+        private readonly GameObject _gameplayWatermark;
 
         [UIElement("NewVersionLabel_Gameplay")]
-        private readonly RectTransform m_gameplayWatermarkTransform;
+        private readonly RectTransform _gameplayWatermarkTransform;
 
         [UIElement("DebugLabel_Gameplay")]
-        private readonly GameObject m_gameplayDebugIcon;
+        private readonly GameObject _gameplayDebugIcon;
 
         [UIElement("Watermark_Gameplay")]
-        private readonly Text m_gameplayVersionText;
+        private readonly Text _gameplayVersionText;
 
         [UIElement("DeveloperBuildLabel", false)]
-        private readonly GameObject m_devBuildLabelObject;
+        private readonly GameObject _devBuildLabelObject;
 
         public bool ForceHide;
 
-        private bool m_refreshWidth;
+        private bool _refreshWidth;
 
-        private bool m_fadeInLabel;
+        private bool _fadeInLabel;
 
         public override bool closeOnEscapeButtonPress => false;
 
@@ -62,28 +62,28 @@ namespace OverhaulMod.UI
             }
         }
 
-        private float m_offsetX;
+        private float _offsetX;
         public float offsetX
         {
             get
             {
-                return m_offsetX;
+                return _offsetX;
             }
             set
             {
-                m_offsetX = value;
-                Vector2 anchoredPosition = m_gameplayWatermarkTransform.anchoredPosition;
+                _offsetX = value;
+                Vector2 anchoredPosition = _gameplayWatermarkTransform.anchoredPosition;
                 anchoredPosition.x = 5f + value;
-                m_gameplayWatermarkTransform.anchoredPosition = anchoredPosition;
+                _gameplayWatermarkTransform.anchoredPosition = anchoredPosition;
             }
         }
 
         protected override void OnInitialized()
         {
             instance = this;
-            m_gameplayVersionText.font = ModResources.EditUndoFont();
-            m_gameplayVersionText.fontSize = 10;
-            m_gameplayWatermarkTransform.localScale = Vector3.one * 0.9f;
+            _gameplayVersionText.font = ModResources.EditUndoFont();
+            _gameplayVersionText.fontSize = 10;
+            _gameplayWatermarkTransform.localScale = Vector3.one * 0.9f;
             RefreshLabels();
 
             ModSettingsManager.Instance.AddSettingValueChangedListener(onDevBuildLabelSettingChanged, ModSettingsConstants.SHOW_DEVELOPER_BUILD_LABEL);
@@ -92,7 +92,7 @@ namespace OverhaulMod.UI
             ModCache.titleScreenUI.VersionLabel.gameObject.SetActive(false);
 
             if (GameModeManager.IsOnTitleScreen())
-                m_watermarkCanvasGroup.alpha = UIIntro.HasEverShownIntro ? 1f : 0f;
+                _watermarkCanvasGroup.alpha = UIIntro.HasEverShownIntro ? 1f : 0f;
         }
 
         public override void OnDestroy()
@@ -105,24 +105,24 @@ namespace OverhaulMod.UI
 
         public override void Update()
         {
-            if (m_refreshWidth)
+            if (_refreshWidth)
             {
-                m_refreshWidth = false;
-                RectTransform rectTransform = m_gameplayWatermarkTransform;
+                _refreshWidth = false;
+                RectTransform rectTransform = _gameplayWatermarkTransform;
                 Vector2 sideDelta = rectTransform.sizeDelta;
-                sideDelta.x = m_gameplayVersionText.preferredWidth + 15f;
+                sideDelta.x = _gameplayVersionText.preferredWidth + 15f;
                 rectTransform.sizeDelta = sideDelta;
             }
 
             bool isOnTitleScreen = GameModeManager.IsOnTitleScreen();
             if (isOnTitleScreen)
             {
-                if (m_fadeInLabel)
+                if (_fadeInLabel)
                 {
-                    m_watermarkCanvasGroup.alpha += Mathf.Min(Time.unscaledDeltaTime, 0.025f);
-                    if (m_watermarkCanvasGroup.alpha >= 1f)
+                    _watermarkCanvasGroup.alpha += Mathf.Min(Time.unscaledDeltaTime, 0.025f);
+                    if (_watermarkCanvasGroup.alpha >= 1f)
                     {
-                        m_fadeInLabel = false;
+                        _fadeInLabel = false;
                     }
                 }
             }
@@ -131,28 +131,28 @@ namespace OverhaulMod.UI
                 return;
 
             bool show = !ForceHide && showWatermark;
-            m_watermark.SetActive(show && ModCache.titleScreenUI.RootButtonsContainerBG.activeInHierarchy && isOnTitleScreen && !UITitleScreenHypocrisisSkin.HideVersionLabel);
-            m_gameplayWatermark.SetActive(show && !isOnTitleScreen);
+            _watermark.SetActive(show && ModCache.titleScreenUI.RootButtonsContainerBG.activeInHierarchy && isOnTitleScreen && !UITitleScreenHypocrisisSkin.HideVersionLabel);
+            _gameplayWatermark.SetActive(show && !isOnTitleScreen);
         }
 
         public void RefreshLabels()
         {
             bool debug = ModBuildInfo.debug;
-            m_versionText.text = $"OVERHAUL {ModBuildInfo.fullVersionString.ToUpper()}\nCLONE DRONE {VersionNumberManager.Instance.GetVersionString()}";
-            m_debugIcon.SetActive(debug);
-            m_gameplayVersionText.text = $"OVERHAUL {ModBuildInfo.versionString.ToUpper()}";
-            m_gameplayDebugIcon.SetActive(debug);
-            m_refreshWidth = true;
+            _versionText.text = $"OVERHAUL {ModBuildInfo.fullVersionString.ToUpper()}\nCLONE DRONE {VersionNumberManager.Instance.GetVersionString()}";
+            _debugIcon.SetActive(debug);
+            _gameplayVersionText.text = $"OVERHAUL {ModBuildInfo.versionString.ToUpper()}";
+            _gameplayDebugIcon.SetActive(debug);
+            _refreshWidth = true;
         }
 
         public void ShowTitleScreenLabel()
         {
-            m_fadeInLabel = true;
+            _fadeInLabel = true;
         }
 
         private void onDevBuildLabelSettingChanged(object obj)
         {
-            m_devBuildLabelObject.SetActive(obj is bool b && ModBuildInfo.isDeveloperBuild && ModBuildInfo.debug && b);
+            _devBuildLabelObject.SetActive(obj is bool b && ModBuildInfo.isDeveloperBuild && ModBuildInfo.debug && b);
         }
     }
 }

@@ -12,21 +12,21 @@ namespace OverhaulMod.UI
     {
         [UIElementAction(nameof(Hide))]
         [UIElement("CloseButton")]
-        private readonly Button m_exitButton;
+        private readonly Button _exitButton;
 
         [UIElementAction(nameof(OnDoneButtonClicked))]
         [UIElement("DoneButton")]
-        private readonly Button m_doneButton;
+        private readonly Button _doneButton;
 
         [UIElementAction(nameof(OnItemNameChanged))]
         [UIElement("ItemNameField")]
-        private readonly InputField m_itemNameField;
+        private readonly InputField _itemNameField;
 
         [UIElement("TemplateDropdown")]
-        private readonly Dropdown m_templateDropdown;
+        private readonly Dropdown _templateDropdown;
 
         [UIElement("StatusText")]
-        private readonly Text m_statusText;
+        private readonly Text _statusText;
 
         public string TargetDirectory;
 
@@ -34,15 +34,15 @@ namespace OverhaulMod.UI
 
         public Action ItemCreatedCallback;
 
-        private float m_timeLeftToRefreshStatus;
+        private float _timeLeftToRefreshStatus;
 
-        private string m_generatedGuid;
+        private string _generatedGuid;
 
-        private string m_folderName;
+        private string _folderName;
 
         protected override void OnInitialized()
         {
-            System.Collections.Generic.List<Dropdown.OptionData> options = m_templateDropdown.options;
+            System.Collections.Generic.List<Dropdown.OptionData> options = _templateDropdown.options;
             options.Clear();
             options.Add(new Dropdown.OptionData("None"));
 
@@ -54,30 +54,30 @@ namespace OverhaulMod.UI
                         options.Add(new DropdownPersonalizationItemInfo(template));
                 }
 
-            m_templateDropdown.options = options;
-            m_templateDropdown.value = 0;
+            _templateDropdown.options = options;
+            _templateDropdown.value = 0;
         }
 
         public override void Show()
         {
             base.Show();
 
-            m_generatedGuid = Guid.NewGuid().ToString().Remove(8);
+            _generatedGuid = Guid.NewGuid().ToString().Remove(8);
 
-            m_templateDropdown.value = 0;
-            m_itemNameField.text = string.Empty;
+            _templateDropdown.value = 0;
+            _itemNameField.text = string.Empty;
 
             ScheduleRefreshingStatus();
         }
 
         public override void Update()
         {
-            if (m_timeLeftToRefreshStatus == -1f) return;
+            if (_timeLeftToRefreshStatus == -1f) return;
 
-            m_timeLeftToRefreshStatus = Mathf.Max(0f, m_timeLeftToRefreshStatus - Time.unscaledDeltaTime);
-            if (m_timeLeftToRefreshStatus == 0f)
+            _timeLeftToRefreshStatus = Mathf.Max(0f, _timeLeftToRefreshStatus - Time.unscaledDeltaTime);
+            if (_timeLeftToRefreshStatus == 0f)
             {
-                m_timeLeftToRefreshStatus = -1f;
+                _timeLeftToRefreshStatus = -1f;
 
                 RefreshStatus();
             }
@@ -86,79 +86,79 @@ namespace OverhaulMod.UI
         public void ScheduleRefreshingStatus()
         {
             SetStatusText("Checking...", Color.gray);
-            m_doneButton.interactable = false;
+            _doneButton.interactable = false;
 
-            m_timeLeftToRefreshStatus = 1f;
+            _timeLeftToRefreshStatus = 1f;
         }
 
         public void RefreshStatus()
         {
-            if (m_itemNameField.text.IsNullOrEmpty())
+            if (_itemNameField.text.IsNullOrEmpty())
             {
                 SetStatusText("The name is empty.", Color.red);
-                m_doneButton.interactable = false;
+                _doneButton.interactable = false;
                 return;
             }
 
-            if (m_itemNameField.text.IsNullOrWhiteSpace())
+            if (_itemNameField.text.IsNullOrWhiteSpace())
             {
                 SetStatusText("The name is whitespace.", Color.red);
-                m_doneButton.interactable = false;
+                _doneButton.interactable = false;
                 return;
             }
 
-            if (m_itemNameField.text.EndsWith(" "))
+            if (_itemNameField.text.EndsWith(" "))
             {
                 SetStatusText("The name ends with whitespace.", Color.red);
-                m_doneButton.interactable = false;
+                _doneButton.interactable = false;
                 return;
             }
 
-            if (m_folderName.IsNullOrEmpty())
+            if (_folderName.IsNullOrEmpty())
             {
                 SetStatusText("Folder name is empty.", Color.red);
-                m_doneButton.interactable = false;
+                _doneButton.interactable = false;
                 return;
             }
 
-            if (m_folderName.IsNullOrWhiteSpace())
+            if (_folderName.IsNullOrWhiteSpace())
             {
                 SetStatusText("Folder name is a whitespace.", Color.red);
-                m_doneButton.interactable = false;
+                _doneButton.interactable = false;
                 return;
             }
 
-            if (m_folderName.Contains(" "))
+            if (_folderName.Contains(" "))
             {
                 SetStatusText("Folder name contains whitespaces.", Color.red);
-                m_doneButton.interactable = false;
+                _doneButton.interactable = false;
                 return;
             }
 
             foreach (char c in Path.GetInvalidFileNameChars())
-                if (m_folderName.Contains(c))
+                if (_folderName.Contains(c))
                 {
                     SetStatusText($"The name contains invalid character: {c}", Color.red);
-                    m_doneButton.interactable = false;
+                    _doneButton.interactable = false;
                     return;
                 }
 
-            string path = Path.Combine(TargetDirectory, m_folderName);
+            string path = Path.Combine(TargetDirectory, _folderName);
             if (Directory.Exists(path))
             {
                 SetStatusText("A folder with the same name already exists.", Color.red);
-                m_doneButton.interactable = false;
+                _doneButton.interactable = false;
                 return;
             }
 
             SetStatusText("You can create the item.", Color.green);
-            m_doneButton.interactable = true;
+            _doneButton.interactable = true;
         }
 
         public void SetStatusText(string text, Color color)
         {
-            m_statusText.text = text;
-            m_statusText.color = color;
+            _statusText.text = text;
+            _statusText.color = color;
         }
 
         public void OnDoneButtonClicked()
@@ -166,10 +166,10 @@ namespace OverhaulMod.UI
             Hide();
 
             PersonalizationItemInfo template = null;
-            if (m_templateDropdown.options[m_templateDropdown.value] is DropdownPersonalizationItemInfo dropdownPersonalizationItemInfo)
+            if (_templateDropdown.options[_templateDropdown.value] is DropdownPersonalizationItemInfo dropdownPersonalizationItemInfo)
                 template = dropdownPersonalizationItemInfo.ItemInfo;
 
-            if (PersonalizationEditorManager.Instance.CreateItem(m_folderName, m_itemNameField.text, m_generatedGuid, UsePersistentFolder, template, out PersonalizationItemInfo personalizationItem))
+            if (PersonalizationEditorManager.Instance.CreateItem(_folderName, _itemNameField.text, _generatedGuid, UsePersistentFolder, template, out PersonalizationItemInfo personalizationItem))
             {
                 UIPersonalizationEditor.instance.ShowEverything();
                 PersonalizationEditorManager.Instance.EditItem(personalizationItem, personalizationItem.FolderPath);
@@ -208,7 +208,7 @@ namespace OverhaulMod.UI
                     }
                 }
             }
-            m_folderName = $"{m_generatedGuid}_{itemName}";
+            _folderName = $"{_generatedGuid}_{itemName}";
         }
     }
 }

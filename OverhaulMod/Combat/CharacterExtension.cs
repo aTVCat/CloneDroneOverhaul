@@ -10,39 +10,39 @@ namespace OverhaulMod.Combat
         [ModSetting(ModSettingsConstants.ENABLE_SCROLL_TO_SWITCH_WEAPON, true)]
         public static bool EnableScrollToSwitchWeapon;
 
-        private float m_weaponSwitchCooldown;
+        private float _weaponSwitchCooldown;
 
-        private bool m_hasNotSwitchedWeaponWithScrolling;
+        private bool _hasNotSwitchedWeaponWithScrolling;
 
         public int LastServerFrameDoubleJumped;
 
         public bool HasDoubleJumpAbility;
 
-        private PlayerInputController m_inputController;
+        private PlayerInputController _inputController;
 
-        private FirstPersonMover m_owner;
+        private FirstPersonMover _owner;
         public FirstPersonMover owner
         {
             get
             {
-                if (!m_owner)
+                if (!_owner)
                 {
-                    m_owner = base.GetComponent<FirstPersonMover>();
+                    _owner = base.GetComponent<FirstPersonMover>();
                 }
-                return m_owner;
+                return _owner;
             }
         }
 
         private void Start()
         {
             OnUpgradesRefreshed(owner._upgradeCollection);
-            m_inputController = owner._playerInputController;
+            _inputController = owner._playerInputController;
         }
 
         private void Update()
         {
-            m_weaponSwitchCooldown = Mathf.Max(0f, m_weaponSwitchCooldown - Time.deltaTime);
-            if (!EnableScrollToSwitchWeapon || !allowSwitchingWeapons() || m_weaponSwitchCooldown > 0f || m_hasNotSwitchedWeaponWithScrolling)
+            _weaponSwitchCooldown = Mathf.Max(0f, _weaponSwitchCooldown - Time.deltaTime);
+            if (!EnableScrollToSwitchWeapon || !allowSwitchingWeapons() || _weaponSwitchCooldown > 0f || _hasNotSwitchedWeaponWithScrolling)
                 return;
 
             FirstPersonMover firstPersonMover = owner;
@@ -62,7 +62,7 @@ namespace OverhaulMod.Combat
 
         private bool allowSwitchingWeapons()
         {
-            return m_inputController && m_inputController.enabled && !InputManager.Instance.IsCursorEnabled();
+            return _inputController && _inputController.enabled && !InputManager.Instance.IsCursorEnabled();
         }
 
         public void OnUpgradesRefreshed(UpgradeCollection upgrades)
@@ -72,24 +72,24 @@ namespace OverhaulMod.Combat
 
         private void selectNextWeapon(FirstPersonMover firstPersonMover)
         {
-            m_weaponSwitchCooldown = 0.1f;
-            m_hasNotSwitchedWeaponWithScrolling = true;
+            _weaponSwitchCooldown = 0.1f;
+            _hasNotSwitchedWeaponWithScrolling = true;
 
             ModGameUtils.WaitForPlayerInputUpdate(delegate (IFPMoveCommandInput commandInput)
             {
-                m_hasNotSwitchedWeaponWithScrolling = false;
+                _hasNotSwitchedWeaponWithScrolling = false;
                 commandInput.NextWeapon = true;
             });
         }
 
         private void selectPreviousWeapon(FirstPersonMover firstPersonMover)
         {
-            m_weaponSwitchCooldown = 0.1f;
-            m_hasNotSwitchedWeaponWithScrolling = true;
+            _weaponSwitchCooldown = 0.1f;
+            _hasNotSwitchedWeaponWithScrolling = true;
 
             ModGameUtils.WaitForPlayerInputUpdate(delegate (IFPMoveCommandInput commandInput)
             {
-                m_hasNotSwitchedWeaponWithScrolling = false;
+                _hasNotSwitchedWeaponWithScrolling = false;
 
                 List<WeaponType> list = new List<WeaponType>(firstPersonMover._equippedWeapons);
                 list.Remove(WeaponType.Shield);

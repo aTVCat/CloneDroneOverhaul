@@ -13,17 +13,17 @@ namespace OverhaulMod.Engine
 
         public static int ExtraResolutionLength;
 
-        private List<ModSetting> m_settings;
-        private Dictionary<string, ModSetting> m_nameToSetting;
-        private Dictionary<string, ModSettingSubDescription> m_idToDescription;
+        private List<ModSetting> _settings;
+        private Dictionary<string, ModSetting> _nameToSetting;
+        private Dictionary<string, ModSettingSubDescription> _idToDescription;
 
         public override void Awake()
         {
             base.Awake();
 
-            m_settings = new List<ModSetting>();
-            m_nameToSetting = new Dictionary<string, ModSetting>();
-            m_idToDescription = new Dictionary<string, ModSettingSubDescription>();
+            _settings = new List<ModSetting>();
+            _nameToSetting = new Dictionary<string, ModSetting>();
+            _idToDescription = new Dictionary<string, ModSettingSubDescription>();
 
             loadSettings();
             loadDescriptions();
@@ -31,7 +31,7 @@ namespace OverhaulMod.Engine
 
         private void loadDescriptions()
         {
-            m_idToDescription.Clear();
+            _idToDescription.Clear();
 
             string fn = Path.Combine(ModCore.dataFolder, "settingDescriptions.txt");
             if (File.Exists(fn))
@@ -65,7 +65,7 @@ namespace OverhaulMod.Engine
 
                                 if (int.TryParse(typeText, out int type) && int.TryParse(valueText, out int value))
                                 {
-                                    m_idToDescription.Add(settingId, new ModSettingSubDescription(type, value));
+                                    _idToDescription.Add(settingId, new ModSettingSubDescription(type, value));
                                 }
                             }
                         }
@@ -84,17 +84,17 @@ namespace OverhaulMod.Engine
                     if (modSetting == null)
                         continue;
 
-                    m_settings.Add(modSetting);
-                    m_nameToSetting.Add(modSetting.name, modSetting);
+                    _settings.Add(modSetting);
+                    _nameToSetting.Add(modSetting.name, modSetting);
                 }
             }
         }
 
         public string GetSubDescription(string settingId)
         {
-            if (m_idToDescription.ContainsKey(settingId))
+            if (_idToDescription.ContainsKey(settingId))
             {
-                ModSettingSubDescription modSettingSubDescription = m_idToDescription[settingId];
+                ModSettingSubDescription modSettingSubDescription = _idToDescription[settingId];
                 if (modSettingSubDescription.Type == 0)
                 {
                     string postfix;
@@ -127,7 +127,7 @@ namespace OverhaulMod.Engine
             if (name.StartsWith("OverhaulMod."))
                 name = name.Substring("OverhaulMod.".Length);
 
-            return m_nameToSetting.ContainsKey(name);
+            return _nameToSetting.ContainsKey(name);
         }
 
         public ModSetting GetSetting(string name)
@@ -135,18 +135,18 @@ namespace OverhaulMod.Engine
             if (name.StartsWith("OverhaulMod."))
                 name = name.Substring("OverhaulMod.".Length);
 
-            return m_nameToSetting.TryGetValue(name, out ModSetting modSetting) ? modSetting : null;
+            return _nameToSetting.TryGetValue(name, out ModSetting modSetting) ? modSetting : null;
         }
 
         public List<ModSetting> GetSettings()
         {
-            return m_settings;
+            return _settings;
         }
 
         public List<ModSetting> GetSettings(ModSetting.Tag tag)
         {
             List<ModSetting> result = new List<ModSetting>();
-            foreach (ModSetting modSetting in m_settings)
+            foreach (ModSetting modSetting in _settings)
             {
                 if (modSetting.tag == tag)
                     result.Add(modSetting);
@@ -156,7 +156,7 @@ namespace OverhaulMod.Engine
 
         public void ResetSettings()
         {
-            foreach (ModSetting setting in m_settings)
+            foreach (ModSetting setting in _settings)
                 setting.SetValue(setting.defaultValue);
 
             ModSettingsDataManager.Instance.Save();

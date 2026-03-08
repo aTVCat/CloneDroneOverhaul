@@ -9,49 +9,49 @@ namespace OverhaulMod.UI
     {
         [UIElementAction(nameof(Hide))]
         [UIElement("CloseButton")]
-        private readonly Button m_exitButton;
+        private readonly Button _exitButton;
 
         [UIElementAction(nameof(OnDownloadButtonClicked))]
         [UIElement("DownloadButton")]
-        private readonly Button m_downloadButton;
+        private readonly Button _downloadButton;
 
         [UIElementAction(nameof(OnDownloadButtonClicked))]
         [UIElement("UpdateButton")]
-        private readonly Button m_updateButton;
+        private readonly Button _updateButton;
 
         [UIElement("InstallButtons")]
-        private readonly GameObject m_installButtons;
+        private readonly GameObject _installButtons;
 
         [UIElement("Header")]
-        private readonly Text m_header;
+        private readonly Text _header;
 
         [UIElement("ContentDescription")]
-        private readonly Text m_addonDescription;
+        private readonly Text _addonDescription;
 
         [UIElement("ContentSize")]
-        private readonly Text m_addonSize;
+        private readonly Text _addonSize;
 
         [UIElement("ContentVersion")]
-        private readonly Text m_addonVersion;
+        private readonly Text _addonVersion;
 
         [UIElement("LoadingIndicator", false)]
-        private readonly GameObject m_loadingIndicator;
+        private readonly GameObject _loadingIndicator;
 
         [UIElement("LoadingIndicatorText")]
-        private readonly Text m_loadingIndicatorText;
+        private readonly Text _loadingIndicatorText;
 
         [UIElement("ImageDisplayPrefab", false)]
-        private readonly ModdedObject m_imageDisplayPrefab;
+        private readonly ModdedObject _imageDisplayPrefab;
 
         [UIElement("Content")]
-        private readonly Transform m_imageDisplayContainer;
+        private readonly Transform _imageDisplayContainer;
 
         [UIElement("NoPreviewsLabel")]
-        private readonly GameObject m_noPreviewsLabelObject;
+        private readonly GameObject _noPreviewsLabelObject;
 
-        private AddonDownloadInfo m_addonDownloadInfo;
+        private AddonDownloadInfo _addonDownloadInfo;
 
-        private bool m_downloadedAddonViaThisMenu;
+        private bool _downloadedAddonViaThisMenu;
 
         protected override void OnInitialized()
         {
@@ -66,42 +66,42 @@ namespace OverhaulMod.UI
 
         public override void Update()
         {
-            if (m_addonDownloadInfo == null)
+            if (_addonDownloadInfo == null)
                 return;
 
-            bool isDownloading = AddonManager.Instance.IsDownloadingAddon(m_addonDownloadInfo.UniqueID);
+            bool isDownloading = AddonManager.Instance.IsDownloadingAddon(_addonDownloadInfo.UniqueID);
             if (isDownloading)
             {
-                m_loadingIndicatorText.text = $"{LocalizationManager.Instance.GetTranslatedString("downloading...")}  {(Mathf.RoundToInt(Mathf.Clamp01(AddonManager.Instance.GetAddonDownloadProgress(m_addonDownloadInfo.UniqueID)) * 100f).ToString() + "%").AddColor(Color.white)}";
+                _loadingIndicatorText.text = $"{LocalizationManager.Instance.GetTranslatedString("downloading...")}  {(Mathf.RoundToInt(Mathf.Clamp01(AddonManager.Instance.GetAddonDownloadProgress(_addonDownloadInfo.UniqueID)) * 100f).ToString() + "%").AddColor(Color.white)}";
             }
         }
 
         public void SetAddon(AddonDownloadInfo addonDownloadInfo)
         {
-            m_addonDownloadInfo = addonDownloadInfo;
-            m_header.text = addonDownloadInfo.GetDisplayName();
-            m_addonDescription.text = addonDownloadInfo.GetDescription();
-            m_addonSize.text = addonDownloadInfo.GetPackageSizeString();
-            m_addonVersion.text = $"Version {addonDownloadInfo.Addon.Version}";
+            _addonDownloadInfo = addonDownloadInfo;
+            _header.text = addonDownloadInfo.GetDisplayName();
+            _addonDescription.text = addonDownloadInfo.GetDescription();
+            _addonSize.text = addonDownloadInfo.GetPackageSizeString();
+            _addonVersion.text = $"Version {addonDownloadInfo.Addon.Version}";
             refreshElements();
             refreshImages();
         }
 
         private void refreshImages()
         {
-            if (m_imageDisplayContainer.childCount != 0)
-                TransformUtils.DestroyAllChildren(m_imageDisplayContainer);
+            if (_imageDisplayContainer.childCount != 0)
+                TransformUtils.DestroyAllChildren(_imageDisplayContainer);
 
-            if (m_addonDownloadInfo.Images.IsNullOrEmpty())
+            if (_addonDownloadInfo.Images.IsNullOrEmpty())
             {
-                m_noPreviewsLabelObject.SetActive(true);
+                _noPreviewsLabelObject.SetActive(true);
                 return;
             }
-            m_noPreviewsLabelObject.SetActive(false);
+            _noPreviewsLabelObject.SetActive(false);
 
-            foreach (string p in m_addonDownloadInfo.Images)
+            foreach (string p in _addonDownloadInfo.Images)
             {
-                ModdedObject moddedObject = Instantiate(m_imageDisplayPrefab, m_imageDisplayContainer);
+                ModdedObject moddedObject = Instantiate(_imageDisplayPrefab, _imageDisplayContainer);
                 moddedObject.gameObject.SetActive(true);
                 UIElementImageDisplay imageDisplay = moddedObject.gameObject.AddComponent<UIElementImageDisplay>();
                 imageDisplay.InitializeElement();
@@ -112,25 +112,25 @@ namespace OverhaulMod.UI
 
         private void refreshElements()
         {
-            if (m_addonDownloadInfo == null)
+            if (_addonDownloadInfo == null)
                 return;
 
-            bool isInstalled = AddonManager.Instance.HasInstalledAddon(m_addonDownloadInfo.UniqueID, 0);
-            bool isDownloading = AddonManager.Instance.IsDownloadingAddon(m_addonDownloadInfo.UniqueID);
-            bool isNewVersion = AddonManager.Instance.GetAddonVersion(m_addonDownloadInfo.UniqueID) < m_addonDownloadInfo.Addon.Version;
+            bool isInstalled = AddonManager.Instance.HasInstalledAddon(_addonDownloadInfo.UniqueID, 0);
+            bool isDownloading = AddonManager.Instance.IsDownloadingAddon(_addonDownloadInfo.UniqueID);
+            bool isNewVersion = AddonManager.Instance.GetAddonVersion(_addonDownloadInfo.UniqueID) < _addonDownloadInfo.Addon.Version;
 
-            m_downloadButton.gameObject.SetActive(!isInstalled);
-            m_updateButton.gameObject.SetActive(isInstalled && isNewVersion);
-            m_installButtons.SetActive(!isDownloading);
-            m_loadingIndicator.SetActive(isDownloading);
+            _downloadButton.gameObject.SetActive(!isInstalled);
+            _updateButton.gameObject.SetActive(isInstalled && isNewVersion);
+            _installButtons.SetActive(!isDownloading);
+            _loadingIndicator.SetActive(isDownloading);
         }
 
         private void onDownloadedAddon(string error)
         {
-            if (!m_downloadedAddonViaThisMenu)
+            if (!_downloadedAddonViaThisMenu)
                 return;
 
-            m_downloadedAddonViaThisMenu = false;
+            _downloadedAddonViaThisMenu = false;
             refreshElements();
 
             if (!string.IsNullOrEmpty(error))
@@ -142,8 +142,8 @@ namespace OverhaulMod.UI
 
         public void OnDownloadButtonClicked()
         {
-            m_downloadedAddonViaThisMenu = true;
-            AddonManager.Instance.DownloadAddon(m_addonDownloadInfo, null);
+            _downloadedAddonViaThisMenu = true;
+            AddonManager.Instance.DownloadAddon(_addonDownloadInfo, null);
             refreshElements();
         }
     }

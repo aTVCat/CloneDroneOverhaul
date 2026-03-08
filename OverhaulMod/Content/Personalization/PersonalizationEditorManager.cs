@@ -17,9 +17,9 @@ namespace OverhaulMod.Content.Personalization
 {
     public class PersonalizationEditorManager : Singleton<PersonalizationEditorManager>
     {
-        public const string ITEM_INFO_FILE = "itemInfo.json";
+        public const string ITE_INFO_FILE = "itemInfo.json";
 
-        public const string ITEM_META_DATA_FILE = "metaData.json";
+        public const string ITE_META_DATA_FILE = "metaData.json";
 
         public const string EDITOR_STARTED_EVENT = "PersonalizationEditorStarted";
 
@@ -34,23 +34,23 @@ namespace OverhaulMod.Content.Personalization
 
         public readonly GameData GameData = new GameData();
 
-        private bool m_hasConfiguredGameData;
+        private bool _hasConfiguredGameData;
 
-        private bool m_isInPlaytestMode;
+        private bool _isInPlaytestMode;
 
-        private bool m_isInScreenshotMode;
+        private bool _isInScreenshotMode;
 
-        private Color m_ambientColorBeforeScreenshotMode;
+        private Color _ambientColorBeforeScreenshotMode;
 
-        private AmbientMode m_ambientModeBeforeScreenshotMode;
+        private AmbientMode _ambientModeBeforeScreenshotMode;
 
-        private GreatSwordPreviewController m_greatSwordPreviewController;
+        private GreatSwordPreviewController _greatSwordPreviewController;
 
-        private FirstPersonMover m_bot;
+        private FirstPersonMover _bot;
 
-        private PersonalizationEditorCamera m_camera;
+        private PersonalizationEditorCamera _camera;
 
-        private PersonalizationEditorScreenshotOverlay m_screenshotOverlay;
+        private PersonalizationEditorScreenshotOverlay _screenshotOverlay;
 
         public PersonalizationController currentPersonalizationController
         {
@@ -78,35 +78,35 @@ namespace OverhaulMod.Content.Personalization
             }
         }
 
-        private bool m_originalModelsEnabled;
+        private bool _originalModelsEnabled;
         public bool originalModelsEnabled
         {
             get
             {
-                return m_originalModelsEnabled;
+                return _originalModelsEnabled;
             }
             set
             {
-                m_originalModelsEnabled = value;
+                _originalModelsEnabled = value;
                 RefreshGreatswordPreview();
             }
         }
 
-        private WeaponVariant2 m_previewPresetKey;
+        private WeaponVariant2 _previewPresetKey;
         public WeaponVariant2 previewPresetKey
         {
             get
             {
-                return m_previewPresetKey;
+                return _previewPresetKey;
             }
             set
             {
-                m_previewPresetKey = value;
+                _previewPresetKey = value;
                 RefreshGreatswordPreview();
             }
         }
 
-        private string m_editorId;
+        private string _editorId;
         public string editorId
         {
             get
@@ -114,11 +114,11 @@ namespace OverhaulMod.Content.Personalization
                 if (!SteamManager.Instance || !SteamManager.Instance.Initialized)
                     return null;
 
-                if (m_editorId == null)
+                if (_editorId == null)
                 {
-                    m_editorId = SteamUser.GetSteamID().ToString();
+                    _editorId = SteamUser.GetSteamID().ToString();
                 }
-                return m_editorId;
+                return _editorId;
             }
         }
 
@@ -168,7 +168,7 @@ namespace OverhaulMod.Content.Personalization
 
             yield return null;
 
-            if (!m_hasConfiguredGameData)
+            if (!_hasConfiguredGameData)
             {
                 GameData gameData = GameData;
                 gameData.HumanFacts = HumanFactsManager.Instance.GetRandomFactSet();
@@ -182,7 +182,7 @@ namespace OverhaulMod.Content.Personalization
                     { UpgradeType.EnergyCapacity, 2 },
                     { UpgradeType.EnergyRecharge, 2 },
                 };
-                m_hasConfiguredGameData = true;
+                _hasConfiguredGameData = true;
             }
 
             currentEditingItemInfo = null;
@@ -190,8 +190,8 @@ namespace OverhaulMod.Content.Personalization
             previewPresetKey = WeaponVariant2.Normal;
             originalModelsEnabled = false;
 
-            m_isInScreenshotMode = false;
-            m_isInPlaytestMode = false;
+            _isInScreenshotMode = false;
+            _isInPlaytestMode = false;
 
             GameFlowManager.Instance._gameMode = GAME_MODE_VALUE;
 
@@ -291,8 +291,8 @@ namespace OverhaulMod.Content.Personalization
             personalizationItem.SetAuthor(SteamFriends.GetPersonaName());
             PersonalizationManager.Instance.itemList.Items.Add(personalizationItem);
 
-            ModJsonUtils.WriteStream(Path.Combine(directoryPath, ITEM_INFO_FILE), personalizationItem);
-            ModJsonUtils.WriteStream(Path.Combine(directoryPath, ITEM_META_DATA_FILE), personalizationItem.MetaData);
+            ModJsonUtils.WriteStream(Path.Combine(directoryPath, ITE_INFO_FILE), personalizationItem);
+            ModJsonUtils.WriteStream(Path.Combine(directoryPath, ITE_META_DATA_FILE), personalizationItem.MetaData);
             return true;
         }
 
@@ -347,8 +347,8 @@ namespace OverhaulMod.Content.Personalization
             SerializeRoot();
             try
             {
-                ModJsonUtils.WriteStream(Path.Combine(folder, ITEM_INFO_FILE), currentEditingItemInfo);
-                ModJsonUtils.WriteStream(Path.Combine(folder, ITEM_META_DATA_FILE), personalizationItemMetaData);
+                ModJsonUtils.WriteStream(Path.Combine(folder, ITE_INFO_FILE), currentEditingItemInfo);
+                ModJsonUtils.WriteStream(Path.Combine(folder, ITE_META_DATA_FILE), personalizationItemMetaData);
             }
             catch (Exception exc)
             {
@@ -473,7 +473,7 @@ namespace OverhaulMod.Content.Personalization
         public void SerializeRotAndRespawnBot()
         {
             SerializeRoot();
-            BoltNetwork.Destroy(m_bot.gameObject);
+            BoltNetwork.Destroy(_bot.gameObject);
             SpawnBot(true);
         }
 
@@ -511,8 +511,8 @@ namespace OverhaulMod.Content.Personalization
             if (bot._playerCamera)
                 bot._playerCamera.gameObject.SetActive(false);
 
-            m_bot = bot;
-            m_greatSwordPreviewController = bot.gameObject.AddComponent<GreatSwordPreviewController>();
+            _bot = bot;
+            _greatSwordPreviewController = bot.gameObject.AddComponent<GreatSwordPreviewController>();
 
             DelegateScheduler.Instance.Schedule(delegate
             {
@@ -538,7 +538,7 @@ namespace OverhaulMod.Content.Personalization
 
         public FirstPersonMover GetBot()
         {
-            return m_bot;
+            return _bot;
         }
 
         private IEnumerator spawnLevelCoroutine(bool useTransitionManager, LevelEditorLevelData levelEditorLevelData)
@@ -564,7 +564,7 @@ namespace OverhaulMod.Content.Personalization
             cameraObject.tag = "MainCamera";
             cameraObject.transform.position = new Vector3(-2.5f, 3f, 3f);
             cameraObject.transform.eulerAngles = new Vector3(5f, 120f, 0f);
-            m_camera = cameraObject.AddComponent<PersonalizationEditorCamera>();
+            _camera = cameraObject.AddComponent<PersonalizationEditorCamera>();
 
             if (useTransitionManager)
             {
@@ -610,11 +610,11 @@ namespace OverhaulMod.Content.Personalization
 
         public void EnterPlaytestMode()
         {
-            if (m_isInPlaytestMode) return;
+            if (_isInPlaytestMode) return;
 
-            m_isInPlaytestMode = true;
+            _isInPlaytestMode = true;
 
-            FirstPersonMover firstPersonMover = m_bot;
+            FirstPersonMover firstPersonMover = _bot;
             if (firstPersonMover)
             {
                 firstPersonMover.GetComponent<BoltEntity>().TakeControl();
@@ -623,7 +623,7 @@ namespace OverhaulMod.Content.Personalization
                 firstPersonMover.SetPlayerCameraEnabled(true);
                 firstPersonMover.SetCameraAnimatorEnabled(true);
 
-                m_camera.gameObject.SetActive(false);
+                _camera.gameObject.SetActive(false);
 
                 UIPersonalizationEditor.instance.Hide();
                 _ = ModUIConstants.ShowPersonalizationEditorPlaytestHUD();
@@ -632,11 +632,11 @@ namespace OverhaulMod.Content.Personalization
 
         public void ExitPlaytestMode()
         {
-            if (!m_isInPlaytestMode) return;
+            if (!_isInPlaytestMode) return;
 
-            m_isInPlaytestMode = false;
+            _isInPlaytestMode = false;
 
-            FirstPersonMover firstPersonMover = m_bot;
+            FirstPersonMover firstPersonMover = _bot;
             if (firstPersonMover)
             {
                 firstPersonMover.SetCameraAnimatorEnabled(false);
@@ -647,7 +647,7 @@ namespace OverhaulMod.Content.Personalization
                 firstPersonMover.SetIsJumpingBools(false);
                 firstPersonMover.SetIsMovingBools(false);
 
-                PersonalizationEditorCamera camera = m_camera;
+                PersonalizationEditorCamera camera = _camera;
                 camera.transform.position = new Vector3(-2.5f, 3f, 3f);
                 camera.transform.eulerAngles = new Vector3(5f, 120f, 0f);
                 camera.gameObject.SetActive(true);
@@ -680,22 +680,22 @@ namespace OverhaulMod.Content.Personalization
 
         public bool IsInPlaytestMode()
         {
-            return m_isInPlaytestMode;
+            return _isInPlaytestMode;
         }
 
         public void EnterScreenshotMode()
         {
-            if (m_isInScreenshotMode) return;
+            if (_isInScreenshotMode) return;
 
-            m_isInScreenshotMode = true;
+            _isInScreenshotMode = true;
 
-            m_ambientColorBeforeScreenshotMode = RenderSettings.ambientLight;
-            m_ambientModeBeforeScreenshotMode = RenderSettings.ambientMode;
+            _ambientColorBeforeScreenshotMode = RenderSettings.ambientLight;
+            _ambientModeBeforeScreenshotMode = RenderSettings.ambientMode;
 
             RenderSettings.ambientLight = Color.white * 0.8f;
             RenderSettings.ambientMode = AmbientMode.Flat;
 
-            m_camera.gameObject.SetActive(false);
+            _camera.gameObject.SetActive(false);
 
             UIPersonalizationEditor.instance.HideWindows();
 
@@ -707,24 +707,24 @@ namespace OverhaulMod.Content.Personalization
             PersonalizationEditorCamera cameraController = manager.GetCameraController();
             cameraController.gameObject.SetActive(true);
 
-            if (!m_screenshotOverlay)
+            if (!_screenshotOverlay)
             {
                 GameObject gameObject = Instantiate(ModResources.Prefab(AssetBundleConstants.UI, "PersonalizationItemScreenshotOverlay"), null, false);
-                m_screenshotOverlay = gameObject.AddComponent<PersonalizationEditorScreenshotOverlay>();
+                _screenshotOverlay = gameObject.AddComponent<PersonalizationEditorScreenshotOverlay>();
             }
-            m_screenshotOverlay.Show();
+            _screenshotOverlay.Show();
         }
 
         public void ExitScreenshotMode()
         {
-            if (!m_isInScreenshotMode) return;
+            if (!_isInScreenshotMode) return;
 
-            m_isInScreenshotMode = false;
+            _isInScreenshotMode = false;
 
-            RenderSettings.ambientLight = m_ambientColorBeforeScreenshotMode;
-            RenderSettings.ambientMode = m_ambientModeBeforeScreenshotMode;
+            RenderSettings.ambientLight = _ambientColorBeforeScreenshotMode;
+            RenderSettings.ambientMode = _ambientModeBeforeScreenshotMode;
 
-            m_camera.gameObject.SetActive(true);
+            _camera.gameObject.SetActive(true);
 
             UIPersonalizationEditor.instance.ShowWindows();
 
@@ -735,21 +735,21 @@ namespace OverhaulMod.Content.Personalization
             PersonalizationEditorCamera cameraController = manager.GetCameraController();
             cameraController.gameObject.SetActive(false);
 
-            if (m_screenshotOverlay)
+            if (_screenshotOverlay)
             {
-                m_screenshotOverlay.Hide();
+                _screenshotOverlay.Hide();
             }
         }
 
         public bool IsInScreenshotMode()
         {
-            return m_isInScreenshotMode;
+            return _isInScreenshotMode;
         }
 
         public void RefreshGreatswordPreview()
         {
-            if (m_greatSwordPreviewController)
-                m_greatSwordPreviewController.SetPreviewActivate(originalModelsEnabled && (previewPresetKey == WeaponVariant2.NormalMultiplayer || previewPresetKey == WeaponVariant2.OnFireMultiplayer));
+            if (_greatSwordPreviewController)
+                _greatSwordPreviewController.SetPreviewActivate(originalModelsEnabled && (previewPresetKey == WeaponVariant2.NormalMultiplayer || previewPresetKey == WeaponVariant2.OnFireMultiplayer));
         }
 
         public List<Dropdown.OptionData> GetConditionOptions()

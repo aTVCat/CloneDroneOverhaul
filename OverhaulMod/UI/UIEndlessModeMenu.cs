@@ -10,23 +10,23 @@ namespace OverhaulMod.UI
     {
         [UIElementAction(nameof(OnExitButtonClicked))]
         [UIElement("CloseButton")]
-        private readonly Button m_exitButton;
+        private readonly Button _exitButton;
 
         [UIElementAction(nameof(OnPlayButtonClicked))]
         [UIElement("PlayButton")]
-        private readonly Button m_playButton;
+        private readonly Button _playButton;
 
         [UIElementAction(nameof(OnLeaderboardButtonClicked))]
         [UIElement("ViewLeaderBoardButton")]
-        private readonly Button m_leaderboardButton;
+        private readonly Button _leaderboardButton;
 
         [ShowTooltipOnHighLight("erase progress", 1.5f, true)]
         [UIElementAction(nameof(OnResetProgressButtonClicked))]
         [UIElement("DeleteProgressButton")]
-        private readonly Button m_resetProgressButton;
+        private readonly Button _resetProgressButton;
 
         [UIElement("CurrentGameplayProgress")]
-        private readonly Text m_progressText;
+        private readonly Text _progressText;
 
         public override bool refreshOnlyCursor => true;
 
@@ -38,18 +38,18 @@ namespace OverhaulMod.UI
                 EndlessTierDescription tierDesc = EndlessModeManager.Instance?.GetNextLevelDifficultyTierDescription(gameData.LevelIDsBeatenThisPlaythrough.Count);
                 if (tierDesc == null)
                 {
-                    m_progressText.text = "Error: difficulty";
+                    _progressText.text = "Error: difficulty";
                 }
                 else
                 {
                     string name = gameData.HumanFacts?.GetFullName();
                     string difficultyText = $" <color={tierDesc.TextColor.ToHex()}>{LocalizationManager.Instance.GetTranslatedString(tierDesc.Tier.GetTierString())}</color>";
-                    m_progressText.text = $"{name} - {LocalizationManager.Instance.GetTranslatedString("level_context")} {gameData.LevelIDsBeatenThisPlaythrough.Count + 1}{difficultyText}";
+                    _progressText.text = $"{name} - {LocalizationManager.Instance.GetTranslatedString("level_context")} {gameData.LevelIDsBeatenThisPlaythrough.Count + 1}{difficultyText}";
                 }
             }
             else
             {
-                m_progressText.text = "N/A";
+                _progressText.text = "N/A";
             }
         }
 

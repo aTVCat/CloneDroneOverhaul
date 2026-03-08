@@ -36,7 +36,7 @@ namespace OverhaulMod.Visuals
         [ModSetting(ModSettingsConstants.ENABLE_DOF, false)]
         public static bool EnableDoF;
 
-        [ModSetting(ModSettingsConstants.BLOOM_MODE, (int)BloomMode.Fancy)]
+        [ModSetting(ModSettingsConstants.BLOO_MODE, (int)BloomMode.Fancy)]
         public static int Bloom;
 
         [ModSetting(ModSettingsConstants.ENABLE_VIGNETTE, true)]
@@ -54,9 +54,9 @@ namespace OverhaulMod.Visuals
         [ModSetting(ModSettingsConstants.ENABLE_REFLECTION_PROBE, false)]
         public static bool EnableReflectionProbe;
 
-        private List<ModSettingsPreset> m_graphicsPresets;
+        private List<ModSettingsPreset> _graphicsPresets;
 
-        private CameraManager m_cameraManager;
+        private CameraManager _cameraManager;
 
         public static List<Dropdown.OptionData> ColorBlindnessOptions = new List<Dropdown.OptionData>()
         {
@@ -95,7 +95,7 @@ namespace OverhaulMod.Visuals
 
         private void Start()
         {
-            m_cameraManager = CameraManager.Instance;
+            _cameraManager = CameraManager.Instance;
             createGraphicsPresets();
         }
 
@@ -107,14 +107,14 @@ namespace OverhaulMod.Visuals
 
         public void ApplyGraphicsPreset(int index)
         {
-            ModSettingsPreset modSettingsPreset = m_graphicsPresets[index];
+            ModSettingsPreset modSettingsPreset = _graphicsPresets[index];
             modSettingsPreset.Apply();
         }
 
         private void createGraphicsPresets()
         {
             List<ModSettingsPreset> list = new List<ModSettingsPreset>();
-            m_graphicsPresets = list;
+            _graphicsPresets = list;
 
             ModSettingsPreset lowest = new ModSettingsPreset(true)
             {
@@ -126,7 +126,7 @@ namespace OverhaulMod.Visuals
             lowest.AddValue(ModSettingsConstants.ENABLE_CHROMATIC_ABERRATION, false);
             lowest.AddValue(ModSettingsConstants.ENABLE_DITHERING, false);
             lowest.AddValue(ModSettingsConstants.ENABLE_VIGNETTE, false);
-            lowest.AddValue(ModSettingsConstants.BLOOM_MODE, (int)BloomMode.Disabled);
+            lowest.AddValue(ModSettingsConstants.BLOO_MODE, (int)BloomMode.Disabled);
             lowest.AddValue(ModSettingsConstants.ENABLE_DOF, false);
             lowest.AddValue(ModSettingsConstants.ENABLE_SUN_SHAFTS, false);
             list.Add(lowest);
@@ -141,7 +141,7 @@ namespace OverhaulMod.Visuals
             low.AddValue(ModSettingsConstants.ENABLE_CHROMATIC_ABERRATION, false);
             low.AddValue(ModSettingsConstants.ENABLE_DITHERING, false);
             low.AddValue(ModSettingsConstants.ENABLE_VIGNETTE, false);
-            low.AddValue(ModSettingsConstants.BLOOM_MODE, (int)BloomMode.Vanilla);
+            low.AddValue(ModSettingsConstants.BLOO_MODE, (int)BloomMode.Vanilla);
             low.AddValue(ModSettingsConstants.ENABLE_DOF, false);
             low.AddValue(ModSettingsConstants.ENABLE_SUN_SHAFTS, false);
             list.Add(low);
@@ -156,7 +156,7 @@ namespace OverhaulMod.Visuals
             mid.AddValue(ModSettingsConstants.ENABLE_CHROMATIC_ABERRATION, false);
             mid.AddValue(ModSettingsConstants.ENABLE_DITHERING, false);
             mid.AddValue(ModSettingsConstants.ENABLE_VIGNETTE, false);
-            mid.AddValue(ModSettingsConstants.BLOOM_MODE, (int)BloomMode.Vanilla);
+            mid.AddValue(ModSettingsConstants.BLOO_MODE, (int)BloomMode.Vanilla);
             mid.AddValue(ModSettingsConstants.ENABLE_DOF, false);
             mid.AddValue(ModSettingsConstants.ENABLE_SUN_SHAFTS, false);
             list.Add(mid);
@@ -171,7 +171,7 @@ namespace OverhaulMod.Visuals
             standardVanilla.AddValue(ModSettingsConstants.ENABLE_CHROMATIC_ABERRATION, false);
             standardVanilla.AddValue(ModSettingsConstants.ENABLE_DITHERING, false);
             standardVanilla.AddValue(ModSettingsConstants.ENABLE_VIGNETTE, false);
-            standardVanilla.AddValue(ModSettingsConstants.BLOOM_MODE, (int)BloomMode.Vanilla);
+            standardVanilla.AddValue(ModSettingsConstants.BLOO_MODE, (int)BloomMode.Vanilla);
             standardVanilla.AddValue(ModSettingsConstants.ENABLE_DOF, false);
             standardVanilla.AddValue(ModSettingsConstants.ENABLE_SUN_SHAFTS, false);
             list.Add(standardVanilla);
@@ -186,7 +186,7 @@ namespace OverhaulMod.Visuals
             standardOverhaul.AddValue(ModSettingsConstants.ENABLE_CHROMATIC_ABERRATION, false);
             standardOverhaul.AddValue(ModSettingsConstants.ENABLE_DITHERING, false);
             standardOverhaul.AddValue(ModSettingsConstants.ENABLE_VIGNETTE, true);
-            standardOverhaul.AddValue(ModSettingsConstants.BLOOM_MODE, (int)BloomMode.Fancy);
+            standardOverhaul.AddValue(ModSettingsConstants.BLOO_MODE, (int)BloomMode.Fancy);
             standardOverhaul.AddValue(ModSettingsConstants.ENABLE_DOF, false);
             standardOverhaul.AddValue(ModSettingsConstants.ENABLE_SUN_SHAFTS, false);
             list.Add(standardOverhaul);
@@ -201,7 +201,7 @@ namespace OverhaulMod.Visuals
             high.AddValue(ModSettingsConstants.ENABLE_CHROMATIC_ABERRATION, true);
             high.AddValue(ModSettingsConstants.ENABLE_DITHERING, true);
             high.AddValue(ModSettingsConstants.ENABLE_VIGNETTE, true);
-            high.AddValue(ModSettingsConstants.BLOOM_MODE, (int)BloomMode.Fancy);
+            high.AddValue(ModSettingsConstants.BLOO_MODE, (int)BloomMode.Fancy);
             high.AddValue(ModSettingsConstants.ENABLE_DOF, false);
             high.AddValue(ModSettingsConstants.ENABLE_SUN_SHAFTS, false);
             list.Add(high);
@@ -216,7 +216,7 @@ namespace OverhaulMod.Visuals
             veryHigh.AddValue(ModSettingsConstants.ENABLE_CHROMATIC_ABERRATION, true);
             veryHigh.AddValue(ModSettingsConstants.ENABLE_DITHERING, true);
             veryHigh.AddValue(ModSettingsConstants.ENABLE_VIGNETTE, true);
-            veryHigh.AddValue(ModSettingsConstants.BLOOM_MODE, (int)BloomMode.Fanciest);
+            veryHigh.AddValue(ModSettingsConstants.BLOO_MODE, (int)BloomMode.Fanciest);
             veryHigh.AddValue(ModSettingsConstants.ENABLE_DOF, true);
             veryHigh.AddValue(ModSettingsConstants.ENABLE_SUN_SHAFTS, true);
             list.Add(veryHigh);
@@ -231,7 +231,7 @@ namespace OverhaulMod.Visuals
             extreme.AddValue(ModSettingsConstants.ENABLE_CHROMATIC_ABERRATION, true);
             extreme.AddValue(ModSettingsConstants.ENABLE_DITHERING, true);
             extreme.AddValue(ModSettingsConstants.ENABLE_VIGNETTE, true);
-            extreme.AddValue(ModSettingsConstants.BLOOM_MODE, (int)BloomMode.Fanciest);
+            extreme.AddValue(ModSettingsConstants.BLOO_MODE, (int)BloomMode.Fanciest);
             extreme.AddValue(ModSettingsConstants.ENABLE_DOF, true);
             extreme.AddValue(ModSettingsConstants.ENABLE_SUN_SHAFTS, true);
             list.Add(extreme);

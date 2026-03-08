@@ -8,38 +8,38 @@ namespace OverhaulMod.UI
     public class UIAutoBuildSelectionMenu : OverhaulUIBehaviour
     {
         [UIElement("BuildDisplayPrefab", false)]
-        private readonly ModdedObject m_buildDisplayPrefab;
+        private readonly ModdedObject _buildDisplayPrefab;
 
         [UIElement("Holder", false)]
-        private readonly GameObject m_holder;
+        private readonly GameObject _holder;
 
         [UIElement("Container")]
-        private readonly Transform m_buildDisplayContainer;
+        private readonly Transform _buildDisplayContainer;
 
-        private CanvasGroup m_canvasGroup;
+        private CanvasGroup _canvasGroup;
 
-        private UIElementAutoBuildSelectionEntry m_prevSelectedEntry, m_currentSelectedEntry;
+        private UIElementAutoBuildSelectionEntry _prevSelectedEntry, _currentSelectedEntry;
 
-        private bool m_show;
+        private bool _show;
 
         public override bool closeOnEscapeButtonPress => false;
 
         protected override void OnInitialized()
         {
-            m_canvasGroup = base.GetComponent<CanvasGroup>();
+            _canvasGroup = base.GetComponent<CanvasGroup>();
             PopulateBuilds();
         }
 
         public override void Show()
         {
             base.Show();
-            if (m_currentSelectedEntry)
-                m_currentSelectedEntry.SetBGActive(false);
+            if (_currentSelectedEntry)
+                _currentSelectedEntry.SetBGActive(false);
 
-            m_show = true;
-            m_canvasGroup.alpha = 0f;
-            m_canvasGroup.blocksRaycasts = true;
-            m_holder.SetActive(true);
+            _show = true;
+            _canvasGroup.alpha = 0f;
+            _canvasGroup.blocksRaycasts = true;
+            _holder.SetActive(true);
 
             Cursor.lockState = CursorLockMode.Locked;
             ModActionUtils.DoInFrame(delegate
@@ -50,26 +50,26 @@ namespace OverhaulMod.UI
 
         public override void Hide()
         {
-            m_show = false;
-            m_canvasGroup.blocksRaycasts = false;
+            _show = false;
+            _canvasGroup.blocksRaycasts = false;
 
-            if (m_currentSelectedEntry)
+            if (_currentSelectedEntry)
             {
-                AutoBuildManager.Instance.ApplyBuild(m_currentSelectedEntry.transform.GetSiblingIndex());
+                AutoBuildManager.Instance.ApplyBuild(_currentSelectedEntry.transform.GetSiblingIndex());
                 SelectEntry(null);
             }
         }
 
         public override void Update()
         {
-            float alpha = m_canvasGroup.alpha;
-            alpha += Time.unscaledDeltaTime * 10f * (m_show ? 1f : -1f);
-            m_canvasGroup.alpha = alpha;
+            float alpha = _canvasGroup.alpha;
+            alpha += Time.unscaledDeltaTime * 10f * (_show ? 1f : -1f);
+            _canvasGroup.alpha = alpha;
 
-            if (!m_show && alpha <= 0.01f)
-                m_holder.SetActive(false);
+            if (!_show && alpha <= 0.01f)
+                _holder.SetActive(false);
 
-            if (!m_show)
+            if (!_show)
                 return;
 
             int number;
@@ -96,9 +96,9 @@ namespace OverhaulMod.UI
             else
                 number = -1;
 
-            if (number >= 0 && number < m_buildDisplayContainer.childCount)
+            if (number >= 0 && number < _buildDisplayContainer.childCount)
             {
-                Transform transform = m_buildDisplayContainer.GetChild(number);
+                Transform transform = _buildDisplayContainer.GetChild(number);
                 if (transform)
                 {
                     UIElementAutoBuildSelectionEntry autoBuildSelectionEntry = transform.GetComponent<UIElementAutoBuildSelectionEntry>();
@@ -121,14 +121,14 @@ namespace OverhaulMod.UI
 
         public void PopulateBuilds()
         {
-            if (m_buildDisplayContainer.childCount != 0)
-                TransformUtils.DestroyAllChildren(m_buildDisplayContainer);
+            if (_buildDisplayContainer.childCount != 0)
+                TransformUtils.DestroyAllChildren(_buildDisplayContainer);
 
             UpgradeManager upgradeManager = UpgradeManager.Instance;
             AutoBuildManager autoBuildManager = AutoBuildManager.Instance;
             foreach (AutoBuildInfo build in autoBuildManager.buildList.Builds)
             {
-                ModdedObject moddedObject = Instantiate(m_buildDisplayPrefab, m_buildDisplayContainer);
+                ModdedObject moddedObject = Instantiate(_buildDisplayPrefab, _buildDisplayContainer);
                 moddedObject.gameObject.SetActive(true);
 
                 Text buildNameText = moddedObject.GetObject<Text>(0);
@@ -167,11 +167,11 @@ namespace OverhaulMod.UI
             if (entry)
                 entry.SetBGActive(true);
 
-            if (m_currentSelectedEntry)
-                m_currentSelectedEntry.SetBGActive(false);
+            if (_currentSelectedEntry)
+                _currentSelectedEntry.SetBGActive(false);
 
-            m_prevSelectedEntry = m_currentSelectedEntry;
-            m_currentSelectedEntry = entry;
+            _prevSelectedEntry = _currentSelectedEntry;
+            _currentSelectedEntry = entry;
         }
     }
 }

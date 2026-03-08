@@ -10,25 +10,25 @@ namespace OverhaulMod.UI
     {
         [UIElementAction(nameof(OnButtonClicked))]
         [UIElement("Button")]
-        public Button m_button;
+        public Button _button;
 
         [UIElement("Graphic")]
-        public Graphic m_graphic;
+        public Graphic _graphic;
 
-        private Color m_color;
+        private Color _color;
         public Color color
         {
             get
             {
-                return m_color;
+                return _color;
             }
             set
             {
-                m_color = value;
+                _color = value;
 
                 Color graphicColor = value;
                 graphicColor.a = useAlpha ? value.a : 1f;
-                m_graphic.color = graphicColor;
+                _graphic.color = graphicColor;
 
                 onValueChanged.Invoke(value);
             }

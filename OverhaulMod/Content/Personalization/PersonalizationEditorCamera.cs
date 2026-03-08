@@ -8,18 +8,18 @@ namespace OverhaulMod.Content.Personalization
 
         public bool IsScreenshotStageCamera;
 
-        private UIManager m_uiManager;
+        private UIManager _uiManager;
 
-        private InputManager m_inputManager;
+        private InputManager _inputManager;
 
-        private bool m_wasMouseButtonDownPrevFrame;
-        private bool m_prevValue;
+        private bool _wasMouseButtonDownPrevFrame;
+        private bool _prevValue;
 
         private void Start()
         {
-            m_uiManager = UIManager.Instance;
-            m_inputManager = InputManager.Instance;
-            m_inputManager.SetCursorEnabled(true);
+            _uiManager = UIManager.Instance;
+            _inputManager = InputManager.Instance;
+            _inputManager.SetCursorEnabled(true);
         }
 
         private void OnDestroy()
@@ -30,20 +30,20 @@ namespace OverhaulMod.Content.Personalization
         private void Update()
         {
             bool newValue = IsControllingTheCamera;
-            if (newValue != m_prevValue)
+            if (newValue != _prevValue)
             {
-                m_inputManager.SetCursorEnabled(!newValue);
-                m_prevValue = newValue;
+                _inputManager.SetCursorEnabled(!newValue);
+                _prevValue = newValue;
             }
         }
 
         private void LateUpdate()
         {
-            bool isMouseOverUIElement = m_uiManager.IsMouseOverUIElement();
+            bool isMouseOverUIElement = _uiManager.IsMouseOverUIElement();
             bool control = Input.GetMouseButton(1);
-            bool willControl = (control && !m_wasMouseButtonDownPrevFrame && !isMouseOverUIElement) || (m_wasMouseButtonDownPrevFrame && control && IsControllingTheCamera);
+            bool willControl = (control && !_wasMouseButtonDownPrevFrame && !isMouseOverUIElement) || (_wasMouseButtonDownPrevFrame && control && IsControllingTheCamera);
 
-            m_wasMouseButtonDownPrevFrame = control;
+            _wasMouseButtonDownPrevFrame = control;
 
             if (!willControl)
             {

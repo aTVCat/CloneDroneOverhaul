@@ -12,44 +12,44 @@ namespace OverhaulMod.UI
 
         [UIElementAction(nameof(Hide))]
         [UIElement("CloseButton")]
-        private readonly Button m_exitButton;
+        private readonly Button _exitButton;
 
         [UIElementAction(nameof(OnAddonsEditorButtonClicked))]
         [UIElement("EditorButton")]
-        private readonly Button m_addonsEditorButton;
+        private readonly Button _addonsEditorButton;
 
         [UIElementAction(nameof(OnAddonsDownloadEditorButtonClicked))]
         [UIElement("AddonDownloadsEditorButton")]
-        private readonly Button m_addonsDownloadEditorButton;
+        private readonly Button _addonsDownloadEditorButton;
 
         [UIElement("LocalAddons")]
-        private readonly ModdedObject m_localAddonsTab;
+        private readonly ModdedObject _localAddonsTab;
         [UIElement("NetworkAddons")]
-        private readonly ModdedObject m_networkAddonsTab;
+        private readonly ModdedObject _networkAddonsTab;
 
         [TabManager(typeof(UIElementTab), null, null, null, nameof(OnTabSelected))]
-        private readonly TabManager m_tabs;
+        private readonly TabManager _tabs;
 
         [UIElement("LocalContentDisplay", false)]
-        private readonly ModdedObject m_localContentDisplay;
+        private readonly ModdedObject _localContentDisplay;
         [UIElement("NetworkContentDisplay", false)]
-        private readonly ModdedObject m_networkContentDisplay;
+        private readonly ModdedObject _networkContentDisplay;
 
         [UIElement("Content")]
-        private readonly Transform m_container;
+        private readonly Transform _container;
 
         [UIElement("LoadingIndicator", false)]
-        private readonly GameObject m_loadingIndicator;
+        private readonly GameObject _loadingIndicator;
 
-        private bool m_shouldSuggestGameRestart;
+        private bool _shouldSuggestGameRestart;
 
         public override bool hideTitleScreen => true;
 
         protected override void OnInitialized()
         {
-            m_tabs.AddTab(m_localAddonsTab.gameObject, "local addons");
-            m_tabs.AddTab(m_networkAddonsTab.gameObject, "network addons");
-            m_tabs.SelectTab("local addons");
+            _tabs.AddTab(_localAddonsTab.gameObject, "local addons");
+            _tabs.AddTab(_networkAddonsTab.gameObject, "network addons");
+            _tabs.SelectTab("local addons");
 
             GlobalEventManager.Instance.AddEventListener<string>(AddonManager.ADDON_DOWNLOADED_EVENT, onContentDownloaded);
         }
@@ -58,17 +58,17 @@ namespace OverhaulMod.UI
         {
             base.Show();
 
-            m_addonsEditorButton.gameObject.SetActive(ModUserInfo.isDeveloper);
-            m_addonsDownloadEditorButton.gameObject.SetActive(ModUserInfo.isDeveloper);
+            _addonsEditorButton.gameObject.SetActive(ModUserInfo.isDeveloper);
+            _addonsDownloadEditorButton.gameObject.SetActive(ModUserInfo.isDeveloper);
         }
 
         public override void Hide()
         {
             base.Hide();
-            if (m_shouldSuggestGameRestart)
+            if (_shouldSuggestGameRestart)
             {
                 _ = ModUIConstants.ShowRestartRequiredScreen(true);
-                m_shouldSuggestGameRestart = false;
+                _shouldSuggestGameRestart = false;
             }
         }
 
@@ -76,7 +76,7 @@ namespace OverhaulMod.UI
         {
             if (error.IsNullOrEmpty())
             {
-                m_shouldSuggestGameRestart = true;
+                _shouldSuggestGameRestart = true;
             }
         }
 
@@ -84,8 +84,8 @@ namespace OverhaulMod.UI
         {
             bool local = elementTab.tabId == "local addons";
 
-            UIElementTab oldTab = m_tabs.prevSelectedTab;
-            UIElementTab newTab = m_tabs.selectedTab;
+            UIElementTab oldTab = _tabs.prevSelectedTab;
+            UIElementTab newTab = _tabs.selectedTab;
             if (oldTab)
             {
                 RectTransform rt = oldTab.transform as RectTransform;
@@ -114,8 +114,8 @@ namespace OverhaulMod.UI
 
         private void populateLocalContent()
         {
-            if (m_container.childCount != 0)
-                TransformUtils.DestroyAllChildren(m_container);
+            if (_container.childCount != 0)
+                TransformUtils.DestroyAllChildren(_container);
 
             System.Collections.Generic.List<AddonInfo> list = AddonManager.Instance.GetLoadedAddons();
             if (list.IsNullOrEmpty())
@@ -123,7 +123,7 @@ namespace OverhaulMod.UI
 
             foreach (AddonInfo addon in list)
             {
-                ModdedObject moddedObject = Instantiate(m_localContentDisplay, m_container);
+                ModdedObject moddedObject = Instantiate(_localContentDisplay, _container);
                 moddedObject.gameObject.SetActive(true);
 
                 UIElementLocalAddonDisplay localAddonDisplay = moddedObject.gameObject.AddComponent<UIElementLocalAddonDisplay>();
@@ -133,8 +133,8 @@ namespace OverhaulMod.UI
 
         private void populateNetworkContent()
         {
-            if (m_container.childCount != 0)
-                TransformUtils.DestroyAllChildren(m_container);
+            if (_container.childCount != 0)
+                TransformUtils.DestroyAllChildren(_container);
 
             if (s_contentLiftInfo != null)
             {
@@ -142,15 +142,15 @@ namespace OverhaulMod.UI
                 return;
             }
 
-            m_loadingIndicator.SetActive(true);
-            m_tabs.interactable = false;
+            _loadingIndicator.SetActive(true);
+            _tabs.interactable = false;
             AddonManager.Instance.DownloadAddonsList(out _, populate, delegate (string error)
             {
                 ModUIUtils.MessagePopupOK("Error", error, true);
 
-                m_loadingIndicator.SetActive(false);
-                m_tabs.interactable = true;
-                m_tabs.SelectTab("local addons");
+                _loadingIndicator.SetActive(false);
+                _tabs.interactable = true;
+                _tabs.SelectTab("local addons");
             });
         }
 
@@ -159,14 +159,14 @@ namespace OverhaulMod.UI
             s_contentLiftInfo = contentListInfo;
             foreach (AddonDownloadInfo addonDownloadInfo in contentListInfo.Addons)
             {
-                ModdedObject moddedObject = Instantiate(m_networkContentDisplay, m_container);
+                ModdedObject moddedObject = Instantiate(_networkContentDisplay, _container);
                 moddedObject.gameObject.SetActive(true);
                 UIElementNetworkAddonDisplay networkAddonDisplay = moddedObject.gameObject.AddComponent<UIElementNetworkAddonDisplay>();
                 networkAddonDisplay.Initialize(addonDownloadInfo, base.transform);
             }
 
-            m_loadingIndicator.SetActive(false);
-            m_tabs.interactable = true;
+            _loadingIndicator.SetActive(false);
+            _tabs.interactable = true;
         }
 
         public void OnAddonsEditorButtonClicked()

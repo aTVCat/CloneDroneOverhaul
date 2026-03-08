@@ -11,131 +11,136 @@ namespace OverhaulMod.UI
     public class UITitleScreenRework : OverhaulUIBehaviour
     {
         [UIElement("ButtonsBG")]
-        private readonly GameObject m_container;
+        private readonly GameObject _container;
 
         [UIElement("DebugButtons", false)]
-        private readonly GameObject m_debugButtonsObject;
+        private readonly GameObject _debugButtonsObject;
 
         [ButtonWithSound(ButtonWithSound.SoundType.Choose)]
         [UIElementAction(nameof(OnPlaySinglePlayerButtonClicked))]
         [UIElement("PlaySingleplayerButton")]
-        private readonly Button m_playSinglePlayerButton;
+        private readonly Button _playSinglePlayerButton;
 
         [ButtonWithSound(ButtonWithSound.SoundType.Choose)]
         [UIElementAction(nameof(OnPlayMultiPlayerButtonClicked))]
         [UIElement("PlayMultiplayerButton")]
-        private readonly Button m_playMultiPlayerButton;
+        private readonly Button _playMultiPlayerButton;
 
         [ButtonWithSound(ButtonWithSound.SoundType.Click)]
         [UIElementAction(nameof(OnViewMultiplayerErrorButtonClicked))]
         [UIElement("ViewMultiplayerErrorButton")]
-        private readonly Button m_viewMultiplayerErrorButton;
+        private readonly Button _viewMultiplayerErrorButton;
 
         [ButtonWithSound(ButtonWithSound.SoundType.Choose_NoEcho)]
         [UIElementAction(nameof(OnModsButtonClicked))]
         [UIElement("ModsButton")]
-        private readonly Button m_modsButton;
+        private readonly Button _modsButton;
 
         [ButtonWithSound(ButtonWithSound.SoundType.Click)]
         [UIElementAction(nameof(OnExcContentMenuButtonClicked))]
         [UIElement("NewExclusiveContentMenuButton")]
-        private readonly Button m_newExcContentMenuButton;
+        private readonly Button _newExcContentMenuButton;
 
         [ButtonWithSound(ButtonWithSound.SoundType.Click)]
         [UIElementAction(nameof(OnUpdatesButtonClicked))]
         [UIElement("NewUpdatesButton")]
-        private readonly Button m_newUpdatesButton;
+        private readonly Button _newUpdatesButton;
 
         [ButtonWithSound(ButtonWithSound.SoundType.Click)]
         [UIElementAction(nameof(OnOptionsButtonClicked))]
         [UIElement("OptionsButton")]
-        private readonly Button m_optionsButton;
+        private readonly Button _optionsButton;
 
         [ButtonWithSound(ButtonWithSound.SoundType.Click)]
         [UIElementAction(nameof(OnAdvancementsButtonClicked))]
         [UIElement("AchievementsButton")]
-        private readonly Button m_advancementsButton;
+        private readonly Button _advancementsButton;
 
         [ButtonWithSound(ButtonWithSound.SoundType.Click)]
         [UIElementAction(nameof(OnWorkshopBrowserButtonClicked))]
         [UIElement("WorkshopBrowserButton")]
-        private readonly Button m_workshopBrowserButton;
+        private readonly Button _workshopBrowserButton;
 
         [UIElementAction(nameof(OnLevelDescriptionsEditorButtonClicked))]
         [UIElement("LevelDescriptionsEditorButton")]
-        private readonly Button m_levelDescriptionsEditorButton;
+        private readonly Button _levelDescriptionsEditorButton;
 
         [ButtonWithSound(ButtonWithSound.SoundType.Choose)]
         [UIElementAction(nameof(OnPersonalizationEditorButtonClicked))]
         [UIElement("PersonalizationEditorButton")]
-        private readonly Button m_personalizationEditorButton;
+        private readonly Button _personalizationEditorButton;
 
         [UIElementAction(nameof(OnLocalizationEditorButtonClicked))]
         [UIElement("LocalizationEditorButton")]
-        private readonly Button m_localizationEditorButton;
+        private readonly Button _localizationEditorButton;
 
         [UIElementAction(nameof(OnSetupButtonClicked))]
         [UIElement("SetupScreenButton")]
-        private readonly Button m_setupButton;
+        private readonly Button _setupButton;
 
         [ButtonWithSound(ButtonWithSound.SoundType.Click)]
         [UIElementAction(nameof(OnContentButtonClicked))]
         [UIElement("ContentButton")]
-        private readonly Button m_contentButton;
+        private readonly Button _contentButton;
 
         [ButtonWithSound(ButtonWithSound.SoundType.Choose)]
         [UIElementAction(nameof(OnLevelEditorButtonClicked))]
         [UIElement("LevelEditorButton")]
-        private readonly Button m_levelEditorButton;
+        private readonly Button _levelEditorButton;
 
         [ButtonWithSound(ButtonWithSound.SoundType.Click)]
         [UIElementAction(nameof(OnCreditsButtonClicked))]
         [UIElement("CreditsButton")]
-        private readonly Button m_creditsButton;
+        private readonly Button _creditsButton;
 
         [ButtonWithSound(ButtonWithSound.SoundType.Choose_NoEcho)]
         [UIElementAction(nameof(OnExitButtonClicked))]
         [UIElement("ExitButton")]
-        private readonly Button m_quitButton;
+        private readonly Button _quitButton;
 
         [ButtonWithSound(ButtonWithSound.SoundType.Click)]
         [UIElementAction(nameof(OnCustomizeButtonClicked))]
         [UIElement("CustomizeButton")]
-        private readonly Button m_customizeButton;
+        private readonly Button _customizeButton;
+
+        [ButtonWithSound(ButtonWithSound.SoundType.Click)]
+        [UIElementAction(nameof(OnFeedbackClicked))]
+        [UIElement("FeedbackButton")]
+        private readonly Button _feedbackButton;
 
         [ButtonWithSound(ButtonWithSound.SoundType.Click)]
         [UIElementAction(nameof(OnModBotLogInButtonClicked))]
         [UIElement("ModBotLogInButton", false)]
-        private readonly Button m_modBotLogInButton;
+        private readonly Button _modBotLogInButton;
 
         [ButtonWithSound(ButtonWithSound.SoundType.Click)]
         [UIElementAction(nameof(OnSkinButtonClicked))]
         [UIElement("SkinButton")]
-        private readonly Button m_skinButton;
+        private readonly Button _skinButton;
 
         [UIElement("SkinNameLabel")]
-        private readonly Text m_skinNameLabelButton;
+        private readonly Text _skinNameLabelButton;
 
         [ButtonWithSound(ButtonWithSound.SoundType.Click)]
         [UIElementAction(nameof(OnBehindTheScenesButtonClicked))]
         [UIElement("BehindTheScenesButton")]
-        private readonly Button m_behindTheScenesButton;
+        private readonly Button _behindTheScenesButton;
 
         [ButtonWithSound(ButtonWithSound.SoundType.Click)]
         [UIElementAction(nameof(OnDiscordServerButtonClicked))]
         [UIElement("DiscordServerButton")]
-        private readonly Button m_discordServerButton;
+        private readonly Button _discordServerButton;
 
         [ButtonWithSound(ButtonWithSound.SoundType.Click)]
         [UIElementAction(nameof(OnPatchNotesButtonClicked))]
         [UIElement("PatchNotesButton")]
-        private readonly Button m_patchNotesButton;
+        private readonly Button _patchNotesButton;
 
         [UIElement("MiscElements")]
-        private readonly GameObject m_miscElementsObject;
+        private readonly GameObject _miscElementsObject;
 
         [UIElement("ModBotLogonText")]
-        private readonly Text m_modBotLogonText;
+        private readonly Text _modBotLogonText;
 
         [UIElement("ErrorMessage", typeof(UIElementMultiplayerMessageBox), false)]
         public UIElementMultiplayerMessageBox ErrorMessage;
@@ -144,35 +149,35 @@ namespace OverhaulMod.UI
         public UIElementMultiplayerMessageButton ErrorMessageButton;
 
         [UIElement("AdvancementsProgressImage")]
-        private readonly Image m_advancementsProgressImage;
+        private readonly Image _advancementsProgressImage;
 
         [UIElement("AdvancementsProgressText")]
-        private readonly Text m_advancementsProgressText;
+        private readonly Text _advancementsProgressText;
 
         [UIElement("AdvancementsProgressPercentageText")]
-        private readonly Text m_advancementsProgressPercentageText;
+        private readonly Text _advancementsProgressPercentageText;
 
         [UIElement("HypocrisisSkinHolder")]
-        private readonly Transform m_hypocrisisSkinHolder;
+        private readonly Transform _hypocrisisSkinHolder;
 
         [UIElement("hcLabel", false)]
-        private readonly GameObject m_skinButtonHCLabel;
+        private readonly GameObject _skinButtonHCLabel;
 
         public override bool closeOnEscapeButtonPress => false;
 
-        private TitleScreenUI m_titleScreenUI;
-        private CanvasGroup m_canvasGroup;
-        private GameObject m_legacyContainer;
+        private TitleScreenUI _titleScreenUI;
+        private CanvasGroup _canvasGroup;
+        private GameObject _legacyContainer;
 
-        private RectTransform m_socialButtonContainer;
-        private RectTransform m_socialButtonPopoutHolder;
+        private RectTransform _socialButtonContainer;
+        private RectTransform _socialButtonPopoutHolder;
 
-        private Vector2 m_initialSocialButtonContainerPosition, m_newSocialButtonContainerPosition;
-        private Vector2 m_initialSocialButtonPopoutHolderPosition, m_newSocialButtonPopoutHolderPosition;
+        private Vector2 _initialSocialButtonContainerPosition, _newSocialButtonContainerPosition;
+        private Vector2 _initialSocialButtonPopoutHolderPosition, _newSocialButtonPopoutHolderPosition;
 
-        private bool m_hasSpawnedHypocrisisSkin;
+        private bool _hasSpawnedHypocrisisSkin;
 
-        private bool m_mobBotUsernameAvailable;
+        private bool _mobBotUsernameAvailable;
 
         public bool hideVanillaTitleScreen
         {
@@ -182,41 +187,41 @@ namespace OverhaulMod.UI
             }
         }
 
-        private TitleScreenSkinType m_skin;
+        private TitleScreenSkinType _skin;
         public TitleScreenSkinType skin
         {
             get
             {
-                return m_skin;
+                return _skin;
             }
             set
             {
-                if (m_skin == value)
+                if (_skin == value)
                     return;
 
-                m_skin = value;
+                _skin = value;
 
                 bool nonVanilla = value != TitleScreenSkinType.Vanilla;
                 bool overhaul = value == TitleScreenSkinType.Overhaul;
                 bool hypocrisis = value == TitleScreenSkinType.Hypocrisis3;
 
-                CanvasGroup group = m_canvasGroup;
+                CanvasGroup group = _canvasGroup;
                 if (group)
                 {
                     group.alpha = nonVanilla ? 0f : 1f;
                     group.interactable = !nonVanilla;
                 }
 
-                if (m_socialButtonContainer && m_socialButtonPopoutHolder)
+                if (_socialButtonContainer && _socialButtonPopoutHolder)
                 {
-                    m_socialButtonContainer.anchoredPosition = overhaul ? m_newSocialButtonContainerPosition : m_initialSocialButtonContainerPosition;
-                    m_socialButtonPopoutHolder.anchoredPosition = overhaul ? m_newSocialButtonPopoutHolderPosition : m_initialSocialButtonPopoutHolderPosition;
+                    _socialButtonContainer.anchoredPosition = overhaul ? _newSocialButtonContainerPosition : _initialSocialButtonContainerPosition;
+                    _socialButtonPopoutHolder.anchoredPosition = overhaul ? _newSocialButtonPopoutHolderPosition : _initialSocialButtonPopoutHolderPosition;
                 }
 
-                if (hypocrisis && !m_hasSpawnedHypocrisisSkin)
+                if (hypocrisis && !_hasSpawnedHypocrisisSkin)
                 {
-                    ModUIConstants.ShowTitleScreenHypocrisisSkin(m_hypocrisisSkinHolder);
-                    m_hasSpawnedHypocrisisSkin = true;
+                    ModUIConstants.ShowTitleScreenHypocrisisSkin(_hypocrisisSkinHolder);
+                    _hasSpawnedHypocrisisSkin = true;
                 }
             }
         }
@@ -225,24 +230,24 @@ namespace OverhaulMod.UI
         {
             bool debug = ModBuildInfo.debug;
 
-            m_modBotLogonText.text = "Not logged in";
-            m_debugButtonsObject.SetActive(debug);
+            _modBotLogonText.text = "Not logged in";
+            _debugButtonsObject.SetActive(debug);
 
             float fraction = GameplayAchievementManager.Instance.GetFractionOfAchievementsCompleted();
-            m_advancementsProgressImage.fillAmount = fraction;
-            m_advancementsProgressText.text = $"{ModGameUtils.GetNumOfAchievementsCompleted()}/{ModGameUtils.GetNumOfAchievements()}";
-            m_advancementsProgressPercentageText.text = $"({Mathf.FloorToInt(fraction * 100f)}%)";
+            _advancementsProgressImage.fillAmount = fraction;
+            _advancementsProgressText.text = $"{ModGameUtils.GetNumOfAchievementsCompleted()}/{ModGameUtils.GetNumOfAchievements()}";
+            _advancementsProgressPercentageText.text = $"({Mathf.FloorToInt(fraction * 100f)}%)";
 
             TitleScreenUI titleScreenUI = ModCache.titleScreenUI;
             if (titleScreenUI)
             {
-                m_titleScreenUI = titleScreenUI;
+                _titleScreenUI = titleScreenUI;
                 if (titleScreenUI.RootButtonsContainerBG)
                 {
                     CanvasGroup group = titleScreenUI.RootButtonsContainerBG.GetComponent<CanvasGroup>() ?? titleScreenUI.RootButtonsContainerBG.AddComponent<CanvasGroup>();
                     group.blocksRaycasts = true;
-                    m_canvasGroup = group;
-                    m_legacyContainer = group.gameObject;
+                    _canvasGroup = group;
+                    _legacyContainer = group.gameObject;
                 }
 
                 Transform socialButtons = titleScreenUI.SocialButtonPanel?.transform;
@@ -252,12 +257,12 @@ namespace OverhaulMod.UI
                     RectTransform socialButtonPopoutHolder = TransformUtils.FindChildRecursive(socialButtons, "PopoutHolder") as RectTransform;
                     if (socialButtonContainer && socialButtonPopoutHolder)
                     {
-                        m_socialButtonContainer = socialButtonContainer;
-                        m_initialSocialButtonContainerPosition = socialButtonContainer.anchoredPosition;
-                        m_newSocialButtonContainerPosition = socialButtonContainer.anchoredPosition + (Vector2.up * 65f);
-                        m_socialButtonPopoutHolder = socialButtonPopoutHolder;
-                        m_initialSocialButtonPopoutHolderPosition = socialButtonPopoutHolder.anchoredPosition;
-                        m_newSocialButtonPopoutHolderPosition = socialButtonPopoutHolder.anchoredPosition + (Vector2.up * 65f);
+                        _socialButtonContainer = socialButtonContainer;
+                        _initialSocialButtonContainerPosition = socialButtonContainer.anchoredPosition;
+                        _newSocialButtonContainerPosition = socialButtonContainer.anchoredPosition + (Vector2.up * 65f);
+                        _socialButtonPopoutHolder = socialButtonPopoutHolder;
+                        _initialSocialButtonPopoutHolderPosition = socialButtonPopoutHolder.anchoredPosition;
+                        _newSocialButtonPopoutHolderPosition = socialButtonPopoutHolder.anchoredPosition + (Vector2.up * 65f);
                     }
                 }
             }
@@ -266,49 +271,49 @@ namespace OverhaulMod.UI
 
             refreshSkinButtonLabel();
 
-            m_mobBotUsernameAvailable = checkIfModBotUserNameIsAvailable();
+            _mobBotUsernameAvailable = checkIfModBotUserNameIsAvailable();
         }
 
         public override void Update()
         {
             bool reworkEnabled = skin == TitleScreenSkinType.Overhaul;
-            bool shouldBeActive = m_legacyContainer.activeInHierarchy;
+            bool shouldBeActive = _legacyContainer.activeInHierarchy;
             bool flag = reworkEnabled && shouldBeActive;
-            m_container.SetActive(flag);
-            m_miscElementsObject.SetActive(flag);
-            m_hypocrisisSkinHolder.gameObject.SetActive(shouldBeActive && skin == TitleScreenSkinType.Hypocrisis3);
+            _container.SetActive(flag);
+            _miscElementsObject.SetActive(flag);
+            _hypocrisisSkinHolder.gameObject.SetActive(shouldBeActive && skin == TitleScreenSkinType.Hypocrisis3);
 
             if (Time.frameCount % 20 == 0)
             {
-                if (m_mobBotUsernameAvailable)
+                if (_mobBotUsernameAvailable)
                 {
                     string userName = ModIntegrationUtils.ModBot.GetModBotUsername();
                     if (!userName.IsNullOrEmpty())
                     {
-                        m_modBotLogonText.text = $"{LocalizationManager.Instance.GetTranslatedString("modui_modbot_logged_as")} {userName.AddColor(Color.white)}";
-                        m_modBotLogonText.enabled = true;
-                        m_modBotLogInButton.gameObject.SetActive(false);
+                        _modBotLogonText.text = $"{LocalizationManager.Instance.GetTranslatedString("modui_modbot_logged_as")} {userName.AddColor(Color.white)}";
+                        _modBotLogonText.enabled = true;
+                        _modBotLogInButton.gameObject.SetActive(false);
                     }
                     else
                     {
-                        m_modBotLogonText.enabled = false;
-                        m_modBotLogInButton.gameObject.SetActive(true);
+                        _modBotLogonText.enabled = false;
+                        _modBotLogInButton.gameObject.SetActive(true);
                     }
                 }
                 else
                 {
-                    m_modBotLogonText.enabled = false;
-                    m_modBotLogInButton.gameObject.SetActive(false);
+                    _modBotLogonText.enabled = false;
+                    _modBotLogInButton.gameObject.SetActive(false);
                 }
 
                 SteamManager steamManager = SteamManager.Instance;
                 bool steamInitialized = steamManager && steamManager.Initialized;
 
-                m_personalizationEditorButton.interactable = steamInitialized;
-                m_workshopBrowserButton.interactable = steamInitialized;
+                _personalizationEditorButton.interactable = steamInitialized;
+                _workshopBrowserButton.interactable = steamInitialized;
             }
 
-            m_skinButton.gameObject.SetActive(shouldBeActive);
+            _skinButton.gameObject.SetActive(shouldBeActive);
         }
 
         public override void OnDestroy()
@@ -345,7 +350,7 @@ namespace OverhaulMod.UI
 
         public void SetMultiplayerButtonActive(bool value)
         {
-            m_playMultiPlayerButton.interactable = value;
+            _playMultiPlayerButton.interactable = value;
         }
 
         private IEnumerator levelEditorTransitionCoroutine()
@@ -355,7 +360,7 @@ namespace OverhaulMod.UI
                 yield return null;
 
             yield return null;
-            m_titleScreenUI.OnLevelEditorButtonClicked();
+            _titleScreenUI.OnLevelEditorButtonClicked();
             yield return new WaitForSecondsRealtime(1f);
             TransitionManager.Instance.EndTransition();
             yield break;
@@ -381,19 +386,19 @@ namespace OverhaulMod.UI
                     break;
             }
 
-            m_skinButtonHCLabel.SetActive(skinType == TitleScreenSkinType.Hypocrisis3);
-            m_skinNameLabelButton.text = displayString;
+            _skinButtonHCLabel.SetActive(skinType == TitleScreenSkinType.Hypocrisis3);
+            _skinNameLabelButton.text = displayString;
         }
 
         public void OnPlaySinglePlayerButtonClicked()
         {
-            m_titleScreenUI.OnPlaySingleplayerButtonClicked();
+            _titleScreenUI.OnPlaySingleplayerButtonClicked();
         }
 
         public void OnPlayMultiPlayerButtonClicked()
         {
-            m_titleScreenUI.OnMultiplayerButtonClicked();
-            m_titleScreenUI.MultiplayerModeSelectScreen.SetMainScreenVisible(true);
+            _titleScreenUI.OnMultiplayerButtonClicked();
+            _titleScreenUI.MultiplayerModeSelectScreen.SetMainScreenVisible(true);
         }
 
         public void OnModBotLogInButtonClicked()
@@ -468,7 +473,7 @@ namespace OverhaulMod.UI
                 if (LevelManager.Instance.IsSpawningCurrentLevel())
                     return;
 
-                m_titleScreenUI.OnLevelEditorButtonClicked();
+                _titleScreenUI.OnLevelEditorButtonClicked();
                 return;
             }
             TransitionManager.Instance.DoNonSceneTransition(levelEditorTransitionCoroutine());
@@ -497,6 +502,11 @@ namespace OverhaulMod.UI
                 return;
             }
             _ = ModUIConstants.ShowFeedbackUIRework(true);
+        }
+
+        public void OnFeedbackClicked()
+        {
+            _ = ModUIConstants.ShowFeedbackUIRework(false);
         }
 
         public void OnCustomizeButtonClicked()

@@ -8,29 +8,29 @@ namespace OverhaulMod.Engine
         public const string SETTINGS_FILE_NAME_OLD = "modSettings.json";
         public const string SETTINGS_FILE_NAME = "Settings.json";
 
-        private string m_settingsFilePathOld;
+        private string _settingsFilePathOld;
         public string settingsFilePathOld
         {
             get
             {
-                if (m_settingsFilePathOld == null)
+                if (_settingsFilePathOld == null)
                 {
-                    m_settingsFilePathOld = Path.Combine(ModCore.modUserDataFolder, SETTINGS_FILE_NAME_OLD);
+                    _settingsFilePathOld = Path.Combine(ModCore.modUserDataFolder, SETTINGS_FILE_NAME_OLD);
                 }
-                return m_settingsFilePathOld;
+                return _settingsFilePathOld;
             }
         }
 
-        private string m_settingsFilePath;
+        private string _settingsFilePath;
         public string settingsFilePath
         {
             get
             {
-                if (m_settingsFilePath == null)
+                if (_settingsFilePath == null)
                 {
-                    m_settingsFilePath = Path.Combine(ModCore.modUserDataFolder, SETTINGS_FILE_NAME);
+                    _settingsFilePath = Path.Combine(ModCore.modUserDataFolder, SETTINGS_FILE_NAME);
                 }
-                return m_settingsFilePath;
+                return _settingsFilePath;
             }
         }
 

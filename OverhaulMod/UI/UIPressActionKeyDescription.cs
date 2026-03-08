@@ -17,36 +17,36 @@ namespace OverhaulMod.UI
         public static int FontSize;
 
         [UIElement("BG")]
-        private readonly RectTransform m_bg;
+        private readonly RectTransform _bg;
 
         [UIElement("BG", false)]
-        private readonly GameObject m_bgObject;
+        private readonly GameObject _bgObject;
 
         [UIElement("BG")]
-        private readonly Image m_bgImage;
+        private readonly Image _bgImage;
 
         [UIElement("BG")]
-        private readonly CanvasGroup m_bgCanvasGroup;
+        private readonly CanvasGroup _bgCanvasGroup;
 
         [UIElement("Text")]
-        private readonly Text m_text;
+        private readonly Text _text;
 
-        private BetterOutline m_textOutline;
+        private BetterOutline _textOutline;
 
         public override bool closeOnEscapeButtonPress => false;
 
-        private float m_expandProgress;
+        private float _expandProgress;
 
-        private bool m_show;
+        private bool _show;
 
-        private int m_siblingIndex;
+        private int _siblingIndex;
 
         protected override void OnInitialized()
         {
-            BetterOutline betterOutline = m_text.gameObject.AddComponent<BetterOutline>();
+            BetterOutline betterOutline = _text.gameObject.AddComponent<BetterOutline>();
             betterOutline.effectColor = Color.black;
             betterOutline.effectDistance = Vector2.one * 1.25f;
-            m_textOutline = betterOutline;
+            _textOutline = betterOutline;
 
             GlobalEventManager.Instance.AddEventListener<string>(ModResources.ASSET_BUNDLE_LOADED_EVENT, onAssetBundleLoaded);
 
@@ -70,22 +70,22 @@ namespace OverhaulMod.UI
 
         public override void Update()
         {
-            Text textComponent = m_text;
+            Text textComponent = _text;
 
-            RectTransform rt = m_bg;
+            RectTransform rt = _bg;
             Vector2 sd = rt.sizeDelta;
-            sd.x = Mathf.Lerp(0f, Mathf.Clamp(textComponent.preferredWidth + 15f, 100f, 200f), NumberUtils.EaseOutQuad(0f, 1f, m_expandProgress));
-            sd.y = Mathf.Lerp(0f, textComponent.preferredHeight + 12.5f, NumberUtils.EaseOutQuad(0f, 1f, m_expandProgress));
+            sd.x = Mathf.Lerp(0f, Mathf.Clamp(textComponent.preferredWidth + 15f, 100f, 200f), NumberUtils.EaseOutQuad(0f, 1f, _expandProgress));
+            sd.y = Mathf.Lerp(0f, textComponent.preferredHeight + 12.5f, NumberUtils.EaseOutQuad(0f, 1f, _expandProgress));
             rt.sizeDelta = sd;
 
-            m_bgObject.SetActive(m_expandProgress > 0f);
-            if (!m_show && m_expandProgress == 0f)
+            _bgObject.SetActive(_expandProgress > 0f);
+            if (!_show && _expandProgress == 0f)
             {
                 if (!textComponent.text.IsNullOrEmpty())
                     textComponent.text = null;
             }
 
-            m_expandProgress = Mathf.Clamp01(m_expandProgress + ((m_show ? 1f : -1f) * Time.unscaledDeltaTime * 7.5f));
+            _expandProgress = Mathf.Clamp01(_expandProgress + ((_show ? 1f : -1f) * Time.unscaledDeltaTime * 7.5f));
         }
 
         private void onAssetBundleLoaded(string assetBundle)
@@ -98,38 +98,38 @@ namespace OverhaulMod.UI
         {
             if (FontType == 0)
             {
-                m_text.font = LocalizationManager.Instance.GetCurrentSubtitlesFont();
+                _text.font = LocalizationManager.Instance.GetCurrentSubtitlesFont();
             }
 
-            m_text.text = text;
-            m_show = true;
+            _text.text = text;
+            _show = true;
         }
 
         public void HideText()
         {
-            m_show = false;
+            _show = false;
         }
 
         public void SetSiblingIndex(bool last)
         {
             if (last)
             {
-                m_siblingIndex = base.transform.GetSiblingIndex();
+                _siblingIndex = base.transform.GetSiblingIndex();
                 base.transform.SetAsLastSibling();
             }
-            else if (m_siblingIndex != 0)
+            else if (_siblingIndex != 0)
             {
-                base.transform.SetSiblingIndex(m_siblingIndex);
+                base.transform.SetSiblingIndex(_siblingIndex);
             }
         }
 
         private void refreshSettings(object obj)
         {
-            m_textOutline.enabled = !EnableBG;
-            m_bgImage.enabled = EnableBG;
+            _textOutline.enabled = !EnableBG;
+            _bgImage.enabled = EnableBG;
 
-            m_text.fontSize = FontSize;
-            m_text.font = ModResources.FontByIndex(FontType);
+            _text.fontSize = FontSize;
+            _text.font = ModResources.FontByIndex(FontType);
         }
     }
 }

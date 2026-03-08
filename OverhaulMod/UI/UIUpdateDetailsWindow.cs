@@ -9,35 +9,35 @@ namespace OverhaulMod.UI
     {
         [UIElementAction(nameof(Hide))]
         [UIElement("CloseButton")]
-        private readonly Button m_exitButton;
+        private readonly Button _exitButton;
 
         [UIElementAction(nameof(OnDownloadButtonClicked))]
         [UIElement("DownloadButton")]
-        private readonly Button m_downloadButton;
+        private readonly Button _downloadButton;
 
         [UIElement("ProgressBar", false)]
-        private readonly GameObject m_progressBar;
+        private readonly GameObject _progressBar;
 
         [UIElement("Fill")]
-        private readonly Image m_progressBarFill;
+        private readonly Image _progressBarFill;
 
         [UIElement("ButtonsContainer", true)]
-        private readonly GameObject m_buttonsContainer;
+        private readonly GameObject _buttonsContainer;
 
         public override bool hideTitleScreen => true;
 
-        public override bool closeOnEscapeButtonPress => m_allowHidingThisMenu;
+        public override bool closeOnEscapeButtonPress => _allowHidingThisMenu;
 
-        private bool m_allowHidingThisMenu;
+        private bool _allowHidingThisMenu;
 
-        private UpdateInfo m_updateInfo;
+        private UpdateInfo _updateInfo;
 
-        private string m_branch;
+        private string _branch;
 
         public void Populate(UpdateInfo updateInfo, string branch)
         {
-            m_updateInfo = updateInfo;
-            m_branch = branch;
+            _updateInfo = updateInfo;
+            _branch = branch;
 
             UIPatchNotes patchNotes = ModUIConstants.ShowPatchNotes(base.transform, new UIPatchNotes.ShowArguments
             {
@@ -53,7 +53,7 @@ namespace OverhaulMod.UI
         public override void Show()
         {
             base.Show();
-            m_allowHidingThisMenu = true;
+            _allowHidingThisMenu = true;
         }
 
         public override void Hide()
@@ -64,22 +64,22 @@ namespace OverhaulMod.UI
 
         public override void Update()
         {
-            m_progressBarFill.fillAmount = UpdateManager.Instance.GetBuildDownloadProgress();
+            _progressBarFill.fillAmount = UpdateManager.Instance.GetBuildDownloadProgress();
         }
 
         public void OnDownloadButtonClicked()
         {
-            m_allowHidingThisMenu = false;
-            m_downloadButton.interactable = false;
-            m_progressBar.SetActive(true);
-            m_progressBarFill.fillAmount = 0f;
-            m_buttonsContainer.SetActive(false);
+            _allowHidingThisMenu = false;
+            _downloadButton.interactable = false;
+            _progressBar.SetActive(true);
+            _progressBarFill.fillAmount = 0f;
+            _buttonsContainer.SetActive(false);
 
-            UpdateManager.Instance.DownloadBuild(m_updateInfo.DownloadLink, m_updateInfo.IsGoogleDriveLink, $"OverhaulMod_{m_updateInfo.DisplayVersion}_{m_branch}", delegate (UpdateManager.InstallUpdateResult installUpdateResult)
+            UpdateManager.Instance.DownloadBuild(_updateInfo.DownloadLink, _updateInfo.IsGoogleDriveLink, $"OverhaulMod_{_updateInfo.DisplayVersion}_{_branch}", delegate (UpdateManager.InstallUpdateResult installUpdateResult)
             {
-                m_allowHidingThisMenu = true;
-                m_progressBar.SetActive(false);
-                m_buttonsContainer.SetActive(true);
+                _allowHidingThisMenu = true;
+                _progressBar.SetActive(false);
+                _buttonsContainer.SetActive(true);
 
                 if (!installUpdateResult.IsError())
                 {
@@ -87,7 +87,7 @@ namespace OverhaulMod.UI
                 }
                 else
                 {
-                    m_downloadButton.interactable = true;
+                    _downloadButton.interactable = true;
                 }
             });
         }

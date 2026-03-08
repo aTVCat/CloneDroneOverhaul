@@ -16,9 +16,9 @@ namespace OverhaulMod.Engine
             }
         }
 
-        private LightingTransitionInfo m_currentTransition;
+        private LightingTransitionInfo _currentTransition;
 
-        private LightingInfo m_oldLevelLightInfo;
+        private LightingInfo _oldLevelLightInfo;
 
         public float transitionTime
         {
@@ -28,17 +28,17 @@ namespace OverhaulMod.Engine
             }
         }
 
-        private float m_timeLeft;
-        private float m_timeToAllowTransitionUpdates;
+        private float _timeLeft;
+        private float _timeToAllowTransitionUpdates;
 
         public void DoTransition(LevelLightSettings b)
         {
             if (!b)
                 return;
 
-            LightingInfo aInfo = m_oldLevelLightInfo;
+            LightingInfo aInfo = _oldLevelLightInfo;
             LightingInfo bInfo = new LightingInfo(b);
-            m_oldLevelLightInfo = bInfo;
+            _oldLevelLightInfo = bInfo;
 
             if (aInfo == null || aInfo.Equals(bInfo))
                 return;
@@ -50,23 +50,23 @@ namespace OverhaulMod.Engine
                 completion = 0f
             };
             lightingTransitionInfo.completion = 0f;
-            m_timeLeft = transitionTime;
-            m_timeToAllowTransitionUpdates = Time.time + 0.3f;
-            m_currentTransition = lightingTransitionInfo;
+            _timeLeft = transitionTime;
+            _timeToAllowTransitionUpdates = Time.time + 0.3f;
+            _currentTransition = lightingTransitionInfo;
         }
 
         public bool IsDoingTransition()
         {
-            return m_currentTransition != null;
+            return _currentTransition != null;
         }
 
         private void Update()
         {
-            if (Time.time < m_timeToAllowTransitionUpdates || m_currentTransition == null || AdvancedPhotoModeManager.Instance.IsActive())
+            if (Time.time < _timeToAllowTransitionUpdates || _currentTransition == null || AdvancedPhotoModeManager.Instance.IsActive())
                 return;
 
-            float v = m_timeLeft - Time.deltaTime;
-            m_timeLeft = v;
+            float v = _timeLeft - Time.deltaTime;
+            _timeLeft = v;
 
             bool levelHidesArena = false;
             LevelManager levelManager = LevelManager.Instance;
@@ -75,13 +75,13 @@ namespace OverhaulMod.Engine
 
             if (v <= 0f || levelHidesArena)
             {
-                m_currentTransition.completion = 1f;
-                m_currentTransition = null;
+                _currentTransition.completion = 1f;
+                _currentTransition = null;
                 LevelEditorLightManager.Instance.RefreshLightInScene();
             }
             else
             {
-                m_currentTransition.completion = 1f - NumberUtils.EaseInOutQuad(0f, 1f, Mathf.Clamp01(v / transitionTime));
+                _currentTransition.completion = 1f - NumberUtils.EaseInOutQuad(0f, 1f, Mathf.Clamp01(v / transitionTime));
             }
         }
     }

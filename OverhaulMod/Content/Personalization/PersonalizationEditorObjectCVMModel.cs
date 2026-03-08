@@ -9,16 +9,16 @@ namespace OverhaulMod.Content.Personalization
 {
     public class PersonalizationEditorObjectCVMModel : PersonalizationEditorObjectComponentBase
     {
-        private PersonalizationEditorObjectVisibilityController m_visibilityController;
+        private PersonalizationEditorObjectVisibilityController _visibilityController;
         public PersonalizationEditorObjectVisibilityController visibilityController
         {
             get
             {
-                if (!m_visibilityController)
+                if (!_visibilityController)
                 {
-                    m_visibilityController = base.GetComponent<PersonalizationEditorObjectVisibilityController>();
+                    _visibilityController = base.GetComponent<PersonalizationEditorObjectVisibilityController>();
                 }
-                return m_visibilityController;
+                return _visibilityController;
             }
         }
 
@@ -50,9 +50,9 @@ namespace OverhaulMod.Content.Personalization
             }
         }
 
-        private CVMImporter.SaveClass m_loadedModel;
+        private CVMImporter.SaveClass _loadedModel;
 
-        private bool m_hasAddedEvent;
+        private bool _hasAddedEvent;
 
         private void Start()
         {
@@ -63,18 +63,18 @@ namespace OverhaulMod.Content.Personalization
             {
                 GlobalEventManager.Instance.AddEventListener(PersonalizationEditorManager.PRESET_PREVIEW_CHANGED_EVENT, RefreshModel);
                 GlobalEventManager.Instance.AddEventListener(PersonalizationEditorManager.OBJECT_EDITED_EVENT, RefreshModel);
-                m_hasAddedEvent = true;
+                _hasAddedEvent = true;
             }
             RefreshModel();
         }
 
         private void OnDestroy()
         {
-            if (m_hasAddedEvent)
+            if (_hasAddedEvent)
             {
                 GlobalEventManager.Instance.RemoveEventListener(PersonalizationEditorManager.PRESET_PREVIEW_CHANGED_EVENT, RefreshModel);
                 GlobalEventManager.Instance.RemoveEventListener(PersonalizationEditorManager.OBJECT_EDITED_EVENT, RefreshModel);
-                m_hasAddedEvent = false;
+                _hasAddedEvent = false;
             }
         }
 
@@ -154,14 +154,14 @@ namespace OverhaulMod.Content.Personalization
             }
 
             string path = Path.Combine(itemInfo.RootFolderPath, preset.CvmFilePath);
-            if (m_loadedModel == null)
+            if (_loadedModel == null)
             {
-                m_loadedModel = CVMImporter.LoadModel(path);
-                if (m_loadedModel == null)
+                _loadedModel = CVMImporter.LoadModel(path);
+                if (_loadedModel == null)
                     return;
             }
 
-            _ = CVMImporter.InstantiateModel(m_loadedModel, preset.Weapon, preset.Variant, preset.ReplaceColors, preset.ShowFireParticles, t, out string error);
+            _ = CVMImporter.InstantiateModel(_loadedModel, preset.Weapon, preset.Variant, preset.ReplaceColors, preset.ShowFireParticles, t, out string error);
             if (PersonalizationEditorManager.IsInEditor() && !error.IsNullOrEmpty())
             {
                 UIPersonalizationEditor.instance.ShowErrorNotification("CVM Error", error, 15f);

@@ -31,33 +31,33 @@ namespace OverhaulMod.Engine
         [ModSetting(ModSettingsConstants.MUTE_SPEED_MULTIPLIER, 0.6f)]
         public static float MuteSpeedMultiplier;
 
-        private AudioSource m_musicAudioSource;
+        private AudioSource _musicAudioSource;
 
-        private AudioSource[] m_commentatorAudioSources;
+        private AudioSource[] _commentatorAudioSources;
 
-        private GameObject m_loadingSoundSourcePrefab, m_customizationEditorAmbianceSourcePrefab;
+        private GameObject _loadingSoundSourcePrefab, _customizationEditorAmbianceSourcePrefab;
 
-        private float m_updateVolumeUntilTime;
+        private float _updateVolumeUntilTime;
 
-        private float m_volumeMultiplier, m_prevVolumeMultiplier;
+        private float _volumeMultiplier, _prevVolumeMultiplier;
 
-        private float m_masterVolume, m_musicVolume, m_commentatorsVolume;
+        private float _masterVolume, _musicVolume, _commentatorsVolume;
 
-        private bool m_focused;
+        private bool _focused;
 
-        private AudioSource m_customizationEditorAmbiance;
+        private AudioSource _customizationEditorAmbiance;
 
-        private float m_timeCustomizationEditorAmbianceStartTime, m_timeCustomizationEditorAmbianceStopTime;
+        private float _timeCustomizationEditorAmbianceStartTime, _timeCustomizationEditorAmbianceStopTime;
 
         private void Start()
         {
-            m_timeCustomizationEditorAmbianceStartTime = -1f;
-            m_timeCustomizationEditorAmbianceStopTime = -1f;
+            _timeCustomizationEditorAmbianceStartTime = -1f;
+            _timeCustomizationEditorAmbianceStopTime = -1f;
 
-            m_loadingSoundSourcePrefab = ModResources.Prefab(AssetBundleConstants.SFX, "LoadingSoundSource");
-            m_customizationEditorAmbianceSourcePrefab = ModResources.Prefab(AssetBundleConstants.SFX, "CustEditorAmbianceSource");
-            m_focused = !MuteSoundWhenUnfocused || Application.isFocused;
-            m_volumeMultiplier = m_focused ? 1f : 0f;
+            _loadingSoundSourcePrefab = ModResources.Prefab(AssetBundleConstants.SFX, "LoadingSoundSource");
+            _customizationEditorAmbianceSourcePrefab = ModResources.Prefab(AssetBundleConstants.SFX, "CustEditorAmbianceSource");
+            _focused = !MuteSoundWhenUnfocused || Application.isFocused;
+            _volumeMultiplier = _focused ? 1f : 0f;
             RefreshVolume();
         }
 
@@ -70,44 +70,44 @@ namespace OverhaulMod.Engine
         {
             if (ModBuildInfo.debug)
             {
-                UIDeveloperMenu.SetKeyValue("Master volume", (m_masterVolume * (MuteMasterVolumeWhenUnfocused ? m_volumeMultiplier : 1f)).ToString());
-                UIDeveloperMenu.SetKeyValue("Music volume", (m_musicVolume * (MuteMusicWhenUnfocused && !MuteMasterVolumeWhenUnfocused ? m_volumeMultiplier : 1f)).ToString());
-                UIDeveloperMenu.SetKeyValue("Commentators volume", (m_commentatorsVolume * (MuteCommentatorsWhenUnfocused && !MuteMasterVolumeWhenUnfocused ? m_volumeMultiplier : 1f)).ToString());
-                UIDeveloperMenu.SetKeyValue("Volume multiplier", m_volumeMultiplier.ToString());
-                UIDeveloperMenu.SetKeyValue("Mute in progress?", (Time.unscaledTime < m_updateVolumeUntilTime).ToString());
+                UIDeveloperMenu.SetKeyValue("Master volume", (_masterVolume * (MuteMasterVolumeWhenUnfocused ? _volumeMultiplier : 1f)).ToString());
+                UIDeveloperMenu.SetKeyValue("Music volume", (_musicVolume * (MuteMusicWhenUnfocused && !MuteMasterVolumeWhenUnfocused ? _volumeMultiplier : 1f)).ToString());
+                UIDeveloperMenu.SetKeyValue("Commentators volume", (_commentatorsVolume * (MuteCommentatorsWhenUnfocused && !MuteMasterVolumeWhenUnfocused ? _volumeMultiplier : 1f)).ToString());
+                UIDeveloperMenu.SetKeyValue("Volume multiplier", _volumeMultiplier.ToString());
+                UIDeveloperMenu.SetKeyValue("Mute in progress?", (Time.unscaledTime < _updateVolumeUntilTime).ToString());
             }
 
-            if (m_customizationEditorAmbiance)
+            if (_customizationEditorAmbiance)
             {
-                if (m_timeCustomizationEditorAmbianceStopTime != -1f)
+                if (_timeCustomizationEditorAmbianceStopTime != -1f)
                 {
-                    m_customizationEditorAmbiance.volume = 1f - Mathf.Clamp01(Time.unscaledTime - m_timeCustomizationEditorAmbianceStopTime);
-                    if (m_customizationEditorAmbiance.volume <= 0f)
+                    _customizationEditorAmbiance.volume = 1f - Mathf.Clamp01(Time.unscaledTime - _timeCustomizationEditorAmbianceStopTime);
+                    if (_customizationEditorAmbiance.volume <= 0f)
                     {
-                        Destroy(m_customizationEditorAmbiance.gameObject);
-                        m_customizationEditorAmbiance = null;
+                        Destroy(_customizationEditorAmbiance.gameObject);
+                        _customizationEditorAmbiance = null;
                     }
                 }
                 else
                 {
-                    m_customizationEditorAmbiance.volume = Mathf.Clamp01((Time.unscaledTime - m_timeCustomizationEditorAmbianceStartTime) * 0.2f);
+                    _customizationEditorAmbiance.volume = Mathf.Clamp01((Time.unscaledTime - _timeCustomizationEditorAmbianceStartTime) * 0.2f);
                 }
             }
 
-            if (Time.unscaledTime > m_updateVolumeUntilTime)
+            if (Time.unscaledTime > _updateVolumeUntilTime)
                 return;
 
-            m_volumeMultiplier = MuteSoundInstantlyWhenUnfocused ? (m_focused ? 1f : 0f) : Mathf.Clamp01(m_volumeMultiplier + (Time.unscaledDeltaTime * (5f * MuteSpeedMultiplier) * (m_focused ? 1f : -1f)));
+            _volumeMultiplier = MuteSoundInstantlyWhenUnfocused ? (_focused ? 1f : 0f) : Mathf.Clamp01(_volumeMultiplier + (Time.unscaledDeltaTime * (5f * MuteSpeedMultiplier) * (_focused ? 1f : -1f)));
 
-            m_prevVolumeMultiplier = m_volumeMultiplier;
+            _prevVolumeMultiplier = _volumeMultiplier;
             RefreshVolume();
         }
 
         private void OnApplicationFocus(bool focused)
         {
             refreshVolumeSettings();
-            m_focused = !MuteSoundWhenUnfocused || focused;
-            m_updateVolumeUntilTime = Time.unscaledTime + 2f;
+            _focused = !MuteSoundWhenUnfocused || focused;
+            _updateVolumeUntilTime = Time.unscaledTime + 2f;
         }
 
         public void PlayOrStopCustomizationEditorAmbiance()
@@ -117,35 +117,35 @@ namespace OverhaulMod.Engine
 
             if (PersonalizationEditorManager.EditorAmbiance)
             {
-                m_timeCustomizationEditorAmbianceStopTime = -1f;
-                m_timeCustomizationEditorAmbianceStartTime = Time.unscaledTime;
+                _timeCustomizationEditorAmbianceStopTime = -1f;
+                _timeCustomizationEditorAmbianceStartTime = Time.unscaledTime;
                 PlayCustomizationEditorAmbiance();
             }
             else
             {
-                m_timeCustomizationEditorAmbianceStartTime = -1f;
-                m_timeCustomizationEditorAmbianceStopTime = Time.unscaledTime;
+                _timeCustomizationEditorAmbianceStartTime = -1f;
+                _timeCustomizationEditorAmbianceStopTime = Time.unscaledTime;
                 StopCustomizationEditorAmbiance();
             }
         }
 
         public void PlayCustomizationEditorAmbiance()
         {
-            if (m_customizationEditorAmbiance)
+            if (_customizationEditorAmbiance)
                 return;
 
-            m_timeCustomizationEditorAmbianceStopTime = -1f;
-            m_timeCustomizationEditorAmbianceStartTime = Time.unscaledTime;
-            m_customizationEditorAmbiance = Instantiate(m_customizationEditorAmbianceSourcePrefab).GetComponent<AudioSource>();
+            _timeCustomizationEditorAmbianceStopTime = -1f;
+            _timeCustomizationEditorAmbianceStartTime = Time.unscaledTime;
+            _customizationEditorAmbiance = Instantiate(_customizationEditorAmbianceSourcePrefab).GetComponent<AudioSource>();
         }
 
         public void StopCustomizationEditorAmbiance()
         {
-            if (!m_customizationEditorAmbiance)
+            if (!_customizationEditorAmbiance)
                 return;
 
-            m_timeCustomizationEditorAmbianceStartTime = -1f;
-            m_timeCustomizationEditorAmbianceStopTime = Time.unscaledTime;
+            _timeCustomizationEditorAmbianceStartTime = -1f;
+            _timeCustomizationEditorAmbianceStopTime = Time.unscaledTime;
         }
 
         public void PlayTransitionSound(float volumeOffset = 0f)
@@ -153,7 +153,7 @@ namespace OverhaulMod.Engine
             if (TransitionSoundBehaviour.Instance)
                 return;
 
-            GameObject gameObject = Instantiate(m_loadingSoundSourcePrefab);
+            GameObject gameObject = Instantiate(_loadingSoundSourcePrefab);
             DontDestroyOnLoad(gameObject);
             TransitionSoundBehaviour transitionSoundBehaviour = gameObject.AddComponent<TransitionSoundBehaviour>();
             transitionSoundBehaviour.Initialize(volumeOffset);
@@ -175,31 +175,31 @@ namespace OverhaulMod.Engine
 
         public void RefreshVolume()
         {
-            SetVolume(m_masterVolume * (MuteMasterVolumeWhenUnfocused ? m_volumeMultiplier : 1f), m_musicVolume * (MuteMusicWhenUnfocused && !MuteMasterVolumeWhenUnfocused ? m_volumeMultiplier : 1f), m_commentatorsVolume * (MuteCommentatorsWhenUnfocused && !MuteMasterVolumeWhenUnfocused ? m_volumeMultiplier : 1f));
+            SetVolume(_masterVolume * (MuteMasterVolumeWhenUnfocused ? _volumeMultiplier : 1f), _musicVolume * (MuteMusicWhenUnfocused && !MuteMasterVolumeWhenUnfocused ? _volumeMultiplier : 1f), _commentatorsVolume * (MuteCommentatorsWhenUnfocused && !MuteMasterVolumeWhenUnfocused ? _volumeMultiplier : 1f));
         }
 
         public void StopChangingVolume(bool updateVolume = true)
         {
-            m_updateVolumeUntilTime = -1f;
+            _updateVolumeUntilTime = -1f;
             refreshVolumeSettings();
 
             if (updateVolume)
-                SetVolume(m_masterVolume, m_musicVolume, m_commentatorsVolume);
+                SetVolume(_masterVolume, _musicVolume, _commentatorsVolume);
         }
 
         private void refreshAudioSources()
         {
             AudioManager audioManager = AudioManager.Instance;
-            m_musicAudioSource = audioManager.MusicAudioSource;
-            m_commentatorAudioSources = audioManager.CommentatorAudioSources;
+            _musicAudioSource = audioManager.MusicAudioSource;
+            _commentatorAudioSources = audioManager.CommentatorAudioSources;
         }
 
         private void refreshVolumeSettings()
         {
             SettingsManager settingsManager = SettingsManager.Instance;
-            m_masterVolume = settingsManager.GetSoundVolume();
-            m_musicVolume = settingsManager.GetMusicVolume();
-            m_commentatorsVolume = settingsManager.GetCommentatorVolume();
+            _masterVolume = settingsManager.GetSoundVolume();
+            _musicVolume = settingsManager.GetMusicVolume();
+            _commentatorsVolume = settingsManager.GetCommentatorVolume();
         }
 
         public void SetVolume(float master, float music, float commentators)
@@ -216,7 +216,7 @@ namespace OverhaulMod.Engine
 
         public void SetMusicVolume(float value)
         {
-            AudioSource source = m_musicAudioSource;
+            AudioSource source = _musicAudioSource;
             if (source)
             {
                 source.volume = value;
@@ -225,7 +225,7 @@ namespace OverhaulMod.Engine
 
         public void SetCommentatorsVolume(float value)
         {
-            AudioSource[] sources = m_commentatorAudioSources;
+            AudioSource[] sources = _commentatorAudioSources;
             if (sources != null)
             {
                 foreach (AudioSource source in sources)

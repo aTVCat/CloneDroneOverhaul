@@ -8,14 +8,14 @@ namespace OverhaulMod.UI
     public class UIAdvancementProgress : OverhaulUIBehaviour
     {
         [UIElement("Panel")]
-        private readonly CanvasGroup m_canvasGroup;
+        private readonly CanvasGroup _canvasGroup;
 
         [UIElement("Image")]
-        private readonly Image m_achievementImage;
+        private readonly Image _achievementImage;
         [UIElement("ProgressText")]
-        private readonly Text m_achievementProgressText;
+        private readonly Text _achievementProgressText;
         [UIElement("ProgressFill")]
-        private readonly Image m_achievementProgressBarFill;
+        private readonly Image _achievementProgressBarFill;
 
         public override bool closeOnEscapeButtonPress => false;
 
@@ -31,7 +31,7 @@ namespace OverhaulMod.UI
 
         protected override void OnInitialized()
         {
-            m_canvasGroup.alpha = 0f;
+            _canvasGroup.alpha = 0f;
         }
 
         public void ShowProgress(GameplayAchievement gameplayAchievement)
@@ -44,17 +44,17 @@ namespace OverhaulMod.UI
             if (progress >= targetProgress || progress % 25 != 0)
                 return;
 
-            m_achievementImage.sprite = gameplayAchievement.GetImageSprite();
-            m_achievementProgressBarFill.fillAmount = progress / (float)targetProgress;
-            m_achievementProgressText.text = $"{progress}/{targetProgress}";
+            _achievementImage.sprite = gameplayAchievement.GetImageSprite();
+            _achievementProgressBarFill.fillAmount = progress / (float)targetProgress;
+            _achievementProgressText.text = $"{progress}/{targetProgress}";
             _ = ModActionUtils.RunCoroutine(waitThenHide());
         }
 
         private IEnumerator waitThenHide()
         {
-            m_canvasGroup.alpha = 0.6f;
+            _canvasGroup.alpha = 0.6f;
             yield return new WaitForSecondsRealtime(5f);
-            m_canvasGroup.alpha = 0f;
+            _canvasGroup.alpha = 0f;
             yield break;
         }
     }

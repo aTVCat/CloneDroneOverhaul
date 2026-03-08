@@ -20,7 +20,7 @@ namespace OverhaulMod.UI
     {
         [UIElementAction(nameof(Hide))]
         [UIElement("CloseButton")]
-        private readonly Button m_closeButton;
+        private readonly Button _closeButton;
 
         [UIElementAction(nameof(OnLegacyUIButtonClicked))]
         [UIElement("OldUIButton")]
@@ -28,14 +28,14 @@ namespace OverhaulMod.UI
 
         [UIElementAction(nameof(OnImportSettingsButtonClicked))]
         [UIElement("ImportSettingsButton")]
-        private Button m_importSettingsButton;
+        private Button _importSettingsButton;
 
         [UIElementAction(nameof(OnExportSettingsButtonClicked))]
         [UIElement("ExportSettingsButton")]
-        private Button m_exportSettingsButton;
+        private Button _exportSettingsButton;
 
         [UIElement("Shadow")]
-        private GameObject m_shadow;
+        private GameObject _shadow;
 
         [UIElement("Content")]
         public Transform PageContentsTransform;
@@ -81,33 +81,33 @@ namespace OverhaulMod.UI
         [UIElement("AddonDownload", false)]
         public ModdedObject AddonDownload;
 
-        [TabManager(typeof(UIElementSettingsMenuCategoryTab), nameof(m_tabPrefab), nameof(m_tabContainer), nameof(OnTabCreated), nameof(OnTabSelected), new string[] { "Gameplay", "Interface", "Graphics", "Effects", "Sounds", "Controls", "Multiplayer", "Languages", "Advanced" })]
-        private readonly TabManager m_tabs;
+        [TabManager(typeof(UIElementSettingsMenuCategoryTab), nameof(_tabPrefab), nameof(_tabContainer), nameof(OnTabCreated), nameof(OnTabSelected), new string[] { "Gameplay", "Interface", "Graphics", "Effects", "Sounds", "Controls", "Multiplayer", "Languages", "Advanced" })]
+        private readonly TabManager _tabs;
         [UIElement("TabPrefab", false)]
-        private readonly ModdedObject m_tabPrefab;
+        private readonly ModdedObject _tabPrefab;
         [UIElement("TabsContainer")]
-        private readonly Transform m_tabContainer;
+        private readonly Transform _tabContainer;
 
         [UIElement("PanelNew")]
-        private readonly RectTransform m_panelTransform;
+        private readonly RectTransform _panelTransform;
 
         [UIElement("Shading")]
-        private readonly GameObject m_shadingObject;
+        private readonly GameObject _shadingObject;
 
         [UIElement("BG")]
-        private readonly GameObject m_normalBgObject;
+        private readonly GameObject _normalBgObject;
 
         [UIElement("BGSetup")]
-        private readonly GameObject m_setupBgObject;
+        private readonly GameObject _setupBgObject;
 
         [UIElement("SettingDescriptionBox", typeof(UIElementSettingsMenuSettingDescriptionBox))]
-        private readonly UIElementSettingsMenuSettingDescriptionBox m_descriptionBox;
+        private readonly UIElementSettingsMenuSettingDescriptionBox _descriptionBox;
 
-        private bool m_hasSelectedTab;
+        private bool _hasSelectedTab;
 
-        private bool m_hasMultiplayerCustomizationChanges;
+        private bool _hasMultiplayerCustomizationChanges;
 
-        private string m_selectedTabId;
+        private string _selectedTabId;
 
         public override bool hideTitleScreen => true;
 
@@ -145,10 +145,10 @@ namespace OverhaulMod.UI
                 pressActionKeyDescription = ModUIConstants.ShowPressActionKeyDescription();
             pressActionKeyDescription.SetSiblingIndex(true);
 
-            if (!m_selectedTabId.IsNullOrEmpty())
-                PopulatePage(m_selectedTabId);
+            if (!_selectedTabId.IsNullOrEmpty())
+                PopulatePage(_selectedTabId);
 
-            m_descriptionBox.Hide();
+            _descriptionBox.Hide();
         }
 
         public override void Hide()
@@ -174,60 +174,60 @@ namespace OverhaulMod.UI
             }
 
             ModSettingsDataManager.Instance.Save();
-            if (m_hasMultiplayerCustomizationChanges && BoltNetwork.IsRunning && !BoltNetwork.IsServer && !BoltNetwork.IsSinglePlayer)
+            if (_hasMultiplayerCustomizationChanges && BoltNetwork.IsRunning && !BoltNetwork.IsServer && !BoltNetwork.IsSinglePlayer)
             {
                 MultiplayerMatchManager.Instance.SendClientCharacterCustomizationEvent();
-                m_hasMultiplayerCustomizationChanges = false;
+                _hasMultiplayerCustomizationChanges = false;
             }
         }
 
         public string GetSelectedTabID()
         {
-            return m_selectedTabId;
+            return _selectedTabId;
         }
 
         public void ShowDescriptionBox(string settingIdOfDescription, RectTransform element)
         {
             string settingId = StringUtils.AddSpacesToCamelCasedString(settingIdOfDescription).ToLower().Replace(" ", "_");
 
-            m_descriptionBox.SetYPosition(element.position.y);
-            m_descriptionBox.SetText(LocalizationManager.Instance.GetTranslatedString($"sd_{settingId}"), ModSettingsManager.Instance.GetSubDescription(settingId));
-            m_descriptionBox.Show();
+            _descriptionBox.SetYPosition(element.position.y);
+            _descriptionBox.SetText(LocalizationManager.Instance.GetTranslatedString($"sd_{settingId}"), ModSettingsManager.Instance.GetSubDescription(settingId));
+            _descriptionBox.Show();
         }
 
         public void HideDescription()
         {
-            m_descriptionBox.Hide();
+            _descriptionBox.Hide();
         }
 
         public void ShowRegularElements()
         {
             disallowUsingKey = false;
-            m_panelTransform.anchorMax = new Vector2(1f, 1f);
-            m_panelTransform.anchorMin = new Vector2(0f, 0f);
-            m_panelTransform.sizeDelta = new Vector2(0f, 0f);
-            m_shadingObject.SetActive(true);
-            m_normalBgObject.SetActive(true);
-            m_setupBgObject.SetActive(false);
-            m_shadow.SetActive(true);
+            _panelTransform.anchorMax = new Vector2(1f, 1f);
+            _panelTransform.anchorMin = new Vector2(0f, 0f);
+            _panelTransform.sizeDelta = new Vector2(0f, 0f);
+            _shadingObject.SetActive(true);
+            _normalBgObject.SetActive(true);
+            _setupBgObject.SetActive(false);
+            _shadow.SetActive(true);
 
-            if (!m_hasSelectedTab)
+            if (!_hasSelectedTab)
             {
-                m_tabs.SelectTab("Gameplay");
-                m_hasSelectedTab = true;
+                _tabs.SelectTab("Gameplay");
+                _hasSelectedTab = true;
             }
         }
 
         public void ShowSetupElements()
         {
             disallowUsingKey = true;
-            m_panelTransform.anchorMax = new Vector2(0.5f, 0.5f);
-            m_panelTransform.anchorMin = new Vector2(0.5f, 0.5f);
-            m_panelTransform.sizeDelta = new Vector2(360f, 500f);
-            m_shadingObject.SetActive(false);
-            m_normalBgObject.SetActive(false);
-            m_setupBgObject.SetActive(true);
-            m_shadow.SetActive(false);
+            _panelTransform.anchorMax = new Vector2(0.5f, 0.5f);
+            _panelTransform.anchorMin = new Vector2(0.5f, 0.5f);
+            _panelTransform.sizeDelta = new Vector2(360f, 500f);
+            _shadingObject.SetActive(false);
+            _normalBgObject.SetActive(false);
+            _setupBgObject.SetActive(true);
+            _shadow.SetActive(false);
             PopulatePage("setup");
         }
 
@@ -247,12 +247,12 @@ namespace OverhaulMod.UI
             if (PageContentsTransform && PageContentsTransform.childCount > 0)
                 TransformUtils.DestroyAllChildren(PageContentsTransform);
 
-            m_descriptionBox.Hide();
+            _descriptionBox.Hide();
         }
 
         public void PopulatePageIfSelected(string id)
         {
-            if (m_selectedTabId != id)
+            if (_selectedTabId != id)
                 return;
 
             PopulatePage(id);
@@ -260,11 +260,11 @@ namespace OverhaulMod.UI
 
         public void PopulatePage(string id)
         {
-            m_selectedTabId = id;
+            _selectedTabId = id;
             ClearPageContents();
 
-            UIElementTab oldTab = m_tabs.prevSelectedTab;
-            UIElementTab newTab = m_tabs.selectedTab;
+            UIElementTab oldTab = _tabs.prevSelectedTab;
+            UIElementTab newTab = _tabs.selectedTab;
             if (oldTab)
             {
                 RectTransform rt = oldTab.transform as RectTransform;
@@ -333,7 +333,7 @@ namespace OverhaulMod.UI
                 ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_SSAO, value, true);
             }, "Ambient occlusion", delegate
             {
-                populateSSAOSettingsPage(m_selectedTabId);
+                populateSSAOSettingsPage(_selectedTabId);
             });
             pageBuilder.AddDescriptionBoxToRecentElement(ModSettingsConstants.ENABLE_SSAO);
 
@@ -342,13 +342,13 @@ namespace OverhaulMod.UI
                 ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_CHROMATIC_ABERRATION, value, true);
             }, "Chromatic aberration", delegate
             {
-                populateCASettingsPage(m_selectedTabId);
+                populateCASettingsPage(_selectedTabId);
             });
             pageBuilder.AddDescriptionBoxToRecentElement(ModSettingsConstants.ENABLE_CHROMATIC_ABERRATION);
 
-            _ = pageBuilder.DropdownWithText(PostEffectsManager.BloomOptions, "Bloom", true, ModSettingsManager.GetIntValue(ModSettingsConstants.BLOOM_MODE), delegate (int value)
+            _ = pageBuilder.DropdownWithText(PostEffectsManager.BloomOptions, "Bloom", true, ModSettingsManager.GetIntValue(ModSettingsConstants.BLOO_MODE), delegate (int value)
             {
-                ModSettingsManager.SetIntValue(ModSettingsConstants.BLOOM_MODE, value, true);
+                ModSettingsManager.SetIntValue(ModSettingsConstants.BLOO_MODE, value, true);
             });
             _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_DITHERING), delegate (bool value)
             {
@@ -540,7 +540,7 @@ namespace OverhaulMod.UI
                 }
             }, "Use key trigger description rework", delegate
             {
-                populateUKTDReworkSettingsPage(m_selectedTabId);
+                populateUKTDReworkSettingsPage(_selectedTabId);
             });
             _ = pageBuilder.ToggleWithOptions(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_SUBTITLE_TEXT_FIELD_REWORK), delegate (bool value)
             {
@@ -548,7 +548,7 @@ namespace OverhaulMod.UI
                 SpeechAudioManager.Instance.PlaySequence("CloneDroneIntro", false);
             }, "Commentator subtitles rework", delegate
             {
-                populateSubtitlesReworkSettingsPage(m_selectedTabId);
+                populateSubtitlesReworkSettingsPage(_selectedTabId);
             });
         }
 
@@ -636,7 +636,7 @@ namespace OverhaulMod.UI
                 ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_SSAO, value, true);
             }, "Ambient occlusion", delegate
             {
-                populateSSAOSettingsPage(m_selectedTabId);
+                populateSSAOSettingsPage(_selectedTabId);
             });
             pageBuilder.AddDescriptionBoxToRecentElement(ModSettingsConstants.ENABLE_SSAO);
 
@@ -654,7 +654,7 @@ namespace OverhaulMod.UI
                 ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_CHROMATIC_ABERRATION, value, true);
             }, "Chromatic aberration", delegate
             {
-                populateCASettingsPage(m_selectedTabId);
+                populateCASettingsPage(_selectedTabId);
             });
             pageBuilder.AddDescriptionBoxToRecentElement(ModSettingsConstants.ENABLE_CHROMATIC_ABERRATION);
 
@@ -674,7 +674,7 @@ namespace OverhaulMod.UI
                 ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_DOF, value, true);
             }, "Depth of field (DoF)", delegate
             {
-                populateCASettingsPage(m_selectedTabId);
+                populateCASettingsPage(_selectedTabId);
             });
             pageBuilder.AddDescriptionBoxToRecentElement(ModSettingsConstants.ENABLE_DOF);
 
@@ -685,7 +685,7 @@ namespace OverhaulMod.UI
                     ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_SUN_SHAFTS, value, true);
                 }, "Sun shafts", delegate
                 {
-                    populateSSAOSettingsPage(m_selectedTabId);
+                    populateSSAOSettingsPage(_selectedTabId);
                 });
                 pageBuilder.AddDescriptionBoxToRecentElement(ModSettingsConstants.ENABLE_SUN_SHAFTS);
             }
@@ -695,9 +695,9 @@ namespace OverhaulMod.UI
             bloomOptions[1].text = LocalizationManager.Instance.GetTranslatedString("settings_option_vanilla");
             bloomOptions[2].text = LocalizationManager.Instance.GetTranslatedString("settings_option_fancy");
             bloomOptions[3].text = LocalizationManager.Instance.GetTranslatedString("settings_option_fanciest");
-            _ = pageBuilder.DropdownWithText(bloomOptions, "Bloom", true, ModSettingsManager.GetIntValue(ModSettingsConstants.BLOOM_MODE), delegate (int value)
+            _ = pageBuilder.DropdownWithText(bloomOptions, "Bloom", true, ModSettingsManager.GetIntValue(ModSettingsConstants.BLOO_MODE), delegate (int value)
             {
-                ModSettingsManager.SetIntValue(ModSettingsConstants.BLOOM_MODE, value, true);
+                ModSettingsManager.SetIntValue(ModSettingsConstants.BLOO_MODE, value, true);
             });
 
             _ = pageBuilder.Header1("Color blindness mode");
@@ -952,7 +952,7 @@ namespace OverhaulMod.UI
                 ModSettingsManager.SetBoolValue(ModSettingsConstants.MUTE_SOUND_WHEN_UNFOCUSED, value, true);
             }, "Mute sounds when unfocused", delegate
             {
-                populateMuteSoundPage(m_selectedTabId);
+                populateMuteSoundPage(_selectedTabId);
             });
         }
 
@@ -1511,7 +1511,7 @@ namespace OverhaulMod.UI
 
                 ModSettingsDataManager.Instance.dataContainer.SetValues(modSettingsDataContainer, true);
                 ModUIUtils.MessagePopupOK("Import successful", $"Imported the file \"{Path.GetFileNameWithoutExtension(path)}\".", true);
-                PopulatePage(m_selectedTabId);
+                PopulatePage(_selectedTabId);
             }, ModCore.savesFolder, "*.json");
         }
 
@@ -1545,8 +1545,8 @@ namespace OverhaulMod.UI
             {
                 localizationManager.SetCurrentLanguage(localizationManager.SupportedLanguages[value].LanguageCode);
 
-                m_tabs.ReinstantiatePreconfiguredTabs();
-                m_tabs.SelectTab("Home");
+                _tabs.ReinstantiatePreconfiguredTabs();
+                _tabs.SelectTab("Home");
             }
         }
 
@@ -1593,7 +1593,7 @@ namespace OverhaulMod.UI
             {
                 settingsMenu.MultiplayerCharacterModelDropdown.value = value;
             }
-            m_hasMultiplayerCustomizationChanges = true;
+            _hasMultiplayerCustomizationChanges = true;
         }
 
         public void OnMultiplayerFavoriteColorDropdownChanged(int value)
@@ -1603,7 +1603,7 @@ namespace OverhaulMod.UI
             {
                 settingsMenu.MultiplayerFavoriteColorDropdown.value = value;
             }
-            m_hasMultiplayerCustomizationChanges = true;
+            _hasMultiplayerCustomizationChanges = true;
         }*/
 
         public void OnStoryDifficultyIndexChanged(int value)
@@ -2088,8 +2088,8 @@ namespace OverhaulMod.UI
                 {
                     LocalizationManager.Instance.SetCurrentLanguage(langCode);
                     ModCache.gameUIRoot.SettingsMenu.populateSettings();
-                    SettingsMenu.m_tabs.ReinstantiatePreconfiguredTabs();
-                    SettingsMenu.m_tabs.SelectTab("Languages");
+                    SettingsMenu._tabs.ReinstantiatePreconfiguredTabs();
+                    SettingsMenu._tabs.SelectTab("Languages");
                 });
             }
 

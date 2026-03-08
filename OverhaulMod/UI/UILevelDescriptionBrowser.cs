@@ -14,45 +14,45 @@ namespace OverhaulMod.UI
 
         [UIElementAction(nameof(Hide))]
         [UIElement("CloseButton")]
-        private readonly Button m_exitButton;
+        private readonly Button _exitButton;
 
         [UIElementAction(nameof(OnDoneButtonClicked))]
         [UIElement("DoneButton")]
-        private readonly Button m_doneButton;
+        private readonly Button _doneButton;
 
         [UIElementAction(nameof(OnCancelButtonClicked))]
         [UIElement("CancelButton")]
-        private readonly Button m_cancelButton;
+        private readonly Button _cancelButton;
 
         [UIElement("LevelDescriptionDisplay", false)]
-        private readonly ModdedObject m_levelDescriptionDisplayPrefab;
+        private readonly ModdedObject _levelDescriptionDisplayPrefab;
 
         [UIElement("Content")]
-        private readonly Transform m_levelDescriptionDisplayContainer;
+        private readonly Transform _levelDescriptionDisplayContainer;
 
         [UIElement("LevelsLabel")]
-        private readonly Text m_levelsLabel;
+        private readonly Text _levelsLabel;
 
         [UIElement("DifficultySelectWindow", false)]
-        private readonly GameObject m_levelDifficultySelectWindow;
+        private readonly GameObject _levelDifficultySelectWindow;
 
         [UIElementAction(nameof(OnDifficultyCloseButtonClicked))]
         [UIElement("DifficultyCloseButton")]
-        private readonly Button m_difficultyExitButton;
+        private readonly Button _difficultyExitButton;
 
         [UIElementAction(nameof(OnDifficultyDoneButtonClicked))]
         [UIElement("DifficultyDoneButton")]
-        private readonly Button m_difficultyDoneButton;
+        private readonly Button _difficultyDoneButton;
 
         [UIElement("LevelDifficultyDisplay", false)]
-        private readonly ModdedObject m_levelDifficultyDisplayPrefab;
+        private readonly ModdedObject _levelDifficultyDisplayPrefab;
 
         [UIElement("DifficultyContent")]
-        private readonly Transform m_levelDifficultyDisplayContainer;
+        private readonly Transform _levelDifficultyDisplayContainer;
 
-        private LevelDescription m_selectedLevel;
+        private LevelDescription _selectedLevel;
 
-        private Graphic m_prevGraphic;
+        private Graphic _prevGraphic;
 
         public Action<LevelDescription> callback
         {
@@ -64,18 +64,18 @@ namespace OverhaulMod.UI
 
         public override void Update()
         {
-            m_doneButton.interactable = m_selectedLevel != null;
-            m_difficultyDoneButton.interactable = m_selectedLevel != null;
+            _doneButton.interactable = _selectedLevel != null;
+            _difficultyDoneButton.interactable = _selectedLevel != null;
         }
 
         public void Populate(List<LevelDescription> levels)
         {
-            if (m_levelDescriptionDisplayContainer.childCount != 0)
-                TransformUtils.DestroyAllChildren(m_levelDescriptionDisplayContainer);
+            if (_levelDescriptionDisplayContainer.childCount != 0)
+                TransformUtils.DestroyAllChildren(_levelDescriptionDisplayContainer);
 
             if (levels.IsNullOrEmpty())
             {
-                m_levelsLabel.text = "No levels to pick";
+                _levelsLabel.text = "No levels to pick";
                 return;
             }
 
@@ -94,14 +94,14 @@ namespace OverhaulMod.UI
                 }
             }
 
-            m_levelsLabel.text = $"{levelLists.Count} {LocalizationManager.Instance.GetTranslatedString("mmcustomization_text_n_levels_to_pick")}";
+            _levelsLabel.text = $"{levelLists.Count} {LocalizationManager.Instance.GetTranslatedString("mmcustomization_text_n_levels_to_pick")}";
 
             foreach (KeyValuePair<string, List<LevelDescription>> keyValue in levelLists)
             {
                 SteamWorkshopItem steamWorkshopItem = keyValue.Value[0].WorkshopItem;
                 bool isWorkshop = steamWorkshopItem != null;
 
-                ModdedObject moddedObject = Instantiate(m_levelDescriptionDisplayPrefab, m_levelDescriptionDisplayContainer);
+                ModdedObject moddedObject = Instantiate(_levelDescriptionDisplayPrefab, _levelDescriptionDisplayContainer);
                 moddedObject.gameObject.SetActive(true);
                 moddedObject.GetObject<Text>(0).text = isWorkshop ? steamWorkshopItem.Title : StringUtils.AddSpacesToCamelCasedString(keyValue.Key.Substring(keyValue.Key.LastIndexOf("/") + 1).Replace(".json", string.Empty));
 
@@ -118,15 +118,15 @@ namespace OverhaulMod.UI
 
         public void ShowDifficultySelection(List<LevelDescription> list)
         {
-            m_selectedLevel = null;
-            if (m_levelDifficultyDisplayContainer.childCount != 0)
-                TransformUtils.DestroyAllChildren(m_levelDifficultyDisplayContainer);
+            _selectedLevel = null;
+            if (_levelDifficultyDisplayContainer.childCount != 0)
+                TransformUtils.DestroyAllChildren(_levelDifficultyDisplayContainer);
 
             list = list.OrderBy(f => (int)f.DifficultyTier).ToList();
 
             Dictionary<DifficultyTier, int> countOfEachDifficultyConfig = new Dictionary<DifficultyTier, int>();
 
-            m_levelDifficultySelectWindow.SetActive(true);
+            _levelDifficultySelectWindow.SetActive(true);
             foreach (LevelDescription level in list)
             {
                 if (countOfEachDifficultyConfig.ContainsKey(level.DifficultyTier))
@@ -138,7 +138,7 @@ namespace OverhaulMod.UI
                 int difficultyCount = countOfEachDifficultyConfig[level.DifficultyTier];
                 Color difficultyColor = description == null ? Color.white : description.TextColor;
 
-                ModdedObject moddedObject = Instantiate(m_levelDifficultyDisplayPrefab, m_levelDifficultyDisplayContainer);
+                ModdedObject moddedObject = Instantiate(_levelDifficultyDisplayPrefab, _levelDifficultyDisplayContainer);
                 moddedObject.gameObject.SetActive(true);
                 moddedObject.GetObject<Text>(0).text = $"{level.DifficultyTier.GetTierString()}{(difficultyCount <= 1 ? string.Empty : $" {difficultyCount}")}";
                 moddedObject.GetObject<Text>(0).color = difficultyColor;
@@ -149,34 +149,34 @@ namespace OverhaulMod.UI
                 Button button = moddedObject.GetComponent<Button>();
                 button.onClick.AddListener(delegate
                 {
-                    if (m_prevGraphic && m_prevGraphic != graphic)
+                    if (_prevGraphic && _prevGraphic != graphic)
                     {
-                        m_prevGraphic.color = ModParseUtils.TryParseToColor(DESELECTED_COLOR, Color.gray);
+                        _prevGraphic.color = ModParseUtils.TryParseToColor(DESELECTED_COLOR, Color.gray);
                     }
                     graphic.color = ModParseUtils.TryParseToColor(SELECTED_COLOR, Color.cyan);
-                    m_prevGraphic = graphic;
+                    _prevGraphic = graphic;
 
-                    m_selectedLevel = level;
+                    _selectedLevel = level;
                 });
             }
         }
 
         public void OnDifficultyCloseButtonClicked()
         {
-            m_selectedLevel = null;
-            m_levelDifficultySelectWindow.SetActive(false);
+            _selectedLevel = null;
+            _levelDifficultySelectWindow.SetActive(false);
         }
 
         public void OnDifficultyDoneButtonClicked()
         {
-            m_levelDifficultySelectWindow.SetActive(false);
+            _levelDifficultySelectWindow.SetActive(false);
             OnDoneButtonClicked();
         }
 
         public void OnDoneButtonClicked()
         {
             Hide();
-            callback?.Invoke(m_selectedLevel);
+            callback?.Invoke(_selectedLevel);
             callback = null;
         }
 

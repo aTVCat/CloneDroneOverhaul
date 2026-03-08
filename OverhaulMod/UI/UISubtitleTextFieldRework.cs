@@ -24,41 +24,41 @@ namespace OverhaulMod.UI
         public static int FontSize;
 
         [UIElement("BG")]
-        private readonly RectTransform m_bg;
+        private readonly RectTransform _bg;
 
         [UIElement("BG", false)]
-        private readonly GameObject m_bgObject;
+        private readonly GameObject _bgObject;
 
         [UIElement("BG")]
-        private readonly CanvasGroup m_bgCanvasGroup;
+        private readonly CanvasGroup _bgCanvasGroup;
 
         [UIElement("BG")]
-        private readonly Image m_bgImage;
+        private readonly Image _bgImage;
 
         [UIElement("Text")]
-        private readonly Text m_text;
+        private readonly Text _text;
 
-        private BetterOutline m_textOutline;
+        private BetterOutline _textOutline;
 
         public override bool closeOnEscapeButtonPress => false;
 
-        private StringBuilder m_stringBuilder;
+        private StringBuilder _stringBuilder;
 
-        private float m_expandProgress;
+        private float _expandProgress;
 
-        private bool m_show;
+        private bool _show;
 
-        private int m_siblingIndex;
+        private int _siblingIndex;
 
         protected override void OnInitialized()
         {
-            m_stringBuilder = new StringBuilder();
+            _stringBuilder = new StringBuilder();
 
-            Destroy(m_text.GetComponent<Outline>());
-            BetterOutline betterOutline = m_text.gameObject.AddComponent<BetterOutline>();
+            Destroy(_text.GetComponent<Outline>());
+            BetterOutline betterOutline = _text.gameObject.AddComponent<BetterOutline>();
             betterOutline.effectColor = Color.black;
             betterOutline.effectDistance = Vector2.one * 1.25f;
-            m_textOutline = betterOutline;
+            _textOutline = betterOutline;
 
             GlobalEventManager.Instance.AddEventListener("SpeechSentenceStarted", onSentenceStarted);
             GlobalEventManager.Instance.AddEventListener("SpeechSequenceFinished", onSentenceFinishedOrCancelled);
@@ -90,22 +90,22 @@ namespace OverhaulMod.UI
 
         public override void Update()
         {
-            Text textComponent = m_text;
+            Text textComponent = _text;
 
-            RectTransform rt = m_bg;
+            RectTransform rt = _bg;
             Vector2 sd = rt.sizeDelta;
-            sd.x = Mathf.Lerp(0f, Mathf.Min(textComponent.preferredWidth + 15f, 400f), NumberUtils.EaseOutQuad(0f, 1f, m_expandProgress));
-            sd.y = Mathf.Lerp(0f, textComponent.preferredHeight + 12.5f, NumberUtils.EaseOutQuad(0f, 1f, m_expandProgress));
+            sd.x = Mathf.Lerp(0f, Mathf.Min(textComponent.preferredWidth + 15f, 400f), NumberUtils.EaseOutQuad(0f, 1f, _expandProgress));
+            sd.y = Mathf.Lerp(0f, textComponent.preferredHeight + 12.5f, NumberUtils.EaseOutQuad(0f, 1f, _expandProgress));
             rt.sizeDelta = sd;
 
-            m_bgObject.SetActive(m_expandProgress > 0f);
-            if (!m_show && m_expandProgress == 0f)
+            _bgObject.SetActive(_expandProgress > 0f);
+            if (!_show && _expandProgress == 0f)
             {
                 if (!textComponent.text.IsNullOrEmpty())
                     textComponent.text = null;
             }
 
-            m_expandProgress = Mathf.Clamp01(m_expandProgress + ((m_show ? 1f : -1f) * Time.unscaledDeltaTime * 5f));
+            _expandProgress = Mathf.Clamp01(_expandProgress + ((_show ? 1f : -1f) * Time.unscaledDeltaTime * 5f));
         }
 
         private void onAssetBundleLoaded(string assetBundle)
@@ -129,7 +129,7 @@ namespace OverhaulMod.UI
                 else
                     y = -10f;
 
-                RectTransform rectTransform = m_bg;
+                RectTransform rectTransform = _bg;
                 Vector2 ap = rectTransform.anchoredPosition;
                 ap.y = y;
                 rectTransform.anchoredPosition = ap;
@@ -137,7 +137,7 @@ namespace OverhaulMod.UI
 
             if (FontType == 0)
             {
-                m_text.font = LocalizationManager.Instance.GetCurrentSubtitlesFont();
+                _text.font = LocalizationManager.Instance.GetCurrentSubtitlesFont();
             }
 
             SpeechAudioManager speechAudioManager = SpeechAudioManager.Instance;
@@ -150,7 +150,7 @@ namespace OverhaulMod.UI
                 }
                 else
                 {
-                    _ = m_stringBuilder.Clear();
+                    _ = _stringBuilder.Clear();
                     if (ModCore.ShowSpeakerName)
                     {
                         string speakerName = ModGameUtils.GetSpeakerNameText(currentSentence.SpeakerName);
@@ -163,11 +163,11 @@ namespace OverhaulMod.UI
                             speakerName = speakerName.AddColor(Color.white);
                         }
 
-                        _ = m_stringBuilder.Append(speakerName);
-                        _ = m_stringBuilder.Append(' ');
+                        _ = _stringBuilder.Append(speakerName);
+                        _ = _stringBuilder.Append(' ');
                     }
-                    _ = m_stringBuilder.Append(currentSentence.SpeechText);
-                    ShowText(m_stringBuilder.ToString(), ModCore.SwapSubtitlesColor ? Color.white : speechAudioManager.GetSubtitleColorForSpeaker(currentSentence.SpeakerName));
+                    _ = _stringBuilder.Append(currentSentence.SpeechText);
+                    ShowText(_stringBuilder.ToString(), ModCore.SwapSubtitlesColor ? Color.white : speechAudioManager.GetSubtitleColorForSpeaker(currentSentence.SpeakerName));
                 }
             }
         }
@@ -179,42 +179,42 @@ namespace OverhaulMod.UI
 
         private void refreshSettings(object obj)
         {
-            m_textOutline.enabled = !EnableBG;
-            m_bgImage.enabled = EnableBG;
+            _textOutline.enabled = !EnableBG;
+            _bgImage.enabled = EnableBG;
 
-            RectTransform rectTransform = m_bg;
+            RectTransform rectTransform = _bg;
             rectTransform.anchorMax = new Vector2(0.5f, BeOnTop ? 1f : 0f);
             rectTransform.anchorMin = rectTransform.anchorMax;
             rectTransform.pivot = new Vector2(0.5f, BeOnTop ? 1f : 0f);
             rectTransform.anchoredPosition = new Vector2(0f, BeOnTop ? -10f : 55f);
 
-            m_text.fontSize = FontSize;
-            m_text.font = ModResources.FontByIndex(FontType);
+            _text.fontSize = FontSize;
+            _text.font = ModResources.FontByIndex(FontType);
         }
 
         public void ShowText(string text, Color color)
         {
-            m_text.color = color;
-            m_text.text = text;
-            m_expandProgress = 0f;
-            m_show = true;
+            _text.color = color;
+            _text.text = text;
+            _expandProgress = 0f;
+            _show = true;
         }
 
         public void HideText()
         {
-            m_show = false;
+            _show = false;
         }
 
         public void SetSiblingIndex(bool last)
         {
             if (last)
             {
-                m_siblingIndex = base.transform.GetSiblingIndex();
+                _siblingIndex = base.transform.GetSiblingIndex();
                 base.transform.SetAsLastSibling();
             }
-            else if (m_siblingIndex != 0)
+            else if (_siblingIndex != 0)
             {
-                base.transform.SetSiblingIndex(m_siblingIndex);
+                base.transform.SetSiblingIndex(_siblingIndex);
             }
         }
     }

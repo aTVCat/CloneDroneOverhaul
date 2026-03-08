@@ -53,11 +53,11 @@ namespace OverhaulMod.Content
 
         public bool GetUpdatesFromTestFolder = false;
 
-        private UnityWebRequest m_webRequest;
+        private UnityWebRequest _webRequest;
 
-        private float m_buildDownloadProgress;
+        private float _buildDownloadProgress;
 
-        private UpdateInfoList m_updatesList;
+        private UpdateInfoList _updatesList;
 
         private void Start()
         {
@@ -76,15 +76,15 @@ namespace OverhaulMod.Content
 
         private void Update()
         {
-            if (m_webRequest != null)
+            if (_webRequest != null)
             {
                 try
                 {
-                    m_buildDownloadProgress = m_webRequest.downloadProgress;
+                    _buildDownloadProgress = _webRequest.downloadProgress;
                 }
                 catch
                 {
-                    m_webRequest = null;
+                    _webRequest = null;
                 }
             }
         }
@@ -102,17 +102,17 @@ namespace OverhaulMod.Content
             }
             infoList.FixValues();
 
-            m_updatesList = infoList;
+            _updatesList = infoList;
         }
 
         public UpdateInfoList GetUpdatesList()
         {
-            return m_updatesList;
+            return _updatesList;
         }
 
         public float GetBuildDownloadProgress()
         {
-            return m_buildDownloadProgress;
+            return _buildDownloadProgress;
         }
 
         private IEnumerator retrieveDataOnStartCoroutine()
@@ -179,7 +179,7 @@ namespace OverhaulMod.Content
                 }
                 ModSettingsDataManager.Instance.Save();
 
-                m_updatesList = updateInfoList;
+                _updatesList = updateInfoList;
                 callback?.Invoke(new GetUpdatesResult(updateInfoList));
             }, delegate (string error)
             {
@@ -208,7 +208,7 @@ namespace OverhaulMod.Content
 
         public void DownloadBuild(string url, bool isGoogleDriveLink, string directoryName, Action<InstallUpdateResult> callback)
         {
-            m_buildDownloadProgress = 0f;
+            _buildDownloadProgress = 0f;
 
             string directoryPath = Path.Combine(ModsManager.Instance.ModFolderPath, directoryName);
             if (Directory.Exists(directoryPath))
@@ -229,7 +229,7 @@ namespace OverhaulMod.Content
                 string tempPath = Path.GetTempFileName();
                 GoogleDriveManager.Instance.DownloadFile(url, tempPath, delegate (float progress)
                 {
-                    m_buildDownloadProgress = progress;
+                    _buildDownloadProgress = progress;
                 }, delegate (string result)
                 {
                     if (result != null)
@@ -245,7 +245,7 @@ namespace OverhaulMod.Content
 
             RepositoryManager.Instance.GetCustomFile(url, delegate (byte[] bytes)
             {
-                m_webRequest = null;
+                _webRequest = null;
 
                 string tempFile = Path.GetTempFileName();
                 ModFileUtils.WriteBytes(bytes, tempFile);
@@ -253,9 +253,9 @@ namespace OverhaulMod.Content
                 callback?.Invoke(new InstallUpdateResult(installBuild(tempFile, directoryPath)));
             }, delegate (string error)
             {
-                m_webRequest = null;
+                _webRequest = null;
                 callback?.Invoke(new InstallUpdateResult(error));
-            }, out m_webRequest, -1);
+            }, out _webRequest, -1);
         }
 
         private string installBuild(string archivePath, string targetDirectory)

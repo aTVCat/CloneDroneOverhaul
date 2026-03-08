@@ -15,7 +15,7 @@ namespace OverhaulMod.UI
 
         public bool IsElement;
 
-        protected bool m_initialized;
+        protected bool _initialized;
 
         public bool isVisible
         {
@@ -344,7 +344,7 @@ namespace OverhaulMod.UI
                 fi.SetValue(this, tabManager);
             }
 
-            m_initialized = true;
+            _initialized = true;
             OnInitialized();
         }
 

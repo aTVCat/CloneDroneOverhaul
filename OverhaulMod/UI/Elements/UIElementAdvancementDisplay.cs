@@ -7,26 +7,26 @@ namespace OverhaulMod.UI
     public class UIElementAdvancementDisplay : OverhaulUIBehaviour, ISelectHandler, IDeselectHandler, IPointerEnterHandler, IPointerExitHandler, IPointerUpHandler
     {
         [UIElement("Name")]
-        private readonly Text m_advancementName;
+        private readonly Text _advancementName;
         [UIElement("Description")]
-        private readonly Text m_advancementDescription;
+        private readonly Text _advancementDescription;
         [UIElement("Image")]
-        private readonly Image m_advancementImage;
+        private readonly Image _advancementImage;
 
         [UIElement("ProgressText")]
-        private readonly Text m_progressText;
+        private readonly Text _progressText;
         [UIElement("BarBG")]
-        private readonly GameObject m_progressBar;
+        private readonly GameObject _progressBar;
         [UIElement("ProgressFill")]
-        private readonly Image m_progressBarFill;
+        private readonly Image _progressBarFill;
 
         [UIElement("RewardInfo", false)]
-        private readonly GameObject m_rewardDisplayObject;
+        private readonly GameObject _rewardDisplayObject;
         [UIElement("RewardText")]
-        private readonly Text m_rewardText;
+        private readonly Text _rewardText;
 
         [UIElement("CompletedIndicator", false)]
-        private readonly GameObject m_completedIndicator;
+        private readonly GameObject _completedIndicator;
 
         public GameplayAchievement gameplayAchievement
         {
@@ -42,10 +42,10 @@ namespace OverhaulMod.UI
             int currentProgress = gameplayAchievementManager.GetProgress(gameplayAchievement.AchievementID);
             int targetProgress = gameplayAchievement.TargetProgress;
 
-            m_rewardText.text = gameplayAchievement.GetRewardText();
-            m_advancementName.text = LocalizationManager.Instance.GetTranslatedString(gameplayAchievement.Name);
-            m_advancementDescription.text = (gameplayAchievement.IsHidden && !isComplete) ? "???" : LocalizationManager.Instance.GetTranslatedString(gameplayAchievement.Description);
-            m_advancementImage.sprite = gameplayAchievement.GetImageSprite();
+            _rewardText.text = gameplayAchievement.GetRewardText();
+            _advancementName.text = LocalizationManager.Instance.GetTranslatedString(gameplayAchievement.Name);
+            _advancementDescription.text = (gameplayAchievement.IsHidden && !isComplete) ? "???" : LocalizationManager.Instance.GetTranslatedString(gameplayAchievement.Description);
+            _advancementImage.sprite = gameplayAchievement.GetImageSprite();
             SetProgressDisplays(currentProgress, targetProgress, isComplete);
 
             this.gameplayAchievement = gameplayAchievement;
@@ -53,50 +53,50 @@ namespace OverhaulMod.UI
 
         public void SetProgressDisplays(int currentProgress, int targetProgress, bool isComplete)
         {
-            m_completedIndicator.SetActive(isComplete);
+            _completedIndicator.SetActive(isComplete);
 
             bool shouldActivate = targetProgress > 1;
             if (!shouldActivate || isComplete)
             {
-                m_progressText.enabled = false;
-                m_progressBar.SetActive(false);
+                _progressText.enabled = false;
+                _progressBar.SetActive(false);
                 return;
             }
 
-            m_progressText.enabled = true;
-            m_progressText.text = $"{currentProgress}/{targetProgress}";
-            m_progressBar.SetActive(true);
-            m_progressBarFill.fillAmount = currentProgress / (float)targetProgress;
+            _progressText.enabled = true;
+            _progressText.text = $"{currentProgress}/{targetProgress}";
+            _progressBar.SetActive(true);
+            _progressBarFill.fillAmount = currentProgress / (float)targetProgress;
         }
 
         public override void OnDisable()
         {
-            m_rewardDisplayObject.SetActive(false);
+            _rewardDisplayObject.SetActive(false);
         }
 
         public void OnSelect(BaseEventData eventData)
         {
-            m_rewardDisplayObject.SetActive(true);
+            _rewardDisplayObject.SetActive(true);
         }
 
         public void OnDeselect(BaseEventData eventData)
         {
-            m_rewardDisplayObject.SetActive(false);
+            _rewardDisplayObject.SetActive(false);
         }
 
         public void OnPointerEnter(PointerEventData eventData)
         {
-            m_rewardDisplayObject.SetActive(true);
+            _rewardDisplayObject.SetActive(true);
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
-            m_rewardDisplayObject.SetActive(false);
+            _rewardDisplayObject.SetActive(false);
         }
 
         public void OnPointerUp(PointerEventData eventData)
         {
-            m_rewardDisplayObject.SetActive(false);
+            _rewardDisplayObject.SetActive(false);
         }
     }
 }

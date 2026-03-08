@@ -12,22 +12,22 @@ namespace OverhaulMod.UI
     {
         [UIElementAction(nameof(Hide))]
         [UIElement("CloseButton")]
-        private readonly Button m_exitButton;
+        private readonly Button _exitButton;
 
         [UIElementAction(nameof(OnStartFromBeginningButtonClicked))]
         [UIElement("StartFromBeginningButton")]
-        private readonly Button m_restartButton;
+        private readonly Button _restartButton;
 
         [UIElement("LevelDisplay", false)]
-        private readonly ModdedObject m_sectionDisplayPrefab;
+        private readonly ModdedObject _sectionDisplayPrefab;
 
         [UIElement("SectionHeader", false)]
-        private readonly Text m_levelHeaderPrefab;
+        private readonly Text _levelHeaderPrefab;
 
         [UIElement("Content")]
-        private readonly Transform m_sectionsContainer;
+        private readonly Transform _sectionsContainer;
 
-        private Dictionary<string, int> m_levelIdToSiblingIndex;
+        private Dictionary<string, int> _levelIdToSiblingIndex;
 
         public int chapterIndex
         {
@@ -39,7 +39,7 @@ namespace OverhaulMod.UI
 
         protected override void OnInitialized()
         {
-            m_levelIdToSiblingIndex = new Dictionary<string, int>();
+            _levelIdToSiblingIndex = new Dictionary<string, int>();
         }
 
         public override void Show()
@@ -54,9 +54,9 @@ namespace OverhaulMod.UI
 
         public void PopulateChapter(int chapterIndex)
         {
-            m_levelIdToSiblingIndex.Clear();
-            if (m_sectionsContainer.childCount != 0)
-                TransformUtils.DestroyAllChildren(m_sectionsContainer);
+            _levelIdToSiblingIndex.Clear();
+            if (_sectionsContainer.childCount != 0)
+                TransformUtils.DestroyAllChildren(_sectionsContainer);
 
             this.chapterIndex = chapterIndex;
 
@@ -70,7 +70,7 @@ namespace OverhaulMod.UI
                 if (chapterSection.DeserializationError)
                     continue;
 
-                ModdedObject moddedObject = Instantiate(m_sectionDisplayPrefab, m_sectionsContainer);
+                ModdedObject moddedObject = Instantiate(_sectionDisplayPrefab, _sectionsContainer);
                 moddedObject.gameObject.SetActive(true);
 
                 if (chapterSection.ChapterIndex < 3)

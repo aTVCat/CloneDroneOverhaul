@@ -4,13 +4,13 @@ namespace OverhaulMod.Engine
 {
     public class ModPhysicsManager : Singleton<ModPhysicsManager>
     {
-        private static readonly RaycastHit[] m_rayCastHitArray = new RaycastHit[10];
+        private static readonly RaycastHit[] _rayCastHitArray = new RaycastHit[10];
 
-        private static readonly Ray m_ray = new Ray();
+        private static readonly Ray _ray = new Ray();
 
         public static RaycastHit[] GetRayCastHitArray(bool clear = true)
         {
-            RaycastHit[] result = m_rayCastHitArray;
+            RaycastHit[] result = _rayCastHitArray;
             if (clear)
                 for (int i = 0; i < result.Length; i++)
                     result[i] = default;
@@ -20,7 +20,7 @@ namespace OverhaulMod.Engine
 
         public static Ray GetRay(Vector3 position, Vector3 direction)
         {
-            Ray ray = m_ray;
+            Ray ray = _ray;
             ray.origin = position;
             ray.direction = direction;
             return ray;

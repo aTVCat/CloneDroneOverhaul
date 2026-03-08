@@ -31,19 +31,19 @@ namespace OverhaulMod.Content
         [ModSetting(ModSettingsConstants.ADDONS_TO_UPDATE, "", ModSetting.Tag.IgnoreExport)]
         public static string AddonsToUpdate;
 
-        private Dictionary<string, float> m_downloadingAddons;
+        private Dictionary<string, float> _downloadingAddons;
 
-        private List<object> m_loadingAddons;
+        private List<object> _loadingAddons;
 
-        private List<AddonInfo> m_loadedAddons;
+        private List<AddonInfo> _loadedAddons;
 
-        private AddonDownloadListInfo m_addonDownloadListInfo;
+        private AddonDownloadListInfo _addonDownloadListInfo;
 
         public override void Awake()
         {
             base.Awake();
-            m_downloadingAddons = new Dictionary<string, float>();
-            m_loadingAddons = new List<object>();
+            _downloadingAddons = new Dictionary<string, float>();
+            _loadingAddons = new List<object>();
             RefreshInstalledAddons();
         }
 
@@ -79,36 +79,36 @@ namespace OverhaulMod.Content
 
         public AddonDownloadListInfo GetDownloadsFromDisk()
         {
-            if (m_addonDownloadListInfo != null)
-                return m_addonDownloadListInfo;
+            if (_addonDownloadListInfo != null)
+                return _addonDownloadListInfo;
 
             string path = Path.Combine(ModCore.developerFolder, ADDONS_LIST_REPOSITORY_FILE);
             if (!File.Exists(path))
             {
-                m_addonDownloadListInfo = new AddonDownloadListInfo();
+                _addonDownloadListInfo = new AddonDownloadListInfo();
             }
             else
             {
-                m_addonDownloadListInfo = ModJsonUtils.DeserializeStream<AddonDownloadListInfo>(path);
+                _addonDownloadListInfo = ModJsonUtils.DeserializeStream<AddonDownloadListInfo>(path);
             }
-            m_addonDownloadListInfo.FixValues();
-            return m_addonDownloadListInfo;
+            _addonDownloadListInfo.FixValues();
+            return _addonDownloadListInfo;
         }
 
         public void SaveDownloadsToDisk()
         {
-            if (m_addonDownloadListInfo == null)
+            if (_addonDownloadListInfo == null)
                 return;
 
             string path = Path.Combine(ModCore.developerFolder, ADDONS_LIST_REPOSITORY_FILE);
-            ModJsonUtils.WriteStream(path, m_addonDownloadListInfo);
+            ModJsonUtils.WriteStream(path, _addonDownloadListInfo);
         }
 
         public void GetDownloads(Action<GetDownloadsResult> callback)
         {
-            if (m_addonDownloadListInfo != null)
+            if (_addonDownloadListInfo != null)
             {
-                callback?.Invoke(new GetDownloadsResult(m_addonDownloadListInfo));
+                callback?.Invoke(new GetDownloadsResult(_addonDownloadListInfo));
                 return;
             }
 
@@ -119,7 +119,7 @@ namespace OverhaulMod.Content
                 {
                     addonDownloadListInfo = ModJsonUtils.Deserialize<AddonDownloadListInfo>(content);
                     addonDownloadListInfo.FixValues();
-                    m_addonDownloadListInfo = addonDownloadListInfo;
+                    _addonDownloadListInfo = addonDownloadListInfo;
                 }
                 catch (Exception ex)
                 {
@@ -136,16 +136,16 @@ namespace OverhaulMod.Content
 
         public void DownloadAddon(string addonId, Action<string> callback)
         {
-            if (m_downloadingAddons.ContainsKey(addonId))
+            if (_downloadingAddons.ContainsKey(addonId))
             {
                 _ = base.StartCoroutine(waitUntilAddonIsDownloaded(callback));
                 return;
             }
 
-            m_downloadingAddons.Add(addonId, 0f);
+            _downloadingAddons.Add(addonId, 0f);
             GetDownloads(delegate (GetDownloadsResult getDownloadsResult)
             {
-                m_downloadingAddons.Remove(addonId);
+                _downloadingAddons.Remove(addonId);
                 if (getDownloadsResult.IsError())
                 {
                     callback?.Invoke(getDownloadsResult.Error);
@@ -184,24 +184,24 @@ namespace OverhaulMod.Content
             string downloadUrl = addonDownloadInfo.PackageFileURL;
             string displayName = addonDownloadInfo.GetDisplayName();
 
-            if (m_downloadingAddons.ContainsKey(uniqueId))
+            if (_downloadingAddons.ContainsKey(uniqueId))
             {
                 _ = base.StartCoroutine(waitUntilAddonIsDownloaded(callback));
                 return;
             }
-            m_downloadingAddons.Add(uniqueId, 0f);
+            _downloadingAddons.Add(uniqueId, 0f);
 
             string tempPath = Path.GetTempFileName();
             GoogleDriveManager.Instance.DownloadFile(downloadUrl, tempPath, delegate (float progress)
             {
-                if (!m_downloadingAddons.ContainsKey(uniqueId))
-                    m_downloadingAddons.Add(uniqueId, progress);
+                if (!_downloadingAddons.ContainsKey(uniqueId))
+                    _downloadingAddons.Add(uniqueId, progress);
                 else
-                    m_downloadingAddons[uniqueId] = progress;
+                    _downloadingAddons[uniqueId] = progress;
             },
             delegate (string result)
             {
-                _ = m_downloadingAddons.Remove(uniqueId);
+                _ = _downloadingAddons.Remove(uniqueId);
 
                 if (result != null)
                 {
@@ -270,12 +270,12 @@ namespace OverhaulMod.Content
 
         public bool IsDownloadingAddon(string uniqueId)
         {
-            return m_downloadingAddons.ContainsKey(uniqueId);
+            return _downloadingAddons.ContainsKey(uniqueId);
         }
 
         public float GetAddonDownloadProgress(string uniqueId)
         {
-            if (m_downloadingAddons.TryGetValue(uniqueId, out float progress))
+            if (_downloadingAddons.TryGetValue(uniqueId, out float progress))
                 return progress;
 
             return -1f;
@@ -286,15 +286,15 @@ namespace OverhaulMod.Content
             if (obj == null)
                 return;
 
-            if (value && !m_loadingAddons.Contains(obj))
-                m_loadingAddons.Add(obj);
+            if (value && !_loadingAddons.Contains(obj))
+                _loadingAddons.Add(obj);
             else if (!value)
-                _ = m_loadingAddons.Remove(obj);
+                _ = _loadingAddons.Remove(obj);
         }
 
         public bool IsLoadingAddons()
         {
-            return m_loadingAddons != null && m_loadingAddons.Count != 0;
+            return _loadingAddons != null && _loadingAddons.Count != 0;
         }
 
         /// <summary>
@@ -317,10 +317,10 @@ namespace OverhaulMod.Content
         public bool HasInstalledAddon(string addonId, out string path)
         {
             path = null;
-            if (m_loadedAddons.IsNullOrEmpty())
+            if (_loadedAddons.IsNullOrEmpty())
                 return false;
 
-            foreach (AddonInfo c in m_loadedAddons)
+            foreach (AddonInfo c in _loadedAddons)
                 if (c.UniqueID == addonId)
                 {
                     path = c.FolderPath;
@@ -338,10 +338,10 @@ namespace OverhaulMod.Content
         /// <returns></returns>
         public bool HasInstalledAddon(string addonId, int minVersion)
         {
-            if (m_loadedAddons.IsNullOrEmpty())
+            if (_loadedAddons.IsNullOrEmpty())
                 return false;
 
-            foreach (AddonInfo c in m_loadedAddons)
+            foreach (AddonInfo c in _loadedAddons)
                 if (c.UniqueID == addonId && c.Version >= minVersion)
                     return true;
 
@@ -350,7 +350,7 @@ namespace OverhaulMod.Content
 
         public AddonInfo GetAddonInfo(string uniqueId)
         {
-            foreach (AddonInfo addon in m_loadedAddons)
+            foreach (AddonInfo addon in _loadedAddons)
                 if (addon.UniqueID == uniqueId)
                     return addon;
 
@@ -386,7 +386,7 @@ namespace OverhaulMod.Content
             AddonInfo addonInfo = GetAddonInfo(uniqueId);
             if (addonInfo != null)
             {
-                m_loadedAddons.Remove(addonInfo);
+                _loadedAddons.Remove(addonInfo);
                 Directory.Delete(addonInfo.FolderPath, true);
             }
         }
@@ -403,14 +403,14 @@ namespace OverhaulMod.Content
         /// <returns></returns>
         public List<AddonInfo> GetLoadedAddons(bool returnCached = true)
         {
-            if (returnCached && m_loadedAddons != null)
-                return m_loadedAddons;
+            if (returnCached && _loadedAddons != null)
+                return _loadedAddons;
 
-            List<AddonInfo> list = m_loadedAddons;
+            List<AddonInfo> list = _loadedAddons;
             if (list == null)
             {
                 list = new List<AddonInfo>();
-                m_loadedAddons = list;
+                _loadedAddons = list;
             }
             else
             {
@@ -491,7 +491,7 @@ namespace OverhaulMod.Content
 
         public void AddLoadedAddon(AddonInfo addonInfo)
         {
-            m_loadedAddons.Add(addonInfo);
+            _loadedAddons.Add(addonInfo);
         }
 
         public bool DoesAddonNeedUpdate(string addonId)

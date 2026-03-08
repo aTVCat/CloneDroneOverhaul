@@ -9,74 +9,74 @@ namespace OverhaulMod.UI
     public class UIElementAddonEditorDownloadDisplay : OverhaulUIBehaviour
     {
         [UIElement("AddonReferenceExistIcon", false)]
-        private readonly GameObject m_addonReferenceExistIconObject;
+        private readonly GameObject _addonReferenceExistIconObject;
 
         [UIElement("AddonIDField")]
-        private readonly InputField m_addonIdField;
+        private readonly InputField _addonIdField;
 
         [UIElementAction(nameof(OnRefreshAddonReferenceButtonClicked))]
         [UIElement("RefreshAddonReferenceButton")]
-        private readonly Button m_refreshAddonReferenceButton;
+        private readonly Button _refreshAddonReferenceButton;
 
         [UIElement("PackageURLField")]
-        private readonly InputField m_packageUrlField;
+        private readonly InputField _packageUrlField;
 
         [UIElement("PackageCompressedFilePathField")]
-        private readonly InputField m_packageCompressedFilePathField;
+        private readonly InputField _packageCompressedFilePathField;
 
         [UIElement("PackageSizeField")]
-        private readonly InputField m_packageSizeField;
+        private readonly InputField _packageSizeField;
 
         [UIElementAction(nameof(OnCalculatePackageSizeButtonClicked))]
         [UIElement("CalculatePackageSizeButton")]
-        private readonly Button m_calculatePackageSizeButton;
+        private readonly Button _calculatePackageSizeButton;
 
         [UIElementAction(nameof(OnAddImageButtonClicked))]
         [UIElement("AddImageButton")]
-        private readonly Button m_addImageButton;
+        private readonly Button _addImageButton;
 
         [UIElement("ImageEntry", false)]
-        private readonly ModdedObject m_imageEntryPrefab;
+        private readonly ModdedObject _imageEntryPrefab;
 
         [UIElement("Content")]
-        private readonly Transform m_imageEntriesContainer;
+        private readonly Transform _imageEntriesContainer;
 
-        private AddonDownloadInfo m_addonDownloadInfo;
+        private AddonDownloadInfo _addonDownloadInfo;
 
-        private AddonDownloadListInfo m_addonDownloadListInfo;
+        private AddonDownloadListInfo _addonDownloadListInfo;
 
-        private UIAddonsDownloadEditor m_addonDownloadEditor;
+        private UIAddonsDownloadEditor _addonDownloadEditor;
 
         public void Initialize(AddonDownloadInfo addonDownloadInfo, AddonDownloadListInfo addonDownloadListInfo)
         {
             base.InitializeElement();
-            m_addonDownloadInfo = addonDownloadInfo;
-            m_addonDownloadListInfo = addonDownloadListInfo;
-            m_addonIdField.text = addonDownloadInfo.UniqueID;
-            m_packageUrlField.text = addonDownloadInfo.PackageFileURL;
-            m_packageSizeField.text = addonDownloadInfo.PackageFileSize.ToString();
+            _addonDownloadInfo = addonDownloadInfo;
+            _addonDownloadListInfo = addonDownloadListInfo;
+            _addonIdField.text = addonDownloadInfo.UniqueID;
+            _packageUrlField.text = addonDownloadInfo.PackageFileURL;
+            _packageSizeField.text = addonDownloadInfo.PackageFileSize.ToString();
 
             refreshImageEntries();
         }
 
         public void UpdateAddonDownloadInfo()
         {
-            m_addonDownloadInfo.UniqueID = m_addonIdField.text;
-            m_addonDownloadInfo.PackageFileURL = m_packageUrlField.text;
-            m_addonDownloadInfo.PackageFileSize = int.Parse(m_packageSizeField.text);
+            _addonDownloadInfo.UniqueID = _addonIdField.text;
+            _addonDownloadInfo.PackageFileURL = _packageUrlField.text;
+            _addonDownloadInfo.PackageFileSize = int.Parse(_packageSizeField.text);
         }
 
         private void refreshAddonReferencePresence()
         {
-            m_addonReferenceExistIconObject.SetActive(m_addonDownloadInfo.HasAddonInfo());
+            _addonReferenceExistIconObject.SetActive(_addonDownloadInfo.HasAddonInfo());
         }
 
         private void refreshImageEntries()
         {
-            if (m_imageEntriesContainer.childCount != 0)
-                TransformUtils.DestroyAllChildren(m_imageEntriesContainer);
+            if (_imageEntriesContainer.childCount != 0)
+                TransformUtils.DestroyAllChildren(_imageEntriesContainer);
 
-            System.Collections.Generic.List<string> list = m_addonDownloadInfo.Images;
+            System.Collections.Generic.List<string> list = _addonDownloadInfo.Images;
             if (list.IsNullOrEmpty())
                 return;
 
@@ -84,7 +84,7 @@ namespace OverhaulMod.UI
             {
                 int index = i;
 
-                ModdedObject moddedObject = Instantiate(m_imageEntryPrefab, m_imageEntriesContainer);
+                ModdedObject moddedObject = Instantiate(_imageEntryPrefab, _imageEntriesContainer);
                 moddedObject.gameObject.SetActive(true);
 
                 InputField inputField = moddedObject.GetObject<InputField>(0);
@@ -105,42 +105,42 @@ namespace OverhaulMod.UI
 
         public void OnRefreshAddonReferenceButtonClicked()
         {
-            m_addonDownloadInfo.Addon = AddonManager.Instance.GetAddonInfo(m_addonIdField.text);
+            _addonDownloadInfo.Addon = AddonManager.Instance.GetAddonInfo(_addonIdField.text);
             refreshAddonReferencePresence();
         }
 
         public void OnCalculatePackageSizeButtonClicked()
         {
-            string path = m_packageCompressedFilePathField.text;
+            string path = _packageCompressedFilePathField.text;
             if (!File.Exists(path))
             {
-                m_packageSizeField.text = "0";
+                _packageSizeField.text = "0";
                 return;
             }
 
             FileInfo fileInfo = new FileInfo(path);
-            m_packageSizeField.text = fileInfo.Length.ToString();
+            _packageSizeField.text = fileInfo.Length.ToString();
         }
 
         public void OnDeleteButtonClicked()
         {
-            ModUIUtils.MessagePopup(true, $"Delete \"{(m_addonDownloadInfo.Addon != null ? m_addonDownloadInfo.GetDisplayName() : m_addonDownloadInfo.UniqueID)}\"?", "so what", 125f, MessageMenu.ButtonLayout.EnableDisableButtons, "ok", "Yes", "No", null, delegate
+            ModUIUtils.MessagePopup(true, $"Delete \"{(_addonDownloadInfo.Addon != null ? _addonDownloadInfo.GetDisplayName() : _addonDownloadInfo.UniqueID)}\"?", "so what", 125f, MessageMenu.ButtonLayout.EnableDisableButtons, "ok", "Yes", "No", null, delegate
             {
-                m_addonDownloadEditor.RemoveEntry(this);
-                m_addonDownloadListInfo.Addons.Remove(m_addonDownloadInfo);
+                _addonDownloadEditor.RemoveEntry(this);
+                _addonDownloadListInfo.Addons.Remove(_addonDownloadInfo);
                 Destroy(base.gameObject);
             });
         }
 
         public void OnAddImageButtonClicked()
         {
-            if (m_addonDownloadInfo.Images == null)
-                m_addonDownloadInfo.Images = new System.Collections.Generic.List<string>();
+            if (_addonDownloadInfo.Images == null)
+                _addonDownloadInfo.Images = new System.Collections.Generic.List<string>();
 
-            if (m_addonDownloadInfo.Images.Contains(string.Empty))
+            if (_addonDownloadInfo.Images.Contains(string.Empty))
                 return;
 
-            m_addonDownloadInfo.Images.Add(string.Empty);
+            _addonDownloadInfo.Images.Add(string.Empty);
             refreshImageEntries();
         }
     }

@@ -13,110 +13,110 @@ namespace OverhaulMod.UI
 
         [UIElementAction(nameof(Hide))]
         [UIElement("CloseButton")]
-        private readonly Button m_exitButton;
+        private readonly Button _exitButton;
 
         [UIElementAction(nameof(OnSaveButtonClicked))]
         [UIElement("SaveButton")]
-        private readonly Button m_saveButton;
+        private readonly Button _saveButton;
 
         [UIElement("NeedsSaveIcon", false)]
-        private readonly GameObject m_needsSaveIcon;
+        private readonly GameObject _needsSaveIcon;
 
         [UIElementAction(nameof(OnSavesFolderButtonClicked))]
         [UIElement("SavesFolderButton")]
-        private readonly Button m_savesFolderButton;
+        private readonly Button _savesFolderButton;
 
         [UIElementAction(nameof(OnNewBranchButtonClicked))]
         [UIElement("NewBranchButton")]
-        private readonly Button m_newBranchButton;
+        private readonly Button _newBranchButton;
 
         [UIElementAction(nameof(OnGetUpdatesFileButtonClicked))]
         [UIElement("GetUpdatesFileButton")]
-        private readonly Button m_getUpdatesFileButton;
+        private readonly Button _getUpdatesFileButton;
 
         [UIElementAction(nameof(OnPreviewChangelogButtonClicked))]
         [UIElement("PreviewChangelogButton")]
-        private readonly Button m_previewChangelogButton;
+        private readonly Button _previewChangelogButton;
 
         [UIElementAction(nameof(OnVersionFieldChanged))]
         [UIElement("BuildVersionField")]
-        private readonly InputField m_buildVersionField;
+        private readonly InputField _buildVersionField;
 
         [UIElementAction(nameof(OnBranchNameFieldChanged))]
         [UIElement("BuildBranchField")]
-        private readonly InputField m_buildBranchField;
+        private readonly InputField _buildBranchField;
 
         [UIElementAction(nameof(OnAllowedUsersFieldChanged))]
         [UIElement("AllowedUsersField")]
-        private readonly InputField m_allowedUsersField;
+        private readonly InputField _allowedUsersField;
 
         [UIElementAction(nameof(OnRequiredExclusivePerkDropdownChanged))]
         [UIElement("ExclusivePerkRequirementDropdown")]
-        private readonly Dropdown m_exclusivePerkRequirementDropdown;
+        private readonly Dropdown _exclusivePerkRequirementDropdown;
 
         [UIElementAction(nameof(OnBuildFileURLFieldChanged))]
         [UIElement("BuildFileURLField")]
-        private readonly InputField m_buildFileURLField;
+        private readonly InputField _buildFileURLField;
 
         [UIElementAction(nameof(OnGoogleDriveLinkToggleChanged))]
         [UIElement("IsGoogleDriveLinkToggle")]
-        private readonly Toggle m_isGoogleDriveLinkToggle;
+        private readonly Toggle _isGoogleDriveLinkToggle;
 
         [UIElementAction(nameof(OnChangelogFileFieldChanged))]
         [UIElement("ChangelogFileField")]
-        private readonly InputField m_changelogFileField;
+        private readonly InputField _changelogFileField;
 
         [UIElement("ChangelogFileExistsIcon", false)]
-        private readonly GameObject m_changelogFileExistsIcon;
+        private readonly GameObject _changelogFileExistsIcon;
 
         [UIElementAction(nameof(OnEditPatchNotesFileButtonClicked))]
         [UIElement("EditChangelogFileButton")]
-        private readonly Button m_editChangelogFileButton;
+        private readonly Button _editChangelogFileButton;
 
         [UIElementAction(nameof(OnRefreshChangelogButtonClicked))]
         [UIElement("RefreshChangelogButton")]
-        private readonly Button m_refreshChangelogButton;
+        private readonly Button _refreshChangelogButton;
 
         [UIElement("BuildDisplay", false)]
-        private readonly ModdedObject m_branchDisplay;
+        private readonly ModdedObject _branchDisplay;
 
         [UIElement("Content")]
-        private readonly Transform m_content;
+        private readonly Transform _content;
 
-        private bool m_disallowCallbacks;
+        private bool _disallowCallbacks;
 
-        private UpdateInfoList m_updatesList;
+        private UpdateInfoList _updatesList;
 
-        private UpdateInfo m_editingUpdate;
+        private UpdateInfo _editingUpdate;
 
-        private string m_editingBranch;
+        private string _editingBranch;
 
         protected override void OnInitialized()
         {
             base.OnInitialized();
 
             UpdateManager.Instance.LoadDataFromDisk();
-            m_updatesList = UpdateManager.Instance.GetUpdatesList();
+            _updatesList = UpdateManager.Instance.GetUpdatesList();
 
-            System.Collections.Generic.List<Dropdown.OptionData> list = m_exclusivePerkRequirementDropdown.options;
+            System.Collections.Generic.List<Dropdown.OptionData> list = _exclusivePerkRequirementDropdown.options;
             list.Clear();
             foreach (ExclusivePerkType perk in typeof(ExclusivePerkType).GetEnumValues())
             {
                 list.Add(new Dropdown.OptionData() { text = StringUtils.AddSpacesToCamelCasedString(perk.ToString()) });
             }
-            m_exclusivePerkRequirementDropdown.RefreshShownValue();
+            _exclusivePerkRequirementDropdown.RefreshShownValue();
 
             populateBranches();
         }
 
         private void populateBranches()
         {
-            if (m_content.childCount != 0)
-                TransformUtils.DestroyAllChildren(m_content);
+            if (_content.childCount != 0)
+                TransformUtils.DestroyAllChildren(_content);
 
-            foreach (System.Collections.Generic.KeyValuePair<string, UpdateInfo> update in m_updatesList.Builds)
+            foreach (System.Collections.Generic.KeyValuePair<string, UpdateInfo> update in _updatesList.Builds)
             {
-                ModdedObject moddedObject = Instantiate(m_branchDisplay, m_content);
+                ModdedObject moddedObject = Instantiate(_branchDisplay, _content);
                 moddedObject.gameObject.SetActive(true);
                 moddedObject.GetObject<Text>(0).text = $"{update.Value.ModVersion} ({update.Value.DisplayVersion})";
                 moddedObject.GetObject<Text>(1).text = update.Key.ToUpper();
@@ -131,49 +131,49 @@ namespace OverhaulMod.UI
 
         private void editUpdate(UpdateInfo update, string branch)
         {
-            m_disallowCallbacks = true;
+            _disallowCallbacks = true;
 
-            m_editingUpdate = update;
-            m_editingBranch = branch;
+            _editingUpdate = update;
+            _editingBranch = branch;
 
-            m_buildVersionField.text = update.ModVersion?.ToString();
-            m_buildBranchField.text = branch;
-            m_allowedUsersField.text = update.AllowedUsers;
-            m_exclusivePerkRequirementDropdown.value = (int)update.RequireExclusivePerk;
-            m_buildFileURLField.text = update.DownloadLink;
-            m_isGoogleDriveLinkToggle.isOn = update.IsGoogleDriveLink;
+            _buildVersionField.text = update.ModVersion?.ToString();
+            _buildBranchField.text = branch;
+            _allowedUsersField.text = update.AllowedUsers;
+            _exclusivePerkRequirementDropdown.value = (int)update.RequireExclusivePerk;
+            _buildFileURLField.text = update.DownloadLink;
+            _isGoogleDriveLinkToggle.isOn = update.IsGoogleDriveLink;
 
-            m_needsSaveIcon.SetActive(false);
+            _needsSaveIcon.SetActive(false);
 
-            m_disallowCallbacks = false;
+            _disallowCallbacks = false;
         }
 
         private void setUpdateInfoFromInputs()
         {
-            if (m_editingUpdate == null)
+            if (_editingUpdate == null)
                 return;
 
             Version version;
-            if (!Version.TryParse(m_buildVersionField.text, out version))
+            if (!Version.TryParse(_buildVersionField.text, out version))
                 version = new Version(0, 0, 0, 0);
 
             OnRefreshChangelogButtonClicked();
-            m_editingUpdate.ModVersion = version;
-            m_editingUpdate.AllowedUsers = m_allowedUsersField.text;
-            m_editingUpdate.RequireExclusivePerk = (ExclusivePerkType)m_exclusivePerkRequirementDropdown.value;
-            m_editingUpdate.DownloadLink = m_buildFileURLField.text;
-            m_editingUpdate.IsGoogleDriveLink = m_isGoogleDriveLinkToggle.isOn;
-            m_editingUpdate.FixValues();
+            _editingUpdate.ModVersion = version;
+            _editingUpdate.AllowedUsers = _allowedUsersField.text;
+            _editingUpdate.RequireExclusivePerk = (ExclusivePerkType)_exclusivePerkRequirementDropdown.value;
+            _editingUpdate.DownloadLink = _buildFileURLField.text;
+            _editingUpdate.IsGoogleDriveLink = _isGoogleDriveLinkToggle.isOn;
+            _editingUpdate.FixValues();
         }
 
         public void OnSaveButtonClicked()
         {
             setUpdateInfoFromInputs();
-            m_updatesList.SetReleasesValuesForOldVersions();
+            _updatesList.SetReleasesValuesForOldVersions();
 
-            ModJsonUtils.WriteStream(Path.Combine(ModCore.developerFolder, UpdateManager.REPOSITORY_FILE), m_updatesList);
+            ModJsonUtils.WriteStream(Path.Combine(ModCore.developerFolder, UpdateManager.REPOSITORY_FILE), _updatesList);
 
-            m_needsSaveIcon.SetActive(false);
+            _needsSaveIcon.SetActive(false);
         }
 
         public void OnSavesFolderButtonClicked()
@@ -183,24 +183,24 @@ namespace OverhaulMod.UI
 
         public void OnGetUpdatesFileButtonClicked()
         {
-            m_getUpdatesFileButton.interactable = false;
+            _getUpdatesFileButton.interactable = false;
             UpdateManager.Instance.DownloadUpdatesList(delegate (UpdateManager.GetUpdatesResult updateInfoList)
             {
-                m_getUpdatesFileButton.interactable = true;
+                _getUpdatesFileButton.interactable = true;
                 if (updateInfoList.IsError())
                 {
                     ModUIUtils.MessagePopupOK("Error", updateInfoList.Error, true);
                     return;
                 }
 
-                m_updatesList = updateInfoList.Updates;
+                _updatesList = updateInfoList.Updates;
                 populateBranches();
             });
         }
 
         public void OnNewBranchButtonClicked()
         {
-            if (m_updatesList.Builds.ContainsKey("new branch"))
+            if (_updatesList.Builds.ContainsKey("new branch"))
                 return;
 
             OnSaveButtonClicked();
@@ -208,7 +208,7 @@ namespace OverhaulMod.UI
             UpdateInfo updateInfo = new UpdateInfo();
             string branch = "new branch";
 
-            m_updatesList.Builds.Add(branch, updateInfo);
+            _updatesList.Builds.Add(branch, updateInfo);
 
             populateBranches();
             editUpdate(updateInfo, branch);
@@ -216,7 +216,7 @@ namespace OverhaulMod.UI
 
         public void OnEditPatchNotesFileButtonClicked()
         {
-            string path = m_changelogFileField.text;
+            string path = _changelogFileField.text;
             if (!File.Exists(path))
             {
                 return;
@@ -227,17 +227,17 @@ namespace OverhaulMod.UI
 
         public void OnRefreshChangelogButtonClicked()
         {
-            string path = m_changelogFileField.text;
+            string path = _changelogFileField.text;
             if (!File.Exists(path))
             {
-                m_changelogFileExistsIcon.SetActive(false);
+                _changelogFileExistsIcon.SetActive(false);
                 return;
             }
 
             string content = ModFileUtils.ReadText(path);
-            m_editingUpdate.Changelog = content;
+            _editingUpdate.Changelog = content;
 
-            m_changelogFileExistsIcon.SetActive(true);
+            _changelogFileExistsIcon.SetActive(true);
         }
 
         public void OnPreviewChangelogButtonClicked()
@@ -249,77 +249,77 @@ namespace OverhaulMod.UI
                 ShrinkPanel = true,
                 HideVersionList = true,
             });
-            patchNotes.PopulateText($"{m_editingUpdate.DisplayVersion} [{m_editingBranch}]", m_editingUpdate.Changelog);
+            patchNotes.PopulateText($"{_editingUpdate.DisplayVersion} [{_editingBranch}]", _editingUpdate.Changelog);
         }
 
         public void OnVersionFieldChanged(string value)
         {
-            if (m_disallowCallbacks)
+            if (_disallowCallbacks)
                 return;
 
             Version version;
-            if (!Version.TryParse(m_buildVersionField.text, out version))
+            if (!Version.TryParse(_buildVersionField.text, out version))
                 version = new Version(0, 0, 0);
 
-            m_editingUpdate.ModVersion = version;
-            m_editingUpdate.FixValues();
+            _editingUpdate.ModVersion = version;
+            _editingUpdate.FixValues();
 
-            m_needsSaveIcon.SetActive(true);
+            _needsSaveIcon.SetActive(true);
             populateBranches();
         }
 
         public void OnBranchNameFieldChanged(string value)
         {
-            if (m_disallowCallbacks)
+            if (_disallowCallbacks)
                 return;
 
-            UpdateInfo updateInfo = m_updatesList.Builds[m_editingBranch];
-            m_updatesList.Builds.Remove(m_editingBranch);
-            m_updatesList.Builds.Add(value, updateInfo);
-            m_editingBranch = value;
+            UpdateInfo updateInfo = _updatesList.Builds[_editingBranch];
+            _updatesList.Builds.Remove(_editingBranch);
+            _updatesList.Builds.Add(value, updateInfo);
+            _editingBranch = value;
 
-            m_needsSaveIcon.SetActive(true);
+            _needsSaveIcon.SetActive(true);
             populateBranches();
         }
 
         public void OnAllowedUsersFieldChanged(string value)
         {
-            if (m_disallowCallbacks)
+            if (_disallowCallbacks)
                 return;
 
-            m_needsSaveIcon.SetActive(true);
+            _needsSaveIcon.SetActive(true);
         }
 
         public void OnRequiredExclusivePerkDropdownChanged(int value)
         {
-            if (m_disallowCallbacks)
+            if (_disallowCallbacks)
                 return;
 
-            m_needsSaveIcon.SetActive(true);
+            _needsSaveIcon.SetActive(true);
         }
 
         public void OnBuildFileURLFieldChanged(string value)
         {
-            if (m_disallowCallbacks)
+            if (_disallowCallbacks)
                 return;
 
-            m_needsSaveIcon.SetActive(true);
+            _needsSaveIcon.SetActive(true);
         }
 
         public void OnChangelogFileFieldChanged(string value)
         {
-            if (m_disallowCallbacks)
+            if (_disallowCallbacks)
                 return;
 
-            m_needsSaveIcon.SetActive(true);
+            _needsSaveIcon.SetActive(true);
         }
 
         public void OnGoogleDriveLinkToggleChanged(bool value)
         {
-            if (m_disallowCallbacks)
+            if (_disallowCallbacks)
                 return;
 
-            m_needsSaveIcon.SetActive(true);
+            _needsSaveIcon.SetActive(true);
         }
     }
 }

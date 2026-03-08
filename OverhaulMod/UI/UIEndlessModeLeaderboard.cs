@@ -10,27 +10,27 @@ namespace OverhaulMod.UI
     {
         [UIElementAction(nameof(OnExitButtonClicked))]
         [UIElement("CloseButton")]
-        private readonly Button m_exitButton;
+        private readonly Button _exitButton;
 
         [UIElementAction(nameof(OnExportButtonClicked))]
         [UIElement("ExportButton")]
-        private readonly Button m_exportButton;
+        private readonly Button _exportButton;
 
         [UIElementAction(nameof(OnClearButtonClicked))]
         [UIElement("ClearButton")]
-        private readonly Button m_clearButton;
+        private readonly Button _clearButton;
 
         [UIElementAction(nameof(OnSavesFolderButtonClicked))]
         [UIElement("SavesFolderButton")]
-        private readonly Button m_savesFolderButton;
+        private readonly Button _savesFolderButton;
 
         [UIElement("LeaderboardEntryDisplayPrefab", false)]
-        private readonly ModdedObject m_leaderboardEntry;
+        private readonly ModdedObject _leaderboardEntry;
         [UIElement("Content")]
-        private readonly Transform m_content;
+        private readonly Transform _content;
 
         [UIElement("NoRecordsIndicator")]
-        private readonly GameObject m_noRecordsIndicatorObject;
+        private readonly GameObject _noRecordsIndicatorObject;
 
         public override bool refreshOnlyCursor => true;
 
@@ -53,9 +53,9 @@ namespace OverhaulMod.UI
             clearList();
 
             bool nullOrEmpty = list.IsNullOrEmpty();
-            m_exportButton.interactable = !nullOrEmpty;
-            m_clearButton.interactable = !nullOrEmpty;
-            m_noRecordsIndicatorObject.SetActive(nullOrEmpty);
+            _exportButton.interactable = !nullOrEmpty;
+            _clearButton.interactable = !nullOrEmpty;
+            _noRecordsIndicatorObject.SetActive(nullOrEmpty);
 
             if (nullOrEmpty)
                 return;
@@ -63,7 +63,7 @@ namespace OverhaulMod.UI
             int position = 1;
             foreach (HighScoreData data in list)
             {
-                ModdedObject moddedObject = Instantiate(m_leaderboardEntry, m_content);
+                ModdedObject moddedObject = Instantiate(_leaderboardEntry, _content);
                 moddedObject.gameObject.SetActive(true);
                 moddedObject.GetObject<Text>(0).text = data.HumanFacts.GetFullName();
                 moddedObject.GetObject<Text>(1).text = position.ToString() + ".";
@@ -77,8 +77,8 @@ namespace OverhaulMod.UI
 
         private void clearList()
         {
-            if (m_content.childCount != 0)
-                TransformUtils.DestroyAllChildren(m_content);
+            if (_content.childCount != 0)
+                TransformUtils.DestroyAllChildren(_content);
         }
 
         public void OnExitButtonClicked()

@@ -10,70 +10,70 @@ namespace OverhaulMod.UI
     {
         [UIElementAction(nameof(Hide))]
         [UIElement("CloseButton")]
-        private readonly Button m_closeButton;
+        private readonly Button _closeButton;
 
         [UIElementAction(nameof(OnSyncWthSteamButtonClicked))]
         [UIElement("SyncWithSteamButton")]
-        private readonly Button m_syncWithSteamButton;
+        private readonly Button _syncWithSteamButton;
 
         [UIElementAction(nameof(OnLegacyUIButtonClicked))]
         [UIElement("OldUIButton")]
-        private readonly Button m_legacyUIButton;
+        private readonly Button _legacyUIButton;
 
         [UIElementAction(nameof(OnLegacyUIButtonClicked))]
         [UIElement("SearchBox")]
-        private readonly InputField m_searchBox;
+        private readonly InputField _searchBox;
 
         [UIElement("ScrollRect")]
-        private readonly ScrollRect m_scrollRect;
+        private readonly ScrollRect _scrollRect;
         [UIElement("GridContent")]
-        private readonly Transform m_pageGridContentsTransform;
+        private readonly Transform _pageGridContentsTransform;
         [UIElement("VerticalContent")]
-        private readonly Transform m_pageVerticalContentsTransform;
+        private readonly Transform _pageVerticalContentsTransform;
 
         [UIElement("LoadingIndicator", false)]
-        private readonly GameObject m_loadingIndicator;
+        private readonly GameObject _loadingIndicator;
         [UIElement("ProgressText")]
-        private readonly Text m_progressText;
+        private readonly Text _progressText;
         [UIElement("ProgressFill")]
-        private readonly Image m_progressBarFill;
+        private readonly Image _progressBarFill;
 
         [UIElement("AdvancementPrefab", false)]
-        private readonly ModdedObject m_displayPrefab;
+        private readonly ModdedObject _displayPrefab;
         [UIElement("GlobalAdvancementPrefab", false)]
-        private readonly ModdedObject m_globalDisplayPrefab;
+        private readonly ModdedObject _globalDisplayPrefab;
         [UIElement("GlobalAdvancementsTable", false)]
-        private readonly ModdedObject m_tablePrefab;
+        private readonly ModdedObject _tablePrefab;
         [UIElement("AllAchievementsUnlockedLabel", false)]
-        private readonly ModdedObject m_allAchievementsUnlockedLabelPrefab;
+        private readonly ModdedObject _allAchievementsUnlockedLabelPrefab;
 
         [UIElement("MyAchTabButton")]
-        private readonly ModdedObject m_localAdvancementsTab;
+        private readonly ModdedObject _localAdvancementsTab;
         [UIElement("GlbAchTabButton")]
-        private readonly ModdedObject m_globalAdvancementsTab;
+        private readonly ModdedObject _globalAdvancementsTab;
 
         [TabManager(typeof(UIElementTab), null, null, null, nameof(OnTabSelected))]
-        private readonly TabManager m_tabs;
+        private readonly TabManager _tabs;
 
         public override bool hideTitleScreen => true;
 
-        private bool m_hasUpdatedLabels;
+        private bool _hasUpdatedLabels;
 
         protected override void OnInitialized()
         {
             ClearPageContents();
 
-            m_tabs.AddTab(m_localAdvancementsTab.gameObject, "local advancements");
-            m_tabs.AddTab(m_globalAdvancementsTab.gameObject, "global advancements");
-            m_tabs.SelectTab("local advancements");
+            _tabs.AddTab(_localAdvancementsTab.gameObject, "local advancements");
+            _tabs.AddTab(_globalAdvancementsTab.gameObject, "global advancements");
+            _tabs.SelectTab("local advancements");
         }
 
         public void OnTabSelected(UIElementTab elementTab)
         {
             bool local = elementTab.tabId == "local advancements";
 
-            UIElementTab oldTab = m_tabs.prevSelectedTab;
-            UIElementTab newTab = m_tabs.selectedTab;
+            UIElementTab oldTab = _tabs.prevSelectedTab;
+            UIElementTab newTab = _tabs.selectedTab;
             if (oldTab)
             {
                 RectTransform rt = oldTab.transform as RectTransform;
@@ -96,16 +96,16 @@ namespace OverhaulMod.UI
             else
                 PopulateGlobalAchievments();
 
-            m_syncWithSteamButton.interactable = local;
+            _syncWithSteamButton.interactable = local;
         }
 
         public void ClearPageContents()
         {
-            if (m_pageGridContentsTransform && m_pageGridContentsTransform.childCount > 0)
-                TransformUtils.DestroyAllChildren(m_pageGridContentsTransform);
+            if (_pageGridContentsTransform && _pageGridContentsTransform.childCount > 0)
+                TransformUtils.DestroyAllChildren(_pageGridContentsTransform);
 
-            if (m_pageVerticalContentsTransform && m_pageVerticalContentsTransform.childCount > 0)
-                TransformUtils.DestroyAllChildren(m_pageVerticalContentsTransform);
+            if (_pageVerticalContentsTransform && _pageVerticalContentsTransform.childCount > 0)
+                TransformUtils.DestroyAllChildren(_pageVerticalContentsTransform);
         }
 
         public void PopulateLocalAchievements()
@@ -120,17 +120,17 @@ namespace OverhaulMod.UI
             float fraction = GameplayAchievementManager.Instance.GetFractionOfAchievementsCompleted();
             int percentage = Mathf.FloorToInt(fraction * 100f);
 
-            if (!m_hasUpdatedLabels)
+            if (!_hasUpdatedLabels)
             {
-                m_hasUpdatedLabels = true;
-                m_progressBarFill.fillAmount = fraction;
-                m_progressText.text = $"{ModGameUtils.GetNumOfAchievementsCompleted()}/{ModGameUtils.GetNumOfAchievements()} ({percentage}%)";
+                _hasUpdatedLabels = true;
+                _progressBarFill.fillAmount = fraction;
+                _progressText.text = $"{ModGameUtils.GetNumOfAchievementsCompleted()}/{ModGameUtils.GetNumOfAchievements()} ({percentage}%)";
             }
 
-            GridLayoutGroup gridLayoutGroup = m_pageGridContentsTransform.GetComponent<GridLayoutGroup>();
+            GridLayoutGroup gridLayoutGroup = _pageGridContentsTransform.GetComponent<GridLayoutGroup>();
             if (percentage >= 100f)
             {
-                ModdedObject moddedObject1 = Instantiate(m_allAchievementsUnlockedLabelPrefab, m_pageGridContentsTransform);
+                ModdedObject moddedObject1 = Instantiate(_allAchievementsUnlockedLabelPrefab, _pageGridContentsTransform);
                 moddedObject1.gameObject.SetActive(true);
 
                 RectTransform rectTransform = moddedObject1.transform as RectTransform;
@@ -144,7 +144,7 @@ namespace OverhaulMod.UI
 
             foreach (GameplayAchievement achievement in manager.Achievements)
             {
-                ModdedObject moddedObject = Instantiate(m_displayPrefab, m_pageGridContentsTransform);
+                ModdedObject moddedObject = Instantiate(_displayPrefab, _pageGridContentsTransform);
                 moddedObject.gameObject.SetActive(true);
                 UIElementAdvancementDisplay elementAdvancementDisplay = moddedObject.gameObject.AddComponent<UIElementAdvancementDisplay>();
                 elementAdvancementDisplay.Populate(achievement, manager);
@@ -160,16 +160,16 @@ namespace OverhaulMod.UI
                 return;
             }
 
-            m_tabs.interactable = false;
-            m_loadingIndicator.SetActive(true);
+            _tabs.interactable = false;
+            _loadingIndicator.SetActive(true);
             ModSteamUserStatsUtils.RefreshAllStats(delegate (bool result)
             {
-                m_tabs.interactable = true;
-                m_loadingIndicator.SetActive(false);
+                _tabs.interactable = true;
+                _loadingIndicator.SetActive(false);
                 if (!result)
                 {
                     ModUIUtils.MessagePopupOK("Error", "Something went wrong while getting user statistics.", true);
-                    m_tabs.SelectTab("local advancements");
+                    _tabs.SelectTab("local advancements");
                     return;
                 }
 
@@ -189,12 +189,12 @@ namespace OverhaulMod.UI
                     return;
                 }
 
-                ModdedObject moddedObject1 = Instantiate(m_tablePrefab, m_pageVerticalContentsTransform);
+                ModdedObject moddedObject1 = Instantiate(_tablePrefab, _pageVerticalContentsTransform);
                 moddedObject1.gameObject.SetActive(true);
 
                 foreach ((GameplayAchievement, float) tuple in list)
                 {
-                    ModdedObject moddedObject = Instantiate(m_globalDisplayPrefab, m_pageVerticalContentsTransform);
+                    ModdedObject moddedObject = Instantiate(_globalDisplayPrefab, _pageVerticalContentsTransform);
                     moddedObject.gameObject.SetActive(true);
                     moddedObject.GetObject<Text>(0).text = LocalizationManager.Instance.GetTranslatedString(tuple.Item1.Name);
                     moddedObject.GetObject<Text>(1).text = LocalizationManager.Instance.GetTranslatedString(tuple.Item1.Description);
@@ -208,9 +208,9 @@ namespace OverhaulMod.UI
 
         public void SetContentLayout(bool grid)
         {
-            m_pageGridContentsTransform.gameObject.SetActive(grid);
-            m_pageVerticalContentsTransform.gameObject.SetActive(!grid);
-            m_scrollRect.content = (grid ? m_pageGridContentsTransform : m_pageVerticalContentsTransform) as RectTransform;
+            _pageGridContentsTransform.gameObject.SetActive(grid);
+            _pageVerticalContentsTransform.gameObject.SetActive(!grid);
+            _scrollRect.content = (grid ? _pageGridContentsTransform : _pageVerticalContentsTransform) as RectTransform;
         }
 
         public void OnLegacyUIButtonClicked()

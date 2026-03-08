@@ -14,18 +14,18 @@ namespace OverhaulMod.Engine
     {
         public const string CUSTOMIZATION_INFO_FILE = "TitleScreenCustomizationInfo.json";
 
-        public const string CUSTOM_LEVEL_ID = "customTitleScreenLevel";
+        public const string CUSTO_LEVEL_ID = "customTitleScreenLevel";
 
         [ModSetting(ModSettingsConstants.TITLE_SCREEN_MUSIC_TRACK_INDEX, 0)]
         public static int MusicTrackIndex;
 
-        private TitleScreenCustomizationInfo m_customizationInfo;
+        private TitleScreenCustomizationInfo _customizationInfo;
 
-        private GameObject m_levelIsLoadingBg;
+        private GameObject _levelIsLoadingBg;
 
-        private float m_timeToRefreshMusicTrack;
+        private float _timeToRefreshMusicTrack;
 
-        private bool m_isWaitingForSoundpackToLoad;
+        private bool _isWaitingForSoundpackToLoad;
 
         public LevelDescription overrideLevelDescription
         {
@@ -43,18 +43,18 @@ namespace OverhaulMod.Engine
         {
             base.Awake();
 
-            m_timeToRefreshMusicTrack = -1f;
+            _timeToRefreshMusicTrack = -1f;
 
             LoadCustomizationInfo();
         }
 
         private void Update()
         {
-            if (m_timeToRefreshMusicTrack != -1f && Time.unscaledTime >= m_timeToRefreshMusicTrack)
+            if (_timeToRefreshMusicTrack != -1f && Time.unscaledTime >= _timeToRefreshMusicTrack)
             {
-                m_timeToRefreshMusicTrack = -1f;
+                _timeToRefreshMusicTrack = -1f;
 
-                if (!m_isWaitingForSoundpackToLoad)
+                if (!_isWaitingForSoundpackToLoad)
                     RefreshMusicTrack();
             }
         }
@@ -87,10 +87,10 @@ namespace OverhaulMod.Engine
 
         public void SetHypocrisisBackgroundLevel()
         {
-            if (m_customizationInfo.StaticBackgroundInfo.Level != null && m_customizationInfo.StaticBackgroundInfo.Level.WorkshopItem != null && m_customizationInfo.StaticBackgroundInfo.Level.WorkshopItem.WorkshopItemID == UITitleScreenHypocrisisSkin.MAIN_MENU_LEVEL_STEAM_ID)
+            if (_customizationInfo.StaticBackgroundInfo.Level != null && _customizationInfo.StaticBackgroundInfo.Level.WorkshopItem != null && _customizationInfo.StaticBackgroundInfo.Level.WorkshopItem.WorkshopItemID == UITitleScreenHypocrisisSkin.MAIN_MENU_LEVEL_STEA_ID)
                 return;
 
-            if (ModSteamUGCUtils.IsItemInstalled(UITitleScreenHypocrisisSkin.MAIN_MENU_LEVEL_STEAM_ID) && SteamUGC.GetItemInstallInfo(UITitleScreenHypocrisisSkin.MAIN_MENU_LEVEL_STEAM_ID, out _, out string folder, ModSteamUGCUtils.cchFolderSize, out _))
+            if (ModSteamUGCUtils.IsItemInstalled(UITitleScreenHypocrisisSkin.MAIN_MENU_LEVEL_STEA_ID) && SteamUGC.GetItemInstallInfo(UITitleScreenHypocrisisSkin.MAIN_MENU_LEVEL_STEA_ID, out _, out string folder, ModSteamUGCUtils.cchFolderSize, out _))
             {
                 SteamWorkshopItem workshopItem = null;
 
@@ -98,7 +98,7 @@ namespace OverhaulMod.Engine
                 if (list != null && list.Count != 0)
                 {
                     foreach (LevelDescription levelDescription in list)
-                        if (levelDescription.WorkshopItem != null && levelDescription.WorkshopItem.WorkshopItemID == UITitleScreenHypocrisisSkin.MAIN_MENU_LEVEL_STEAM_ID)
+                        if (levelDescription.WorkshopItem != null && levelDescription.WorkshopItem.WorkshopItemID == UITitleScreenHypocrisisSkin.MAIN_MENU_LEVEL_STEA_ID)
                         {
                             workshopItem = levelDescription.WorkshopItem;
                         }
@@ -110,20 +110,20 @@ namespace OverhaulMod.Engine
                     {
                         Title = "ARCHONETHER",
                         CreatorName = "Archaeologist",
-                        WorkshopItemID = UITitleScreenHypocrisisSkin.MAIN_MENU_LEVEL_STEAM_ID,
+                        WorkshopItemID = UITitleScreenHypocrisisSkin.MAIN_MENU_LEVEL_STEA_ID,
                         Folder = folder,
                     };
                 }
 
                 LevelDescription level = new LevelDescription()
                 {
-                    LevelID = CUSTOM_LEVEL_ID,
+                    LevelID = CUSTO_LEVEL_ID,
                     LevelJSONPath = Path.Combine(folder, "LevelData.json"),
                     LevelTags = new List<LevelTags>(),
                     WorkshopItem = workshopItem
                 };
                 overrideLevelDescription = level;
-                m_customizationInfo.StaticBackgroundInfo.Level = level;
+                _customizationInfo.StaticBackgroundInfo.Level = level;
                 SpawnStaticBackground();
                 SaveCustomizationInfo();
             }
@@ -142,13 +142,13 @@ namespace OverhaulMod.Engine
                 titleScreenCustomizationInfo = new TitleScreenCustomizationInfo();
                 titleScreenCustomizationInfo.FixValues();
             }
-            m_customizationInfo = titleScreenCustomizationInfo;
+            _customizationInfo = titleScreenCustomizationInfo;
             overrideLevelDescription = titleScreenCustomizationInfo.StaticBackgroundInfo.Level;
         }
 
         public void SaveCustomizationInfo()
         {
-            TitleScreenCustomizationInfo titleScreenCustomizationInfo = m_customizationInfo;
+            TitleScreenCustomizationInfo titleScreenCustomizationInfo = _customizationInfo;
             if (titleScreenCustomizationInfo == null)
                 return;
 
@@ -157,7 +157,7 @@ namespace OverhaulMod.Engine
 
         public TitleScreenBackgroundInfo GetStaticBackgroundInfo()
         {
-            TitleScreenCustomizationInfo titleScreenCustomizationInfo = m_customizationInfo;
+            TitleScreenCustomizationInfo titleScreenCustomizationInfo = _customizationInfo;
             if (titleScreenCustomizationInfo == null)
                 return null;
 
@@ -187,7 +187,7 @@ namespace OverhaulMod.Engine
 
         public void SpawnStaticBackground()
         {
-            TitleScreenCustomizationInfo titleScreenCustomizationInfo = m_customizationInfo;
+            TitleScreenCustomizationInfo titleScreenCustomizationInfo = _customizationInfo;
             if (titleScreenCustomizationInfo == null)
                 return;
 
@@ -198,7 +198,7 @@ namespace OverhaulMod.Engine
 
         public void SetLevelIsLoadingBG(GameObject gameObject)
         {
-            m_levelIsLoadingBg = gameObject;
+            _levelIsLoadingBg = gameObject;
         }
 
         public List<Dropdown.OptionData> GetMusicTracks()
@@ -237,10 +237,10 @@ namespace OverhaulMod.Engine
 
         private void waitUntilSoundpackIsLoadedThenPlayMusic()
         {
-            if (m_isWaitingForSoundpackToLoad)
+            if (_isWaitingForSoundpackToLoad)
                 return;
 
-            m_isWaitingForSoundpackToLoad = true;
+            _isWaitingForSoundpackToLoad = true;
             waitUntilSoundpackIsLoadedThenPlayMusicCoroutine().Run();
         }
 
@@ -249,7 +249,7 @@ namespace OverhaulMod.Engine
             while (!ModIntegrationUtils.SoundpackMod.HasLoadedSoundpack())
                 yield return null;
 
-            m_isWaitingForSoundpackToLoad = false;
+            _isWaitingForSoundpackToLoad = false;
             RefreshMusicTrack();
 
             yield break;
@@ -257,7 +257,7 @@ namespace OverhaulMod.Engine
 
         public void RefreshMusicTrackDelayed(float time)
         {
-            m_timeToRefreshMusicTrack = Time.unscaledTime + time;
+            _timeToRefreshMusicTrack = Time.unscaledTime + time;
         }
 
         public void RefreshMusicTrack()
@@ -314,8 +314,8 @@ namespace OverhaulMod.Engine
 
         private IEnumerator spawnStaticBackgroundCoroutine()
         {
-            if (m_levelIsLoadingBg)
-                m_levelIsLoadingBg.SetActive(true);
+            if (_levelIsLoadingBg)
+                _levelIsLoadingBg.SetActive(true);
 
             yield return null;
             GameFlowManager.Instance.SwapOutTitleScreenLevel();
@@ -325,8 +325,8 @@ namespace OverhaulMod.Engine
             while (levelManager.IsCurrentlySwappingInLevel() || levelManager.IsSpawningCurrentLevel())
                 yield return null;
 
-            if (m_levelIsLoadingBg)
-                m_levelIsLoadingBg.SetActive(false);
+            if (_levelIsLoadingBg)
+                _levelIsLoadingBg.SetActive(false);
 
             yield break;
         }

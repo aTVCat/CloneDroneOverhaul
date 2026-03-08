@@ -10,47 +10,47 @@ namespace OverhaulMod.Content.Personalization
 {
     public class PersonalizationEditorScreenshotOverlay : MonoBehaviour
     {
-        private CanvasGroup m_canvasGroup;
+        private CanvasGroup _canvasGroup;
 
-        private RawImage m_resultImage;
+        private RawImage _resultImage;
 
-        private GameObject m_resultImageFrame;
+        private GameObject _resultImageFrame;
 
-        private GameObject m_autoScreenshotSettingsPanel;
+        private GameObject _autoScreenshotSettingsPanel;
 
-        private Dropdown m_categoryDropdown;
+        private Dropdown _categoryDropdown;
 
-        private Dropdown m_weaponTypeDropdown;
+        private Dropdown _weaponTypeDropdown;
 
-        private float m_timeLeftToHideResult;
+        private float _timeLeftToHideResult;
 
-        private string m_overrideItemFolder;
+        private string _overrideItemFolder;
 
         private void Start()
         {
             ModdedObject moddedObject = GetComponent<ModdedObject>();
 
-            m_canvasGroup = base.GetComponent<CanvasGroup>();
-            m_canvasGroup.blocksRaycasts = false;
+            _canvasGroup = base.GetComponent<CanvasGroup>();
+            _canvasGroup.blocksRaycasts = false;
 
-            m_resultImage = moddedObject.GetObject<RawImage>(0);
-            m_resultImageFrame = m_resultImage.transform.parent.gameObject;
-            m_resultImageFrame.SetActive(false);
+            _resultImage = moddedObject.GetObject<RawImage>(0);
+            _resultImageFrame = _resultImage.transform.parent.gameObject;
+            _resultImageFrame.SetActive(false);
 
-            m_autoScreenshotSettingsPanel = moddedObject.GetObject<GameObject>(1);
-            m_autoScreenshotSettingsPanel.SetActive(false);
+            _autoScreenshotSettingsPanel = moddedObject.GetObject<GameObject>(1);
+            _autoScreenshotSettingsPanel.SetActive(false);
             moddedObject.GetObject<Button>(2).onClick.AddListener(HideAutoScreenshotSettingsPanel);
             moddedObject.GetObject<Button>(5).onClick.AddListener(TakeScreenshotsOfMultipleItems);
 
-            m_categoryDropdown = moddedObject.GetObject<Dropdown>(3);
-            System.Collections.Generic.List<Dropdown.OptionData> options = m_categoryDropdown.options;
+            _categoryDropdown = moddedObject.GetObject<Dropdown>(3);
+            System.Collections.Generic.List<Dropdown.OptionData> options = _categoryDropdown.options;
             options.Clear();
 
             foreach (PersonalizationCategory category in typeof(PersonalizationCategory).GetEnumValues())
                 options.Add(new DropdownIntOptionData() { IntValue = (int)category, text = StringUtils.AddSpacesToCamelCasedString(category.ToString()) });
 
-            m_weaponTypeDropdown = moddedObject.GetObject<Dropdown>(4);
-            System.Collections.Generic.List<Dropdown.OptionData> options2 = m_weaponTypeDropdown.options;
+            _weaponTypeDropdown = moddedObject.GetObject<Dropdown>(4);
+            System.Collections.Generic.List<Dropdown.OptionData> options2 = _weaponTypeDropdown.options;
             options2.Clear();
             options2.Add(new DropdownIntOptionData() { IntValue = (int)WeaponType.Sword, text = "Sword" });
             options2.Add(new DropdownIntOptionData() { IntValue = (int)WeaponType.Bow, text = "Bow" });
@@ -61,11 +61,11 @@ namespace OverhaulMod.Content.Personalization
 
         private void Update()
         {
-            m_timeLeftToHideResult = Mathf.Max(0f, m_timeLeftToHideResult - Time.unscaledDeltaTime);
-            if (m_resultImageFrame.activeSelf && m_timeLeftToHideResult == 0f)
+            _timeLeftToHideResult = Mathf.Max(0f, _timeLeftToHideResult - Time.unscaledDeltaTime);
+            if (_resultImageFrame.activeSelf && _timeLeftToHideResult == 0f)
             {
                 destroyRecentTexture();
-                m_resultImageFrame.SetActive(false);
+                _resultImageFrame.SetActive(false);
             }
 
             if (InputManager.Instance.GetKeyMode() != KeyMode.GeneralCommands) return;
@@ -117,8 +117,8 @@ namespace OverhaulMod.Content.Personalization
         {
             System.Collections.Generic.List<PersonalizationItemInfo> items = PersonalizationManager.Instance.itemList.GetItems();
             PersonalizationEditorScreenshotStage stage = PersonalizationEditorScreenshotStage.Instance;
-            PersonalizationCategory personalizationCategory = (PersonalizationCategory)(m_categoryDropdown.options[m_categoryDropdown.value] as DropdownIntOptionData).IntValue;
-            WeaponType weaponType = (WeaponType)(m_weaponTypeDropdown.options[m_weaponTypeDropdown.value] as DropdownIntOptionData).IntValue;
+            PersonalizationCategory personalizationCategory = (PersonalizationCategory)(_categoryDropdown.options[_categoryDropdown.value] as DropdownIntOptionData).IntValue;
+            WeaponType weaponType = (WeaponType)(_weaponTypeDropdown.options[_weaponTypeDropdown.value] as DropdownIntOptionData).IntValue;
             PersonalizationEditorScreenshotCameraAnglesInfo angles = stage.GetCameraAnglesInfo();
             Transform cameraTransform = stage.GetCameraController().transform;
 
@@ -134,7 +134,7 @@ namespace OverhaulMod.Content.Personalization
                 UIPersonalizationEditor.instance.Utilities.SetRandomFavoriteColor();
                 PersonalizationEditorManager.Instance.currentEditingItemInfo = item;
 
-                m_overrideItemFolder = item.FolderPath;
+                _overrideItemFolder = item.FolderPath;
                 stage.SpawnItemInHolder(item);
 
                 PersonalizationEditorScreenshotCameraAngle angle = angles.GetAngle(weaponType == ModWeaponsManager.SCYTHE_TYPE ? "Scythe" : weaponType.ToString());
@@ -159,18 +159,18 @@ namespace OverhaulMod.Content.Personalization
             QualitySettings.antiAliasing = 8;
             Texture2D texture = PersonalizationEditorScreenshotStage.Instance.TakeScreenshotOfObject(128, 128, 1);
             QualitySettings.antiAliasing = antiAliasingBefore;
-            m_resultImageFrame.SetActive(true);
-            m_resultImage.texture = texture;
-            m_timeLeftToHideResult = 5f;
+            _resultImageFrame.SetActive(true);
+            _resultImage.texture = texture;
+            _timeLeftToHideResult = 5f;
 
-            string folderPath = m_overrideItemFolder ?? PersonalizationEditorManager.Instance.currentEditingItemFolder;
+            string folderPath = _overrideItemFolder ?? PersonalizationEditorManager.Instance.currentEditingItemFolder;
             string path = Path.Combine(folderPath, "preview.png");
             ModFileUtils.WriteBytes(texture.EncodeToPNG(), path);
         }
 
         private void destroyRecentTexture()
         {
-            Texture texture = m_resultImage.texture;
+            Texture texture = _resultImage.texture;
             if (texture)
             {
                 Destroy(texture);
@@ -189,14 +189,14 @@ namespace OverhaulMod.Content.Personalization
 
         public void ShowAutoScreenshotSettingsPanel()
         {
-            m_autoScreenshotSettingsPanel.SetActive(true);
-            m_canvasGroup.blocksRaycasts = true;
+            _autoScreenshotSettingsPanel.SetActive(true);
+            _canvasGroup.blocksRaycasts = true;
         }
 
         public void HideAutoScreenshotSettingsPanel()
         {
-            m_autoScreenshotSettingsPanel.SetActive(false);
-            m_canvasGroup.blocksRaycasts = false;
+            _autoScreenshotSettingsPanel.SetActive(false);
+            _canvasGroup.blocksRaycasts = false;
         }
     }
 }

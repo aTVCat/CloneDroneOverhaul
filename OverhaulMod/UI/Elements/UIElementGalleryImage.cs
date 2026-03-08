@@ -8,15 +8,15 @@ namespace OverhaulMod.UI
     public class UIElementGalleryImage : OverhaulUIBehaviour
     {
         [UIElement("Title")]
-        public Text m_titleText;
+        public Text _titleText;
 
         [UIElement("Description")]
-        public Text m_descriptionText;
+        public Text _descriptionText;
 
         [UIElement("Image")]
-        public RawImage m_image;
+        public RawImage _image;
 
-        private Texture2D m_texture;
+        private Texture2D _texture;
 
         public string filePath
         {
@@ -32,14 +32,14 @@ namespace OverhaulMod.UI
             Button button = base.GetComponent<Button>();
             button.onClick.AddListener(delegate
             {
-                ModUIUtils.ImageViewer(m_texture, ModCache.gameUIRoot.transform);
+                ModUIUtils.ImageViewer(_texture, ModCache.gameUIRoot.transform);
             });
         }
 
         public override void OnDestroy()
         {
-            if (m_texture)
-                Destroy(m_texture);
+            if (_texture)
+                Destroy(_texture);
         }
 
         public void GetDescription()
@@ -124,8 +124,8 @@ namespace OverhaulMod.UI
             displayName = LocalizationManager.Instance.GetTranslatedString($"{translationKey}_name");
             string description = LocalizationManager.Instance.GetTranslatedString($"{translationKey}_description");
 
-            m_titleText.text = displayName;
-            m_descriptionText.text = description;
+            _titleText.text = displayName;
+            _descriptionText.text = description;
         }
 
         public void GetImage()
@@ -144,8 +144,8 @@ namespace OverhaulMod.UI
             Texture2D texture = new Texture2D(1, 1);
             _ = texture.LoadImage(bytes);
             texture.Apply();
-            m_texture = texture;
-            m_image.texture = texture;
+            _texture = texture;
+            _image.texture = texture;
         }
     }
 }

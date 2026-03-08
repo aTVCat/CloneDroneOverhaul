@@ -7,38 +7,38 @@ namespace OverhaulMod.UI
     {
         [UIElementAction(nameof(Hide))]
         [UIElement("CloseButton")]
-        private readonly Button m_exitButton;
+        private readonly Button _exitButton;
 
         [UIElement("InviteLinkField")]
-        private readonly InputField m_urlField;
+        private readonly InputField _urlField;
 
         [UIElementAction(nameof(OnCopyURLButtonClicked))]
         [UIElement("CopyURLButton")]
-        private readonly Button m_copyUrlButton;
+        private readonly Button _copyUrlButton;
 
         [UIElementAction(nameof(OnOpenURLInBrowserButtonClicked))]
         [UIElement("OpenURLInBrowserButton")]
-        private readonly Button m_openUrlInBrowserButton;
+        private readonly Button _openUrlInBrowserButton;
 
         public override bool hideTitleScreen => true;
 
-        private string m_url;
+        private string _url;
 
         protected override void OnInitialized()
         {
             string url = "https://discord.gg/ezhvabY63m";
-            m_url = url;
-            m_urlField.text = url;
+            _url = url;
+            _urlField.text = url;
         }
 
         public void OnCopyURLButtonClicked()
         {
-            GUIUtility.systemCopyBuffer = m_url;
+            GUIUtility.systemCopyBuffer = _url;
         }
 
         public void OnOpenURLInBrowserButtonClicked()
         {
-            Application.OpenURL(m_url);
+            Application.OpenURL(_url);
         }
     }
 }

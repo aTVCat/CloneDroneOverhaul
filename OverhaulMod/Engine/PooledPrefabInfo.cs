@@ -5,7 +5,7 @@ namespace OverhaulMod.Engine
 {
     public class PooledPrefabInfo
     {
-        private List<PooledPrefabBehaviour> m_instantiatedObjects;
+        private List<PooledPrefabBehaviour> _instantiatedObjects;
 
         public Transform container
         {
@@ -34,11 +34,11 @@ namespace OverhaulMod.Engine
 
         private PooledPrefabBehaviour getInstantiatedNonActiveObject()
         {
-            List<PooledPrefabBehaviour> list = m_instantiatedObjects;
+            List<PooledPrefabBehaviour> list = _instantiatedObjects;
             if (list == null)
             {
                 list = new List<PooledPrefabBehaviour>();
-                m_instantiatedObjects = list;
+                _instantiatedObjects = list;
             }
 
             if (list.Count == 0)
@@ -64,12 +64,12 @@ namespace OverhaulMod.Engine
                 return null;
 
             int l = limit;
-            if (l != -1 && m_instantiatedObjects.Count >= l)
+            if (l != -1 && _instantiatedObjects.Count >= l)
                 return null;
 
             GameObject gameObject = Object.Instantiate(obj, container, false);
             PooledPrefabBehaviour behaviour = gameObject.AddComponent<PooledPrefabBehaviour>();
-            m_instantiatedObjects.Add(behaviour);
+            _instantiatedObjects.Add(behaviour);
             return behaviour;
         }
 

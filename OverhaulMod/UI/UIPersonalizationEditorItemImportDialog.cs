@@ -9,19 +9,19 @@ namespace OverhaulMod.UI
     {
         [UIElementAction(nameof(Hide))]
         [UIElement("CloseButton")]
-        private readonly Button m_exitButton;
+        private readonly Button _exitButton;
 
         [UIElementAction(nameof(OnDoneButtonClicked))]
         [UIElement("DoneButton")]
-        private readonly Button m_doneButton;
+        private readonly Button _doneButton;
 
         [UIElementAction(nameof(OnChangeFolderNameToggle))]
         [UIElement("ChangeFolderNameToggle")]
-        private readonly Toggle m_changeFolderNameToggle;
+        private readonly Toggle _changeFolderNameToggle;
 
         [UIElementAction(nameof(OnItemFolderNameChanged))]
         [UIElement("ItemFolderNameField")]
-        private readonly InputField m_itemFolderNameField;
+        private readonly InputField _itemFolderNameField;
 
         public UIPersonalizationEditorItemBrowser ItemBrowser;
 
@@ -29,8 +29,8 @@ namespace OverhaulMod.UI
 
         protected override void OnInitialized()
         {
-            m_changeFolderNameToggle.isOn = true;
-            m_itemFolderNameField.text = string.Empty;
+            _changeFolderNameToggle.isOn = true;
+            _itemFolderNameField.text = string.Empty;
             RefreshDoneButton();
         }
 
@@ -41,12 +41,12 @@ namespace OverhaulMod.UI
 
         public void RefreshDoneButton()
         {
-            m_doneButton.interactable = !m_changeFolderNameToggle.isOn || (!m_itemFolderNameField.text.IsNullOrEmpty() && !m_itemFolderNameField.text.IsNullOrWhiteSpace());
+            _doneButton.interactable = !_changeFolderNameToggle.isOn || (!_itemFolderNameField.text.IsNullOrEmpty() && !_itemFolderNameField.text.IsNullOrWhiteSpace());
         }
 
         public void OnChangeFolderNameToggle(bool value)
         {
-            m_itemFolderNameField.interactable = value;
+            _itemFolderNameField.interactable = value;
             RefreshDoneButton();
         }
 
@@ -57,7 +57,7 @@ namespace OverhaulMod.UI
 
         public void OnDoneButtonClicked()
         {
-            string folderName = m_changeFolderNameToggle.isOn ? $"{Path.GetFileName(FilePath).Replace("PersonalizationItem_", string.Empty).Remove(8)}_{m_itemFolderNameField.text.Replace(" ", string.Empty)}" : null;
+            string folderName = _changeFolderNameToggle.isOn ? $"{Path.GetFileName(FilePath).Replace("PersonalizationIte_", string.Empty).Remove(8)}_{_itemFolderNameField.text.Replace(" ", string.Empty)}" : null;
             PersonalizationEditorManager.Instance.ImportItem(FilePath, folderName, out string error, true);
             if (!string.IsNullOrEmpty(error))
             {

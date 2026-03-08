@@ -11,64 +11,64 @@ namespace OverhaulMod.UI
     {
         [UIElementAction(nameof(Hide))]
         [UIElement("CloseButton")]
-        private readonly Button m_exitButton;
+        private readonly Button _exitButton;
 
         [UIElementAction(nameof(OnEditorButtonClicked))]
         [UIElement("EditorButton")]
-        private readonly Button m_editorButton;
+        private readonly Button _editorButton;
 
         [UIElementAction(nameof(OnCheckForUpdatesButtonClicked))]
         [UIElement("CheckForUpdatesButton")]
-        private readonly Button m_checkForUpdatesButton;
+        private readonly Button _checkForUpdatesButton;
 
         [UIElementAction(nameof(OnPatchNotesButtonClicked))]
         [UIElement("InstalledBuildChangelogButton")]
-        private readonly Button m_patchNotesButton;
+        private readonly Button _patchNotesButton;
 
         [UIElementAction(nameof(OnCheckUpdatesOnStartToggled))]
         [UIElement("CheckUpdatesOnStartToggle")]
-        private readonly Toggle m_checkUpdatesOnStartToggle;
+        private readonly Toggle _checkUpdatesOnStartToggle;
 
         [UIElementAction(nameof(OnNotifyAboutTestBuildsToggled))]
         [UIElement("NotifyAboutTestBuildsToggle")]
-        private readonly Toggle m_notifyAboutTestBuildsToggle;
+        private readonly Toggle _notifyAboutTestBuildsToggle;
 
         [UIElement("NotifyAboutTestBuildsToggle_Shading")]
-        private readonly GameObject m_notifyAboutTestBuildsToggleShading;
+        private readonly GameObject _notifyAboutTestBuildsToggleShading;
 
         [UIElement("InstalledVersionText")]
-        private readonly Text m_installedVersionText;
+        private readonly Text _installedVersionText;
 
         [UIElement("IdleElements", true)]
-        private readonly GameObject m_idleElements;
+        private readonly GameObject _idleElements;
 
         [UIElement("LoadingIndicator", false)]
-        private readonly GameObject m_loadingIndicator;
+        private readonly GameObject _loadingIndicator;
 
         [UIElement("ResultElements", false)]
-        private readonly GameObject m_resultElements;
+        private readonly GameObject _resultElements;
 
         [UIElement("IdleHeader")]
-        private readonly Text m_idleHeaderText;
+        private readonly Text _idleHeaderText;
 
         [UIElement("IdleDescription")]
-        private readonly Text m_idleDescriptionText;
+        private readonly Text _idleDescriptionText;
 
         [UIElement("NewBuildDisplay", false)]
-        private readonly ModdedObject m_buildDisplay;
+        private readonly ModdedObject _buildDisplay;
 
         [UIElement("Content")]
-        private readonly Transform m_content;
+        private readonly Transform _content;
 
         public override bool hideTitleScreen => true;
 
         protected override void OnInitialized()
         {
-            m_installedVersionText.text = ModBuildInfo.versionStringNoBranch;
-            m_checkUpdatesOnStartToggle.isOn = UpdateManager.CheckForUpdatesOnStartup;
-            m_notifyAboutTestBuildsToggle.isOn = UpdateManager.NotifyAboutNewTestBuilds;
-            m_notifyAboutTestBuildsToggle.interactable = UpdateManager.CheckForUpdatesOnStartup;
-            m_notifyAboutTestBuildsToggleShading.SetActive(!UpdateManager.CheckForUpdatesOnStartup);
+            _installedVersionText.text = ModBuildInfo.versionStringNoBranch;
+            _checkUpdatesOnStartToggle.isOn = UpdateManager.CheckForUpdatesOnStartup;
+            _notifyAboutTestBuildsToggle.isOn = UpdateManager.NotifyAboutNewTestBuilds;
+            _notifyAboutTestBuildsToggle.interactable = UpdateManager.CheckForUpdatesOnStartup;
+            _notifyAboutTestBuildsToggleShading.SetActive(!UpdateManager.CheckForUpdatesOnStartup);
             displayUpdatesLastCheckedIdleText();
         }
 
@@ -84,8 +84,8 @@ namespace OverhaulMod.UI
             if (UpdateManager.UpdatesLastCheckedDate.IsNullOrEmpty() || !DateTime.TryParse(UpdateManager.UpdatesLastCheckedDate, out dateTime))
                 dateTime = DateTime.MinValue;
 
-            m_idleHeaderText.text = LocalizationManager.Instance.GetTranslatedString("updates_text_overhaul_mod_is_up_to_date");
-            m_idleDescriptionText.text = $"{LocalizationManager.Instance.GetTranslatedString("updates_tooltip_last_checked")} {(dateTime == DateTime.MinValue ? "unknown" : dateTime.ToShortDateString())}";
+            _idleHeaderText.text = LocalizationManager.Instance.GetTranslatedString("updates_text_overhaul_mod_is_up_to_date");
+            _idleDescriptionText.text = $"{LocalizationManager.Instance.GetTranslatedString("updates_tooltip_last_checked")} {(dateTime == DateTime.MinValue ? "unknown" : dateTime.ToShortDateString())}";
         }
 
         public void OnCheckUpdatesOnStartToggled(bool value)
@@ -93,8 +93,8 @@ namespace OverhaulMod.UI
             ModSettingsManager.SetBoolValue(ModSettingsConstants.CHECK_UPDATES_ON_NEXT_START, true);
             ModSettingsManager.SetBoolValue(ModSettingsConstants.CHECK_FOR_UPDATES_ON_STARTUP, value, true);
 
-            m_notifyAboutTestBuildsToggleShading.SetActive(!value);
-            m_notifyAboutTestBuildsToggle.interactable = value;
+            _notifyAboutTestBuildsToggleShading.SetActive(!value);
+            _notifyAboutTestBuildsToggle.interactable = value;
         }
 
         public void OnNotifyAboutTestBuildsToggled(bool value)
@@ -122,21 +122,21 @@ namespace OverhaulMod.UI
 
         public void OnCheckForUpdatesButtonClicked()
         {
-            m_idleElements.SetActive(false);
-            m_loadingIndicator.SetActive(true);
-            m_resultElements.SetActive(false);
-            m_checkForUpdatesButton.interactable = false;
+            _idleElements.SetActive(false);
+            _loadingIndicator.SetActive(true);
+            _resultElements.SetActive(false);
+            _checkForUpdatesButton.interactable = false;
 
             UpdateManager.Instance.DownloadUpdatesList(delegate (UpdateManager.GetUpdatesResult result)
             {
-                m_loadingIndicator.SetActive(false);
-                m_checkForUpdatesButton.interactable = true;
+                _loadingIndicator.SetActive(false);
+                _checkForUpdatesButton.interactable = true;
 
                 if (result.IsError())
                 {
-                    m_idleElements.SetActive(true);
-                    m_idleHeaderText.text = "An error occurred.";
-                    m_idleDescriptionText.text = result.Error;
+                    _idleElements.SetActive(true);
+                    _idleHeaderText.text = "An error occurred.";
+                    _idleDescriptionText.text = result.Error;
                     return;
                 }
 
@@ -145,10 +145,10 @@ namespace OverhaulMod.UI
                 UpdateInfoList updateInfoList = result.Updates;
                 if (showBuildsAnyway || updateInfoList.HasAnyNewBuildAvailable())
                 {
-                    m_resultElements.SetActive(true);
+                    _resultElements.SetActive(true);
 
-                    if (m_content.childCount != 0)
-                        TransformUtils.DestroyAllChildren(m_content);
+                    if (_content.childCount != 0)
+                        TransformUtils.DestroyAllChildren(_content);
 
                     foreach (System.Collections.Generic.KeyValuePair<string, UpdateInfo> build in updateInfoList.Builds)
                     {
@@ -163,7 +163,7 @@ namespace OverhaulMod.UI
                 }
                 else
                 {
-                    m_idleElements.SetActive(true);
+                    _idleElements.SetActive(true);
 
                     displayUpdatesLastCheckedIdleText();
                 }
@@ -172,7 +172,7 @@ namespace OverhaulMod.UI
 
         private void instantiateBuildDisplay(string branch, UpdateInfo updateInfo)
         {
-            ModdedObject moddedObject = Instantiate(m_buildDisplay, m_content);
+            ModdedObject moddedObject = Instantiate(_buildDisplay, _content);
             moddedObject.gameObject.SetActive(true);
             moddedObject.GetObject<Text>(0).text = updateInfo.DisplayVersion?.ToString();
             moddedObject.GetObject<Text>(1).text = branch.ToUpper();

@@ -5,14 +5,14 @@ namespace OverhaulMod.Patches.Behaviours
 {
     internal class SubtitleTextFieldPatchBehaviour : GamePatchBehaviour
     {
-        private int m_initialSiblingIndex;
+        private int _initialSiblingIndex;
 
-        private Transform m_targetTransform;
+        private Transform _targetTransform;
         private Transform targetTransform
         {
             get
             {
-                if (!m_targetTransform)
+                if (!_targetTransform)
                 {
                     Transform guiRootTransform = ModCache.gameUIRoot.transform;
                     for (int i = 0; i < guiRootTransform.childCount; i++)
@@ -20,12 +20,12 @@ namespace OverhaulMod.Patches.Behaviours
                         Transform child = guiRootTransform.GetChild(i);
                         if (child.name == "SpeechSubtitles")
                         {
-                            m_targetTransform = child;
+                            _targetTransform = child;
                             break;
                         }
                     }
                 }
-                return m_targetTransform;
+                return _targetTransform;
             }
         }
 
@@ -59,7 +59,7 @@ namespace OverhaulMod.Patches.Behaviours
             Transform transform1 = targetTransform;
             if (transform && transform1)
             {
-                m_initialSiblingIndex = transform1.GetSiblingIndex();
+                _initialSiblingIndex = transform1.GetSiblingIndex();
                 transform1.SetSiblingIndex(transform.GetSiblingIndex() + 1);
             }
         }
@@ -69,7 +69,7 @@ namespace OverhaulMod.Patches.Behaviours
             Transform transform1 = targetTransform;
             if (transform1)
             {
-                transform1.SetSiblingIndex(m_initialSiblingIndex);
+                transform1.SetSiblingIndex(_initialSiblingIndex);
             }
         }
     }

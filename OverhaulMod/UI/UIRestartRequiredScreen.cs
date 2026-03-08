@@ -9,35 +9,35 @@ namespace OverhaulMod.UI
     {
         [UIElementAction(nameof(Hide))]
         [UIElement("CloseButton")]
-        private readonly Button m_exitButton;
+        private readonly Button _exitButton;
 
         [UIElementAction(nameof(OnRestartButtonClicked))]
         [UIElement("RestartButton")]
-        private readonly Button m_restartButton;
+        private readonly Button _restartButton;
 
-        private CanvasGroup m_canvasGroup;
+        private CanvasGroup _canvasGroup;
 
         public override bool hideTitleScreen => true;
 
         protected override void OnInitialized()
         {
-            m_canvasGroup = base.GetComponent<CanvasGroup>();
+            _canvasGroup = base.GetComponent<CanvasGroup>();
         }
 
         public override void Show()
         {
             base.Show();
-            m_canvasGroup.alpha = 0f;
+            _canvasGroup.alpha = 0f;
         }
 
         public override void Update()
         {
-            m_canvasGroup.alpha += Time.unscaledDeltaTime * 5f;
+            _canvasGroup.alpha += Time.unscaledDeltaTime * 5f;
         }
 
         public void SetAllowIgnoring(bool value)
         {
-            m_exitButton.gameObject.SetActive(value);
+            _exitButton.gameObject.SetActive(value);
         }
 
         public void OnRestartButtonClicked()

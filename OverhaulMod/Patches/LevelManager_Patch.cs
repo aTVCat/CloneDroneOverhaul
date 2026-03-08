@@ -26,7 +26,7 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(LevelManager.setCurrentDifficultyIndex))]
         private static bool setCurrentDifficultyIndex_Prefix(LevelManager __instance, LevelDescription levelDescription, LevelEditorLevelData levelData)
         {
-            if (levelDescription != null && levelDescription.LevelID == TitleScreenCustomizationManager.CUSTOM_LEVEL_ID)
+            if (levelDescription != null && levelDescription.LevelID == TitleScreenCustomizationManager.CUSTO_LEVEL_ID)
             {
                 __instance._currentWorkshopLevelDifficultyIndex = 0;
                 return false;

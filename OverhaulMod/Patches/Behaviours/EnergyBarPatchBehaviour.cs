@@ -11,32 +11,32 @@ namespace OverhaulMod.Patches.Behaviours
         [ModSetting(ModSettingsConstants.ENERGY_UI_REWORK, true)]
         public static bool EnablePatch;
 
-        private EnergyUI m_playerEnergyBar;
+        private EnergyUI _playerEnergyBar;
         public EnergyUI playerEnergyBar
         {
             get
             {
-                if (!m_playerEnergyBar)
+                if (!_playerEnergyBar)
                 {
-                    m_playerEnergyBar = ModCache.gameUIRoot?.EnergyUI;
+                    _playerEnergyBar = ModCache.gameUIRoot?.EnergyUI;
                 }
-                return m_playerEnergyBar;
+                return _playerEnergyBar;
             }
         }
 
-        private EnergyUI m_mountEnergyBar;
+        private EnergyUI _mountEnergyBar;
         private EnergyUI mountEnergyBar
         {
             get
             {
-                if (!m_mountEnergyBar)
+                if (!_mountEnergyBar)
                 {
                     Transform mountEnergyBarTransform = TransformUtils.FindChildRecursive(ModCache.gameUIRoot.transform, "EnergyUI_Mount");
                     if (!mountEnergyBarTransform) return null;
 
-                    m_mountEnergyBar = mountEnergyBarTransform.GetComponent<EnergyUI>();
+                    _mountEnergyBar = mountEnergyBarTransform.GetComponent<EnergyUI>();
                 }
-                return m_mountEnergyBar;
+                return _mountEnergyBar;
             }
         }
 

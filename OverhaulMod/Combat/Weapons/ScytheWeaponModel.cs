@@ -6,9 +6,9 @@ namespace OverhaulMod.Combat.Weapons
 {
     public class ScytheWeaponModel : ModWeaponModel
     {
-        private bool m_hasUpdatedShaderForNormalVariant, m_hasUpdatedShaderForFireVariant;
+        private bool _hasUpdatedShaderForNormalVariant, _hasUpdatedShaderForFireVariant;
 
-        private GameObject m_fireVfx;
+        private GameObject _fireVfx;
 
         public override float attackSpeed
         {
@@ -84,7 +84,7 @@ namespace OverhaulMod.Combat.Weapons
             particleSystem.startLifetime = 0.6f;
             ParticleSystem.ShapeModule shape = particleSystem.shape;
             shape.scale = new Vector3(140f, 8f, 1f);
-            m_fireVfx = fireParticles.gameObject;
+            _fireVfx = fireParticles.gameObject;
 
             RefreshRenderer();
         }
@@ -136,23 +136,23 @@ namespace OverhaulMod.Combat.Weapons
             MeshRenderer meshRenderer = moddedObject.GetObject<MeshRenderer>(3);
             if (meshRenderer)
             {
-                if (!m_hasUpdatedShaderForNormalVariant)
+                if (!_hasUpdatedShaderForNormalVariant)
                 {
                     meshRenderer.material.shader = Shader.Find("Standard");
-                    m_hasUpdatedShaderForNormalVariant = true;
+                    _hasUpdatedShaderForNormalVariant = true;
                 }
                 meshRenderer.enabled = !fire && IsModelActive;
             }
             MeshRenderer meshRenderer2 = moddedObject.GetObject<MeshRenderer>(4);
             if (meshRenderer2)
             {
-                if (!m_hasUpdatedShaderForFireVariant)
+                if (!_hasUpdatedShaderForFireVariant)
                 {
                     meshRenderer2.material.shader = Shader.Find("Standard");
-                    m_hasUpdatedShaderForFireVariant = true;
+                    _hasUpdatedShaderForFireVariant = true;
                 }
                 meshRenderer2.enabled = fire && IsModelActive;
-                m_fireVfx.SetActive(fire && IsModelActive);
+                _fireVfx.SetActive(fire && IsModelActive);
             }
         }
     }

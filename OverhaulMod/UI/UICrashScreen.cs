@@ -14,48 +14,48 @@ namespace OverhaulMod.UI
         public override bool closeOnEscapeButtonPress => false;
 
         [UIElement("StackTrace")]
-        private readonly Text m_stackTraceText;
+        private readonly Text _stackTraceText;
 
         [UIElementAction(nameof(OnIgnoreCrashButtonClicked))]
         [UIElement("IgnoreCrashButton")]
-        private readonly Button m_ignoreCrashButton;
+        private readonly Button _ignoreCrashButton;
 
         [UIElementAction(nameof(OnMainMenuButtonClicked))]
         [UIElement("MainMenuButton")]
-        private readonly Button m_mainMenuButton;
+        private readonly Button _mainMenuButton;
 
         [UIElementAction(nameof(OnExitGameButtonClicked))]
         [UIElement("ExitGameButton")]
-        private readonly Button m_exitGameButton;
+        private readonly Button _exitGameButton;
 
         [UIElementAction(nameof(OnSendReportButtonClicked))]
         [UIElement("SendReportButton")]
-        private readonly Button m_sendReportButton;
+        private readonly Button _sendReportButton;
 
         [UIElementAction(nameof(OnIgnoreCrashesToggleChanged))]
         [UIElement("IgnoreCrashesToggle")]
-        private readonly Toggle m_ignoreCrashesToggle;
+        private readonly Toggle _ignoreCrashesToggle;
 
         [UIElement("ExpandButton", typeof(UIElementExpandButton))]
-        private readonly UIElementExpandButton m_expandButton;
+        private readonly UIElementExpandButton _expandButton;
 
         [UIElement("ScrollRect")]
-        private readonly RectTransform m_stackTracePanel;
+        private readonly RectTransform _stackTracePanel;
 
         protected override void OnInitialized()
         {
-            UIElementExpandButton expandButton = m_expandButton;
-            expandButton.rectTransform = m_stackTracePanel;
+            UIElementExpandButton expandButton = _expandButton;
+            expandButton.rectTransform = _stackTracePanel;
             expandButton.collapsedSize = new Vector2(-50f, 175f);
             expandButton.expandedSize = new Vector2(-50f, 350f);
 
-            m_ignoreCrashesToggle.isOn = CrashManager.IgnoreCrashes;
-            m_sendReportButton.interactable = !HasSentReport;
+            _ignoreCrashesToggle.isOn = CrashManager.IgnoreCrashes;
+            _sendReportButton.interactable = !HasSentReport;
         }
 
         public void SetStackTraceText(string message)
         {
-            m_stackTraceText.text = message;
+            _stackTraceText.text = message;
         }
 
         public void OnIgnoreCrashButtonClicked()
@@ -83,8 +83,8 @@ namespace OverhaulMod.UI
         public void OnSendReportButtonClicked()
         {
             HasSentReport = true;
-            m_sendReportButton.interactable = false;
-            PostmanManager.Instance.SendCrashReport(m_stackTraceText.text, delegate
+            _sendReportButton.interactable = false;
+            PostmanManager.Instance.SendCrashReport(_stackTraceText.text, delegate
             {
                 ModUIUtils.MessagePopupOK("Report sent!", string.Empty, true);
             }, delegate (string error)

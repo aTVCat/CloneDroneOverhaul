@@ -10,25 +10,25 @@ namespace OverhaulMod.UI
     public class UIElementPersonalizationEditorDropdown : OverhaulUIBehaviour
     {
         [UIElement("Button", false)]
-        private readonly Button m_buttonPrefab;
+        private readonly Button _buttonPrefab;
 
         [UIElement("Separator", false)]
-        private readonly GameObject m_separatorPrefab;
+        private readonly GameObject _separatorPrefab;
 
-        private UIElementMouseEventsComponent m_mouseChecker;
+        private UIElementMouseEventsComponent _mouseChecker;
 
-        private List<GameObject> m_spawnedEntries;
+        private List<GameObject> _spawnedEntries;
 
         protected override void OnInitialized()
         {
-            m_mouseChecker = base.gameObject.AddComponent<UIElementMouseEventsComponent>();
-            m_spawnedEntries = new List<GameObject>();
+            _mouseChecker = base.gameObject.AddComponent<UIElementMouseEventsComponent>();
+            _spawnedEntries = new List<GameObject>();
         }
 
         public override void Update()
         {
             base.Update();
-            if (Input.GetMouseButtonDown(0) && !m_mouseChecker.isMouseOverElement)
+            if (Input.GetMouseButtonDown(0) && !_mouseChecker.isMouseOverElement)
             {
                 Hide();
             }
@@ -52,7 +52,7 @@ namespace OverhaulMod.UI
 
         public void Populate(List<OptionData> list)
         {
-            List<GameObject> entiriesList = m_spawnedEntries;
+            List<GameObject> entiriesList = _spawnedEntries;
             foreach (GameObject entry in entiriesList)
             {
                 Destroy(entry);
@@ -71,7 +71,7 @@ namespace OverhaulMod.UI
                 }
                 else if (od.IsSeparator)
                 {
-                    gameObject = Instantiate(m_separatorPrefab, base.transform);
+                    gameObject = Instantiate(_separatorPrefab, base.transform);
                 }
                 else
                 {
@@ -82,7 +82,7 @@ namespace OverhaulMod.UI
                     }
                     catch { }
 
-                    Button button = Instantiate(m_buttonPrefab, base.transform);
+                    Button button = Instantiate(_buttonPrefab, base.transform);
                     button.onClick.AddListener(od.Action);
                     ModdedObject moddedObject = button.GetComponent<ModdedObject>();
                     moddedObject.GetObject<Text>(0).text = od.text;

@@ -8,19 +8,19 @@ namespace OverhaulMod.UI
     public class UIElementWorkshopItemQuickPreview : OverhaulUIBehaviour
     {
         [UIElement("DescriptionText")]
-        public Text m_description;
+        public Text _description;
 
         [UIElement("AuthorText")]
-        public Text m_authorText;
+        public Text _authorText;
 
         [UIElement("StarsFill")]
-        public Image m_starsFill;
+        public Image _starsFill;
 
         [UIElement("Stars")]
-        public GameObject m_starsObject;
+        public GameObject _starsObject;
 
         [UIElement("NotEnoughRatingsText")]
-        public GameObject m_notEnoughRatingsTextObject;
+        public GameObject _notEnoughRatingsTextObject;
 
         public void Populate(WorkshopItem workshopItem)
         {
@@ -29,17 +29,17 @@ namespace OverhaulMod.UI
                 description = $"{description.Remove(400)}{"...".AddColor(Color.white)}";
 
             int votes = workshopItem.Votes;
-            m_notEnoughRatingsTextObject.SetActive(votes < 25);
-            m_starsObject.SetActive(!m_notEnoughRatingsTextObject.activeSelf);
+            _notEnoughRatingsTextObject.SetActive(votes < 25);
+            _starsObject.SetActive(!_notEnoughRatingsTextObject.activeSelf);
 
-            m_description.text = description;
+            _description.text = description;
 
             if (!workshopItem.Author.IsNullOrEmpty() && workshopItem.Author != "[unknown]")
-                m_authorText.text = $"{LocalizationManager.Instance.GetTranslatedString("workshop_leveldetails_author")} {workshopItem.Author.AddColor(Color.white)}";
+                _authorText.text = $"{LocalizationManager.Instance.GetTranslatedString("workshop_leveldetails_author")} {workshopItem.Author.AddColor(Color.white)}";
             else
-                m_authorText.text = $"{LocalizationManager.Instance.GetTranslatedString("workshop_leveldetails_author")} {workshopItem.AuthorID.ToString().AddColor(Color.white)}";
+                _authorText.text = $"{LocalizationManager.Instance.GetTranslatedString("workshop_leveldetails_author")} {workshopItem.AuthorID.ToString().AddColor(Color.white)}";
 
-            m_starsFill.fillAmount = Mathf.Ceil(workshopItem.Rating * 5f) / 5f;
+            _starsFill.fillAmount = Mathf.Ceil(workshopItem.Rating * 5f) / 5f;
         }
     }
 }

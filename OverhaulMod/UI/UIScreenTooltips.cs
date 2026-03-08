@@ -12,14 +12,14 @@ namespace OverhaulMod.UI
         }
 
         [UIElement("Panel")]
-        private readonly CanvasGroup m_canvasGroup;
+        private readonly CanvasGroup _canvasGroup;
 
         [UIElement("Text")]
-        private readonly Text m_text;
+        private readonly Text _text;
 
-        private float m_alpha;
+        private float _alpha;
 
-        private float m_timeLeft;
+        private float _timeLeft;
 
         public override bool refreshOnlyCursor => true;
         public override bool closeOnEscapeButtonPress => false;
@@ -40,17 +40,17 @@ namespace OverhaulMod.UI
             base.Update();
 
             float d = Time.unscaledDeltaTime;
-            m_alpha = Mathf.Lerp(m_alpha, m_timeLeft > 0f ? 1f : 0f, d * 10f);
-            m_canvasGroup.alpha = NumberUtils.EaseInOutCubic(0f, 1f, m_alpha);
+            _alpha = Mathf.Lerp(_alpha, _timeLeft > 0f ? 1f : 0f, d * 10f);
+            _canvasGroup.alpha = NumberUtils.EaseInOutCubic(0f, 1f, _alpha);
 
-            if (m_timeLeft > 0f)
-                m_timeLeft -= d;
+            if (_timeLeft > 0f)
+                _timeLeft -= d;
         }
 
         public void ShowText(string text, float duration)
         {
-            m_text.text = text;
-            m_timeLeft = duration;
+            _text.text = text;
+            _timeLeft = duration;
         }
     }
 }

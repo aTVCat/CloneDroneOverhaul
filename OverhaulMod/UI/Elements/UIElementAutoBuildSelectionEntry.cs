@@ -7,7 +7,7 @@ namespace OverhaulMod.UI
     public class UIElementAutoBuildSelectionEntry : OverhaulUIBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerUpHandler
     {
         [UIElement("ButtonBG", false)]
-        private readonly GameObject m_buttonBGObject;
+        private readonly GameObject _buttonBGObject;
 
         public AutoBuildInfo BuildInfo;
 
@@ -15,7 +15,7 @@ namespace OverhaulMod.UI
 
         public void SetBGActive(bool value)
         {
-            m_buttonBGObject.SetActive(value);
+            _buttonBGObject.SetActive(value);
         }
 
         public void OnPointerEnter(PointerEventData eventData)

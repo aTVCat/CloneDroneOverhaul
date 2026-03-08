@@ -5,13 +5,13 @@ namespace OverhaulMod.Content.Personalization
 {
     public class PersonalizationAccessoryBehaviour : MonoBehaviour
     {
-        private bool m_isBodyPartActive;
+        private bool _isBodyPartActive;
 
-        private MechBodyPart m_bodyPart;
+        private MechBodyPart _bodyPart;
 
-        private PersonalizationEditorObjectBehaviour m_itemObject;
+        private PersonalizationEditorObjectBehaviour _itemObject;
 
-        private PersonalizationAccessoryReferences m_references;
+        private PersonalizationAccessoryReferences _references;
 
         private void OnDestroy()
         {
@@ -20,71 +20,71 @@ namespace OverhaulMod.Content.Personalization
 
         private void Update()
         {
-            bool isBodyPartActive = m_bodyPart ? m_bodyPart.gameObject.activeSelf : false;
-            if (m_isBodyPartActive != isBodyPartActive)
+            bool isBodyPartActive = _bodyPart ? _bodyPart.gameObject.activeSelf : false;
+            if (_isBodyPartActive != isBodyPartActive)
             {
-                m_isBodyPartActive = isBodyPartActive;
+                _isBodyPartActive = isBodyPartActive;
                 RefreshVisibility();
             } // todo: optimize?
         }
 
         public void SetBodyPart(MechBodyPart bodyPart)
         {
-            m_bodyPart = bodyPart;
-            m_isBodyPartActive = bodyPart && bodyPart.gameObject.activeSelf;
+            _bodyPart = bodyPart;
+            _isBodyPartActive = bodyPart && bodyPart.gameObject.activeSelf;
         }
 
         public void SetItemObject(PersonalizationEditorObjectBehaviour objectBehaviour)
         {
-            m_itemObject = objectBehaviour;
+            _itemObject = objectBehaviour;
         }
 
         public void Register()
         {
-            if (!m_bodyPart)
+            if (!_bodyPart)
                 return;
 
-            PersonalizationAccessoryReferences references = m_references ? m_references : PersonalizationAccessoryReferences.AddReferencesComponent(m_bodyPart.gameObject);
+            PersonalizationAccessoryReferences references = _references ? _references : PersonalizationAccessoryReferences.AddReferencesComponent(_bodyPart.gameObject);
             references.AddAccessory(this);
         }
 
         public void Unregister()
         {
-            if (m_references)
-                m_references.RemoveAccessory(this);
+            if (_references)
+                _references.RemoveAccessory(this);
         }
 
         public void RefreshVisibility()
         {
-            if (!m_itemObject)
+            if (!_itemObject)
                 return;
 
-            MechBodyPart mechBodyPart = m_bodyPart;
+            MechBodyPart mechBodyPart = _bodyPart;
             if (!mechBodyPart)
             {
-                m_itemObject.SetChildrenActive(false);
+                _itemObject.SetChildrenActive(false);
                 return;
             }
 
-            Character owner = m_bodyPart.GetOwner();
+            Character owner = _bodyPart.GetOwner();
             if (owner)
             {
                 if (!owner.IsAlive())
                 {
-                    m_itemObject.SetChildrenActive(false);
+                    _itemObject.SetChildrenActive(false);
                     return;
                 }
                 else if (owner.IsMainPlayer())
                 {
-                    PersonalizationItemInfo itemInfo = m_itemObject.ControllerInfo?.ItemInfo;
+                    PersonalizationItemInfo itemInfo = _itemObject.ControllerInfo?.ItemInfo;
                     if (itemInfo != null && itemInfo.BodyPartName == "Head" && CameraManager.EnableFirstPersonMode && !CameraManager.Instance.isCameraControlledByCutscene && !PhotoManager.Instance.IsInPhotoMode())
                     {
-                        m_itemObject.SetChildrenActive(false);
+                        _itemObject.SetChildrenActive(false);
                         return;
                     }
                 }
             }
-            m_itemObject.SetChildrenActive(m_isBodyPartActive && mechBodyPart.GetNumDestroyedVoxels() == 0 && !mechBodyPart.HasParentConnectionBeenSevered());
+            _itemObject.SetChildrenActive(_isBodyPartActive && mechBodyPart.GetNumDestroyedVoxels() == 0 && !mechBodyPart.HasParentConnectionBeenSevered());
         }
     }
 }

@@ -8,48 +8,48 @@ namespace OverhaulMod.Engine
     public class UpgradeModeButtonController : OverhaulUIBehaviour
     {
         [UIElement("RevertUpgradesText")]
-        private readonly GameObject m_revertUpgradesTextObject;
+        private readonly GameObject _revertUpgradesTextObject;
 
         [UIElement("RevertUpgradesText")]
-        private readonly Text m_revertUpgradesText;
+        private readonly Text _revertUpgradesText;
 
         [UIElement("GetUpgradesText")]
-        private readonly GameObject m_getUpgradesTextObject;
+        private readonly GameObject _getUpgradesTextObject;
 
         [UIElement("GetUpgradesText")]
-        private readonly Text m_getUpgradesText;
+        private readonly Text _getUpgradesText;
 
-        private Button m_button;
+        private Button _button;
 
-        private Image m_graphic;
+        private Image _graphic;
 
         protected override void OnInitialized()
         {
             Button button = base.GetComponent<Button>();
-            m_button = button;
+            _button = button;
 
             Image image = base.GetComponent<Image>();
-            m_graphic = image;
+            _graphic = image;
         }
 
         public override void OnEnable()
         {
             bool shouldBeActive = !GameModeManager.IsOnTitleScreen() && !GameModeManager.IsMultiplayer() && !ModIntegrationUtils.ModdedMultiplayer.IsInModdedMultiplayer();
-            m_button.interactable = shouldBeActive;
-            m_graphic.enabled = shouldBeActive;
-            m_getUpgradesTextObject.SetActive(shouldBeActive);
-            m_revertUpgradesTextObject.SetActive(shouldBeActive);
+            _button.interactable = shouldBeActive;
+            _graphic.enabled = shouldBeActive;
+            _getUpgradesTextObject.SetActive(shouldBeActive);
+            _revertUpgradesTextObject.SetActive(shouldBeActive);
         }
 
         public void SetText(bool revert)
         {
-            m_revertUpgradesText.enabled = !revert;
-            m_getUpgradesText.enabled = revert;
+            _revertUpgradesText.enabled = !revert;
+            _getUpgradesText.enabled = revert;
         }
 
         public void SetSprite(Sprite sprite)
         {
-            m_graphic.sprite = sprite;
+            _graphic.sprite = sprite;
         }
     }
 }

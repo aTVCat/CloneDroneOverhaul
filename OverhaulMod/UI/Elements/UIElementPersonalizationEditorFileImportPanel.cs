@@ -12,48 +12,48 @@ namespace OverhaulMod.UI
 
         [UIElementAction(nameof(OnHelpButtonClicked))]
         [UIElement("HelpButton")]
-        private readonly Button m_helpButton;
+        private readonly Button _helpButton;
 
         [UIElementAction(nameof(OnImportVoxButtonClicked))]
         [UIElement("ImportVoxButton")]
-        private readonly Button m_importVoxButton;
+        private readonly Button _importVoxButton;
 
         [UIElementAction(nameof(OnImportCvmButtonClicked))]
         [UIElement("ImportCvmButton")]
-        private readonly Button m_importCvmButton;
+        private readonly Button _importCvmButton;
 
         [UIElementAction(nameof(OnMagicaVoxelTipButtonClicked))]
         [UIElement("MagicaVoxelTipButton")]
-        private readonly Button m_magicaVoxelTipButton;
+        private readonly Button _magicaVoxelTipButton;
 
         [UIElement("FileDisplayPrefab", false)]
-        private readonly ModdedObject m_fileDisplayPrefab;
+        private readonly ModdedObject _fileDisplayPrefab;
 
         [UIElement("Content")]
-        private readonly Transform m_fileDisplayContainer;
+        private readonly Transform _fileDisplayContainer;
 
-        private PersonalizationItemInfo m_itemInfo;
+        private PersonalizationItemInfo _itemInfo;
         public PersonalizationItemInfo itemInfo
         {
             get
             {
-                return m_itemInfo;
+                return _itemInfo;
             }
             set
             {
-                m_itemInfo = value;
+                _itemInfo = value;
                 Populate();
             }
         }
 
         public void Populate()
         {
-            if (m_fileDisplayContainer.childCount != 0)
-                TransformUtils.DestroyAllChildren(m_fileDisplayContainer);
+            if (_fileDisplayContainer.childCount != 0)
+                TransformUtils.DestroyAllChildren(_fileDisplayContainer);
 
             foreach (string file in itemInfo.ImportedFiles)
             {
-                ModdedObject moddedObject = Instantiate(m_fileDisplayPrefab, m_fileDisplayContainer);
+                ModdedObject moddedObject = Instantiate(_fileDisplayPrefab, _fileDisplayContainer);
                 moddedObject.gameObject.SetActive(true);
                 moddedObject.GetObject<Text>(1).text = file;
                 moddedObject.GetObject<Button>(2).onClick.AddListener(delegate

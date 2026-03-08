@@ -7,76 +7,76 @@ namespace OverhaulMod.Engine
 {
     public class CameraModeController : MonoBehaviour
     {
-        private CameraManager m_cameraManager;
+        private CameraManager _cameraManager;
 
-        private FirstPersonMover m_owner;
+        private FirstPersonMover _owner;
 
-        private PlayerCameraMover m_cameraMover;
+        private PlayerCameraMover _cameraMover;
 
-        private Animator m_cameraAnimator;
+        private Animator _cameraAnimator;
 
-        private Transform m_targetTransform;
+        private Transform _targetTransform;
 
-        private Vector3 m_offset;
+        private Vector3 _offset;
 
-        private float m_lerp;
+        private float _lerp;
 
         public float ForwardVectorMultiplier = 0.25f;
 
         public Vector3 ShakePositionOffset, ShakeRotationOffset;
 
-        private List<Renderer> m_headRenderers;
+        private List<Renderer> _headRenderers;
         public List<Renderer> headRenderers
         {
             get
             {
-                if (m_headRenderers == null)
-                    m_headRenderers = m_owner.GetRenderersOfBodyPart("Head");
+                if (_headRenderers == null)
+                    _headRenderers = _owner.GetRenderersOfBodyPart("Head");
 
-                return m_headRenderers;
+                return _headRenderers;
             }
         }
 
-        private List<Renderer> m_jawRenderers;
+        private List<Renderer> _jawRenderers;
         public List<Renderer> jawRenderers
         {
             get
             {
-                if (m_jawRenderers == null)
-                    m_jawRenderers = m_owner.GetRenderersOfBodyPart("Jaw");
+                if (_jawRenderers == null)
+                    _jawRenderers = _owner.GetRenderersOfBodyPart("Jaw");
 
-                return m_jawRenderers;
+                return _jawRenderers;
             }
         }
 
-        private List<Renderer> m_shieldRenderers;
+        private List<Renderer> _shieldRenderers;
         public List<Renderer> shieldRenderers
         {
             get
             {
-                if (m_shieldRenderers == null)
-                    m_shieldRenderers = m_owner.GetRenderersOfBodyPart("Shield");
+                if (_shieldRenderers == null)
+                    _shieldRenderers = _owner.GetRenderersOfBodyPart("Shield");
 
-                return m_shieldRenderers;
+                return _shieldRenderers;
             }
         }
 
-        private List<Renderer> m_torsoRenderers;
+        private List<Renderer> _torsoRenderers;
         public List<Renderer> torsoRenderers
         {
             get
             {
-                if (m_torsoRenderers == null)
-                    m_torsoRenderers = m_owner.GetRenderersOfBodyPart("Torso");
+                if (_torsoRenderers == null)
+                    _torsoRenderers = _owner.GetRenderersOfBodyPart("Torso");
 
-                return m_torsoRenderers;
+                return _torsoRenderers;
             }
         }
 
         private void Start()
         {
-            m_lerp = CameraManager.EnableFirstPersonMode ? 0f : 1f;
-            m_cameraManager = CameraManager.Instance;
+            _lerp = CameraManager.EnableFirstPersonMode ? 0f : 1f;
+            _cameraManager = CameraManager.Instance;
 
             GlobalEventManager.Instance.AddEventListener(GlobalEvents.ConsciousnessTransferStarted, ForceEnableHeadRenderers);
             GlobalEventManager.Instance.AddEventListener(GlobalEvents.ConsciousnessTransferComplete, ForceEnableHeadRenderers);
@@ -96,38 +96,38 @@ namespace OverhaulMod.Engine
             int frameCount = Time.frameCount;
             bool refresh = frameCount % 5 == 0;
 
-            FirstPersonMover firstPersonMover = m_owner;
+            FirstPersonMover firstPersonMover = _owner;
             if (IsMindTransferInProgress() || !firstPersonMover || !firstPersonMover.IsAlive())
                 return;
 
-            m_lerp = Mathf.Clamp01(m_lerp + ((CameraManager.EnableFirstPersonMode && !m_cameraManager.enableThirdPerson && !MultiplayerSpectateManager.Instance.IsInMultiplayerSpectatorMode() && (!GameModeManager.UsesMultiplayerSpawnPoints() || firstPersonMover.HasConstructionFinished()) && !firstPersonMover._isGrabbedForUpgrade ? -Time.unscaledDeltaTime : Time.unscaledDeltaTime) * 3f));
+            _lerp = Mathf.Clamp01(_lerp + ((CameraManager.EnableFirstPersonMode && !_cameraManager.enableThirdPerson && !MultiplayerSpectateManager.Instance.IsInMultiplayerSpectatorMode() && (!GameModeManager.UsesMultiplayerSpawnPoints() || firstPersonMover.HasConstructionFinished()) && !firstPersonMover._isGrabbedForUpgrade ? -Time.unscaledDeltaTime : Time.unscaledDeltaTime) * 3f));
 
             if (refresh)
-                RefreshHeadVisibility(m_lerp);
+                RefreshHeadVisibility(_lerp);
 
-            Animator animator = m_cameraAnimator;
-            if (!m_targetTransform || !animator || !animator.enabled)
+            Animator animator = _cameraAnimator;
+            if (!_targetTransform || !animator || !animator.enabled)
                 return;
 
-            PlayerCameraMover playerCameraMover = m_cameraMover;
+            PlayerCameraMover playerCameraMover = _cameraMover;
             if (playerCameraMover)
             {
-                if (m_lerp > 0f && m_lerp < 1f)
+                if (_lerp > 0f && _lerp < 1f)
                     playerCameraMover._hasCollidedWithEnvironment = true;
-                else if (m_lerp == 0f)
+                else if (_lerp == 0f)
                     playerCameraMover._hasCollidedWithEnvironment = false;
 
                 playerCameraMover.LateUpdate();
             }
 
-            Vector3 forwardVector = m_targetTransform.forward * (firstPersonMover._isOnFloorFromKick ? 0f : ForwardVectorMultiplier);
-            Vector3 upVector = m_targetTransform.forward * (firstPersonMover._isOnFloorFromKick ? 0.35f : 0f);
+            Vector3 forwardVector = _targetTransform.forward * (firstPersonMover._isOnFloorFromKick ? 0f : ForwardVectorMultiplier);
+            Vector3 upVector = _targetTransform.forward * (firstPersonMover._isOnFloorFromKick ? 0.35f : 0f);
 
             Transform transform = base.transform;
             Vector3 difference = transform.position;
-            transform.position = ModUnityUtils.LerpVector3(m_targetTransform.position + m_offset + forwardVector + upVector, difference, NumberUtils.EaseInOutCubic(0f, 1f, m_lerp)) + ShakePositionOffset;
+            transform.position = ModUnityUtils.LerpVector3(_targetTransform.position + _offset + forwardVector + upVector, difference, NumberUtils.EaseInOutCubic(0f, 1f, _lerp)) + ShakePositionOffset;
 
-            if (m_lerp <= 0.99f)
+            if (_lerp <= 0.99f)
             {
                 Vector3 localPosition = transform.localPosition;
                 localPosition.x = ShakePositionOffset.x;
@@ -137,10 +137,10 @@ namespace OverhaulMod.Engine
 
         public void Initialize(CameraManager cameraManager, FirstPersonMover owner, PlayerCameraMover playerCameraMover, Animator animator)
         {
-            m_owner = owner;
-            m_cameraMover = playerCameraMover;
-            m_cameraAnimator = animator;
-            m_cameraManager = cameraManager;
+            _owner = owner;
+            _cameraMover = playerCameraMover;
+            _cameraAnimator = animator;
+            _cameraManager = cameraManager;
             RefreshOffset();
         }
 
@@ -149,12 +149,12 @@ namespace OverhaulMod.Engine
             setRenderersActive(headRenderers, value);
             setRenderersActive(jawRenderers, value);
             setRenderersActive(shieldRenderers, value);
-            setRenderersActive(torsoRenderers, (m_owner ? m_owner.IsMindSpaceCharacter : false) || value || m_owner._isOnFloorFromKick);
+            setRenderersActive(torsoRenderers, (_owner ? _owner.IsMindSpaceCharacter : false) || value || _owner._isOnFloorFromKick);
         }
 
         public bool IsMindTransferInProgress()
         {
-            PlayerCameraMover mover = m_cameraMover;
+            PlayerCameraMover mover = _cameraMover;
             return mover && mover._isConsciousnessTransferInProgress;
         }
 
@@ -165,20 +165,20 @@ namespace OverhaulMod.Engine
 
         public void RefreshOffset()
         {
-            if (!m_targetTransform)
+            if (!_targetTransform)
             {
-                m_targetTransform = getTargetTransform();
+                _targetTransform = getTargetTransform();
             }
 
-            if (!m_targetTransform || (m_owner && m_owner.IsMindSpaceCharacter))
+            if (!_targetTransform || (_owner && _owner.IsMindSpaceCharacter))
             {
-                m_offset = Vector3.up * 0.575f;
+                _offset = Vector3.up * 0.575f;
                 return;
             }
 
-            Bounds bounds = new Bounds(m_targetTransform.localPosition, Vector3.zero);
+            Bounds bounds = new Bounds(_targetTransform.localPosition, Vector3.zero);
             int index = 0;
-            foreach (MeshFilter meshFilter in m_targetTransform.GetComponentsInChildren<MeshFilter>())
+            foreach (MeshFilter meshFilter in _targetTransform.GetComponentsInChildren<MeshFilter>())
             {
                 Mesh mesh = meshFilter.mesh;
                 if (mesh)
@@ -191,13 +191,13 @@ namespace OverhaulMod.Engine
                 index++;
             }
 
-            m_offset = new Vector3(0f, bounds.center.y + (bounds.extents.y * 0.2f), 0f);
+            _offset = new Vector3(0f, bounds.center.y + (bounds.extents.y * 0.2f), 0f);
         }
 
         public void RefreshHeadVisibility(float lerpValue)
         {
-            Animator animator = m_cameraAnimator;
-            SetHeadRenderersActive(lerpValue > 0.1f || !animator || !animator.enabled || !m_owner.IsAlive() || PhotoManager.Instance.IsInPhotoMode());
+            Animator animator = _cameraAnimator;
+            SetHeadRenderersActive(lerpValue > 0.1f || !animator || !animator.enabled || !_owner.IsAlive() || PhotoManager.Instance.IsInPhotoMode());
         }
 
         private void setRenderersActive(List<Renderer> list, bool value)
@@ -217,7 +217,7 @@ namespace OverhaulMod.Engine
 
         private Transform getTargetTransform()
         {
-            FirstPersonMover firstPersonMover = m_owner;
+            FirstPersonMover firstPersonMover = _owner;
 
             Transform targetTransform = null;
             BaseBodyPart headPart = firstPersonMover.IsMindSpaceCharacter ? (BaseBodyPart)firstPersonMover.GetBodyPartParent("Head").GetComponentInChildren<MindSpaceBodyPart>() : firstPersonMover.GetBodyPart(MechBodyPartType.Head);

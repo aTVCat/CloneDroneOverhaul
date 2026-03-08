@@ -22,123 +22,123 @@ namespace OverhaulMod.UI
 
         [UIElementAction(nameof(Hide))]
         [UIElement("CloseButton")]
-        private readonly Button m_closeButton;
+        private readonly Button _closeButton;
 
         [UIElement("Panel")]
-        private readonly RectTransform m_panel;
+        private readonly RectTransform _panel;
 
         [UIElement("Panel", typeof(UIElementMouseEventsComponent))]
-        private readonly UIElementMouseEventsComponent m_panelMouseEvents;
+        private readonly UIElementMouseEventsComponent _panelMouseEvents;
 
         [TabManager(typeof(UIElementTab), null, null, null, nameof(OnCategoryTabSelected))]
-        private readonly TabManager m_categoryTabs;
+        private readonly TabManager _categoryTabs;
         [UIElement("WeaponSkinsTab")]
-        private readonly ModdedObject m_weaponSkinsTab;
+        private readonly ModdedObject _weaponSkinsTab;
         [UIElement("AccessoriesTab")]
-        private readonly ModdedObject m_accessoriesTab;
+        private readonly ModdedObject _accessoriesTab;
         [UIElement("PetsTab")]
-        private readonly ModdedObject m_petsTab;
+        private readonly ModdedObject _petsTab;
 
-        [TabManager(typeof(UIElementTabWithText), nameof(m_subCategoryTabPrefab), nameof(m_subCategoryTabsContainer), nameof(OnSubcategoryTabCreated), nameof(OnSubcategoryTabSelected))]
-        private readonly TabManager m_subcategoryTabs;
+        [TabManager(typeof(UIElementTabWithText), nameof(_subCategoryTabPrefab), nameof(_subCategoryTabsContainer), nameof(OnSubcategoryTabCreated), nameof(OnSubcategoryTabSelected))]
+        private readonly TabManager _subcategoryTabs;
         [UIElement("SubcategoryTabPrefab", false)]
-        private readonly ModdedObject m_subCategoryTabPrefab;
+        private readonly ModdedObject _subCategoryTabPrefab;
         [UIElement("SubcategoryTabs")]
-        private readonly Transform m_subCategoryTabsContainer;
+        private readonly Transform _subCategoryTabsContainer;
 
         [UIElement("MessageDisplay", false)]
-        private readonly ModdedObject m_messageDisplay;
+        private readonly ModdedObject _messageDisplay;
         [UIElement("UtilsPanel", false)]
-        private readonly ModdedObject m_utilsPanel;
+        private readonly ModdedObject _utilsPanel;
         [UIElement("BottomPanel", false)]
-        private readonly ModdedObject m_bottomPanel;
+        private readonly ModdedObject _bottomPanel;
         [UIElement("Content")]
-        private readonly Transform m_container;
+        private readonly Transform _container;
         [UIElement("Content")]
-        private readonly CanvasGroup m_containerCanvasGroup;
+        private readonly CanvasGroup _containerCanvasGroup;
 
         [UIElement("NotImplementedText", false)]
-        private readonly GameObject m_notImplementedTextObject;
+        private readonly GameObject _notImplementedTextObject;
 
         [UIElementAction(nameof(OnAllowEnemiesUseWeaponSkinsToggled))]
         [UIElement("EnemiesUseSkinsToggle")]
-        private readonly Toggle m_allowEnemiesUseWeaponSkinsToggle;
+        private readonly Toggle _allowEnemiesUseWeaponSkinsToggle;
 
         [UIElementAction(nameof(OnClearButtonClicked))]
         [UIElement("ClearButton")]
-        private readonly Button m_clearButton;
+        private readonly Button _clearButton;
 
         [UIElement("ScrollRect")]
-        private readonly RectTransform m_scrollRectTransform;
+        private readonly RectTransform _scrollRectTransform;
         [UIElement("ScrollRect")]
-        private readonly Image m_scrollRectImage;
+        private readonly Image _scrollRectImage;
         [UIElement("Viewport")]
-        private readonly RectTransform m_viewportTransform;
+        private readonly RectTransform _viewportTransform;
         [UIElement("ScrollbarVertical")]
-        private readonly CanvasGroup m_scrollbarVerticalCanvasGroup;
+        private readonly CanvasGroup _scrollbarVerticalCanvasGroup;
 
         [UIElement("DescriptionBox", typeof(UIElementPersonalizationItemDescriptionBox), false)]
-        private readonly UIElementPersonalizationItemDescriptionBox m_descriptionBox;
+        private readonly UIElementPersonalizationItemDescriptionBox _descriptionBox;
 
         [UIElementAction(nameof(OnSearchBoxChanged))]
         [UIElement("SearchBox")]
-        private readonly InputField m_searchBox;
+        private readonly InputField _searchBox;
 
         [UIElement("LoadingIndicator")]
-        private readonly CanvasGroup m_loadingIndicator;
+        private readonly CanvasGroup _loadingIndicator;
 
         [UIElement("CameraRotationTutorial")]
-        private readonly GameObject m_cameraRotationTutorial;
+        private readonly GameObject _cameraRotationTutorial;
 
         [UIElement("ItemsLine", false)]
-        private readonly Transform m_cardsLine;
+        private readonly Transform _cardsLine;
 
         [UIElement("ItemCardDisplay", false)]
-        private readonly ModdedObject m_itemCardDisplay;
+        private readonly ModdedObject _itemCardDisplay;
 
-        private RectTransform m_rectTransform;
+        private RectTransform _rectTransform;
 
-        private bool m_allowUICallbacks;
+        private bool _allowUICallbacks;
 
-        private PersonalizationCategory m_selectedCategory;
+        private PersonalizationCategory _selectedCategory;
 
-        private string m_selectedSubcategory;
+        private string _selectedSubcategory;
 
-        private Dictionary<string, UIElementPersonalizationItemDisplay> m_cachedDisplays;
+        private Dictionary<string, UIElementPersonalizationItemDisplay> _cachedDisplays;
 
-        private bool m_isOpen, m_isPopulating, m_showContents, m_hasEverShown;
+        private bool _isOpen, _isPopulating, _showContents, _hasEverShown;
 
-        private float m_transitionProgress, m_prevTransitionProgress;
+        private float _transitionProgress, _prevTransitionProgress;
 
-        private string m_prevTab;
+        private string _prevTab;
 
-        private Button m_defaultSkinButton;
+        private Button _defaultSkinButton;
 
-        private Transform m_cameraHolderTransform;
+        private Transform _cameraHolderTransform;
 
-        private float m_cameraHolderRotationY;
+        private float _cameraHolderRotationY;
 
         public override bool enableCursor => true;
 
         protected override void OnInitialized()
         {
-            m_loadingIndicator.gameObject.SetActive(true);
+            _loadingIndicator.gameObject.SetActive(true);
 
-            m_cachedDisplays = new Dictionary<string, UIElementPersonalizationItemDisplay>();
-            m_rectTransform = base.GetComponent<RectTransform>();
+            _cachedDisplays = new Dictionary<string, UIElementPersonalizationItemDisplay>();
+            _rectTransform = base.GetComponent<RectTransform>();
 
-            m_categoryTabs.AddTab(m_weaponSkinsTab.gameObject, "weapon skins");
-            m_categoryTabs.AddTab(m_accessoriesTab.gameObject, "accessories");
-            m_categoryTabs.AddTab(m_petsTab.gameObject, "pets");
-            m_categoryTabs.SelectTab("weapon skins");
-            m_prevTab = "weapon skins";
+            _categoryTabs.AddTab(_weaponSkinsTab.gameObject, "weapon skins");
+            _categoryTabs.AddTab(_accessoriesTab.gameObject, "accessories");
+            _categoryTabs.AddTab(_petsTab.gameObject, "pets");
+            _categoryTabs.SelectTab("weapon skins");
+            _prevTab = "weapon skins";
 
-            m_descriptionBox.SetBrowserUI(this);
-            m_allowEnemiesUseWeaponSkinsToggle.isOn = PersonalizationUserInfo.AllowEnemiesUseSkins;
+            _descriptionBox.SetBrowserUI(this);
+            _allowEnemiesUseWeaponSkinsToggle.isOn = PersonalizationUserInfo.AllowEnemiesUseSkins;
 
             GlobalEventManager.Instance.AddEventListener(PersonalizationManager.CUSTOMIZATION_ASSETS_FILE_DOWNLOADED_EVENT, onCustomizationAssetsFileDownloaded);
             GlobalEventManager.Instance.AddEventListener(GlobalEvents.PlayerDied, tryHide);
-            m_allowUICallbacks = true;
+            _allowUICallbacks = true;
         }
 
         public override void OnDestroy()
@@ -153,17 +153,17 @@ namespace OverhaulMod.UI
         {
             base.Show();
             IsPreviewing = true;
-            m_isOpen = true;
-            m_showContents = !m_hasEverShown;
-            m_transitionProgress = 0f;
-            m_categoryTabs.interactable = true;
+            _isOpen = true;
+            _showContents = !_hasEverShown;
+            _transitionProgress = 0f;
+            _categoryTabs.interactable = true;
 
-            if (m_categoryTabs.selectedTab && m_prevTab != m_categoryTabs.selectedTab.tabId)
+            if (_categoryTabs.selectedTab && _prevTab != _categoryTabs.selectedTab.tabId)
             {
-                if (m_container.childCount != 0)
-                    TransformUtils.DestroyAllChildren(m_container);
+                if (_container.childCount != 0)
+                    TransformUtils.DestroyAllChildren(_container);
 
-                m_categoryTabs.SelectTab(m_prevTab);
+                _categoryTabs.SelectTab(_prevTab);
             }
 
             _ = base.StartCoroutine(waitThenRefreshCameraCoroutine());
@@ -172,21 +172,21 @@ namespace OverhaulMod.UI
             if (UIVersionLabel.instance)
                 UIVersionLabel.instance.offsetX = 325f;
 
-            m_cachedDisplays.Clear();
-            if (m_container.childCount != 0)
-                TransformUtils.DestroyAllChildren(m_container);
+            _cachedDisplays.Clear();
+            if (_container.childCount != 0)
+                TransformUtils.DestroyAllChildren(_container);
 
-            if (m_selectedCategory == PersonalizationCategory.WeaponSkins)
+            if (_selectedCategory == PersonalizationCategory.WeaponSkins)
                 selectSubcategoryOfCurrentWeapon();
 
-            m_hasEverShown = true;
+            _hasEverShown = true;
             Populate();
         }
 
         public override void Hide()
         {
             base.Hide();
-            m_isOpen = false;
+            _isOpen = false;
             setCameraZoomedIn(false);
             UIVersionLabel.instance.offsetX = 0f;
 
@@ -200,31 +200,31 @@ namespace OverhaulMod.UI
         {
             base.Update();
 
-            m_transitionProgress = Mathf.Clamp01(m_transitionProgress + (Time.unscaledDeltaTime * 5f * (m_showContents ? 1f : -1f)));
-            if (m_transitionProgress != m_prevTransitionProgress)
+            _transitionProgress = Mathf.Clamp01(_transitionProgress + (Time.unscaledDeltaTime * 5f * (_showContents ? 1f : -1f)));
+            if (_transitionProgress != _prevTransitionProgress)
             {
-                m_prevTransitionProgress = m_transitionProgress;
-                float progress = NumberUtils.EaseInOutQuad(0f, 1f, m_transitionProgress);
+                _prevTransitionProgress = _transitionProgress;
+                float progress = NumberUtils.EaseInOutQuad(0f, 1f, _transitionProgress);
 
-                float a = m_containerCanvasGroup.alpha;
+                float a = _containerCanvasGroup.alpha;
                 a = progress;
-                m_containerCanvasGroup.alpha = a;
+                _containerCanvasGroup.alpha = a;
 
-                m_scrollbarVerticalCanvasGroup.alpha = progress;
-                m_loadingIndicator.alpha = 1f - progress;
+                _scrollbarVerticalCanvasGroup.alpha = progress;
+                _loadingIndicator.alpha = 1f - progress;
 
-                Color color2 = m_scrollRectImage.color;
+                Color color2 = _scrollRectImage.color;
                 color2.r = Mathf.Lerp(0.05f, 0.15f, progress);
                 color2.g = Mathf.Lerp(0.05f, 0.15f, progress);
                 color2.b = Mathf.Lerp(0.05f, 0.15f, progress);
-                m_scrollRectImage.color = color2;
+                _scrollRectImage.color = color2;
 
-                Vector2 offsetMax = m_viewportTransform.offsetMax;
+                Vector2 offsetMax = _viewportTransform.offsetMax;
                 offsetMax.y = -50f * (1f - progress);
-                m_viewportTransform.offsetMax = offsetMax;
+                _viewportTransform.offsetMax = offsetMax;
             }
 
-            Transform holder = m_cameraHolderTransform;
+            Transform holder = _cameraHolderTransform;
             if (holder)
             {
                 bool mouseButtonDown = Input.GetMouseButton(1);
@@ -234,14 +234,14 @@ namespace OverhaulMod.UI
                 }
 
                 float d2 = Time.deltaTime * 15f;
-                m_cameraHolderRotationY = Mathf.Lerp(m_cameraHolderRotationY, mouseButtonDown ? Input.GetAxis("Mouse X") * 1.25f : 0f, d2);
+                _cameraHolderRotationY = Mathf.Lerp(_cameraHolderRotationY, mouseButtonDown ? Input.GetAxis("Mouse X") * 1.25f : 0f, d2);
 
                 Vector3 currentEulerAngles = holder.localEulerAngles;
-                currentEulerAngles.y += m_cameraHolderRotationY;
+                currentEulerAngles.y += _cameraHolderRotationY;
                 holder.localEulerAngles = currentEulerAngles;
             }
 
-            m_cameraRotationTutorial.SetActive(!HasEverRotatedTheCamera);
+            _cameraRotationTutorial.SetActive(!HasEverRotatedTheCamera);
         }
 
         private void LateUpdate()
@@ -254,19 +254,19 @@ namespace OverhaulMod.UI
             base.OnDisable();
 
             IsPreviewing = false;
-            m_isPopulating = false;
+            _isPopulating = false;
         }
 
-        public bool IsMouseOverPanel() => m_panelMouseEvents.isMouseOverElement;
+        public bool IsMouseOverPanel() => _panelMouseEvents.isMouseOverElement;
 
         public void ShowDescriptionBox(PersonalizationItemInfo itemInfo, RectTransform rectTransform)
         {
-            m_descriptionBox.ShowForItem(itemInfo, rectTransform);
+            _descriptionBox.ShowForItem(itemInfo, rectTransform);
         }
 
         public void MakeDefaultSkinButtonInteractable()
         {
-            Button button = m_defaultSkinButton;
+            Button button = _defaultSkinButton;
             if (button) button.interactable = true;
         }
 
@@ -283,11 +283,11 @@ namespace OverhaulMod.UI
 
         public void OnCategoryTabSelected(UIElementTab elementTab)
         {
-            UIElementTab oldTab = m_categoryTabs.prevSelectedTab;
-            UIElementTab newTab = m_categoryTabs.selectedTab;
+            UIElementTab oldTab = _categoryTabs.prevSelectedTab;
+            UIElementTab newTab = _categoryTabs.selectedTab;
             if (oldTab)
             {
-                m_prevTab = oldTab.tabId;
+                _prevTab = oldTab.tabId;
 
                 RectTransform rt = oldTab.transform as RectTransform;
                 Vector2 vector = rt.sizeDelta;
@@ -302,34 +302,34 @@ namespace OverhaulMod.UI
                 rt.sizeDelta = vector;
             }
 
-            m_subcategoryTabs.Clear();
+            _subcategoryTabs.Clear();
             if (newTab.tabId == "weapon skins")
             {
-                m_selectedCategory = PersonalizationCategory.WeaponSkins;
-                m_subcategoryTabs.AddTab("Sword");
-                m_subcategoryTabs.AddTab("Bow");
-                m_subcategoryTabs.AddTab("Hammer");
-                m_subcategoryTabs.AddTab("Spear");
+                _selectedCategory = PersonalizationCategory.WeaponSkins;
+                _subcategoryTabs.AddTab("Sword");
+                _subcategoryTabs.AddTab("Bow");
+                _subcategoryTabs.AddTab("Hammer");
+                _subcategoryTabs.AddTab("Spear");
 
                 if (ModFeatures.IsEnabled(ModFeatures.FeatureType.ShieldSkins))
-                    m_subcategoryTabs.AddTab("Shield");
+                    _subcategoryTabs.AddTab("Shield");
 
                 if (BoltNetwork.IsServer)
-                    m_subcategoryTabs.AddTab(ModWeaponsManager.SCYTHE_TYPE.ToString());
+                    _subcategoryTabs.AddTab(ModWeaponsManager.SCYTHE_TYPE.ToString());
 
                 selectSubcategoryOfCurrentWeapon();
             }
             else if (newTab.tabId == "accessories")
             {
-                m_selectedCategory = PersonalizationCategory.Accessories;
+                _selectedCategory = PersonalizationCategory.Accessories;
             }
             else if (newTab.tabId == "pets")
             {
-                m_selectedCategory = PersonalizationCategory.Pets;
+                _selectedCategory = PersonalizationCategory.Pets;
             }
             else
             {
-                m_selectedCategory = PersonalizationCategory.None;
+                _selectedCategory = PersonalizationCategory.None;
             }
 
             Populate();
@@ -337,7 +337,7 @@ namespace OverhaulMod.UI
 
         public void OnSubcategoryTabSelected(UIElementTab elementTab)
         {
-            m_selectedSubcategory = elementTab.tabId;
+            _selectedSubcategory = elementTab.tabId;
             Populate();
         }
 
@@ -349,27 +349,27 @@ namespace OverhaulMod.UI
 
         public void Populate()
         {
-            if (m_isPopulating || !base.enabled || !base.gameObject.activeInHierarchy)
+            if (_isPopulating || !base.enabled || !base.gameObject.activeInHierarchy)
                 return;
 
-            m_isPopulating = true;
+            _isPopulating = true;
             _ = base.StartCoroutine(populateCoroutine());
         }
 
         private IEnumerator populateCoroutine()
         {
-            m_showContents = false;
-            m_categoryTabs.interactable = false;
-            m_subcategoryTabs.interactable = false;
-            m_notImplementedTextObject.SetActive(false);
+            _showContents = false;
+            _categoryTabs.interactable = false;
+            _subcategoryTabs.interactable = false;
+            _notImplementedTextObject.SetActive(false);
 
             refreshScrollRectSize();
 
             float timeToWait = Time.unscaledTime + 0.25f;
             while (timeToWait > Time.unscaledTime) yield return null;
 
-            m_cachedDisplays.Clear();
-            if (m_container.childCount != 0) TransformUtils.DestroyAllChildren(m_container);
+            _cachedDisplays.Clear();
+            if (_container.childCount != 0) TransformUtils.DestroyAllChildren(_container);
 
             List<PersonalizationItemInfo> items = null;
             bool populatePage = false;
@@ -377,13 +377,13 @@ namespace OverhaulMod.UI
 
             WeaponType weaponType = getWeaponOfSubcategory();
 
-            switch (m_selectedCategory)
+            switch (_selectedCategory)
             {
                 case PersonalizationCategory.WeaponSkins:
                     equipWeapon(weaponType);
                     if (weaponType == WeaponType.Bow && ModSpecialUtils.IsModEnabled("ee32ba1b-8c92-4f50-bdf4-400a14da829e"))
                     {
-                        ModdedObject messageDisplay = Instantiate(m_messageDisplay, m_container);
+                        ModdedObject messageDisplay = Instantiate(_messageDisplay, _container);
                         messageDisplay.gameObject.SetActive(true);
                         messageDisplay.GetObject<Text>(0).text = LocalizationManager.Instance.GetTranslatedString("bow_skins_not_supported_glock18");
                         break;
@@ -393,12 +393,12 @@ namespace OverhaulMod.UI
                     break;
                 case PersonalizationCategory.Accessories:
                     populatePage = ModFeatures.IsEnabled(ModFeatures.FeatureType.Accessories);
-                    m_notImplementedTextObject.SetActive(!populatePage);
+                    _notImplementedTextObject.SetActive(!populatePage);
                     if(populatePage) items = PersonalizationManager.Instance.itemList.GetItems(PersonalizationCategory.Accessories, PersonalizationItemsSortType.Alphabet);
                     break;
                 case PersonalizationCategory.Pets:
                     populatePage = ModFeatures.IsEnabled(ModFeatures.FeatureType.Pets);
-                    m_notImplementedTextObject.SetActive(!populatePage);
+                    _notImplementedTextObject.SetActive(!populatePage);
                     if (populatePage) items = PersonalizationManager.Instance.itemList.GetItems(PersonalizationCategory.Pets, PersonalizationItemsSortType.Alphabet);
                     break;
             }
@@ -406,7 +406,7 @@ namespace OverhaulMod.UI
             if (populatePage)
             {
                 // spawn utils panel
-                ModdedObject utilsPanel = Instantiate(m_utilsPanel, m_container);
+                ModdedObject utilsPanel = Instantiate(_utilsPanel, _container);
                 utilsPanel.gameObject.SetActive(true);
                 Button defaultSkinButton = utilsPanel.GetObject<Button>(0);
                 defaultSkinButton.onClick.AddListener(delegate
@@ -414,10 +414,10 @@ namespace OverhaulMod.UI
                     defaultSkinButton.interactable = false;
                     PersonalizationUserInfo.SetWeaponSkin(weaponType, null);
                     PersonalizationController.DestroyWeaponSkinOnMainPlayer(weaponType);
-                    GlobalEventManager.Instance.Dispatch(PersonalizationManager.ITEM_EQUIPPED_OR_UNEQUIPPED_EVENT);
+                    GlobalEventManager.Instance.Dispatch(PersonalizationManager.ITE_EQUIPPED_OR_UNEQUIPPED_EVENT);
                 });
                 defaultSkinButton.interactable = !PersonalizationUserInfo.GetWeaponSkin(weaponType).IsNullOrEmpty();
-                m_defaultSkinButton = defaultSkinButton;
+                _defaultSkinButton = defaultSkinButton;
 
                 utilsPanel.GetObject<Button>(1).onClick.AddListener(OnUpdateButtonClicked);
 
@@ -439,7 +439,7 @@ namespace OverhaulMod.UI
 
                     if (spawnedCards % 3 == 0)
                     {
-                        lastCardsLine = Instantiate(m_cardsLine, m_container);
+                        lastCardsLine = Instantiate(_cardsLine, _container);
                         lastCardsLine.gameObject.SetActive(true);
                     }
                     instantiateItemEntryDisplay(item, lastCardsLine);
@@ -447,7 +447,7 @@ namespace OverhaulMod.UI
                 }
 
                 // additional panels
-                ModdedObject bottomPanel = Instantiate(m_bottomPanel, m_container);
+                ModdedObject bottomPanel = Instantiate(_bottomPanel, _container);
                 bottomPanel.gameObject.SetActive(true);
                 Button editorButton = bottomPanel.GetObject<Button>(0);
                 editorButton.onClick.AddListener(delegate
@@ -459,29 +459,29 @@ namespace OverhaulMod.UI
                     });
                 });
 
-                ModdedObject messageDisplay1 = Instantiate(m_messageDisplay, m_container);
+                ModdedObject messageDisplay1 = Instantiate(_messageDisplay, _container);
                 messageDisplay1.gameObject.SetActive(true);
                 messageDisplay1.GetObject<Text>(0).text = LocalizationManager.Instance.GetTranslatedString("authors_reminder");
 
                 // refresh search
-                OnSearchBoxChanged(m_searchBox.text);
+                OnSearchBoxChanged(_searchBox.text);
             }
 
             float waitTime = Time.unscaledTime + 0.1f;
             while (Time.unscaledTime < waitTime)
                 yield return null;
 
-            m_prevTab = m_categoryTabs.selectedTab?.tabId;
-            m_categoryTabs.interactable = true;
-            m_subcategoryTabs.interactable = true;
-            m_showContents = true;
-            m_isPopulating = false;
+            _prevTab = _categoryTabs.selectedTab?.tabId;
+            _categoryTabs.interactable = true;
+            _subcategoryTabs.interactable = true;
+            _showContents = true;
+            _isPopulating = false;
             yield break;
         }
 
         private void instantiateItemEntryDisplay(PersonalizationItemInfo item, Transform parent = null)
         {
-            ModdedObject moddedObject = Instantiate(m_itemCardDisplay, parent ? parent : m_container);
+            ModdedObject moddedObject = Instantiate(_itemCardDisplay, parent ? parent : _container);
             moddedObject.gameObject.SetActive(true);
 
             UIElementPersonalizationItemDisplay personalizationItemDisplay = moddedObject.gameObject.AddComponent<UIElementPersonalizationItemDisplay>();
@@ -490,10 +490,10 @@ namespace OverhaulMod.UI
             personalizationItemDisplay.InitializeElement();
 
             string text = item.Name.ToLower();
-            while (m_cachedDisplays.ContainsKey(text))
+            while (_cachedDisplays.ContainsKey(text))
                 text += "_1";
 
-            m_cachedDisplays.Add(text, personalizationItemDisplay);
+            _cachedDisplays.Add(text, personalizationItemDisplay);
         }
 
         private IEnumerator waitThenRefreshCameraCoroutine()
@@ -526,7 +526,7 @@ namespace OverhaulMod.UI
 
         private WeaponType getWeaponOfSubcategory()
         {
-            if (!Enum.TryParse(m_selectedSubcategory, out WeaponType weaponType))
+            if (!Enum.TryParse(_selectedSubcategory, out WeaponType weaponType))
                 weaponType = WeaponType.Sword;
 
             return weaponType;
@@ -540,17 +540,17 @@ namespace OverhaulMod.UI
         private void selectSubcategoryOfWeapon(WeaponType weaponType)
         {
             string weaponTypeString = weaponType.ToString();
-            if (m_subcategoryTabs.HasTab(weaponTypeString))
-                m_subcategoryTabs.SelectTab(weaponTypeString);
+            if (_subcategoryTabs.HasTab(weaponTypeString))
+                _subcategoryTabs.SelectTab(weaponTypeString);
             else
-                m_subcategoryTabs.SelectTab("Sword");
+                _subcategoryTabs.SelectTab("Sword");
         }
 
         private void refreshScrollRectSize()
         {
-            RectTransform scrollRectTransform = m_scrollRectTransform;
+            RectTransform scrollRectTransform = _scrollRectTransform;
             Vector2 offsetMax = scrollRectTransform.offsetMax;
-            if (m_selectedCategory != PersonalizationCategory.WeaponSkins)
+            if (_selectedCategory != PersonalizationCategory.WeaponSkins)
                 offsetMax.y = -125f;
             else
                 offsetMax.y = -155f;
@@ -592,9 +592,9 @@ namespace OverhaulMod.UI
         private void refreshCameraRect()
         {
             CameraManager cameraManager = CameraManager.Instance;
-            if (m_isOpen)
+            if (_isOpen)
             {
-                float proportionOfWidthTakenUpBySidebar = m_panel.rect.width / m_rectTransform.rect.width;
+                float proportionOfWidthTakenUpBySidebar = _panel.rect.width / _rectTransform.rect.width;
                 cameraManager.SetCameraRect(new Rect(proportionOfWidthTakenUpBySidebar, 0, 1f - proportionOfWidthTakenUpBySidebar, 1f));
             }
             else
@@ -624,7 +624,7 @@ namespace OverhaulMod.UI
                 cameraManager.ResetCameraHolderEulerAngles(firstPersonMover);
                 cameraManager.enableForceFOVOffset = false;
                 cameraManager.enableThirdPerson = false;
-                m_cameraHolderTransform = null;
+                _cameraHolderTransform = null;
                 return;
             }
 
@@ -637,7 +637,7 @@ namespace OverhaulMod.UI
 
             FirstPersonMover robot = CharacterTracker.Instance.GetPlayerRobot();
             if (robot)
-                m_cameraHolderTransform = robot._cameraHolderTransform;
+                _cameraHolderTransform = robot._cameraHolderTransform;
 
             ModGameUtils.WaitForPlayerInputUpdate(delegate (IFPMoveCommandInput commandInput)
             {
@@ -657,11 +657,11 @@ namespace OverhaulMod.UI
 
         public void OnSearchBoxChanged(string text)
         {
-            m_clearButton.gameObject.SetActive(!text.IsNullOrEmpty());
+            _clearButton.gameObject.SetActive(!text.IsNullOrEmpty());
 
             _ = text.ToLower();
             bool forceEnableAll = text.IsNullOrEmpty();
-            foreach (KeyValuePair<string, UIElementPersonalizationItemDisplay> keyValue in m_cachedDisplays)
+            foreach (KeyValuePair<string, UIElementPersonalizationItemDisplay> keyValue in _cachedDisplays)
             {
                 if (forceEnableAll)
                     keyValue.Value.gameObject.SetActive(true);
@@ -672,12 +672,12 @@ namespace OverhaulMod.UI
 
         public void OnClearButtonClicked()
         {
-            m_searchBox.text = string.Empty;
+            _searchBox.text = string.Empty;
         }
 
         public void OnAllowEnemiesUseWeaponSkinsToggled(bool value)
         {
-            if (!m_allowUICallbacks)
+            if (!_allowUICallbacks)
                 return;
 
             ModSettingsManager.SetBoolValue(ModSettingsConstants.ALLOW_ENEMIES_USE_WEAPON_SKINS, value, true);

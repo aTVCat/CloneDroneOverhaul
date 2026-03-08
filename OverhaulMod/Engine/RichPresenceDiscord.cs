@@ -11,12 +11,12 @@ namespace OverhaulMod.Engine
         public const long APP_ID = 1091373211163308073;
         public const CreateFlags CREATE_FLAG = CreateFlags.NoRequireDiscord;
 
-        private Discord.Discord m_client;
-        private Activity m_activity;
-        private ActivityParty m_party;
-        private ActivitySecrets m_secrets;
-        private PartySize m_partySize;
-        private ActivityManager.UpdateActivityHandler m_activityHandler;
+        private Discord.Discord _client;
+        private Activity _activity;
+        private ActivityParty _party;
+        private ActivitySecrets _secrets;
+        private PartySize _partySize;
+        private ActivityManager.UpdateActivityHandler _activityHandler;
 
         public override void Start()
         {
@@ -38,8 +38,8 @@ namespace OverhaulMod.Engine
             base.Update();
             try
             {
-                if (m_client != null)
-                    m_client.RunCallbacks();
+                if (_client != null)
+                    _client.RunCallbacks();
             }
             catch
             {
@@ -49,39 +49,39 @@ namespace OverhaulMod.Engine
         public override void RefreshInformation()
         {
             base.RefreshInformation();
-            if (m_client != null)
+            if (_client != null)
             {
-                ActivityManager manager = m_client.GetActivityManager();
+                ActivityManager manager = _client.GetActivityManager();
                 if (manager == null)
                     return;
 
                 bool isInModdedMultiplayer = ModIntegrationUtils.ModdedMultiplayer.IsInModdedMultiplayer();
                 string id = isInModdedMultiplayer ? $"{ModIntegrationUtils.ModdedMultiplayer.GetCurrentGameModeInfoID()}_{ModIntegrationUtils.ModdedMultiplayer.GetLobbyID()}" : null;
 
-                PartySize partySize = m_partySize;
+                PartySize partySize = _partySize;
                 partySize.CurrentSize = isInModdedMultiplayer ? ModIntegrationUtils.ModdedMultiplayer.GetCurrentPlayerCount() : 0;
                 partySize.MaxSize = isInModdedMultiplayer ? ModIntegrationUtils.ModdedMultiplayer.GetMaxPlayerCount() : 0;
 
-                ActivitySecrets activitySecrets = m_secrets;
+                ActivitySecrets activitySecrets = _secrets;
                 activitySecrets.Join = isInModdedMultiplayer ? $"lobby_{id}" : null;
 
-                ActivityParty party = m_party;
+                ActivityParty party = _party;
                 party.Id = isInModdedMultiplayer ? $"cdo_{id}" : null;
                 party.Size = partySize;
 
-                Activity activity = m_activity;
+                Activity activity = _activity;
                 activity.State = !gameModeDetailsString.IsNullOrEmpty() ? gameModeDetailsString : string.Empty;
                 activity.Details = $"v{ModBuildInfo.version} · {gameModeString}";
                 activity.Party = party;
                 activity.Secrets = activitySecrets;
 
-                manager.UpdateActivity(activity, m_activityHandler);
+                manager.UpdateActivity(activity, _activityHandler);
             }
         }
 
         public void TryInitializeDiscord()
         {
-            if (m_client == null)
+            if (_client == null)
             {
                 try
                 {
@@ -130,7 +130,7 @@ namespace OverhaulMod.Engine
                         activityManager.SendRequestReply(user.Id, reply, _ => { });
                     };
 
-                    m_client = client;
+                    _client = client;
 
                     Activity activity = new Activity()
                     {
@@ -140,7 +140,7 @@ namespace OverhaulMod.Engine
                             LargeText = "Overhaul Mod",
                         },
                     };
-                    m_activity = activity;
+                    _activity = activity;
                 }
                 catch
                 {
@@ -148,18 +148,18 @@ namespace OverhaulMod.Engine
                 }
             }
 
-            if (m_activityHandler == null)
-                m_activityHandler = new ActivityManager.UpdateActivityHandler(handleActivityUpdate);
+            if (_activityHandler == null)
+                _activityHandler = new ActivityManager.UpdateActivityHandler(handleActivityUpdate);
         }
 
         public void DisposeDiscordClient()
         {
             try
             {
-                if (m_client != null)
+                if (_client != null)
                 {
-                    m_client.Dispose();
-                    m_client = null;
+                    _client.Dispose();
+                    _client = null;
                 }
             }
             catch

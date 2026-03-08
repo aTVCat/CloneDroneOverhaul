@@ -10,7 +10,7 @@ namespace OverhaulMod.Utils
 {
     public static class ModGameUtils
     {
-        private static readonly List<Action<IFPMoveCommandInput>> m_playerInputUpdateActions = new List<Action<IFPMoveCommandInput>>();
+        private static readonly List<Action<IFPMoveCommandInput>> _playerInputUpdateActions = new List<Action<IFPMoveCommandInput>>();
 
         public static int GetNumOfAchievements()
         {
@@ -40,7 +40,7 @@ namespace OverhaulMod.Utils
 
         public static void InvokePlayerInputUpdateAction(IFPMoveCommandInput fpmoveCommand)
         {
-            List<Action<IFPMoveCommandInput>> list = m_playerInputUpdateActions;
+            List<Action<IFPMoveCommandInput>> list = _playerInputUpdateActions;
             if (list.IsNullOrEmpty())
                 return;
 
@@ -159,7 +159,7 @@ namespace OverhaulMod.Utils
 
         public static string GetSpeakerNameText(SpeakerNames speakerName)
         {
-            return $"{LocalizationManager.Instance.GetTranslatedString($"enum_{speakerName}")}:";
+            return $"{LocalizationManager.Instance.GetTranslatedString($"enu_{speakerName}")}:";
         }
 
         public static List<Renderer> GetRenderersOfBodyPart(this FirstPersonMover firstPersonMover, MechBodyPartType bodyPartType)
@@ -243,7 +243,7 @@ namespace OverhaulMod.Utils
 
         public static void WaitForPlayerInputUpdate(Action<IFPMoveCommandInput> action)
         {
-            m_playerInputUpdateActions.Add(action);
+            _playerInputUpdateActions.Add(action);
         }
 
         public static void FadeThenStopMusic(float duration)

@@ -9,30 +9,30 @@ namespace OverhaulMod.UI
     public class UIElementKeyBindSetter : OverhaulUIBehaviour
     {
         [UIElement("Text")]
-        private readonly Text m_keyBindText;
+        private readonly Text _keyBindText;
 
         [UIElementAction(nameof(OnSetBindButtonClicked))]
         [UIElement("SetBindButton")]
-        private readonly Button m_setBindButton;
+        private readonly Button _setBindButton;
 
         [UIElementAction(nameof(OnSetDefaultButtonClicked))]
         [UIElement("SetDefaultBindButton")]
-        private readonly Button m_setDefaultBindButton;
+        private readonly Button _setDefaultBindButton;
 
         [UIElement("Description")]
-        private readonly Text m_description;
+        private readonly Text _description;
 
-        private KeyCode m_key;
+        private KeyCode _key;
         public KeyCode key
         {
             get
             {
-                return m_key;
+                return _key;
             }
             set
             {
-                m_key = value;
-                m_keyBindText.text = value.ToString().Replace("Alpha", string.Empty);
+                _key = value;
+                _keyBindText.text = value.ToString().Replace("Alpha", string.Empty);
                 onValueChanged.Invoke(value);
             }
         }
@@ -43,7 +43,7 @@ namespace OverhaulMod.UI
 
         public void OnSetBindButtonClicked()
         {
-            ModUIUtils.KeyBinder(m_description.text, defaultKey, delegate (KeyCode kc)
+            ModUIUtils.KeyBinder(_description.text, defaultKey, delegate (KeyCode kc)
             {
                 if (kc == (KeyCode)(-1))
                     return;
@@ -59,7 +59,7 @@ namespace OverhaulMod.UI
 
         public void SetDescription(string text)
         {
-            m_description.text = text;
+            _description.text = text;
         }
 
         [Serializable]

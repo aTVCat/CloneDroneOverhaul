@@ -18,27 +18,27 @@ namespace OverhaulMod.Content.Personalization
             }
         }
 
-        private bool m_hasLoadedTemplates;
+        private bool _hasLoadedTemplates;
 
-        private bool m_noTemplates;
+        private bool _noTemplates;
 
-        private PersonalizationItemInfo[] m_templates;
+        private PersonalizationItemInfo[] _templates;
 
         public void LoadTemplates()
         {
-            m_hasLoadedTemplates = true;
+            _hasLoadedTemplates = true;
 
             string path = templatesFolder;
             if (!Directory.Exists(path))
             {
-                m_noTemplates = true;
+                _noTemplates = true;
                 return;
             }
 
             string[] files = Directory.GetFiles(path);
             if (files.IsNullOrEmpty())
             {
-                m_noTemplates = true;
+                _noTemplates = true;
                 return;
             }
 
@@ -65,15 +65,15 @@ namespace OverhaulMod.Content.Personalization
                 i++;
             }
 
-            m_templates = array;
+            _templates = array;
         }
 
         public PersonalizationItemInfo[] GetTemplates()
         {
-            if (!m_hasLoadedTemplates || m_noTemplates)
+            if (!_hasLoadedTemplates || _noTemplates)
                 return null;
 
-            return m_templates;
+            return _templates;
         }
     }
 }

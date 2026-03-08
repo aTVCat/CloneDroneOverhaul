@@ -10,72 +10,72 @@ namespace OverhaulMod.UI
     {
         [UIElementAction(nameof(Hide))]
         [UIElement("CloseButton")]
-        private readonly Button m_exitButton;
+        private readonly Button _exitButton;
 
         [UIElement("LBSLogo")]
-        private readonly GameObject m_battleRoyaleLogoObject;
+        private readonly GameObject _battleRoyaleLogoObject;
 
         [UIElement("GenericHeader")]
-        private readonly GameObject m_genericHeaderObject;
+        private readonly GameObject _genericHeaderObject;
 
         [UIElement("GenericHeader")]
-        private readonly Text m_genericHeaderText;
+        private readonly Text _genericHeaderText;
 
         [UIElement("GenericDescription")]
-        private readonly Text m_genericDescriptionText;
+        private readonly Text _genericDescriptionText;
 
         [UIElement("RulesBox")]
-        private readonly GameObject m_rulesBoxObject;
+        private readonly GameObject _rulesBoxObject;
 
         [UIElementAction(nameof(OnRulesButtonClicked))]
         [UIElement("RulesButton")]
-        private readonly Button m_rulesButton;
+        private readonly Button _rulesButton;
 
         [UIElementAction(nameof(OnPlayButtonClicked))]
         [UIElement("PlayPublicMatch")]
-        private readonly Button m_playPublicMatchButton;
+        private readonly Button _playPublicMatchButton;
 
         [UIElementAction(nameof(OnCreateMatchButtonClicked))]
         [UIElement("CreatePrivateMatchButton")]
-        private readonly Button m_createPrivateMatchButton;
+        private readonly Button _createPrivateMatchButton;
 
         [UIElementAction(nameof(OnJoinMatchButtonClicked))]
         [UIElement("JoinPrivateMatchButton")]
-        private readonly Button m_joinPrivateMatchButton;
+        private readonly Button _joinPrivateMatchButton;
 
         [UIElementAction(nameof(OnAutoBuildConfigButtonClicked))]
         [UIElement("AutoBuildConfigButton", false)]
-        private readonly Button m_autoBuildConfigButton;
+        private readonly Button _autoBuildConfigButton;
 
         [UIElement("JoinBox", false)]
-        private readonly GameObject m_joinBoxObject;
+        private readonly GameObject _joinBoxObject;
 
         [UIElementAction(nameof(OnCancelJoinButtonClicked))]
         [UIElement("CancelButton")]
-        private readonly Button m_cancelButton;
+        private readonly Button _cancelButton;
 
         [UIElement("CodeField")]
-        private readonly InputField m_codeField;
+        private readonly InputField _codeField;
 
         [UIElementAction(nameof(OnGoButtonClicked))]
         [UIElement("GoButton")]
-        private readonly Button m_goButton;
+        private readonly Button _goButton;
 
         [UIElement("LBSStatsBox", typeof(UIElementBattleRoyaleStatsBox))]
-        private readonly UIElementBattleRoyaleStatsBox m_battleRoyaleStatsBox;
+        private readonly UIElementBattleRoyaleStatsBox _battleRoyaleStatsBox;
 
         [UIElement("Panel")]
-        private readonly GameObject m_panelObject;
+        private readonly GameObject _panelObject;
 
         [UIElement("GarbageBotSkinDropdown")]
-        private readonly GameObject m_garbageBotSkinDropdownObject;
+        private readonly GameObject _garbageBotSkinDropdownObject;
 
         [UIElementAction(nameof(OnGarbageBotSkinDropdownValueChanged))]
         [UIElement("GarbageBotSkinDropdown")]
-        private readonly Dropdown m_garbageBotSkinDropdown;
+        private readonly Dropdown _garbageBotSkinDropdown;
 
         [UIElement("GarbageBotSkinDropdownOverlay")]
-        private readonly GameObject m_garbageBotSkinDropdownOverlayObject;
+        private readonly GameObject _garbageBotSkinDropdownOverlayObject;
 
         public override bool refreshOnlyCursor => true;
 
@@ -99,14 +99,14 @@ namespace OverhaulMod.UI
 
         private IEnumerator waitThenRefreshGarbageBotSkinDropdownCoroutine()
         {
-            m_garbageBotSkinDropdown.interactable = false;
-            m_garbageBotSkinDropdownOverlayObject.SetActive(true);
+            _garbageBotSkinDropdown.interactable = false;
+            _garbageBotSkinDropdownOverlayObject.SetActive(true);
             while (!ModIntegrationUtils.SelectGarbageBotSkin.HasLocalPlayerStats())
             {
                 yield return null;
             }
-            m_garbageBotSkinDropdown.interactable = true;
-            m_garbageBotSkinDropdownOverlayObject.SetActive(false);
+            _garbageBotSkinDropdown.interactable = true;
+            _garbageBotSkinDropdownOverlayObject.SetActive(false);
             refreshGarbageBotSkinDropdown();
             yield break;
         }
@@ -114,7 +114,7 @@ namespace OverhaulMod.UI
         private void refreshGarbageBotSkinDropdown()
         {
             List<Dropdown.OptionData> garbageBotSkinOptions = ModIntegrationUtils.SelectGarbageBotSkin.GetGarbageBotSkinOptions();
-            m_garbageBotSkinDropdown.options = garbageBotSkinOptions;
+            _garbageBotSkinDropdown.options = garbageBotSkinOptions;
             int selectedGarbageBotSkinIndex = ModIntegrationUtils.SelectGarbageBotSkin.selectedGarbageBotSkinIndex;
             int value = 0;
             for (int i = 0; i < garbageBotSkinOptions.Count; i++)
@@ -125,23 +125,23 @@ namespace OverhaulMod.UI
                     break;
                 }
             }
-            m_garbageBotSkinDropdown.value = value;
+            _garbageBotSkinDropdown.value = value;
         }
 
         public void Populate(GameMode gameMode)
         {
             displayingGameMode = gameMode;
 
-            m_genericHeaderObject.SetActive(gameMode != GameMode.BattleRoyale);
-            m_battleRoyaleLogoObject.SetActive(gameMode == GameMode.BattleRoyale);
-            m_rulesBoxObject.SetActive(gameMode == GameMode.BattleRoyale);
-            m_battleRoyaleStatsBox.gameObject.SetActive(gameMode == GameMode.BattleRoyale);
-            m_autoBuildConfigButton.gameObject.SetActive(gameMode == GameMode.BattleRoyale);
-            m_joinBoxObject.SetActive(false);
-            m_codeField.text = string.Empty;
-            m_playPublicMatchButton.gameObject.SetActive(gameMode != GameMode.MultiplayerDuel || ModSpecialUtils.IsModEnabled("3cfnb387n78eg"));
-            m_garbageBotSkinDropdown.gameObject.SetActive(gameMode == GameMode.BattleRoyale && ModIntegrationUtils.SelectGarbageBotSkin.IsModAvailable());
-            if (m_garbageBotSkinDropdownObject.activeSelf)
+            _genericHeaderObject.SetActive(gameMode != GameMode.BattleRoyale);
+            _battleRoyaleLogoObject.SetActive(gameMode == GameMode.BattleRoyale);
+            _rulesBoxObject.SetActive(gameMode == GameMode.BattleRoyale);
+            _battleRoyaleStatsBox.gameObject.SetActive(gameMode == GameMode.BattleRoyale);
+            _autoBuildConfigButton.gameObject.SetActive(gameMode == GameMode.BattleRoyale);
+            _joinBoxObject.SetActive(false);
+            _codeField.text = string.Empty;
+            _playPublicMatchButton.gameObject.SetActive(gameMode != GameMode.MultiplayerDuel || ModSpecialUtils.IsModEnabled("3cfnb387n78eg"));
+            _garbageBotSkinDropdown.gameObject.SetActive(gameMode == GameMode.BattleRoyale && ModIntegrationUtils.SelectGarbageBotSkin.IsModAvailable());
+            if (_garbageBotSkinDropdownObject.activeSelf)
             {
                 _ = base.StartCoroutine(waitThenRefreshGarbageBotSkinDropdownCoroutine());
             }
@@ -149,30 +149,30 @@ namespace OverhaulMod.UI
             switch (gameMode)
             {
                 case GameMode.MultiplayerDuel:
-                    m_genericHeaderText.text = LocalizationManager.Instance.GetTranslatedString("Duels");
-                    m_genericDescriptionText.text = LocalizationManager.Instance.GetTranslatedString("Challenge your friend!");
+                    _genericHeaderText.text = LocalizationManager.Instance.GetTranslatedString("Duels");
+                    _genericDescriptionText.text = LocalizationManager.Instance.GetTranslatedString("Challenge your friend!");
                     break;
                 case GameMode.CoopChallenge:
-                    m_genericHeaderText.text = LocalizationManager.Instance.GetTranslatedString("Co-op Challenges");
-                    m_genericDescriptionText.text = LocalizationManager.Instance.GetTranslatedString("Tackle Challenges with other humans!");
+                    _genericHeaderText.text = LocalizationManager.Instance.GetTranslatedString("Co-op Challenges");
+                    _genericDescriptionText.text = LocalizationManager.Instance.GetTranslatedString("Tackle Challenges with other humans!");
                     break;
                 case GameMode.EndlessCoop:
-                    m_genericHeaderText.text = LocalizationManager.Instance.GetTranslatedString("Endless Co-op");
-                    m_genericDescriptionText.text = LocalizationManager.Instance.GetTranslatedString("Survive the arena with other humans!");
+                    _genericHeaderText.text = LocalizationManager.Instance.GetTranslatedString("Endless Co-op");
+                    _genericDescriptionText.text = LocalizationManager.Instance.GetTranslatedString("Survive the arena with other humans!");
                     break;
             }
         }
 
         private async void joinMatchFunction()
         {
-            if (m_codeField.text.Length != m_codeField.characterLimit || !MultiplayerLoginManager.Instance.IsLoggedIntoPlayfab())
+            if (_codeField.text.Length != _codeField.characterLimit || !MultiplayerLoginManager.Instance.IsLoggedIntoPlayfab())
                 return;
 
-            m_goButton.interactable = false;
+            _goButton.interactable = false;
             if (ExperimentalBranchManager.Instance.UseGameye)
                 MultiplayerMatchmakingManager.Instance.Matchmaking20Private.StopSearching(false);
 
-            string inviteCodeToJoin = m_codeField.text.ToUpper().Trim();
+            string inviteCodeToJoin = _codeField.text.ToUpper().Trim();
 
             GameRequestType gameType = GameRequestType.DuelInviteCodeJoin;
             switch (displayingGameMode)
@@ -209,7 +209,7 @@ namespace OverhaulMod.UI
 
                 Hide();
                 MultiplayerMatchmakingManager.Instance.ConnectToExternalMatchmakeResult(result, gameRequest);
-                m_goButton.interactable = true;
+                _goButton.interactable = true;
             }, delegate (CustomMatchmakerError error)
             {
                 if (DuelInviteMenu._ignoreCallbackID >= DuelInviteMenu._currentCallbackID)
@@ -231,13 +231,13 @@ namespace OverhaulMod.UI
                 {
                     ModUIUtils.MessagePopupOK("Could not join the match", $"Reason: {StringUtils.AddSpacesToCamelCasedString(error.Type.ToString())}", true);
                 }
-                m_goButton.interactable = true;
+                _goButton.interactable = true;
             });
         }
 
         public void OnGarbageBotSkinDropdownValueChanged(int value)
         {
-            ModIntegrationUtils.SelectGarbageBotSkin.selectedGarbageBotSkinIndex = (m_garbageBotSkinDropdown.options[value] as DropdownIntOptionData).IntValue;
+            ModIntegrationUtils.SelectGarbageBotSkin.selectedGarbageBotSkinIndex = (_garbageBotSkinDropdown.options[value] as DropdownIntOptionData).IntValue;
         }
 
         public void OnPlayButtonClicked()
@@ -308,12 +308,12 @@ namespace OverhaulMod.UI
 
         public void OnJoinMatchButtonClicked()
         {
-            m_joinBoxObject.SetActive(true);
+            _joinBoxObject.SetActive(true);
         }
 
         public void OnAutoBuildConfigButtonClicked()
         {
-            GameObject gameObject = m_panelObject;
+            GameObject gameObject = _panelObject;
             gameObject.SetActive(false);
             UIAutoBuildMenu ui = ModUIConstants.ShowAutoBuildMenu();
             ui.objectToShow = gameObject;
@@ -321,7 +321,7 @@ namespace OverhaulMod.UI
 
         public void OnCancelJoinButtonClicked()
         {
-            m_joinBoxObject.SetActive(false);
+            _joinBoxObject.SetActive(false);
         }
 
         public void OnGoButtonClicked()

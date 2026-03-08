@@ -11,61 +11,61 @@ namespace OverhaulMod.UI
     {
         [UIElementAction(nameof(Hide))]
         [UIElement("CloseButton")]
-        private readonly Button m_exitButton;
+        private readonly Button _exitButton;
 
         [UIElementAction(nameof(OnReloadButtonClicked))]
         [UIElement("ReloadButton")]
-        private readonly Button m_reloadButton;
+        private readonly Button _reloadButton;
 
         [UIElementAction(nameof(OnFolderButtonClicked))]
         [UIElement("FolderButton")]
-        private readonly Button m_folderButton;
+        private readonly Button _folderButton;
 
         [UIElementAction(nameof(OnCreateNewButtonClicked))]
         [UIElement("CreateNewButton")]
-        private readonly Button m_createNewButton;
+        private readonly Button _createNewButton;
 
         [UIElementAction(nameof(OnImportButtonClicked))]
         [UIElement("ImportButton")]
-        private readonly Button m_importButton;
+        private readonly Button _importButton;
 
         [UIElementAction(nameof(OnViewAllItemsToggleChanged))]
         [UIElement("ViewAllItemsToggle")]
-        private readonly Toggle m_viewAllItemsToggle;
+        private readonly Toggle _viewAllItemsToggle;
 
         [UIElement("UsePersistentDirectoryToggle")]
-        private readonly Toggle m_usePersistentDirectoryToggle;
+        private readonly Toggle _usePersistentDirectoryToggle;
 
         [UIElement("ItemDisplayPrefab", false)]
-        private readonly ModdedObject m_itemDisplayPrefab;
+        private readonly ModdedObject _itemDisplayPrefab;
 
         [UIElement("LoadErrorDisplayPrefab", false)]
-        private readonly ModdedObject m_itemLoadErrorDisplayPrefab;
+        private readonly ModdedObject _itemLoadErrorDisplayPrefab;
 
         [UIElement("TextPrefab", false)]
-        private readonly Text m_textPrefab;
+        private readonly Text _textPrefab;
 
         [UIElement("HeaderPrefab", false)]
-        private readonly ModdedObject m_headerPrefab;
+        private readonly ModdedObject _headerPrefab;
 
         [UIElement("Content")]
-        private readonly Transform m_container;
+        private readonly Transform _container;
 
         [UIElementAction(nameof(OnSearchBoxChanged))]
         [UIElement("SearchBox")]
-        private readonly InputField m_searchBox;
+        private readonly InputField _searchBox;
 
-        private Dictionary<string, GameObject> m_cachedInstantiatedDisplays;
+        private Dictionary<string, GameObject> _cachedInstantiatedDisplays;
 
         protected override void OnInitialized()
         {
             bool canVerifyItems = PersonalizationEditorManager.Instance.canVerifyItems;
 
-            m_cachedInstantiatedDisplays = new Dictionary<string, GameObject>();
-            m_viewAllItemsToggle.gameObject.SetActive(PersonalizationEditorManager.Instance.canEditNonOwnItems);
-            m_usePersistentDirectoryToggle.gameObject.SetActive(canVerifyItems);
-            m_usePersistentDirectoryToggle.isOn = true;
-            m_importButton.interactable = canVerifyItems;
+            _cachedInstantiatedDisplays = new Dictionary<string, GameObject>();
+            _viewAllItemsToggle.gameObject.SetActive(PersonalizationEditorManager.Instance.canEditNonOwnItems);
+            _usePersistentDirectoryToggle.gameObject.SetActive(canVerifyItems);
+            _usePersistentDirectoryToggle.isOn = true;
+            _importButton.interactable = canVerifyItems;
         }
 
         public override void Show()
@@ -73,14 +73,14 @@ namespace OverhaulMod.UI
             base.Show();
             Populate();
 
-            m_searchBox.ActivateInputField();
+            _searchBox.ActivateInputField();
         }
 
         public void Populate()
         {
-            m_cachedInstantiatedDisplays.Clear();
-            if (m_container.childCount != 0)
-                TransformUtils.DestroyAllChildren(m_container);
+            _cachedInstantiatedDisplays.Clear();
+            if (_container.childCount != 0)
+                TransformUtils.DestroyAllChildren(_container);
 
             PersonalizationItemList itemList = PersonalizationManager.Instance.itemList;
             if (itemList == null)
@@ -88,7 +88,7 @@ namespace OverhaulMod.UI
 
             if (!itemList.Items.IsNullOrEmpty())
             {
-                bool getAll = m_viewAllItemsToggle.isOn && PersonalizationEditorManager.Instance.canEditNonOwnItems;
+                bool getAll = _viewAllItemsToggle.isOn && PersonalizationEditorManager.Instance.canEditNonOwnItems;
                 List<PersonalizationItemInfo> nonPersistent = new List<PersonalizationItemInfo>();
                 List<PersonalizationItemInfo> persistent = new List<PersonalizationItemInfo>();
                 foreach (PersonalizationItemInfo item in itemList.Items)
@@ -113,7 +113,7 @@ namespace OverhaulMod.UI
                     populate(persistent);
                 }
 
-                Text textComponent = Instantiate(m_textPrefab, m_container);
+                Text textComponent = Instantiate(_textPrefab, _container);
                 textComponent.gameObject.SetActive(true);
                 textComponent.text = $"{nonPersistent.Count + persistent.Count} items in total";
             }
@@ -121,7 +121,7 @@ namespace OverhaulMod.UI
             if (!itemList.ItemLoadErrors.IsNullOrEmpty())
                 foreach (KeyValuePair<string, System.Exception> keyValue in itemList.ItemLoadErrors)
                 {
-                    ModdedObject moddedObject = Instantiate(m_itemLoadErrorDisplayPrefab, m_container);
+                    ModdedObject moddedObject = Instantiate(_itemLoadErrorDisplayPrefab, _container);
                     moddedObject.gameObject.SetActive(true);
                     moddedObject.GetObject<Text>(0).text = $"Item load error: {keyValue.Key}";
                     moddedObject.GetObject<Text>(1).text = keyValue.Value.ToString();
@@ -134,7 +134,7 @@ namespace OverhaulMod.UI
             {
                 foreach (PersonalizationItemInfo item in list)
                 {
-                    ModdedObject moddedObject = Instantiate(m_itemDisplayPrefab, m_container);
+                    ModdedObject moddedObject = Instantiate(_itemDisplayPrefab, _container);
                     moddedObject.gameObject.SetActive(true);
                     moddedObject.GetObject<Text>(0).text = item.Name;
                     moddedObject.GetObject<Text>(1).text = PersonalizationItemInfo.GetCategoryString(item.Category);
@@ -152,13 +152,13 @@ namespace OverhaulMod.UI
                     });
 
                     string text = item.Name.ToLower();
-                    while (m_cachedInstantiatedDisplays.ContainsKey(text))
+                    while (_cachedInstantiatedDisplays.ContainsKey(text))
                         text += "_1";
 
-                    m_cachedInstantiatedDisplays.Add(text, moddedObject.gameObject);
+                    _cachedInstantiatedDisplays.Add(text, moddedObject.gameObject);
                 }
 
-                Text textComponent = Instantiate(m_textPrefab, m_container);
+                Text textComponent = Instantiate(_textPrefab, _container);
                 textComponent.gameObject.SetActive(true);
                 textComponent.text = $"{list.Count} items";
             }
@@ -166,7 +166,7 @@ namespace OverhaulMod.UI
 
         private void instantiateHeader(string text)
         {
-            ModdedObject moddedObject = Instantiate(m_headerPrefab, m_container);
+            ModdedObject moddedObject = Instantiate(_headerPrefab, _container);
             moddedObject.gameObject.SetActive(true);
             moddedObject.GetObject<Text>(0).text = text;
         }
@@ -184,20 +184,20 @@ namespace OverhaulMod.UI
 
         public void OnFolderButtonClicked()
         {
-            _ = ModFileUtils.OpenFileExplorer(m_usePersistentDirectoryToggle.isOn ? ModCore.customizationPersistentFolder : ModCore.customizationFolder);
+            _ = ModFileUtils.OpenFileExplorer(_usePersistentDirectoryToggle.isOn ? ModCore.customizationPersistentFolder : ModCore.customizationFolder);
         }
 
         public void OnCreateNewButtonClicked()
         {
             UIPersonalizationEditorItemCreationDialog panel = ModUIConstants.ShowPersonalizationEditorItemCreationDialog(base.transform);
-            panel.TargetDirectory = m_usePersistentDirectoryToggle.isOn ? ModCore.customizationPersistentFolder : ModCore.customizationFolder;
-            panel.UsePersistentFolder = m_usePersistentDirectoryToggle.isOn;
+            panel.TargetDirectory = _usePersistentDirectoryToggle.isOn ? ModCore.customizationPersistentFolder : ModCore.customizationFolder;
+            panel.UsePersistentFolder = _usePersistentDirectoryToggle.isOn;
             panel.ItemCreatedCallback = Hide;
 
             /*
             ModUIUtils.InputFieldWindow("Create new item", "Enter folder name", 150f, delegate (string str)
             {
-                string rootDirectory = m_usePersistentDirectoryToggle.isOn ? ModCore.customizationPersistentFolder : ModCore.customizationFolder;
+                string rootDirectory = _usePersistentDirectoryToggle.isOn ? ModCore.customizationPersistentFolder : ModCore.customizationFolder;
                 string directoryName = str.Replace(" ", string.Empty);
                 string directoryPath = $"{Path.Combine(rootDirectory, directoryName)}/";
                 if (Directory.Exists(directoryPath))
@@ -206,7 +206,7 @@ namespace OverhaulMod.UI
                     return;
                 }
 
-                if (PersonalizationEditorManager.Instance.CreateItem(str, m_usePersistentDirectoryToggle.isOn, out PersonalizationItemInfo personalizationItem))
+                if (PersonalizationEditorManager.Instance.CreateItem(str, _usePersistentDirectoryToggle.isOn, out PersonalizationItemInfo personalizationItem))
                 {
                     UIPersonalizationEditor.instance.ShowEverything();
                     PersonalizationEditorManager.Instance.EditItem(personalizationItem, personalizationItem.FolderPath);
@@ -224,7 +224,7 @@ namespace OverhaulMod.UI
             string lowerText = text.ToLower();
             bool forceSetEnabled = text.IsNullOrEmpty();
 
-            foreach (KeyValuePair<string, GameObject> keyValue in m_cachedInstantiatedDisplays)
+            foreach (KeyValuePair<string, GameObject> keyValue in _cachedInstantiatedDisplays)
             {
                 if (forceSetEnabled)
                 {

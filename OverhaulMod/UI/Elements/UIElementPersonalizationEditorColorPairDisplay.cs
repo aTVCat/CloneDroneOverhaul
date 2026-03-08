@@ -11,147 +11,147 @@ namespace OverhaulMod.UI
     public class UIElementPersonalizationEditorColorPairDisplay : OverhaulUIBehaviour
     {
         [UIElement("ColorAGraphic")]
-        private readonly Graphic m_colorAGraphic;
+        private readonly Graphic _colorAGraphic;
 
         [UIElement("ColorAGraphicAlphaText")]
-        private readonly Text m_colorAAlphaText;
+        private readonly Text _colorAAlphaText;
 
         [UIElement("ColorBGraphic")]
-        private readonly Graphic m_colorBGraphic;
+        private readonly Graphic _colorBGraphic;
 
         [UIElement("ColorBGraphicAlphaText")]
-        private readonly Text m_colorBAlphaText;
+        private readonly Text _colorBAlphaText;
 
         [UIElementAction(nameof(OnColorBButtonClicked))]
         [UIElement("ColorBGraphic")]
-        private readonly Button m_colorBButton;
+        private readonly Button _colorBButton;
 
         [UIElementAction(nameof(OnResetButtonClicked))]
         [UIElement("ResetButton")]
-        private readonly Button m_resetButton;
+        private readonly Button _resetButton;
 
         [UIElementAction(nameof(OnApplyFavColorToggleChanged))]
         [UIElement("ApplyFavColorToggle")]
-        private readonly Toggle m_applyFavoriteColorToggle;
+        private readonly Toggle _applyFavoriteColorToggle;
 
         [UIElementAction(nameof(OnFavoriteColorSaturationSliderChanged))]
         [UIElement("FavColorSaturationSlider")]
-        private readonly Slider m_favoriteColorSaturationSlider;
+        private readonly Slider _favoriteColorSaturationSlider;
 
         [UIElementAction(nameof(OnFavoriteColorBrightnessSliderChanged))]
         [UIElement("FavColorBrightnessSlider")]
-        private readonly Slider m_favoriteColorBrightnessSlider;
+        private readonly Slider _favoriteColorBrightnessSlider;
 
         [UIElementAction(nameof(OnFavoriteColorGlowPercentSliderChanged))]
         [UIElement("FavColorGlowPercentSlider")]
-        private readonly Slider m_favoriteColorGlowPercentSlider;
+        private readonly Slider _favoriteColorGlowPercentSlider;
 
-        private bool m_disableCallbacks;
+        private bool _disableCallbacks;
 
-        private bool m_disableColorPairUpdates;
+        private bool _disableColorPairUpdates;
 
-        private ColorPairFloat m_colorPair = new ColorPairFloat();
+        private ColorPairFloat _colorPair = new ColorPairFloat();
         public ColorPairFloat colorPair
         {
             get
             {
-                return m_colorPair;
+                return _colorPair;
             }
             set
             {
-                m_disableColorPairUpdates = true;
-                m_disableCallbacks = true;
+                _disableColorPairUpdates = true;
+                _disableCallbacks = true;
                 colorA = value.ColorA;
                 colorB = value.ColorB;
-                m_disableCallbacks = false;
-                m_disableColorPairUpdates = false;
+                _disableCallbacks = false;
+                _disableColorPairUpdates = false;
 
-                m_colorPair = value;
+                _colorPair = value;
 
-                if (!m_disableCallbacks)
+                if (!_disableCallbacks)
                     onValueChanged.Invoke(returnNewPair ? new ColorPairFloat(value.ColorA, value.ColorB) : value);
             }
         }
 
-        private Dictionary<string, FavoriteColorSettings> m_favoriteColorSettings;
+        private Dictionary<string, FavoriteColorSettings> _favoriteColorSettings;
         public Dictionary<string, FavoriteColorSettings> favoriteColorSettings
         {
             get
             {
-                return m_favoriteColorSettings;
+                return _favoriteColorSettings;
             }
             set
             {
-                m_favoriteColorSettings = value;
+                _favoriteColorSettings = value;
 
                 if (value == null)
                     return;
 
                 if (value.TryGetValue(ColorUtility.ToHtmlStringRGBA(colorA), out FavoriteColorSettings favoriteColorSettings))
                 {
-                    m_disableCallbacks = true;
-                    m_applyFavoriteColorToggle.isOn = true;
-                    m_favoriteColorSaturationSlider.value = Mathf.Clamp(favoriteColorSettings.SaturationMultiplier * 100f, 0f, 100f);
-                    m_favoriteColorBrightnessSlider.value = Mathf.Clamp(favoriteColorSettings.BrightnessMultiplier * 100f, 0f, 100f);
-                    m_favoriteColorGlowPercentSlider.value = Mathf.Clamp(favoriteColorSettings.GlowPercent * 100f, 0f, 100f);
-                    m_favoriteColorSaturationSlider.interactable = true;
-                    m_favoriteColorBrightnessSlider.interactable = true;
-                    m_favoriteColorGlowPercentSlider.interactable = true;
-                    m_disableCallbacks = false;
+                    _disableCallbacks = true;
+                    _applyFavoriteColorToggle.isOn = true;
+                    _favoriteColorSaturationSlider.value = Mathf.Clamp(favoriteColorSettings.SaturationMultiplier * 100f, 0f, 100f);
+                    _favoriteColorBrightnessSlider.value = Mathf.Clamp(favoriteColorSettings.BrightnessMultiplier * 100f, 0f, 100f);
+                    _favoriteColorGlowPercentSlider.value = Mathf.Clamp(favoriteColorSettings.GlowPercent * 100f, 0f, 100f);
+                    _favoriteColorSaturationSlider.interactable = true;
+                    _favoriteColorBrightnessSlider.interactable = true;
+                    _favoriteColorGlowPercentSlider.interactable = true;
+                    _disableCallbacks = false;
                 }
                 else
                 {
-                    m_applyFavoriteColorToggle.isOn = false;
-                    m_favoriteColorSaturationSlider.interactable = false;
-                    m_favoriteColorBrightnessSlider.interactable = false;
-                    m_favoriteColorGlowPercentSlider.interactable = false;
+                    _applyFavoriteColorToggle.isOn = false;
+                    _favoriteColorSaturationSlider.interactable = false;
+                    _favoriteColorBrightnessSlider.interactable = false;
+                    _favoriteColorGlowPercentSlider.interactable = false;
                 }
             }
         }
 
-        private Color m_colorA;
+        private Color _colorA;
         public Color colorA
         {
             get
             {
-                return m_colorA;
+                return _colorA;
             }
             set
             {
                 Color graphicColor = new Color(value.r, value.g, value.b, 1f);
-                m_colorAGraphic.color = graphicColor;
+                _colorAGraphic.color = graphicColor;
 
-                m_colorAAlphaText.text = $"{Mathf.Round((1f - value.a) * 100f)}%";
-                m_colorA = value;
+                _colorAAlphaText.text = $"{Mathf.Round((1f - value.a) * 100f)}%";
+                _colorA = value;
 
-                if (!m_disableColorPairUpdates)
-                    m_colorPair.ColorA = value;
+                if (!_disableColorPairUpdates)
+                    _colorPair.ColorA = value;
 
-                if (!m_disableCallbacks)
-                    onValueChanged.Invoke(returnNewPair ? new ColorPairFloat(value, colorB) : m_colorPair);
+                if (!_disableCallbacks)
+                    onValueChanged.Invoke(returnNewPair ? new ColorPairFloat(value, colorB) : _colorPair);
             }
         }
 
-        private Color m_colorB;
+        private Color _colorB;
         public Color colorB
         {
             get
             {
-                return m_colorB;
+                return _colorB;
             }
             set
             {
                 Color graphicColor = new Color(value.r, value.g, value.b, 1f);
-                m_colorBGraphic.color = graphicColor;
+                _colorBGraphic.color = graphicColor;
 
-                m_colorBAlphaText.text = $"{Mathf.Round((1f - value.a) * 100f)}%";
-                m_colorB = value;
+                _colorBAlphaText.text = $"{Mathf.Round((1f - value.a) * 100f)}%";
+                _colorB = value;
 
-                if (!m_disableColorPairUpdates)
-                    m_colorPair.ColorB = value;
+                if (!_disableColorPairUpdates)
+                    _colorPair.ColorB = value;
 
-                if (!m_disableCallbacks)
-                    onValueChanged.Invoke(returnNewPair ? new ColorPairFloat(colorA, value) : m_colorPair);
+                if (!_disableCallbacks)
+                    onValueChanged.Invoke(returnNewPair ? new ColorPairFloat(colorA, value) : _colorPair);
             }
         }
 
@@ -183,34 +183,34 @@ namespace OverhaulMod.UI
 
         public void OnApplyFavColorToggleChanged(bool value)
         {
-            if (m_disableCallbacks || m_favoriteColorSettings == null)
+            if (_disableCallbacks || _favoriteColorSettings == null)
                 return;
 
             string hex = ColorUtility.ToHtmlStringRGBA(colorA);
             if (value)
             {
-                if (!m_favoriteColorSettings.ContainsKey(hex))
-                    m_favoriteColorSettings.Add(hex, new FavoriteColorSettings(m_favoriteColorSaturationSlider.value / 100f, m_favoriteColorBrightnessSlider.value / 100f, m_favoriteColorGlowPercentSlider.value / 100f));
+                if (!_favoriteColorSettings.ContainsKey(hex))
+                    _favoriteColorSettings.Add(hex, new FavoriteColorSettings(_favoriteColorSaturationSlider.value / 100f, _favoriteColorBrightnessSlider.value / 100f, _favoriteColorGlowPercentSlider.value / 100f));
             }
             else
             {
-                _ = m_favoriteColorSettings.Remove(hex);
+                _ = _favoriteColorSettings.Remove(hex);
             }
             onFavoriteColorSettingsChanged.Invoke();
 
-            m_favoriteColorSaturationSlider.interactable = value;
-            m_favoriteColorBrightnessSlider.interactable = value;
-            m_favoriteColorGlowPercentSlider.interactable = value;
+            _favoriteColorSaturationSlider.interactable = value;
+            _favoriteColorBrightnessSlider.interactable = value;
+            _favoriteColorGlowPercentSlider.interactable = value;
         }
 
         public void OnFavoriteColorSaturationSliderChanged(float value)
         {
-            if (m_disableCallbacks || m_favoriteColorSettings == null)
+            if (_disableCallbacks || _favoriteColorSettings == null)
                 return;
 
             string hex = ColorUtility.ToHtmlStringRGBA(colorA);
-            if (m_favoriteColorSettings.ContainsKey(hex))
-                m_favoriteColorSettings[hex].SaturationMultiplier = value / 100f;
+            if (_favoriteColorSettings.ContainsKey(hex))
+                _favoriteColorSettings[hex].SaturationMultiplier = value / 100f;
 
             ModUIUtils.Tooltip($"{value}%");
 
@@ -219,12 +219,12 @@ namespace OverhaulMod.UI
 
         public void OnFavoriteColorBrightnessSliderChanged(float value)
         {
-            if (m_disableCallbacks || m_favoriteColorSettings == null)
+            if (_disableCallbacks || _favoriteColorSettings == null)
                 return;
 
             string hex = ColorUtility.ToHtmlStringRGBA(colorA);
-            if (m_favoriteColorSettings.ContainsKey(hex))
-                m_favoriteColorSettings[hex].BrightnessMultiplier = value / 100f;
+            if (_favoriteColorSettings.ContainsKey(hex))
+                _favoriteColorSettings[hex].BrightnessMultiplier = value / 100f;
 
             ModUIUtils.Tooltip($"{value}%");
 
@@ -233,12 +233,12 @@ namespace OverhaulMod.UI
 
         public void OnFavoriteColorGlowPercentSliderChanged(float value)
         {
-            if (m_disableCallbacks || m_favoriteColorSettings == null)
+            if (_disableCallbacks || _favoriteColorSettings == null)
                 return;
 
             string hex = ColorUtility.ToHtmlStringRGBA(colorA);
-            if (m_favoriteColorSettings.ContainsKey(hex))
-                m_favoriteColorSettings[hex].GlowPercent = value / 100f;
+            if (_favoriteColorSettings.ContainsKey(hex))
+                _favoriteColorSettings[hex].GlowPercent = value / 100f;
 
             ModUIUtils.Tooltip($"{value}%");
 

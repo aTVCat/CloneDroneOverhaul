@@ -6,9 +6,9 @@ namespace OverhaulMod.Engine
 {
     public class PooledPrefabManager : Singleton<PooledPrefabManager>
     {
-        private Dictionary<string, PooledPrefabInfo> m_pooledPrefabs;
+        private Dictionary<string, PooledPrefabInfo> _pooledPrefabs;
 
-        private Transform m_container;
+        private Transform _container;
 
         public override void Awake()
         {
@@ -16,21 +16,21 @@ namespace OverhaulMod.Engine
 
             Transform container = new GameObject("Pooled prefabs").transform;
             container.SetParent(base.transform, false);
-            m_container = container;
+            _container = container;
         }
 
         private void Start()
         {
-            m_pooledPrefabs = new Dictionary<string, PooledPrefabInfo>();
+            _pooledPrefabs = new Dictionary<string, PooledPrefabInfo>();
         }
 
         public void MakePooledPrefab(string id, GameObject prefab, float lifeTime, int limit)
         {
-            if (m_pooledPrefabs == null || m_pooledPrefabs.ContainsKey(id))
+            if (_pooledPrefabs == null || _pooledPrefabs.ContainsKey(id))
                 return;
 
             Transform container = new GameObject(id).transform;
-            container.SetParent(m_container, false);
+            container.SetParent(_container, false);
 
             PooledPrefabInfo pooledPrefabInfo = new PooledPrefabInfo()
             {
@@ -39,12 +39,12 @@ namespace OverhaulMod.Engine
                 lifeTime = lifeTime,
                 limit = limit
             };
-            m_pooledPrefabs.Add(id, pooledPrefabInfo);
+            _pooledPrefabs.Add(id, pooledPrefabInfo);
         }
 
         public void MakePooledPrefab(string id, string bundle, string asset, float lifeTime, int limit)
         {
-            if (m_pooledPrefabs == null || m_pooledPrefabs.ContainsKey(id))
+            if (_pooledPrefabs == null || _pooledPrefabs.ContainsKey(id))
                 return;
 
             MakePooledPrefab(id, ModResources.Prefab(bundle, asset), lifeTime, limit);
@@ -52,7 +52,7 @@ namespace OverhaulMod.Engine
 
         public void MakePooledPrefab(string id, string bundle, string asset, string startPath, float lifeTime, int limit)
         {
-            if (m_pooledPrefabs == null || m_pooledPrefabs.ContainsKey(id))
+            if (_pooledPrefabs == null || _pooledPrefabs.ContainsKey(id))
                 return;
 
             MakePooledPrefab(id, ModResources.Prefab(bundle, asset, startPath), lifeTime, limit);
@@ -60,7 +60,7 @@ namespace OverhaulMod.Engine
 
         public Transform SpawnObject(string id, Vector3 position, Vector3 rotation, Vector3 scale)
         {
-            if (m_pooledPrefabs.IsNullOrEmpty() || !m_pooledPrefabs.TryGetValue(id, out PooledPrefabInfo pooledPrefabInfo))
+            if (_pooledPrefabs.IsNullOrEmpty() || !_pooledPrefabs.TryGetValue(id, out PooledPrefabInfo pooledPrefabInfo))
                 return null;
 
             return pooledPrefabInfo.SpawnObject(position, rotation, scale);

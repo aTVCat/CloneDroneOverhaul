@@ -14,41 +14,41 @@ namespace OverhaulMod.UI
 
         [UIElementAction(nameof(Hide))]
         [UIElement("CloseButton")]
-        private readonly Button m_exitButton;
+        private readonly Button _exitButton;
 
         [UIElement("ExportVersionField")]
-        private readonly InputField m_exportVersionField;
+        private readonly InputField _exportVersionField;
 
         [UIElementAction(nameof(OnBumpUpVersionButtonClicked))]
         [UIElement("BumpVersionButton")]
-        private readonly Button m_bumpUpVersionButton;
+        private readonly Button _bumpUpVersionButton;
 
         [UIElement("ExportFolderField")]
-        private readonly InputField m_exportFolderField;
+        private readonly InputField _exportFolderField;
 
         [UIElementAction(nameof(OnEditExportFolderButtonClicked))]
         [UIElement("EditExportFolderButton")]
-        private readonly Button m_editExportFolderButton;
+        private readonly Button _editExportFolderButton;
 
         [UIElementAction(nameof(OnExportAllButtonClicked))]
         [UIElement("ExportAllButton")]
-        private readonly Button m_exportAllButton;
+        private readonly Button _exportAllButton;
 
         protected override void OnInitialized()
         {
-            m_exportVersionField.text = PersonalizationManager.Instance.localAssetsInfo.AssetVersionNumber.ToString();
-            m_exportFolderField.text = ExportFolderPath;
+            _exportVersionField.text = PersonalizationManager.Instance.localAssetsInfo.AssetVersionNumber.ToString();
+            _exportFolderField.text = ExportFolderPath;
         }
 
         private void onExportFolderSelected(string path)
         {
-            m_exportFolderField.text = path;
+            _exportFolderField.text = path;
             ModSettingsManager.SetStringValue(ModSettingsConstants.PERSONALIZATION_ITEMS_EXPORT_PATH, path, true);
         }
 
         public void OnBumpUpVersionButtonClicked()
         {
-            m_exportVersionField.text = (PersonalizationManager.Instance.localAssetsInfo.AssetVersionNumber + 1).ToString();
+            _exportVersionField.text = (PersonalizationManager.Instance.localAssetsInfo.AssetVersionNumber + 1).ToString();
         }
 
         public void OnEditExportFolderButtonClicked()
@@ -58,7 +58,7 @@ namespace OverhaulMod.UI
 
         public void OnExportAllButtonClicked()
         {
-            if (!int.TryParse(m_exportVersionField.text, out int versionNumber))
+            if (!int.TryParse(_exportVersionField.text, out int versionNumber))
             {
                 ModUIUtils.MessagePopupOK("Error", "Could not parse text from version input field");
                 return;

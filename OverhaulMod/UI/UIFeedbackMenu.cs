@@ -27,70 +27,70 @@ namespace OverhaulMod.UI
 
         [UIElementAction(nameof(Hide))]
         [UIElement("CloseButton")]
-        private readonly Button m_exitButton;
+        private readonly Button _exitButton;
 
         [UIElementAction(nameof(On1RankClicked))]
         [UIElement("BadRank")]
-        private readonly Button m_1rankButton;
+        private readonly Button _1rankButton;
 
         [UIElementAction(nameof(On2RankClicked))]
         [UIElement("MehRank")]
-        private readonly Button m_2rankButton;
+        private readonly Button _2rankButton;
 
         [UIElementAction(nameof(On3RankClicked))]
         [UIElement("NeutralRank")]
-        private readonly Button m_3rankButton;
+        private readonly Button _3rankButton;
 
         [UIElementAction(nameof(On4RankClicked))]
         [UIElement("GoodRank")]
-        private readonly Button m_4rankButton;
+        private readonly Button _4rankButton;
 
         [UIElementAction(nameof(On5RankClicked))]
         [UIElement("SatisfiedRank")]
-        private readonly Button m_5rankButton;
+        private readonly Button _5rankButton;
 
         [UIElementAction(nameof(OnSendButtonClicked))]
         [UIElement("SendButton")]
-        private readonly Button m_sendButton;
+        private readonly Button _sendButton;
 
         [UIElementAction(nameof(OnLikeButtonClicked))]
         [UIElement("LikeButton")]
-        private readonly Button m_likeButton;
+        private readonly Button _likeButton;
 
         [UIElementAction(nameof(OnExitGameButtonClicked))]
         [UIElement("ExitGameButton")]
-        private readonly Button m_exitGameButton;
+        private readonly Button _exitGameButton;
 
         [UIElementAction(nameof(OnSkipButtonClicked))]
         [UIElement("SkipButton")]
-        private readonly Button m_skipButton;
+        private readonly Button _skipButton;
 
         [UIElement("LoadingIndicator", false)]
-        private readonly GameObject m_loadingIndicator;
+        private readonly GameObject _loadingIndicator;
 
         [UIElementAction(nameof(OnImproveFieldChanged))]
         [UIElement("ImproveTextInputField")]
-        private readonly InputField m_improveField;
+        private readonly InputField _improveField;
 
         [UIElementAction(nameof(OnFavoriteFieldChanged))]
         [UIElement("FavouriteTextInputField")]
-        private readonly InputField m_favoriteField;
+        private readonly InputField _favoriteField;
 
         [UIElement("charLeftText_Improve")]
-        private readonly Text m_improveFieldCharsLeftText;
+        private readonly Text _improveFieldCharsLeftText;
 
         [UIElement("charLeftText_Favorite")]
-        private readonly Text m_favoriteFieldCharsLeftText;
+        private readonly Text _favoriteFieldCharsLeftText;
 
         public override bool hideTitleScreen => true;
 
-        private bool m_refreshElementsNextFrame;
+        private bool _refreshElementsNextFrame;
 
-        private bool m_usedSavedSettings;
+        private bool _usedSavedSettings;
 
-        private bool m_isSendingFeedback;
+        private bool _isSendingFeedback;
 
-        private string m_charsLeftText;
+        private string _charsLeftText;
 
         public int selectedRank
         {
@@ -100,15 +100,15 @@ namespace OverhaulMod.UI
 
         protected override void OnInitialized()
         {
-            m_improveField.characterLimit = CHARACTER_LIMIT;
-            m_favoriteField.characterLimit = CHARACTER_LIMIT;
+            _improveField.characterLimit = CHARACTER_LIMIT;
+            _favoriteField.characterLimit = CHARACTER_LIMIT;
         }
 
         public override void Update()
         {
-            if (m_refreshElementsNextFrame)
+            if (_refreshElementsNextFrame)
             {
-                m_refreshElementsNextFrame = false;
+                _refreshElementsNextFrame = false;
                 refreshElements();
             }
         }
@@ -117,24 +117,24 @@ namespace OverhaulMod.UI
         {
             base.Show();
 
-            m_charsLeftText = LocalizationManager.Instance.GetTranslatedString("charsleft");
-            m_likeButton.interactable = !ModBotSignInUI._userName.IsNullOrEmpty() && !HasLikedTheMod;
+            _charsLeftText = LocalizationManager.Instance.GetTranslatedString("charsleft");
+            _likeButton.interactable = !ModBotSignInUI._userName.IsNullOrEmpty() && !HasLikedTheMod;
 
-            m_skipButton.interactable = true;
+            _skipButton.interactable = true;
 
-            if (!m_usedSavedSettings)
+            if (!_usedSavedSettings)
             {
-                m_usedSavedSettings = true;
+                _usedSavedSettings = true;
 
                 selectedRank = SavedRating;
-                m_improveField.text = SavedImproveText;
-                m_favoriteField.text = SavedFavoriteText;
+                _improveField.text = SavedImproveText;
+                _favoriteField.text = SavedFavoriteText;
             }
 
             refreshElementsNextFrame();
 
-            m_improveFieldCharsLeftText.text = getCharLeftTextForField(m_improveField);
-            m_favoriteFieldCharsLeftText.text = getCharLeftTextForField(m_favoriteField);
+            _improveFieldCharsLeftText.text = getCharLeftTextForField(_improveField);
+            _favoriteFieldCharsLeftText.text = getCharLeftTextForField(_favoriteField);
         }
 
         public override void Hide()
@@ -142,36 +142,36 @@ namespace OverhaulMod.UI
             base.Hide();
 
             ModSettingsManager.SetIntValue(ModSettingsConstants.FEEDBACK_MENU_RATE, selectedRank);
-            ModSettingsManager.SetStringValue(ModSettingsConstants.FEEDBACK_MENU_IMPROVE_TEXT, m_improveField.text);
-            ModSettingsManager.SetStringValue(ModSettingsConstants.FEEDBACK_MENU_FAVORITE_TEXT, m_favoriteField.text);
+            ModSettingsManager.SetStringValue(ModSettingsConstants.FEEDBACK_MENU_IMPROVE_TEXT, _improveField.text);
+            ModSettingsManager.SetStringValue(ModSettingsConstants.FEEDBACK_MENU_FAVORITE_TEXT, _favoriteField.text);
             ModSettingsDataManager.Instance.Save();
         }
 
         private void refreshElementsNextFrame()
         {
-            m_refreshElementsNextFrame = true;
+            _refreshElementsNextFrame = true;
         }
 
         private void refreshElements()
         {
-            bool shouldBeInteractable = !HasSentFeedback && !m_isSendingFeedback;
+            bool shouldBeInteractable = !HasSentFeedback && !_isSendingFeedback;
 
-            m_improveField.interactable = shouldBeInteractable;
-            m_favoriteField.interactable = shouldBeInteractable;
-            m_1rankButton.interactable = selectedRank != 1 && shouldBeInteractable;
-            m_2rankButton.interactable = selectedRank != 2 && shouldBeInteractable;
-            m_3rankButton.interactable = selectedRank != 3 && shouldBeInteractable;
-            m_4rankButton.interactable = selectedRank != 4 && shouldBeInteractable;
-            m_5rankButton.interactable = selectedRank != 5 && shouldBeInteractable;
-            m_sendButton.interactable = shouldBeInteractable && selectedRank > 0 && selectedRank < 6 && !m_improveField.text.IsNullOrEmpty() && !m_improveField.text.IsNullOrWhiteSpace();
+            _improveField.interactable = shouldBeInteractable;
+            _favoriteField.interactable = shouldBeInteractable;
+            _1rankButton.interactable = selectedRank != 1 && shouldBeInteractable;
+            _2rankButton.interactable = selectedRank != 2 && shouldBeInteractable;
+            _3rankButton.interactable = selectedRank != 3 && shouldBeInteractable;
+            _4rankButton.interactable = selectedRank != 4 && shouldBeInteractable;
+            _5rankButton.interactable = selectedRank != 5 && shouldBeInteractable;
+            _sendButton.interactable = shouldBeInteractable && selectedRank > 0 && selectedRank < 6 && !_improveField.text.IsNullOrEmpty() && !_improveField.text.IsNullOrWhiteSpace();
 
-            m_loadingIndicator.SetActive(m_isSendingFeedback);
+            _loadingIndicator.SetActive(_isSendingFeedback);
         }
 
         private void likeTheMod()
         {
             HasLikedTheMod = true;
-            m_likeButton.interactable = false;
+            _likeButton.interactable = false;
             API.Like("rAnDomPaTcHeS1", "true", delegate (JsonObject jsonObject)
             {
                 ModUIUtils.MessagePopupOK("Successfully liked the mod!", "Thanks!", false);
@@ -180,13 +180,13 @@ namespace OverhaulMod.UI
 
         private string getCharLeftTextForField(InputField inputField)
         {
-            return $"{inputField.characterLimit - inputField.text.Length} {m_charsLeftText}";
+            return $"{inputField.characterLimit - inputField.text.Length} {_charsLeftText}";
         }
 
         public void SetExitButtonVisible(bool value)
         {
-            m_exitGameButton.gameObject.SetActive(value);
-            m_skipButton.gameObject.SetActive(value && !HasEverSentFeedback);
+            _exitGameButton.gameObject.SetActive(value);
+            _skipButton.gameObject.SetActive(value && !HasEverSentFeedback);
         }
 
         public void OnExitGameButtonClicked()
@@ -198,23 +198,23 @@ namespace OverhaulMod.UI
         public void OnImproveFieldChanged(string text)
         {
             refreshElementsNextFrame();
-            m_improveFieldCharsLeftText.text = getCharLeftTextForField(m_improveField);
+            _improveFieldCharsLeftText.text = getCharLeftTextForField(_improveField);
         }
 
         public void OnFavoriteFieldChanged(string text)
         {
             refreshElementsNextFrame();
-            m_favoriteFieldCharsLeftText.text = getCharLeftTextForField(m_favoriteField);
+            _favoriteFieldCharsLeftText.text = getCharLeftTextForField(_favoriteField);
         }
 
         public void OnSendButtonClicked()
         {
             HasSentFeedback = true;
-            m_isSendingFeedback = true;
+            _isSendingFeedback = true;
             refreshElementsNextFrame();
-            PostmanManager.Instance.SendFeedback(selectedRank, m_improveField.text, m_favoriteField.text, delegate
+            PostmanManager.Instance.SendFeedback(selectedRank, _improveField.text, _favoriteField.text, delegate
             {
-                m_isSendingFeedback = false;
+                _isSendingFeedback = false;
                 refreshElementsNextFrame();
                 ModUIUtils.MessagePopupOK(LocalizationManager.Instance.GetTranslatedString("feedback_success_header"), LocalizationManager.Instance.GetTranslatedString("feedback_success_text"), true);
 
@@ -223,11 +223,11 @@ namespace OverhaulMod.UI
                     ModSettingsManager.SetStringValue(ModSettingsConstants.FEEDBACK_MENU_IMPROVE_TEXT, string.Empty);
                     ModSettingsManager.SetStringValue(ModSettingsConstants.FEEDBACK_MENU_FAVORITE_TEXT, string.Empty);
                     ModSettingsManager.SetBoolValue(ModSettingsConstants.HAS_EVER_SENT_FEEDBACK, true);
-                    m_skipButton.gameObject.SetActive(false);
+                    _skipButton.gameObject.SetActive(false);
                 }
             }, delegate (string error)
             {
-                m_isSendingFeedback = false;
+                _isSendingFeedback = false;
                 refreshElementsNextFrame();
                 ModUIUtils.MessagePopupOK("Could not send the feedback", $"Error details:\n{error}\n\nTry again later", true);
             });
@@ -270,7 +270,7 @@ namespace OverhaulMod.UI
 
         public void OnSkipButtonClicked()
         {
-            m_skipButton.interactable = false;
+            _skipButton.interactable = false;
             ModSettingsManager.SetBoolValue(ModSettingsConstants.HAS_EVER_SENT_FEEDBACK, true);
         }
     }

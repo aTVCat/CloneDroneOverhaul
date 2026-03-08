@@ -9,39 +9,39 @@ namespace OverhaulMod.UI
     {
         [UIElementAction(nameof(Hide))]
         [UIElement("CloseButton")]
-        private readonly Button m_exitButton;
+        private readonly Button _exitButton;
 
         [UIElementAction(nameof(OnDownloadButtonClicked))]
         [UIElement("DownloadButton")]
-        private readonly Button m_downloadButton;
+        private readonly Button _downloadButton;
 
         [UIElementAction(nameof(OnUpdateButtonClicked))]
         [UIElement("UpdateButton")]
-        private readonly Button m_updateButton;
+        private readonly Button _updateButton;
 
         [UIElementAction(nameof(OnRefreshButtonClicked))]
         [UIElement("RefreshButton")]
-        private readonly Button m_refreshButton;
+        private readonly Button _refreshButton;
 
         [UIElement("ProgressBar", false)]
-        private readonly GameObject m_progressBar;
+        private readonly GameObject _progressBar;
 
         [UIElement("Fill")]
-        private readonly Image m_progressBarFill;
+        private readonly Image _progressBarFill;
 
         [UIElement("VersionText")]
-        private readonly Text m_versionText;
+        private readonly Text _versionText;
 
         [UIElement("Header")]
-        private readonly Text m_header;
+        private readonly Text _header;
 
-        private PersonalizationManager m_personalizationManager;
+        private PersonalizationManager _personalizationManager;
 
         private static float s_dontActuallyRefreshRemoteVersionUntilTime;
 
         protected override void OnInitialized()
         {
-            m_personalizationManager = PersonalizationManager.Instance;
+            _personalizationManager = PersonalizationManager.Instance;
             s_dontActuallyRefreshRemoteVersionUntilTime = 0f;
         }
 
@@ -50,14 +50,14 @@ namespace OverhaulMod.UI
             base.Show();
             refreshContents();
 
-            PersonalizationManager personalizationManager = m_personalizationManager;
+            PersonalizationManager personalizationManager = _personalizationManager;
             if (personalizationManager.GetPersonalizationAssetsState() == PersonalizationAssetsState.NotInstalled)
             {
-                m_header.text = LocalizationManager.Instance.GetTranslatedString("customization_need_install_header");
+                _header.text = LocalizationManager.Instance.GetTranslatedString("customization_need_install_header");
             }
             else
             {
-                m_header.text = LocalizationManager.Instance.GetTranslatedString("customization_need_update_header");
+                _header.text = LocalizationManager.Instance.GetTranslatedString("customization_need_update_header");
             }
         }
 
@@ -69,62 +69,62 @@ namespace OverhaulMod.UI
 
         public bool CanExit()
         {
-            return m_exitButton.gameObject.activeSelf;
+            return _exitButton.gameObject.activeSelf;
         }
 
         private void refreshContents()
         {
-            PersonalizationManager personalizationManager = m_personalizationManager;
+            PersonalizationManager personalizationManager = _personalizationManager;
 
-            m_updateButton.interactable = true;
-            m_progressBar.SetActive(personalizationManager.IsDownloadingCustomizationFile());
+            _updateButton.interactable = true;
+            _progressBar.SetActive(personalizationManager.IsDownloadingCustomizationFile());
             switch (personalizationManager.GetPersonalizationAssetsState())
             {
                 case PersonalizationAssetsState.NotInstalled:
-                    m_downloadButton.gameObject.SetActive(!personalizationManager.IsDownloadingCustomizationFile());
-                    m_refreshButton.gameObject.SetActive(false);
-                    m_updateButton.gameObject.SetActive(false);
+                    _downloadButton.gameObject.SetActive(!personalizationManager.IsDownloadingCustomizationFile());
+                    _refreshButton.gameObject.SetActive(false);
+                    _updateButton.gameObject.SetActive(false);
                     break;
                 case PersonalizationAssetsState.Installed:
-                    m_downloadButton.gameObject.SetActive(false);
-                    m_refreshButton.gameObject.SetActive(!personalizationManager.IsDownloadingCustomizationFile());
-                    m_updateButton.gameObject.SetActive(!personalizationManager.IsDownloadingCustomizationFile());
-                    m_updateButton.interactable = false;
+                    _downloadButton.gameObject.SetActive(false);
+                    _refreshButton.gameObject.SetActive(!personalizationManager.IsDownloadingCustomizationFile());
+                    _updateButton.gameObject.SetActive(!personalizationManager.IsDownloadingCustomizationFile());
+                    _updateButton.interactable = false;
                     break;
                 case PersonalizationAssetsState.NeedUpdate:
-                    m_downloadButton.gameObject.SetActive(false);
-                    m_refreshButton.gameObject.SetActive(false);
-                    m_updateButton.gameObject.SetActive(!personalizationManager.IsDownloadingCustomizationFile());
+                    _downloadButton.gameObject.SetActive(false);
+                    _refreshButton.gameObject.SetActive(false);
+                    _updateButton.gameObject.SetActive(!personalizationManager.IsDownloadingCustomizationFile());
                     break;
             }
 
             PersonalizationAssetsInfo personalizationAssetsInfo = personalizationManager.localAssetsInfo;
             if (personalizationAssetsInfo == null || personalizationAssetsInfo.AssetVersionNumber == -1)
             {
-                m_versionText.text = "None";
+                _versionText.text = "None";
             }
             else
             {
-                m_versionText.text = personalizationAssetsInfo.AssetVersionNumber.ToString();
+                _versionText.text = personalizationAssetsInfo.AssetVersionNumber.ToString();
             }
         }
 
         private void refreshProgressBarFill()
         {
-            PersonalizationManager personalizationManager = m_personalizationManager;
+            PersonalizationManager personalizationManager = _personalizationManager;
             if (personalizationManager.IsDownloadingCustomizationFile())
             {
-                m_progressBarFill.fillAmount = Mathf.Lerp(m_progressBarFill.fillAmount, personalizationManager.GetCustomizationFileDownloadProgress(), Time.unscaledDeltaTime * 12.5f);
+                _progressBarFill.fillAmount = Mathf.Lerp(_progressBarFill.fillAmount, personalizationManager.GetCustomizationFileDownloadProgress(), Time.unscaledDeltaTime * 12.5f);
             }
         }
 
         public void OnDownloadButtonClicked()
         {
-            m_progressBarFill.fillAmount = 0f;
-            m_exitButton.gameObject.SetActive(false);
-            m_personalizationManager.DownloadCustomizationFile(delegate (string error)
+            _progressBarFill.fillAmount = 0f;
+            _exitButton.gameObject.SetActive(false);
+            _personalizationManager.DownloadCustomizationFile(delegate (string error)
             {
-                m_exitButton.gameObject.SetActive(true);
+                _exitButton.gameObject.SetActive(true);
                 refreshContents();
 
                 if (!error.IsNullOrEmpty())
@@ -137,11 +137,11 @@ namespace OverhaulMod.UI
 
         public void OnUpdateButtonClicked()
         {
-            m_progressBarFill.fillAmount = 0f;
-            m_exitButton.gameObject.SetActive(false);
-            m_personalizationManager.DownloadCustomizationFile(delegate (string error)
+            _progressBarFill.fillAmount = 0f;
+            _exitButton.gameObject.SetActive(false);
+            _personalizationManager.DownloadCustomizationFile(delegate (string error)
             {
-                m_exitButton.gameObject.SetActive(true);
+                _exitButton.gameObject.SetActive(true);
                 refreshContents();
 
                 if (!error.IsNullOrEmpty())
@@ -154,20 +154,20 @@ namespace OverhaulMod.UI
 
         public void OnRefreshButtonClicked()
         {
-            m_refreshButton.interactable = false;
+            _refreshButton.interactable = false;
             if (Time.realtimeSinceStartup < s_dontActuallyRefreshRemoteVersionUntilTime)
             {
                 DelegateScheduler.Instance.Schedule(delegate
                 {
-                    m_refreshButton.interactable = true;
+                    _refreshButton.interactable = true;
                 }, 1f);
                 return;
             }
 
-            m_personalizationManager.RefreshRemoteCustomizationAssetsVersion(delegate (bool result)
+            _personalizationManager.RefreshRemoteCustomizationAssetsVersion(delegate (bool result)
             {
                 s_dontActuallyRefreshRemoteVersionUntilTime = Time.realtimeSinceStartup + 15f;
-                m_refreshButton.interactable = true;
+                _refreshButton.interactable = true;
                 if (result)
                     refreshContents();
             });

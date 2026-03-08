@@ -8,21 +8,21 @@ namespace OverhaulMod.UI
     {
         [UIElementAction(nameof(Hide))]
         [UIElement("CloseButton")]
-        private readonly Button m_exitButton;
+        private readonly Button _exitButton;
 
         [UIElementAction(nameof(OnDoneButtonClicked))]
         [UIElement("DoneButton")]
-        private readonly Button m_doneButton;
+        private readonly Button _doneButton;
 
         [UIElement("FolderNameField")]
-        private readonly InputField m_nameField;
+        private readonly InputField _nameField;
 
         [UIElement("StatusText")]
-        private readonly Text m_statusText;
+        private readonly Text _statusText;
 
         public Action<string> Callback;
 
-        private FileCreationDialogController m_controller;
+        private FileCreationDialogController _controller;
 
         protected override void OnInitialized()
         {
@@ -35,26 +35,26 @@ namespace OverhaulMod.UI
                 SuccessMessage = "You can create the addon."
             };
             controller.OnProcessedName.AddListener(onProcessedInput);
-            controller.Initialize(m_nameField);
-            m_controller = controller;
+            controller.Initialize(_nameField);
+            _controller = controller;
         }
 
         public override void Show()
         {
             base.Show();
-            m_controller.ClearInput();
+            _controller.ClearInput();
         }
 
         public override void Update()
         {
-            m_controller.UpdateController();
+            _controller.UpdateController();
         }
 
         private void onProcessedInput(FileCreationDialogController.FileNameProcessResult result)
         {
-            m_statusText.text = result.Message;
-            m_statusText.color = result.DisplayColor;
-            m_doneButton.interactable = !result.Error && !result.IsNotResult;
+            _statusText.text = result.Message;
+            _statusText.color = result.DisplayColor;
+            _doneButton.interactable = !result.Error && !result.IsNotResult;
         }
 
         public void OnDoneButtonClicked()
@@ -62,7 +62,7 @@ namespace OverhaulMod.UI
             Hide();
             if (Callback != null)
             {
-                Callback(m_nameField.text);
+                Callback(_nameField.text);
                 Callback = null;
             }
         }

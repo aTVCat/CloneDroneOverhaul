@@ -12,13 +12,13 @@ namespace OverhaulMod.UI
         public static bool EnableDebugMenu;
 
         private static readonly Dictionary<string, string> s_debugValues = new Dictionary<string, string>();
-        private StringBuilder m_stringBuilder;
+        private StringBuilder _stringBuilder;
 
         public static bool Enabled;
 
         public override void Start()
         {
-            m_stringBuilder = new StringBuilder();
+            _stringBuilder = new StringBuilder();
         }
 
         public void OnGUI()
@@ -34,18 +34,18 @@ namespace OverhaulMod.UI
             }
 
             int index = 0;
-            _ = m_stringBuilder.Clear();
+            _ = _stringBuilder.Clear();
             foreach (KeyValuePair<string, string> keyValue in s_debugValues)
             {
-                _ = m_stringBuilder.Append(keyValue.Key);
-                _ = m_stringBuilder.Append(": ");
-                _ = m_stringBuilder.Append(keyValue.Value);
+                _ = _stringBuilder.Append(keyValue.Key);
+                _ = _stringBuilder.Append(": ");
+                _ = _stringBuilder.Append(keyValue.Value);
                 if (index < s_debugValues.Count - 1)
-                    _ = m_stringBuilder.Append("\n");
+                    _ = _stringBuilder.Append("\n");
 
                 index++;
             }
-            _ = GUILayout.TextArea(m_stringBuilder.ToString());
+            _ = GUILayout.TextArea(_stringBuilder.ToString());
             GUILayout.EndArea();
         }
 

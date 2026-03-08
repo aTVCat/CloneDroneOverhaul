@@ -21,23 +21,23 @@ namespace OverhaulMod.UI
 
         public bool IsMountEnergyBar;
 
-        private CanvasGroup m_canvasGroup;
+        private CanvasGroup _canvasGroup;
 
-        private CharacterTracker m_characterTracker;
+        private CharacterTracker _characterTracker;
 
         private void Start()
         {
-            m_canvasGroup = EnergyUI.gameObject.AddComponent<CanvasGroup>();
-            m_characterTracker = CharacterTracker.Instance;
+            _canvasGroup = EnergyUI.gameObject.AddComponent<CanvasGroup>();
+            _characterTracker = CharacterTracker.Instance;
         }
 
         private void Update()
         {
             EnergyUI energyUI = EnergyUI;
-            CanvasGroup canvasGroup = m_canvasGroup;
+            CanvasGroup canvasGroup = _canvasGroup;
             if (energyUI && canvasGroup)
             {
-                FirstPersonMover target = m_characterTracker.GetPlayerRobot();
+                FirstPersonMover target = _characterTracker.GetPlayerRobot();
                 if (IsMountEnergyBar)
                 {
                     FirstPersonMover mount = target.GetCharacterWeAreRiding();

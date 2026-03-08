@@ -18,20 +18,20 @@ namespace OverhaulMod.Engine
 
         public float AdditionalXOffset, AdditionalZOffset;
 
-        private Camera m_camera;
-        private Transform m_playerCameraTransform;
-        private SettingsManager m_settingsManager;
-        private FirstPersonMover m_owner;
+        private Camera _camera;
+        private Transform _playerCameraTransform;
+        private SettingsManager _settingsManager;
+        private FirstPersonMover _owner;
 
-        private Vector3 m_rotation;
-        private float m_cursorMovementVelocityX, m_cursorMovementVelocityY;
+        private Vector3 _rotation;
+        private float _cursorMovementVelocityX, _cursorMovementVelocityY;
 
         public bool enableControl
         {
             get
             {
-                FirstPersonMover owner = m_owner;
-                return owner && owner.IsPlayerCameraActive() && m_settingsManager && !PhotoManager.Instance.IsInPhotoMode();
+                FirstPersonMover owner = _owner;
+                return owner && owner.IsPlayerCameraActive() && _settingsManager && !PhotoManager.Instance.IsInPhotoMode();
             }
         }
 
@@ -42,22 +42,22 @@ namespace OverhaulMod.Engine
                 if (!EnableRolling)
                     return true;
 
-                FirstPersonMover owner = m_owner;
+                FirstPersonMover owner = _owner;
                 return Cursor.visible || !owner || owner.IsAimingBow() || owner.IsRidingOtherCharacter() || !owner.IsPlayerInputEnabled() || owner._isGrabbedForUpgrade;
             }
         }
 
         public void Initialize(Camera camera, FirstPersonMover firstPersonMover)
         {
-            m_settingsManager = SettingsManager.Instance;
-            m_playerCameraTransform = camera.transform;
-            m_owner = firstPersonMover;
-            m_camera = camera;
+            _settingsManager = SettingsManager.Instance;
+            _playerCameraTransform = camera.transform;
+            _owner = firstPersonMover;
+            _camera = camera;
         }
 
         private void LateUpdate()
         {
-            if (!m_playerCameraTransform)
+            if (!_playerCameraTransform)
                 return;
 
             if (!enableControl)
@@ -65,7 +65,7 @@ namespace OverhaulMod.Engine
 
             bool forceZero = forceInitialRotation;
 
-            FirstPersonMover firstPersonMover = m_owner;
+            FirstPersonMover firstPersonMover = _owner;
             float x = 0f;
             float z = 0f;
             if (!forceZero)
@@ -87,9 +87,9 @@ namespace OverhaulMod.Engine
                     x += 1f;
             }
 
-            if (m_camera)
+            if (_camera)
             {
-                m_camera.nearClipPlane = CameraManager.EnableFirstPersonMode ? 0.1f : 0.3f;
+                _camera.nearClipPlane = CameraManager.EnableFirstPersonMode ? 0.1f : 0.3f;
             }
 
             UpdateViewBobbing(forceZero);
@@ -107,30 +107,30 @@ namespace OverhaulMod.Engine
             {
                 float ts = Mathf.Min(1f, Time.timeScale);
                 float cursorX = forceZero ? 0f : player.GetAxis(7) * multiply;
-                float cursorY = forceZero ? 0f : player.GetAxis(6) * (m_settingsManager.GetInvertMouse() ? 1f : -1f) * multiply;
+                float cursorY = forceZero ? 0f : player.GetAxis(6) * (_settingsManager.GetInvertMouse() ? 1f : -1f) * multiply;
 
-                m_cursorMovementVelocityX = Mathf.Lerp(m_cursorMovementVelocityX, cursorX * 0.8f, deltaTimeMultiplied) * ts;
-                m_cursorMovementVelocityY = Mathf.Lerp(m_cursorMovementVelocityY, cursorY * 0.8f, deltaTimeMultiplied) * ts;
+                _cursorMovementVelocityX = Mathf.Lerp(_cursorMovementVelocityX, cursorX * 0.8f, deltaTimeMultiplied) * ts;
+                _cursorMovementVelocityY = Mathf.Lerp(_cursorMovementVelocityY, cursorY * 0.8f, deltaTimeMultiplied) * ts;
             }
             else
             {
-                m_cursorMovementVelocityX = 0f;
-                m_cursorMovementVelocityY = 0f;
+                _cursorMovementVelocityX = 0f;
+                _cursorMovementVelocityY = 0f;
             }
 
             bool isOnFloorFirstPersonMode = CameraManager.EnableFirstPersonMode && firstPersonMover.IsOnFloorFromKick() && !firstPersonMover.IsGettingUpFromKick();
             float limit = isOnFloorFirstPersonMode ? 90f : 10f;
 
-            Vector3 newTargetRotation = m_rotation;
-            newTargetRotation.x = Mathf.Clamp(Mathf.Lerp(newTargetRotation.x, isOnFloorFirstPersonMode ? -60f : targetX, multiply) + m_cursorMovementVelocityY, -limit, limit);
-            newTargetRotation.y = Mathf.Clamp(Mathf.Lerp(newTargetRotation.y, targetY, multiply) + m_cursorMovementVelocityX, -limit, limit);
+            Vector3 newTargetRotation = _rotation;
+            newTargetRotation.x = Mathf.Clamp(Mathf.Lerp(newTargetRotation.x, isOnFloorFirstPersonMode ? -60f : targetX, multiply) + _cursorMovementVelocityY, -limit, limit);
+            newTargetRotation.y = Mathf.Clamp(Mathf.Lerp(newTargetRotation.y, targetY, multiply) + _cursorMovementVelocityX, -limit, limit);
             newTargetRotation.z = Mathf.Clamp(Mathf.Lerp(newTargetRotation.z, targetZ, multiply), -limit, limit);
-            m_rotation = newTargetRotation;
+            _rotation = newTargetRotation;
 
-            if (!m_owner._cameraHolderAnimator || !m_owner._cameraHolderAnimator.enabled)
+            if (!_owner._cameraHolderAnimator || !_owner._cameraHolderAnimator.enabled)
                 return;
 
-            m_playerCameraTransform.localEulerAngles = newTargetRotation;
+            _playerCameraTransform.localEulerAngles = newTargetRotation;
         }
 
         public void UpdateViewBobbing(bool forceZero)
@@ -142,7 +142,7 @@ namespace OverhaulMod.Engine
                 return;
             }
 
-            FirstPersonMover owner = m_owner;
+            FirstPersonMover owner = _owner;
             if (!owner)
             {
                 AdditionalXOffset = 0f;

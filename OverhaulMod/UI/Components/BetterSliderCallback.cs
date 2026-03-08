@@ -5,9 +5,9 @@ namespace OverhaulMod.UI
 {
     public class BetterSliderCallback : ModBehaviour
     {
-        private bool m_isWaitingMouseButtonGetUp;
-        private float m_valueToSet;
-        private Slider.SliderEvent m_sliderEvent;
+        private bool _isWaitingMouseButtonGetUp;
+        private float _valueToSet;
+        private Slider.SliderEvent _sliderEvent;
 
         public override void Awake()
         {
@@ -21,23 +21,23 @@ namespace OverhaulMod.UI
             Slider.SliderEvent newSliderEvent = new Slider.SliderEvent();
             newSliderEvent.AddListener(onValueChanged);
 
-            m_sliderEvent = slider.onValueChanged;
+            _sliderEvent = slider.onValueChanged;
             slider.onValueChanged = newSliderEvent;
         }
 
         public override void Update()
         {
-            if (m_isWaitingMouseButtonGetUp && !Input.GetMouseButton(0))
+            if (_isWaitingMouseButtonGetUp && !Input.GetMouseButton(0))
             {
-                m_isWaitingMouseButtonGetUp = false;
-                m_sliderEvent.Invoke(m_valueToSet);
+                _isWaitingMouseButtonGetUp = false;
+                _sliderEvent.Invoke(_valueToSet);
             }
         }
 
         private void onValueChanged(float value)
         {
-            m_valueToSet = value;
-            m_isWaitingMouseButtonGetUp = true;
+            _valueToSet = value;
+            _isWaitingMouseButtonGetUp = true;
         }
     }
 }

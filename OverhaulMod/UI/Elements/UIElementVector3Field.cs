@@ -11,33 +11,33 @@ namespace OverhaulMod.UI
     {
         [UIElementAction(nameof(OnXFieldChanged))]
         [UIElement("XField")]
-        private readonly InputField m_xField;
+        private readonly InputField _xField;
 
         [UIElementAction(nameof(OnYFieldChanged))]
         [UIElement("YField")]
-        private readonly InputField m_yField;
+        private readonly InputField _yField;
 
         [UIElementAction(nameof(OnZFieldChanged))]
         [UIElement("ZField")]
-        private readonly InputField m_zField;
+        private readonly InputField _zField;
 
-        private bool m_disableCallbacks;
+        private bool _disableCallbacks;
 
-        private Vector3 m_vector;
+        private Vector3 _vector;
         public Vector3 vector
         {
             get
             {
-                return m_vector;
+                return _vector;
             }
             set
             {
-                m_vector = value;
-                m_disableCallbacks = true;
-                m_xField.text = value.x.ToString(CultureInfo.InvariantCulture);
-                m_yField.text = value.y.ToString(CultureInfo.InvariantCulture);
-                m_zField.text = value.z.ToString(CultureInfo.InvariantCulture);
-                m_disableCallbacks = false;
+                _vector = value;
+                _disableCallbacks = true;
+                _xField.text = value.x.ToString(CultureInfo.InvariantCulture);
+                _yField.text = value.y.ToString(CultureInfo.InvariantCulture);
+                _zField.text = value.z.ToString(CultureInfo.InvariantCulture);
+                _disableCallbacks = false;
 
                 onValueChanged.Invoke(value);
             }
@@ -47,7 +47,7 @@ namespace OverhaulMod.UI
 
         public void OnXFieldChanged(string val)
         {
-            if (m_disableCallbacks)
+            if (_disableCallbacks)
                 return;
 
             onXChanged(ModParseUtils.TryParseToFloat(val, 0f));
@@ -55,7 +55,7 @@ namespace OverhaulMod.UI
 
         public void OnYFieldChanged(string val)
         {
-            if (m_disableCallbacks)
+            if (_disableCallbacks)
                 return;
 
             onYChanged(ModParseUtils.TryParseToFloat(val, 0f));
@@ -63,7 +63,7 @@ namespace OverhaulMod.UI
 
         public void OnZFieldChanged(string val)
         {
-            if (m_disableCallbacks)
+            if (_disableCallbacks)
                 return;
 
             onZChanged(ModParseUtils.TryParseToFloat(val, 0f));
@@ -73,7 +73,7 @@ namespace OverhaulMod.UI
         {
             Vector3 vector1 = vector;
             vector1.x = val;
-            m_vector = vector1;
+            _vector = vector1;
             onValueChanged.Invoke(vector1);
         }
 
@@ -81,7 +81,7 @@ namespace OverhaulMod.UI
         {
             Vector3 vector1 = vector;
             vector1.y = val;
-            m_vector = vector1;
+            _vector = vector1;
             onValueChanged.Invoke(vector1);
         }
 
@@ -89,7 +89,7 @@ namespace OverhaulMod.UI
         {
             Vector3 vector1 = vector;
             vector1.z = val;
-            m_vector = vector1;
+            _vector = vector1;
             onValueChanged.Invoke(vector1);
         }
 

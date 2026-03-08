@@ -10,51 +10,51 @@ namespace OverhaulMod.Visuals.ImageEffects
         // 2 - Deuteranopia
         // 3 - Tritanopia
 
-        private int m_type;
+        private int _type;
         public int type
         {
             get
             {
-                return m_type;
+                return _type;
             }
             set
             {
-                if (m_material)
-                    m_material.SetInt("type", value);
+                if (_material)
+                    _material.SetInt("type", value);
 
-                m_type = value;
+                _type = value;
             }
         }
 
-        public Shader m_shader;
+        public Shader _shader;
 
-        private Material m_material;
+        private Material _material;
 
-        private bool m_supported;
+        private bool _supported;
 
         private void Start()
         {
             if (!SystemInfo.supportsImageEffects || SystemInfo.graphicsShaderLevel < 30)
                 return;
 
-            m_shader = ModResources.Shader(AssetBundleConstants.IMAGE_EFFECTS, "Colorblind");
-            if (!m_shader || !m_shader.isSupported)
+            _shader = ModResources.Shader(AssetBundleConstants.IMAGE_EFFECTS, "Colorblind");
+            if (!_shader || !_shader.isSupported)
                 return;
 
-            m_material = new Material(m_shader);
-            m_material.SetInt("type", type);
+            _material = new Material(_shader);
+            _material.SetInt("type", type);
 
-            if (!m_material || m_material.passCount != 1)
+            if (!_material || _material.passCount != 1)
                 return;
 
-            m_supported = true;
+            _supported = true;
         }
 
         private void OnRenderImage(RenderTexture source, RenderTexture destination)
         {
-            if (m_supported)
+            if (_supported)
             {
-                Graphics.Blit(source, destination, m_material);
+                Graphics.Blit(source, destination, _material);
             }
             else
             {

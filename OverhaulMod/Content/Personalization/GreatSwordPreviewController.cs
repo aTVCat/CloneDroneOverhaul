@@ -5,15 +5,15 @@ namespace OverhaulMod.Content.Personalization
 {
     public class GreatSwordPreviewController : MonoBehaviour
     {
-        private GameObject m_greatSwordModel;
+        private GameObject _greatSwordModel;
 
-        private WeaponModel m_weaponModel;
+        private WeaponModel _weaponModel;
 
-        private bool m_initialized;
+        private bool _initialized;
 
         private void OnEnable()
         {
-            if (!m_initialized)
+            if (!_initialized)
             {
                 _ = base.StartCoroutine(initializeCoroutine());
             }
@@ -25,38 +25,38 @@ namespace OverhaulMod.Content.Personalization
             while (firstPersonMover && !firstPersonMover.HasCharacterModel())
                 yield return null;
 
-            m_initialized = true;
+            _initialized = true;
             if (!firstPersonMover)
                 yield break;
 
-            m_weaponModel = firstPersonMover.GetCharacterModel().GetWeaponModel(WeaponType.Sword);
+            _weaponModel = firstPersonMover.GetCharacterModel().GetWeaponModel(WeaponType.Sword);
             yield break;
         }
 
         public void SetPreviewActivate(bool value)
         {
-            if (!m_initialized || !m_weaponModel)
+            if (!_initialized || !_weaponModel)
                 return;
 
             if (value)
             {
-                if (!m_greatSwordModel)
+                if (!_greatSwordModel)
                 {
                     PhysicalWeaponModelType weaponModelType = WeaponManager.Instance.GetWeaponModelReplacementPrefab(WeaponType.Sword, false, true, false);
-                    m_greatSwordModel = Instantiate(WeaponManager.Instance.GetDefaultWeaponModel(weaponModelType), m_weaponModel.transform, false).gameObject;
-                    m_greatSwordModel.transform.localScale = Vector3.one * 1.01f;
+                    _greatSwordModel = Instantiate(WeaponManager.Instance.GetDefaultWeaponModel(weaponModelType), _weaponModel.transform, false).gameObject;
+                    _greatSwordModel.transform.localScale = Vector3.one * 1.01f;
                 }
-                m_greatSwordModel.SetActive(true);
+                _greatSwordModel.SetActive(true);
             }
-            else if (m_greatSwordModel)
+            else if (_greatSwordModel)
             {
-                m_greatSwordModel.SetActive(false);
+                _greatSwordModel.SetActive(false);
             }
         }
 
         public bool IsPreviewActive()
         {
-            return m_greatSwordModel && m_greatSwordModel.activeSelf;
+            return _greatSwordModel && _greatSwordModel.activeSelf;
         }
     }
 }

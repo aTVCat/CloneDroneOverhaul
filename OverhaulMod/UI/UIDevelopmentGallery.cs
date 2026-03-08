@@ -11,13 +11,13 @@ namespace OverhaulMod.UI
     {
         [UIElementAction(nameof(Hide))]
         [UIElement("CloseButton")]
-        private readonly Button m_exitButton;
+        private readonly Button _exitButton;
 
         [UIElement("ImageDisplay", false)]
-        private readonly ModdedObject m_imageDisplay;
+        private readonly ModdedObject _imageDisplay;
 
         [UIElement("Content")]
-        private readonly Transform m_imageDisplaysContainer;
+        private readonly Transform _imageDisplaysContainer;
 
         public override bool hideTitleScreen => true;
 
@@ -30,8 +30,8 @@ namespace OverhaulMod.UI
         public override void Hide()
         {
             base.Hide();
-            if (m_imageDisplaysContainer.childCount != 0)
-                TransformUtils.DestroyAllChildren(m_imageDisplaysContainer);
+            if (_imageDisplaysContainer.childCount != 0)
+                TransformUtils.DestroyAllChildren(_imageDisplaysContainer);
         }
 
         public void Populate()
@@ -41,8 +41,8 @@ namespace OverhaulMod.UI
 
         private IEnumerator populateCoroutine()
         {
-            if (m_imageDisplaysContainer.childCount != 0)
-                TransformUtils.DestroyAllChildren(m_imageDisplaysContainer);
+            if (_imageDisplaysContainer.childCount != 0)
+                TransformUtils.DestroyAllChildren(_imageDisplaysContainer);
 
             if (!AddonManager.Instance.HasInstalledAddon(AddonManager.GALLERY_ADDON_ID, out string directory))
             {
@@ -57,7 +57,7 @@ namespace OverhaulMod.UI
             int counter = 0;
             foreach (string imageFilePath in images)
             {
-                ModdedObject moddedObject = Instantiate(m_imageDisplay, m_imageDisplaysContainer);
+                ModdedObject moddedObject = Instantiate(_imageDisplay, _imageDisplaysContainer);
                 moddedObject.gameObject.SetActive(true);
                 UIElementGalleryImage galleryImage = moddedObject.gameObject.AddComponent<UIElementGalleryImage>();
                 galleryImage.filePath = imageFilePath;

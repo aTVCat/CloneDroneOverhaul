@@ -10,19 +10,19 @@ namespace OverhaulMod.UI
     public class UIElementTitleScreenBackgroundConfig : OverhaulUIBehaviour
     {
         [UIElement("Label")]
-        private readonly Text m_label;
+        private readonly Text _label;
 
         [UIElementAction(nameof(OnSetInGameLevelButtonClicked))]
         [UIElement("SetInGameLevelButton")]
-        private readonly Button m_setInGameLevelButton;
+        private readonly Button _setInGameLevelButton;
 
         [UIElementAction(nameof(OnSetWorkshopLevelButtonClicked))]
         [UIElement("SetWorkshopLevelButton")]
-        private readonly Button m_setWorkshopLevelButton;
+        private readonly Button _setWorkshopLevelButton;
 
         [UIElementAction(nameof(OnSetCustomLevelButtonClicked))]
         [UIElement("SetCustomLevelButton")]
-        private readonly Button m_setCustomLevelButton;
+        private readonly Button _setCustomLevelButton;
 
         public GameObject levelIsLoadingBG
         {
@@ -67,7 +67,7 @@ namespace OverhaulMod.UI
                     LevelTags = new List<LevelTags>() { },
                     LevelJSONPath = levelPath,
                     LevelEditorDifficultyIndex = 0,
-                    LevelID = TitleScreenCustomizationManager.CUSTOM_LEVEL_ID
+                    LevelID = TitleScreenCustomizationManager.CUSTO_LEVEL_ID
                 };
                 LevelManager.Instance._currentWorkshopLevelDifficultyIndex = 0;
                 onSetLevel(levelDescription);
@@ -88,22 +88,22 @@ namespace OverhaulMod.UI
             TitleScreenBackgroundInfo info = TitleScreenCustomizationManager.Instance?.GetStaticBackgroundInfo();
             if (info == null || info.Level == null)
             {
-                m_label.text = "None";
+                _label.text = "None";
                 return;
             }
 
             if (info.Level.WorkshopItem != null)
             {
                 SteamWorkshopItem steamWorkshopItem = info.Level.WorkshopItem;
-                m_label.text = $"{steamWorkshopItem.Title} (by {steamWorkshopItem.CreatorName})";
+                _label.text = $"{steamWorkshopItem.Title} (by {steamWorkshopItem.CreatorName})";
                 return;
             }
-            if (info.Level.LevelID == TitleScreenCustomizationManager.CUSTOM_LEVEL_ID)
+            if (info.Level.LevelID == TitleScreenCustomizationManager.CUSTO_LEVEL_ID)
             {
-                m_label.text = Path.GetFileNameWithoutExtension(info.Level.LevelJSONPath);
+                _label.text = Path.GetFileNameWithoutExtension(info.Level.LevelJSONPath);
                 return;
             }
-            m_label.text = StringUtils.AddSpacesToCamelCasedString(info.Level.PrefabName.Substring(info.Level.PrefabName.LastIndexOf("/") + 1));
+            _label.text = StringUtils.AddSpacesToCamelCasedString(info.Level.PrefabName.Substring(info.Level.PrefabName.LastIndexOf("/") + 1));
         }
     }
 }

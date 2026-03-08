@@ -6,15 +6,15 @@ namespace OverhaulMod.UI
 {
     public class EventController : MonoBehaviour
     {
-        private List<KeyValuePair<string, Action>> m_addedEventListeners;
+        private List<KeyValuePair<string, Action>> _addedEventListeners;
 
         public void AddEventListener(string eventName, Action action)
         {
-            List<KeyValuePair<string, Action>> list = m_addedEventListeners;
+            List<KeyValuePair<string, Action>> list = _addedEventListeners;
             if (list == null)
             {
                 list = new List<KeyValuePair<string, Action>>();
-                m_addedEventListeners = list;
+                _addedEventListeners = list;
             }
 
             GlobalEventManager.Instance.AddEventListener(eventName, action);
@@ -23,7 +23,7 @@ namespace OverhaulMod.UI
 
         private void OnDestroy()
         {
-            List<KeyValuePair<string, Action>> list = m_addedEventListeners;
+            List<KeyValuePair<string, Action>> list = _addedEventListeners;
             if (list == null || list.Count == 0)
                 return;
 

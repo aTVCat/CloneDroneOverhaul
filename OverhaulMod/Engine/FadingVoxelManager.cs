@@ -13,11 +13,11 @@ namespace OverhaulMod.Engine
         [ModSetting(ModSettingsConstants.ENABLE_VOXEL_BURNING, true)]
         public static bool EnableBurning;
 
-        private List<FadingVoxel> m_voxelsToFade;
+        private List<FadingVoxel> _voxelsToFade;
 
-        private ModTime m_modTime;
+        private ModTime _modTime;
 
-        private bool m_hasInitialized;
+        private bool _hasInitialized;
 
         public float multiplier
         {
@@ -45,14 +45,14 @@ namespace OverhaulMod.Engine
 
         private void Start()
         {
-            m_voxelsToFade = new List<FadingVoxel>();
-            m_modTime = ModTime.Instance;
-            m_hasInitialized = true;
+            _voxelsToFade = new List<FadingVoxel>();
+            _modTime = ModTime.Instance;
+            _hasInitialized = true;
         }
 
         private void Update()
         {
-            ModTime modTime = m_modTime;
+            ModTime modTime = _modTime;
             if (modTime.HasFixedUpdatedThisFrame() && modTime.GetFixedFrameCount() % 10 == 0)
             {
                 UpdateFading();
@@ -61,7 +61,7 @@ namespace OverhaulMod.Engine
 
         public void AddFadingVoxel(PicaVoxelPoint picaVoxelPoint, MechBodyPart mechBodyPart, float timeToDestroy)
         {
-            if (!m_hasInitialized || m_voxelsToFade.Count > fadingVoxelsLimit)
+            if (!_hasInitialized || _voxelsToFade.Count > fadingVoxelsLimit)
                 return;
 
             FadingVoxel fadingVoxel = new FadingVoxel()
@@ -70,7 +70,7 @@ namespace OverhaulMod.Engine
                 BodyPart = mechBodyPart,
                 TimeToDestroy = timeToDestroy
             };
-            m_voxelsToFade.Add(fadingVoxel);
+            _voxelsToFade.Add(fadingVoxel);
         }
 
         public byte BurnColor(byte color) => (byte)Mathf.RoundToInt(color * ModCache.attackManager.FireBurnColorMultiplier);
@@ -90,12 +90,12 @@ namespace OverhaulMod.Engine
 
         public void UpdateFading()
         {
-            if (!m_hasInitialized || m_voxelsToFade == null || m_voxelsToFade.Count == 0)
+            if (!_hasInitialized || _voxelsToFade == null || _voxelsToFade.Count == 0)
                 return;
 
             int index = 0;
             List<int> indicesToRemove = new List<int>();
-            foreach (FadingVoxel fadingVoxel in m_voxelsToFade)
+            foreach (FadingVoxel fadingVoxel in _voxelsToFade)
             {
                 if (fadingVoxel.TimeToDestroy <= Time.time)
                 {
@@ -132,7 +132,7 @@ namespace OverhaulMod.Engine
                 int i = indicesToRemove.Count - 1;
                 do
                 {
-                    m_voxelsToFade.RemoveAt(indicesToRemove[i]);
+                    _voxelsToFade.RemoveAt(indicesToRemove[i]);
                     i--;
                 } while (i > -1);
             }

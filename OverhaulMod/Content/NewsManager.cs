@@ -17,7 +17,7 @@ namespace OverhaulMod.Content
         [ModSetting(ModSettingsConstants.DOWNLOADED_NEWS_COUNT, 0, ModSetting.Tag.IgnoreExport)]
         public static int DownloadedNewsCount;
 
-        private NewsUserData m_userData;
+        private NewsUserData _userData;
 
         public static float timeToToClearCache
         {
@@ -46,7 +46,7 @@ namespace OverhaulMod.Content
 
         public void LoadUserData()
         {
-            if (m_userData != null)
+            if (_userData != null)
                 return;
 
             NewsUserData newsUserData;
@@ -60,16 +60,16 @@ namespace OverhaulMod.Content
                 newsUserData = new NewsUserData();
                 newsUserData.FixValues();
             }
-            m_userData = newsUserData;
+            _userData = newsUserData;
         }
 
         public void SaveUserData()
         {
-            NewsUserData newsUserData = m_userData;
+            NewsUserData newsUserData = _userData;
             if (newsUserData == null)
             {
                 newsUserData = new NewsUserData();
-                m_userData = newsUserData;
+                _userData = newsUserData;
             }
 
             newsUserData.FixValues();
@@ -88,11 +88,11 @@ namespace OverhaulMod.Content
 
         public void SetHasSeenNews()
         {
-            NewsUserData newsUserData = m_userData;
+            NewsUserData newsUserData = _userData;
             if (newsUserData == null)
             {
                 newsUserData = new NewsUserData();
-                m_userData = newsUserData;
+                _userData = newsUserData;
             }
             newsUserData.FixValues();
 
@@ -101,16 +101,16 @@ namespace OverhaulMod.Content
 
         public bool HasAnsweredSurvey(string title)
         {
-            return m_userData != null && m_userData.HasAnswered(title);
+            return _userData != null && _userData.HasAnswered(title);
         }
 
         public void SetHasAnsweredSurvey(string title)
         {
-            NewsUserData newsUserData = m_userData;
+            NewsUserData newsUserData = _userData;
             if (newsUserData == null)
             {
                 newsUserData = new NewsUserData();
-                m_userData = newsUserData;
+                _userData = newsUserData;
             }
 
             newsUserData.FixValues();

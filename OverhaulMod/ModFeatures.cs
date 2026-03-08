@@ -5,11 +5,11 @@ namespace OverhaulMod
 {
     public static class ModFeatures
     {
-        private static readonly Dictionary<FeatureType, bool> m_cachedValues = new Dictionary<FeatureType, bool>();
+        private static readonly Dictionary<FeatureType, bool> _cachedValues = new Dictionary<FeatureType, bool>();
 
         public static void CacheValues()
         {
-            Dictionary<FeatureType, bool> d = m_cachedValues;
+            Dictionary<FeatureType, bool> d = _cachedValues;
             d.Clear();
 
             foreach (FeatureType feature in typeof(FeatureType).GetEnumValues())
@@ -20,7 +20,7 @@ namespace OverhaulMod
         {
             if (useCaching)
             {
-                Dictionary<FeatureType, bool> d = m_cachedValues;
+                Dictionary<FeatureType, bool> d = _cachedValues;
                 if (d != null && d.ContainsKey(feature))
                     return d[feature];
             }

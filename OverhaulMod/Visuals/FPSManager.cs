@@ -69,7 +69,7 @@ namespace OverhaulMod.Visuals
 
         public void RefreshDropdownOptionTranslation()
         {
-            FPSCapOptions[0].text = LocalizationManager.Instance.GetTranslatedString("settings_option_custom_fps");
+            FPSCapOptions[0].text = LocalizationManager.Instance.GetTranslatedString("settings_option_custo_fps");
             FPSCapOptions[1].text = LocalizationManager.Instance.GetTranslatedString("settings_option_unlimited_fps");
         }
 

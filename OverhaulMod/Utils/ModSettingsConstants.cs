@@ -574,7 +574,7 @@ namespace OverhaulMod.Utils
         /// <summary>
         /// <see cref="Content.UpdateManager"/>
         /// </summary>
-        public const string NOTIFY_ABOUT_NEW_VERSION_FROM_BRANCH = "NotifyAboutNewVersionFromBranch";
+        public const string NOTIFY_ABOUT_NEW_VERSION_FRO_BRANCH = "NotifyAboutNewVersionFromBranch";
 
         /// <summary>
         /// <see cref="Content.UpdateManager"/>
@@ -669,6 +669,6 @@ namespace OverhaulMod.Utils
         /// <summary>
         /// <see cref="Visuals.PostEffectsManager"/>
         /// </summary>
-        public const string BLOOM_MODE = "BloomMode";
+        public const string BLOO_MODE = "BloomMode";
     }
 }

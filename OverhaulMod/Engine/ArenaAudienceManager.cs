@@ -9,28 +9,28 @@ namespace OverhaulMod.Engine
     {
         public const string FILE_NAME = "arenaAudiencePlacement.json";
 
-        private List<ArenaAudienceLinePoint> m_linePoints;
+        private List<ArenaAudienceLinePoint> _linePoints;
 
-        private List<AudiencePlacementLine> m_customPlacementLines;
-        private List<AudiencePlacementLine> m_customVipPlacementLines;
+        private List<AudiencePlacementLine> _customPlacementLines;
+        private List<AudiencePlacementLine> _customVipPlacementLines;
 
-        private AudiencePlacementLine[] m_vanillaPlacementLines;
-        private AudiencePlacementLine[] m_vanillaVipPlacementLines;
+        private AudiencePlacementLine[] _vanillaPlacementLines;
+        private AudiencePlacementLine[] _vanillaVipPlacementLines;
 
-        private ArenaAudienceLinePointInfoList m_infoList;
+        private ArenaAudienceLinePointInfoList _infoList;
 
         public void OnGameLoaded()
         {
-            if (m_linePoints == null)
-                m_linePoints = new List<ArenaAudienceLinePoint>();
+            if (_linePoints == null)
+                _linePoints = new List<ArenaAudienceLinePoint>();
 
-            if (m_customPlacementLines == null)
-                m_customPlacementLines = new List<AudiencePlacementLine>();
+            if (_customPlacementLines == null)
+                _customPlacementLines = new List<AudiencePlacementLine>();
 
-            if (m_customVipPlacementLines == null)
-                m_customVipPlacementLines = new List<AudiencePlacementLine>();
+            if (_customVipPlacementLines == null)
+                _customVipPlacementLines = new List<AudiencePlacementLine>();
 
-            if (m_infoList == null)
+            if (_infoList == null)
                 LoadCustomPlacementLinesFile();
 
             ClearCustomPlacementLines();
@@ -41,13 +41,13 @@ namespace OverhaulMod.Engine
 
         public void AddLinePoint(ArenaAudienceLinePoint arenaAudienceLine)
         {
-            if (!m_linePoints.Contains(arenaAudienceLine))
-                m_linePoints.Add(arenaAudienceLine);
+            if (!_linePoints.Contains(arenaAudienceLine))
+                _linePoints.Add(arenaAudienceLine);
         }
 
         public void RemoveLinePoint(ArenaAudienceLinePoint arenaAudienceLine)
         {
-            _ = m_linePoints.Remove(arenaAudienceLine);
+            _ = _linePoints.Remove(arenaAudienceLine);
         }
 
         public void ClearLinesList(List<AudiencePlacementLine> list)
@@ -85,16 +85,16 @@ namespace OverhaulMod.Engine
                 arenaAudienceLinePointInfoList = new ArenaAudienceLinePointInfoList();
             }
             arenaAudienceLinePointInfoList.FixValues();
-            m_infoList = arenaAudienceLinePointInfoList;
+            _infoList = arenaAudienceLinePointInfoList;
         }
 
         public void CreateCustomPlacementLines(Transform parent)
         {
-            if (m_infoList == null || m_infoList.Points.IsNullOrEmpty())
+            if (_infoList == null || _infoList.Points.IsNullOrEmpty())
                 return;
 
             Dictionary<int, (ArenaAudienceLinePointInfo, ArenaAudienceLinePointInfo)> dictionary = new Dictionary<int, (ArenaAudienceLinePointInfo, ArenaAudienceLinePointInfo)>();
-            foreach (ArenaAudienceLinePointInfo pointInfo in m_infoList.Points)
+            foreach (ArenaAudienceLinePointInfo pointInfo in _infoList.Points)
             {
                 if (!dictionary.ContainsKey(pointInfo.ID))
                 {
@@ -147,11 +147,11 @@ namespace OverhaulMod.Engine
 
                     if (tuple.Item1.IsVIP && tuple.Item2.IsVIP)
                     {
-                        m_customVipPlacementLines.Add(audiencePlacementLine);
+                        _customVipPlacementLines.Add(audiencePlacementLine);
                     }
                     else
                     {
-                        m_customPlacementLines.Add(audiencePlacementLine);
+                        _customPlacementLines.Add(audiencePlacementLine);
                     }
                 }
             }
@@ -159,19 +159,19 @@ namespace OverhaulMod.Engine
 
         public void ClearCustomPlacementLines()
         {
-            ClearLinesList(m_customPlacementLines);
-            ClearLinesList(m_customVipPlacementLines);
+            ClearLinesList(_customPlacementLines);
+            ClearLinesList(_customVipPlacementLines);
         }
 
         public void SaveCustomPlacementLines()
         {
-            if (m_linePoints.IsNullOrEmpty())
+            if (_linePoints.IsNullOrEmpty())
                 return;
 
             ArenaAudienceLinePointInfoList arenaAudienceLinePointInfoList = new ArenaAudienceLinePointInfoList();
             arenaAudienceLinePointInfoList.FixValues();
 
-            foreach (ArenaAudienceLinePoint point in m_linePoints)
+            foreach (ArenaAudienceLinePoint point in _linePoints)
             {
                 ArenaAudienceLinePointInfo arenaAudienceLinePointInfo = new ArenaAudienceLinePointInfo(point);
                 arenaAudienceLinePointInfoList.Points.Add(arenaAudienceLinePointInfo);
@@ -215,25 +215,25 @@ namespace OverhaulMod.Engine
 
             AudienceRoot2019 audienceRoot2019 = audienceManager.AudienceRoot;
 
-            if (m_vanillaPlacementLines == null)
+            if (_vanillaPlacementLines == null)
             {
-                m_vanillaPlacementLines = audienceRoot2019.NormalPlacementLines;
+                _vanillaPlacementLines = audienceRoot2019.NormalPlacementLines;
             }
 
-            if (m_vanillaVipPlacementLines == null)
+            if (_vanillaVipPlacementLines == null)
             {
-                m_vanillaVipPlacementLines = audienceRoot2019.VipPlacementLines;
+                _vanillaVipPlacementLines = audienceRoot2019.VipPlacementLines;
             }
 
             if (overhaul)
             {
-                audienceRoot2019.NormalPlacementLines = m_customPlacementLines.ToArray();
-                audienceRoot2019.VipPlacementLines = m_customVipPlacementLines.ToArray();
+                audienceRoot2019.NormalPlacementLines = _customPlacementLines.ToArray();
+                audienceRoot2019.VipPlacementLines = _customVipPlacementLines.ToArray();
             }
             else
             {
-                audienceRoot2019.NormalPlacementLines = m_vanillaPlacementLines;
-                audienceRoot2019.VipPlacementLines = m_vanillaVipPlacementLines;
+                audienceRoot2019.NormalPlacementLines = _vanillaPlacementLines;
+                audienceRoot2019.VipPlacementLines = _vanillaVipPlacementLines;
             }
 
             if (refreshNow)

@@ -11,22 +11,22 @@ namespace OverhaulMod.Visuals
         [ModSetting(ModSettingsConstants.ENABLE_ARROW_REWORK, true)]
         public static bool EnableArrowRework;
 
-        private ArrowProjectile m_arrowProjectile;
+        private ArrowProjectile _arrowProjectile;
 
-        private Transform m_normalVisualsTransform;
-        private GameObject[] m_normalVisuals;
+        private Transform _normalVisualsTransform;
+        private GameObject[] _normalVisuals;
 
-        private Transform m_fireVisualsTransform;
-        private GameObject[] m_fireVisuals;
+        private Transform _fireVisualsTransform;
+        private GameObject[] _fireVisuals;
 
-        private Transform m_newNormalModelTransform;
-        private Transform m_newFireModelTransform;
+        private Transform _newNormalModelTransform;
+        private Transform _newFireModelTransform;
 
-        private bool m_hasStarted;
+        private bool _hasStarted;
 
         public override void Start()
         {
-            m_arrowProjectile = base.GetComponent<ArrowProjectile>();
+            _arrowProjectile = base.GetComponent<ArrowProjectile>();
 
             Transform normalVisualsObject = TransformUtils.FindChildRecursive(base.transform, "NormalVisuals");
             if (normalVisualsObject && normalVisualsObject.childCount != 0)
@@ -36,11 +36,11 @@ namespace OverhaulMod.Visuals
                 {
                     gameObjects[i] = normalVisualsObject.GetChild(i).gameObject;
                 }
-                m_normalVisuals = gameObjects;
-                m_normalVisualsTransform = normalVisualsObject;
+                _normalVisuals = gameObjects;
+                _normalVisualsTransform = normalVisualsObject;
             }
             else
-                m_normalVisuals = Array.Empty<GameObject>();
+                _normalVisuals = Array.Empty<GameObject>();
 
             Transform fireVisualsObject = TransformUtils.FindChildRecursive(base.transform, "FlamingVisuals");
             if (fireVisualsObject && fireVisualsObject.childCount != 0)
@@ -50,14 +50,14 @@ namespace OverhaulMod.Visuals
                 {
                     gameObjects[i] = fireVisualsObject.GetChild(i).gameObject;
                 }
-                m_fireVisuals = gameObjects;
-                m_fireVisualsTransform = fireVisualsObject;
+                _fireVisuals = gameObjects;
+                _fireVisualsTransform = fireVisualsObject;
             }
             else
-                m_fireVisuals = Array.Empty<GameObject>();
+                _fireVisuals = Array.Empty<GameObject>();
 
             InstantiateNewModels();
-            m_hasStarted = true;
+            _hasStarted = true;
         }
 
         public override void OnEnable()
@@ -72,7 +72,7 @@ namespace OverhaulMod.Visuals
 
         public void RefreshAllVisuals()
         {
-            if (!m_arrowProjectile || !m_hasStarted)
+            if (!_arrowProjectile || !_hasStarted)
                 return;
 
             bool featureEnabled = ModCore.isEnabled && EnableArrowRework;
@@ -83,10 +83,10 @@ namespace OverhaulMod.Visuals
             }
             SetDefaultVisuals(false);
 
-            Transform newNormalModelTransform = m_newNormalModelTransform;
-            Transform newFireModelTransform = m_newFireModelTransform;
+            Transform newNormalModelTransform = _newNormalModelTransform;
+            Transform newFireModelTransform = _newFireModelTransform;
 
-            Transform[] transforms = m_arrowProjectile.BladeScaleTransforms;
+            Transform[] transforms = _arrowProjectile.BladeScaleTransforms;
             if (transforms != null && transforms.Length != 0)
             {
                 Transform transform = transforms[0];
@@ -104,23 +104,23 @@ namespace OverhaulMod.Visuals
 
         public void SetDefaultVisuals(bool visible)
         {
-            if (m_fireVisuals != null)
+            if (_fireVisuals != null)
             {
-                foreach (GameObject gameObject in m_fireVisuals)
+                foreach (GameObject gameObject in _fireVisuals)
                     gameObject.SetActive(visible);
             }
 
-            if (m_normalVisuals != null)
+            if (_normalVisuals != null)
             {
-                foreach (GameObject gameObject in m_normalVisuals)
+                foreach (GameObject gameObject in _normalVisuals)
                     gameObject.SetActive(visible);
             }
 
-            if (m_newNormalModelTransform)
-                m_newNormalModelTransform.gameObject.SetActive(!visible);
+            if (_newNormalModelTransform)
+                _newNormalModelTransform.gameObject.SetActive(!visible);
 
-            if (m_newFireModelTransform)
-                m_newFireModelTransform.gameObject.SetActive(!visible);
+            if (_newFireModelTransform)
+                _newFireModelTransform.gameObject.SetActive(!visible);
         }
 
         public void InstantiateNewModels()
@@ -129,10 +129,10 @@ namespace OverhaulMod.Visuals
             if (!featureEnabled)
                 return;
 
-            if (!m_newNormalModelTransform)
+            if (!_newNormalModelTransform)
             {
                 Transform arrowModel = Instantiate(ModResources.Prefab(AssetBundleConstants.MODELS, "OverhaulVRArrowModel")).transform;
-                arrowModel.SetParent(m_normalVisualsTransform);
+                arrowModel.SetParent(_normalVisualsTransform);
                 arrowModel.localPosition = new Vector3(0.025f, -0.025f, -0.6f);
                 arrowModel.localEulerAngles = new Vector3(0f, 180f, 0f);
                 arrowModel.localScale = Vector3.one * 0.4f;
@@ -142,13 +142,13 @@ namespace OverhaulMod.Visuals
                     meshRenderer.material.shader = Shader.Find("Standard");
                     meshRenderer.material.SetColor("_EmissionColor", new Color(0.7f, 1.5f, 3f) * 2f);
                 }
-                m_newNormalModelTransform = arrowModel;
+                _newNormalModelTransform = arrowModel;
             }
 
-            if (!m_newFireModelTransform)
+            if (!_newFireModelTransform)
             {
                 Transform arrowModel = Instantiate(ModResources.Prefab(AssetBundleConstants.MODELS, "OverhaulVRArrowModel")).transform;
-                arrowModel.SetParent(m_fireVisualsTransform);
+                arrowModel.SetParent(_fireVisualsTransform);
                 arrowModel.localPosition = new Vector3(0.025f, -0.025f, -0.6f);
                 arrowModel.localEulerAngles = new Vector3(0f, 180f, 0f);
                 arrowModel.localScale = Vector3.one * 0.4f;
@@ -159,7 +159,7 @@ namespace OverhaulMod.Visuals
                     meshRenderer.material.SetColor("_EmissionColor", WeaponManager.Instance.FireSpearModelPrefab.GetComponent<MeshRenderer>().material.GetColor("_EmissionColor"));
                 }
 
-                Transform ogVfx = TransformUtils.FindChildRecursive(m_fireVisualsTransform, "FireVFX");
+                Transform ogVfx = TransformUtils.FindChildRecursive(_fireVisualsTransform, "FireVFX");
                 if (ogVfx)
                 {
                     Transform newVfx = Instantiate(ogVfx, arrowModel);
@@ -168,13 +168,13 @@ namespace OverhaulMod.Visuals
                     newVfx.localScale = Vector3.one * 0.03f;
                 }
 
-                m_newFireModelTransform = arrowModel;
+                _newFireModelTransform = arrowModel;
             }
         }
 
         private IEnumerator waitThenRefreshAllVisuals()
         {
-            if (!m_hasStarted)
+            if (!_hasStarted)
             {
                 yield return null;
             }

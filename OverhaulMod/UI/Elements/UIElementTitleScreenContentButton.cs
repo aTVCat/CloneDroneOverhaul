@@ -6,23 +6,23 @@ namespace OverhaulMod.UI
     public class UIElementTitleScreenContentButton : OverhaulUIBehaviour
     {
         [UIElement("LoadingIndicator", false)]
-        private readonly GameObject m_loadingIndicator;
+        private readonly GameObject _loadingIndicator;
 
         [UIElement("Image", true)]
-        private readonly GameObject m_icon;
+        private readonly GameObject _icon;
 
-        private AddonManager m_addonManager;
+        private AddonManager _addonManager;
 
         protected override void OnInitialized()
         {
-            m_addonManager = AddonManager.Instance;
+            _addonManager = AddonManager.Instance;
         }
 
         public override void Update()
         {
-            bool isLoadingAnyContent = m_addonManager.IsLoadingAddons();
-            m_loadingIndicator.SetActive(isLoadingAnyContent);
-            m_icon.SetActive(!isLoadingAnyContent);
+            bool isLoadingAnyContent = _addonManager.IsLoadingAddons();
+            _loadingIndicator.SetActive(isLoadingAnyContent);
+            _icon.SetActive(!isLoadingAnyContent);
         }
     }
 }

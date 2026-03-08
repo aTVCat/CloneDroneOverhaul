@@ -36,7 +36,7 @@ namespace OverhaulMod.Content
 
         public bool InstallInfoError, PreviewURLError, GetChildrenError;
 
-        private bool m_disposed;
+        private bool _disposed;
 
         public bool ContainsTag(string tag)
         {
@@ -68,7 +68,7 @@ namespace OverhaulMod.Content
 
         public bool IsDisposed()
         {
-            return m_disposed;
+            return _disposed;
         }
 
         public SteamWorkshopItem ToSteamWorkshopItem()
@@ -93,7 +93,7 @@ namespace OverhaulMod.Content
 
         public void Dispose()
         {
-            if (!m_disposed)
+            if (!_disposed)
             {
                 if (AdditionalPreviews != null)
                     AdditionalPreviews.Clear();
@@ -121,7 +121,7 @@ namespace OverhaulMod.Content
                 GetChildrenError = false;
                 PostDate = default;
                 UpdateDate = default;
-                m_disposed = true;
+                _disposed = true;
                 GC.SuppressFinalize(this);
             }
         }

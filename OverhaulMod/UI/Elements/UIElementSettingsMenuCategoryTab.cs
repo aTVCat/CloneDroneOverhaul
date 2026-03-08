@@ -10,27 +10,27 @@ namespace OverhaulMod.UI
         public const float EXTRA_HEIGHT = 7f;
 
         [UIElement("Text")]
-        private readonly Text m_text;
+        private readonly Text _text;
 
         [UIElement("SubcategoriesContainer")]
-        private readonly RectTransform m_subcategoriesContainer;
+        private readonly RectTransform _subcategoriesContainer;
 
         [UIElement("SubcategoriesContainer", false)]
-        private readonly GameObject m_subcategoriesContainerObject;
+        private readonly GameObject _subcategoriesContainerObject;
 
         [UIElement("SubcategoryDisplay", false)]
-        private readonly Text m_subcategoryDisplay;
+        private readonly Text _subcategoryDisplay;
 
         public string LocalizationID;
 
-        private bool m_mouseIn;
+        private bool _mouseIn;
 
-        private float m_expandProgress, m_height;
+        private float _expandProgress, _height;
 
         protected override void OnInitialized()
         {
-            m_height = 0f;
-            m_text.text = LocalizationID.IsNullOrEmpty() ? tabId : LocalizationManager.Instance.GetTranslatedString(LocalizationID);
+            _height = 0f;
+            _text.text = LocalizationID.IsNullOrEmpty() ? tabId : LocalizationManager.Instance.GetTranslatedString(LocalizationID);
 
             switch (tabId)
             {
@@ -85,43 +85,43 @@ namespace OverhaulMod.UI
 
         public override void OnDisable()
         {
-            m_mouseIn = false;
-            m_expandProgress = 0f;
+            _mouseIn = false;
+            _expandProgress = 0f;
         }
 
         public override void Update()
         {
-            RectTransform rt = m_subcategoriesContainer;
+            RectTransform rt = _subcategoriesContainer;
             Vector2 sd = rt.sizeDelta;
-            sd.y = Mathf.Lerp(0f, m_height + EXTRA_HEIGHT, NumberUtils.EaseOutQuad(0f, 1f, m_expandProgress));
+            sd.y = Mathf.Lerp(0f, _height + EXTRA_HEIGHT, NumberUtils.EaseOutQuad(0f, 1f, _expandProgress));
             rt.sizeDelta = sd;
 
-            m_subcategoriesContainerObject.SetActive(m_expandProgress > 0f);
+            _subcategoriesContainerObject.SetActive(_expandProgress > 0f);
 
-            m_expandProgress = Mathf.Clamp01(m_expandProgress + ((m_mouseIn ? 1f : -1f) * Time.unscaledDeltaTime * 7.5f));
+            _expandProgress = Mathf.Clamp01(_expandProgress + ((_mouseIn ? 1f : -1f) * Time.unscaledDeltaTime * 7.5f));
         }
 
         public void InitializeSubcategoryDisplay(string text, bool subHeader)
         {
-            m_height += 20f + EXTRA_HEIGHT;
-            Text text1 = Instantiate(m_subcategoryDisplay, m_subcategoriesContainer);
+            _height += 20f + EXTRA_HEIGHT;
+            Text text1 = Instantiate(_subcategoryDisplay, _subcategoriesContainer);
             text1.gameObject.SetActive(true);
             text1.text = LocalizationManager.Instance.GetTranslatedString($"settings_{(subHeader ? "subheader" : "header")}_{text.ToLower().Replace(' ', '_')}");
         }
 
         public void OnPointerEnter(PointerEventData eventData)
         {
-            m_mouseIn = m_height != 0f;
+            _mouseIn = _height != 0f;
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
-            m_mouseIn = false;
+            _mouseIn = false;
         }
 
         public void OnPointerUp(PointerEventData eventData)
         {
-            m_mouseIn = false;
+            _mouseIn = false;
         }
     }
 }

@@ -11,7 +11,7 @@ namespace OverhaulMod.Engine
         public const string FILE_NAME = "localization.json";
         public const string LANGUAGE_OPTIONS_CACHE_KEY = "LangOptions_";
 
-        private ModLocalizationInfo m_localizationInfo;
+        private ModLocalizationInfo _localizationInfo;
 
         private void Start()
         {
@@ -25,7 +25,7 @@ namespace OverhaulMod.Engine
 
         public void LoadInfo()
         {
-            ModLocalizationInfo info = m_localizationInfo;
+            ModLocalizationInfo info = _localizationInfo;
             if (info != null)
                 return;
 
@@ -39,7 +39,7 @@ namespace OverhaulMod.Engine
             }
             info.FixValues();
 
-            m_localizationInfo = info;
+            _localizationInfo = info;
             string currentLangId;
             try
             {
@@ -55,7 +55,7 @@ namespace OverhaulMod.Engine
 
         public void SaveInfo()
         {
-            ModLocalizationInfo info = m_localizationInfo;
+            ModLocalizationInfo info = _localizationInfo;
             if (info != null)
             {
                 ModJsonUtils.WriteStream(Path.Combine(ModCore.dataFolder, FILE_NAME), info);
@@ -64,7 +64,7 @@ namespace OverhaulMod.Engine
 
         public void AddTranslation(string key)
         {
-            ModLocalizationInfo info = m_localizationInfo;
+            ModLocalizationInfo info = _localizationInfo;
             if (info != null)
             {
                 info.AddTranslation(key);
@@ -73,7 +73,7 @@ namespace OverhaulMod.Engine
 
         public void ChangeTranslation(string oldName, string newName)
         {
-            ModLocalizationInfo info = m_localizationInfo;
+            ModLocalizationInfo info = _localizationInfo;
             if (info != null)
             {
                 info.ChangeTranslation(oldName, newName);
@@ -82,7 +82,7 @@ namespace OverhaulMod.Engine
 
         public void DeleteTranslation(string key)
         {
-            ModLocalizationInfo info = m_localizationInfo;
+            ModLocalizationInfo info = _localizationInfo;
             if (info != null)
             {
                 info.DeleteTranslation(key);
@@ -91,7 +91,7 @@ namespace OverhaulMod.Engine
 
         public string GetTranslation(string langId, string key)
         {
-            ModLocalizationInfo info = m_localizationInfo;
+            ModLocalizationInfo info = _localizationInfo;
             if (info != null)
             {
                 Dictionary<string, string> d = info.GetDictionary(langId);
@@ -105,7 +105,7 @@ namespace OverhaulMod.Engine
 
         public void SetTranslation(string langId, string key, string value)
         {
-            ModLocalizationInfo info = m_localizationInfo;
+            ModLocalizationInfo info = _localizationInfo;
             if (info != null)
             {
                 Dictionary<string, string> d = info.GetDictionary(langId);
@@ -150,14 +150,14 @@ namespace OverhaulMod.Engine
 
         public Dictionary<string, string> GetTranslationDictionary(string langId)
         {
-            ModLocalizationInfo modLocalizationInfo = m_localizationInfo;
+            ModLocalizationInfo modLocalizationInfo = _localizationInfo;
             return modLocalizationInfo != null ? modLocalizationInfo.GetDictionary(langId) : null;
         }
 
         public void PopulateTranslationDictionary(ref Dictionary<string, string> keyValuePairs, string langId)
         {
             ModUpgradesManager.Instance.DeleteLocalizationKeysOfUpgrades(keyValuePairs); // fixes a bug which corrupts the name of upgrades after switching the language 
-            ModLocalizationInfo modLocalizationInfo = m_localizationInfo;
+            ModLocalizationInfo modLocalizationInfo = _localizationInfo;
             if (modLocalizationInfo != null)
             {
                 Dictionary<string, string> modTranslations = langId == "ru" ? modLocalizationInfo.GetDictionary("ru") : modLocalizationInfo.GetDictionary("en");

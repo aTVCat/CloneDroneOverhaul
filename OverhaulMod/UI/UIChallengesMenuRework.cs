@@ -9,54 +9,54 @@ namespace OverhaulMod.UI
     {
         [UIElementAction(nameof(Hide))]
         [UIElement("CloseButton")]
-        private readonly Button m_exitButton;
+        private readonly Button _exitButton;
 
         [UIElementAction(nameof(OnLegacyUIButtonClicked))]
         [UIElement("OldUIButton")]
-        private readonly Button m_legacyUIButton;
+        private readonly Button _legacyUIButton;
 
         [UIElementAction(nameof(OnDebugSoloChallengesButtonClicked))]
         [UIElement("DebugSoloButton")]
-        private readonly Button m_debugSoloChallengesButton;
+        private readonly Button _debugSoloChallengesButton;
         [UIElementAction(nameof(OnDebugPublicCoopChallengesButtonClicked))]
         [UIElement("DebugPubCoopButton")]
-        private readonly Button m_debugPublicCoopChallengesButton;
+        private readonly Button _debugPublicCoopChallengesButton;
         [UIElementAction(nameof(OnDebugPrivateCoopChallengesButtonClicked))]
         [UIElement("DebugPrivCoopButton")]
-        private readonly Button m_debugPrivateCoopChallengesButton;
+        private readonly Button _debugPrivateCoopChallengesButton;
 
         [UIElementAction(nameof(OnPlayRandomButtonClicked))]
         [UIElement("RandomSoloChallengeButton")]
-        private readonly Button m_soloPlayRandomButton;
+        private readonly Button _soloPlayRandomButton;
         [UIElementAction(nameof(OnPlayUndefeatedButtonClicked))]
         [UIElement("UndefeatedSoloChallengeButton")]
-        private readonly Button m_soloPlayUndefeatedButton;
+        private readonly Button _soloPlayUndefeatedButton;
 
         [UIElementAction(nameof(OnPlayRandomButtonClicked))]
         [UIElement("RandomCoopChallengeButton")]
-        private readonly Button m_coopPlayRandomButton;
+        private readonly Button _coopPlayRandomButton;
         [UIElementAction(nameof(OnPlayUndefeatedButtonClicked))]
         [UIElement("UndefeatedCoopChallengeButton")]
-        private readonly Button m_coopPlayUndefeatedButton;
+        private readonly Button _coopPlayUndefeatedButton;
 
         [UIElementAction(nameof(OnGetMoreChallengesButtonClicked))]
         [UIElement("WorkshopChallengesButton")]
-        private readonly Button m_getMoreChallengesButton;
+        private readonly Button _getMoreChallengesButton;
 
         [UIElement("SoloButtons", true)]
-        private readonly GameObject m_soloButtonsContainerObject;
+        private readonly GameObject _soloButtonsContainerObject;
         [UIElement("CoopButtons", false)]
-        private readonly GameObject m_coopButtonsContainerObject;
+        private readonly GameObject _coopButtonsContainerObject;
 
         [UIElement("PlayUndefeatedChallengeButtonHolder", true)]
-        private readonly GameObject m_soloPlayUndefeatedChallengeButtonHolder;
+        private readonly GameObject _soloPlayUndefeatedChallengeButtonHolder;
         [UIElement("JoinUndefeatedChallengeButtonHolder", true)]
-        private readonly GameObject m_coopPlayUndefeatedChallengeButtonHolder;
+        private readonly GameObject _coopPlayUndefeatedChallengeButtonHolder;
 
         [UIElement("ChallengeDisplay", false)]
-        private readonly ModdedObject m_challengeDisplayPrefab;
+        private readonly ModdedObject _challengeDisplayPrefab;
         [UIElement("Content")]
-        private readonly Transform m_challengesContainer;
+        private readonly Transform _challengesContainer;
 
         public override bool refreshOnlyCursor => true;
 
@@ -111,11 +111,11 @@ namespace OverhaulMod.UI
             startPrivateMatch = isPrivate;
 
             displayingChallenges.Clear();
-            if (m_challengesContainer.childCount != 0)
-                TransformUtils.DestroyAllChildren(m_challengesContainer);
+            if (_challengesContainer.childCount != 0)
+                TransformUtils.DestroyAllChildren(_challengesContainer);
 
-            m_coopButtonsContainerObject.SetActive(isCoop);
-            m_soloButtonsContainerObject.SetActive(!isCoop);
+            _coopButtonsContainerObject.SetActive(isCoop);
+            _soloButtonsContainerObject.SetActive(!isCoop);
 
             ChallengeManager manager = ChallengeManager.Instance;
             ChallengeDefinition[] challenges = manager.GetChallenges(isCoop);
@@ -167,7 +167,7 @@ namespace OverhaulMod.UI
                             : LocalizationManager.Instance.GetTranslatedString("A nice trophy!", -1);
                 }
 
-                ModdedObject moddedObject = Instantiate(m_challengeDisplayPrefab, m_challengesContainer);
+                ModdedObject moddedObject = Instantiate(_challengeDisplayPrefab, _challengesContainer);
                 moddedObject.gameObject.SetActive(true);
                 moddedObject.GetObject<Text>(0).text = LocalizationManager.Instance.GetTranslatedString(challengeDefinition.ChallengeName);
                 moddedObject.GetObject<Text>(1).text = LocalizationManager.Instance.GetTranslatedString(challengeDefinition.ChallengeDescription);
@@ -191,8 +191,8 @@ namespace OverhaulMod.UI
                 }
             }
 
-            m_soloPlayUndefeatedButton.interactable = hasUndefeatedChallenge;
-            m_coopPlayUndefeatedButton.interactable = hasUndefeatedChallenge;
+            _soloPlayUndefeatedButton.interactable = hasUndefeatedChallenge;
+            _coopPlayUndefeatedButton.interactable = hasUndefeatedChallenge;
         }
 
         private CharacterModelCustomizationEntry getCharacterModelUnlockedByChallenge(string challengeID)

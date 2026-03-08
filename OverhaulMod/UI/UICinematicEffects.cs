@@ -12,41 +12,41 @@ namespace OverhaulMod.UI
         }
 
         [UIElement("Borders", false)]
-        private readonly GameObject m_bordersObject;
+        private readonly GameObject _bordersObject;
 
         [UIElement("UpperBorder")]
-        private readonly RectTransform m_upperBorder;
+        private readonly RectTransform _upperBorder;
 
         [UIElement("LowerBorder")]
-        private readonly RectTransform m_lowerBorder;
+        private readonly RectTransform _lowerBorder;
 
-        private PhotoManager m_photoManager;
+        private PhotoManager _photoManager;
 
         public override bool refreshOnlyCursor => true;
         public override bool closeOnEscapeButtonPress => false;
 
         public bool borders { get; set; }
 
-        private float m_bordersHeight;
+        private float _bordersHeight;
         public float bordersHeight
         {
             get
             {
-                return m_bordersHeight;
+                return _bordersHeight;
             }
             set
             {
-                m_bordersHeight = value;
+                _bordersHeight = value;
 
                 Vector2 vector = new Vector2(0f, value);
-                m_upperBorder.sizeDelta = vector;
-                m_lowerBorder.sizeDelta = vector;
+                _upperBorder.sizeDelta = vector;
+                _lowerBorder.sizeDelta = vector;
             }
         }
 
         protected override void OnInitialized()
         {
-            m_photoManager = PhotoManager.Instance;
+            _photoManager = PhotoManager.Instance;
             instance = this;
 
             borders = false;
@@ -62,7 +62,7 @@ namespace OverhaulMod.UI
         public override void Update()
         {
             base.Update();
-            m_bordersObject.SetActive(AdvancedPhotoModeManager.Instance.IsActive() && borders);
+            _bordersObject.SetActive(AdvancedPhotoModeManager.Instance.IsActive() && borders);
         }
     }
 }

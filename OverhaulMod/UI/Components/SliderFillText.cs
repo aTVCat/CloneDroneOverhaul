@@ -12,7 +12,7 @@ namespace OverhaulMod.UI
 
         public Func<float, string> Function;
 
-        private float m_prevValue;
+        private float _prevValue;
 
         private void Start()
         {
@@ -20,7 +20,7 @@ namespace OverhaulMod.UI
             if (!sl)
                 return;
 
-            m_prevValue = sl.value;
+            _prevValue = sl.value;
             UpdateText();
         }
 
@@ -31,9 +31,9 @@ namespace OverhaulMod.UI
                 return;
 
             float newValue = sl.value;
-            if (newValue != m_prevValue)
+            if (newValue != _prevValue)
             {
-                m_prevValue = newValue;
+                _prevValue = newValue;
                 UpdateText();
             }
         }

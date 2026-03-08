@@ -19,9 +19,9 @@ namespace OverhaulMod.Engine
 
         public static readonly string LightSettingsOverrideObjectResourcePath = "Prefabs/LevelObjects/Lights/LightSettingsOverride";
 
-        private RealisticLightingInfoList m_lightingInfoList;
+        private RealisticLightingInfoList _lightingInfoList;
 
-        private Dictionary<string, bool?> m_loadingSkyboxes;
+        private Dictionary<string, bool?> _loadingSkyboxes;
 
         private void Start()
         {
@@ -41,9 +41,9 @@ namespace OverhaulMod.Engine
                 return;
 
             AddonManager.Instance.SetAddonIsLoading(this, true);
-            m_loadingSkyboxes = new Dictionary<string, bool?>();
+            _loadingSkyboxes = new Dictionary<string, bool?>();
             foreach (string file in files)
-                m_loadingSkyboxes.Add(Path.GetFileName(file), false);
+                _loadingSkyboxes.Add(Path.GetFileName(file), false);
 
             foreach (string file in files)
             {
@@ -52,11 +52,11 @@ namespace OverhaulMod.Engine
                 {
                     if (!result)
                     {
-                        m_loadingSkyboxes[fn] = null;
+                        _loadingSkyboxes[fn] = null;
                     }
                     else
                     {
-                        m_loadingSkyboxes[fn] = true;
+                        _loadingSkyboxes[fn] = true;
                     }
 
                 }, path);
@@ -67,7 +67,7 @@ namespace OverhaulMod.Engine
 
         private IEnumerator processSkyboxesCoroutine()
         {
-            while (m_loadingSkyboxes.ContainsValue(false))
+            while (_loadingSkyboxes.ContainsValue(false))
                 yield return null;
 
             string addonPath = AddonManager.Instance.GetAddonPath(AddonManager.REALISTIC_SKYBOXES_ADDON_ID);
@@ -96,24 +96,24 @@ namespace OverhaulMod.Engine
                 realisticLightingInfoList = new RealisticLightingInfoList();
                 realisticLightingInfoList.FixValues();
             }
-            m_lightingInfoList = realisticLightingInfoList;
+            _lightingInfoList = realisticLightingInfoList;
 
-            Dictionary<string, bool?> dictionary = new Dictionary<string, bool?>(m_loadingSkyboxes);
-            m_loadingSkyboxes.Clear();
+            Dictionary<string, bool?> dictionary = new Dictionary<string, bool?>(_loadingSkyboxes);
+            _loadingSkyboxes.Clear();
             foreach (KeyValuePair<string, bool?> kv in dictionary)
             {
                 if (kv.Value.HasValue && kv.Value.Value)
                 {
-                    m_loadingSkyboxes.Add(kv.Key, false);
+                    _loadingSkyboxes.Add(kv.Key, false);
                     ModActionUtils.RunCoroutine(processBundle(ModResources.AssetBundle(kv.Key, addonPath), kv.Key));
                 }
             }
 
-            while (m_loadingSkyboxes.ContainsValue(false))
+            while (_loadingSkyboxes.ContainsValue(false))
                 yield return null;
 
-            m_loadingSkyboxes.Clear();
-            m_loadingSkyboxes = null;
+            _loadingSkyboxes.Clear();
+            _loadingSkyboxes = null;
 
             LevelEditorLightManager.Instance.RefreshLightInScene();
             AddonManager.Instance.SetAddonIsLoading(this, false);
@@ -127,18 +127,18 @@ namespace OverhaulMod.Engine
             if (!r.allAssets.IsNullOrEmpty() && r.allAssets[0] is Material material)
             {
                 AdditionalSkyboxesManager.Instance.AddSkybox(key, material.name, material);
-                m_loadingSkyboxes[key] = true;
+                _loadingSkyboxes[key] = true;
             }
             else
             {
-                m_loadingSkyboxes[key] = null;
+                _loadingSkyboxes[key] = null;
             }
             yield break;
         }
 
         public void SaveLightingInfo()
         {
-            RealisticLightingInfoList realisticLightingInfoList = m_lightingInfoList;
+            RealisticLightingInfoList realisticLightingInfoList = _lightingInfoList;
             if (realisticLightingInfoList == null || realisticLightingInfoList.LightingInfos.IsNullOrEmpty())
                 return;
 
@@ -147,7 +147,7 @@ namespace OverhaulMod.Engine
 
         public void SaveCurrentLightingInfo(string skyboxName)
         {
-            RealisticLightingInfoList realisticLightingInfoList = m_lightingInfoList;
+            RealisticLightingInfoList realisticLightingInfoList = _lightingInfoList;
             if (realisticLightingInfoList == null)
             {
                 ModUIUtils.MessagePopupOK("Could not save current level lighting info", "info list is missing");
@@ -202,7 +202,7 @@ namespace OverhaulMod.Engine
             if (prefabName.IsNullOrEmpty())
                 return null;
 
-            RealisticLightingInfoList realisticLightingInfoList = m_lightingInfoList;
+            RealisticLightingInfoList realisticLightingInfoList = _lightingInfoList;
             if (realisticLightingInfoList == null || realisticLightingInfoList.LightingInfos.IsNullOrEmpty())
                 return null;
 

@@ -17,62 +17,62 @@ namespace OverhaulMod.UI
 
         [UIElementAction(nameof(OnCloseButtonClicked))]
         [UIElement("CloseButton")]
-        private readonly Button m_exitButton;
+        private readonly Button _exitButton;
 
         [UIElementAction(nameof(OnFeedbackButtonClicked))]
         [UIElement("FeedbackButton")]
-        private readonly Button m_feedbackButton;
+        private readonly Button _feedbackButton;
 
         [UIElement("VersionDisplay", false)]
-        private readonly ModdedObject m_versionDisplay;
+        private readonly ModdedObject _versionDisplay;
 
         [UIElement("Separator", false)]
-        private readonly ModdedObject m_separator;
+        private readonly ModdedObject _separator;
 
         [UIElement("Content")]
-        private readonly Transform m_container;
+        private readonly Transform _container;
 
         [UIElement("Header")]
-        private readonly Text m_headerText;
+        private readonly Text _headerText;
 
         [UIElement("TextLine", false)]
-        private readonly Text m_textLine;
+        private readonly Text _textLine;
 
         [UIElement("ImageEmbed", false)]
-        private readonly ModdedObject m_imageEmbed;
+        private readonly ModdedObject _imageEmbed;
 
         [UIElement("TextContent")]
-        private readonly Transform m_textContainer;
+        private readonly Transform _textContainer;
 
         [UIElement("VersionListBG")]
-        private readonly GameObject m_versionListBG;
+        private readonly GameObject _versionListBG;
 
         [UIElement("VersionListScrollRect")]
-        private readonly GameObject m_versionListScrollRect;
+        private readonly GameObject _versionListScrollRect;
 
         [UIElement("MainPart")]
-        private readonly RectTransform m_mainPartTransform;
+        private readonly RectTransform _mainPartTransform;
 
         [UIElement("Panel")]
-        private readonly RectTransform m_panelTransform;
+        private readonly RectTransform _panelTransform;
 
-        private Image m_shading;
+        private Image _shading;
 
         public override bool hideTitleScreen => true;
 
-        public override bool closeOnEscapeButtonPress => m_allowHidingThisMenu;
+        public override bool closeOnEscapeButtonPress => _allowHidingThisMenu;
 
-        private bool m_allowHidingThisMenu;
+        private bool _allowHidingThisMenu;
 
-        private Button m_previousButtonClicked;
+        private Button _previousButtonClicked;
 
-        private Button m_firstButton;
+        private Button _firstButton;
 
         protected override void OnInitialized()
         {
-            m_allowHidingThisMenu = true;
-            m_shading = base.GetComponent<Image>();
-            m_textLine.gameObject.AddComponent<BetterOutline>().effectColor = Color.black;
+            _allowHidingThisMenu = true;
+            _shading = base.GetComponent<Image>();
+            _textLine.gameObject.AddComponent<BetterOutline>().effectColor = Color.black;
 
             string path = Path.Combine(ModCore.dataFolder, "changelogs");
             if (!Directory.Exists(path)) return;
@@ -105,7 +105,7 @@ namespace OverhaulMod.UI
                     minorVersion = version.Minor;
                     updateString = $"{LocalizationManager.Instance.GetTranslatedString("changelog_update")} {majorVersion}.{minorVersion}";
 
-                    ModdedObject separator = Instantiate(m_separator, m_container);
+                    ModdedObject separator = Instantiate(_separator, _container);
                     separator.gameObject.SetActive(true);
                     separator.GetObject<Text>(0).text = updateString;
                 }
@@ -114,7 +114,7 @@ namespace OverhaulMod.UI
                     updateString = $"{LocalizationManager.Instance.GetTranslatedString("changelog_update")} {majorVersion}.{minorVersion}";
                 }
 
-                ModdedObject display = Instantiate(m_versionDisplay, m_container);
+                ModdedObject display = Instantiate(_versionDisplay, _container);
                 display.gameObject.SetActive(true);
 
                 string verString = version.ToString();
@@ -125,12 +125,12 @@ namespace OverhaulMod.UI
                 Button button = display.GetComponent<Button>();
                 button.onClick.AddListener(delegate
                 {
-                    Button pb = m_previousButtonClicked;
+                    Button pb = _previousButtonClicked;
                     if (pb)
                         pb.interactable = true;
 
                     button.interactable = false;
-                    m_previousButtonClicked = button;
+                    _previousButtonClicked = button;
 
                     PopulateChangelog(updateString, verHeader, verString);
                 });
@@ -138,7 +138,7 @@ namespace OverhaulMod.UI
                 if (!firstButton)
                 {
                     firstButton = button;
-                    m_firstButton = firstButton;
+                    _firstButton = firstButton;
                 }
             }
 
@@ -156,52 +156,52 @@ namespace OverhaulMod.UI
 
         public void ShowVersionList()
         {
-            m_versionListBG.SetActive(true);
-            m_versionListScrollRect.SetActive(true);
+            _versionListBG.SetActive(true);
+            _versionListScrollRect.SetActive(true);
 
-            Vector2 offset = m_mainPartTransform.offsetMin;
+            Vector2 offset = _mainPartTransform.offsetMin;
             offset.x = 265f;
-            m_mainPartTransform.offsetMin = offset;
+            _mainPartTransform.offsetMin = offset;
         }
 
         public void HideVersionList()
         {
-            m_versionListBG.SetActive(false);
-            m_versionListScrollRect.SetActive(false);
+            _versionListBG.SetActive(false);
+            _versionListScrollRect.SetActive(false);
 
-            Vector2 offset = m_mainPartTransform.offsetMin;
+            Vector2 offset = _mainPartTransform.offsetMin;
             offset.x = 10f;
-            m_mainPartTransform.offsetMin = offset;
+            _mainPartTransform.offsetMin = offset;
         }
 
         public void ShrinkPanel()
         {
-            Vector2 sideDelta = m_panelTransform.sizeDelta;
+            Vector2 sideDelta = _panelTransform.sizeDelta;
             sideDelta.x = 475f;
-            m_panelTransform.sizeDelta = sideDelta;
+            _panelTransform.sizeDelta = sideDelta;
         }
 
         public void ExpandPanel()
         {
-            Vector2 sideDelta = m_panelTransform.sizeDelta;
+            Vector2 sideDelta = _panelTransform.sizeDelta;
             sideDelta.x = 725f;
-            m_panelTransform.sizeDelta = sideDelta;
+            _panelTransform.sizeDelta = sideDelta;
         }
 
         public void SetPanelOffset(Vector2 offset)
         {
-            m_panelTransform.anchoredPosition = offset;
+            _panelTransform.anchoredPosition = offset;
         }
 
         public void SetCloseButtonActive(bool value)
         {
-            m_exitButton.gameObject.SetActive(value);
-            m_allowHidingThisMenu = value;
+            _exitButton.gameObject.SetActive(value);
+            _allowHidingThisMenu = value;
         }
 
         public void SetShadingActive(bool value)
         {
-            m_shading.enabled = value;
+            _shading.enabled = value;
         }
 
         public void SetElementsViaArguments(ShowArguments showArguments)
@@ -223,8 +223,8 @@ namespace OverhaulMod.UI
 
         public void ClickOnFirstButton()
         {
-            if (m_firstButton)
-                m_firstButton.OnPointerClick(new UnityEngine.EventSystems.PointerEventData(null));
+            if (_firstButton)
+                _firstButton.OnPointerClick(new UnityEngine.EventSystems.PointerEventData(null));
         }
 
         public void PopulateChangelog(string updateString, string header, string folderName)
@@ -265,13 +265,13 @@ namespace OverhaulMod.UI
 
         public void Clear()
         {
-            if (m_textContainer.childCount != 0)
-                TransformUtils.DestroyAllChildren(m_textContainer);
+            if (_textContainer.childCount != 0)
+                TransformUtils.DestroyAllChildren(_textContainer);
         }
 
         public void PopulateText(string header, string text)
         {
-            m_headerText.text = header;
+            _headerText.text = header;
             Clear();
 
             if (text.IsNullOrEmpty() || text.IsNullOrWhiteSpace())
@@ -294,7 +294,7 @@ namespace OverhaulMod.UI
 
             if (line.StartsWith("img="))
             {
-                ModdedObject moddedObject = Instantiate(m_imageEmbed, m_textContainer);
+                ModdedObject moddedObject = Instantiate(_imageEmbed, _textContainer);
                 moddedObject.gameObject.SetActive(true);
 
                 UIElementPatchNotesImageEmbed imageEmbed = moddedObject.gameObject.AddComponent<UIElementPatchNotesImageEmbed>();
@@ -304,7 +304,7 @@ namespace OverhaulMod.UI
             }
             else
             {
-                Text textLine = Instantiate(m_textLine, m_textContainer);
+                Text textLine = Instantiate(_textLine, _textContainer);
                 textLine.gameObject.SetActive(true);
                 configureLine(textLine, line);
             }

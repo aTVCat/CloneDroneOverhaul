@@ -9,26 +9,26 @@ namespace OverhaulMod.UI
     {
         [UIElementAction(nameof(Hide))]
         [UIElement("CloseButton")]
-        private readonly Button m_closeButton;
+        private readonly Button _closeButton;
 
         [UIElement("Header")]
-        private readonly Text m_headerText;
+        private readonly Text _headerText;
 
         [UIElement("Description")]
-        private readonly Text m_descriptionText;
+        private readonly Text _descriptionText;
 
         [UIElementAction(nameof(OnDoneButtonClicked))]
         [UIElement("DoneButton")]
-        private readonly Button m_doneButton;
+        private readonly Button _doneButton;
 
         [UIElement("InputField")]
-        private readonly InputField m_inputField;
+        private readonly InputField _inputField;
 
         [UIElement("Panel")]
-        private readonly CanvasGroup m_panelCanvasGroup;
+        private readonly CanvasGroup _panelCanvasGroup;
 
         [UIElement("Panel")]
-        private readonly RectTransform m_panelTransform;
+        private readonly RectTransform _panelTransform;
 
         public override bool refreshOnlyCursor => true;
 
@@ -41,38 +41,38 @@ namespace OverhaulMod.UI
         public override void Show()
         {
             base.Show();
-            m_inputField.ActivateInputField();
+            _inputField.ActivateInputField();
         }
 
         public override void Update()
         {
-            m_doneButton.interactable = !m_inputField.text.IsNullOrEmpty();
+            _doneButton.interactable = !_inputField.text.IsNullOrEmpty();
         }
 
         public void OnDoneButtonClicked()
         {
-            doneAction?.Invoke(m_inputField.text);
+            doneAction?.Invoke(_inputField.text);
             doneAction = null;
             Hide();
         }
 
         public void SetTexts(string header, string description)
         {
-            m_headerText.text = header;
-            m_descriptionText.text = description;
+            _headerText.text = header;
+            _descriptionText.text = description;
         }
 
         public void SetHeight(float height)
         {
-            Vector2 sizeDelta = m_panelTransform.sizeDelta;
+            Vector2 sizeDelta = _panelTransform.sizeDelta;
             sizeDelta.y = Mathf.Max(100f, height);
-            m_panelTransform.sizeDelta = sizeDelta;
+            _panelTransform.sizeDelta = sizeDelta;
         }
 
         public void SetInputFieldText(string text, int limit)
         {
-            m_inputField.text = text;
-            m_inputField.characterLimit = Mathf.Max(0, limit);
+            _inputField.text = text;
+            _inputField.characterLimit = Mathf.Max(0, limit);
         }
     }
 }

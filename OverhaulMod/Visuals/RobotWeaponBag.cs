@@ -13,9 +13,9 @@ namespace OverhaulMod.Visuals
         [ModSetting(ModSettingsConstants.ENABLE_WEAPON_BAG, true)]
         public static bool EnableWeaponBag;
 
-        private FirstPersonMover m_firstPersonMover;
+        private FirstPersonMover _firstPersonMover;
 
-        private WeaponType m_lastEquippedWeapon;
+        private WeaponType _lastEquippedWeapon;
 
         public static readonly Dictionary<WeaponType, TransformInfo> WeaponToPosition = new Dictionary<WeaponType, TransformInfo>()
         {
@@ -26,7 +26,7 @@ namespace OverhaulMod.Visuals
             { ModWeaponsManager.SCYTHE_TYPE, new TransformInfo(new Vector3(0.1f, 0.5f, -0.6f), new Vector3(290f, 280f, 70f), Vector3.one)},
         };
 
-        private Dictionary<WeaponType, GameObject> m_weaponToRenderer;
+        private Dictionary<WeaponType, GameObject> _weaponToRenderer;
 
         public Transform bag { get; private set; }
 
@@ -34,9 +34,9 @@ namespace OverhaulMod.Visuals
 
         private void Start()
         {
-            m_firstPersonMover = base.GetComponent<FirstPersonMover>();
+            _firstPersonMover = base.GetComponent<FirstPersonMover>();
 
-            m_weaponToRenderer = new Dictionary<WeaponType, GameObject>();
+            _weaponToRenderer = new Dictionary<WeaponType, GameObject>();
             CreateContainers();
             RefreshRenderers();
 
@@ -49,11 +49,11 @@ namespace OverhaulMod.Visuals
             if (!IsSupported)
                 return;
 
-            WeaponType currentWeapon = m_firstPersonMover._currentWeapon;
-            if (currentWeapon != m_lastEquippedWeapon)
+            WeaponType currentWeapon = _firstPersonMover._currentWeapon;
+            if (currentWeapon != _lastEquippedWeapon)
             {
                 RefreshRenderers();
-                m_lastEquippedWeapon = currentWeapon;
+                _lastEquippedWeapon = currentWeapon;
             }
         }
 
@@ -67,7 +67,7 @@ namespace OverhaulMod.Visuals
         {
             ModActionUtils.DoInFrames(delegate
             {
-                if (firstPersonMover && firstPersonMover == m_firstPersonMover)
+                if (firstPersonMover && firstPersonMover == _firstPersonMover)
                     RespawnRenderers();
             }, 10);
         }
@@ -102,7 +102,7 @@ namespace OverhaulMod.Visuals
 
         public void RespawnRenderers()
         {
-            Dictionary<WeaponType, GameObject> keyValues = m_weaponToRenderer;
+            Dictionary<WeaponType, GameObject> keyValues = _weaponToRenderer;
             if (keyValues == null)
                 return;
 
@@ -116,7 +116,7 @@ namespace OverhaulMod.Visuals
 
         public void RefreshRenderers()
         {
-            FirstPersonMover firstPersonMover = m_firstPersonMover;
+            FirstPersonMover firstPersonMover = _firstPersonMover;
             if (!firstPersonMover)
             {
                 DestroySelf();
@@ -141,7 +141,7 @@ namespace OverhaulMod.Visuals
             foreach (WeaponType weaponType in equippedWeapons)
                 AddRenderer(weaponType, equippedWeapons, equippedWeaponModels);
 
-            foreach (KeyValuePair<WeaponType, GameObject> keyValue in m_weaponToRenderer)
+            foreach (KeyValuePair<WeaponType, GameObject> keyValue in _weaponToRenderer)
             {
                 if (!keyValue.Value || keyValue.Key == WeaponType.None)
                     continue;
@@ -149,7 +149,7 @@ namespace OverhaulMod.Visuals
                 bool hasConstructionFinished = (!GameModeManager.IsBattleRoyale() && !GameModeManager.IsMultiplayerDuel()) || firstPersonMover.HasConstructionFinished();
                 bool isEquipped = firstPersonMover.GetEquippedWeaponType() == keyValue.Key;
                 bool shouldDisplay = EnableWeaponBag && hasConstructionFinished && !isEquipped && !droppedWeapons.Contains(keyValue.Key);
-                m_weaponToRenderer[keyValue.Key].SetActive(shouldDisplay);
+                _weaponToRenderer[keyValue.Key].SetActive(shouldDisplay);
             }
         }
 
@@ -172,7 +172,7 @@ namespace OverhaulMod.Visuals
 
             if (hasModel && hasWeapon)
             {
-                if (!m_weaponToRenderer.ContainsKey(weaponType))
+                if (!_weaponToRenderer.ContainsKey(weaponType))
                 {
                     Transform modelTransform;
                     if (weaponModel is ModWeaponModel modWeaponModel)
@@ -200,7 +200,7 @@ namespace OverhaulMod.Visuals
                     GameObject newRenderer = InstantiateNewRenderer(modelTransform, weaponType);
                     if (newRenderer)
                     {
-                        m_weaponToRenderer.Add(weaponType, newRenderer);
+                        _weaponToRenderer.Add(weaponType, newRenderer);
                     }
                 }
             }

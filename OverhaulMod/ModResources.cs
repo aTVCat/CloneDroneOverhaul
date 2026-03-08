@@ -225,29 +225,29 @@ namespace OverhaulMod
 
             public AssetLoadingState LoadingState;
 
-            private float m_loadProgress;
+            private float _loadProgress;
 
 
-            private AssetBundle m_bundle;
+            private AssetBundle _bundle;
 
-            private readonly Dictionary<string, UnityEngine.Object> m_cachedAssets;
+            private readonly Dictionary<string, UnityEngine.Object> _cachedAssets;
 
 
-            private readonly Dictionary<string, float> m_assetsBeingLoaded;
+            private readonly Dictionary<string, float> _assetsBeingLoaded;
 
             public AssetBundleInfo(string fileLocation)
             {
                 FileLocation = fileLocation;
                 LoadingState = AssetLoadingState.NotLoaded;
-                m_bundle = null;
-                m_cachedAssets = new Dictionary<string, UnityEngine.Object>();
-                m_assetsBeingLoaded = new Dictionary<string, float>();
-                m_loadProgress = 0f;
+                _bundle = null;
+                _cachedAssets = new Dictionary<string, UnityEngine.Object>();
+                _assetsBeingLoaded = new Dictionary<string, float>();
+                _loadProgress = 0f;
             }
 
             public AssetBundle GetBundle()
             {
-                return m_bundle;
+                return _bundle;
             }
 
             public float GetBundleLoadProgress()
@@ -255,15 +255,15 @@ namespace OverhaulMod
                 if (LoadingState == AssetLoadingState.NotLoaded)
                     return 0f;
 
-                return m_loadProgress;
+                return _loadProgress;
             }
 
             public float GetAssetLoadProgress(string name)
             {
-                if (m_cachedAssets.ContainsKey(name))
+                if (_cachedAssets.ContainsKey(name))
                     return 1f;
 
-                return m_assetsBeingLoaded.ContainsKey(name) ? m_assetsBeingLoaded[name] : 0f;
+                return _assetsBeingLoaded.ContainsKey(name) ? _assetsBeingLoaded[name] : 0f;
             }
 
             public T GetAsset<T>(string name) where T : UnityEngine.Object
@@ -271,13 +271,13 @@ namespace OverhaulMod
                 if (LoadingState != AssetLoadingState.Loaded)
                     return null;
 
-                if (m_cachedAssets.TryGetValue(name, out UnityEngine.Object obj))
+                if (_cachedAssets.TryGetValue(name, out UnityEngine.Object obj))
                     return (T)obj;
 
-                obj = m_bundle.LoadAsset<T>(name);
+                obj = _bundle.LoadAsset<T>(name);
                 if (obj)
                 {
-                    m_cachedAssets.Add(name, obj);
+                    _cachedAssets.Add(name, obj);
                 }
                 return (T)obj;
             }
@@ -290,13 +290,13 @@ namespace OverhaulMod
                     return;
                 }
 
-                if (m_assetsBeingLoaded.ContainsKey(name))
+                if (_assetsBeingLoaded.ContainsKey(name))
                 {
                     _ = waitForAssetLoadCoroutine(name, callback).Run(true);
                     return;
                 }
 
-                if (m_cachedAssets.TryGetValue(name, out UnityEngine.Object obj))
+                if (_cachedAssets.TryGetValue(name, out UnityEngine.Object obj))
                 {
                     callback?.Invoke((T)obj);
                     return;
@@ -307,28 +307,28 @@ namespace OverhaulMod
 
             private IEnumerator getAssetAsync<T>(string name, Action<T> callback) where T : UnityEngine.Object
             {
-                m_assetsBeingLoaded.Add(name, 0f);
+                _assetsBeingLoaded.Add(name, 0f);
 
-                AssetBundleRequest assetRequest = m_bundle.LoadAssetAsync<T>(name);
+                AssetBundleRequest assetRequest = _bundle.LoadAssetAsync<T>(name);
                 while (!assetRequest.isDone)
                 {
-                    m_assetsBeingLoaded[name] = assetRequest.progress;
+                    _assetsBeingLoaded[name] = assetRequest.progress;
                     yield return null;
                 }
 
-                m_cachedAssets.Add(name, assetRequest.asset);
+                _cachedAssets.Add(name, assetRequest.asset);
 
-                _ = m_assetsBeingLoaded.Remove(name);
+                _ = _assetsBeingLoaded.Remove(name);
                 callback?.Invoke((T)assetRequest.asset);
                 yield break;
             }
 
             private IEnumerator waitForAssetLoadCoroutine<T>(string name, Action<T> callback) where T : UnityEngine.Object
             {
-                while (m_assetsBeingLoaded.ContainsKey(name))
+                while (_assetsBeingLoaded.ContainsKey(name))
                     yield return null;
 
-                if (m_cachedAssets.TryGetValue(name, out UnityEngine.Object obj))
+                if (_cachedAssets.TryGetValue(name, out UnityEngine.Object obj))
                 {
                     callback?.Invoke((T)obj);
                 }
@@ -348,8 +348,8 @@ namespace OverhaulMod
                     return;
 
                 LoadingState = AssetLoadingState.Loading;
-                m_bundle = UnityEngine.AssetBundle.LoadFromFile(FileLocation);
-                m_loadProgress = 1f;
+                _bundle = UnityEngine.AssetBundle.LoadFromFile(FileLocation);
+                _loadProgress = 1f;
                 LoadingState = AssetLoadingState.Loaded;
 
                 GlobalEventManager.Instance.Dispatch(ASSET_BUNDLE_LOADED_EVENT, ModResources.GetAssetBundleInfoKey(this));
@@ -383,20 +383,20 @@ namespace OverhaulMod
                 AssetBundleCreateRequest createRequest = UnityEngine.AssetBundle.LoadFromFileAsync(FileLocation);
                 while (!createRequest.isDone)
                 {
-                    m_loadProgress = createRequest.progress;
+                    _loadProgress = createRequest.progress;
                     yield return null;
                 }
 
                 if (!createRequest.assetBundle)
                 {
-                    m_loadProgress = 0f;
+                    _loadProgress = 0f;
                     LoadingState = AssetLoadingState.NotLoaded;
                     callback?.Invoke(false);
                     yield break;
                 }
 
-                m_bundle = createRequest.assetBundle;
-                m_loadProgress = 1f;
+                _bundle = createRequest.assetBundle;
+                _loadProgress = 1f;
 
                 LoadingState = AssetLoadingState.Loaded;
                 callback?.Invoke(true);
@@ -418,13 +418,13 @@ namespace OverhaulMod
                 if (LoadingState != AssetLoadingState.Loaded)
                     return;
 
-                m_assetsBeingLoaded.Clear();
-                m_cachedAssets.Clear();
-                m_bundle.Unload(false);
-                m_bundle = null;
+                _assetsBeingLoaded.Clear();
+                _cachedAssets.Clear();
+                _bundle.Unload(false);
+                _bundle = null;
 
                 LoadingState = AssetLoadingState.NotLoaded;
-                m_loadProgress = 0f;
+                _loadProgress = 0f;
             }
         }
     }

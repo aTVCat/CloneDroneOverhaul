@@ -14,27 +14,27 @@ namespace OverhaulMod.Combat
 
         public const UpgradeType DOUBLE_JUMP_UPGRADE = (UpgradeType)580;
 
-        private List<UpgradeDescription> m_upgrades;
+        private List<UpgradeDescription> _upgrades;
 
-        private Transform m_upgradesObjectTransform;
+        private Transform _upgradesObjectTransform;
 
         public override void Awake()
         {
             base.Awake();
 
-            m_upgrades = new List<UpgradeDescription>();
+            _upgrades = new List<UpgradeDescription>();
 
             Transform transform = new GameObject("Upgrades").transform;
             transform.SetParent(base.transform);
-            m_upgradesObjectTransform = transform;
+            _upgradesObjectTransform = transform;
 
             createUpgrades();
         }
 
         private void OnDestroy()
         {
-            if (!m_upgrades.IsNullOrEmpty())
-                foreach (UpgradeDescription upgradeDescription in m_upgrades)
+            if (!_upgrades.IsNullOrEmpty())
+                foreach (UpgradeDescription upgradeDescription in _upgrades)
                     if (upgradeDescription)
                     {
                         _ = UpgradeManager.Instance.UpgradeDescriptions.Remove(upgradeDescription);
@@ -84,7 +84,7 @@ namespace OverhaulMod.Combat
 
         public void DeleteLocalizationKeysOfUpgrades(Dictionary<string, string> keys)
         {
-            foreach (UpgradeDescription upgrade in m_upgrades)
+            foreach (UpgradeDescription upgrade in _upgrades)
             {
                 _ = keys.Remove(upgrade.UpgradeName);
                 _ = keys.Remove(upgrade.Description);
@@ -95,7 +95,7 @@ namespace OverhaulMod.Combat
         {
             Mod mod = ModCore.instance;
             UpgradeManager upgradeManager = UpgradeManager.Instance;
-            foreach (UpgradeDescription upgrade in m_upgrades)
+            foreach (UpgradeDescription upgrade in _upgrades)
                 if (!upgradeManager.HasUpgrade(upgrade.UpgradeType, upgrade.Level))
                 {
                     if (!upgradeManager.IsUpgradeTypeAndLevelUsed(upgrade.UpgradeType, upgrade.Level))
@@ -116,7 +116,7 @@ namespace OverhaulMod.Combat
         public T CreateUpgrade<T>(string displayName, string description, UpgradeType upgradeType, int level = 1, string iconBundle = null, string iconAsset = null, UpgradeDescription r1 = null, UpgradeDescription r2 = null) where T : UpgradeDescription
         {
             GameObject gameObject = new GameObject($"{displayName} {level}");
-            gameObject.transform.SetParent(m_upgradesObjectTransform);
+            gameObject.transform.SetParent(_upgradesObjectTransform);
 
             UpgradeDescription upgradeDescription = gameObject.AddComponent<T>();
             upgradeDescription.UpgradeName = displayName;
@@ -128,7 +128,7 @@ namespace OverhaulMod.Combat
             if (!iconBundle.IsNullOrEmpty() && !iconAsset.IsNullOrEmpty())
                 upgradeDescription.Icon = ModResources.Sprite(iconBundle, iconAsset);
 
-            m_upgrades.Add(upgradeDescription);
+            _upgrades.Add(upgradeDescription);
             return (T)upgradeDescription;
         }
     }

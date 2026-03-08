@@ -41,7 +41,7 @@ namespace OverhaulMod.Content.Personalization
         public Dictionary<string, int> ItemVersions;
 
         [NonSerialized]
-        public bool m_isDirty;
+        public bool _isDirty;
 
         public void FixValues()
         {
@@ -68,12 +68,12 @@ namespace OverhaulMod.Content.Personalization
 
         public void SetIsDirty(bool value = true)
         {
-            m_isDirty = value;
+            _isDirty = value;
         }
 
         public bool IsDirty()
         {
-            return m_isDirty;
+            return _isDirty;
         }
 
         public void SaveIfDirty()

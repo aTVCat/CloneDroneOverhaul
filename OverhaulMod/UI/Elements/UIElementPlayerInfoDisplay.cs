@@ -11,32 +11,32 @@ namespace OverhaulMod.UI
     public class UIElementPlayerInfoDisplay : OverhaulUIBehaviour
     {
         [UIElement("PlayerIcon")]
-        public RawImage m_icon;
+        public RawImage _icon;
 
-        private bool m_showIcon;
+        private bool _showIcon;
 
-        private UnityWebRequest m_webRequest;
+        private UnityWebRequest _webRequest;
 
-        private Texture2D m_texture;
+        private Texture2D _texture;
 
         protected override void OnInitialized()
         {
-            m_icon.color = new Color(1f, 1f, 1f, 0f);
-            m_icon.enabled = false;
+            _icon.color = new Color(1f, 1f, 1f, 0f);
+            _icon.enabled = false;
         }
 
         public override void Update()
         {
-            Color color = m_icon.color;
-            color.a = Mathf.Lerp(color.a, m_showIcon ? 1f : 0f, Time.unscaledDeltaTime * 12.5f);
-            m_icon.color = color;
+            Color color = _icon.color;
+            color.a = Mathf.Lerp(color.a, _showIcon ? 1f : 0f, Time.unscaledDeltaTime * 12.5f);
+            _icon.color = color;
         }
 
         public override void OnDestroy()
         {
             base.OnDestroy();
 
-            UnityWebRequest unityWebRequest = m_webRequest;
+            UnityWebRequest unityWebRequest = _webRequest;
             if (unityWebRequest != null)
             {
                 try
@@ -49,7 +49,7 @@ namespace OverhaulMod.UI
                 }
             }
 
-            Texture2D texture = m_texture;
+            Texture2D texture = _texture;
             if (texture)
             {
                 Destroy(texture);
@@ -84,16 +84,16 @@ namespace OverhaulMod.UI
         {
             using (UnityWebRequest unityWebRequest = UnityWebRequestTexture.GetTexture($"file://{path}"))
             {
-                m_webRequest = unityWebRequest;
+                _webRequest = unityWebRequest;
                 yield return unityWebRequest.SendWebRequest();
-                m_webRequest = null;
+                _webRequest = null;
                 if (!unityWebRequest.isHttpError && !unityWebRequest.isNetworkError && unityWebRequest.isDone)
                 {
                     Texture2D texture = (unityWebRequest.downloadHandler as DownloadHandlerTexture).texture;
-                    m_texture = texture;
-                    m_icon.texture = texture;
-                    m_icon.enabled = true;
-                    m_showIcon = true;
+                    _texture = texture;
+                    _icon.texture = texture;
+                    _icon.enabled = true;
+                    _showIcon = true;
                 }
             }
             yield break;

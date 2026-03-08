@@ -13,29 +13,29 @@ namespace OverhaulMod.Engine
         public const string CHAPTER_1_SECTIONS_CACHE_KEY = "StoryC1_Sections";
         public const string CHAPTER_2_SECTIONS_CACHE_KEY = "StoryC2_Sections";
 
-        private string m_chapterSectionsFolder;
+        private string _chapterSectionsFolder;
         public string chapterSectionsFolder
         {
             get
             {
-                if (m_chapterSectionsFolder == null)
+                if (_chapterSectionsFolder == null)
                 {
-                    m_chapterSectionsFolder = Path.Combine(ModCore.dataFolder, CHAPTER_SECTIONS_FOLDER);
+                    _chapterSectionsFolder = Path.Combine(ModCore.dataFolder, CHAPTER_SECTIONS_FOLDER);
                 }
-                return m_chapterSectionsFolder;
+                return _chapterSectionsFolder;
             }
         }
 
-        private string m_levelsFolder;
+        private string _levelsFolder;
         public string levelsFolder
         {
             get
             {
-                if (m_levelsFolder == null)
+                if (_levelsFolder == null)
                 {
-                    m_levelsFolder = Path.Combine(ModCore.dataFolder, LEVELS_FOLDER);
+                    _levelsFolder = Path.Combine(ModCore.dataFolder, LEVELS_FOLDER);
                 }
-                return m_levelsFolder;
+                return _levelsFolder;
             }
         }
 

@@ -9,23 +9,23 @@ namespace OverhaulMod.UI
     public class UIElementAddonEmbed : OverhaulUIBehaviour
     {
         [UIElement("IdleDisplays", false)]
-        public GameObject m_idleDisplays;
+        public GameObject _idleDisplays;
 
         [UIElementAction(nameof(OnDownloadButtonClicked))]
         [UIElement("DownloadButton")]
-        public Button m_downloadButton;
+        public Button _downloadButton;
 
         [UIElementAction(nameof(OnUpdateButtonClicked))]
         [UIElement("UpdateButton")]
-        public Button m_updateButton;
+        public Button _updateButton;
 
         [UIElement("LoadingIndicator", false)]
-        public GameObject m_loadingIndicatorObject;
+        public GameObject _loadingIndicatorObject;
 
         [UIElement("LoadingIndicatorText")]
-        public Text m_loadingIndicatorText;
+        public Text _loadingIndicatorText;
 
-        private float m_timeLeftToRefresh;
+        private float _timeLeftToRefresh;
 
         public string AddonId;
 
@@ -40,7 +40,7 @@ namespace OverhaulMod.UI
 
         public override void OnEnable()
         {
-            if (m_initialized)
+            if (_initialized)
                 RefreshDisplays();
         }
 
@@ -48,11 +48,11 @@ namespace OverhaulMod.UI
         {
             float d = Time.unscaledDeltaTime;
 
-            m_timeLeftToRefresh -= d;
-            if (m_timeLeftToRefresh <= 0f)
+            _timeLeftToRefresh -= d;
+            if (_timeLeftToRefresh <= 0f)
             {
                 RefreshLoading();
-                m_timeLeftToRefresh = 0.1f;
+                _timeLeftToRefresh = 0.1f;
             }
         }
 
@@ -71,10 +71,10 @@ namespace OverhaulMod.UI
             bool hasUpdates = hasInstalled && !contentManager.HasInstalledAddon(AddonId, Version);
             bool isDownloading = contentManager.IsDownloadingAddon(AddonId);
 
-            m_idleDisplays.SetActive((!hasInstalled || hasUpdates) && !isDownloading);
-            m_downloadButton.gameObject.SetActive(!hasInstalled);
-            m_updateButton.gameObject.SetActive(hasUpdates);
-            m_loadingIndicatorObject.SetActive(isDownloading);
+            _idleDisplays.SetActive((!hasInstalled || hasUpdates) && !isDownloading);
+            _downloadButton.gameObject.SetActive(!hasInstalled);
+            _updateButton.gameObject.SetActive(hasUpdates);
+            _loadingIndicatorObject.SetActive(isDownloading);
         }
 
         public void RefreshLoading()
@@ -85,7 +85,7 @@ namespace OverhaulMod.UI
             AddonManager contentManager = AddonManager.Instance;
             if (contentManager.IsDownloadingAddon(AddonId))
             {
-                m_loadingIndicatorText.text = $"{LocalizationManager.Instance.GetTranslatedString("downloading...")}  {(Mathf.RoundToInt(Mathf.Clamp01(contentManager.GetAddonDownloadProgress(AddonId)) * 100f).ToString() + "%").AddColor(Color.white)}";
+                _loadingIndicatorText.text = $"{LocalizationManager.Instance.GetTranslatedString("downloading...")}  {(Mathf.RoundToInt(Mathf.Clamp01(contentManager.GetAddonDownloadProgress(AddonId)) * 100f).ToString() + "%").AddColor(Color.white)}";
             }
         }
 

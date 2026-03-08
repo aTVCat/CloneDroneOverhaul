@@ -11,37 +11,37 @@ namespace OverhaulMod.UI
     {
         [UIElementAction(nameof(Hide))]
         [UIElement("CloseButton")]
-        private readonly Button m_exitButton;
+        private readonly Button _exitButton;
 
         [UIElement("UIDisplay", false)]
-        private readonly ModdedObject m_uiDisplayPrefab;
+        private readonly ModdedObject _uiDisplayPrefab;
 
         [UIElement("Content")]
-        private readonly Transform m_uiDisplayContainer;
+        private readonly Transform _uiDisplayContainer;
 
         [UIElementAction(nameof(OnEnableAllButtonClicked))]
         [UIElement("EnableAllButton")]
-        private readonly Button m_enableAllButton;
+        private readonly Button _enableAllButton;
 
         [UIElementAction(nameof(OnDisableAllButtonClicked))]
         [UIElement("DisableAllButton")]
-        private readonly Button m_disableAllButton;
+        private readonly Button _disableAllButton;
 
-        private List<Toggle> m_instantiatedToggles;
+        private List<Toggle> _instantiatedToggles;
 
         protected override void OnInitialized()
         {
-            m_instantiatedToggles = new List<Toggle>();
+            _instantiatedToggles = new List<Toggle>();
         }
 
         public override void Show()
         {
             base.Show();
 
-            if (m_uiDisplayContainer.childCount != 0)
-                TransformUtils.DestroyAllChildren(m_uiDisplayContainer);
+            if (_uiDisplayContainer.childCount != 0)
+                TransformUtils.DestroyAllChildren(_uiDisplayContainer);
 
-            m_instantiatedToggles.Clear();
+            _instantiatedToggles.Clear();
             instantiateToggles();
         }
 
@@ -59,7 +59,7 @@ namespace OverhaulMod.UI
             if (setting == null || setting.valueType != ModSetting.ValueType.Bool)
                 return;
 
-            ModdedObject moddedObject = Instantiate(m_uiDisplayPrefab, m_uiDisplayContainer);
+            ModdedObject moddedObject = Instantiate(_uiDisplayPrefab, _uiDisplayContainer);
             moddedObject.gameObject.SetActive(true);
             moddedObject.GetObject<Text>(0).text = LocalizationManager.Instance.GetTranslatedString(setting.name);
             moddedObject.GetObject<Button>(2).onClick.AddListener(delegate
@@ -81,29 +81,29 @@ namespace OverhaulMod.UI
                 setting.SetBoolValue(value);
             });
 
-            m_instantiatedToggles.Add(toggle);
+            _instantiatedToggles.Add(toggle);
         }
 
         public void OnEnableAllButtonClicked()
         {
-            if (m_instantiatedToggles.IsNullOrEmpty())
+            if (_instantiatedToggles.IsNullOrEmpty())
                 return;
 
             ModUIUtils.MessagePopup(true, LocalizationManager.Instance.GetTranslatedString("settings_configure_overhaul_mod_uis_header_enable_all_modded_uis"), "", 100f, MessageMenu.ButtonLayout.EnableDisableButtons, "ok", "Yes", "No", null, delegate
             {
-                foreach (Toggle toggle in m_instantiatedToggles)
+                foreach (Toggle toggle in _instantiatedToggles)
                     toggle.isOn = true;
             });
         }
 
         public void OnDisableAllButtonClicked()
         {
-            if (m_instantiatedToggles.IsNullOrEmpty())
+            if (_instantiatedToggles.IsNullOrEmpty())
                 return;
 
             ModUIUtils.MessagePopup(true, LocalizationManager.Instance.GetTranslatedString("settings_configure_overhaul_mod_uis_header_disable_all_modded_uis"), "", 100f, MessageMenu.ButtonLayout.EnableDisableButtons, "ok", "Yes", "No", null, delegate
             {
-                foreach (Toggle toggle in m_instantiatedToggles)
+                foreach (Toggle toggle in _instantiatedToggles)
                     toggle.isOn = false;
             });
         }

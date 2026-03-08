@@ -10,156 +10,156 @@ namespace OverhaulMod.UI
     public class UIPhotoModeUIRework : OverhaulUIBehaviour
     {
         [UIElement("ExpandButton", typeof(UIElementExpandButton))]
-        private readonly UIElementExpandButton m_expandButton;
+        private readonly UIElementExpandButton _expandButton;
 
         [UIElement("LightingPanel")]
-        private readonly RectTransform m_lightingPanel;
+        private readonly RectTransform _lightingPanel;
 
         [UIElementAction(nameof(OnSaveRLightInfoButtonClicked))]
         [UIElement("SaveRLightInfoButton")]
-        private readonly Button m_saveRLightInfoButton;
+        private readonly Button _saveRLightInfoButton;
 
         [UIElementAction(nameof(OnRestoreDefaultsButtonClicked))]
         [UIElement("RestoreDefaultsButton")]
-        private readonly Button m_restoreDefaultsButton;
+        private readonly Button _restoreDefaultsButton;
 
         [UIElementCallback(true)]
         [UIElementAction(nameof(OnTimeScaleChanged))]
         [UIElement("TimeScaleSlider")]
-        private readonly Slider m_timeScaleSlider;
+        private readonly Slider _timeScaleSlider;
 
 
         [UIElementAction(nameof(OnShowPlayerToggled))]
         [UIElement("ShowPlayerToggle")]
-        private readonly Toggle m_showPlayerToggle;
+        private readonly Toggle _showPlayerToggle;
 
         [UIElementAction(nameof(OnShowEnemiesToggled))]
         [UIElement("ShowEnemiesToggle")]
-        private readonly Toggle m_showEnemiesToggle;
+        private readonly Toggle _showEnemiesToggle;
 
         [UIElementAction(nameof(OnShowGarbageToggled))]
         [UIElement("ShowGarbageToggle")]
-        private readonly Toggle m_showGarbageToggle;
+        private readonly Toggle _showGarbageToggle;
 
         [UIElementAction(nameof(OnHUDToggled))]
         [UIElement("ShowHUDToggle")]
-        private readonly Toggle m_showHUDToggle;
+        private readonly Toggle _showHUDToggle;
 
 
         [UIElementAction(nameof(OnCinematicBordersToggled))]
         [UIElement("CinematicBordersToggle")]
-        private readonly Toggle m_cinematicBordersToggle;
+        private readonly Toggle _cinematicBordersToggle;
 
         [UIElementAction(nameof(OnCinematicBordersHeightChanged))]
         [UIElement("CinematicBordersHeightSlider")]
-        private readonly Slider m_cinematicBordersHeightSlider;
+        private readonly Slider _cinematicBordersHeightSlider;
 
         [UIElementAction(nameof(OnSSAOToggled))]
         [UIElement("SSAOToggle")]
-        private readonly Toggle m_ambientOcclusionToggle;
+        private readonly Toggle _ambientOcclusionToggle;
 
         [UIElementAction(nameof(OnVignetteToggled))]
         [UIElement("VignetteToggle")]
-        private readonly Toggle m_vignetteToggle;
+        private readonly Toggle _vignetteToggle;
 
         [UIElementAction(nameof(OnVignetteIntensityChanged))]
         [UIElement("VignetteIntensitySlider")]
-        private readonly Slider m_vignetteIntensitySlider;
+        private readonly Slider _vignetteIntensitySlider;
 
         [UIElementAction(nameof(OnDitheringToggled))]
         [UIElement("DitheringToggle")]
-        private readonly Toggle m_ditheringToggle;
+        private readonly Toggle _ditheringToggle;
 
         [UIElementAction(nameof(OnGlobalIlluminationToggled))]
         [UIElement("GlobalIlluminationToggle")]
-        private readonly Toggle m_globalIlluminationToggle;
+        private readonly Toggle _globalIlluminationToggle;
 
         [UIElementAction(nameof(OnReflectionProbeToggled))]
         [UIElement("ReflectionProbeToggle")]
-        private readonly Toggle m_reflectionProbeToggle;
+        private readonly Toggle _reflectionProbeToggle;
 
         [UIElementAction(nameof(OnCAToggled))]
         [UIElement("CAToggle")]
-        private readonly Toggle m_caToggle;
+        private readonly Toggle _caToggle;
 
         [UIElementAction(nameof(OnSunShaftsToggled))]
         [UIElement("SunShaftsToggle")]
-        private readonly Toggle m_sunShaftsToggle;
+        private readonly Toggle _sunShaftsToggle;
 
         [UIElementAction(nameof(OnDoFToggled))]
         [UIElement("DoFToggle")]
-        private readonly Toggle m_dofToggle;
+        private readonly Toggle _dofToggle;
 
 
         [UIElementAction(nameof(OnFogToggled))]
         [UIElement("FogToggle")]
-        private readonly Toggle m_fogToggle;
+        private readonly Toggle _fogToggle;
 
         [ColorPicker(false)]
         [UIElementAction(nameof(OnFogColored))]
         [UIElement("FogColor")]
-        private readonly UIElementColorPickerButton m_fogColor;
+        private readonly UIElementColorPickerButton _fogColor;
 
         [UIElementAction(nameof(OnFogStartChanged))]
         [UIElement("FogStartSlider")]
-        private readonly Slider m_fogStartSlider;
+        private readonly Slider _fogStartSlider;
 
         [UIElementAction(nameof(OnFogEndChanged))]
         [UIElement("FogEndSlider")]
-        private readonly Slider m_fogEndSlider;
+        private readonly Slider _fogEndSlider;
 
 
         [UIElementAction(nameof(OnDirectionalLightToggled))]
         [UIElement("DirectionalLightToggle")]
-        private readonly Toggle m_directionalLightToggle;
+        private readonly Toggle _directionalLightToggle;
 
         [ColorPicker(false)]
         [UIElementAction(nameof(OnDirectionalLightColored))]
         [UIElement("DirectionalLightColor")]
-        private readonly UIElementColorPickerButton m_directionalLightColor;
+        private readonly UIElementColorPickerButton _directionalLightColor;
 
         [UIElementAction(nameof(OnDirectionalLightXChanged))]
         [UIElement("DirectionalLightX")]
-        private readonly Slider m_directionalLightXSlider;
+        private readonly Slider _directionalLightXSlider;
 
         [UIElementAction(nameof(OnDirectionalLightYChanged))]
         [UIElement("DirectionalLightY")]
-        private readonly Slider m_directionalLightYSlider;
+        private readonly Slider _directionalLightYSlider;
 
         [UIElementAction(nameof(OnDirectionalLightIntensityChanged))]
         [UIElement("DirectionalLightIntensity")]
-        private readonly Slider m_directionalLightIntensitySlider;
+        private readonly Slider _directionalLightIntensitySlider;
 
         [UIElementAction(nameof(OnDirectionalLightShadowsChanged))]
         [UIElement("DirectionalLightShadows")]
-        private readonly Slider m_directionalLightShadowsSlider;
+        private readonly Slider _directionalLightShadowsSlider;
 
 
         [UIElementAction(nameof(OnSkyBoxIndexChanged))]
         [UIElement("SkyboxSlider")]
-        private readonly Slider m_skyBoxSlider;
+        private readonly Slider _skyBoxSlider;
 
         [UIElementAction(nameof(OnUseRealisticSkyBoxesToggled))]
         [UIElement("RealisticSkyboxToggle")]
-        private readonly Toggle m_realisticSkyBoxToggle;
+        private readonly Toggle _realisticSkyBoxToggle;
 
         [UIElementAction(nameof(OnRealisticSkyBoxDropdownChanged))]
         [UIElement("RealisticSkyboxDropdown")]
-        private readonly Dropdown m_realisticSkyBoxDropdown;
+        private readonly Dropdown _realisticSkyBoxDropdown;
 
         [UIElement("RealisticSkyboxDropdownField")]
-        private readonly GameObject m_realisticSkyBoxDropdownFieldObject;
+        private readonly GameObject _realisticSkyBoxDropdownFieldObject;
 
 
         [UIElementAction(nameof(OnAutoResetLightingSettingsToggleChanged))]
         [UIElement("AutoResetLightingToggle")]
-        private readonly Toggle m_autoResetLightingSettingsToggle;
+        private readonly Toggle _autoResetLightingSettingsToggle;
 
-        private LightingInfo m_lightingInfo;
+        private LightingInfo _lightingInfo;
 
-        private bool m_disallowCallbacks;
+        private bool _disallowCallbacks;
 
-        private List<GarbageTarget> m_garbageTargets;
+        private List<GarbageTarget> _garbageTargets;
 
         public override bool closeOnEscapeButtonPress => false;
 
@@ -167,18 +167,18 @@ namespace OverhaulMod.UI
 
         protected override void OnInitialized()
         {
-            RectTransform lightingPanel = m_lightingPanel;
+            RectTransform lightingPanel = _lightingPanel;
             lightingPanel.sizeDelta = new Vector2(225f, 400f);
 
-            UIElementExpandButton expandButton = m_expandButton;
+            UIElementExpandButton expandButton = _expandButton;
             expandButton.rectTransform = lightingPanel;
             expandButton.collapsedSize = lightingPanel.sizeDelta;
             expandButton.expandedSize = new Vector2(375f, 400f);
 
-            m_directionalLightColor.colorPickerParent = base.transform;
-            m_fogColor.colorPickerParent = base.transform;
+            _directionalLightColor.colorPickerParent = base.transform;
+            _fogColor.colorPickerParent = base.transform;
 
-            m_saveRLightInfoButton.gameObject.SetActive(ModUserInfo.isDeveloper);
+            _saveRLightInfoButton.gameObject.SetActive(ModUserInfo.isDeveloper);
         }
 
         public override void Show()
@@ -186,7 +186,7 @@ namespace OverhaulMod.UI
             base.Show();
             ModActionUtils.DoInFrame(setFieldsValues);
 
-            m_autoResetLightingSettingsToggle.isOn = ModSettingsManager.GetBoolValue(ModSettingsConstants.AUTO_RESET_LIGHTING_SETTINGS);
+            _autoResetLightingSettingsToggle.isOn = ModSettingsManager.GetBoolValue(ModSettingsConstants.AUTO_RESET_LIGHTING_SETTINGS);
         }
 
         public override void Hide()
@@ -196,10 +196,10 @@ namespace OverhaulMod.UI
 
         public void ResetEnvironmentFields()
         {
-            m_showEnemiesToggle.isOn = true;
-            m_showPlayerToggle.isOn = true;
-            m_showHUDToggle.isOn = true;
-            m_showGarbageToggle.isOn = true;
+            _showEnemiesToggle.isOn = true;
+            _showPlayerToggle.isOn = true;
+            _showHUDToggle.isOn = true;
+            _showGarbageToggle.isOn = true;
         }
 
         private void setFieldsValues()
@@ -207,69 +207,69 @@ namespace OverhaulMod.UI
             LightingInfo lightingInfo = AdvancedPhotoModeManager.Instance.GetEditedLightingInfo();
             if (lightingInfo == null)
             {
-                m_lightingInfo = default;
+                _lightingInfo = default;
                 return;
             }
-            m_lightingInfo = lightingInfo;
+            _lightingInfo = lightingInfo;
 
-            m_disallowCallbacks = true;
+            _disallowCallbacks = true;
 
             UICinematicEffects cinematicEffects = UICinematicEffects.instance;
             if (!cinematicEffects)
             {
-                m_cinematicBordersHeightSlider.value = 100f;
-                m_cinematicBordersToggle.isOn = false;
+                _cinematicBordersHeightSlider.value = 100f;
+                _cinematicBordersToggle.isOn = false;
             }
             else
             {
-                m_cinematicBordersHeightSlider.value = cinematicEffects.bordersHeight;
-                m_cinematicBordersToggle.isOn = cinematicEffects.borders;
+                _cinematicBordersHeightSlider.value = cinematicEffects.bordersHeight;
+                _cinematicBordersToggle.isOn = cinematicEffects.borders;
             }
 
-            m_timeScaleSlider.value = Mathf.Round(Mathf.Clamp01(PhotoManager.Instance.OverridePausedTimeScale) * 10f);
+            _timeScaleSlider.value = Mathf.Round(Mathf.Clamp01(PhotoManager.Instance.OverridePausedTimeScale) * 10f);
 
-            m_vignetteToggle.isOn = AdvancedPhotoModeManager.Settings.EnableVignette;
-            m_ditheringToggle.isOn = AdvancedPhotoModeManager.Settings.EnableDithering;
-            m_ambientOcclusionToggle.isOn = AdvancedPhotoModeManager.Settings.EnableSSAO;
-            m_vignetteIntensitySlider.value = AdvancedPhotoModeManager.Settings.VignetteIntensity;
-            m_globalIlluminationToggle.isOn = AdvancedPhotoModeManager.Settings.EnableGlobalIllumination;
-            m_reflectionProbeToggle.isOn = AdvancedPhotoModeManager.Settings.EnableReflectionProbe;
-            m_caToggle.isOn = AdvancedPhotoModeManager.Settings.EnableCA;
-            m_sunShaftsToggle.isOn = AdvancedPhotoModeManager.Settings.EnableSunShafts;
-            m_dofToggle.isOn = AdvancedPhotoModeManager.Settings.EnableDoF;
+            _vignetteToggle.isOn = AdvancedPhotoModeManager.Settings.EnableVignette;
+            _ditheringToggle.isOn = AdvancedPhotoModeManager.Settings.EnableDithering;
+            _ambientOcclusionToggle.isOn = AdvancedPhotoModeManager.Settings.EnableSSAO;
+            _vignetteIntensitySlider.value = AdvancedPhotoModeManager.Settings.VignetteIntensity;
+            _globalIlluminationToggle.isOn = AdvancedPhotoModeManager.Settings.EnableGlobalIllumination;
+            _reflectionProbeToggle.isOn = AdvancedPhotoModeManager.Settings.EnableReflectionProbe;
+            _caToggle.isOn = AdvancedPhotoModeManager.Settings.EnableCA;
+            _sunShaftsToggle.isOn = AdvancedPhotoModeManager.Settings.EnableSunShafts;
+            _dofToggle.isOn = AdvancedPhotoModeManager.Settings.EnableDoF;
 
-            m_fogToggle.isOn = lightingInfo.FogEnabled;
-            m_fogColor.color = lightingInfo.FogColor;
-            m_fogStartSlider.value = lightingInfo.FogStartDistance;
-            m_fogEndSlider.value = lightingInfo.FogEndDistance;
+            _fogToggle.isOn = lightingInfo.FogEnabled;
+            _fogColor.color = lightingInfo.FogColor;
+            _fogStartSlider.value = lightingInfo.FogStartDistance;
+            _fogEndSlider.value = lightingInfo.FogEndDistance;
 
-            m_directionalLightToggle.isOn = lightingInfo.EnableDirectionalLight;
-            m_directionalLightColor.color = lightingInfo.DirectionalColor;
-            m_directionalLightXSlider.value = lightingInfo.DirectionalRotationX;
-            m_directionalLightYSlider.value = lightingInfo.DirectionalRotationY;
-            m_directionalLightIntensitySlider.value = lightingInfo.DirectionalIntensity;
-            m_directionalLightShadowsSlider.value = lightingInfo.DirectionalShadowStrength;
+            _directionalLightToggle.isOn = lightingInfo.EnableDirectionalLight;
+            _directionalLightColor.color = lightingInfo.DirectionalColor;
+            _directionalLightXSlider.value = lightingInfo.DirectionalRotationX;
+            _directionalLightYSlider.value = lightingInfo.DirectionalRotationY;
+            _directionalLightIntensitySlider.value = lightingInfo.DirectionalIntensity;
+            _directionalLightShadowsSlider.value = lightingInfo.DirectionalShadowStrength;
 
-            m_skyBoxSlider.value = lightingInfo.SkyboxIndex;
+            _skyBoxSlider.value = lightingInfo.SkyboxIndex;
 
             bool hasAdditionalSkybox = !lightingInfo.AdditonalSkybox.IsNullOrEmpty();
-            m_realisticSkyBoxToggle.isOn = hasAdditionalSkybox;
-            m_realisticSkyBoxDropdownFieldObject.SetActive(hasAdditionalSkybox);
+            _realisticSkyBoxToggle.isOn = hasAdditionalSkybox;
+            _realisticSkyBoxDropdownFieldObject.SetActive(hasAdditionalSkybox);
 
             List<Dropdown.OptionData> additonalSkyboxOptions = AdditionalSkyboxesManager.Instance.GetSkyboxOptions();
-            m_realisticSkyBoxDropdown.options = additonalSkyboxOptions;
+            _realisticSkyBoxDropdown.options = additonalSkyboxOptions;
             for (int i = 0; i < additonalSkyboxOptions.Count; i++)
             {
                 if ((additonalSkyboxOptions[i] as DropdownStringOptionData).StringValue == lightingInfo.AdditonalSkybox)
                 {
-                    m_realisticSkyBoxDropdown.value = i;
+                    _realisticSkyBoxDropdown.value = i;
                     break;
                 }
             }
 
-            m_showHUDToggle.isOn = !CutSceneManager.Instance.IsInCutscene() && !SettingsManager.Instance.ShouldHideGameUI();
+            _showHUDToggle.isOn = !CutSceneManager.Instance.IsInCutscene() && !SettingsManager.Instance.ShouldHideGameUI();
 
-            m_disallowCallbacks = false;
+            _disallowCallbacks = false;
         }
 
         private void toggleRobot(FirstPersonMover firstPersonMover, bool value)
@@ -294,7 +294,7 @@ namespace OverhaulMod.UI
 
         public void OnSaveRLightInfoButtonClicked()
         {
-            RealisticLightingManager.Instance.SaveCurrentLightingInfo(m_realisticSkyBoxToggle.isOn ? (m_realisticSkyBoxDropdown.options[m_realisticSkyBoxDropdown.value] as DropdownStringOptionData).StringValue : string.Empty);
+            RealisticLightingManager.Instance.SaveCurrentLightingInfo(_realisticSkyBoxToggle.isOn ? (_realisticSkyBoxDropdown.options[_realisticSkyBoxDropdown.value] as DropdownStringOptionData).StringValue : string.Empty);
         }
 
         public void OnRestoreDefaultsButtonClicked()
@@ -311,7 +311,7 @@ namespace OverhaulMod.UI
 
         public void OnTimeScaleChanged(float value)
         {
-            if (m_disallowCallbacks)
+            if (_disallowCallbacks)
                 return;
 
             PhotoManager.Instance.OverridePausedTimeScale = Mathf.Clamp(value / 10f, 0.1f, 1f);
@@ -319,7 +319,7 @@ namespace OverhaulMod.UI
 
         public void OnShowPlayerToggled(bool value)
         {
-            if (m_disallowCallbacks)
+            if (_disallowCallbacks)
                 return;
 
             toggleRobot(CharacterTracker.Instance.GetPlayerRobot(), value);
@@ -327,7 +327,7 @@ namespace OverhaulMod.UI
 
         public void OnShowEnemiesToggled(bool value)
         {
-            if (m_disallowCallbacks)
+            if (_disallowCallbacks)
                 return;
 
             foreach (Character character in CharacterTracker.Instance.GetAllLivingCharacters())
@@ -341,16 +341,16 @@ namespace OverhaulMod.UI
 
         public void OnShowGarbageToggled(bool value)
         {
-            if (m_disallowCallbacks)
+            if (_disallowCallbacks)
                 return;
 
-            List<GarbageTarget> list = value ? m_garbageTargets : GarbageManager.Instance.GetAllGarbageReadyForCollection();
+            List<GarbageTarget> list = value ? _garbageTargets : GarbageManager.Instance.GetAllGarbageReadyForCollection();
             if (list.IsNullOrEmpty())
                 return;
 
             if (!value)
             {
-                m_garbageTargets = list;
+                _garbageTargets = list;
 
                 foreach (GarbageTarget t in list)
                     if (t)
@@ -366,7 +366,7 @@ namespace OverhaulMod.UI
 
         public void OnHUDToggled(bool value)
         {
-            if (m_disallowCallbacks)
+            if (_disallowCallbacks)
                 return;
 
             ModCache.gameUIRoot.SetPlayerHUDVisible(value && !CutSceneManager.Instance.IsInCutscene());
@@ -374,8 +374,8 @@ namespace OverhaulMod.UI
 
         public void OnCinematicBordersToggled(bool value)
         {
-            m_cinematicBordersHeightSlider.gameObject.SetActive(value);
-            if (m_disallowCallbacks)
+            _cinematicBordersHeightSlider.gameObject.SetActive(value);
+            if (_disallowCallbacks)
                 return;
 
             UICinematicEffects cinematicEffects = UICinematicEffects.instance;
@@ -385,7 +385,7 @@ namespace OverhaulMod.UI
 
         public void OnCinematicBordersHeightChanged(float value)
         {
-            if (m_disallowCallbacks)
+            if (_disallowCallbacks)
                 return;
 
             UICinematicEffects cinematicEffects = UICinematicEffects.instance;
@@ -395,7 +395,7 @@ namespace OverhaulMod.UI
 
         public void OnSSAOToggled(bool value)
         {
-            if (m_disallowCallbacks)
+            if (_disallowCallbacks)
                 return;
 
             AdvancedPhotoModeManager.Settings.EnableSSAO = value;
@@ -404,8 +404,8 @@ namespace OverhaulMod.UI
 
         public void OnVignetteToggled(bool value)
         {
-            m_vignetteIntensitySlider.gameObject.SetActive(value);
-            if (m_disallowCallbacks)
+            _vignetteIntensitySlider.gameObject.SetActive(value);
+            if (_disallowCallbacks)
                 return;
 
             AdvancedPhotoModeManager.Settings.EnableVignette = value;
@@ -414,7 +414,7 @@ namespace OverhaulMod.UI
 
         public void OnVignetteIntensityChanged(float value)
         {
-            if (m_disallowCallbacks)
+            if (_disallowCallbacks)
                 return;
 
             AdvancedPhotoModeManager.Settings.VignetteIntensity = value;
@@ -423,7 +423,7 @@ namespace OverhaulMod.UI
 
         public void OnDitheringToggled(bool value)
         {
-            if (m_disallowCallbacks)
+            if (_disallowCallbacks)
                 return;
 
             AdvancedPhotoModeManager.Settings.EnableDithering = value;
@@ -432,7 +432,7 @@ namespace OverhaulMod.UI
 
         public void OnGlobalIlluminationToggled(bool value)
         {
-            if (m_disallowCallbacks)
+            if (_disallowCallbacks)
                 return;
 
             AdvancedPhotoModeManager.Settings.EnableGlobalIllumination = value;
@@ -441,7 +441,7 @@ namespace OverhaulMod.UI
 
         public void OnReflectionProbeToggled(bool value)
         {
-            if (m_disallowCallbacks)
+            if (_disallowCallbacks)
                 return;
 
             AdvancedPhotoModeManager.Settings.EnableReflectionProbe = value;
@@ -450,7 +450,7 @@ namespace OverhaulMod.UI
 
         public void OnCAToggled(bool value)
         {
-            if (m_disallowCallbacks)
+            if (_disallowCallbacks)
                 return;
 
             AdvancedPhotoModeManager.Settings.EnableCA = value;
@@ -459,7 +459,7 @@ namespace OverhaulMod.UI
 
         public void OnSunShaftsToggled(bool value)
         {
-            if (m_disallowCallbacks)
+            if (_disallowCallbacks)
                 return;
 
             AdvancedPhotoModeManager.Settings.EnableSunShafts = value;
@@ -468,7 +468,7 @@ namespace OverhaulMod.UI
 
         public void OnDoFToggled(bool value)
         {
-            if (m_disallowCallbacks)
+            if (_disallowCallbacks)
                 return;
 
             AdvancedPhotoModeManager.Settings.EnableDoF = value;
@@ -477,124 +477,124 @@ namespace OverhaulMod.UI
 
         public void OnFogToggled(bool value)
         {
-            if (m_disallowCallbacks)
+            if (_disallowCallbacks)
                 return;
 
-            m_lightingInfo.FogEnabled = value;
+            _lightingInfo.FogEnabled = value;
             AdvancedPhotoModeManager.Instance.SetEditedLighting();
         }
 
         public void OnFogColored(Color value)
         {
-            if (m_disallowCallbacks)
+            if (_disallowCallbacks)
                 return;
 
-            m_lightingInfo.FogColor = value;
+            _lightingInfo.FogColor = value;
             AdvancedPhotoModeManager.Instance.SetEditedLighting();
         }
 
         public void OnFogStartChanged(float value)
         {
-            if (m_disallowCallbacks)
+            if (_disallowCallbacks)
                 return;
 
-            m_lightingInfo.FogStartDistance = value;
+            _lightingInfo.FogStartDistance = value;
             AdvancedPhotoModeManager.Instance.SetEditedLighting();
         }
 
         public void OnFogEndChanged(float value)
         {
-            if (m_disallowCallbacks)
+            if (_disallowCallbacks)
                 return;
 
-            m_lightingInfo.FogEndDistance = value;
+            _lightingInfo.FogEndDistance = value;
             AdvancedPhotoModeManager.Instance.SetEditedLighting();
         }
 
         public void OnDirectionalLightToggled(bool value)
         {
-            if (m_disallowCallbacks)
+            if (_disallowCallbacks)
                 return;
 
-            m_lightingInfo.EnableDirectionalLight = value;
+            _lightingInfo.EnableDirectionalLight = value;
             AdvancedPhotoModeManager.Instance.SetEditedLighting();
         }
 
         public void OnDirectionalLightColored(Color value)
         {
-            if (m_disallowCallbacks)
+            if (_disallowCallbacks)
                 return;
 
-            m_lightingInfo.DirectionalColor = value;
+            _lightingInfo.DirectionalColor = value;
             AdvancedPhotoModeManager.Instance.SetEditedLighting();
         }
 
         public void OnDirectionalLightXChanged(float value)
         {
-            if (m_disallowCallbacks)
+            if (_disallowCallbacks)
                 return;
 
-            m_lightingInfo.DirectionalRotationX = value;
+            _lightingInfo.DirectionalRotationX = value;
             AdvancedPhotoModeManager.Instance.SetEditedLighting();
         }
 
         public void OnDirectionalLightYChanged(float value)
         {
-            if (m_disallowCallbacks)
+            if (_disallowCallbacks)
                 return;
 
-            m_lightingInfo.DirectionalRotationY = value;
+            _lightingInfo.DirectionalRotationY = value;
             AdvancedPhotoModeManager.Instance.SetEditedLighting();
         }
 
         public void OnSkyBoxIndexChanged(float value)
         {
-            if (m_disallowCallbacks)
+            if (_disallowCallbacks)
                 return;
 
-            m_lightingInfo.SkyboxIndex = Mathf.RoundToInt(value);
+            _lightingInfo.SkyboxIndex = Mathf.RoundToInt(value);
             AdvancedPhotoModeManager.Instance.SetEditedLighting();
         }
 
         public void OnUseRealisticSkyBoxesToggled(bool value)
         {
-            if (m_disallowCallbacks)
+            if (_disallowCallbacks)
                 return;
 
-            string skyboxName = (m_realisticSkyBoxDropdown.options[m_realisticSkyBoxDropdown.value] as DropdownStringOptionData).StringValue;
+            string skyboxName = (_realisticSkyBoxDropdown.options[_realisticSkyBoxDropdown.value] as DropdownStringOptionData).StringValue;
 
-            m_lightingInfo.AdditonalSkybox = value ? skyboxName : string.Empty;
+            _lightingInfo.AdditonalSkybox = value ? skyboxName : string.Empty;
             AdvancedPhotoModeManager.Instance.SetEditedLighting();
 
-            m_realisticSkyBoxDropdownFieldObject.SetActive(value);
+            _realisticSkyBoxDropdownFieldObject.SetActive(value);
         }
 
         public void OnRealisticSkyBoxDropdownChanged(int value)
         {
-            if (m_disallowCallbacks)
+            if (_disallowCallbacks)
                 return;
 
-            string skyboxName = (m_realisticSkyBoxDropdown.options[value] as DropdownStringOptionData).StringValue;
+            string skyboxName = (_realisticSkyBoxDropdown.options[value] as DropdownStringOptionData).StringValue;
 
-            m_lightingInfo.AdditonalSkybox = m_realisticSkyBoxToggle.isOn ? skyboxName : string.Empty;
+            _lightingInfo.AdditonalSkybox = _realisticSkyBoxToggle.isOn ? skyboxName : string.Empty;
             AdvancedPhotoModeManager.Instance.SetEditedLighting();
         }
 
         public void OnDirectionalLightIntensityChanged(float value)
         {
-            if (m_disallowCallbacks)
+            if (_disallowCallbacks)
                 return;
 
-            m_lightingInfo.DirectionalIntensity = value;
+            _lightingInfo.DirectionalIntensity = value;
             AdvancedPhotoModeManager.Instance.SetEditedLighting();
         }
 
         public void OnDirectionalLightShadowsChanged(float value)
         {
-            if (m_disallowCallbacks)
+            if (_disallowCallbacks)
                 return;
 
-            m_lightingInfo.DirectionalShadowStrength = value;
+            _lightingInfo.DirectionalShadowStrength = value;
             AdvancedPhotoModeManager.Instance.SetEditedLighting();
         }
 

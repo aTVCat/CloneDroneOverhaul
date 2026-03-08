@@ -48,22 +48,22 @@ namespace B83.MeshTools
     public class MeshData
     {
         [SerializeField, HideInInspector]
-        private byte[] m_Data;
-        private Mesh m_Mesh;
-        public byte[] Data { get { return m_Data; } }
+        private byte[] _Data;
+        private Mesh _Mesh;
+        public byte[] Data { get { return _Data; } }
         public void SetMesh(Mesh aMesh)
         {
-            m_Mesh = aMesh;
+            _Mesh = aMesh;
             if (aMesh == null)
-                m_Data = null;
+                _Data = null;
             else
-                m_Data = MeshSerializer.SerializeMesh(m_Mesh);
+                _Data = MeshSerializer.SerializeMesh(_Mesh);
         }
         public Mesh GetMesh()
         {
-            if (m_Mesh == null && m_Data != null)
-                m_Mesh = MeshSerializer.DeserializeMesh(m_Data);
-            return m_Mesh;
+            if (_Mesh == null && _Data != null)
+                _Mesh = MeshSerializer.DeserializeMesh(_Data);
+            return _Mesh;
         }
     }
 
@@ -127,7 +127,7 @@ namespace B83.MeshTools
             BlendShape,
         }
 
-        private const uint m_Magic = 0x6873654D; // "Mesh"
+        private const uint _Magic = 0x6873654D; // "Mesh"
 
         public static byte[] SerializeMesh(Mesh aMesh)
         {
@@ -144,7 +144,7 @@ namespace B83.MeshTools
         }
         public static void SerializeMesh(BinaryWriter aWriter, Mesh aMesh)
         {
-            aWriter.Write(m_Magic);
+            aWriter.Write(_Magic);
             Vector3[] vertices = aMesh.vertices;
             int count = vertices.Length;
             int subMeshCount = aMesh.subMeshCount;
@@ -298,7 +298,7 @@ namespace B83.MeshTools
         }
         public static Mesh DeserializeMesh(BinaryReader aReader, Mesh aTarget = null)
         {
-            if (aReader.ReadUInt32() != m_Magic)
+            if (aReader.ReadUInt32() != _Magic)
                 return null;
             if (aTarget == null)
                 aTarget = new Mesh();

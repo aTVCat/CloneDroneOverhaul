@@ -10,20 +10,20 @@ namespace OverhaulMod.Content.Personalization
     {
         public const string OBJECT_SELECTION_CHANGED_EVENT = "PersonalizationEditorObjectSelectionChanged";
 
-        private List<PersonalizationEditorObjectSpawnInfo> m_objectInfos;
+        private List<PersonalizationEditorObjectSpawnInfo> _objectInfos;
 
-        private Material m_volumeMaterial;
+        private Material _volumeMaterial;
 
-        private List<PersonalizationEditorObjectBehaviour> m_instantiatedObjects;
+        private List<PersonalizationEditorObjectBehaviour> _instantiatedObjects;
 
-        private int m_nextUniqueIndex;
+        private int _nextUniqueIndex;
 
         public override void Awake()
         {
             base.Awake();
 
-            m_instantiatedObjects = new List<PersonalizationEditorObjectBehaviour>();
-            m_objectInfos = new List<PersonalizationEditorObjectSpawnInfo>();
+            _instantiatedObjects = new List<PersonalizationEditorObjectBehaviour>();
+            _objectInfos = new List<PersonalizationEditorObjectSpawnInfo>();
             addObjectInfo("Empty object", "Empty", instantiateEmpty);
             addObjectInfo("Model Renderer (.vox)", "Volume", instantiateVolume);
             addObjectInfo("Model Renderer (.cvm) [BETA]", "CvmModel", instantiateCvmModel);
@@ -41,28 +41,28 @@ namespace OverhaulMod.Content.Personalization
                 Path = path,
                 InstantiateFunction = func
             };
-            m_objectInfos.Add(personalizationEditorObjectInfo);
+            _objectInfos.Add(personalizationEditorObjectInfo);
         }
 
         public List<PersonalizationEditorObjectSpawnInfo> GetObjectInfos()
         {
-            return m_objectInfos;
+            return _objectInfos;
         }
 
         public void AddInstantiatedObject(PersonalizationEditorObjectBehaviour behaviour)
         {
-            if (!m_instantiatedObjects.Contains(behaviour))
-                m_instantiatedObjects.Add(behaviour);
+            if (!_instantiatedObjects.Contains(behaviour))
+                _instantiatedObjects.Add(behaviour);
         }
 
         public void RemoveInstantiatedObject(PersonalizationEditorObjectBehaviour behaviour)
         {
-            _ = m_instantiatedObjects.Remove(behaviour);
+            _ = _instantiatedObjects.Remove(behaviour);
         }
 
         public PersonalizationEditorObjectBehaviour GetInstantiatedObject(int uniqueIndex)
         {
-            List<PersonalizationEditorObjectBehaviour> list = m_instantiatedObjects;
+            List<PersonalizationEditorObjectBehaviour> list = _instantiatedObjects;
             if (list.IsNullOrEmpty())
                 return null;
 
@@ -81,23 +81,23 @@ namespace OverhaulMod.Content.Personalization
 
         public void SetCurrentRootNextUniqueIndex(int value)
         {
-            m_nextUniqueIndex = value;
+            _nextUniqueIndex = value;
         }
 
         public int GetNextUniqueIndex()
         {
-            m_nextUniqueIndex++;
-            return m_nextUniqueIndex;
+            _nextUniqueIndex++;
+            return _nextUniqueIndex;
         }
 
         public int GetCurrentUniqueIndex()
         {
-            return m_nextUniqueIndex;
+            return _nextUniqueIndex;
         }
 
         private Material getVolumeMaterial()
         {
-            Material material = m_volumeMaterial;
+            Material material = _volumeMaterial;
             if (material)
                 return material;
 
@@ -108,7 +108,7 @@ namespace OverhaulMod.Content.Personalization
                     break;
                 }
 
-            m_volumeMaterial = material;
+            _volumeMaterial = material;
             return material;
         }
 
@@ -205,7 +205,7 @@ namespace OverhaulMod.Content.Personalization
 
         public PersonalizationEditorObjectSpawnInfo GetObjectInfo(string path)
         {
-            foreach (PersonalizationEditorObjectSpawnInfo info in m_objectInfos)
+            foreach (PersonalizationEditorObjectSpawnInfo info in _objectInfos)
                 if (info.Path == path)
                     return info;
 

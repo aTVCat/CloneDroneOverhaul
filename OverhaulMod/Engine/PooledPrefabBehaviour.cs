@@ -4,25 +4,25 @@ namespace OverhaulMod.Engine
 {
     public class PooledPrefabBehaviour : MonoBehaviour
     {
-        private float m_timeToDeactivate;
+        private float _timeToDeactivate;
 
-        private GameObject m_objectReference;
+        private GameObject _objectReference;
         public GameObject objectReference
         {
             get
             {
-                if (!m_objectReference)
-                    m_objectReference = base.gameObject;
+                if (!_objectReference)
+                    _objectReference = base.gameObject;
 
-                return m_objectReference;
+                return _objectReference;
             }
         }
 
         private void Update()
         {
             float d = Time.deltaTime;
-            float v = m_timeToDeactivate - d;
-            m_timeToDeactivate = v;
+            float v = _timeToDeactivate - d;
+            _timeToDeactivate = v;
             if (v <= 0f)
             {
                 objectReference.SetActive(false);
@@ -31,7 +31,7 @@ namespace OverhaulMod.Engine
 
         public void Activate(float time)
         {
-            m_timeToDeactivate = time;
+            _timeToDeactivate = time;
             objectReference.SetActive(true);
         }
     }

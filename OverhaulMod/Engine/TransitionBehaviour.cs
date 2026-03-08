@@ -13,29 +13,29 @@ namespace OverhaulMod.Engine
 
         public float WaitBeforeFadeOut;
 
-        private Image m_bg;
+        private Image _bg;
 
-        private CanvasGroup m_canvasGroup;
+        private CanvasGroup _canvasGroup;
 
-        private GameObject m_loadingIndicator;
+        private GameObject _loadingIndicator;
 
-        private Outline m_loadingLabelOutline;
+        private Outline _loadingLabelOutline;
 
-        private ErrorManager m_errorManager;
+        private ErrorManager _errorManager;
 
-        private float m_timeToFade;
+        private float _timeToFade;
 
         public override void Awake()
         {
-            m_canvasGroup = base.GetComponent<CanvasGroup>();
-            m_bg = base.GetComponent<Image>();
-            m_loadingIndicator = moddedObjectReference.GetObject<GameObject>(0);
-            m_loadingLabelOutline = moddedObjectReference.GetObject<Outline>(1);
+            _canvasGroup = base.GetComponent<CanvasGroup>();
+            _bg = base.GetComponent<Image>();
+            _loadingIndicator = moddedObjectReference.GetObject<GameObject>(0);
+            _loadingLabelOutline = moddedObjectReference.GetObject<Outline>(1);
         }
 
         public override void Start()
         {
-            m_errorManager = ErrorManager.Instance;
+            _errorManager = ErrorManager.Instance;
             if (TransitionManager.TransitionSound && !FadeOut)
                 ModAudioManager.Instance.PlayTransitionSound();
 
@@ -49,7 +49,7 @@ namespace OverhaulMod.Engine
 
         public override void Update()
         {
-            ErrorManager errorManager = m_errorManager;
+            ErrorManager errorManager = _errorManager;
             if (errorManager && errorManager.HasCrashed())
             {
                 Destroy(base.gameObject);
@@ -57,34 +57,34 @@ namespace OverhaulMod.Engine
             }
 
             bool fo = FadeOut;
-            if (fo && m_timeToFade > Time.unscaledTime) return;
+            if (fo && _timeToFade > Time.unscaledTime) return;
 
-            float alpha = m_canvasGroup.alpha;
+            float alpha = _canvasGroup.alpha;
             alpha = Mathf.Lerp(alpha, fo ? 0f : 1f, Mathf.Min(Time.unscaledDeltaTime, 0.016f) * DeltaTimeMultiplier);
-            m_canvasGroup.alpha = alpha;
-            m_canvasGroup.blocksRaycasts = alpha >= 0.9f;
+            _canvasGroup.alpha = alpha;
+            _canvasGroup.blocksRaycasts = alpha >= 0.9f;
 
-            Color outlineColor = m_loadingLabelOutline.effectColor;
+            Color outlineColor = _loadingLabelOutline.effectColor;
             outlineColor.a = (Mathf.Clamp01(alpha - 0.7f) * 10f) - 2f;
-            m_loadingLabelOutline.effectColor = outlineColor;
+            _loadingLabelOutline.effectColor = outlineColor;
 
             if (fo && alpha <= 0.05f) Destroy(base.gameObject);
         }
 
         public void SetColor(Color color)
         {
-            m_bg.color = color;
+            _bg.color = color;
         }
 
         public void SetLoadingIndicatorActive(bool value)
         {
-            m_loadingIndicator.SetActive(value);
+            _loadingIndicator.SetActive(value);
         }
 
         public void StartFading()
         {
-            m_canvasGroup.alpha = FadeOut ? 1f : 0f;
-            m_timeToFade = Time.unscaledTime + WaitBeforeFadeOut;
+            _canvasGroup.alpha = FadeOut ? 1f : 0f;
+            _timeToFade = Time.unscaledTime + WaitBeforeFadeOut;
         }
 
         public void RunCoroutine(IEnumerator enumerator)

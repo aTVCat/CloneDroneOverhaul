@@ -6,12 +6,12 @@ namespace OverhaulMod.UI
     public class UIElementExpandButton : OverhaulUIBehaviour
     {
         [UIElement("ExpandImage", true)]
-        public GameObject m_expandImageObject;
+        public GameObject _expandImageObject;
 
         [UIElement("CollapseImage", false)]
-        public GameObject m_collapseImageObject;
+        public GameObject _collapseImageObject;
 
-        private Button m_button;
+        private Button _button;
 
         public RectTransform rectTransform
         {
@@ -31,19 +31,19 @@ namespace OverhaulMod.UI
             set;
         }
 
-        private bool m_expanded;
+        private bool _expanded;
         public bool expanded
         {
             get
             {
-                return m_expanded;
+                return _expanded;
             }
             set
             {
                 rectTransform.sizeDelta = value ? expandedSize : collapsedSize;
-                m_collapseImageObject.SetActive(value);
-                m_expandImageObject.SetActive(!value);
-                m_expanded = value;
+                _collapseImageObject.SetActive(value);
+                _expandImageObject.SetActive(!value);
+                _expanded = value;
             }
         }
 
@@ -51,13 +51,13 @@ namespace OverhaulMod.UI
         {
             Button button = base.GetComponent<Button>();
             button.onClick.AddListener(ToggleExpand);
-            m_button = button;
+            _button = button;
         }
 
         public void ToggleExpand()
         {
             expanded = !expanded;
-            m_button.OnDeselect(null);
+            _button.OnDeselect(null);
         }
     }
 }

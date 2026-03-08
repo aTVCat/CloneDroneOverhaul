@@ -10,13 +10,13 @@ namespace OverhaulMod.UI
     {
         [UIElementAction(nameof(Hide))]
         [UIElement("CloseButton")]
-        private readonly Button m_exitButton;
+        private readonly Button _exitButton;
 
         [UIElement("ObjectDisplayPrefab", false)]
-        private readonly ModdedObject m_objectDisplayPrefab;
+        private readonly ModdedObject _objectDisplayPrefab;
 
         [UIElement("Content")]
-        private readonly Transform m_container;
+        private readonly Transform _container;
 
         public Action callback
         {
@@ -32,7 +32,7 @@ namespace OverhaulMod.UI
                 if (obj.Path == "Empty")
                     continue;
 
-                ModdedObject moddedObject = Instantiate(m_objectDisplayPrefab, m_container);
+                ModdedObject moddedObject = Instantiate(_objectDisplayPrefab, _container);
                 moddedObject.gameObject.SetActive(true);
                 moddedObject.GetObject<Text>(0).text = obj.Name;
                 moddedObject.GetObject<Text>(1).text = LocalizationManager.Instance.GetTranslatedString($"ce_object_{obj.Name}");

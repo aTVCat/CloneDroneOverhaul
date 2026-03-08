@@ -14,22 +14,22 @@ namespace OverhaulMod.UI
 
         [UIElementAction(nameof(OnSelectItemButtonClicked))]
         [UIElement("SelectItemButton")]
-        private readonly Button m_selectItemButton;
+        private readonly Button _selectItemButton;
 
         [UIElementAction(nameof(OnSaveButtonClicked))]
         [UIElement("SaveButton")]
-        private readonly Button m_saveButton;
+        private readonly Button _saveButton;
 
         [UIElementAction(nameof(OnSendToVerificationButtonClicked))]
         [UIElement("SendToVerificationButton")]
-        private readonly Button m_sendToVerificationButton;
+        private readonly Button _sendToVerificationButton;
 
         [UIElementAction(nameof(OnPlaytestButtonClicked))]
         [UIElement("PlaytestButton")]
-        private readonly Button m_playtestButton;
+        private readonly Button _playtestButton;
 
         [UIElement("DeveloperPanel", false)]
-        private readonly RectTransform m_developerPanel;
+        private readonly RectTransform _developerPanel;
 
         [UIElement("ToolBar")]
         public RectTransform ToolBarTransform;
@@ -54,23 +54,23 @@ namespace OverhaulMod.UI
 
         [UIElementAction(nameof(OnFileButtonClicked))]
         [UIElement("FileButton")]
-        private readonly Button m_toolbarFileButton;
+        private readonly Button _toolbarFileButton;
 
         [UIElementAction(nameof(OnViewButtonClicked))]
         [UIElement("ViewButton")]
-        private readonly Button m_toolbarViewButton;
+        private readonly Button _toolbarViewButton;
 
         [UIElementAction(nameof(OnWindowButtonClicked))]
         [UIElement("WindowButton")]
-        private readonly Button m_toolbarWindowButton;
+        private readonly Button _toolbarWindowButton;
 
         [UIElementAction(nameof(OnHelpButtonClicked))]
         [UIElement("HelpButton")]
-        private readonly Button m_toolbarHelpButton;
+        private readonly Button _toolbarHelpButton;
 
         [UIElementAction(nameof(OnUploadButtonClicked))]
         [UIElement("UploadButton")]
-        private readonly Button m_toolbarUploadButton;
+        private readonly Button _toolbarUploadButton;
 
         public string InspectorWindowID, DeveloperWindowID, ObjectPropertiesWindowID;
 
@@ -89,9 +89,9 @@ namespace OverhaulMod.UI
             instance = this;
             tryInitializeOptions();
 
-            m_toolbarWindowButton.interactable = false;
-            m_toolbarUploadButton.interactable = false;
-            m_saveButton.interactable = false;
+            _toolbarWindowButton.interactable = false;
+            _toolbarUploadButton.interactable = false;
+            _saveButton.interactable = false;
 
             if (PersonalizationEditorGuideManager.NeverShowIntroductionGuide) return;
 
@@ -207,9 +207,9 @@ namespace OverhaulMod.UI
 
         public void ShowEverything()
         {
-            m_toolbarWindowButton.interactable = true;
-            m_toolbarUploadButton.interactable = true;
-            m_saveButton.interactable = true;
+            _toolbarWindowButton.interactable = true;
+            _toolbarUploadButton.interactable = true;
+            _saveButton.interactable = true;
             ShowInspector();
             ShowObjectProperties();
             ShowItemModerator();
@@ -250,7 +250,7 @@ namespace OverhaulMod.UI
             {
                 ModUIManager.WindowManager windowManager = ModUIManager.Instance.windowManager;
                 if (DeveloperWindowID == null)
-                    DeveloperWindowID = windowManager.Window(base.transform, m_developerPanel, "Item moderator", Vector2.one * -1f, Vector2.up * -120f);
+                    DeveloperWindowID = windowManager.Window(base.transform, _developerPanel, "Item moderator", Vector2.one * -1f, Vector2.up * -120f);
                 else
                     windowManager.ShowWindow(DeveloperWindowID);
 
@@ -334,22 +334,22 @@ namespace OverhaulMod.UI
 
         public void OnFileButtonClicked()
         {
-            Dropdown.ShowWithOptions(s_fileOptions, m_toolbarFileButton.transform as RectTransform);
+            Dropdown.ShowWithOptions(s_fileOptions, _toolbarFileButton.transform as RectTransform);
         }
 
         public void OnViewButtonClicked()
         {
-            Dropdown.ShowWithOptions(s_viewOptions, m_toolbarViewButton.transform as RectTransform);
+            Dropdown.ShowWithOptions(s_viewOptions, _toolbarViewButton.transform as RectTransform);
         }
 
         public void OnWindowButtonClicked()
         {
-            Dropdown.ShowWithOptions(s_windowOptions, m_toolbarWindowButton.transform as RectTransform);
+            Dropdown.ShowWithOptions(s_windowOptions, _toolbarWindowButton.transform as RectTransform);
         }
 
         public void OnHelpButtonClicked()
         {
-            Dropdown.ShowWithOptions(s_helpOptions, m_toolbarHelpButton.transform as RectTransform);
+            Dropdown.ShowWithOptions(s_helpOptions, _toolbarHelpButton.transform as RectTransform);
         }
 
         public void TutorialVideo()

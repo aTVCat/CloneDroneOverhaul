@@ -5,12 +5,12 @@ namespace OverhaulMod.Patches.Behaviours
 {
     internal class CustomizationButtonPatchBehaviour : GamePatchBehaviour
     {
-        private GameObject m_customizeButton;
+        private GameObject _customizeButton;
 
         public override void Patch()
         {
             Transform buttonRoot = ModCache.titleScreenUI.CustomizationUI.ButtonRoot.transform;
-            m_customizeButton = TransformUtils.FindChildRecursive(buttonRoot, "CustomizeButton").gameObject;
+            _customizeButton = TransformUtils.FindChildRecursive(buttonRoot, "CustomizeButton").gameObject;
 
             GlobalEventManager.Instance.AddEventListener(GlobalEvents.LevelSpawned, onLevelSpawned);
 
@@ -26,7 +26,7 @@ namespace OverhaulMod.Patches.Behaviours
         {
             if (!GameModeManager.IsOnTitleScreen()) return;
 
-            m_customizeButton.gameObject.SetActive(FindObjectOfType<CustomizationPlayerPreview>());
+            _customizeButton.gameObject.SetActive(FindObjectOfType<CustomizationPlayerPreview>());
         }
     }
 }

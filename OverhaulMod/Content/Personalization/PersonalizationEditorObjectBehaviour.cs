@@ -7,9 +7,9 @@ namespace OverhaulMod.Content.Personalization
 {
     public class PersonalizationEditorObjectBehaviour : MonoBehaviour
     {
-        private bool m_hasHiddenObjects;
+        private bool _hasHiddenObjects;
 
-        private Dictionary<GameObject, bool> m_hiddenObjects;
+        private Dictionary<GameObject, bool> _hiddenObjects;
 
         public string Name, Path;
 
@@ -23,16 +23,16 @@ namespace OverhaulMod.Content.Personalization
 
         public Vector3 SerializedScale;
 
-        private List<PersonalizationEditorObjectBehaviour> m_children;
+        private List<PersonalizationEditorObjectBehaviour> _children;
         public List<PersonalizationEditorObjectBehaviour> children
         {
             get
             {
-                List<PersonalizationEditorObjectBehaviour> list = m_children;
+                List<PersonalizationEditorObjectBehaviour> list = _children;
                 if (list == null)
                 {
                     list = new List<PersonalizationEditorObjectBehaviour>();
-                    m_children = list;
+                    _children = list;
                 }
                 else
                 {
@@ -83,7 +83,7 @@ namespace OverhaulMod.Content.Personalization
 
         private void Awake()
         {
-            m_children = new List<PersonalizationEditorObjectBehaviour>();
+            _children = new List<PersonalizationEditorObjectBehaviour>();
         }
 
         private void OnDestroy()
@@ -93,39 +93,39 @@ namespace OverhaulMod.Content.Personalization
 
         public void HideChildren()
         {
-            if (m_hasHiddenObjects)
+            if (_hasHiddenObjects)
                 return;
 
             Transform t = base.transform;
             if (t.childCount == 0)
                 return;
 
-            m_hasHiddenObjects = true;
+            _hasHiddenObjects = true;
 
-            if (m_hiddenObjects == null)
-                m_hiddenObjects = new Dictionary<GameObject, bool>();
+            if (_hiddenObjects == null)
+                _hiddenObjects = new Dictionary<GameObject, bool>();
             else
-                m_hiddenObjects.Clear();
+                _hiddenObjects.Clear();
 
             for (int i = 0; i < t.childCount; i++)
             {
                 Transform child = t.GetChild(i);
-                m_hiddenObjects.Add(child.gameObject, child.gameObject.activeSelf);
+                _hiddenObjects.Add(child.gameObject, child.gameObject.activeSelf);
                 child.gameObject.SetActive(false);
             }
         }
 
         public void ShowChildren()
         {
-            if (!m_hasHiddenObjects || m_hiddenObjects == null || m_hiddenObjects.Count == 0)
+            if (!_hasHiddenObjects || _hiddenObjects == null || _hiddenObjects.Count == 0)
                 return;
 
-            m_hasHiddenObjects = false;
-            foreach (KeyValuePair<GameObject, bool> kv in m_hiddenObjects)
+            _hasHiddenObjects = false;
+            foreach (KeyValuePair<GameObject, bool> kv in _hiddenObjects)
             {
                 kv.Key.SetActive(kv.Value);
             }
-            m_hiddenObjects.Clear();
+            _hiddenObjects.Clear();
         }
 
         public void SetChildrenActive(bool value)

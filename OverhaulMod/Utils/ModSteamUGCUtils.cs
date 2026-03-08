@@ -414,88 +414,88 @@ namespace OverhaulMod.Utils
 
         public class RequestParameters
         {
-            private List<string> m_requiredTags;
+            private List<string> _requiredTags;
 
-            private string m_searchText;
+            private string _searchText;
 
-            private bool m_enableCaching;
+            private bool _enableCaching;
 
-            private bool m_returnChildren;
+            private bool _returnChildren;
 
-            private bool m_returnPreviews;
+            private bool _returnPreviews;
 
-            private bool m_returnLongDescription;
+            private bool _returnLongDescription;
 
-            private EUGCMatchingUGCType m_itemType;
+            private EUGCMatchingUGCType _itemType;
 
             public static RequestParameters Create(EUGCMatchingUGCType itemType)
             {
                 return new RequestParameters()
                 {
-                    m_itemType = itemType
+                    _itemType = itemType
                 };
             }
 
             public void EnableCaching()
             {
-                m_enableCaching = true;
+                _enableCaching = true;
             }
 
             public void ReturnChildren()
             {
-                m_returnChildren = true;
+                _returnChildren = true;
             }
 
             public void ReturnPreviews()
             {
-                m_returnPreviews = true;
+                _returnPreviews = true;
             }
 
             public void ReturnLongDescription()
             {
-                m_returnLongDescription = true;
+                _returnLongDescription = true;
             }
 
             public void RequireTags(List<string> tags)
             {
-                m_requiredTags = tags;
+                _requiredTags = tags;
             }
 
             public void SearchText(string text)
             {
-                m_searchText = text;
+                _searchText = text;
             }
 
             public void ConfigureQuery(UGCQueryHandle_t queryHandle)
             {
-                if (m_requiredTags != null && m_requiredTags.Count != 0)
-                    foreach (string tag in m_requiredTags)
+                if (_requiredTags != null && _requiredTags.Count != 0)
+                    foreach (string tag in _requiredTags)
                         _ = SteamUGC.AddRequiredTag(queryHandle, tag);
 
-                if (!m_searchText.IsNullOrEmpty())
-                    _ = SteamUGC.SetSearchText(queryHandle, m_searchText);
+                if (!_searchText.IsNullOrEmpty())
+                    _ = SteamUGC.SetSearchText(queryHandle, _searchText);
 
-                if (m_enableCaching)
+                if (_enableCaching)
                     _ = SteamUGC.SetAllowCachedResponse(queryHandle, 5);
 
-                if (m_returnChildren)
+                if (_returnChildren)
                     _ = SteamUGC.SetReturnChildren(queryHandle, true);
 
-                if (m_returnPreviews)
+                if (_returnPreviews)
                     _ = SteamUGC.SetReturnAdditionalPreviews(queryHandle, true);
 
-                if (m_returnLongDescription)
+                if (_returnLongDescription)
                     _ = SteamUGC.SetReturnLongDescription(queryHandle, true);
             }
 
             public bool IsCachingEnabled()
             {
-                return m_enableCaching;
+                return _enableCaching;
             }
 
             public EUGCMatchingUGCType GetItemType()
             {
-                return m_itemType;
+                return _itemType;
             }
         }
     }

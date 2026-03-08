@@ -9,18 +9,18 @@ namespace OverhaulMod.UI
     {
         [UIElementAction(nameof(Hide))]
         [UIElement("CloseButton")]
-        private readonly Button m_exitButton;
+        private readonly Button _exitButton;
 
         [UIElement("ScrollRect")]
-        private readonly ScrollRect m_scrollRect;
+        private readonly ScrollRect _scrollRect;
 
         [UIElement("SectionPrefab", false)]
-        private readonly ModdedObject m_sectionPrefab;
+        private readonly ModdedObject _sectionPrefab;
         [UIElement("UserDisplayPrefab", false)]
-        private readonly ModdedObject m_userDisplayPrefab;
+        private readonly ModdedObject _userDisplayPrefab;
 
         [UIElement("Content")]
-        private readonly Transform m_content;
+        private readonly Transform _content;
 
         protected override void OnInitialized()
         {
@@ -41,7 +41,7 @@ namespace OverhaulMod.UI
             AddSection(LocalizationManager.Instance.GetTranslatedString("credits_header_libraries_used_in_the_mod"), "6FE5FF");
             AddLibrary("Amplify Occlusion", LocalizationManager.Instance.GetTranslatedString("credits_tooltip_libraries_used_in_the_mod_amplify_occlusion"), "https://assetstore.unity.com/packages/vfx/shaders/fullscreen-camera-effects/amplify-occlusion-56739", false);
             AddLibrary("SEGI", LocalizationManager.Instance.GetTranslatedString("credits_tooltip_libraries_used_in_the_mod_segi"), "https://github.com/sonicether/SEGI", false);
-            AddLibrary("Custom robot model editor", LocalizationManager.Instance.GetTranslatedString("credits_tooltip_libraries_used_in_the_mod_custom_robot_model_editor"), "https://modbot.org/modPreview.html?modID=de731a6b-0a96-4882-a02b-a336904f9853", false);
+            AddLibrary("Custom robot model editor", LocalizationManager.Instance.GetTranslatedString("credits_tooltip_libraries_used_in_the_mod_custo_robot_model_editor"), "https://modbot.org/modPreview.html?modID=de731a6b-0a96-4882-a02b-a336904f9853", false);
             //AddLibrary("Mesh Serializer", "The utility to save meshes on the disk and read them.\nMade by BUNNY83", "https://pastebin.com/yW91qEQh", false); // this isn't used yet
             AddLibrary("Discord RPC", LocalizationManager.Instance.GetTranslatedString("credits_tooltip_libraries_used_in_the_mod_discord_rpc"), "https://discord.com/developers/docs/topics/rpc", false);
         }
@@ -50,7 +50,7 @@ namespace OverhaulMod.UI
         {
             bool descriptionIsEmpty = description.IsNullOrEmpty();
 
-            ModdedObject moddedObject = Instantiate(m_userDisplayPrefab, m_content);
+            ModdedObject moddedObject = Instantiate(_userDisplayPrefab, _content);
             moddedObject.GetObject<Text>(0).text = libraryName;
             moddedObject.GetObject<GameObject>(0).SetActive(!descriptionIsEmpty);
             moddedObject.GetObject<Text>(4).text = libraryName;
@@ -72,7 +72,7 @@ namespace OverhaulMod.UI
         {
             bool descriptionIsEmpty = description.IsNullOrEmpty();
 
-            ModdedObject moddedObject = Instantiate(m_userDisplayPrefab, m_content);
+            ModdedObject moddedObject = Instantiate(_userDisplayPrefab, _content);
             moddedObject.GetObject<Text>(0).text = username;
             moddedObject.GetObject<GameObject>(0).SetActive(!descriptionIsEmpty);
             moddedObject.GetObject<Text>(4).text = username;
@@ -96,7 +96,7 @@ namespace OverhaulMod.UI
             Color color2 = color1;
             color2.a = 0.25f;
 
-            ModdedObject moddedObject = Instantiate(m_sectionPrefab, m_content);
+            ModdedObject moddedObject = Instantiate(_sectionPrefab, _content);
             moddedObject.GetObject<Text>(0).text = name;
             moddedObject.GetObject<Text>(0).color = color1;
             moddedObject.GetObject<Image>(1).color = color2;

@@ -20,7 +20,7 @@ namespace OverhaulMod.Engine
         [ModSetting(ModSettingsConstants.TRANSITION_SOUND, true)]
         public static bool TransitionSound;
 
-        private TransitionBehaviour m_transitionBehaviour;
+        private TransitionBehaviour _transitionBehaviour;
 
         public override void Awake()
         {
@@ -36,7 +36,7 @@ namespace OverhaulMod.Engine
 
         public bool IsDoingTransition()
         {
-            return m_transitionBehaviour;
+            return _transitionBehaviour;
         }
 
         public void DoNonSceneTransition(IEnumerator coroutine)
@@ -49,7 +49,7 @@ namespace OverhaulMod.Engine
             if (transitionArgs == null)
                 throw new ArgumentNullException(nameof(transitionArgs));
 
-            if (m_transitionBehaviour)
+            if (_transitionBehaviour)
                 return;
 
             GameObject gameObject = Instantiate(ModResources.Prefab(AssetBundleConstants.UI, "UI_Transition"), ModCache.gameUIRoot.transform, false);
@@ -66,13 +66,13 @@ namespace OverhaulMod.Engine
             transitionBehaviour.SetLoadingIndicatorActive(transitionArgs.ShowIndicator);
             transitionBehaviour.RunCoroutine(transitionArgs.Coroutine);
             transitionBehaviour.StartFading();
-            m_transitionBehaviour = transitionBehaviour;
+            _transitionBehaviour = transitionBehaviour;
         }
 
         public void EndTransition()
         {
-            if (m_transitionBehaviour)
-                m_transitionBehaviour.FadeOut = true;
+            if (_transitionBehaviour)
+                _transitionBehaviour.FadeOut = true;
         }
 
         public static IEnumerator SceneTransitionCoroutine(SceneTransitionManager sceneTransitionManager)

@@ -8,23 +8,23 @@ namespace OverhaulMod.UI
     {
         [UIElementAction(nameof(Hide))]
         [UIElement("CloseButton")]
-        private readonly Button m_exitButton;
+        private readonly Button _exitButton;
 
         [UIElementAction(nameof(OnOverhaulInfoButtonClicked))]
         [UIElement("OverhaulInfoButton")]
-        private readonly Button m_overhaulInfoButton;
+        private readonly Button _overhaulInfoButton;
 
         [UIElementAction(nameof(OnModBotInfoButtonClicked))]
         [UIElement("ModBotInfo")]
-        private readonly Button m_modBotInfoButton;
+        private readonly Button _modBotInfoButton;
 
         [UIElementAction(nameof(OnCloneDroneInfoButtonClicked))]
         [UIElement("CloneDroneInfoButton")]
-        private readonly Button m_cloneDroneInfoButton;
+        private readonly Button _cloneDroneInfoButton;
 
         [UIElementAction(nameof(OnGalleryButtonClicked))]
         [UIElement("GalleryButton")]
-        private readonly Button m_galleryButton;
+        private readonly Button _galleryButton;
 
         public override bool hideTitleScreen => true;
 

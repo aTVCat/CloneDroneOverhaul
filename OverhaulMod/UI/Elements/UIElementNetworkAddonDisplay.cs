@@ -8,25 +8,25 @@ namespace OverhaulMod.UI
     public class UIElementNetworkAddonDisplay : OverhaulUIBehaviour
     {
         [UIElement("ContentName")]
-        private readonly Text m_addonNameText;
+        private readonly Text _addonNameText;
 
         [UIElement("ContentDescription")]
-        private readonly Text m_addonDescriptionText;
+        private readonly Text _addonDescriptionText;
 
         [UIElement("ContentSize")]
-        private readonly Text m_addonSizeText;
+        private readonly Text _addonSizeText;
 
         [UIElement("ErrorPanel", false)]
-        private readonly GameObject m_errorPanelObject;
+        private readonly GameObject _errorPanelObject;
 
         [UIElement("ErrorLabel")]
-        private readonly Text m_errorLabel;
+        private readonly Text _errorLabel;
 
-        private AddonManager m_addonManager;
+        private AddonManager _addonManager;
 
-        public AddonDownloadInfo m_addonDownloadInfo;
+        public AddonDownloadInfo _addonDownloadInfo;
 
-        private Transform m_subUIParent;
+        private Transform _subUIParent;
 
         public void Initialize(AddonDownloadInfo addonDownloadInfo, Transform subUIParent)
         {
@@ -34,13 +34,13 @@ namespace OverhaulMod.UI
             Button button = base.GetComponent<Button>();
             button.onClick.AddListener(OnClicked);
 
-            m_addonManager = AddonManager.Instance;
-            m_addonDownloadInfo = addonDownloadInfo;
-            m_subUIParent = subUIParent;
+            _addonManager = AddonManager.Instance;
+            _addonDownloadInfo = addonDownloadInfo;
+            _subUIParent = subUIParent;
 
-            m_addonNameText.text = addonDownloadInfo.GetDisplayName();
-            m_addonDescriptionText.text = addonDownloadInfo.GetDescription();
-            m_addonSizeText.text = addonDownloadInfo.GetPackageSizeString();
+            _addonNameText.text = addonDownloadInfo.GetDisplayName();
+            _addonDescriptionText.text = addonDownloadInfo.GetDescription();
+            _addonSizeText.text = addonDownloadInfo.GetPackageSizeString();
 
             bool isSupported = addonDownloadInfo.Addon.IsSupported();
             if (!isSupported)
@@ -51,10 +51,10 @@ namespace OverhaulMod.UI
                 else
                     versionString = "N/A";
 
-                m_errorLabel.text = $"{LocalizationManager.Instance.GetTranslatedString("addon_requires_version")} {versionString}";
+                _errorLabel.text = $"{LocalizationManager.Instance.GetTranslatedString("addon_requires_version")} {versionString}";
             }
 
-            m_errorPanelObject.SetActive(!isSupported);
+            _errorPanelObject.SetActive(!isSupported);
 
             RectTransform rectTransform = base.transform as RectTransform;
             Vector2 size = rectTransform.sizeDelta;
@@ -64,8 +64,8 @@ namespace OverhaulMod.UI
 
         public void OnClicked()
         {
-            UIAddonDetailsMenu menu = ModUIConstants.ShowAddonDetailsMenu(m_subUIParent);
-            menu.SetAddon(m_addonDownloadInfo);
+            UIAddonDetailsMenu menu = ModUIConstants.ShowAddonDetailsMenu(_subUIParent);
+            menu.SetAddon(_addonDownloadInfo);
         }
     }
 }

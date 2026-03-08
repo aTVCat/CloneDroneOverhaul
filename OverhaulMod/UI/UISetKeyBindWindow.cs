@@ -8,35 +8,35 @@ namespace OverhaulMod.UI
     {
         [UIElementAction(nameof(OnCloseButtonClicked))]
         [UIElement("CloseButton")]
-        private readonly Button m_exitButton;
+        private readonly Button _exitButton;
 
         [UIElementAction(nameof(OnDoneButtonClicked))]
         [UIElement("DoneButton")]
-        private readonly Button m_doneButton;
+        private readonly Button _doneButton;
 
         [UIElementAction(nameof(OnSetDefaultButtonClicked))]
         [UIElement("SetDefaultButton")]
-        private readonly Button m_setDefaultButton;
+        private readonly Button _setDefaultButton;
 
         [UIElementAction(nameof(OnSetBindAgainButtonClicked))]
         [UIElement("SetBindAgainButton")]
-        private readonly Button m_setBindAgainButton;
+        private readonly Button _setBindAgainButton;
 
         [UIElement("PressAnyKeyText", false)]
-        private readonly GameObject m_pressAnyKeyTextObject;
+        private readonly GameObject _pressAnyKeyTextObject;
 
         [UIElement("Header")]
-        private readonly Text m_header;
+        private readonly Text _header;
 
         [UIElement("KeyBindText", false)]
-        private readonly Text m_keyBindText;
+        private readonly Text _keyBindText;
 
         public override bool refreshOnlyCursor => true;
 
-        private KeyCode m_defaultKey;
-        private KeyCode m_setKey;
+        private KeyCode _defaultKey;
+        private KeyCode _setKey;
 
-        private bool m_isWaiting;
+        private bool _isWaiting;
 
         public Action<KeyCode> callBack
         {
@@ -62,30 +62,30 @@ namespace OverhaulMod.UI
 
         public void SetContents(string keyBindName, KeyCode defaultKey)
         {
-            m_header.text = $"{LocalizationManager.Instance.GetTranslatedString("set_keybind_for")} \"{keyBindName}\"";
-            m_defaultKey = defaultKey;
+            _header.text = $"{LocalizationManager.Instance.GetTranslatedString("set_keybind_for")} \"{keyBindName}\"";
+            _defaultKey = defaultKey;
             StartWaitingUser();
         }
 
         public void StartWaitingUser()
         {
-            m_pressAnyKeyTextObject.SetActive(true);
-            m_keyBindText.gameObject.SetActive(false);
-            m_setBindAgainButton.interactable = false;
-            m_doneButton.interactable = false;
-            m_isWaiting = true;
+            _pressAnyKeyTextObject.SetActive(true);
+            _keyBindText.gameObject.SetActive(false);
+            _setBindAgainButton.interactable = false;
+            _doneButton.interactable = false;
+            _isWaiting = true;
         }
 
         public void SetCurrentKeyBind(KeyCode keyCode)
         {
-            m_pressAnyKeyTextObject.SetActive(false);
-            m_keyBindText.gameObject.SetActive(true);
-            m_keyBindText.text = keyCode.ToString().Replace("Alpha", string.Empty);
-            m_setBindAgainButton.interactable = true;
-            m_doneButton.interactable = true;
-            m_isWaiting = false;
+            _pressAnyKeyTextObject.SetActive(false);
+            _keyBindText.gameObject.SetActive(true);
+            _keyBindText.text = keyCode.ToString().Replace("Alpha", string.Empty);
+            _setBindAgainButton.interactable = true;
+            _doneButton.interactable = true;
+            _isWaiting = false;
 
-            m_setKey = keyCode;
+            _setKey = keyCode;
         }
 
         public void OnCloseButtonClicked()
@@ -95,14 +95,14 @@ namespace OverhaulMod.UI
 
         public void OnDoneButtonClicked()
         {
-            callBack?.Invoke(m_setKey);
+            callBack?.Invoke(_setKey);
             callBack = null;
             Hide();
         }
 
         public void OnSetDefaultButtonClicked()
         {
-            callBack?.Invoke(m_defaultKey);
+            callBack?.Invoke(_defaultKey);
             callBack = null;
             Hide();
         }

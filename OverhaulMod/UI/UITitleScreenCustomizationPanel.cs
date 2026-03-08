@@ -9,32 +9,32 @@ namespace OverhaulMod.UI
     {
         [UIElementAction(nameof(Hide))]
         [UIElement("CloseButton")]
-        private readonly Button m_exitButton;
+        private readonly Button _exitButton;
 
         [UIElementAction(nameof(OnPreviewButtonClicked))]
         [UIElement("PreviewButton")]
-        private readonly Button m_previewButton;
+        private readonly Button _previewButton;
 
         [UIElement("MusicDropdown")]
-        private readonly Dropdown m_musicDropdown;
+        private readonly Dropdown _musicDropdown;
 
         [UIElementAction(nameof(OnVolumeSliderChanged), true)]
         [UIElement("VolumeSlider")]
-        private readonly Slider m_volumeSlider;
+        private readonly Slider _volumeSlider;
 
         [UIElement("StaticBackgroundConfig", typeof(UIElementTitleScreenBackgroundConfig))]
-        private readonly UIElementTitleScreenBackgroundConfig m_staticBgConfig;
+        private readonly UIElementTitleScreenBackgroundConfig _staticBgConfig;
 
         [UIElement("LoadingLevelBG", false)]
-        private readonly GameObject m_loadingLevelBg;
+        private readonly GameObject _loadingLevelBg;
 
         [UIElement("Panel", true)]
-        private readonly GameObject m_panel;
+        private readonly GameObject _panel;
 
         [UIElement("LockedOverlay", false)]
-        private readonly GameObject m_lockedOverlay;
+        private readonly GameObject _lockedOverlay;
 
-        private bool m_isPreviewing;
+        private bool _isPreviewing;
 
         public override bool hideTitleScreen => true;
 
@@ -42,12 +42,12 @@ namespace OverhaulMod.UI
 
         protected override void OnInitialized()
         {
-            m_musicDropdown.options = TitleScreenCustomizationManager.Instance.GetMusicTracks();
-            m_musicDropdown.value = TitleScreenCustomizationManager.MusicTrackIndex;
-            m_musicDropdown.onValueChanged.AddListener(onMusicTrackDropdownChanged);
+            _musicDropdown.options = TitleScreenCustomizationManager.Instance.GetMusicTracks();
+            _musicDropdown.value = TitleScreenCustomizationManager.MusicTrackIndex;
+            _musicDropdown.onValueChanged.AddListener(onMusicTrackDropdownChanged);
 
-            m_staticBgConfig.refreshWhenEdited = true;
-            m_staticBgConfig.levelIsLoadingBG = m_loadingLevelBg;
+            _staticBgConfig.refreshWhenEdited = true;
+            _staticBgConfig.levelIsLoadingBG = _loadingLevelBg;
         }
 
         public override void OnDisable()
@@ -59,7 +59,7 @@ namespace OverhaulMod.UI
         public override void Update()
         {
             base.Update();
-            if (m_isPreviewing && Input.anyKey)
+            if (_isPreviewing && Input.anyKey)
             {
                 stopPreviewing();
             }
@@ -68,20 +68,20 @@ namespace OverhaulMod.UI
         public override void Show()
         {
             base.Show();
-            m_volumeSlider.value = SettingsManager.Instance.GetMusicVolume();
-            m_lockedOverlay.SetActive(TitleScreenCustomizationManager.Instance.ShouldLockUserCustomization());
+            _volumeSlider.value = SettingsManager.Instance.GetMusicVolume();
+            _lockedOverlay.SetActive(TitleScreenCustomizationManager.Instance.ShouldLockUserCustomization());
         }
 
         private void startPreviewing()
         {
-            m_isPreviewing = true;
-            m_panel.SetActive(false);
+            _isPreviewing = true;
+            _panel.SetActive(false);
         }
 
         private void stopPreviewing()
         {
-            m_isPreviewing = false;
-            m_panel.SetActive(true);
+            _isPreviewing = false;
+            _panel.SetActive(true);
         }
 
         public void OnPreviewButtonClicked()

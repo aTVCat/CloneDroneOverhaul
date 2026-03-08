@@ -11,41 +11,41 @@ namespace OverhaulMod.UI
 
         [UIElementAction(nameof(Hide))]
         [UIElement("CloseButton")]
-        private readonly Button m_closeButton;
+        private readonly Button _closeButton;
 
         [UIElement("Header")]
-        private readonly Text m_header;
+        private readonly Text _header;
 
         [UIElement("Description")]
-        private readonly Text m_description;
+        private readonly Text _description;
 
         [UIElement("Fill")]
-        private readonly Image m_fill;
+        private readonly Image _fill;
 
         [UIElement("Notification")]
-        private readonly Image m_bg;
+        private readonly Image _bg;
 
         [UIElement("Frame")]
-        private readonly Image m_frame;
+        private readonly Image _frame;
 
         [UIElement("Notification")]
-        private readonly CanvasGroup m_canvasGroup;
+        private readonly CanvasGroup _canvasGroup;
 
-        private float m_duration;
+        private float _duration;
 
-        private float m_timeLeft;
+        private float _timeLeft;
 
         public override void Update()
         {
             float d = Time.unscaledDeltaTime;
             float dMultiplied = d * 12.5f;
 
-            m_timeLeft -= d;
+            _timeLeft -= d;
 
-            m_canvasGroup.alpha += Mathf.Lerp(m_canvasGroup.alpha, 1f, dMultiplied);
-            m_fill.fillAmount = (m_duration - m_timeLeft) / m_duration;
+            _canvasGroup.alpha += Mathf.Lerp(_canvasGroup.alpha, 1f, dMultiplied);
+            _fill.fillAmount = (_duration - _timeLeft) / _duration;
 
-            if (m_timeLeft <= 0f)
+            if (_timeLeft <= 0f)
             {
                 Hide();
             }
@@ -58,15 +58,15 @@ namespace OverhaulMod.UI
             HSBColor frameHsbColor = new HSBColor(baseColor);
             frameHsbColor.b = Mathf.Clamp01(frameHsbColor.b + 0.3f);
             Color frameColor = frameHsbColor.ToColor();
-            m_bg.color = baseColor;
-            m_frame.color = frameColor;
-            m_header.text = header;
-            m_description.text = text;
-            m_duration = duration;
-            m_timeLeft = duration;
+            _bg.color = baseColor;
+            _frame.color = frameColor;
+            _header.text = header;
+            _description.text = text;
+            _duration = duration;
+            _timeLeft = duration;
 
-            m_canvasGroup.alpha = 0f;
-            m_fill.fillAmount = 0f;
+            _canvasGroup.alpha = 0f;
+            _fill.fillAmount = 0f;
 
             Show();
         }

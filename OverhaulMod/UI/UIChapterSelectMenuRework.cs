@@ -8,49 +8,49 @@ namespace OverhaulMod.UI
     {
         [UIElementAction(nameof(Hide))]
         [UIElement("CloseButton")]
-        private readonly Button m_exitButton;
+        private readonly Button _exitButton;
 
         [UIElementAction(nameof(OnRestartChapter1ButtonClicked))]
         [UIElement("RestartC1")]
-        private readonly Button m_chapter1Button;
+        private readonly Button _chapter1Button;
 
         [UIElementAction(nameof(OnRestartChapter2ButtonClicked))]
         [UIElement("RestartC2")]
-        private readonly Button m_chapter2Button;
+        private readonly Button _chapter2Button;
 
         [UIElementAction(nameof(OnRestartChapter3ButtonClicked))]
         [UIElement("RestartC3")]
-        private readonly Button m_chapter3Button;
+        private readonly Button _chapter3Button;
 
         [UIElementAction(nameof(OnRestartChapter4ButtonClicked))]
         [UIElement("RestartC4")]
-        private readonly Button m_chapter4Button;
+        private readonly Button _chapter4Button;
 
         [UIElementAction(nameof(OnRestartChapter5ButtonClicked))]
         [UIElement("RestartC5")]
-        private readonly Button m_chapter5Button;
+        private readonly Button _chapter5Button;
 
         [UIElementAction(nameof(OnContinueButtonClicked))]
         [UIElement("ContinueButton")]
-        private readonly Button m_continueButton;
+        private readonly Button _continueButton;
 
         [UIElementAction(nameof(OnLegacyUIButtonClicked))]
         [UIElement("OldUIButton")]
-        private readonly Button m_legacyUIButton;
+        private readonly Button _legacyUIButton;
 
         [UIElementAction(nameof(OnDifficultyDropdownEdit))]
         [UIElement("DifficultyDropdown")]
-        private readonly Dropdown m_difficultyDropdown;
+        private readonly Dropdown _difficultyDropdown;
 
         [UIElementAction(nameof(OnEnableGreatSwordsToggleEdit))]
         [UIElement("EnableGreatswordsToggle")]
-        private readonly Toggle m_enableGreatSwordsToggle;
+        private readonly Toggle _enableGreatSwordsToggle;
 
         [UIElement("ProgressText")]
-        private readonly Text m_progressText;
+        private readonly Text _progressText;
 
         [UIElement("ContinueText")]
-        private readonly Text m_continueButtonText;
+        private readonly Text _continueButtonText;
 
         public override bool refreshOnlyCursor => true;
 
@@ -58,9 +58,9 @@ namespace OverhaulMod.UI
         {
             base.Show();
             ModCache.titleScreenUI.SetSinglePlayerModeSelectButtonsVisibile(false);
-            m_difficultyDropdown.options = SettingsManager.Instance.GetDifficultyOptions();
-            m_difficultyDropdown.value = SettingsManager.Instance.GetStoryDifficultyIndex();
-            m_enableGreatSwordsToggle.isOn = ModGameModifiersManager.Instance.forceEnableGreatSwords;
+            _difficultyDropdown.options = SettingsManager.Instance.GetDifficultyOptions();
+            _difficultyDropdown.value = SettingsManager.Instance.GetStoryDifficultyIndex();
+            _enableGreatSwordsToggle.isOn = ModGameModifiersManager.Instance.forceEnableGreatSwords;
             RefreshProgressText();
         }
 
@@ -73,19 +73,19 @@ namespace OverhaulMod.UI
 
         public void RefreshProgressText()
         {
-            m_progressText.text = string.Empty;
+            _progressText.text = string.Empty;
 
             int currentChapter = MetagameProgressManager.Instance.CurrentProgressHasReached(MetagameProgress.P2_FirstHumanEscaped) ? 2 : 1;
             int numLevels = GameDataManager.Instance.GetNumberOfStoryLevelsWon() + 1;
             if (currentChapter <= 1 && numLevels <= 1)
-                m_continueButtonText.text = LocalizationManager.Instance.GetTranslatedString("New Game");
+                _continueButtonText.text = LocalizationManager.Instance.GetTranslatedString("New Game");
             else
             {
                 string chapterText = LocalizationManager.Instance.GetTranslatedString("Chapter");
                 string levelText = LocalizationManager.Instance.GetTranslatedString("Level");
 
-                m_continueButtonText.text = LocalizationManager.Instance.GetTranslatedString("Continue");
-                m_progressText.text = Singleton<MetagameProgressManager>.Instance.CurrentProgressHasReached(MetagameProgress.P10_ConqueredBattlecruiser)
+                _continueButtonText.text = LocalizationManager.Instance.GetTranslatedString("Continue");
+                _progressText.text = Singleton<MetagameProgressManager>.Instance.CurrentProgressHasReached(MetagameProgress.P10_ConqueredBattlecruiser)
                     ? $"{chapterText} 5"
                     : Singleton<MetagameProgressManager>.Instance.CurrentProgressHasReached(MetagameProgress.P7_CompletedTowerAssault)
                     ? $"{chapterText} 4"
@@ -94,11 +94,11 @@ namespace OverhaulMod.UI
                     : $"{chapterText} {currentChapter}, {levelText} {numLevels}";
             }
 
-            m_chapter1Button.gameObject.SetActive(true);
-            m_chapter2Button.gameObject.SetActive(MetagameProgressManager.Instance.HasBeatChapter1());
-            m_chapter3Button.gameObject.SetActive(MetagameProgressManager.Instance.HasBeatChapter2());
-            m_chapter4Button.gameObject.SetActive(MetagameProgressManager.Instance.HasBeatChapter3());
-            m_chapter5Button.gameObject.SetActive(MetagameProgressManager.Instance.HasBeatChapter4());
+            _chapter1Button.gameObject.SetActive(true);
+            _chapter2Button.gameObject.SetActive(MetagameProgressManager.Instance.HasBeatChapter1());
+            _chapter3Button.gameObject.SetActive(MetagameProgressManager.Instance.HasBeatChapter2());
+            _chapter4Button.gameObject.SetActive(MetagameProgressManager.Instance.HasBeatChapter3());
+            _chapter5Button.gameObject.SetActive(MetagameProgressManager.Instance.HasBeatChapter4());
         }
 
         public void ShowChapterLevelSelectionMenu(int chapterIndex)

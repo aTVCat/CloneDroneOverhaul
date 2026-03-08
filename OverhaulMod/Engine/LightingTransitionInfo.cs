@@ -8,16 +8,16 @@ namespace OverhaulMod.Engine
     {
         public LightingInfo LightingA, LightingB;
 
-        private float m_completion;
+        private float _completion;
         public float completion
         {
             get
             {
-                return m_completion;
+                return _completion;
             }
             set
             {
-                m_completion = value;
+                _completion = value;
                 setTransitionProgress(value);
             }
         }

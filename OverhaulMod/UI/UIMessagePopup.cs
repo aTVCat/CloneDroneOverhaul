@@ -9,48 +9,48 @@ namespace OverhaulMod.UI
     {
         [UIElementAction(nameof(Hide))]
         [UIElement("CloseButton")]
-        private readonly Button m_closeButton;
+        private readonly Button _closeButton;
 
         [UIElement("Header")]
-        private readonly Text m_headerText;
+        private readonly Text _headerText;
 
         [UIElement("Description")]
-        private readonly Text m_descriptionText;
+        private readonly Text _descriptionText;
 
         [UIElementAction(nameof(OnOkButtonClicked))]
         [UIElement("OKButton", false)]
-        private readonly Button m_okButton;
+        private readonly Button _okButton;
 
         [UIElementAction(nameof(OnYesButtonClicked))]
         [UIElement("YesButton", false)]
-        private readonly Button m_yesButton;
+        private readonly Button _yesButton;
 
         [UIElementAction(nameof(OnNoButtonClicked))]
         [UIElement("NoButton", false)]
-        private readonly Button m_noButton;
+        private readonly Button _noButton;
 
         [UIElement("OKButtonText")]
-        private readonly Text m_okButtonText;
+        private readonly Text _okButtonText;
 
         [UIElement("YesButtonText")]
-        private readonly Text m_yesButtonText;
+        private readonly Text _yesButtonText;
 
         [UIElement("NoButtonText")]
-        private readonly Text m_noButtonText;
+        private readonly Text _noButtonText;
 
         [UIElement("Panel")]
-        private readonly CanvasGroup m_panelCanvasGroup;
+        private readonly CanvasGroup _panelCanvasGroup;
 
         [UIElement("Panel")]
-        private readonly RectTransform m_panelTransform;
+        private readonly RectTransform _panelTransform;
 
         [UIElementIgnoreIfMissing]
         [UIElement("ScrollRect")]
-        private readonly GameObject m_scrollRectObject;
+        private readonly GameObject _scrollRectObject;
 
         public bool IsFullscreen;
 
-        private bool m_shouldRefreshText;
+        private bool _shouldRefreshText;
 
         public override bool refreshOnlyCursor => true;
 
@@ -83,13 +83,13 @@ namespace OverhaulMod.UI
         public override void Update()
         {
             base.Update();
-            if (m_shouldRefreshText)
+            if (_shouldRefreshText)
             {
-                m_shouldRefreshText = false;
+                _shouldRefreshText = false;
 
-                Vector2 sizeDelta = m_descriptionText.rectTransform.sizeDelta;
-                sizeDelta.y = m_descriptionText.preferredHeight + 30f;
-                m_descriptionText.rectTransform.sizeDelta = sizeDelta;
+                Vector2 sizeDelta = _descriptionText.rectTransform.sizeDelta;
+                sizeDelta.y = _descriptionText.preferredHeight + 30f;
+                _descriptionText.rectTransform.sizeDelta = sizeDelta;
             }
         }
 
@@ -113,28 +113,28 @@ namespace OverhaulMod.UI
 
         public void SetTexts(string header, string description)
         {
-            m_headerText.text = header;
-            m_descriptionText.text = description;
+            _headerText.text = header;
+            _descriptionText.text = description;
             refreshTextHeightNextFrame();
 
-            if (m_scrollRectObject)
+            if (_scrollRectObject)
             {
-                m_scrollRectObject.SetActive(!description.IsNullOrEmpty());
+                _scrollRectObject.SetActive(!description.IsNullOrEmpty());
             }
         }
 
         public void SetHeight(float height)
         {
-            Vector2 sizeDelta = m_panelTransform.sizeDelta;
+            Vector2 sizeDelta = _panelTransform.sizeDelta;
             sizeDelta.y = Mathf.Max(100f, height);
-            m_panelTransform.sizeDelta = sizeDelta;
+            _panelTransform.sizeDelta = sizeDelta;
         }
 
         public void SetButtonLayout(MessageMenu.ButtonLayout buttonLayout)
         {
-            m_okButton.gameObject.SetActive(buttonLayout == MessageMenu.ButtonLayout.OkButton);
-            m_yesButton.gameObject.SetActive(buttonLayout == MessageMenu.ButtonLayout.EnableDisableButtons);
-            m_noButton.gameObject.SetActive(buttonLayout == MessageMenu.ButtonLayout.EnableDisableButtons);
+            _okButton.gameObject.SetActive(buttonLayout == MessageMenu.ButtonLayout.OkButton);
+            _yesButton.gameObject.SetActive(buttonLayout == MessageMenu.ButtonLayout.EnableDisableButtons);
+            _noButton.gameObject.SetActive(buttonLayout == MessageMenu.ButtonLayout.EnableDisableButtons);
         }
 
         public void SetButtonActions(Action ok, Action yes, Action no)
@@ -158,14 +158,14 @@ namespace OverhaulMod.UI
             if (noText.ToLower() == "no")
                 noText = LocalizationManager.Instance.GetTranslatedString("button_no");
 
-            m_okButtonText.text = okText;
-            m_yesButtonText.text = yesText;
-            m_noButtonText.text = noText;
+            _okButtonText.text = okText;
+            _yesButtonText.text = yesText;
+            _noButtonText.text = noText;
         }
 
         private void refreshTextHeightNextFrame()
         {
-            m_shouldRefreshText = true;
+            _shouldRefreshText = true;
         }
     }
 }

@@ -28,128 +28,128 @@ namespace OverhaulMod.UI
         };
 
         [UIElement("VolumeColorsConfigPanel", typeof(UIElementPersonalizationEditorVolumeColorsSettings), false)]
-        private readonly UIElementPersonalizationEditorVolumeColorsSettings m_volumeColorsSettings;
+        private readonly UIElementPersonalizationEditorVolumeColorsSettings _volumeColorsSettings;
 
         [UIElementAction(nameof(OnPositionChanged))]
         [UIElement("PositionPanel", typeof(UIElementVector3Field))]
-        private readonly UIElementVector3Field m_positionField;
+        private readonly UIElementVector3Field _positionField;
 
         [UIElementAction(nameof(OnRotationChanged))]
         [UIElement("RotationPanel", typeof(UIElementVector3Field))]
-        private readonly UIElementVector3Field m_rotationField;
+        private readonly UIElementVector3Field _rotationField;
 
         [UIElementAction(nameof(OnScaleChanged))]
         [UIElement("ScalePanel", typeof(UIElementVector3Field))]
-        private readonly UIElementVector3Field m_scaleField;
+        private readonly UIElementVector3Field _scaleField;
 
         [UIElement("ForceVolumeSettingsPresetDropdown", false)]
-        private readonly ModdedObject m_forceVolumeSettingsPresetDropdown;
+        private readonly ModdedObject _forceVolumeSettingsPresetDropdown;
 
         [UIElement("VolumeSettingsPresetDisplay", false)]
-        private readonly ModdedObject m_volumeSettingsPresetDisplay;
+        private readonly ModdedObject _volumeSettingsPresetDisplay;
 
         [UIElement("VolumeSettingsPresetDisplay_Acc", false)]
-        private readonly ModdedObject m_volumeSettingsPresetDisplayAccessory;
+        private readonly ModdedObject _volumeSettingsPresetDisplayAccessory;
 
         [UIElement("EnableIfPresetDropdown", false)]
-        private readonly ModdedObject m_enableIfPresetDropdown;
+        private readonly ModdedObject _enableIfPresetDropdown;
 
         [UIElement("VolumeExtraSettings", false)]
-        private readonly ModdedObject m_volumeExtraSettings;
+        private readonly ModdedObject _volumeExtraSettings;
 
         [UIElement("ColorPickButton", false)]
-        private readonly ModdedObject m_colorPickButton;
+        private readonly ModdedObject _colorPickButton;
 
         [UIElement("BoolFieldDisplay", false)]
-        private readonly ModdedObject m_togglePrefab;
+        private readonly ModdedObject _togglePrefab;
 
         [UIElement("IntFloatSlider", false)]
-        private readonly ModdedObject m_intFloatSliderPrefab;
+        private readonly ModdedObject _intFloatSliderPrefab;
 
         [UIElement("CvmModelPresetDisplay", false)]
-        private readonly ModdedObject m_cvmModelPresetDisplay;
+        private readonly ModdedObject _cvmModelPresetDisplay;
 
         [UIElement("AddVolumeSettingsPresetButton", false)]
-        private readonly Button m_addVolumeSettingsPresetButton;
+        private readonly Button _addVolumeSettingsPresetButton;
 
         [UIElement("Content")]
-        private readonly Transform m_container;
+        private readonly Transform _container;
 
         [UIElement("NothingToEditOverlay", true)]
-        private readonly GameObject m_nothingToEditOverlay;
+        private readonly GameObject _nothingToEditOverlay;
 
         [UIElementCallback(true)]
         [UIElementAction(nameof(OnObjectNameChanged))]
         [UIElement("ObjectNameField")]
-        private readonly InputField m_objectNameField;
+        private readonly InputField _objectNameField;
 
-        private UIElementMouseEventsComponent m_mousePositionChecker;
+        private UIElementMouseEventsComponent _mousePositionChecker;
 
-        private int m_objectId;
+        private int _objectId;
 
-        private PersonalizationEditorObjectBehaviour m_object;
+        private PersonalizationEditorObjectBehaviour _object;
 
-        private VolumePropertiesController m_volumePropertiesController;
+        private VolumePropertiesController _volumePropertiesController;
 
-        private VisibilityPropertiesController m_visibilityPropertiesController;
+        private VisibilityPropertiesController _visibilityPropertiesController;
 
-        private FireParticlesPropertiesController m_fireParticlesPropertiesController;
+        private FireParticlesPropertiesController _fireParticlesPropertiesController;
 
-        private CvmModelPropertiesController m_cvmModelPropertiesController;
+        private CvmModelPropertiesController _cvmModelPropertiesController;
 
-        private bool m_disableCallbacks;
+        private bool _disableCallbacks;
 
-        private bool m_prevObjectState;
+        private bool _prevObjectState;
 
         protected override void OnInitialized()
         {
-            m_objectId = -1;
-            m_volumePropertiesController = new VolumePropertiesController();
-            m_visibilityPropertiesController = new VisibilityPropertiesController();
-            m_fireParticlesPropertiesController = new FireParticlesPropertiesController();
-            m_cvmModelPropertiesController = new CvmModelPropertiesController();
+            _objectId = -1;
+            _volumePropertiesController = new VolumePropertiesController();
+            _visibilityPropertiesController = new VisibilityPropertiesController();
+            _fireParticlesPropertiesController = new FireParticlesPropertiesController();
+            _cvmModelPropertiesController = new CvmModelPropertiesController();
 
-            m_mousePositionChecker = base.gameObject.AddComponent<UIElementMouseEventsComponent>();
-            m_volumeColorsSettings.onColorChanged = OnVolumeColorReplacementsChanged;
+            _mousePositionChecker = base.gameObject.AddComponent<UIElementMouseEventsComponent>();
+            _volumeColorsSettings.onColorChanged = OnVolumeColorReplacementsChanged;
         }
 
         private void LateUpdate()
         {
-            bool newObjectState = m_object;
-            if (newObjectState != m_prevObjectState)
+            bool newObjectState = _object;
+            if (newObjectState != _prevObjectState)
             {
                 if (!newObjectState)
                 {
                     EditObject(null);
                 }
-                m_prevObjectState = newObjectState;
+                _prevObjectState = newObjectState;
             }
         }
 
         public void Clear()
         {
-            TransformUtils.DestroyAllChildren(m_container);
+            TransformUtils.DestroyAllChildren(_container);
         }
 
         public void Refresh()
         {
-            EditObject(m_object);
+            EditObject(_object);
         }
 
         public int GetEditingObjectUniqueIndex()
         {
-            if (m_object)
-                return m_object.UniqueIndex;
+            if (_object)
+                return _object.UniqueIndex;
 
             return -1;
         }
 
         public void EditObjectAgain()
         {
-            if (m_objectId == -1)
+            if (_objectId == -1)
                 return;
 
-            EditObject(PersonalizationEditorObjectManager.Instance.GetInstantiatedObject(m_objectId));
+            EditObject(PersonalizationEditorObjectManager.Instance.GetInstantiatedObject(_objectId));
         }
 
         public void EditObject(PersonalizationEditorObjectBehaviour objectBehaviour)
@@ -157,48 +157,48 @@ namespace OverhaulMod.UI
             bool isNotNull = objectBehaviour;
 
             ModUIConstants.HideGenericColorPicker();
-            m_volumeColorsSettings.Hide();
-            m_nothingToEditOverlay.SetActive(!isNotNull);
+            _volumeColorsSettings.Hide();
+            _nothingToEditOverlay.SetActive(!isNotNull);
             if (!isNotNull)
             {
-                m_objectId = -1;
-                m_object = null;
-                m_objectNameField.text = string.Empty;
+                _objectId = -1;
+                _object = null;
+                _objectNameField.text = string.Empty;
                 GlobalEventManager.Instance.Dispatch(PersonalizationEditorObjectManager.OBJECT_SELECTION_CHANGED_EVENT);
                 return;
             }
-            m_objectId = objectBehaviour.UniqueIndex;
-            m_object = objectBehaviour;
+            _objectId = objectBehaviour.UniqueIndex;
+            _object = objectBehaviour;
             GlobalEventManager.Instance.Dispatch(PersonalizationEditorObjectManager.OBJECT_SELECTION_CHANGED_EVENT);
 
             Clear();
 
-            m_disableCallbacks = true;
-            m_objectNameField.text = objectBehaviour.Name;
-            m_positionField.vector = objectBehaviour.transform.localPosition;
-            m_rotationField.vector = objectBehaviour.transform.localEulerAngles;
-            m_scaleField.vector = objectBehaviour.transform.localScale;
+            _disableCallbacks = true;
+            _objectNameField.text = objectBehaviour.Name;
+            _positionField.vector = objectBehaviour.transform.localPosition;
+            _rotationField.vector = objectBehaviour.transform.localEulerAngles;
+            _scaleField.vector = objectBehaviour.transform.localScale;
 
             bool isWeaponSkin = objectBehaviour.ControllerInfo.ItemInfo.Category == PersonalizationCategory.WeaponSkins;
 
             if (isWeaponSkin && objectBehaviour.GetComponent<PersonalizationEditorObjectVisibilityController>())
             {
-                m_visibilityPropertiesController.PopulateFields(this, m_container, objectBehaviour);
+                _visibilityPropertiesController.PopulateFields(this, _container, objectBehaviour);
             }
 
             if (objectBehaviour.GetComponent<PersonalizationEditorObjectVolume>())
             {
-                m_volumePropertiesController.PopulateFields(this, m_container, objectBehaviour);
+                _volumePropertiesController.PopulateFields(this, _container, objectBehaviour);
             }
 
             if (objectBehaviour.GetComponent<PersonalizationEditorObjectCVMModel>())
             {
-                m_cvmModelPropertiesController.PopulateFields(this, m_container, objectBehaviour);
+                _cvmModelPropertiesController.PopulateFields(this, _container, objectBehaviour);
             }
 
             if (objectBehaviour.GetComponent<PersonalizationEditorObjectFireParticles>())
             {
-                m_fireParticlesPropertiesController.PopulateFields(this, m_container, objectBehaviour);
+                _fireParticlesPropertiesController.PopulateFields(this, _container, objectBehaviour);
             }
 
             /*
@@ -209,7 +209,7 @@ namespace OverhaulMod.UI
                 {
                     if (attribute.IsFileLocation)
                     {
-                        fieldDisplay = Instantiate(m_fileLocationFieldDisplay, m_container).gameObject.AddComponent<FileLocationField>();
+                        fieldDisplay = Instantiate(_fileLocationFieldDisplay, _container).gameObject.AddComponent<FileLocationField>();
                     }
                 }
 
@@ -224,23 +224,23 @@ namespace OverhaulMod.UI
                 }
             }*/
 
-            m_disableCallbacks = false;
+            _disableCallbacks = false;
         }
 
         public void OnVolumeColorReplacementsChanged(string str)
         {
             /*
-            PersonalizationEditorObjectVolume volume = m_volume;
+            PersonalizationEditorObjectVolume volume = _volume;
             if (volume)
                 volume.colorReplacements = str;*/
         }
 
         public void OnPositionChanged(Vector3 value)
         {
-            if (m_disableCallbacks)
+            if (_disableCallbacks)
                 return;
 
-            PersonalizationEditorObjectBehaviour objectBehaviour = m_object;
+            PersonalizationEditorObjectBehaviour objectBehaviour = _object;
             if (!objectBehaviour)
                 return;
 
@@ -249,10 +249,10 @@ namespace OverhaulMod.UI
 
         public void OnRotationChanged(Vector3 value)
         {
-            if (m_disableCallbacks)
+            if (_disableCallbacks)
                 return;
 
-            PersonalizationEditorObjectBehaviour objectBehaviour = m_object;
+            PersonalizationEditorObjectBehaviour objectBehaviour = _object;
             if (!objectBehaviour)
                 return;
 
@@ -261,10 +261,10 @@ namespace OverhaulMod.UI
 
         public void OnScaleChanged(Vector3 value)
         {
-            if (m_disableCallbacks)
+            if (_disableCallbacks)
                 return;
 
-            PersonalizationEditorObjectBehaviour objectBehaviour = m_object;
+            PersonalizationEditorObjectBehaviour objectBehaviour = _object;
             if (!objectBehaviour)
                 return;
 
@@ -274,9 +274,9 @@ namespace OverhaulMod.UI
 
         public void OnObjectNameChanged(string str)
         {
-            if (!m_disableCallbacks && m_object)
+            if (!_disableCallbacks && _object)
             {
-                m_object.Name = str;
+                _object.Name = str;
                 PersonalizationEditorManager.Instance.SerializeRoot();
                 UIPersonalizationEditor.instance.Inspector.RefreshHierarchyPanel();
             }
@@ -301,7 +301,7 @@ namespace OverhaulMod.UI
 
                 PersonalizationEditorObjectCVMModel model = objectBehaviour.GetComponent<PersonalizationEditorObjectCVMModel>();
 
-                ModdedObject volumeExtraSettings = Instantiate(propertiesPanel.m_volumeExtraSettings, container);
+                ModdedObject volumeExtraSettings = Instantiate(propertiesPanel._volumeExtraSettings, container);
                 volumeExtraSettings.gameObject.SetActive(true);
                 Toggle hideIfNoPresetToggle = volumeExtraSettings.GetObject<Toggle>(0);
                 hideIfNoPresetToggle.isOn = model.hideIfNoPreset;
@@ -318,7 +318,7 @@ namespace OverhaulMod.UI
                     {
                         CVMModelPreset preset = keyValue.Value;
 
-                        ModdedObject display = Instantiate(propertiesPanel.m_cvmModelPresetDisplay, container);
+                        ModdedObject display = Instantiate(propertiesPanel._cvmModelPresetDisplay, container);
                         display.gameObject.SetActive(true);
 
                         // voxel model file
@@ -518,7 +518,7 @@ namespace OverhaulMod.UI
 
                 if (model.GetUnusedShowCondition() != WeaponVariant2.None)
                 {
-                    Button newPresetButton = Instantiate(propertiesPanel.m_addVolumeSettingsPresetButton, container);
+                    Button newPresetButton = Instantiate(propertiesPanel._addVolumeSettingsPresetButton, container);
                     newPresetButton.gameObject.SetActive(true);
                     newPresetButton.onClick.AddListener(delegate
                     {
@@ -535,7 +535,7 @@ namespace OverhaulMod.UI
             {
                 PersonalizationEditorObjectFireParticles fireParticles = objectBehaviour.GetComponent<PersonalizationEditorObjectFireParticles>();
 
-                ModdedObject colorPickButton = Instantiate(propertiesPanel.m_colorPickButton, container);
+                ModdedObject colorPickButton = Instantiate(propertiesPanel._colorPickButton, container);
                 colorPickButton.gameObject.SetActive(true);
                 colorPickButton.GetObject<Text>(2).text = "Fire color";
                 UIElementColorPickerButton colorPickerButtonComponent = colorPickButton.gameObject.AddComponent<UIElementColorPickerButton>();
@@ -549,7 +549,7 @@ namespace OverhaulMod.UI
                     fireParticles.RefreshColor();
                 });
 
-                ModdedObject applyFavoriteColorToggleModdedObject = Instantiate(propertiesPanel.m_togglePrefab, container);
+                ModdedObject applyFavoriteColorToggleModdedObject = Instantiate(propertiesPanel._togglePrefab, container);
                 applyFavoriteColorToggleModdedObject.gameObject.SetActive(true);
                 Toggle applyFavoriteColorToggle = applyFavoriteColorToggleModdedObject.GetComponent<Toggle>();
                 applyFavoriteColorToggle.isOn = fireParticles.applyFavoriteColor;
@@ -560,7 +560,7 @@ namespace OverhaulMod.UI
                 });
                 applyFavoriteColorToggleModdedObject.GetObject<Text>(0).text = "Apply favorite color";
 
-                ModdedObject hueOffsetSliderModdedObject = Instantiate(propertiesPanel.m_intFloatSliderPrefab, container);
+                ModdedObject hueOffsetSliderModdedObject = Instantiate(propertiesPanel._intFloatSliderPrefab, container);
                 hueOffsetSliderModdedObject.gameObject.SetActive(true);
                 hueOffsetSliderModdedObject.GetObject<Text>(1).text = "Fav. color hue offset";
                 Slider hueOffsetSlider = hueOffsetSliderModdedObject.GetObject<Slider>(0);
@@ -575,7 +575,7 @@ namespace OverhaulMod.UI
                     fireParticles.RefreshColor();
                 });
 
-                ModdedObject brightnessSliderModdedObject = Instantiate(propertiesPanel.m_intFloatSliderPrefab, container);
+                ModdedObject brightnessSliderModdedObject = Instantiate(propertiesPanel._intFloatSliderPrefab, container);
                 brightnessSliderModdedObject.gameObject.SetActive(true);
                 brightnessSliderModdedObject.GetObject<Text>(1).text = "Fav. color brightness";
                 Slider brightnessSlider = brightnessSliderModdedObject.GetObject<Slider>(0);
@@ -589,7 +589,7 @@ namespace OverhaulMod.UI
                     fireParticles.RefreshColor();
                 });
 
-                ModdedObject saturationSliderModdedObject = Instantiate(propertiesPanel.m_intFloatSliderPrefab, container);
+                ModdedObject saturationSliderModdedObject = Instantiate(propertiesPanel._intFloatSliderPrefab, container);
                 saturationSliderModdedObject.gameObject.SetActive(true);
                 saturationSliderModdedObject.GetObject<Text>(1).text = "Fav. color saturation";
                 Slider saturationSlider = saturationSliderModdedObject.GetObject<Slider>(0);
@@ -603,7 +603,7 @@ namespace OverhaulMod.UI
                     fireParticles.RefreshColor();
                 });
 
-                ModdedObject enableSmokeToggleModdedObject = Instantiate(propertiesPanel.m_togglePrefab, container);
+                ModdedObject enableSmokeToggleModdedObject = Instantiate(propertiesPanel._togglePrefab, container);
                 enableSmokeToggleModdedObject.gameObject.SetActive(true);
                 Toggle enableSmokeToggle = enableSmokeToggleModdedObject.GetComponent<Toggle>();
                 enableSmokeToggle.isOn = fireParticles.enableSmoke;
@@ -620,7 +620,7 @@ namespace OverhaulMod.UI
         {
             public override void PopulateFields(UIElementPersonalizationEditorInspectorPanel propertiesPanel, Transform container, PersonalizationEditorObjectBehaviour objectBehaviour)
             {
-                ModdedObject enableIfPresetDropdown = Instantiate(propertiesPanel.m_enableIfPresetDropdown, container);
+                ModdedObject enableIfPresetDropdown = Instantiate(propertiesPanel._enableIfPresetDropdown, container);
                 enableIfPresetDropdown.gameObject.SetActive(true);
 
                 PersonalizationEditorObjectVisibilityController visibilityController = objectBehaviour.GetComponent<PersonalizationEditorObjectVisibilityController>();
@@ -669,7 +669,7 @@ namespace OverhaulMod.UI
 
                 if (isWeaponSkin)
                 {
-                    ModdedObject volumeExtraSettings = Instantiate(propertiesPanel.m_volumeExtraSettings, container);
+                    ModdedObject volumeExtraSettings = Instantiate(propertiesPanel._volumeExtraSettings, container);
                     volumeExtraSettings.gameObject.SetActive(true);
                     Toggle hideIfNoPresetToggle = volumeExtraSettings.GetObject<Toggle>(0);
                     hideIfNoPresetToggle.isOn = volume.hideIfNoPreset;
@@ -687,7 +687,7 @@ namespace OverhaulMod.UI
                     {
                         VolumeSettingsPreset settingsPreset = preset.Value;
 
-                        ModdedObject display = Instantiate((isWeaponSkin || volumePresets.Count != 1) ? propertiesPanel.m_volumeSettingsPresetDisplay : propertiesPanel.m_volumeSettingsPresetDisplayAccessory, container);
+                        ModdedObject display = Instantiate((isWeaponSkin || volumePresets.Count != 1) ? propertiesPanel._volumeSettingsPresetDisplay : propertiesPanel._volumeSettingsPresetDisplayAccessory, container);
                         display.gameObject.SetActive(true);
 
                         // voxel model file
@@ -809,7 +809,7 @@ namespace OverhaulMod.UI
 
                         display.GetObject<Button>(3).onClick.AddListener(delegate
                         {
-                            UIElementPersonalizationEditorVolumeColorsSettings volumeColorsSettings = propertiesPanel.m_volumeColorsSettings;
+                            UIElementPersonalizationEditorVolumeColorsSettings volumeColorsSettings = propertiesPanel._volumeColorsSettings;
                             volumeColorsSettings.Show();
                             volumeColorsSettings.Populate(settingsPreset);
                             volumeColorsSettings.onColorChanged = onColorChangedAction;
@@ -850,7 +850,7 @@ namespace OverhaulMod.UI
 
                 if ((isWeaponSkin || volumePresets.Count == 0) && volume.GetUnusedShowCondition() != WeaponVariant2.None)
                 {
-                    Button newPresetButton = Instantiate(propertiesPanel.m_addVolumeSettingsPresetButton, container);
+                    Button newPresetButton = Instantiate(propertiesPanel._addVolumeSettingsPresetButton, container);
                     newPresetButton.gameObject.SetActive(true);
                     newPresetButton.onClick.AddListener(delegate
                     {

@@ -6,11 +6,11 @@ namespace OverhaulMod.UI
     public class UIElementTitleScreenButtonWithWarn : OverhaulUIBehaviour
     {
         [UIElement("WarnIndicator", false)]
-        private readonly GameObject m_indicator;
+        private readonly GameObject _indicator;
 
-        private Animator m_animator;
+        private Animator _animator;
 
-        private float m_timeToUpdate;
+        private float _timeToUpdate;
 
         public bool isUpdatesButton
         {
@@ -26,25 +26,25 @@ namespace OverhaulMod.UI
 
         public override void Start()
         {
-            m_animator = base.GetComponent<Animator>();
-            m_timeToUpdate = 3f;
+            _animator = base.GetComponent<Animator>();
+            _timeToUpdate = 3f;
         }
 
         public override void Update()
         {
             float d = Time.unscaledDeltaTime;
-            m_timeToUpdate -= d;
-            if (m_timeToUpdate < 0f)
+            _timeToUpdate -= d;
+            if (_timeToUpdate < 0f)
             {
-                m_timeToUpdate = 3f;
+                _timeToUpdate = 3f;
                 SetWarnActive((isNewsButton && NewsManager.Instance.ShouldHighlightNewsButton()) || (isUpdatesButton && UpdateManager.Instance.ShouldHighlightUpdatesButton()));
             }
         }
 
         public void SetWarnActive(bool value)
         {
-            m_indicator.SetActive(value);
-            m_animator.enabled = value;
+            _indicator.SetActive(value);
+            _animator.enabled = value;
         }
     }
 }

@@ -12,66 +12,66 @@ namespace OverhaulMod.UI
     {
         [UIElementAction(nameof(Hide))]
         [UIElement("CloseButton")]
-        private readonly Button m_exitButton;
+        private readonly Button _exitButton;
 
         [ShowTooltipOnHighLight("Go up")]
         [UIElementAction(nameof(OnGoUpButtonClicked))]
         [UIElement("GoToParentFolderButton")]
-        private readonly Button m_goUpButton;
+        private readonly Button _goUpButton;
 
         [UIElementAction(nameof(OnDoneButtonClicked))]
         [UIElement("DoneButton")]
-        private readonly Button m_doneButton;
+        private readonly Button _doneButton;
 
         [UIElementAction(nameof(OnCancelButtonClicked))]
         [UIElement("CancelButton")]
-        private readonly Button m_cancelButton;
+        private readonly Button _cancelButton;
 
         [UIElementAction(nameof(OnDownloadsFolderButtonClicked))]
         [UIElement("DownloadsFolderButton")]
-        private readonly Button m_downloadsFolderButton;
+        private readonly Button _downloadsFolderButton;
 
         [UIElementAction(nameof(OnSearchBoxChanged))]
         [UIElement("SearchBox")]
-        private readonly InputField m_searchBox;
+        private readonly InputField _searchBox;
 
         [UIElement("ItemDisplayPrefab", false)]
-        private readonly ModdedObject m_itemDisplayPrefab;
+        private readonly ModdedObject _itemDisplayPrefab;
 
         [UIElement("Content")]
-        private readonly Transform m_itemDisplayContainer;
+        private readonly Transform _itemDisplayContainer;
 
         [UIElement("ErrorWindow", false)]
-        private readonly GameObject m_errorWindow;
+        private readonly GameObject _errorWindow;
 
         [UIElement("ErrorDescription")]
-        private readonly Text m_errorText;
+        private readonly Text _errorText;
 
         [UIElement("SearchPatternText")]
-        private readonly Text m_searchPatternText;
+        private readonly Text _searchPatternText;
 
         [UIElementAction(nameof(OnEditedDriveDropdown))]
         [UIElement("DriveDropdown")]
-        private readonly Dropdown m_driveDropdown;
+        private readonly Dropdown _driveDropdown;
 
         [UIElementCallback(true)]
         [UIElementAction(nameof(OnEditedPathField))]
         [UIElement("PathField")]
-        private readonly InputField m_pathField;
+        private readonly InputField _pathField;
 
         [UIElementAction(nameof(OnRevealPathButtonClicked))]
         [UIElement("RevealPathButton")]
-        private readonly Button m_revealPathButton;
+        private readonly Button _revealPathButton;
 
-        private bool m_populateNextFrame;
+        private bool _populateNextFrame;
 
-        private List<string> m_selectedEntries;
+        private List<string> _selectedEntries;
 
-        private string m_selectedEntryPath;
+        private string _selectedEntryPath;
 
-        private GameObject m_prevSelectedIndicator;
+        private GameObject _prevSelectedIndicator;
 
-        private Dictionary<string, GameObject> m_cachedInstantiatedDisplays;
+        private Dictionary<string, GameObject> _cachedInstantiatedDisplays;
 
         public override bool enableCursor => true;
 
@@ -110,78 +110,78 @@ namespace OverhaulMod.UI
                     currentFolderInfo = new DirectoryInfo(value);
                 }
 
-                m_populateNextFrame = true;
-                m_pathField.text = currentFolderInfo.FullName;
+                _populateNextFrame = true;
+                _pathField.text = currentFolderInfo.FullName;
 
                 string rootName = currentFolderInfo.Root.Name;
-                for (int i = 0; i < m_driveDropdown.options.Count; i++)
+                for (int i = 0; i < _driveDropdown.options.Count; i++)
                 {
-                    if (m_driveDropdown.options[i].text == rootName)
+                    if (_driveDropdown.options[i].text == rootName)
                     {
-                        m_driveDropdown.value = i;
+                        _driveDropdown.value = i;
                         break;
                     }
                 }
             }
         }
 
-        private string m_searchPattern;
+        private string _searchPattern;
         public string searchPattern
         {
             get
             {
-                return m_searchPattern;
+                return _searchPattern;
             }
             set
             {
-                m_searchPattern = value;
-                m_populateNextFrame = true;
+                _searchPattern = value;
+                _populateNextFrame = true;
 
                 if (value.IsNullOrEmpty())
-                    m_searchPatternText.text = "All";
+                    _searchPatternText.text = "All";
                 else
-                    m_searchPatternText.text = value;
+                    _searchPatternText.text = value;
             }
         }
 
-        private bool m_selectFolder;
+        private bool _selectFolder;
         public bool selectFolder
         {
-            get => m_selectFolder;
-            set => m_selectFolder = value;
+            get => _selectFolder;
+            set => _selectFolder = value;
         }
 
-        private bool m_selectMany;
+        private bool _selectMany;
         public bool selectMany
         {
-            get => m_selectMany;
-            set => m_selectMany = value;
+            get => _selectMany;
+            set => _selectMany = value;
         }
 
         protected override void OnInitialized()
         {
-            m_selectedEntries = new List<string>();
-            m_cachedInstantiatedDisplays = new Dictionary<string, GameObject>();
+            _selectedEntries = new List<string>();
+            _cachedInstantiatedDisplays = new Dictionary<string, GameObject>();
 
-            m_doneButton.interactable = false;
-            m_searchBox.text = string.Empty;
+            _doneButton.interactable = false;
+            _searchBox.text = string.Empty;
 
-            m_driveDropdown.options.Clear();
+            _driveDropdown.options.Clear();
             foreach (DriveInfo d in DriveInfo.GetDrives())
             {
                 Sprite sprite = ModResources.Sprite(AssetBundleConstants.UI, d.Name == "C:\\" ? "SysDrive-Mini-16x16" : "Drive-Mini-16x16");
-                m_driveDropdown.options.Add(new Dropdown.OptionData(d.Name, sprite));
+                _driveDropdown.options.Add(new Dropdown.OptionData(d.Name, sprite));
             }
-            m_driveDropdown.RefreshShownValue();
+            _driveDropdown.RefreshShownValue();
         }
 
         public override void Hide()
         {
             base.Hide();
 
-            m_doneButton.interactable = false;
-            m_selectedEntryPath = null;
-            m_selectedEntries.Clear();
+            _doneButton.interactable = false;
+            _selectedEntryPath = null;
+            _selectedEntries.Clear();
             singleFileCallback = null;
         }
 
@@ -189,27 +189,27 @@ namespace OverhaulMod.UI
         {
             base.Show();
 
-            m_pathField.interactable = false;
-            m_revealPathButton.gameObject.SetActive(true);
+            _pathField.interactable = false;
+            _revealPathButton.gameObject.SetActive(true);
         }
 
         public override void Update()
         {
             base.Update();
-            if (m_populateNextFrame)
+            if (_populateNextFrame)
             {
-                m_populateNextFrame = false;
+                _populateNextFrame = false;
                 Populate();
             }
         }
 
         public void Populate()
         {
-            m_errorWindow.SetActive(false);
+            _errorWindow.SetActive(false);
 
-            m_cachedInstantiatedDisplays.Clear();
-            if (m_itemDisplayContainer.childCount != 0)
-                TransformUtils.DestroyAllChildren(m_itemDisplayContainer);
+            _cachedInstantiatedDisplays.Clear();
+            if (_itemDisplayContainer.childCount != 0)
+                TransformUtils.DestroyAllChildren(_itemDisplayContainer);
 
             string currentDirectory = currentFolder;
             if (currentDirectory.IsNullOrEmpty())
@@ -220,7 +220,7 @@ namespace OverhaulMod.UI
                 sp = "*";
 
             DirectoryInfo directoryInfo = currentFolderInfo;
-            m_goUpButton.interactable = directoryInfo.Parent != null;
+            _goUpButton.interactable = directoryInfo.Parent != null;
 
             List<FileSystemInfo> list = new List<FileSystemInfo>();
             try
@@ -241,7 +241,7 @@ namespace OverhaulMod.UI
             {
                 spawnItem(info);
             }
-            OnSearchBoxChanged(m_searchBox.text);
+            OnSearchBoxChanged(_searchBox.text);
         }
 
         private void spawnItem(FileSystemInfo fileSystemInfo)
@@ -250,16 +250,16 @@ namespace OverhaulMod.UI
                 return;
 
             bool isFolder = fileSystemInfo is DirectoryInfo;
-            bool isSelected = fileSystemInfo.FullName == m_selectedEntryPath;
+            bool isSelected = fileSystemInfo.FullName == _selectedEntryPath;
 
-            ModdedObject moddedObject = Instantiate(m_itemDisplayPrefab, m_itemDisplayContainer);
+            ModdedObject moddedObject = Instantiate(_itemDisplayPrefab, _itemDisplayContainer);
             moddedObject.gameObject.SetActive(true);
             moddedObject.GetObject<Text>(0).text = fileSystemInfo.Name;
             moddedObject.GetObject<GameObject>(1).SetActive(!isFolder);
             moddedObject.GetObject<GameObject>(2).SetActive(isFolder);
             moddedObject.GetObject<GameObject>(3).SetActive(isSelected);
             if (isSelected)
-                m_prevSelectedIndicator = moddedObject.GetObject<GameObject>(3);
+                _prevSelectedIndicator = moddedObject.GetObject<GameObject>(3);
 
             UIElementFileExplorerItemDisplay itemDisplay = moddedObject.gameObject.AddComponent<UIElementFileExplorerItemDisplay>();
             itemDisplay.InitializeElement();
@@ -270,32 +270,32 @@ namespace OverhaulMod.UI
             itemDisplay.doubleClickAction = onItemDoubleClicked;
 
             string text = fileSystemInfo.Name.ToLower();
-            while (m_cachedInstantiatedDisplays.ContainsKey(text))
+            while (_cachedInstantiatedDisplays.ContainsKey(text))
                 text += "_1";
 
-            m_cachedInstantiatedDisplays.Add(text, moddedObject.gameObject);
+            _cachedInstantiatedDisplays.Add(text, moddedObject.gameObject);
         }
 
         public void ShowError(Exception exception)
         {
-            m_errorWindow.SetActive(true);
+            _errorWindow.SetActive(true);
             if (exception == null)
             {
-                m_errorText.text = "Unknown error.";
+                _errorText.text = "Unknown error.";
                 return;
             }
 
             if (exception is SecurityException || exception is UnauthorizedAccessException)
             {
-                m_errorText.text = "Access denied.";
+                _errorText.text = "Access denied.";
             }
             else if (exception is DirectoryNotFoundException)
             {
-                m_errorText.text = "Directory not found.";
+                _errorText.text = "Directory not found.";
             }
             else
             {
-                m_errorText.text = $"{exception.GetType().Name}.";
+                _errorText.text = $"{exception.GetType().Name}.";
             }
         }
 
@@ -304,31 +304,31 @@ namespace OverhaulMod.UI
             if (itemDisplay.isFolder != selectFolder)
                 return;
 
-            if (!selectMany && m_prevSelectedIndicator)
-                m_prevSelectedIndicator.SetActive(false);
+            if (!selectMany && _prevSelectedIndicator)
+                _prevSelectedIndicator.SetActive(false);
 
-            m_prevSelectedIndicator = itemDisplay.moddedObjectReference.GetObject<GameObject>(3);
-            m_selectedEntryPath = itemDisplay.fullName;
+            _prevSelectedIndicator = itemDisplay.moddedObjectReference.GetObject<GameObject>(3);
+            _selectedEntryPath = itemDisplay.fullName;
 
             if (selectMany)
             {
-                if (m_selectedEntries.Contains(itemDisplay.fullName))
+                if (_selectedEntries.Contains(itemDisplay.fullName))
                 {
-                    m_selectedEntries.Remove(itemDisplay.fullName);
-                    m_prevSelectedIndicator.SetActive(false);
+                    _selectedEntries.Remove(itemDisplay.fullName);
+                    _prevSelectedIndicator.SetActive(false);
                 }
                 else
                 {
-                    m_selectedEntries.Add(itemDisplay.fullName);
-                    m_prevSelectedIndicator.SetActive(true);
+                    _selectedEntries.Add(itemDisplay.fullName);
+                    _prevSelectedIndicator.SetActive(true);
                 }
             }
             else
             {
-                m_prevSelectedIndicator.SetActive(true);
+                _prevSelectedIndicator.SetActive(true);
             }
 
-            m_doneButton.interactable = true;
+            _doneButton.interactable = true;
         }
 
         private void onItemDoubleClicked(UIElementFileExplorerItemDisplay itemDisplay)
@@ -345,15 +345,15 @@ namespace OverhaulMod.UI
 
         public void OnEditedDriveDropdown(int value)
         {
-            if (m_populateNextFrame)
+            if (_populateNextFrame)
                 return;
 
-            currentFolder = m_driveDropdown.options[value].text;
+            currentFolder = _driveDropdown.options[value].text;
         }
 
         public void OnEditedPathField(string path)
         {
-            if (m_populateNextFrame)
+            if (_populateNextFrame)
                 return;
 
             currentFolder = path.Replace("'", string.Empty).Replace("\"", string.Empty);
@@ -376,12 +376,12 @@ namespace OverhaulMod.UI
         {
             if (selectMany)
             {
-                multipleFilesCallback?.Invoke(m_selectedEntries);
+                multipleFilesCallback?.Invoke(_selectedEntries);
                 multipleFilesCallback = null;
             }
             else
             {
-                singleFileCallback?.Invoke(m_selectedEntryPath);
+                singleFileCallback?.Invoke(_selectedEntryPath);
                 singleFileCallback = null;
             }
             Hide();
@@ -389,8 +389,8 @@ namespace OverhaulMod.UI
 
         public void OnRevealPathButtonClicked()
         {
-            m_pathField.interactable = true;
-            m_revealPathButton.gameObject.SetActive(false);
+            _pathField.interactable = true;
+            _revealPathButton.gameObject.SetActive(false);
         }
 
         public void OnCancelButtonClicked()
@@ -413,7 +413,7 @@ namespace OverhaulMod.UI
             string lowerText = text.ToLower();
             bool forceSetEnabled = text.IsNullOrEmpty();
 
-            foreach (KeyValuePair<string, GameObject> keyValue in m_cachedInstantiatedDisplays)
+            foreach (KeyValuePair<string, GameObject> keyValue in _cachedInstantiatedDisplays)
             {
                 if (forceSetEnabled)
                 {

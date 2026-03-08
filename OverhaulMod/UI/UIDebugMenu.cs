@@ -14,27 +14,27 @@ namespace OverhaulMod.UI
 
         [UIElementAction(nameof(OnUpdateBuildCompilationInfoButtonClicked))]
         [UIElement("UpdateBuildInfoButton")]
-        private readonly Button m_buildCompilationInfoButton;
+        private readonly Button _buildCompilationInfoButton;
 
         [UIElementAction(nameof(OnSkipToNightmariumButtonClicked))]
         [UIElement("SkipToNightmariumButton")]
-        private readonly Button m_skipToNightmariumButton;
+        private readonly Button _skipToNightmariumButton;
 
         [UIElementAction(nameof(OnSkillPointsButtonClicked))]
         [UIElement("MoreSkillPointsButton")]
-        private readonly Button m_skillPointsButton;
+        private readonly Button _skillPointsButton;
 
         [UIElementAction(nameof(OnExportAllUpgradesButtonClicked))]
         [UIElement("ExportAllUpgradesButton")]
-        private readonly Button m_exportAllUpgradesButton;
+        private readonly Button _exportAllUpgradesButton;
 
         [UIElementAction(nameof(OnWipLabelToggleChanged))]
         [UIElement("ShowWipLabelToggle")]
-        private readonly Toggle m_wipLabelToggle;
+        private readonly Toggle _wipLabelToggle;
 
         protected override void OnInitialized()
         {
-            m_wipLabelToggle.isOn = ModSettingsManager.GetBoolValue(ModSettingsConstants.SHOW_DEVELOPER_BUILD_LABEL);
+            _wipLabelToggle.isOn = ModSettingsManager.GetBoolValue(ModSettingsConstants.SHOW_DEVELOPER_BUILD_LABEL);
         }
 
         public override void Hide()

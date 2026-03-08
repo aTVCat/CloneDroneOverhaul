@@ -10,12 +10,12 @@ namespace OverhaulMod.Engine
         public List<LevelDescription> LevelDescriptions;
 
         [NonSerialized]
-        private List<LevelDescription> m_fixedLevelDescriptions;
+        private List<LevelDescription> _fixedLevelDescriptions;
 
         public List<LevelDescription> GetFixedLevelDescriptions()
         {
-            if (m_fixedLevelDescriptions != null)
-                return m_fixedLevelDescriptions;
+            if (_fixedLevelDescriptions != null)
+                return _fixedLevelDescriptions;
 
             if (LevelDescriptions.IsNullOrEmpty())
                 return new List<LevelDescription>();
@@ -33,7 +33,7 @@ namespace OverhaulMod.Engine
                 };
                 fixedLevelDescriptions.Add(levelDescription);
             }
-            m_fixedLevelDescriptions = fixedLevelDescriptions;
+            _fixedLevelDescriptions = fixedLevelDescriptions;
             return fixedLevelDescriptions;
         }
     }

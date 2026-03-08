@@ -10,29 +10,29 @@ namespace OverhaulMod.UI
     public class UIElementWorkshopItemDisplay : OverhaulUIBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerUpHandler, IPointerClickHandler
     {
         [UIElement("Text")]
-        private readonly Text m_titleText;
+        private readonly Text _titleText;
 
         [UIElement("AuthorText")]
-        private readonly Text m_authorText;
+        private readonly Text _authorText;
 
         [UIElement("DescriptionText")]
-        private readonly Text m_description;
+        private readonly Text _description;
 
         [UIElement("Preview", false)]
-        private readonly RawImage m_thumbnail;
+        private readonly RawImage _thumbnail;
 
         [UIElement("SelectedFrame", false)]
-        private readonly GameObject m_selectedFrame;
+        private readonly GameObject _selectedFrame;
 
         [UIElement("LoadingIndicator", true)]
-        private readonly GameObject m_loadingIndicator;
+        private readonly GameObject _loadingIndicator;
 
         [UIElement("CompletedIndicator", false)]
-        private readonly GameObject m_completedIndicator;
+        private readonly GameObject _completedIndicator;
 
-        private UnityWebRequest m_webRequest;
+        private UnityWebRequest _webRequest;
 
-        private bool m_isMouseIn;
+        private bool _isMouseIn;
 
         public WorkshopItem workshopItem
         {
@@ -79,7 +79,7 @@ namespace OverhaulMod.UI
 
             try
             {
-                m_webRequest.Abort();
+                _webRequest.Abort();
             }
             catch { }
         }
@@ -92,16 +92,16 @@ namespace OverhaulMod.UI
             if (isCollection)
             {
                 if (!workshopItem.Author.IsNullOrEmpty() && workshopItem.Author != "[unknown]")
-                    m_authorText.text = $"By {workshopItem.Author.AddColor(Color.white)}";
+                    _authorText.text = $"By {workshopItem.Author.AddColor(Color.white)}";
                 else
-                    m_authorText.text = $"By {workshopItem.AuthorID.ToString().AddColor(Color.white)}";
+                    _authorText.text = $"By {workshopItem.AuthorID.ToString().AddColor(Color.white)}";
 
 
-                m_description.text = workshopItem.Description;
+                _description.text = workshopItem.Description;
             }
             else
             {
-                m_completedIndicator.SetActive(ChallengeManager.Instance.HasCompletedChallenge(workshopItem.ItemID.ToString()));
+                _completedIndicator.SetActive(ChallengeManager.Instance.HasCompletedChallenge(workshopItem.ItemID.ToString()));
             }
         }
 
@@ -123,21 +123,21 @@ namespace OverhaulMod.UI
                 }
 
                 thumbnailTexture = texture;
-                m_loadingIndicator.SetActive(false);
-                m_thumbnail.gameObject.SetActive(true);
-                m_thumbnail.texture = texture;
+                _loadingIndicator.SetActive(false);
+                _thumbnail.gameObject.SetActive(true);
+                _thumbnail.texture = texture;
             }, delegate
             {
                 if (!workshopItemDisplay)
                     return;
 
-                m_loadingIndicator.SetActive(false);
-            }, out m_webRequest, 60);
+                _loadingIndicator.SetActive(false);
+            }, out _webRequest, 60);
         }
 
         public void RefreshSelectedFrame()
         {
-            m_selectedFrame.SetActive(m_isMouseIn || browserUI.IsItemSelected(this));
+            _selectedFrame.SetActive(_isMouseIn || browserUI.IsItemSelected(this));
         }
 
         private void onClicked()
@@ -164,7 +164,7 @@ namespace OverhaulMod.UI
 
         public void OnPointerEnter(PointerEventData eventData)
         {
-            m_isMouseIn = true;
+            _isMouseIn = true;
             RefreshSelectedFrame();
             if (isCollection)
                 return;
@@ -174,7 +174,7 @@ namespace OverhaulMod.UI
 
         public void OnPointerExit(PointerEventData eventData)
         {
-            m_isMouseIn = false;
+            _isMouseIn = false;
             RefreshSelectedFrame();
             if (isCollection)
                 return;
@@ -184,7 +184,7 @@ namespace OverhaulMod.UI
 
         public void OnPointerUp(PointerEventData eventData)
         {
-            m_isMouseIn = false;
+            _isMouseIn = false;
             RefreshSelectedFrame();
             if (isCollection)
                 return;

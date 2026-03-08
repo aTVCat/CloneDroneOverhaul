@@ -22,185 +22,185 @@ namespace OverhaulMod.UI
 
         [UIElementAction(nameof(Hide))]
         [UIElement("CloseButton")]
-        private readonly Button m_exitButton;
+        private readonly Button _exitButton;
 
         [UIElementAction(nameof(OnLegacyUIButtonClicked))]
         [UIElement("OldUIButton")]
-        private readonly Button m_legacyUIButton;
+        private readonly Button _legacyUIButton;
 
         [UIElementAction(nameof(OnHistoryButtonClicked))]
         [UIElement("HistoryButton")]
-        private readonly Button m_historyButton;
+        private readonly Button _historyButton;
 
         [TabManager(typeof(UIElementTab), null, null, null, nameof(OnSourceTabSelected))]
-        private readonly TabManager m_sourceTabs;
+        private readonly TabManager _sourceTabs;
 
         [UIElement("YourLevelsTab")]
-        public GameObject m_yourLevelsTab;
+        public GameObject _yourLevelsTab;
         [UIElement("SubscriptionsTab")]
-        public GameObject m_subscriptionsTab;
+        public GameObject _subscriptionsTab;
         [UIElementAction(nameof(OnBrowseButtonClicked))]
         [UIElement("BrowseTab")]
-        public Button m_browseTab;
+        public Button _browseTab;
 
         [UIElementAction(nameof(Populate))]
         [UIElement("ReloadButton")]
-        public Button m_reloadButton;
+        public Button _reloadButton;
 
         [TabManager(typeof(UIElementTab), null, null, null, nameof(OnQueryTabSelected))]
-        private readonly TabManager m_queryTabs;
+        private readonly TabManager _queryTabs;
 
         [UIElement("TrendingTab")]
-        public GameObject m_trendingTab;
+        public GameObject _trendingTab;
         [UIElement("RecentTab")]
-        public GameObject m_recentTab;
+        public GameObject _recentTab;
         [UIElement("MostPopularTab")]
-        public GameObject m_mostPopularTab;
+        public GameObject _mostPopularTab;
         [UIElement("MostSubscribersTab")]
-        public GameObject m_mostSubscribersTab;
+        public GameObject _mostSubscribersTab;
         [UIElement("ByFollowedUsersTab")]
-        public GameObject m_byFollowedTab;
+        public GameObject _byFollowedTab;
         [UIElement("ByFriendsTab")]
-        public GameObject m_byFriendsTab;
+        public GameObject _byFriendsTab;
         [UIElement("FriendsFavoritesTab")]
-        public GameObject m_friendsFavoritesTab;
+        public GameObject _friendsFavoritesTab;
 
         [TabManager(typeof(UIElementTab), null, null, null, nameof(OnLevelTypeTabSelected))]
-        private readonly TabManager m_levelTypeTabs;
+        private readonly TabManager _levelTypeTabs;
 
         [UIElement("AdventuresTab")]
-        public GameObject m_adventuresTab;
+        public GameObject _adventuresTab;
         [UIElement("ChallengesTab")]
-        public GameObject m_challengesTab;
+        public GameObject _challengesTab;
         [UIElement("EndlessLevelsTab")]
-        public GameObject m_endlessLevelsTab;
+        public GameObject _endlessLevelsTab;
         [UIElement("LBSLevelsTab")]
-        public GameObject m_lastBotStandingLevelsTab;
+        public GameObject _lastBotStandingLevelsTab;
         [UIElement("CollectionsTab")]
-        public GameObject m_collectionsTab;
+        public GameObject _collectionsTab;
 
         [UIElement("WorkshopItemDisplay", false)]
-        public ModdedObject m_workshopItemDisplay;
+        public ModdedObject _workshopItemDisplay;
         [UIElement("WorkshopCollectionDisplay", false)]
-        public ModdedObject m_workshopCollectionDisplay;
+        public ModdedObject _workshopCollectionDisplay;
 
         [UIElement("ScrollRect")]
-        public ScrollRect m_scrollRect;
+        public ScrollRect _scrollRect;
         [UIElement("Content")]
-        public Transform m_gridContainer;
+        public Transform _gridContainer;
         [UIElement("VerticalContent")]
-        public Transform m_verticalContainer;
+        public Transform _verticalContainer;
         [UIElement("Content")]
-        public GridLayoutGroup m_containerGridLayoutGroup;
+        public GridLayoutGroup _containerGridLayoutGroup;
 
         [UIElement("LoadingIndicator", false)]
-        public GameObject m_loadingIndicator;
+        public GameObject _loadingIndicator;
         [UIElement("NothingToDisplayLabel", false)]
-        public GameObject m_nothingToDisplayLabel;
+        public GameObject _nothingToDisplayLabel;
 
         [UIElement("Tabs")]
-        public CanvasGroup m_tabsCanvasGroup;
+        public CanvasGroup _tabsCanvasGroup;
 
         [UIElement("BrowseItemsOfTypeDropdown", false)]
-        public GameObject m_browseItemsOfTypeDropdownObject;
+        public GameObject _browseItemsOfTypeDropdownObject;
 
         [UIElementAction(nameof(OnBrowseLevelsButtonClicked))]
         [UIElement("BrowseLevelsButton")]
-        public Button m_browseLevelsButton;
+        public Button _browseLevelsButton;
         [UIElement("BrowseLevelsSelectedIndicator", true)]
-        public GameObject m_browseLevelsSelectedIndicatorObject;
+        public GameObject _browseLevelsSelectedIndicatorObject;
 
         [UIElementAction(nameof(OnBrowseCollectionsButtonClicked))]
         [UIElement("BrowseCollectionsButton")]
-        public Button m_browseCollectionsButton;
+        public Button _browseCollectionsButton;
         [UIElement("BrowseCollectionsSelectedIndicator", false)]
-        public GameObject m_browseCollectionsSelectedIndicatorObject;
+        public GameObject _browseCollectionsSelectedIndicatorObject;
 
         [UIElementAction(nameof(OnPrevPageButtonClicked))]
         [UIElement("PrevPageButton")]
-        private readonly Button m_prevPageButton;
+        private readonly Button _prevPageButton;
         [UIElementAction(nameof(OnNextPageButtonClicked))]
         [UIElement("NextPageButton")]
-        private readonly Button m_nextPageButton;
+        private readonly Button _nextPageButton;
         [UIElementAction(nameof(OnPageButtonClicked))]
         [UIElement("CurrentPageButton")]
-        private readonly Button m_currentPageButton;
+        private readonly Button _currentPageButton;
         [UIElement("CurrentPageText")]
-        private readonly Text m_currentPageText;
+        private readonly Text _currentPageText;
 
         [UIElement("PageDropdown", false)]
-        public GameObject m_pageDropdownObject;
+        public GameObject _pageDropdownObject;
         [UIElement("PageButton", false)]
-        public ModdedObject m_pageButtonPrefab;
+        public ModdedObject _pageButtonPrefab;
         [UIElement("PageContainer")]
-        public Transform m_pageContainer;
+        public Transform _pageContainer;
 
         [UIElementAction(nameof(OnTypedSearchText))]
         [UIElement("SearchBox")]
-        public InputField m_searchBox;
+        public InputField _searchBox;
         [UIElementAction(nameof(OnSearchButtonClicked))]
         [UIElement("SearchButton")]
-        public Button m_searchButton;
+        public Button _searchButton;
         [UIElementAction(nameof(OnClearButtonClicked))]
         [UIElement("ClearButton")]
-        public Button m_clearButton;
+        public Button _clearButton;
         [UIElementAction(nameof(OnBrowseLevelsButtonClicked))]
         [UIElement("SearchLevelsButton")]
-        public Button m_searchLevelsButton;
+        public Button _searchLevelsButton;
 
         [UIElement("SearchLevelsByTitleHolder", false)]
-        public GameObject m_searchLevelsByTitleHolderObject;
+        public GameObject _searchLevelsByTitleHolderObject;
         [UIElement("SearchLevelsByTitleText")]
-        public Text m_searchLevelsByTitleText;
+        public Text _searchLevelsByTitleText;
 
         [UIElement("SearchLevelsByUserHolder", false)]
-        public GameObject m_searchLevelsByUserHolderObject;
+        public GameObject _searchLevelsByUserHolderObject;
         [UIElement("SearchLevelsByUserText")]
-        public Text m_searchLevelsByUserText;
+        public Text _searchLevelsByUserText;
 
         [UIElementAction(nameof(OnHelpButtonClicked))]
         [UIElement("HelpButton")]
-        public Button m_controlsButton;
+        public Button _controlsButton;
         [UIElement("ControlsPanel", false)]
-        public GameObject m_controlsPanel;
+        public GameObject _controlsPanel;
 
         [UIElement("ContextMenu", false)]
-        private readonly RectTransform m_contextMenu;
+        private readonly RectTransform _contextMenu;
         [UIElement("ContextMenu", typeof(UIElementMouseEventsComponent))]
-        private readonly UIElementMouseEventsComponent m_contextMenuMouseChecker;
+        private readonly UIElementMouseEventsComponent _contextMenuMouseChecker;
 
         [UIElementAction(nameof(OnContextMenuSubscribeButtonClicked))]
         [UIElement("ContextMenuSubscribeButton")]
-        public Button m_contextMenuSubscribeButton;
+        public Button _contextMenuSubscribeButton;
         [UIElementAction(nameof(OnContextMenuPlayButtonClicked))]
         [UIElement("ContextMenuPlayButton")]
-        public Button m_contextMenuPlayButton;
+        public Button _contextMenuPlayButton;
 
         [UIElement("QuickPreview", typeof(UIElementWorkshopItemQuickPreview), false)]
-        private readonly UIElementWorkshopItemQuickPreview m_quickPreview;
+        private readonly UIElementWorkshopItemQuickPreview _quickPreview;
 
         [UIElementAction(nameof(OnBackButtonClicked))]
         [UIElement("BackButton")]
-        public Button m_backButton;
+        public Button _backButton;
 
         [UIElement("MainBG")]
-        public RectTransform m_mainBG;
+        public RectTransform _mainBG;
 
         [UIElement("ContentCategoryContainer")]
-        public GameObject m_tagsContainerObject;
+        public GameObject _tagsContainerObject;
 
         [UIElement("ViewFavoritesToggle", false)]
-        public Toggle m_viewFavoritesToggle;
+        public Toggle _viewFavoritesToggle;
 
-        private List<UIElementWorkshopItemDisplay> m_selectedItemDisplays;
+        private List<UIElementWorkshopItemDisplay> _selectedItemDisplays;
 
-        private Transform m_container;
+        private Transform _container;
 
         public override bool hideTitleScreen => true;
 
-        private bool m_steamInitialized, m_initializedTabs, m_getWorkshopItemsNextFrame, m_isLoading;
+        private bool _steamInitialized, _initializedTabs, _getWorkshopItemsNextFrame, _isLoading;
 
-        private float m_timeLeftToPopulate;
+        private float _timeLeftToPopulate;
 
         public bool browseCollections
         {
@@ -259,14 +259,14 @@ namespace OverhaulMod.UI
         protected override void OnInitialized()
         {
             page = 1;
-            m_timeLeftToPopulate = -1f;
-            m_selectedItemDisplays = new List<UIElementWorkshopItemDisplay>();
+            _timeLeftToPopulate = -1f;
+            _selectedItemDisplays = new List<UIElementWorkshopItemDisplay>();
 
-            m_controlsButton.gameObject.SetActive(ModFeatures.IsEnabled(ModFeatures.FeatureType.WorkshopBrowserContextMenu));
+            _controlsButton.gameObject.SetActive(ModFeatures.IsEnabled(ModFeatures.FeatureType.WorkshopBrowserContextMenu));
             browseChildrenOfCollection = default;
 
-            m_viewFavoritesToggle.isOn = false;
-            m_viewFavoritesToggle.onValueChanged.AddListener(delegate (bool b)
+            _viewFavoritesToggle.isOn = false;
+            _viewFavoritesToggle.onValueChanged.AddListener(delegate (bool b)
             {
                 Populate();
             });
@@ -281,29 +281,29 @@ namespace OverhaulMod.UI
                 ModUIUtils.MessagePopupOK("Steam not initialized", "To browse Steam workshop you must have Steam connection established.", "Ok", Hide, 125f, true);
                 return;
             }
-            m_steamInitialized = true;
+            _steamInitialized = true;
 
-            if (!m_initializedTabs)
+            if (!_initializedTabs)
             {
-                m_levelTypeTabs.AddTab(m_adventuresTab, ADVENTURE_LEVEL_TYPE_TAB);
-                m_levelTypeTabs.AddTab(m_challengesTab, CHALLENGE_LEVEL_TYPE_TAB);
-                m_levelTypeTabs.AddTab(m_endlessLevelsTab, ENDLESS_LEVEL_TYPE_TAB);
-                m_levelTypeTabs.AddTab(m_lastBotStandingLevelsTab, LBS_LEVEL_TYPE_TAB);
-                m_levelTypeTabs.SelectTab(ADVENTURE_LEVEL_TYPE_TAB);
+                _levelTypeTabs.AddTab(_adventuresTab, ADVENTURE_LEVEL_TYPE_TAB);
+                _levelTypeTabs.AddTab(_challengesTab, CHALLENGE_LEVEL_TYPE_TAB);
+                _levelTypeTabs.AddTab(_endlessLevelsTab, ENDLESS_LEVEL_TYPE_TAB);
+                _levelTypeTabs.AddTab(_lastBotStandingLevelsTab, LBS_LEVEL_TYPE_TAB);
+                _levelTypeTabs.SelectTab(ADVENTURE_LEVEL_TYPE_TAB);
 
-                m_queryTabs.AddTab(m_trendingTab, EUGCQuery.k_EUGCQuery_RankedByTrend.ToString());
-                m_queryTabs.AddTab(m_recentTab, EUGCQuery.k_EUGCQuery_RankedByPublicationDate.ToString());
-                m_queryTabs.AddTab(m_mostPopularTab, EUGCQuery.k_EUGCQuery_RankedByVote.ToString());
-                m_queryTabs.AddTab(m_mostSubscribersTab, EUGCQuery.k_EUGCQuery_RankedByTotalUniqueSubscriptions.ToString());
-                m_queryTabs.AddTab(m_byFollowedTab, EUGCQuery.k_EUGCQuery_CreatedByFollowedUsersRankedByPublicationDate.ToString());
-                m_queryTabs.AddTab(m_byFriendsTab, EUGCQuery.k_EUGCQuery_CreatedByFriendsRankedByPublicationDate.ToString());
-                m_queryTabs.AddTab(m_friendsFavoritesTab, EUGCQuery.k_EUGCQuery_FavoritedByFriendsRankedByPublicationDate.ToString());
-                m_queryTabs.SelectTab(EUGCQuery.k_EUGCQuery_RankedByTrend.ToString());
+                _queryTabs.AddTab(_trendingTab, EUGCQuery.k_EUGCQuery_RankedByTrend.ToString());
+                _queryTabs.AddTab(_recentTab, EUGCQuery.k_EUGCQuery_RankedByPublicationDate.ToString());
+                _queryTabs.AddTab(_mostPopularTab, EUGCQuery.k_EUGCQuery_RankedByVote.ToString());
+                _queryTabs.AddTab(_mostSubscribersTab, EUGCQuery.k_EUGCQuery_RankedByTotalUniqueSubscriptions.ToString());
+                _queryTabs.AddTab(_byFollowedTab, EUGCQuery.k_EUGCQuery_CreatedByFollowedUsersRankedByPublicationDate.ToString());
+                _queryTabs.AddTab(_byFriendsTab, EUGCQuery.k_EUGCQuery_CreatedByFriendsRankedByPublicationDate.ToString());
+                _queryTabs.AddTab(_friendsFavoritesTab, EUGCQuery.k_EUGCQuery_FavoritedByFriendsRankedByPublicationDate.ToString());
+                _queryTabs.SelectTab(EUGCQuery.k_EUGCQuery_RankedByTrend.ToString());
 
-                m_sourceTabs.AddTab(m_yourLevelsTab, YOUR_LEVELS_SOURCE_TYPE);
-                m_sourceTabs.AddTab(m_subscriptionsTab, SUBSCRIPTIONS_SOURCE_TYPE);
-                m_sourceTabs.SelectTab(ALL_SOURCE_TYPE);
-                m_initializedTabs = true;
+                _sourceTabs.AddTab(_yourLevelsTab, YOUR_LEVELS_SOURCE_TYPE);
+                _sourceTabs.AddTab(_subscriptionsTab, SUBSCRIPTIONS_SOURCE_TYPE);
+                _sourceTabs.SelectTab(ALL_SOURCE_TYPE);
+                _initializedTabs = true;
             }
 
             Populate();
@@ -313,26 +313,26 @@ namespace OverhaulMod.UI
         {
             base.Hide();
 
-            m_timeLeftToPopulate = -1f;
-            if (m_gridContainer.childCount != 0)
-                TransformUtils.DestroyAllChildren(m_gridContainer);
+            _timeLeftToPopulate = -1f;
+            if (_gridContainer.childCount != 0)
+                TransformUtils.DestroyAllChildren(_gridContainer);
         }
 
         public override void Update()
         {
-            if (m_getWorkshopItemsNextFrame)
+            if (_getWorkshopItemsNextFrame)
                 populate();
 
-            if (m_timeLeftToPopulate >= 0f)
+            if (_timeLeftToPopulate >= 0f)
             {
-                m_timeLeftToPopulate -= Time.unscaledDeltaTime;
-                if (m_timeLeftToPopulate <= 0f)
+                _timeLeftToPopulate -= Time.unscaledDeltaTime;
+                if (_timeLeftToPopulate <= 0f)
                 {
                     Populate();
                 }
             }
 
-            if (Input.GetMouseButtonDown(0) && m_contextMenu.gameObject.activeSelf && !m_contextMenuMouseChecker.isMouseOverElement)
+            if (Input.GetMouseButtonDown(0) && _contextMenu.gameObject.activeSelf && !_contextMenuMouseChecker.isMouseOverElement)
             {
                 ShowContextMenu(null);
             }
@@ -342,8 +342,8 @@ namespace OverhaulMod.UI
         {
             page = 1;
 
-            UIElementTab oldTab = m_levelTypeTabs.prevSelectedTab;
-            UIElementTab newTab = m_levelTypeTabs.selectedTab;
+            UIElementTab oldTab = _levelTypeTabs.prevSelectedTab;
+            UIElementTab newTab = _levelTypeTabs.selectedTab;
             if (oldTab)
             {
                 RectTransform rt = oldTab.transform as RectTransform;
@@ -367,8 +367,8 @@ namespace OverhaulMod.UI
         {
             page = 1;
 
-            UIElementTab oldTab = m_levelTypeTabs.prevSelectedTab;
-            UIElementTab newTab = m_levelTypeTabs.selectedTab;
+            UIElementTab oldTab = _levelTypeTabs.prevSelectedTab;
+            UIElementTab newTab = _levelTypeTabs.selectedTab;
             if (oldTab)
             {
                 RectTransform rt = oldTab.transform as RectTransform;
@@ -405,9 +405,9 @@ namespace OverhaulMod.UI
                 searchUserList = EUserUGCList.k_EUserUGCList_Published;
                 steamId = SteamUser.GetSteamID();
 
-                m_tabsCanvasGroup.alpha = 0.25f;
-                m_tabsCanvasGroup.interactable = false;
-                m_viewFavoritesToggle.isOn = false;
+                _tabsCanvasGroup.alpha = 0.25f;
+                _tabsCanvasGroup.interactable = false;
+                _viewFavoritesToggle.isOn = false;
 
                 setBrowseItemType(false);
             }
@@ -417,9 +417,9 @@ namespace OverhaulMod.UI
                 searchUserList = EUserUGCList.k_EUserUGCList_Subscribed;
                 steamId = SteamUser.GetSteamID();
 
-                m_tabsCanvasGroup.alpha = 0.25f;
-                m_tabsCanvasGroup.interactable = false;
-                m_viewFavoritesToggle.isOn = false;
+                _tabsCanvasGroup.alpha = 0.25f;
+                _tabsCanvasGroup.interactable = false;
+                _viewFavoritesToggle.isOn = false;
 
                 setBrowseItemType(false);
             }
@@ -427,8 +427,8 @@ namespace OverhaulMod.UI
             {
                 sourceType = 0;
 
-                m_tabsCanvasGroup.alpha = 1f;
-                m_tabsCanvasGroup.interactable = true;
+                _tabsCanvasGroup.alpha = 1f;
+                _tabsCanvasGroup.interactable = true;
             }
             searchLevelsByUser = steamId;
             Populate();
@@ -436,27 +436,27 @@ namespace OverhaulMod.UI
 
         public void Populate()
         {
-            if (!m_steamInitialized)
+            if (!_steamInitialized)
                 return;
 
-            m_timeLeftToPopulate = -1f;
-            m_getWorkshopItemsNextFrame = !m_isLoading;
+            _timeLeftToPopulate = -1f;
+            _getWorkshopItemsNextFrame = !_isLoading;
         }
 
         private void populate()
         {
-            m_getWorkshopItemsNextFrame = false;
+            _getWorkshopItemsNextFrame = false;
             setIsLoading(true);
             refreshTabContainers();
             refreshSearchBox();
 
-            if (m_gridContainer.childCount != 0)
-                TransformUtils.DestroyAllChildren(m_gridContainer);
+            if (_gridContainer.childCount != 0)
+                TransformUtils.DestroyAllChildren(_gridContainer);
 
-            if (m_verticalContainer.childCount != 0)
-                TransformUtils.DestroyAllChildren(m_verticalContainer);
+            if (_verticalContainer.childCount != 0)
+                TransformUtils.DestroyAllChildren(_verticalContainer);
 
-            m_selectedItemDisplays.Clear();
+            _selectedItemDisplays.Clear();
 
             if (searchLevelType != COLLECTIONS_TYPE_TAB)
             {
@@ -493,7 +493,7 @@ namespace OverhaulMod.UI
                     }
                     else
                     {
-                        success = sourceType == 0 ? ModSteamUGCUtils.GetAllWorkshopItems(searchQuery, page, requestParameters, onGotItems, onError, null) : ModSteamUGCUtils.GetWorkshopUserItemList(searchLevelsByUser, page, searchLevelsByUser == SteamUser.GetSteamID() ? (m_viewFavoritesToggle.isOn ? EUserUGCList.k_EUserUGCList_Favorited : searchUserList) : searchUserList, EUserUGCListSortOrder.k_EUserUGCListSortOrder_SubscriptionDateDesc, requestParameters, onGotItems, onError, null);
+                        success = sourceType == 0 ? ModSteamUGCUtils.GetAllWorkshopItems(searchQuery, page, requestParameters, onGotItems, onError, null) : ModSteamUGCUtils.GetWorkshopUserItemList(searchLevelsByUser, page, searchLevelsByUser == SteamUser.GetSteamID() ? (_viewFavoritesToggle.isOn ? EUserUGCList.k_EUserUGCList_Favorited : searchUserList) : searchUserList, EUserUGCListSortOrder.k_EUserUGCListSortOrder_SubscriptionDateDesc, requestParameters, onGotItems, onError, null);
                     }
                 }
 
@@ -509,7 +509,7 @@ namespace OverhaulMod.UI
         {
             bool isEmpty = list.IsNullOrEmpty();
             setIsLoading(false);
-            m_nothingToDisplayLabel.SetActive(isEmpty);
+            _nothingToDisplayLabel.SetActive(isEmpty);
             refreshContainer();
 
             if (isEmpty)
@@ -518,7 +518,7 @@ namespace OverhaulMod.UI
             bool collections = browseCollections && browseChildrenOfCollection == default;
             foreach (WorkshopItem workshopItem in list)
             {
-                ModdedObject moddedObject = Instantiate(collections ? m_workshopCollectionDisplay : m_workshopItemDisplay, m_container);
+                ModdedObject moddedObject = Instantiate(collections ? _workshopCollectionDisplay : _workshopItemDisplay, _container);
                 moddedObject.gameObject.SetActive(true);
                 moddedObject.GetObject<Text>(0).text = workshopItem.Name;
                 UIElementWorkshopItemDisplay workshopItemDisplay = moddedObject.gameObject.AddComponent<UIElementWorkshopItemDisplay>();
@@ -548,10 +548,10 @@ namespace OverhaulMod.UI
 
         private void setGridLayout(bool collections)
         {
-            GridLayoutGroup gridLayoutGroup = m_containerGridLayoutGroup;
+            GridLayoutGroup gridLayoutGroup = _containerGridLayoutGroup;
             if (collections)
             {
-                gridLayoutGroup.cellSize = new Vector2((m_gridContainer as RectTransform).rect.width - 24f, 100f);
+                gridLayoutGroup.cellSize = new Vector2((_gridContainer as RectTransform).rect.width - 24f, 100f);
             }
             else
             {
@@ -561,41 +561,41 @@ namespace OverhaulMod.UI
 
         private void setPageButtonsActive(bool value)
         {
-            m_prevPageButton.interactable = value;
-            m_nextPageButton.interactable = value;
-            m_currentPageButton.interactable = value;
+            _prevPageButton.interactable = value;
+            _nextPageButton.interactable = value;
+            _currentPageButton.interactable = value;
         }
 
         private void setIsLoading(bool value)
         {
-            m_isLoading = value;
+            _isLoading = value;
 
             bool searchByUser = sourceType != 0 && searchUserList == EUserUGCList.k_EUserUGCList_Published;
-            m_searchLevelsByUserHolderObject.SetActive(searchByUser);
-            m_searchLevelsByUserText.text = searchByUser ? SteamFriends.GetFriendPersonaName(searchLevelsByUser) : "none";
+            _searchLevelsByUserHolderObject.SetActive(searchByUser);
+            _searchLevelsByUserText.text = searchByUser ? SteamFriends.GetFriendPersonaName(searchLevelsByUser) : "none";
 
             bool searchByTitle = !searchText.IsNullOrEmpty();
-            m_searchLevelsByTitleHolderObject.SetActive(!searchByUser && searchByTitle);
-            m_searchLevelsByTitleText.text = searchText;
-            m_clearButton.interactable = !value && searchByTitle;
+            _searchLevelsByTitleHolderObject.SetActive(!searchByUser && searchByTitle);
+            _searchLevelsByTitleText.text = searchText;
+            _clearButton.interactable = !value && searchByTitle;
 
             if (sourceType != 0)
             {
-                m_browseCollectionsSelectedIndicatorObject.SetActive(false);
-                m_browseLevelsSelectedIndicatorObject.SetActive(false);
+                _browseCollectionsSelectedIndicatorObject.SetActive(false);
+                _browseLevelsSelectedIndicatorObject.SetActive(false);
             }
 
-            m_viewFavoritesToggle.gameObject.SetActive(sourceType == 1 && searchLevelsByUser == SteamUser.GetSteamID());
-            m_viewFavoritesToggle.interactable = !value;
+            _viewFavoritesToggle.gameObject.SetActive(sourceType == 1 && searchLevelsByUser == SteamUser.GetSteamID());
+            _viewFavoritesToggle.interactable = !value;
 
-            m_backButton.interactable = !value;
-            m_reloadButton.interactable = !value;
-            m_sourceTabs.interactable = !value;
-            m_levelTypeTabs.interactable = !value && !browseCollections;
-            m_queryTabs.interactable = !value && !browseCollections;
-            m_loadingIndicator.SetActive(value);
-            m_nothingToDisplayLabel.SetActive(false);
-            m_pageDropdownObject.SetActive(false);
+            _backButton.interactable = !value;
+            _reloadButton.interactable = !value;
+            _sourceTabs.interactable = !value;
+            _levelTypeTabs.interactable = !value && !browseCollections;
+            _queryTabs.interactable = !value && !browseCollections;
+            _loadingIndicator.SetActive(value);
+            _nothingToDisplayLabel.SetActive(false);
+            _pageDropdownObject.SetActive(false);
             setPageButtonsActive(!value);
             refreshPagePageButton();
         }
@@ -605,41 +605,41 @@ namespace OverhaulMod.UI
             bool notCollections = !browseCollections;
 
             int p = page;
-            m_prevPageButton.gameObject.SetActive(notCollections && p > 1);
-            m_nextPageButton.gameObject.SetActive(notCollections && p < ModSteamUGCUtils.pageCount);
-            m_currentPageButton.gameObject.SetActive(notCollections);
-            m_backButton.gameObject.SetActive(browseChildrenOfCollection != default);
-            m_currentPageText.text = p.ToString();
+            _prevPageButton.gameObject.SetActive(notCollections && p > 1);
+            _nextPageButton.gameObject.SetActive(notCollections && p < ModSteamUGCUtils.pageCount);
+            _currentPageButton.gameObject.SetActive(notCollections);
+            _backButton.gameObject.SetActive(browseChildrenOfCollection != default);
+            _currentPageText.text = p.ToString();
         }
 
         private void refreshContainer()
         {
-            m_container = browseCollections && browseChildrenOfCollection == default ? m_verticalContainer : m_gridContainer;
-            m_scrollRect.content = m_container as RectTransform;
+            _container = browseCollections && browseChildrenOfCollection == default ? _verticalContainer : _gridContainer;
+            _scrollRect.content = _container as RectTransform;
         }
 
         private void refreshTabContainers()
         {
             bool collections = browseCollections;
-            m_tagsContainerObject.SetActive(!collections);
+            _tagsContainerObject.SetActive(!collections);
 
             if (collections)
             {
-                Vector2 vector = m_mainBG.sizeDelta;
+                Vector2 vector = _mainBG.sizeDelta;
                 vector.y = -55f;
-                m_mainBG.sizeDelta = vector;
+                _mainBG.sizeDelta = vector;
             }
             else
             {
-                Vector2 vector = m_mainBG.sizeDelta;
+                Vector2 vector = _mainBG.sizeDelta;
                 vector.y = -75f;
-                m_mainBG.sizeDelta = vector;
+                _mainBG.sizeDelta = vector;
             }
         }
 
         private void refreshSearchBox()
         {
-            InputField inputField = m_searchBox;
+            InputField inputField = _searchBox;
             bool makeVisible = !browseCollections && sourceType == 0;
 
             if (!makeVisible && inputField.IsActive())
@@ -648,24 +648,24 @@ namespace OverhaulMod.UI
             if (!makeVisible)
                 inputField.text = string.Empty;
 
-            m_searchBox.gameObject.SetActive(makeVisible);
-            m_clearButton.gameObject.SetActive(makeVisible);
-            m_searchLevelsButton.gameObject.SetActive(!makeVisible);
+            _searchBox.gameObject.SetActive(makeVisible);
+            _clearButton.gameObject.SetActive(makeVisible);
+            _searchLevelsButton.gameObject.SetActive(!makeVisible);
         }
 
         private void setBrowseItemType(bool collections)
         {
             browseCollections = collections;
-            m_browseItemsOfTypeDropdownObject.SetActive(false);
-            m_browseCollectionsSelectedIndicatorObject.SetActive(collections);
-            m_browseLevelsSelectedIndicatorObject.SetActive(!collections);
+            _browseItemsOfTypeDropdownObject.SetActive(false);
+            _browseCollectionsSelectedIndicatorObject.SetActive(collections);
+            _browseLevelsSelectedIndicatorObject.SetActive(!collections);
         }
 
         public bool HideContextMenuIfShown()
         {
-            if (m_contextMenu.gameObject.activeSelf)
+            if (_contextMenu.gameObject.activeSelf)
             {
-                m_contextMenu.gameObject.SetActive(false);
+                _contextMenu.gameObject.SetActive(false);
                 return true;
             }
             return false;
@@ -675,74 +675,74 @@ namespace OverhaulMod.UI
         {
             bool isNull = !itemDisplay;
 
-            m_contextMenu.gameObject.SetActive(!isNull);
+            _contextMenu.gameObject.SetActive(!isNull);
             if (!isNull)
-                m_contextMenu.position = itemDisplay.transform.position;
+                _contextMenu.position = itemDisplay.transform.position;
 
-            m_contextMenuSubscribeButton.gameObject.SetActive(true);
-            m_contextMenuPlayButton.gameObject.SetActive(m_selectedItemDisplays.Count == 1);
+            _contextMenuSubscribeButton.gameObject.SetActive(true);
+            _contextMenuPlayButton.gameObject.SetActive(_selectedItemDisplays.Count == 1);
         }
 
         public void SetItemSelected(UIElementWorkshopItemDisplay itemDisplay, bool value)
         {
             if (value)
             {
-                if (!m_selectedItemDisplays.Contains(itemDisplay))
-                    m_selectedItemDisplays.Add(itemDisplay);
+                if (!_selectedItemDisplays.Contains(itemDisplay))
+                    _selectedItemDisplays.Add(itemDisplay);
             }
             else
             {
-                _ = m_selectedItemDisplays.Remove(itemDisplay);
+                _ = _selectedItemDisplays.Remove(itemDisplay);
             }
         }
 
         public bool IsItemSelected(UIElementWorkshopItemDisplay itemDisplay)
         {
-            return m_selectedItemDisplays.Contains(itemDisplay);
+            return _selectedItemDisplays.Contains(itemDisplay);
         }
 
         public void QuickPreview(WorkshopItem workshopItem)
         {
             if (workshopItem == null)
             {
-                m_quickPreview.gameObject.SetActive(false);
+                _quickPreview.gameObject.SetActive(false);
                 return;
             }
-            m_quickPreview.gameObject.SetActive(true);
-            m_quickPreview.Populate(workshopItem);
+            _quickPreview.gameObject.SetActive(true);
+            _quickPreview.Populate(workshopItem);
         }
 
         public void OnHelpButtonClicked()
         {
-            m_controlsPanel.SetActive(!m_controlsPanel.activeSelf);
+            _controlsPanel.SetActive(!_controlsPanel.activeSelf);
         }
 
         public void OnTypedSearchText(string text)
         {
             searchText = text;
-            m_timeLeftToPopulate = 1f;
+            _timeLeftToPopulate = 1f;
         }
 
         public void OnSearchButtonClicked()
         {
-            searchText = m_searchBox.text;
+            searchText = _searchBox.text;
             Populate();
         }
 
         public void OnClearButtonClicked()
         {
-            m_searchBox.text = string.Empty;
+            _searchBox.text = string.Empty;
             searchText = null;
             Populate();
         }
 
         public void OnPageButtonClicked()
         {
-            bool active = !m_pageDropdownObject.activeSelf && ModSteamUGCUtils.pageCount > 1;
-            m_pageDropdownObject.SetActive(active);
+            bool active = !_pageDropdownObject.activeSelf && ModSteamUGCUtils.pageCount > 1;
+            _pageDropdownObject.SetActive(active);
 
-            if (m_pageContainer.childCount != 0)
-                TransformUtils.DestroyAllChildren(m_pageContainer);
+            if (_pageContainer.childCount != 0)
+                TransformUtils.DestroyAllChildren(_pageContainer);
 
             if (!active)
                 return;
@@ -750,7 +750,7 @@ namespace OverhaulMod.UI
             for (int i = 1; i < ModSteamUGCUtils.pageCount + 1; i++)
             {
                 int pageIndex = i;
-                ModdedObject pageObject = Instantiate(m_pageButtonPrefab, m_pageContainer);
+                ModdedObject pageObject = Instantiate(_pageButtonPrefab, _pageContainer);
                 pageObject.gameObject.SetActive(true);
                 pageObject.GetObject<Text>(0).text = i.ToString();
                 pageObject.GetObject<GameObject>(1).SetActive(i == page);
@@ -777,12 +777,12 @@ namespace OverhaulMod.UI
 
         public void OnBrowseButtonClicked()
         {
-            m_browseItemsOfTypeDropdownObject.SetActive(!m_browseItemsOfTypeDropdownObject.activeSelf);
+            _browseItemsOfTypeDropdownObject.SetActive(!_browseItemsOfTypeDropdownObject.activeSelf);
         }
 
         public void OnBrowseLevelsButtonClicked()
         {
-            if (m_isLoading)
+            if (_isLoading)
                 return;
 
             setBrowseItemType(false);
@@ -790,16 +790,16 @@ namespace OverhaulMod.UI
             browseChildrenOfCollection = default;
             page = 1;
             sourceType = 0;
-            m_tabsCanvasGroup.alpha = 1f;
-            m_tabsCanvasGroup.interactable = true;
-            m_sourceTabs.DeselectAllTabs();
+            _tabsCanvasGroup.alpha = 1f;
+            _tabsCanvasGroup.interactable = true;
+            _sourceTabs.DeselectAllTabs();
 
             Populate();
         }
 
         public void OnBrowseCollectionsButtonClicked()
         {
-            if (m_isLoading)
+            if (_isLoading)
                 return;
 
             setBrowseItemType(true);
@@ -807,9 +807,9 @@ namespace OverhaulMod.UI
             browseChildrenOfCollection = default;
             page = 1;
             sourceType = 0;
-            m_tabsCanvasGroup.alpha = 0.25f;
-            m_tabsCanvasGroup.interactable = false;
-            m_sourceTabs.DeselectAllTabs();
+            _tabsCanvasGroup.alpha = 0.25f;
+            _tabsCanvasGroup.interactable = false;
+            _sourceTabs.DeselectAllTabs();
 
             Populate();
         }
@@ -826,7 +826,7 @@ namespace OverhaulMod.UI
 
         public void OnBackButtonClicked()
         {
-            if (m_isLoading)
+            if (_isLoading)
                 return;
 
             browseChildrenOfCollection = default;

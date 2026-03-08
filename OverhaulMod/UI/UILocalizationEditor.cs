@@ -10,60 +10,60 @@ namespace OverhaulMod.UI
     {
         [UIElementAction(nameof(Hide))]
         [UIElement("CloseButton")]
-        private readonly Button m_exitButton;
+        private readonly Button _exitButton;
 
         [UIElementAction(nameof(OnSaveButtonClicked))]
         [UIElement("SaveButton")]
-        private readonly Button m_saveButton;
+        private readonly Button _saveButton;
 
         [UIElementAction(nameof(OnLanguagesDropdownChanged))]
         [UIElement("LanguagesDropdown")]
-        private readonly Dropdown m_languagesDropdown;
+        private readonly Dropdown _languagesDropdown;
 
         [UIElement("TranslationKeyDisplay", false)]
-        private readonly ModdedObject m_translationKeyPrefab;
+        private readonly ModdedObject _translationKeyPrefab;
         [UIElement("AddTranslationKeyButton", false)]
-        private readonly Button m_addTranslationKeyButtonPrefab;
+        private readonly Button _addTranslationKeyButtonPrefab;
         [UIElement("TextPrefab", false)]
-        private readonly Text m_textPrefab;
+        private readonly Text _textPrefab;
         [UIElement("TranslationKeysListContainer")]
-        private readonly Transform m_translationKeysContainer;
+        private readonly Transform _translationKeysContainer;
         [UIElement("LoadingIndicator", false)]
-        private readonly GameObject m_loadingIndicatorObject;
+        private readonly GameObject _loadingIndicatorObject;
 
         [UIElementAction(nameof(OnChangedTranslationKeyField))]
         [UIElement("EditingKeyText")]
-        private readonly InputField m_translationKeyLabel;
+        private readonly InputField _translationKeyLabel;
         [UIElement("EditingValueInputField")]
-        private readonly InputField m_translationValueInputField;
+        private readonly InputField _translationValueInputField;
 
         [UIElementAction(nameof(OnToLowerButtonClicked))]
         [UIElement("ToLowerButton")]
-        private readonly Button m_toLowerButton;
+        private readonly Button _toLowerButton;
         [UIElementAction(nameof(OnDeleteTranslationButtonClicked))]
         [UIElement("DeleteButton")]
-        private readonly Button m_deleteButton;
+        private readonly Button _deleteButton;
 
         [UIElement("ArialRText")]
-        private readonly Text m_arialRFontPreviewText;
+        private readonly Text _arialRFontPreviewText;
         [UIElement("ArialBText")]
-        private readonly Text m_arialBFontPreviewText;
+        private readonly Text _arialBFontPreviewText;
         [UIElement("OSRText")]
-        private readonly Text m_openSansRFontPreviewText;
+        private readonly Text _openSansRFontPreviewText;
         [UIElement("OSBText")]
-        private readonly Text m_openSansBFontPreviewText;
+        private readonly Text _openSansBFontPreviewText;
         [UIElement("EditUndoText")]
-        private readonly Text m_editUndoFontPreviewText;
+        private readonly Text _editUndoFontPreviewText;
         [UIElement("PixelsSimpleText")]
-        private readonly Text m_pixelsSimpleFontPreviewText;
+        private readonly Text _pixelsSimpleFontPreviewText;
         [UIElement("TriggeringFanfaresText")]
-        private readonly Text m_triggeringFanfaresFontPreviewText;
+        private readonly Text _triggeringFanfaresFontPreviewText;
 
         [UIElementAction(nameof(OnSearchBoxChanged))]
         [UIElement("SearchBox")]
-        private readonly InputField m_searchBox;
+        private readonly InputField _searchBox;
 
-        private Dictionary<string, GameObject> m_cachedInstantiatedKeyDisplays;
+        private Dictionary<string, GameObject> _cachedInstantiatedKeyDisplays;
 
         public override bool hideTitleScreen => true;
 
@@ -71,7 +71,7 @@ namespace OverhaulMod.UI
         {
             get
             {
-                return m_languagesDropdown.options[m_languagesDropdown.value].text;
+                return _languagesDropdown.options[_languagesDropdown.value].text;
             }
         }
 
@@ -89,18 +89,18 @@ namespace OverhaulMod.UI
 
         protected override void OnInitialized()
         {
-            m_cachedInstantiatedKeyDisplays = new Dictionary<string, GameObject>();
+            _cachedInstantiatedKeyDisplays = new Dictionary<string, GameObject>();
 
-            m_languagesDropdown.options = ModLocalizationManager.Instance.GetLanguageOptions(true);
-            m_languagesDropdown.value = 0;
-            m_translationValueInputField.onEndEdit.AddListener(delegate (string str)
+            _languagesDropdown.options = ModLocalizationManager.Instance.GetLanguageOptions(true);
+            _languagesDropdown.value = 0;
+            _translationValueInputField.onEndEdit.AddListener(delegate (string str)
             {
                 if (editingLangId.IsNullOrEmpty() || editingTranslationKey.IsNullOrEmpty())
                     return;
 
                 ModLocalizationManager.Instance.SetTranslation(editingLangId, editingTranslationKey, str);
             });
-            m_translationValueInputField.onValueChanged.AddListener(delegate
+            _translationValueInputField.onValueChanged.AddListener(delegate
             {
                 RefreshPreview();
             });
@@ -112,14 +112,14 @@ namespace OverhaulMod.UI
         {
             editingTranslationKey = key;
 
-            m_translationKeyLabel.text = key;
-            m_translationValueInputField.text = ModLocalizationManager.Instance.GetTranslation(editingLangId, editingTranslationKey);
+            _translationKeyLabel.text = key;
+            _translationValueInputField.text = ModLocalizationManager.Instance.GetTranslation(editingLangId, editingTranslationKey);
             RefreshPreview();
         }
 
         public void ChangeTranslation(string oldName, string newName)
         {
-            if (m_cachedInstantiatedKeyDisplays.TryGetValue(oldName, out GameObject display))
+            if (_cachedInstantiatedKeyDisplays.TryGetValue(oldName, out GameObject display))
             {
                 editingTranslationKey = newName;
 
@@ -142,8 +142,8 @@ namespace OverhaulMod.UI
                 }
                 catch { }
 
-                _ = m_cachedInstantiatedKeyDisplays.Remove(oldName);
-                m_cachedInstantiatedKeyDisplays.Add(newName, display);
+                _ = _cachedInstantiatedKeyDisplays.Remove(oldName);
+                _cachedInstantiatedKeyDisplays.Add(newName, display);
             }
         }
 
@@ -152,14 +152,14 @@ namespace OverhaulMod.UI
             editingTranslationKey = string.Empty;
 
             ModLocalizationManager.Instance.DeleteTranslation(key);
-            _ = m_cachedInstantiatedKeyDisplays.Remove(key);
+            _ = _cachedInstantiatedKeyDisplays.Remove(key);
 
-            m_translationKeyLabel.text = string.Empty;
-            m_translationValueInputField.text = string.Empty;
+            _translationKeyLabel.text = string.Empty;
+            _translationValueInputField.text = string.Empty;
 
             try
             {
-                Transform translationKey = m_translationKeysContainer.GetChild(siblingIndexOfTranslationKey);
+                Transform translationKey = _translationKeysContainer.GetChild(siblingIndexOfTranslationKey);
                 if (translationKey)
                 {
                     Destroy(translationKey.gameObject);
@@ -170,20 +170,20 @@ namespace OverhaulMod.UI
 
         public void RefreshPreview()
         {
-            string text = m_translationValueInputField.text;
+            string text = _translationValueInputField.text;
 
-            m_arialRFontPreviewText.text = text;
-            m_arialBFontPreviewText.text = text;
-            m_openSansRFontPreviewText.text = text;
-            m_openSansBFontPreviewText.text = text;
-            m_editUndoFontPreviewText.text = text;
-            m_pixelsSimpleFontPreviewText.text = text;
-            m_triggeringFanfaresFontPreviewText.text = text;
+            _arialRFontPreviewText.text = text;
+            _arialBFontPreviewText.text = text;
+            _openSansRFontPreviewText.text = text;
+            _openSansBFontPreviewText.text = text;
+            _editUndoFontPreviewText.text = text;
+            _pixelsSimpleFontPreviewText.text = text;
+            _triggeringFanfaresFontPreviewText.text = text;
         }
 
         public ModdedObject InstantiateTranslationKeyDisplay(string key)
         {
-            ModdedObject translationKey = Instantiate(m_translationKeyPrefab, m_translationKeysContainer);
+            ModdedObject translationKey = Instantiate(_translationKeyPrefab, _translationKeysContainer);
             translationKey.gameObject.SetActive(true);
             translationKey.GetObject<Text>(0).text = key;
             Button button = translationKey.GetComponent<Button>();
@@ -193,20 +193,20 @@ namespace OverhaulMod.UI
                 EditTranslation(key);
             });
 
-            m_cachedInstantiatedKeyDisplays.Add(key, translationKey.gameObject);
+            _cachedInstantiatedKeyDisplays.Add(key, translationKey.gameObject);
             return translationKey;
         }
 
         public void PopulateTranslations()
         {
-            m_cachedInstantiatedKeyDisplays.Clear();
-            if (m_translationKeysContainer.childCount != 0)
-                TransformUtils.DestroyAllChildren(m_translationKeysContainer);
+            _cachedInstantiatedKeyDisplays.Clear();
+            if (_translationKeysContainer.childCount != 0)
+                TransformUtils.DestroyAllChildren(_translationKeysContainer);
 
             ModLocalizationManager manager = ModLocalizationManager.Instance;
             if (!manager.CanLanguageBeTranslated(editingLangId))
             {
-                Text text = Instantiate(m_textPrefab, m_translationKeysContainer);
+                Text text = Instantiate(_textPrefab, _translationKeysContainer);
                 text.gameObject.SetActive(true);
                 text.text = "This language cannot be translated now";
                 return;
@@ -219,7 +219,7 @@ namespace OverhaulMod.UI
                     _ = InstantiateTranslationKeyDisplay(key);
             }
 
-            Button addTranslationButton = Instantiate(m_addTranslationKeyButtonPrefab, m_translationKeysContainer);
+            Button addTranslationButton = Instantiate(_addTranslationKeyButtonPrefab, _translationKeysContainer);
             addTranslationButton.gameObject.SetActive(true);
             addTranslationButton.onClick.AddListener(OnAddTranslationButtonClicked);
         }
@@ -239,7 +239,7 @@ namespace OverhaulMod.UI
             {
                 ModLocalizationManager.Instance.AddTranslation(value);
                 ModdedObject moddedObject = InstantiateTranslationKeyDisplay(value);
-                moddedObject.transform.SetSiblingIndex(m_translationKeysContainer.childCount - 2);
+                moddedObject.transform.SetSiblingIndex(_translationKeysContainer.childCount - 2);
                 EditTranslation(value);
             });
         }
@@ -273,7 +273,7 @@ namespace OverhaulMod.UI
             string lowerText = text.ToLower();
             bool forceSetEnabled = text.IsNullOrEmpty();
 
-            foreach (KeyValuePair<string, GameObject> keyValue in m_cachedInstantiatedKeyDisplays)
+            foreach (KeyValuePair<string, GameObject> keyValue in _cachedInstantiatedKeyDisplays)
             {
                 if (forceSetEnabled)
                 {

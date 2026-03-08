@@ -12,105 +12,105 @@ namespace OverhaulMod.UI
     {
         [UIElementAction(nameof(Hide))]
         [UIElement("CloseButton")]
-        private readonly Button m_exitButton;
+        private readonly Button _exitButton;
 
         [UIElementAction(nameof(OnSaveButtonClicked))]
         [UIElement("SaveButton")]
-        private readonly Button m_saveButton;
+        private readonly Button _saveButton;
 
         [UIElement("NeedsSaveIcon", false)]
-        private readonly GameObject m_needsSaveIcon;
+        private readonly GameObject _needsSaveIcon;
 
         [UIElementAction(nameof(OnAddonsButtonClicked))]
         [UIElement("AddonsButton")]
-        private readonly Button m_addonsButton;
+        private readonly Button _addonsButton;
 
         [UIElementAction(nameof(OnCloseAddonsPanelButtonClicked))]
         [UIElement("CloseAddonsPanelButton")]
-        private readonly Button m_closeAddonsPanelButton;
+        private readonly Button _closeAddonsPanelButton;
 
         [UIElementAction(nameof(OnNewAddonButtonClicked))]
         [UIElement("NewAddonButton")]
-        private readonly Button m_newAddonButton;
+        private readonly Button _newAddonButton;
 
         [UIElement("EditorBG", false)]
-        private readonly GameObject m_editorBG;
+        private readonly GameObject _editorBG;
 
         [UIElement("NonEditorBG", true)]
-        private readonly GameObject m_nonEditorBG;
+        private readonly GameObject _nonEditorBG;
 
         [UIElement("AddonsPanel", false)]
-        private readonly GameObject m_addonsPanel;
+        private readonly GameObject _addonsPanel;
 
         [UIElement("AddonDisplay", false)]
-        private readonly ModdedObject m_addonDisplay;
+        private readonly ModdedObject _addonDisplay;
 
         [UIElement("Content")]
-        private readonly Transform m_addonsContent;
+        private readonly Transform _addonsContent;
 
         [UIElementAction(nameof(OnDisplayNameLanguageDropdownChanged))]
         [UIElement("NameLanguageDropdown")]
-        private readonly Dropdown m_displayNameLanguageDropdown;
+        private readonly Dropdown _displayNameLanguageDropdown;
 
         [UIElementCallback(true)]
         [UIElementAction(nameof(OnDisplayNameFieldChanged))]
         [UIElement("NameField")]
-        private readonly InputField m_displayNameField;
+        private readonly InputField _displayNameField;
 
         [UIElementAction(nameof(OnDescriptionLanguageDropdownChanged))]
         [UIElement("DescriptionLanguageDropdown")]
-        private readonly Dropdown m_descriptionLanguageDropdown;
+        private readonly Dropdown _descriptionLanguageDropdown;
 
         [UIElementCallback(true)]
         [UIElementAction(nameof(OnDescriptionFieldChanged))]
         [UIElement("DescriptionField")]
-        private readonly InputField m_descriptionField;
+        private readonly InputField _descriptionField;
 
         [UIElementAction(nameof(OnUniqueIDFieldChanged))]
         [UIElement("UniqueIDField")]
-        private readonly InputField m_uniqueIDField;
+        private readonly InputField _uniqueIDField;
 
         [UIElementAction(nameof(OnGenerateUniqueIDButtonClicked))]
         [UIElement("GenerateUniqueIDButton")]
-        private readonly Button m_generateUniqueIDButton;
+        private readonly Button _generateUniqueIDButton;
 
         [UIElement("AddonVersionField")]
-        private readonly InputField m_addonVersionField;
+        private readonly InputField _addonVersionField;
 
         [UIElementAction(nameof(OnBumpAddonVersionButtonClicked))]
         [UIElement("BumpAddonVersionButton")]
-        private readonly Button m_bumpAddonVersionButton;
+        private readonly Button _bumpAddonVersionButton;
 
         [UIElement("MinModVersionField")]
-        private readonly InputField m_minModVersionField;
+        private readonly InputField _minModVersionField;
 
         [UIElementAction(nameof(OnSetCurrentModVersionButtonClicked))]
         [UIElement("SetCurrentModVersionButton")]
-        private readonly Button m_setCurrentModVersionButton;
+        private readonly Button _setCurrentModVersionButton;
 
-        private AddonInfo m_editingAddonInfo;
+        private AddonInfo _editingAddonInfo;
 
-        private string m_editingDisplayNameTranslationLangCode, m_editingDescriptionTranslationLangCode;
+        private string _editingDisplayNameTranslationLangCode, _editingDescriptionTranslationLangCode;
 
-        private bool m_disableUICallbacks;
+        private bool _disableUICallbacks;
 
         protected override void OnInitialized()
         {
-            m_saveButton.interactable = false;
+            _saveButton.interactable = false;
 
-            m_editingDisplayNameTranslationLangCode = "en";
-            m_editingDescriptionTranslationLangCode = "en";
+            _editingDisplayNameTranslationLangCode = "en";
+            _editingDescriptionTranslationLangCode = "en";
 
-            m_displayNameLanguageDropdown.options = ModLocalizationManager.Instance.GetLanguageOptions(false);
-            m_displayNameLanguageDropdown.value = 0;
-            m_descriptionLanguageDropdown.options = m_displayNameLanguageDropdown.options;
-            m_descriptionLanguageDropdown.value = 0;
+            _displayNameLanguageDropdown.options = ModLocalizationManager.Instance.GetLanguageOptions(false);
+            _displayNameLanguageDropdown.value = 0;
+            _descriptionLanguageDropdown.options = _displayNameLanguageDropdown.options;
+            _descriptionLanguageDropdown.value = 0;
         }
 
         private void populateAddonsPanel()
         {
-            if (m_addonsContent.childCount != 0)
-                TransformUtils.DestroyAllChildren(m_addonsContent);
+            if (_addonsContent.childCount != 0)
+                TransformUtils.DestroyAllChildren(_addonsContent);
 
             System.Collections.Generic.List<AddonInfo> addons = AddonManager.Instance.GetLoadedAddons();
             foreach (AddonInfo addon in addons)
@@ -119,7 +119,7 @@ namespace OverhaulMod.UI
                 if (displayName.IsNullOrEmpty())
                     displayName = "<i>No name addon</i>".AddColor(Color.gray);
 
-                ModdedObject moddedObject = Instantiate(m_addonDisplay, m_addonsContent);
+                ModdedObject moddedObject = Instantiate(_addonDisplay, _addonsContent);
                 moddedObject.gameObject.SetActive(true);
                 moddedObject.GetObject<Text>(0).text = displayName;
                 Button button = moddedObject.GetComponent<Button>();
@@ -132,22 +132,22 @@ namespace OverhaulMod.UI
 
         private void editAddon(AddonInfo addonInfo)
         {
-            m_editingAddonInfo = addonInfo;
+            _editingAddonInfo = addonInfo;
 
-            m_saveButton.interactable = true;
+            _saveButton.interactable = true;
 
             setFieldsValue(addonInfo);
 
             OnCloseAddonsPanelButtonClicked();
-            m_editorBG.SetActive(true);
-            m_nonEditorBG.SetActive(false);
+            _editorBG.SetActive(true);
+            _nonEditorBG.SetActive(false);
         }
 
         private void saveEditingAddon()
         {
-            m_needsSaveIcon.SetActive(false);
+            _needsSaveIcon.SetActive(false);
 
-            AddonInfo addonInfo = m_editingAddonInfo;
+            AddonInfo addonInfo = _editingAddonInfo;
             if (addonInfo != null)
             {
                 updateAddonInfo(addonInfo);
@@ -162,38 +162,38 @@ namespace OverhaulMod.UI
 
         private void setFieldsValue(AddonInfo addonInfo)
         {
-            m_disableUICallbacks = true;
+            _disableUICallbacks = true;
 
-            m_displayNameField.text = addonInfo.GetDisplayName(m_editingDisplayNameTranslationLangCode, true);
-            m_descriptionField.text = addonInfo.GetDescription(m_editingDescriptionTranslationLangCode, true);
-            m_uniqueIDField.text = m_editingAddonInfo.UniqueID;
+            _displayNameField.text = addonInfo.GetDisplayName(_editingDisplayNameTranslationLangCode, true);
+            _descriptionField.text = addonInfo.GetDescription(_editingDescriptionTranslationLangCode, true);
+            _uniqueIDField.text = _editingAddonInfo.UniqueID;
 
-            m_addonVersionField.text = m_editingAddonInfo.Version.ToString();
-            m_minModVersionField.text = m_editingAddonInfo.MinModVersion.ToString();
+            _addonVersionField.text = _editingAddonInfo.Version.ToString();
+            _minModVersionField.text = _editingAddonInfo.MinModVersion.ToString();
 
-            m_disableUICallbacks = false;
+            _disableUICallbacks = false;
         }
 
         private void updateAddonInfo(AddonInfo addonInfo)
         {
-            m_editingAddonInfo.UniqueID = m_uniqueIDField.text;
+            _editingAddonInfo.UniqueID = _uniqueIDField.text;
 
-            if (!int.TryParse(m_addonVersionField.text, out int addonVersion))
+            if (!int.TryParse(_addonVersionField.text, out int addonVersion))
             {
                 ModUIUtils.MessagePopupOK("Cannot parse ADDON VERSION", "please try contacting tech support that doesnt exist", true);
             }
             else
             {
-                m_editingAddonInfo.Version = addonVersion;
+                _editingAddonInfo.Version = addonVersion;
             }
 
-            if (!Version.TryParse(m_minModVersionField.text, out Version minVersion))
+            if (!Version.TryParse(_minModVersionField.text, out Version minVersion))
             {
                 ModUIUtils.MessagePopupOK("Cannot parse MIN MOD VERSION", "please try contacting tech support that doesnt exist", true);
             }
             else
             {
-                m_editingAddonInfo.MinModVersion = minVersion;
+                _editingAddonInfo.MinModVersion = minVersion;
             }
         }
 
@@ -220,12 +220,12 @@ namespace OverhaulMod.UI
         public void OnAddonsButtonClicked()
         {
             populateAddonsPanel();
-            m_addonsPanel.SetActive(true);
+            _addonsPanel.SetActive(true);
         }
 
         public void OnCloseAddonsPanelButtonClicked()
         {
-            m_addonsPanel.SetActive(false);
+            _addonsPanel.SetActive(false);
         }
 
         public void OnNewAddonButtonClicked()
@@ -241,76 +241,76 @@ namespace OverhaulMod.UI
 
         public void OnDisplayNameLanguageDropdownChanged(int value)
         {
-            if (m_disableUICallbacks)
+            if (_disableUICallbacks)
                 return;
 
-            m_editingDisplayNameTranslationLangCode = (m_displayNameLanguageDropdown.options[value] as DropdownStringOptionData).StringValue;
+            _editingDisplayNameTranslationLangCode = (_displayNameLanguageDropdown.options[value] as DropdownStringOptionData).StringValue;
 
-            m_disableUICallbacks = true;
-            m_displayNameField.text = m_editingAddonInfo.GetDisplayName(m_editingDisplayNameTranslationLangCode, true);
-            m_disableUICallbacks = false;
+            _disableUICallbacks = true;
+            _displayNameField.text = _editingAddonInfo.GetDisplayName(_editingDisplayNameTranslationLangCode, true);
+            _disableUICallbacks = false;
         }
 
         public void OnDisplayNameFieldChanged(string value)
         {
-            if (m_disableUICallbacks)
+            if (_disableUICallbacks)
                 return;
 
-            m_needsSaveIcon.SetActive(true);
+            _needsSaveIcon.SetActive(true);
 
-            if (m_editingAddonInfo.DisplayName.ContainsKey(m_editingDisplayNameTranslationLangCode))
-                m_editingAddonInfo.DisplayName[m_editingDisplayNameTranslationLangCode] = value;
+            if (_editingAddonInfo.DisplayName.ContainsKey(_editingDisplayNameTranslationLangCode))
+                _editingAddonInfo.DisplayName[_editingDisplayNameTranslationLangCode] = value;
             else
-                m_editingAddonInfo.DisplayName.Add(m_editingDisplayNameTranslationLangCode, value);
+                _editingAddonInfo.DisplayName.Add(_editingDisplayNameTranslationLangCode, value);
         }
 
         public void OnDescriptionLanguageDropdownChanged(int value)
         {
-            if (m_disableUICallbacks)
+            if (_disableUICallbacks)
                 return;
 
-            m_editingDescriptionTranslationLangCode = (m_descriptionLanguageDropdown.options[value] as DropdownStringOptionData).StringValue;
+            _editingDescriptionTranslationLangCode = (_descriptionLanguageDropdown.options[value] as DropdownStringOptionData).StringValue;
 
-            m_disableUICallbacks = true;
-            m_descriptionField.text = m_editingAddonInfo.GetDescription(m_editingDescriptionTranslationLangCode, true);
-            m_disableUICallbacks = false;
+            _disableUICallbacks = true;
+            _descriptionField.text = _editingAddonInfo.GetDescription(_editingDescriptionTranslationLangCode, true);
+            _disableUICallbacks = false;
         }
 
         public void OnDescriptionFieldChanged(string value)
         {
-            if (m_disableUICallbacks)
+            if (_disableUICallbacks)
                 return;
 
-            m_needsSaveIcon.SetActive(true);
+            _needsSaveIcon.SetActive(true);
 
-            if (m_editingAddonInfo.Description.ContainsKey(m_editingDescriptionTranslationLangCode))
-                m_editingAddonInfo.Description[m_editingDescriptionTranslationLangCode] = value;
+            if (_editingAddonInfo.Description.ContainsKey(_editingDescriptionTranslationLangCode))
+                _editingAddonInfo.Description[_editingDescriptionTranslationLangCode] = value;
             else
-                m_editingAddonInfo.Description.Add(m_editingDescriptionTranslationLangCode, value);
+                _editingAddonInfo.Description.Add(_editingDescriptionTranslationLangCode, value);
         }
 
         public void OnUniqueIDFieldChanged(string value)
         {
-            m_needsSaveIcon.SetActive(true);
+            _needsSaveIcon.SetActive(true);
         }
 
         public void OnGenerateUniqueIDButtonClicked()
         {
-            m_editingAddonInfo.GenerateUniqueID();
-            m_uniqueIDField.text = m_editingAddonInfo.UniqueID;
+            _editingAddonInfo.GenerateUniqueID();
+            _uniqueIDField.text = _editingAddonInfo.UniqueID;
         }
 
         public void OnBumpAddonVersionButtonClicked()
         {
-            if (int.TryParse(m_addonVersionField.text, out int ver))
+            if (int.TryParse(_addonVersionField.text, out int ver))
             {
-                m_addonVersionField.text = (ver + 1).ToString();
+                _addonVersionField.text = (ver + 1).ToString();
             }
         }
 
         public void OnSetCurrentModVersionButtonClicked()
         {
-            m_minModVersionField.text = ModBuildInfo.versionStringNoBranch;
+            _minModVersionField.text = ModBuildInfo.versionStringNoBranch;
         }
     }
 }

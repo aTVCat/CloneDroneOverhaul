@@ -10,118 +10,118 @@ namespace OverhaulMod.UI
         private static bool s_open;
 
         [UIElement("Panel", typeof(DraggablePanel))]
-        private readonly GameObject m_panelObject;
+        private readonly GameObject _panelObject;
 
         [UIElementAction(nameof(OnCloseButtonClicked))]
         [UIElement("CloseButton")]
-        private readonly Button m_closeButton;
+        private readonly Button _closeButton;
 
         [UIElement("RGBASettings")]
-        private readonly ModdedObject m_rgbSettingsTab;
+        private readonly ModdedObject _rgbSettingsTab;
 
         [UIElement("HSVSettings")]
-        private readonly ModdedObject m_hsvSettingsTab;
+        private readonly ModdedObject _hsvSettingsTab;
 
         [UIElementAction(nameof(OnHexCodeFieldChanged))]
         [UIElement("HexInputField")]
-        private readonly InputField m_hexCodeField;
+        private readonly InputField _hexCodeField;
 
         [UIElement("RGBSettingsHolder")]
-        private readonly GameObject m_rgbSettingsHolderObject;
+        private readonly GameObject _rgbSettingsHolderObject;
 
         [UIElement("HSVSettingsHolder")]
-        private readonly GameObject m_hsvSettingsHolderObject;
+        private readonly GameObject _hsvSettingsHolderObject;
 
         [UIElementAction(nameof(OnRGBColorRChannelSliderChanged))]
         [UIElement("RGB_RChannelSlider")]
-        private readonly Slider m_rgbColorRChannelSlider;
+        private readonly Slider _rgbColorRChannelSlider;
         [UIElementAction(nameof(OnRGBColorGChannelSliderChanged))]
         [UIElement("RGB_GChannelSlider")]
-        private readonly Slider m_rgbColorGChannelSlider;
+        private readonly Slider _rgbColorGChannelSlider;
         [UIElementAction(nameof(OnRGBColorBChannelSliderChanged))]
         [UIElement("RGB_BChannelSlider")]
-        private readonly Slider m_rgbColorBChannelSlider;
+        private readonly Slider _rgbColorBChannelSlider;
         [UIElementAction(nameof(OnRGBColorAChannelSliderChanged))]
         [UIElement("RGB_AChannelSlider")]
-        private readonly Slider m_rgbColorAChannelSlider;
+        private readonly Slider _rgbColorAChannelSlider;
 
         [UIElementAction(nameof(OnHSVColorHChannelSliderChanged))]
         [UIElement("HSV_HChannelSlider")]
-        private readonly Slider m_hsvColorHChannelSlider;
+        private readonly Slider _hsvColorHChannelSlider;
         [UIElementAction(nameof(OnHSVColorSChannelSliderChanged))]
         [UIElement("HSV_SChannelSlider")]
-        private readonly Slider m_hsvColorSChannelSlider;
+        private readonly Slider _hsvColorSChannelSlider;
         [UIElementAction(nameof(OnHSVColorVChannelSliderChanged))]
         [UIElement("HSV_VChannelSlider")]
-        private readonly Slider m_hsvColorVChannelSlider;
+        private readonly Slider _hsvColorVChannelSlider;
         [UIElementAction(nameof(OnHSVColorAChannelSliderChanged))]
         [UIElement("HSV_AChannelSlider")]
-        private readonly Slider m_hsvColorAChannelSlider;
+        private readonly Slider _hsvColorAChannelSlider;
 
         [TabManager(typeof(UIElementTab), null, null, null, nameof(OnTabSelected))]
-        private readonly TabManager m_tabs;
+        private readonly TabManager _tabs;
 
-        private bool m_disallowHexCodeFieldCallbacks, m_disallowSliderFieldCallbacks;
+        private bool _disallowHexCodeFieldCallbacks, _disallowSliderFieldCallbacks;
 
-        private Color m_outputColor;
+        private Color _outputColor;
         public Color outputColor
         {
             get
             {
-                return m_outputColor;
+                return _outputColor;
             }
             set
             {
-                m_disallowSliderFieldCallbacks = true;
-                m_rgbColorRChannelSlider.value = value.r;
-                m_rgbColorGChannelSlider.value = value.g;
-                m_rgbColorBChannelSlider.value = value.b;
-                m_rgbColorAChannelSlider.value = showAlphaChannel ? value.a : 1f;
+                _disallowSliderFieldCallbacks = true;
+                _rgbColorRChannelSlider.value = value.r;
+                _rgbColorGChannelSlider.value = value.g;
+                _rgbColorBChannelSlider.value = value.b;
+                _rgbColorAChannelSlider.value = showAlphaChannel ? value.a : 1f;
 
                 Color.RGBToHSV(value, out float h, out float s, out float v);
-                m_hsvColorHChannelSlider.value = h;
-                m_hsvColorSChannelSlider.value = s;
-                m_hsvColorVChannelSlider.value = v;
-                m_hsvColorAChannelSlider.value = showAlphaChannel ? value.a : 1f;
-                m_disallowSliderFieldCallbacks = false;
+                _hsvColorHChannelSlider.value = h;
+                _hsvColorSChannelSlider.value = s;
+                _hsvColorVChannelSlider.value = v;
+                _hsvColorAChannelSlider.value = showAlphaChannel ? value.a : 1f;
+                _disallowSliderFieldCallbacks = false;
 
-                m_outputColor = value;
+                _outputColor = value;
             }
         }
 
-        private float m_outputAlpha;
+        private float _outputAlpha;
         public float outputAlpha
         {
             get
             {
-                return m_outputAlpha;
+                return _outputAlpha;
             }
             set
             {
-                m_disallowSliderFieldCallbacks = true;
-                m_rgbColorAChannelSlider.value = showAlphaChannel ? value : 1f;
-                m_hsvColorAChannelSlider.value = showAlphaChannel ? value : 1f;
-                m_disallowSliderFieldCallbacks = false;
-                m_outputAlpha = value;
+                _disallowSliderFieldCallbacks = true;
+                _rgbColorAChannelSlider.value = showAlphaChannel ? value : 1f;
+                _hsvColorAChannelSlider.value = showAlphaChannel ? value : 1f;
+                _disallowSliderFieldCallbacks = false;
+                _outputAlpha = value;
             }
         }
 
-        private bool m_showAlphaChannel;
+        private bool _showAlphaChannel;
         public bool showAlphaChannel
         {
             get
             {
-                return m_showAlphaChannel;
+                return _showAlphaChannel;
             }
             set
             {
-                m_disallowSliderFieldCallbacks = true;
-                m_hsvColorAChannelSlider.gameObject.SetActive(value);
-                m_hsvColorAChannelSlider.value = 1f;
-                m_rgbColorAChannelSlider.gameObject.SetActive(value);
-                m_rgbColorAChannelSlider.value = 1f;
-                m_disallowSliderFieldCallbacks = false;
-                m_showAlphaChannel = value;
+                _disallowSliderFieldCallbacks = true;
+                _hsvColorAChannelSlider.gameObject.SetActive(value);
+                _hsvColorAChannelSlider.value = 1f;
+                _rgbColorAChannelSlider.gameObject.SetActive(value);
+                _rgbColorAChannelSlider.value = 1f;
+                _disallowSliderFieldCallbacks = false;
+                _showAlphaChannel = value;
             }
         }
 
@@ -131,9 +131,9 @@ namespace OverhaulMod.UI
 
         protected override void OnInitialized()
         {
-            m_tabs.AddTab(m_rgbSettingsTab.gameObject, "rgb");
-            m_tabs.AddTab(m_hsvSettingsTab.gameObject, "hsv");
-            m_tabs.SelectTab("rgb");
+            _tabs.AddTab(_rgbSettingsTab.gameObject, "rgb");
+            _tabs.AddTab(_hsvSettingsTab.gameObject, "hsv");
+            _tabs.SelectTab("rgb");
         }
 
         public override void Show()
@@ -153,8 +153,8 @@ namespace OverhaulMod.UI
         {
             bool rgb = elementTab.tabId == "rgb";
 
-            UIElementTab oldTab = m_tabs.prevSelectedTab;
-            UIElementTab newTab = m_tabs.selectedTab;
+            UIElementTab oldTab = _tabs.prevSelectedTab;
+            UIElementTab newTab = _tabs.selectedTab;
             if (oldTab)
             {
                 RectTransform rt = oldTab.transform as RectTransform;
@@ -170,8 +170,8 @@ namespace OverhaulMod.UI
                 rt.sizeDelta = vector;
             }
 
-            m_rgbSettingsHolderObject.SetActive(rgb);
-            m_hsvSettingsHolderObject.SetActive(!rgb);
+            _rgbSettingsHolderObject.SetActive(rgb);
+            _hsvSettingsHolderObject.SetActive(!rgb);
         }
 
         public void Populate(Color currentColor, bool useAlphaChannel, Action<Color> onColorChanged)
@@ -190,9 +190,9 @@ namespace OverhaulMod.UI
 
         public void RefreshHexCodeField()
         {
-            m_disallowHexCodeFieldCallbacks = true;
-            m_hexCodeField.text = "#" + (showAlphaChannel ? ColorUtility.ToHtmlStringRGBA(outputColor) : ColorUtility.ToHtmlStringRGB(outputColor));
-            m_disallowHexCodeFieldCallbacks = false;
+            _disallowHexCodeFieldCallbacks = true;
+            _hexCodeField.text = "#" + (showAlphaChannel ? ColorUtility.ToHtmlStringRGBA(outputColor) : ColorUtility.ToHtmlStringRGB(outputColor));
+            _disallowHexCodeFieldCallbacks = false;
         }
 
         public void OnCloseButtonClicked()
@@ -202,7 +202,7 @@ namespace OverhaulMod.UI
 
         public void OnHexCodeFieldChanged(string value)
         {
-            if (m_disallowHexCodeFieldCallbacks)
+            if (_disallowHexCodeFieldCallbacks)
                 return;
 
             outputColor = ModParseUtils.TryParseToColor(value, Color.white);
@@ -211,7 +211,7 @@ namespace OverhaulMod.UI
 
         public void OnRGBColorRChannelSliderChanged(float value)
         {
-            if (m_disallowSliderFieldCallbacks)
+            if (_disallowSliderFieldCallbacks)
                 return;
 
             Color color = outputColor;
@@ -223,7 +223,7 @@ namespace OverhaulMod.UI
 
         public void OnRGBColorGChannelSliderChanged(float value)
         {
-            if (m_disallowSliderFieldCallbacks)
+            if (_disallowSliderFieldCallbacks)
                 return;
 
             Color color = outputColor;
@@ -235,7 +235,7 @@ namespace OverhaulMod.UI
 
         public void OnRGBColorBChannelSliderChanged(float value)
         {
-            if (m_disallowSliderFieldCallbacks)
+            if (_disallowSliderFieldCallbacks)
                 return;
 
             Color color = outputColor;
@@ -247,7 +247,7 @@ namespace OverhaulMod.UI
 
         public void OnRGBColorAChannelSliderChanged(float value)
         {
-            if (m_disallowSliderFieldCallbacks)
+            if (_disallowSliderFieldCallbacks)
                 return;
 
             Color color = outputColor;
@@ -260,7 +260,7 @@ namespace OverhaulMod.UI
 
         public void OnHSVColorHChannelSliderChanged(float value)
         {
-            if (m_disallowSliderFieldCallbacks)
+            if (_disallowSliderFieldCallbacks)
                 return;
             Color.RGBToHSV(outputColor, out _, out float s, out float v);
             float h = value;
@@ -276,7 +276,7 @@ namespace OverhaulMod.UI
 
         public void OnHSVColorSChannelSliderChanged(float value)
         {
-            if (m_disallowSliderFieldCallbacks)
+            if (_disallowSliderFieldCallbacks)
                 return;
             Color.RGBToHSV(outputColor, out float h, out _, out float v);
             float s = value;
@@ -292,7 +292,7 @@ namespace OverhaulMod.UI
 
         public void OnHSVColorVChannelSliderChanged(float value)
         {
-            if (m_disallowSliderFieldCallbacks)
+            if (_disallowSliderFieldCallbacks)
                 return;
             Color.RGBToHSV(outputColor, out float h, out float s, out _);
             float v = value;
@@ -305,7 +305,7 @@ namespace OverhaulMod.UI
 
         public void OnHSVColorAChannelSliderChanged(float value)
         {
-            if (m_disallowSliderFieldCallbacks)
+            if (_disallowSliderFieldCallbacks)
                 return;
 
             Color color = outputColor;

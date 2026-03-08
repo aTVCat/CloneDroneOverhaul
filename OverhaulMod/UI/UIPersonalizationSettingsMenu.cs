@@ -9,19 +9,19 @@ namespace OverhaulMod.UI
     {
         [UIElementAction(nameof(Hide))]
         [UIElement("CloseButton")]
-        private readonly Button m_exitButton;
+        private readonly Button _exitButton;
 
         [UIElementAction(nameof(OnAllowEnemiesUseWeaponSkinsToggled))]
         [UIElement("EnemiesUseSkinsToggle")]
-        private readonly Toggle m_allowEnemiesUseWeaponSkinsToggle;
+        private readonly Toggle _allowEnemiesUseWeaponSkinsToggle;
 
-        private bool m_disallowCallbacks;
+        private bool _disallowCallbacks;
 
         protected override void OnInitialized()
         {
-            m_disallowCallbacks = true;
-            m_allowEnemiesUseWeaponSkinsToggle.isOn = PersonalizationUserInfo.AllowEnemiesUseSkins;
-            m_disallowCallbacks = false;
+            _disallowCallbacks = true;
+            _allowEnemiesUseWeaponSkinsToggle.isOn = PersonalizationUserInfo.AllowEnemiesUseSkins;
+            _disallowCallbacks = false;
         }
 
         public override void OnDisable()
@@ -31,7 +31,7 @@ namespace OverhaulMod.UI
 
         public void OnAllowEnemiesUseWeaponSkinsToggled(bool value)
         {
-            if (m_disallowCallbacks)
+            if (_disallowCallbacks)
                 return;
 
             ModSettingsManager.SetBoolValue(ModSettingsConstants.ALLOW_ENEMIES_USE_WEAPON_SKINS, value, true);

@@ -7,25 +7,25 @@ namespace OverhaulMod.UI
     public class UIElementMultiplayerMessageBox : OverhaulUIBehaviour
     {
         [UIElement("Header")]
-        public Text m_headerText;
+        public Text _headerText;
         [UIElement("Header")]
-        public Outline m_headerOutline;
+        public Outline _headerOutline;
 
         [UIElement("Description")]
-        public Text m_descriptionText;
+        public Text _descriptionText;
         [UIElement("Description")]
-        public Outline m_descriptionOutline;
+        public Outline _descriptionOutline;
 
         [UIElement("ErrorMessage")]
-        public Graphic m_bgGraphic;
+        public Graphic _bgGraphic;
         [UIElement("Frame")]
-        public Graphic m_frameGraphic;
+        public Graphic _frameGraphic;
 
         [UIElementAction(nameof(OnRulesButtonClicked))]
         [UIElement("RulesButton")]
-        public Button m_rulesButton;
+        public Button _rulesButton;
 
-        private (Color, Color, Color)[] m_colors;
+        private (Color, Color, Color)[] _colors;
 
         public bool showedFromCode
         {
@@ -41,7 +41,7 @@ namespace OverhaulMod.UI
 
         protected override void OnInitialized()
         {
-            m_colors = new (Color, Color, Color)[]
+            _colors = new (Color, Color, Color)[]
             {
                 (ModParseUtils.TryParseToColor("E62E2E", Color.white), ModParseUtils.TryParseToColor("661919", Color.gray), ModParseUtils.TryParseToColor("A60000", Color.white)),
                 (ModParseUtils.TryParseToColor("E6B92E", Color.white), ModParseUtils.TryParseToColor("998126", Color.gray), ModParseUtils.TryParseToColor("F3B500", Color.white)),
@@ -91,27 +91,27 @@ namespace OverhaulMod.UI
 
         public void ShowError(string errorLabel, string errorDetails, bool showRulesButton = false, bool isWarning = false)
         {
-            m_headerText.text = errorLabel;
-            m_descriptionText.text = errorDetails;
-            m_rulesButton.gameObject.SetActive(showRulesButton);
-            SetColor(isWarning ? m_colors[1].Item1 : m_colors[0].Item1, isWarning ? m_colors[1].Item2 : m_colors[0].Item2, isWarning ? m_colors[1].Item3 : m_colors[0].Item3);
+            _headerText.text = errorLabel;
+            _descriptionText.text = errorDetails;
+            _rulesButton.gameObject.SetActive(showRulesButton);
+            SetColor(isWarning ? _colors[1].Item1 : _colors[0].Item1, isWarning ? _colors[1].Item2 : _colors[0].Item2, isWarning ? _colors[1].Item3 : _colors[0].Item3);
         }
 
         public void ShowSuccess()
         {
-            m_headerText.text = LocalizationManager.Instance.GetTranslatedString("multiplayer_connection_fine");
-            m_descriptionText.text = LocalizationManager.Instance.GetTranslatedString("multiplayer_connection_fine_desc");
-            m_rulesButton.gameObject.SetActive(false);
-            SetColor(m_colors[2].Item1, m_colors[2].Item2, m_colors[2].Item3);
+            _headerText.text = LocalizationManager.Instance.GetTranslatedString("multiplayer_connection_fine");
+            _descriptionText.text = LocalizationManager.Instance.GetTranslatedString("multiplayer_connection_fine_desc");
+            _rulesButton.gameObject.SetActive(false);
+            SetColor(_colors[2].Item1, _colors[2].Item2, _colors[2].Item3);
         }
 
         public void SetColor(Color firstColor, Color secondColor, Color buttonColor)
         {
-            m_bgGraphic.color = firstColor;
-            m_frameGraphic.color = secondColor;
-            m_headerOutline.effectColor = Color.black;
-            m_descriptionOutline.effectColor = Color.black;
-            m_rulesButton.image.color = buttonColor;
+            _bgGraphic.color = firstColor;
+            _frameGraphic.color = secondColor;
+            _headerOutline.effectColor = Color.black;
+            _descriptionOutline.effectColor = Color.black;
+            _rulesButton.image.color = buttonColor;
         }
 
         public void OnRulesButtonClicked()

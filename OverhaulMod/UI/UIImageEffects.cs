@@ -11,15 +11,15 @@ namespace OverhaulMod.UI
     public class UIImageEffects : OverhaulUIBehaviour
     {
         [UIElement("Vignette", true)]
-        private readonly Image m_vignetteImage;
+        private readonly Image _vignetteImage;
 
         [UIElement("Dithering", true)]
-        private readonly RawImage m_ditheringImage;
+        private readonly RawImage _ditheringImage;
 
         public override bool closeOnEscapeButtonPress => false;
 
-        private float m_timeLeftToSwitchTexture;
-        private int m_TextureIndex;
+        private float _timeLeftToSwitchTexture;
+        private int _TextureIndex;
 
         public static Texture2D[] ditheringTextures
         {
@@ -29,8 +29,8 @@ namespace OverhaulMod.UI
 
         protected override void OnInitialized()
         {
-            m_vignetteImage.enabled = false;
-            m_ditheringImage.enabled = false;
+            _vignetteImage.enabled = false;
+            _ditheringImage.enabled = false;
 
             if (ditheringTextures == null)
                 GenerateNoiseTextures();
@@ -43,38 +43,38 @@ namespace OverhaulMod.UI
             bool isNotInLevelEditor = !GameModeManager.IsInLevelEditor();
             bool overrideSettings = AdvancedPhotoModeManager.Settings.overrideSettings;
 
-            float v = m_timeLeftToSwitchTexture - Time.unscaledDeltaTime;
-            m_timeLeftToSwitchTexture = v;
+            float v = _timeLeftToSwitchTexture - Time.unscaledDeltaTime;
+            _timeLeftToSwitchTexture = v;
             if (v > 0f)
                 return;
-            m_timeLeftToSwitchTexture = 0.034f;
+            _timeLeftToSwitchTexture = 0.034f;
 
             bool hasCamera = CameraManager.Instance.mainCamera;
             bool enableVignette = isNotInLevelEditor && hasCamera && (overrideSettings ? AdvancedPhotoModeManager.Settings.EnableVignette : PostEffectsManager.EnableVignette);
             bool enableDithering = isNotInLevelEditor && hasCamera && (overrideSettings ? AdvancedPhotoModeManager.Settings.EnableDithering : PostEffectsManager.EnableDithering) && ditheringTextures != null;
 
-            m_vignetteImage.enabled = enableVignette;
-            m_ditheringImage.enabled = enableDithering;
+            _vignetteImage.enabled = enableVignette;
+            _ditheringImage.enabled = enableDithering;
 
             if (enableDithering)
             {
-                Color color = m_ditheringImage.color;
+                Color color = _ditheringImage.color;
                 color.a = 0.25f;
-                m_ditheringImage.color = color;
+                _ditheringImage.color = color;
 
-                int index = m_TextureIndex;
-                m_ditheringImage.texture = ditheringTextures[index];
+                int index = _TextureIndex;
+                _ditheringImage.texture = ditheringTextures[index];
                 index++;
                 if (index > 2)
                     index = 0;
-                m_TextureIndex = index;
+                _TextureIndex = index;
             }
 
             if (enableVignette)
             {
-                Color color = m_vignetteImage.color;
+                Color color = _vignetteImage.color;
                 color.a = overrideSettings ? AdvancedPhotoModeManager.Settings.VignetteIntensity : 0.5f;
-                m_vignetteImage.color = color;
+                _vignetteImage.color = color;
             }
         }
 

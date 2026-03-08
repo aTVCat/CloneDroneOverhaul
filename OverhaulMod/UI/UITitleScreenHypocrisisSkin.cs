@@ -13,80 +13,80 @@ namespace OverhaulMod.UI
 {
     public class UITitleScreenHypocrisisSkin : OverhaulUIBehaviour
     {
-        public static readonly PublishedFileId_t LEVEL_STEAM_ID = new PublishedFileId_t(3557418313);
+        public static readonly PublishedFileId_t LEVEL_STEA_ID = new PublishedFileId_t(3557418313);
 
-        public static readonly PublishedFileId_t MAIN_MENU_LEVEL_STEAM_ID = new PublishedFileId_t(3522164720);
+        public static readonly PublishedFileId_t MAIN_MENU_LEVEL_STEA_ID = new PublishedFileId_t(3522164720);
 
-        public const string LEVEL_AUTHOR_STEAM_PROFILE_PAGE = "https://steamcommunity.com/profiles/76561198886409131";
+        public const string LEVEL_AUTHOR_STEA_PROFILE_PAGE = "https://steamcommunity.com/profiles/76561198886409131";
 
         public const string LEVEL_AUTHOR_DISCORD_SERVER = "https://discord.gg/79r26pu7MC";
 
         [UIElementAction(nameof(OnStartButtonClicked))]
         [UIElement("StartButton")]
-        private readonly Button m_startButton;
+        private readonly Button _startButton;
 
         [UIElementAction(nameof(OnSettingsButtonClicked))]
         [UIElement("SettingsButton")]
-        private readonly Button m_settingsButton;
+        private readonly Button _settingsButton;
 
         [UIElementAction(nameof(OnDiscordButtonClicked))]
         [UIElement("DiscordButton")]
-        private readonly Button m_discordButton;
+        private readonly Button _discordButton;
 
         [UIElementAction(nameof(OnSteamButtonClicked))]
         [UIElement("SteamButton")]
-        private readonly Button m_steamButton;
+        private readonly Button _steamButton;
 
         [UIElement("LoadingIndicator", false)]
-        private readonly GameObject m_loadingIndicator;
+        private readonly GameObject _loadingIndicator;
 
         [UIElement("Holder", true)]
-        private readonly GameObject m_holder;
+        private readonly GameObject _holder;
 
         [UIElement("ProgressBarFill")]
-        private readonly Image m_progressBarFill;
+        private readonly Image _progressBarFill;
 
         [UIElement("DisabledModsPanel", false)]
-        private readonly GameObject m_disabledModsPanel;
+        private readonly GameObject _disabledModsPanel;
 
         [UIElement("Description")]
-        private readonly Text m_disabledModsPanelText;
+        private readonly Text _disabledModsPanelText;
 
         [UIElementAction(nameof(OnModsButtonClicked))]
         [UIElement("ModsButton")]
-        private readonly Button m_modsButton;
+        private readonly Button _modsButton;
 
         [UIElementAction(nameof(OnCloseButtonClicked))]
         [UIElement("CloseButton")]
-        private readonly Button m_closeButton;
+        private readonly Button _closeButton;
 
         [UIElementAction(nameof(OnModsButtonClicked))]
         [UIElement("ModsButton2", false)]
-        private readonly Button m_modsButton2;
+        private readonly Button _modsButton2;
 
         [UIElementAction(nameof(OnRestartButtonClicked))]
         [UIElement("RestartButton")]
-        private readonly Button m_restartButton;
+        private readonly Button _restartButton;
 
         public override bool closeOnEscapeButtonPress => false;
 
-        private bool m_getCallbacks;
+        private bool _getCallbacks;
 
-        private bool m_startChallengeWhenReady;
+        private bool _startChallengeWhenReady;
 
-        private float m_timeLeftToUpdate;
+        private float _timeLeftToUpdate;
 
-        private bool m_ignoreMinorErrors;
+        private bool _ignoreMinorErrors;
 
-        private WorkshopItem m_levelWorkshopItem;
+        private WorkshopItem _levelWorkshopItem;
 
-        private bool m_prevHolderState;
+        private bool _prevHolderState;
 
         public static bool HideVersionLabel;
 
         protected override void OnInitialized()
         {
-            m_startButton.interactable = true;
+            _startButton.interactable = true;
 
             ModActionUtils.DoInFrames(doChecks, 60);
         }
@@ -142,11 +142,11 @@ namespace OverhaulMod.UI
         public override void Update()
         {
             bool state = ModCache.titleScreenRootButtonsBG.activeInHierarchy;
-            if (m_prevHolderState != state)
+            if (_prevHolderState != state)
             {
-                m_prevHolderState = state;
+                _prevHolderState = state;
 
-                m_holder.SetActive(state);
+                _holder.SetActive(state);
 
                 if (state)
                 {
@@ -154,16 +154,16 @@ namespace OverhaulMod.UI
                 }
             }
 
-            m_progressBarFill.fillAmount = ModSteamUGCUtils.GetItemDownloadProgress(LEVEL_STEAM_ID);
+            _progressBarFill.fillAmount = ModSteamUGCUtils.GetItemDownloadProgress(LEVEL_STEA_ID);
 
-            m_timeLeftToUpdate = Mathf.Max(0f, m_timeLeftToUpdate - Time.unscaledDeltaTime);
-            if (m_timeLeftToUpdate == 0f)
+            _timeLeftToUpdate = Mathf.Max(0f, _timeLeftToUpdate - Time.unscaledDeltaTime);
+            if (_timeLeftToUpdate == 0f)
             {
-                m_timeLeftToUpdate = 1f;
+                _timeLeftToUpdate = 1f;
 
-                if (m_startChallengeWhenReady && isReadyToStartChallenge())
+                if (_startChallengeWhenReady && isReadyToStartChallenge())
                 {
-                    m_startChallengeWhenReady = false;
+                    _startChallengeWhenReady = false;
                     startChallenge();
                 }
             }
@@ -250,11 +250,11 @@ namespace OverhaulMod.UI
                 }
             }
 
-            m_modsButton2.gameObject.SetActive(!someModsNotEnabled);
-            m_disabledModsPanel.SetActive(someModsNotEnabled);
+            _modsButton2.gameObject.SetActive(!someModsNotEnabled);
+            _disabledModsPanel.SetActive(someModsNotEnabled);
             if (someModsNotEnabled)
             {
-                m_disabledModsPanelText.text = stringBuilder.ToString();
+                _disabledModsPanelText.text = stringBuilder.ToString();
             }
         }
 
@@ -266,10 +266,10 @@ namespace OverhaulMod.UI
                 return;
             }
 
-            m_getCallbacks = true;
-            m_startButton.interactable = false;
-            m_loadingIndicator.SetActive(true);
-            ModSteamUGCUtils.GetWorkshopItem(LEVEL_STEAM_ID, onGotItem, onError, null);
+            _getCallbacks = true;
+            _startButton.interactable = false;
+            _loadingIndicator.SetActive(true);
+            ModSteamUGCUtils.GetWorkshopItem(LEVEL_STEA_ID, onGotItem, onError, null);
         }
 
         public void OnSettingsButtonClicked()
@@ -285,15 +285,15 @@ namespace OverhaulMod.UI
         public void OnSteamButtonClicked()
         {
             if (SteamManager.Instance && SteamManager.Instance.Initialized && SteamUtils.IsOverlayEnabled())
-                SteamFriends.ActivateGameOverlayToWebPage(LEVEL_AUTHOR_STEAM_PROFILE_PAGE);
+                SteamFriends.ActivateGameOverlayToWebPage(LEVEL_AUTHOR_STEA_PROFILE_PAGE);
             else
-                Application.OpenURL(LEVEL_AUTHOR_STEAM_PROFILE_PAGE);
+                Application.OpenURL(LEVEL_AUTHOR_STEA_PROFILE_PAGE);
         }
 
         public void OnCloseButtonClicked()
         {
-            m_disabledModsPanel.SetActive(false);
-            m_modsButton2.gameObject.SetActive(true);
+            _disabledModsPanel.SetActive(false);
+            _modsButton2.gameObject.SetActive(true);
         }
 
         public void OnModsButtonClicked()
@@ -303,7 +303,7 @@ namespace OverhaulMod.UI
 
         public void OnRestartButtonClicked()
         {
-            m_restartButton.interactable = false;
+            _restartButton.interactable = false;
             restartCoroutine().Run();
         }
 
@@ -320,12 +320,12 @@ namespace OverhaulMod.UI
 
         private void onGotItem(Content.WorkshopItem workshopItem)
         {
-            if (!m_getCallbacks)
+            if (!_getCallbacks)
                 return;
 
-            m_getCallbacks = false;
-            m_startChallengeWhenReady = true;
-            m_levelWorkshopItem = workshopItem;
+            _getCallbacks = false;
+            _startChallengeWhenReady = true;
+            _levelWorkshopItem = workshopItem;
 
             EItemState itemState = ModSteamUGCUtils.GetItemState(workshopItem.ItemID);
             bool installed = ModSteamUGCUtils.IsItemInstalled(workshopItem.ItemID);
@@ -343,12 +343,12 @@ namespace OverhaulMod.UI
                         {
                             if (!installed)
                             {
-                                m_loadingIndicator.SetActive(false);
-                                m_startButton.interactable = true;
+                                _loadingIndicator.SetActive(false);
+                                _startButton.interactable = true;
                                 ModUIUtils.MessagePopupOK("Update error", $"Error code: {t.m_eResult}", 150f, true);
                             }
                             else
-                                m_ignoreMinorErrors = true;
+                                _ignoreMinorErrors = true;
                         }
                     });
                 }
@@ -361,12 +361,12 @@ namespace OverhaulMod.UI
                     {
                         if (!installed)
                         {
-                            m_loadingIndicator.SetActive(false);
-                            m_startButton.interactable = true;
+                            _loadingIndicator.SetActive(false);
+                            _startButton.interactable = true;
                             ModUIUtils.MessagePopupOK("Subscription error", $"Error code: {t.m_eResult} (ioError: {ioError})", 150f, true);
                         }
                         else
-                            m_ignoreMinorErrors = true;
+                            _ignoreMinorErrors = true;
                     }
                 });
             }
@@ -374,14 +374,14 @@ namespace OverhaulMod.UI
 
         private void onError(string error)
         {
-            if (!m_getCallbacks)
+            if (!_getCallbacks)
                 return;
 
-            m_getCallbacks = false;
-            m_loadingIndicator.SetActive(false);
-            m_startButton.interactable = true;
+            _getCallbacks = false;
+            _loadingIndicator.SetActive(false);
+            _startButton.interactable = true;
 
-            if (ModSteamUGCUtils.IsItemInstalled(LEVEL_STEAM_ID)) // if we have challenge installed then just start it
+            if (ModSteamUGCUtils.IsItemInstalled(LEVEL_STEA_ID)) // if we have challenge installed then just start it
             {
                 startChallenge();
                 return;
@@ -391,29 +391,29 @@ namespace OverhaulMod.UI
 
         private bool isReadyToStartChallenge()
         {
-            EItemState itemState = ModSteamUGCUtils.GetItemState(LEVEL_STEAM_ID);
-            bool installed = ModSteamUGCUtils.IsItemInstalled(LEVEL_STEAM_ID);
-            return installed && (m_ignoreMinorErrors || itemState.HasFlag(EItemState.k_EItemStateSubscribed)) && (m_ignoreMinorErrors || !itemState.HasFlag(EItemState.k_EItemStateNeedsUpdate)) && !itemState.HasFlag(EItemState.k_EItemStateDownloadPending) && !itemState.HasFlag(EItemState.k_EItemStateDownloading);
+            EItemState itemState = ModSteamUGCUtils.GetItemState(LEVEL_STEA_ID);
+            bool installed = ModSteamUGCUtils.IsItemInstalled(LEVEL_STEA_ID);
+            return installed && (_ignoreMinorErrors || itemState.HasFlag(EItemState.k_EItemStateSubscribed)) && (_ignoreMinorErrors || !itemState.HasFlag(EItemState.k_EItemStateNeedsUpdate)) && !itemState.HasFlag(EItemState.k_EItemStateDownloadPending) && !itemState.HasFlag(EItemState.k_EItemStateDownloading);
         }
 
         private void startChallenge()
         {
-            if (m_levelWorkshopItem == null)
+            if (_levelWorkshopItem == null)
             {
-                m_levelWorkshopItem = new WorkshopItem()
+                _levelWorkshopItem = new WorkshopItem()
                 {
                     Author = "Archaeologist",
                     AuthorID = (CSteamID)76561198886409131,
-                    ItemID = LEVEL_STEAM_ID,
+                    ItemID = LEVEL_STEA_ID,
                     Name = "HYPOCRISIS: Chapter 3, Pack 1, The Deserters Saga",
                     Description = string.Empty
                 };
             }
 
-            if (SteamUGC.GetItemInstallInfo(m_levelWorkshopItem.ItemID, out _, out string folder, ModSteamUGCUtils.cchFolderSize, out _))
-                m_levelWorkshopItem.Folder = folder;
+            if (SteamUGC.GetItemInstallInfo(_levelWorkshopItem.ItemID, out _, out string folder, ModSteamUGCUtils.cchFolderSize, out _))
+                _levelWorkshopItem.Folder = folder;
 
-            if (!WorkshopChallengeManager.Instance.StartChallengeFromWorkshop(m_levelWorkshopItem.ToSteamWorkshopItem()))
+            if (!WorkshopChallengeManager.Instance.StartChallengeFromWorkshop(_levelWorkshopItem.ToSteamWorkshopItem()))
             {
                 ModUIUtils.MessagePopupOK("Incompatible game version!", "This item was made on newer version of the game.\nTo become able to play this level, update the game.", true);
             }

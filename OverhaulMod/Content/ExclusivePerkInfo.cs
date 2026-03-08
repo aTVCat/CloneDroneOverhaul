@@ -14,47 +14,47 @@ namespace OverhaulMod.Content
         public ulong SteamID;
         public string PlayFabID;
 
-        private bool m_hasDeserializedData;
-        private object m_deserializedData;
+        private bool _hasDeserializedData;
+        private object _deserializedData;
 
         public void SerializeData()
         {
-            Data = ModJsonUtils.Serialize(m_deserializedData);
+            Data = ModJsonUtils.Serialize(_deserializedData);
         }
 
         public object DeserializeData()
         {
-            if (m_hasDeserializedData)
-                return m_deserializedData;
+            if (_hasDeserializedData)
+                return _deserializedData;
 
             if (!Data.IsNullOrEmpty())
             {
                 switch (PerkType)
                 {
                     case ExclusivePerkType.Color:
-                        m_deserializedData = ModJsonUtils.Deserialize<ExclusivePerkColor>(Data);
+                        _deserializedData = ModJsonUtils.Deserialize<ExclusivePerkColor>(Data);
                         break;
                     case ExclusivePerkType.Feature:
-                        m_deserializedData = ModJsonUtils.Deserialize<int>(Data);
+                        _deserializedData = ModJsonUtils.Deserialize<int>(Data);
                         break;
                     default:
-                        m_deserializedData = null;
+                        _deserializedData = null;
                         break;
                 }
             }
             else
             {
-                m_deserializedData = null;
+                _deserializedData = null;
             }
-            m_hasDeserializedData = true;
+            _hasDeserializedData = true;
 
-            return m_deserializedData;
+            return _deserializedData;
         }
 
         public void SetData(object data)
         {
-            m_deserializedData = data;
-            m_hasDeserializedData = true;
+            _deserializedData = data;
+            _hasDeserializedData = true;
         }
 
         public void SetDefaultData()

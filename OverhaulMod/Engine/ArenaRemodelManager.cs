@@ -15,51 +15,51 @@ namespace OverhaulMod.Engine
             "ARENA_THRONE_END_PARTS-3"
         };
 
-        private GameObject m_newArenaObject;
+        private GameObject _newArenaObject;
 
-        private Transform m_worldRootTransform;
+        private Transform _worldRootTransform;
 
-        private Transform m_arenaFinalTransform;
-        private Transform m_arenaUpperInteriorTransform;
+        private Transform _arenaFinalTransform;
+        private Transform _arenaUpperInteriorTransform;
 
-        private Transform m_liftTransform;
-        private Transform m_liftWallTransform;
+        private Transform _liftTransform;
+        private Transform _liftWallTransform;
 
-        private Transform m_arenaMainTransform;
+        private Transform _arenaMainTransform;
 
-        private Transform m_emperorSectionTransform;
-        private Transform m_battleCruiserTransform;
+        private Transform _emperorSectionTransform;
+        private Transform _battleCruiserTransform;
 
-        private Transform m_commentatorBoxTransform;
-        private Transform m_commentatronTransform;
-        private Transform m_analysisBotTransform;
+        private Transform _commentatorBoxTransform;
+        private Transform _commentatronTransform;
+        private Transform _analysisBotTransform;
 
-        private Transform m_arenaCameraAnimatorTransform;
-        private Transform m_commentatorTargetTransform;
+        private Transform _arenaCameraAnimatorTransform;
+        private Transform _commentatorTargetTransform;
 
-        private Transform m_arenaGroundArrowsTransform;
-        private Transform m_returnSignTransform;
-        private Transform m_arenaGroundArrowsSpotlightTransform;
+        private Transform _arenaGroundArrowsTransform;
+        private Transform _returnSignTransform;
+        private Transform _arenaGroundArrowsSpotlightTransform;
 
-        private Transform m_tvsTransform;
-        private Transform m_giantScreen2Transform;
-        private Transform m_arenaTVEndlessLevelTransform;
+        private Transform _tvsTransform;
+        private Transform _giantScreen2Transform;
+        private Transform _arenaTVEndlessLevelTransform;
 
-        private Transform m_garbageShuteTransform;
-        private Transform m_garbageDoorTransform;
-        private Transform m_garbageDoor2Transform;
+        private Transform _garbageShuteTransform;
+        private Transform _garbageDoorTransform;
+        private Transform _garbageDoor2Transform;
 
-        private Transform m_overhaulGarbageDoorTransform;
+        private Transform _overhaulGarbageDoorTransform;
 
-        private Material m_arenaOverhaulMaterial;
-        private Material m_arenaLightsMaterial;
+        private Material _arenaOverhaulMaterial;
+        private Material _arenaLightsMaterial;
 
-        private Vector3 m_ogGiantScreen2Position;
-        private Vector3 m_ogGiantScreen2EulerAngles;
-        private Vector3 m_ogGiantScreen2LocalScale;
+        private Vector3 _ogGiantScreen2Position;
+        private Vector3 _ogGiantScreen2EulerAngles;
+        private Vector3 _ogGiantScreen2LocalScale;
 
-        private Vector3 m_ogReturnSignPosition;
-        private Vector3 m_ogReturnSignEulerAngles;
+        private Vector3 _ogReturnSignPosition;
+        private Vector3 _ogReturnSignEulerAngles;
 
         private void Start()
         {
@@ -73,69 +73,69 @@ namespace OverhaulMod.Engine
 
         public void RefreshArenaLook()
         {
-            if (!EnableRemodel || m_newArenaObject)
+            if (!EnableRemodel || _newArenaObject)
                 return;
 
-            m_worldRootTransform = WorldRoot.Instance.transform;
+            _worldRootTransform = WorldRoot.Instance.transform;
 
-            m_arenaFinalTransform = m_worldRootTransform.FindChildRecursive("ArenaFinal");
-            m_arenaUpperInteriorTransform = m_arenaFinalTransform.FindChildRecursive("Arena2019");
+            _arenaFinalTransform = _worldRootTransform.FindChildRecursive("ArenaFinal");
+            _arenaUpperInteriorTransform = _arenaFinalTransform.FindChildRecursive("Arena2019");
 
-            m_liftTransform = m_worldRootTransform.FindChildRecursive("LiftContainer");
-            m_liftWallTransform = m_liftTransform.FindChildRecursive("LiftWall (1)");
+            _liftTransform = _worldRootTransform.FindChildRecursive("LiftContainer");
+            _liftWallTransform = _liftTransform.FindChildRecursive("LiftWall (1)");
 
-            m_arenaMainTransform = m_arenaFinalTransform.FindChildRecursive("Arena");
-            m_emperorSectionTransform = m_arenaMainTransform.FindChildRecursive("EmperorSection");
+            _arenaMainTransform = _arenaFinalTransform.FindChildRecursive("Arena");
+            _emperorSectionTransform = _arenaMainTransform.FindChildRecursive("EmperorSection");
 
-            m_commentatorBoxTransform = m_arenaFinalTransform.FindChildRecursive("CommentatorBox");
-            m_commentatronTransform = m_commentatorBoxTransform.FindChildRecursive("Commentatron");
-            if (!m_commentatronTransform)
-                m_commentatronTransform = m_commentatorBoxTransform.FindChildRecursive("Commentatron_Xmas(Clone)");
+            _commentatorBoxTransform = _arenaFinalTransform.FindChildRecursive("CommentatorBox");
+            _commentatronTransform = _commentatorBoxTransform.FindChildRecursive("Commentatron");
+            if (!_commentatronTransform)
+                _commentatronTransform = _commentatorBoxTransform.FindChildRecursive("Commentatron_Xmas(Clone)");
 
-            m_analysisBotTransform = m_commentatorBoxTransform.FindChildRecursive("AnalysisBot");
-            if (!m_analysisBotTransform)
-                m_analysisBotTransform = m_commentatorBoxTransform.FindChildRecursive("AnalysisBot_Xmas(Clone)");
+            _analysisBotTransform = _commentatorBoxTransform.FindChildRecursive("AnalysisBot");
+            if (!_analysisBotTransform)
+                _analysisBotTransform = _commentatorBoxTransform.FindChildRecursive("AnalysisBot_Xmas(Clone)");
 
-            m_arenaCameraAnimatorTransform = m_arenaFinalTransform.FindChildRecursive("ArenaCameraAnimator");
-            if (!m_arenaCameraAnimatorTransform)
+            _arenaCameraAnimatorTransform = _arenaFinalTransform.FindChildRecursive("ArenaCameraAnimator");
+            if (!_arenaCameraAnimatorTransform)
             {
-                m_arenaCameraAnimatorTransform = m_worldRootTransform.FindChildRecursive("ArenaCameraAnimator");
+                _arenaCameraAnimatorTransform = _worldRootTransform.FindChildRecursive("ArenaCameraAnimator");
             }
 
-            m_commentatorTargetTransform = m_arenaCameraAnimatorTransform.FindChildRecursive("CommentatorTarget");
+            _commentatorTargetTransform = _arenaCameraAnimatorTransform.FindChildRecursive("CommentatorTarget");
 
-            m_tvsTransform = m_arenaFinalTransform.FindChildRecursive("ArenaSideTVs");
-            m_giantScreen2Transform = m_tvsTransform.FindChildRecursive("GiantScreen (2)");
-            m_ogGiantScreen2Position = m_giantScreen2Transform.localPosition;
-            m_ogGiantScreen2EulerAngles = m_giantScreen2Transform.localEulerAngles;
-            m_ogGiantScreen2LocalScale = m_giantScreen2Transform.localScale;
-            m_arenaTVEndlessLevelTransform = m_tvsTransform.FindChildRecursive("ArenaTV_EndlessLevel");
+            _tvsTransform = _arenaFinalTransform.FindChildRecursive("ArenaSideTVs");
+            _giantScreen2Transform = _tvsTransform.FindChildRecursive("GiantScreen (2)");
+            _ogGiantScreen2Position = _giantScreen2Transform.localPosition;
+            _ogGiantScreen2EulerAngles = _giantScreen2Transform.localEulerAngles;
+            _ogGiantScreen2LocalScale = _giantScreen2Transform.localScale;
+            _arenaTVEndlessLevelTransform = _tvsTransform.FindChildRecursive("ArenaTV_EndlessLevel");
 
-            m_arenaGroundArrowsTransform = m_arenaFinalTransform.FindChildRecursive("ArenaGroundArrows");
-            m_returnSignTransform = m_arenaGroundArrowsTransform.FindChildRecursive("ReturnSign");
-            m_ogReturnSignPosition = m_returnSignTransform.localPosition;
-            m_ogReturnSignEulerAngles = m_returnSignTransform.localEulerAngles;
-            m_arenaGroundArrowsSpotlightTransform = m_arenaGroundArrowsTransform.FindChildRecursive("Spotlight");
+            _arenaGroundArrowsTransform = _arenaFinalTransform.FindChildRecursive("ArenaGroundArrows");
+            _returnSignTransform = _arenaGroundArrowsTransform.FindChildRecursive("ReturnSign");
+            _ogReturnSignPosition = _returnSignTransform.localPosition;
+            _ogReturnSignEulerAngles = _returnSignTransform.localEulerAngles;
+            _arenaGroundArrowsSpotlightTransform = _arenaGroundArrowsTransform.FindChildRecursive("Spotlight");
 
-            m_garbageShuteTransform = m_arenaFinalTransform.FindChildRecursive("GarbageShute");
-            m_garbageDoorTransform = m_garbageShuteTransform.FindChildRecursive("GarbageDoor2019");
-            m_garbageDoorTransform.GetComponent<Renderer>().enabled = false;
-            m_garbageDoor2Transform = m_garbageShuteTransform.FindChildRecursive("GarbageDoor2019Static");
-            m_garbageDoor2Transform.GetComponent<Renderer>().enabled = false;
+            _garbageShuteTransform = _arenaFinalTransform.FindChildRecursive("GarbageShute");
+            _garbageDoorTransform = _garbageShuteTransform.FindChildRecursive("GarbageDoor2019");
+            _garbageDoorTransform.GetComponent<Renderer>().enabled = false;
+            _garbageDoor2Transform = _garbageShuteTransform.FindChildRecursive("GarbageDoor2019Static");
+            _garbageDoor2Transform.GetComponent<Renderer>().enabled = false;
 
-            GameObject gameObject = Instantiate(ModResources.Prefab(AssetBundleConstants.MODELS, "ArenaOverhaul"), m_arenaFinalTransform);
+            GameObject gameObject = Instantiate(ModResources.Prefab(AssetBundleConstants.MODELS, "ArenaOverhaul"), _arenaFinalTransform);
             gameObject.transform.localPosition = Vector3.zero;
             gameObject.transform.localEulerAngles = Vector3.zero;
             gameObject.transform.localScale = Vector3.one;
-            m_newArenaObject = gameObject;
+            _newArenaObject = gameObject;
 
             ModdedObject moddedObject = gameObject.GetComponent<ModdedObject>();
-            m_overhaulGarbageDoorTransform = moddedObject.GetObject<Transform>(0);
+            _overhaulGarbageDoorTransform = moddedObject.GetObject<Transform>(0);
 
-            m_arenaOverhaulMaterial = gameObject.GetComponentInChildren<MeshRenderer>().sharedMaterial;
-            m_arenaOverhaulMaterial.shader = Shader.Find("Standard");
-            m_arenaLightsMaterial = gameObject.transform.GetChild(1).GetComponentInChildren<MeshRenderer>().sharedMaterial;
-            m_arenaLightsMaterial.shader = Shader.Find("Standard");
+            _arenaOverhaulMaterial = gameObject.GetComponentInChildren<MeshRenderer>().sharedMaterial;
+            _arenaOverhaulMaterial.shader = Shader.Find("Standard");
+            _arenaLightsMaterial = gameObject.transform.GetChild(1).GetComponentInChildren<MeshRenderer>().sharedMaterial;
+            _arenaLightsMaterial.shader = Shader.Find("Standard");
 
             GlobalEventManager.Instance.AddEventListener(GlobalEvents.ArenaSettingsRefreshed, onArenaSettingsUpdate);
 
@@ -148,52 +148,52 @@ namespace OverhaulMod.Engine
 
         public void PatchVanillaParts(bool overhaul)
         {
-            if (!m_giantScreen2Transform || !m_returnSignTransform)
+            if (!_giantScreen2Transform || !_returnSignTransform)
                 return;
 
             if (!overhaul)
             {
-                m_giantScreen2Transform.localPosition = m_ogGiantScreen2Position;
-                m_giantScreen2Transform.localEulerAngles = m_ogGiantScreen2EulerAngles;
-                m_giantScreen2Transform.localScale = m_ogGiantScreen2LocalScale;
+                _giantScreen2Transform.localPosition = _ogGiantScreen2Position;
+                _giantScreen2Transform.localEulerAngles = _ogGiantScreen2EulerAngles;
+                _giantScreen2Transform.localScale = _ogGiantScreen2LocalScale;
 
-                m_returnSignTransform.localPosition = m_ogReturnSignPosition;
-                m_returnSignTransform.localEulerAngles = m_ogReturnSignEulerAngles;
+                _returnSignTransform.localPosition = _ogReturnSignPosition;
+                _returnSignTransform.localEulerAngles = _ogReturnSignEulerAngles;
                 return;
             }
-            m_giantScreen2Transform.localPosition = new Vector3(82, 75);
-            m_giantScreen2Transform.localEulerAngles = new Vector3(345, 90);
-            m_giantScreen2Transform.localScale = Vector3.one * 4.4f;
+            _giantScreen2Transform.localPosition = new Vector3(82, 75);
+            _giantScreen2Transform.localEulerAngles = new Vector3(345, 90);
+            _giantScreen2Transform.localScale = Vector3.one * 4.4f;
 
-            m_returnSignTransform.localPosition = new Vector3(83, 47, 0);
-            m_returnSignTransform.localEulerAngles = new Vector3(350, 90, 0);
+            _returnSignTransform.localPosition = new Vector3(83, 47, 0);
+            _returnSignTransform.localEulerAngles = new Vector3(350, 90, 0);
 
-            m_arenaTVEndlessLevelTransform.localPosition = new Vector3(-76.5f, 25.15f, 0);
-            m_arenaTVEndlessLevelTransform.localEulerAngles = new Vector3(347.64f, 270f, 0f);
+            _arenaTVEndlessLevelTransform.localPosition = new Vector3(-76.5f, 25.15f, 0);
+            _arenaTVEndlessLevelTransform.localEulerAngles = new Vector3(347.64f, 270f, 0f);
 
-            m_arenaGroundArrowsSpotlightTransform.localPosition = new Vector3(60, 55, 0);
-            m_arenaGroundArrowsSpotlightTransform.localEulerAngles = new Vector3(47.5f, 90, 90);
-            m_arenaGroundArrowsSpotlightTransform.localScale = Vector3.one;
+            _arenaGroundArrowsSpotlightTransform.localPosition = new Vector3(60, 55, 0);
+            _arenaGroundArrowsSpotlightTransform.localEulerAngles = new Vector3(47.5f, 90, 90);
+            _arenaGroundArrowsSpotlightTransform.localScale = Vector3.one;
 
-            m_commentatorTargetTransform.localPosition = new Vector3(-62.55f, 38f, 0f);
-            m_commentatorTargetTransform.localEulerAngles = new Vector3(8f, 270f, 0f);
+            _commentatorTargetTransform.localPosition = new Vector3(-62.55f, 38f, 0f);
+            _commentatorTargetTransform.localEulerAngles = new Vector3(8f, 270f, 0f);
 
-            if (m_analysisBotTransform)
-                m_analysisBotTransform.localPosition = new Vector3(5.2f, 4.7f, 0.52f);
-            if (m_commentatronTransform)
-                m_commentatronTransform.localPosition = new Vector3(3.44f, 2, -3.71f);
+            if (_analysisBotTransform)
+                _analysisBotTransform.localPosition = new Vector3(5.2f, 4.7f, 0.52f);
+            if (_commentatronTransform)
+                _commentatronTransform.localPosition = new Vector3(3.44f, 2, -3.71f);
 
-            m_commentatorBoxTransform.localPosition = new Vector3(-83.8f, 26.4f, 1.95f);
-            m_commentatorBoxTransform.localScale = Vector3.one * 1.3f;
+            _commentatorBoxTransform.localPosition = new Vector3(-83.8f, 26.4f, 1.95f);
+            _commentatorBoxTransform.localScale = Vector3.one * 1.3f;
 
-            m_emperorSectionTransform.localPosition = new Vector3(-12.9f, 5.0925f, 1.663f);
+            _emperorSectionTransform.localPosition = new Vector3(-12.9f, 5.0925f, 1.663f);
         }
 
         public void SetVanillaPartsActive(bool value)
         {
-            for (int i = 0; i < m_arenaUpperInteriorTransform.childCount; i++)
+            for (int i = 0; i < _arenaUpperInteriorTransform.childCount; i++)
             {
-                GameObject gameObject = m_arenaUpperInteriorTransform.GetChild(i).gameObject;
+                GameObject gameObject = _arenaUpperInteriorTransform.GetChild(i).gameObject;
                 if (!IgnoredParts.Contains(gameObject.name))
                 {
                     gameObject.SetActive(value);
@@ -206,19 +206,19 @@ namespace OverhaulMod.Engine
                     }
                 }
             }
-            m_liftWallTransform.gameObject.SetActive(value);
+            _liftWallTransform.gameObject.SetActive(value);
         }
 
         public void SetUpperInteriorActive(bool value)
         {
-            if (m_arenaUpperInteriorTransform)
-                m_arenaUpperInteriorTransform.gameObject.SetActive(value);
+            if (_arenaUpperInteriorTransform)
+                _arenaUpperInteriorTransform.gameObject.SetActive(value);
         }
 
         private void setUpBattleCruiser()
         {
-            m_battleCruiserTransform = TransformUtils.FindChildRecursive(m_emperorSectionTransform, "Battlecruiser");
-            if (!m_battleCruiserTransform)
+            _battleCruiserTransform = TransformUtils.FindChildRecursive(_emperorSectionTransform, "Battlecruiser");
+            if (!_battleCruiserTransform)
                 return;
 
             Transform transformBC = Instantiate(EnemyFactory.Instance.GetEnemyConfiguration(EnemyType.BattlecruiserFlagship).EnemyPrefab.GetComponent<BattleCruiserController>().CharacterModelPrefab.transform);
@@ -248,12 +248,12 @@ namespace OverhaulMod.Engine
 
             TransformUtils.HideAllChildren(transformBC);
             transformBC.GetChild(0).gameObject.SetActive(true);
-            transformBC.SetParent(m_battleCruiserTransform, false);
+            transformBC.SetParent(_battleCruiserTransform, false);
             transformBC.localPosition = new Vector3(0f, 0f, -0.65f);
             transformBC.localEulerAngles = Vector3.zero;
             transformBC.localScale = new Vector3(0.35f, 0.35f, 0.35f);
 
-            m_battleCruiserTransform.GetComponent<MeshRenderer>().enabled = false;
+            _battleCruiserTransform.GetComponent<MeshRenderer>().enabled = false;
         }
 
         private void onArenaSettingsUpdate()
@@ -261,22 +261,22 @@ namespace OverhaulMod.Engine
             LevelEditorArenaSettings activeSettings = ArenaCustomizationManager.Instance.GetActiveSettings();
             if (activeSettings)
             {
-                if (m_arenaOverhaulMaterial)
-                    m_arenaOverhaulMaterial.SetColor("_EmissionColor", activeSettings.HighlightColor * activeSettings.HighlightEmission);
-                if (m_arenaLightsMaterial)
-                    m_arenaLightsMaterial.SetColor("_EmissionColor", activeSettings.LightsColor * activeSettings.LightsEmission);
+                if (_arenaOverhaulMaterial)
+                    _arenaOverhaulMaterial.SetColor("_EmissionColor", activeSettings.HighlightColor * activeSettings.HighlightEmission);
+                if (_arenaLightsMaterial)
+                    _arenaLightsMaterial.SetColor("_EmissionColor", activeSettings.LightsColor * activeSettings.LightsEmission);
             }
         }
 
         private void Update()
         {
-            if (m_overhaulGarbageDoorTransform && m_garbageDoorTransform)
+            if (_overhaulGarbageDoorTransform && _garbageDoorTransform)
             {
-                Vector3 position = m_garbageDoorTransform.position;
+                Vector3 position = _garbageDoorTransform.position;
                 position.x = -1.225f;
                 position.y += 1.21f;
                 position.z = 0f;
-                m_overhaulGarbageDoorTransform.localPosition = position;
+                _overhaulGarbageDoorTransform.localPosition = position;
             }
         }
     }

@@ -5,7 +5,7 @@ namespace OverhaulMod.UI
 {
     public class UIElementShowTooltipOnHightLight : OverhaulUIBehaviour, ISelectHandler, IDeselectHandler, IPointerEnterHandler, IPointerExitHandler, IPointerUpHandler
     {
-        private bool m_isMouseIn;
+        private bool _isMouseIn;
 
         public string tooltipText
         {
@@ -27,33 +27,33 @@ namespace OverhaulMod.UI
 
         public override void Update()
         {
-            if (m_isMouseIn)
+            if (_isMouseIn)
                 ModUIUtils.Tooltip(textIsLocalizationId ? LocalizationManager.Instance.GetTranslatedString(tooltipText) : tooltipText, tooltipShowDuration);
         }
 
         public void OnDeselect(BaseEventData eventData)
         {
-            m_isMouseIn = false;
+            _isMouseIn = false;
         }
 
         public void OnPointerEnter(PointerEventData eventData)
         {
-            m_isMouseIn = true;
+            _isMouseIn = true;
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
-            m_isMouseIn = false;
+            _isMouseIn = false;
         }
 
         public void OnSelect(BaseEventData eventData)
         {
-            m_isMouseIn = true;
+            _isMouseIn = true;
         }
 
         public void OnPointerUp(PointerEventData eventData)
         {
-            m_isMouseIn = false;
+            _isMouseIn = false;
         }
     }
 }

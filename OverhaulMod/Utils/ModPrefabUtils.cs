@@ -70,13 +70,13 @@ namespace OverhaulMod.Utils
         /// <returns></returns>
         public static T CreateGameObjectWithComponent<T>(string name) where T : UnityEngine.Component
         {
-            GameObject gameObject = new GameObject("Custom_" + name);
+            GameObject gameObject = new GameObject("Custo_" + name);
             return StoreObject<T>(gameObject.AddComponent<T>(), false);
         }
 
         public static T GetOrCreateGameObjectWithComponent<T>(string name) where T : UnityEngine.Component
         {
-            string key = "Custom_" + name;
+            string key = "Custo_" + name;
             return Storage.ContainsKey(key) ? (T)Storage[key] : CreateGameObjectWithComponent<T>(name);
         }
 

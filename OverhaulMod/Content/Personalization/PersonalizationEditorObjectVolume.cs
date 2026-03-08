@@ -13,29 +13,29 @@ namespace OverhaulMod.Content.Personalization
     {
         public static readonly MeshingMode VolumeMeshingMode = MeshingMode.Culled;
 
-        private PersonalizationEditorObjectVisibilityController m_visibilityController;
+        private PersonalizationEditorObjectVisibilityController _visibilityController;
         public PersonalizationEditorObjectVisibilityController visibilityController
         {
             get
             {
-                if (!m_visibilityController)
+                if (!_visibilityController)
                 {
-                    m_visibilityController = base.GetComponent<PersonalizationEditorObjectVisibilityController>();
+                    _visibilityController = base.GetComponent<PersonalizationEditorObjectVisibilityController>();
                 }
-                return m_visibilityController;
+                return _visibilityController;
             }
         }
 
-        private Volume m_volume;
+        private Volume _volume;
         public Volume volume
         {
             get
             {
-                if (!m_volume)
+                if (!_volume)
                 {
-                    m_volume = base.GetComponent<Volume>();
+                    _volume = base.GetComponent<Volume>();
                 }
-                return m_volume;
+                return _volume;
             }
         }
 
@@ -67,15 +67,15 @@ namespace OverhaulMod.Content.Personalization
             }
         }
 
-        private bool m_hasAddedEventListeners;
+        private bool _hasAddedEventListeners;
 
-        private bool m_hasStarted, m_isDestroyed;
+        private bool _hasStarted, _isDestroyed;
 
-        private bool m_aboutToRefreshVolume;
+        private bool _aboutToRefreshVolume;
 
         private void Start()
         {
-            m_hasStarted = true;
+            _hasStarted = true;
 
             if (volumeSettingPresets == null)
                 volumeSettingPresets = new Dictionary<WeaponVariant2, VolumeSettingsPreset>();
@@ -91,16 +91,16 @@ namespace OverhaulMod.Content.Personalization
             {
                 GlobalEventManager.Instance.AddEventListener(PersonalizationEditorManager.PRESET_PREVIEW_CHANGED_EVENT, RefreshVolume);
                 GlobalEventManager.Instance.AddEventListener(PersonalizationEditorManager.OBJECT_EDITED_EVENT, RefreshVolume);
-                m_hasAddedEventListeners = true;
+                _hasAddedEventListeners = true;
             }
         }
 
         private void OnDestroy()
         {
-            m_isDestroyed = true;
-            if (m_hasAddedEventListeners)
+            _isDestroyed = true;
+            if (_hasAddedEventListeners)
             {
-                m_hasAddedEventListeners = false;
+                _hasAddedEventListeners = false;
                 GlobalEventManager.Instance.RemoveEventListener(PersonalizationEditorManager.PRESET_PREVIEW_CHANGED_EVENT, RefreshVolume);
                 GlobalEventManager.Instance.RemoveEventListener(PersonalizationEditorManager.OBJECT_EDITED_EVENT, RefreshVolume);
             }
@@ -158,29 +158,29 @@ namespace OverhaulMod.Content.Personalization
 
         public void RefreshVolume()
         {
-            if (m_aboutToRefreshVolume || m_isDestroyed)
+            if (_aboutToRefreshVolume || _isDestroyed)
                 return;
 
-            m_aboutToRefreshVolume = true;
+            _aboutToRefreshVolume = true;
             _ = refreshVolumeCoroutine().Run();
         }
 
         private IEnumerator refreshVolumeCoroutine() // this fixes weird crash
         {
-            while (!m_isDestroyed && !PersonalizationEditorManager.IsInEditor() && (!objectBehaviour || objectBehaviour.ControllerInfo == null))
+            while (!_isDestroyed && !PersonalizationEditorManager.IsInEditor() && (!objectBehaviour || objectBehaviour.ControllerInfo == null))
                 yield return null;
 
-            if (m_isDestroyed)
+            if (_isDestroyed)
                 yield break;
 
-            m_aboutToRefreshVolume = false;
+            _aboutToRefreshVolume = false;
             refreshVolume();
             yield break;
         }
 
         private void refreshVolume()
         {
-            if (!m_hasStarted)
+            if (!_hasStarted)
                 return;
 
             VolumeSettingsPreset preset = GetCurrentPreset();

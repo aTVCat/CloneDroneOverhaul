@@ -6,13 +6,13 @@ namespace OverhaulMod.UI
     public class UIElementBattleRoyaleStatsBox : OverhaulUIBehaviour
     {
         [UIElement("WinCountText")]
-        private readonly Text m_winCountText;
+        private readonly Text _winCountText;
 
         [UIElement("NextGarbageBotWinsText")]
-        private readonly Text m_nextGarbageBotWinsText;
+        private readonly Text _nextGarbageBotWinsText;
 
         [UIElement("NextGarbageBotImage", false)]
-        private readonly Image m_nextGarbageBotImage;
+        private readonly Image _nextGarbageBotImage;
 
         public override void OnEnable()
         {
@@ -35,10 +35,10 @@ namespace OverhaulMod.UI
             BattleRoyaleGarbageBotPerWin upcomingGarbageBotInfo = garbageBotCustomizationManager.GetUpcomingGarbageBotInfo(lastBotStandingWins);
             BattleRoyaleGarbageBotPerWin garbageBotInfo = garbageBotCustomizationManager.GetGarbageBotInfo(lastBotStandingWins);
 
-            m_winCountText.text = lastBotStandingWins.ToString();
-            m_nextGarbageBotImage.sprite = garbageBotInfo == null || !garbageBotInfo.PreviewImage ? null : garbageBotInfo.PreviewImage;
-            m_nextGarbageBotImage.gameObject.SetActive(garbageBotInfo != null);
-            m_nextGarbageBotWinsText.text = upcomingGarbageBotInfo == null ? "-" : upcomingGarbageBotInfo.MinWins.ToString();
+            _winCountText.text = lastBotStandingWins.ToString();
+            _nextGarbageBotImage.sprite = garbageBotInfo == null || !garbageBotInfo.PreviewImage ? null : garbageBotInfo.PreviewImage;
+            _nextGarbageBotImage.gameObject.SetActive(garbageBotInfo != null);
+            _nextGarbageBotWinsText.text = upcomingGarbageBotInfo == null ? "-" : upcomingGarbageBotInfo.MinWins.ToString();
         }
     }
 }

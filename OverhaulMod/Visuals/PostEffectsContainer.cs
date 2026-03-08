@@ -10,7 +10,7 @@ namespace OverhaulMod.Visuals
 {
     public class PostEffectsContainer : MonoBehaviour
     {
-        private Camera m_camera;
+        private Camera _camera;
 
         public Bloom Bloom;
 
@@ -32,7 +32,7 @@ namespace OverhaulMod.Visuals
 
         public void Initialize(Camera camera)
         {
-            m_camera = camera;
+            _camera = camera;
             RefreshEffects();
         }
 
@@ -94,7 +94,7 @@ namespace OverhaulMod.Visuals
             bool shouldEnableEffects = ShouldEnableEffects();
             bool overrideSettings = AdvancedPhotoModeManager.Settings.overrideSettings;
 
-            GameObject cameraObject = m_camera.gameObject;
+            GameObject cameraObject = _camera.gameObject;
 
             LevelLightSettings activeLightSettings = LevelEditorLightManager.Instance.GetActiveLightSettings();
             float cameraExposure = activeLightSettings ? activeLightSettings.CameraExposure : 1f;
@@ -362,7 +362,7 @@ namespace OverhaulMod.Visuals
 
         public bool ShouldEnableEffects()
         {
-            return !GameModeManager.IsInLevelEditor() && m_camera && !m_camera.orthographic;
+            return !GameModeManager.IsInLevelEditor() && _camera && !_camera.orthographic;
         }
     }
 }

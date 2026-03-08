@@ -9,19 +9,19 @@ namespace OverhaulMod.Visuals.Environment
         [ModSetting(ModSettingsConstants.ENABLE_GARBAGE_PARTICLES, true)]
         public static bool EnableGarbageParticles;
 
-        private CameraManager m_cameraManager;
+        private CameraManager _cameraManager;
 
-        private float m_timeLeftToSpark;
+        private float _timeLeftToSpark;
 
         private void Start()
         {
-            m_cameraManager = CameraManager.Instance;
+            _cameraManager = CameraManager.Instance;
             setTime();
         }
 
         private void Update()
         {
-            if (Time.frameCount % 20 == 0 && Time.time >= m_timeLeftToSpark)
+            if (Time.frameCount % 20 == 0 && Time.time >= _timeLeftToSpark)
             {
                 setTime();
                 spark();
@@ -30,7 +30,7 @@ namespace OverhaulMod.Visuals.Environment
 
         private void setTime()
         {
-            m_timeLeftToSpark = Time.time + UnityEngine.Random.Range(4f, 25f);
+            _timeLeftToSpark = Time.time + UnityEngine.Random.Range(4f, 25f);
         }
 
         private void spark()
@@ -38,7 +38,7 @@ namespace OverhaulMod.Visuals.Environment
             if (!EnableGarbageParticles)
                 return;
 
-            Camera camera = m_cameraManager?.mainCamera;
+            Camera camera = _cameraManager?.mainCamera;
             if (!camera)
                 return;
 

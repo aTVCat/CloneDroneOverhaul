@@ -10,46 +10,46 @@ namespace OverhaulMod.UI
     {
         [UIElementAction(nameof(Hide))]
         [UIElement("CloseButton")]
-        private readonly Button m_exitButton;
+        private readonly Button _exitButton;
 
         [UIElementAction(nameof(OnDoneButtonClicked))]
         [UIElement("DoneButton")]
-        private readonly Button m_doneButton;
+        private readonly Button _doneButton;
 
         [UIElementAction(nameof(OnFileNameChanged))]
         [UIElement("FileNameField")]
-        private readonly InputField m_fileNameField;
+        private readonly InputField _fileNameField;
 
         [UIElement("OpenFileExplorerToggle")]
-        private readonly Toggle m_openFileExplorerToggle;
+        private readonly Toggle _openFileExplorerToggle;
 
         [UIElement("StatusText")]
-        private readonly Text m_statusText;
+        private readonly Text _statusText;
 
-        private float m_timeLeftToRefreshStatus;
+        private float _timeLeftToRefreshStatus;
 
-        private bool m_hasToRefreshStatus;
+        private bool _hasToRefreshStatus;
 
         public override void Show()
         {
             base.Show();
 
-            m_openFileExplorerToggle.isOn = true;
-            m_fileNameField.text = string.Empty;
+            _openFileExplorerToggle.isOn = true;
+            _fileNameField.text = string.Empty;
 
-            m_timeLeftToRefreshStatus = 0f;
-            m_hasToRefreshStatus = true;
+            _timeLeftToRefreshStatus = 0f;
+            _hasToRefreshStatus = true;
         }
 
         public override void Update()
         {
-            if (m_hasToRefreshStatus)
+            if (_hasToRefreshStatus)
             {
-                m_timeLeftToRefreshStatus -= Time.unscaledDeltaTime;
-                if (m_timeLeftToRefreshStatus <= 0f)
+                _timeLeftToRefreshStatus -= Time.unscaledDeltaTime;
+                if (_timeLeftToRefreshStatus <= 0f)
                 {
-                    m_hasToRefreshStatus = false;
-                    m_timeLeftToRefreshStatus = 0f;
+                    _hasToRefreshStatus = false;
+                    _timeLeftToRefreshStatus = 0f;
 
                     RefreshStatus();
                 }
@@ -58,69 +58,69 @@ namespace OverhaulMod.UI
 
         public void SetStatusText(string text, Color color)
         {
-            m_statusText.text = text;
-            m_statusText.color = color;
+            _statusText.text = text;
+            _statusText.color = color;
         }
 
         public void StartRefreshingStatus()
         {
             SetStatusText("Please wait...", Color.gray);
-            m_doneButton.interactable = false;
+            _doneButton.interactable = false;
 
-            m_timeLeftToRefreshStatus = 1f;
-            m_hasToRefreshStatus = true;
+            _timeLeftToRefreshStatus = 1f;
+            _hasToRefreshStatus = true;
         }
 
         public void RefreshStatus()
         {
-            if (m_fileNameField.text.IsNullOrEmpty())
+            if (_fileNameField.text.IsNullOrEmpty())
             {
                 SetStatusText("File name is empty.", Color.red);
-                m_doneButton.interactable = false;
+                _doneButton.interactable = false;
                 return;
             }
 
-            if (m_fileNameField.text.IsNullOrWhiteSpace())
+            if (_fileNameField.text.IsNullOrWhiteSpace())
             {
                 SetStatusText("File name is whitespace.", Color.red);
-                m_doneButton.interactable = false;
+                _doneButton.interactable = false;
                 return;
             }
 
-            if (m_fileNameField.text.EndsWith(" "))
+            if (_fileNameField.text.EndsWith(" "))
             {
                 SetStatusText("Item name ends with whitespace.", Color.red);
-                m_doneButton.interactable = false;
+                _doneButton.interactable = false;
                 return;
             }
 
             foreach (char c in Path.GetInvalidFileNameChars())
-                if (m_fileNameField.text.Contains(c.ToString()))
+                if (_fileNameField.text.Contains(c.ToString()))
                 {
                     SetStatusText($"File name contains invalid character: {c}", Color.red);
-                    m_doneButton.interactable = false;
+                    _doneButton.interactable = false;
                     return;
                 }
 
-            string path = Path.Combine(ModCore.savesFolder, $"{m_fileNameField.text}.json");
+            string path = Path.Combine(ModCore.savesFolder, $"{_fileNameField.text}.json");
             if (File.Exists(path))
             {
                 SetStatusText("A file with the same name already exists.", Color.red);
-                m_doneButton.interactable = false;
+                _doneButton.interactable = false;
                 return;
             }
 
             SetStatusText("You can export settings.", Color.green);
-            m_doneButton.interactable = true;
+            _doneButton.interactable = true;
         }
 
         public void OnDoneButtonClicked()
         {
-            string path = Path.Combine(ModCore.savesFolder, $"{m_fileNameField.text}.json");
+            string path = Path.Combine(ModCore.savesFolder, $"{_fileNameField.text}.json");
             ModJsonUtils.WriteStream(path, ModSettingsDataManager.Instance.CreateDataContainerForExport());
 
             Hide();
-            if (m_openFileExplorerToggle.isOn)
+            if (_openFileExplorerToggle.isOn)
                 ModFileUtils.OpenFileExplorer(ModCore.savesFolder);
         }
 

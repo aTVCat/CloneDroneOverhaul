@@ -8,76 +8,76 @@ namespace OverhaulMod.UI
     public class UIElementPersonalizationItemDescriptionBox : OverhaulUIBehaviour
     {
         [UIElement("ItemName")]
-        private readonly Text m_itemNameText;
+        private readonly Text _itemNameText;
 
         [UIElement("ItemDescription")]
-        private readonly Text m_itemDescriptionText;
+        private readonly Text _itemDescriptionText;
 
         [UIElement("LockedOverlay")]
-        private readonly GameObject m_lockedOverlay;
+        private readonly GameObject _lockedOverlay;
 
         [UIElement("NonVerifiedOverlay")]
-        private readonly GameObject m_nonVerifiedOverlay;
+        private readonly GameObject _nonVerifiedOverlay;
 
         [UIElement("LockedNonVerifiedOverlay")]
-        private readonly GameObject m_lockedNonVerifiedOverlay;
+        private readonly GameObject _lockedNonVerifiedOverlay;
 
         [UIElement("NameHolder")]
-        private readonly RectTransform m_nameHolder;
+        private readonly RectTransform _nameHolder;
 
-        private RectTransform m_boxTransform;
+        private RectTransform _boxTransform;
 
-        private PersonalizationItemInfo m_selectedItemInfo;
+        private PersonalizationItemInfo _selectedItemInfo;
 
-        private UIElementMouseEventsComponent m_mouseEvents;
+        private UIElementMouseEventsComponent _mouseEvents;
 
-        private UIPersonalizationItemBrowser m_browser;
+        private UIPersonalizationItemBrowser _browser;
 
-        private Animator m_animator;
+        private Animator _animator;
 
-        private bool m_refreshBoxNextFrame;
+        private bool _refreshBoxNextFrame;
 
         protected override void OnInitialized()
         {
-            m_boxTransform = base.transform as RectTransform;
-            m_mouseEvents = base.gameObject.AddComponent<UIElementMouseEventsComponent>();
-            m_animator = base.GetComponent<Animator>();
+            _boxTransform = base.transform as RectTransform;
+            _mouseEvents = base.gameObject.AddComponent<UIElementMouseEventsComponent>();
+            _animator = base.GetComponent<Animator>();
         }
 
         public override void Update()
         {
-            if (Input.GetMouseButtonDown(0) && !m_mouseEvents.isMouseOverElement && !m_browser.IsMouseOverPanel())
+            if (Input.GetMouseButtonDown(0) && !_mouseEvents.isMouseOverElement && !_browser.IsMouseOverPanel())
             {
                 Hide();
             }
 
-            if (m_refreshBoxNextFrame)
+            if (_refreshBoxNextFrame)
             {
-                m_refreshBoxNextFrame = false;
+                _refreshBoxNextFrame = false;
 
-                float initialHeight = 95f - (m_lockedOverlay.activeSelf || m_lockedNonVerifiedOverlay.activeSelf || m_nonVerifiedOverlay.activeSelf ? 0f : 20f);
-                float preferredTextHeight = m_itemDescriptionText.preferredHeight + 10f;
+                float initialHeight = 95f - (_lockedOverlay.activeSelf || _lockedNonVerifiedOverlay.activeSelf || _nonVerifiedOverlay.activeSelf ? 0f : 20f);
+                float preferredTextHeight = _itemDescriptionText.preferredHeight + 10f;
 
-                RectTransform t = m_boxTransform;
+                RectTransform t = _boxTransform;
                 Vector2 sizeDelta = t.sizeDelta;
                 sizeDelta.y = initialHeight + preferredTextHeight;
                 t.sizeDelta = sizeDelta;
 
-                RectTransform t2 = m_itemDescriptionText.rectTransform;
+                RectTransform t2 = _itemDescriptionText.rectTransform;
                 Vector2 sizeDelta2 = t2.sizeDelta;
                 sizeDelta2.y = preferredTextHeight;
                 t2.sizeDelta = sizeDelta2;
 
-                RectTransform t3 = m_nameHolder;
+                RectTransform t3 = _nameHolder;
                 Vector2 sizeDelta3 = t3.sizeDelta;
-                sizeDelta3.x = Mathf.Min(m_itemNameText.preferredWidth + 10f, 251f);
+                sizeDelta3.x = Mathf.Min(_itemNameText.preferredWidth + 10f, 251f);
                 t3.sizeDelta = sizeDelta3;
             }
         }
 
         public void SetBrowserUI(UIPersonalizationItemBrowser personalizationItemsBrowser)
         {
-            m_browser = personalizationItemsBrowser;
+            _browser = personalizationItemsBrowser;
         }
 
         public void ShowForItem(PersonalizationItemInfo itemInfo, RectTransform rectTransform)
@@ -89,11 +89,11 @@ namespace OverhaulMod.UI
             }
 
             Show();
-            if (m_selectedItemInfo == itemInfo)
+            if (_selectedItemInfo == itemInfo)
                 return;
 
-            m_animator.Play(string.Empty);
-            m_selectedItemInfo = itemInfo;
+            _animator.Play(string.Empty);
+            _selectedItemInfo = itemInfo;
 
             bool noSpecificAuthor = false;
             string authorsString = itemInfo.GetAuthorsString(true);
@@ -121,20 +121,20 @@ namespace OverhaulMod.UI
                 authorsStringToDisplay = $"{prefix}{authorsString.AddColor(Color.white)}";
             }
 
-            m_itemNameText.text = itemInfo.Name;
-            m_itemDescriptionText.text = itemInfo.Description;
+            _itemNameText.text = itemInfo.Name;
+            _itemDescriptionText.text = itemInfo.Description;
 
             bool isLocked = !itemInfo.IsUnlocked();
-            m_lockedOverlay.SetActive(isLocked && itemInfo.IsVerified);
-            m_nonVerifiedOverlay.SetActive(!itemInfo.IsVerified && !isLocked);
-            m_lockedNonVerifiedOverlay.SetActive(!itemInfo.IsVerified && isLocked);
+            _lockedOverlay.SetActive(isLocked && itemInfo.IsVerified);
+            _nonVerifiedOverlay.SetActive(!itemInfo.IsVerified && !isLocked);
+            _lockedNonVerifiedOverlay.SetActive(!itemInfo.IsVerified && isLocked);
 
             Transform transform = base.transform;
             Vector3 vector = transform.position;
             vector.y = rectTransform.position.y;
             transform.position = vector;
 
-            m_refreshBoxNextFrame = true;
+            _refreshBoxNextFrame = true;
         }
     }
 }

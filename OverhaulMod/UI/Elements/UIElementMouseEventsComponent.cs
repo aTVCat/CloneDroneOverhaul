@@ -6,7 +6,7 @@ namespace OverhaulMod.UI
 {
     public class UIElementMouseEventsComponent : OverhaulUIBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerUpHandler, IPointerClickHandler
     {
-        private float m_timeForDoubleClick;
+        private float _timeForDoubleClick;
 
         public bool isMouseOverElement
         {
@@ -28,12 +28,12 @@ namespace OverhaulMod.UI
 
         public void OnPointerClick(PointerEventData eventData)
         {
-            if (Time.unscaledTime < m_timeForDoubleClick)
+            if (Time.unscaledTime < _timeForDoubleClick)
             {
                 doubleClickCallback?.Invoke();
                 return;
             }
-            m_timeForDoubleClick = Time.unscaledTime + 0.25f;
+            _timeForDoubleClick = Time.unscaledTime + 0.25f;
         }
 
         public void OnPointerEnter(PointerEventData eventData)

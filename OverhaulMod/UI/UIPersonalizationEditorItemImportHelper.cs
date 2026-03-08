@@ -11,66 +11,66 @@ namespace OverhaulMod.UI
     {
         [UIElementAction(nameof(Hide))]
         [UIElement("CloseButton")]
-        private readonly Button m_exitButton;
+        private readonly Button _exitButton;
 
         [UIElementAction(nameof(OnAddItemClicked))]
         [UIElement("AddItemButton")]
-        private readonly Button m_addItemButton;
+        private readonly Button _addItemButton;
 
         [UIElementAction(nameof(OnStartVerifyingButtonClicked))]
         [UIElement("StartVerifyingButton")]
-        private readonly Button m_startVerifyingButton;
+        private readonly Button _startVerifyingButton;
 
         [UIElement("ItemDisplayPrefab", false)]
-        private readonly ModdedObject m_itemDisplayPrefab;
+        private readonly ModdedObject _itemDisplayPrefab;
 
         [UIElement("Content")]
-        private readonly Transform m_content;
+        private readonly Transform _content;
 
         [UIElement("Shading", true)]
-        private readonly GameObject m_shading;
+        private readonly GameObject _shading;
 
         [UIElement("ImportPanel", true)]
-        private readonly GameObject m_importPanel;
+        private readonly GameObject _importPanel;
 
         [UIElement("TaskPanel", false)]
-        private readonly GameObject m_taskPanel;
+        private readonly GameObject _taskPanel;
 
         [UIElement("ProgressFill")]
-        private readonly Image m_progressFill;
+        private readonly Image _progressFill;
 
         [UIElement("ProgressText")]
-        private readonly Text m_progressText;
+        private readonly Text _progressText;
 
         [UIElementAction(nameof(OnDeclineButtonClicked))]
         [UIElement("DeclineButton")]
-        private readonly Button m_declineButton;
+        private readonly Button _declineButton;
 
         [UIElementAction(nameof(OnVerifyButtonClicked))]
         [UIElement("VerifyButton")]
-        private readonly Button m_verifyButton;
+        private readonly Button _verifyButton;
 
         [UIElement("DeleteCheckedItemFilesToggle")]
-        private readonly Toggle m_deleteCheckedFiles;
+        private readonly Toggle _deleteCheckedFiles;
 
-        private List<string> m_files;
+        private List<string> _files;
 
-        private int m_currentItemIndex;
+        private int _currentItemIndex;
 
-        private bool m_isExecutingTasks;
+        private bool _isExecutingTasks;
 
-        public override bool closeOnEscapeButtonPress => !m_isExecutingTasks;
+        public override bool closeOnEscapeButtonPress => !_isExecutingTasks;
 
         protected override void OnInitialized()
         {
-            m_files = new List<string>();
+            _files = new List<string>();
         }
 
         public override void Show()
         {
             base.Show();
 
-            m_files.Clear();
+            _files.Clear();
             populate();
 
             ShowImportPanel();
@@ -81,39 +81,39 @@ namespace OverhaulMod.UI
 
         public void ShowImportPanel()
         {
-            m_shading.SetActive(true);
-            m_importPanel.SetActive(true);
-            m_taskPanel.SetActive(false);
-            m_isExecutingTasks = false;
+            _shading.SetActive(true);
+            _importPanel.SetActive(true);
+            _taskPanel.SetActive(false);
+            _isExecutingTasks = false;
         }
 
         public void ShowTaskPanel()
         {
-            m_shading.SetActive(false);
-            m_importPanel.SetActive(false);
-            m_taskPanel.SetActive(true);
-            m_isExecutingTasks = true;
+            _shading.SetActive(false);
+            _importPanel.SetActive(false);
+            _taskPanel.SetActive(true);
+            _isExecutingTasks = true;
         }
 
         private void refreshTaskProgressBar()
         {
-            m_progressFill.fillAmount = (m_currentItemIndex + 1) / (float)m_files.Count;
-            m_progressText.text = $"{m_currentItemIndex + 1}/{m_files.Count}";
+            _progressFill.fillAmount = (_currentItemIndex + 1) / (float)_files.Count;
+            _progressText.text = $"{_currentItemIndex + 1}/{_files.Count}";
         }
 
         private void continueOrEndVerifyingItems()
         {
-            if (m_deleteCheckedFiles.isOn)
+            if (_deleteCheckedFiles.isOn)
             {
-                string path = m_files[m_currentItemIndex];
+                string path = _files[_currentItemIndex];
                 if (File.Exists(path))
                 {
                     File.Delete(path);
                 }
             }
 
-            m_currentItemIndex++;
-            if (m_currentItemIndex >= m_files.Count)
+            _currentItemIndex++;
+            if (_currentItemIndex >= _files.Count)
             {
                 Hide();
                 ModUIUtils.MessagePopup(true, "All items verfied!", "Would you like to export all items?", 150f, MessageMenu.ButtonLayout.EnableDisableButtons, "Ok", "Yes", "No", null, exportAllItems);
@@ -126,10 +126,10 @@ namespace OverhaulMod.UI
 
         private void importAndEditCurrentItem()
         {
-            string path = m_files[m_currentItemIndex];
-            string folderName = Path.GetFileName(path).Replace("PersonalizationItem_", string.Empty).Remove(8);
+            string path = _files[_currentItemIndex];
+            string folderName = Path.GetFileName(path).Replace("PersonalizationIte_", string.Empty).Remove(8);
 
-            PersonalizationEditorManager.Instance.ImportItem(m_files[m_currentItemIndex], folderName, out string error, true);
+            PersonalizationEditorManager.Instance.ImportItem(_files[_currentItemIndex], folderName, out string error, true);
             if (!string.IsNullOrEmpty(error))
             {
                 ModUIUtils.MessagePopupOK("Import error", error, true);
@@ -150,9 +150,9 @@ namespace OverhaulMod.UI
             for (int i = 0; i < files.Count; i++)
             {
                 string file = files[i];
-                if (!m_files.Contains(file))
+                if (!_files.Contains(file))
                 {
-                    m_files.Add(file);
+                    _files.Add(file);
                 }
             }
 
@@ -161,13 +161,13 @@ namespace OverhaulMod.UI
 
         private void populate()
         {
-            if (m_content.childCount != 0)
-                TransformUtils.DestroyAllChildren(m_content);
+            if (_content.childCount != 0)
+                TransformUtils.DestroyAllChildren(_content);
 
-            List<string> list = m_files;
+            List<string> list = _files;
             if (list == null || list.Count == 0)
             {
-                m_startVerifyingButton.interactable = false;
+                _startVerifyingButton.interactable = false;
                 return;
             }
 
@@ -176,17 +176,17 @@ namespace OverhaulMod.UI
                 int index = i;
 
                 string file = list[i];
-                ModdedObject display = Instantiate(m_itemDisplayPrefab, m_content);
+                ModdedObject display = Instantiate(_itemDisplayPrefab, _content);
                 display.gameObject.SetActive(true);
                 display.GetObject<Text>(2).text = $"{i + 1}.";
                 display.GetObject<Text>(0).text = Path.GetFileName(file);
                 display.GetObject<Button>(1).onClick.AddListener(delegate
                 {
-                    m_files.RemoveAt(index);
+                    _files.RemoveAt(index);
                     populate();
                 });
             }
-            m_startVerifyingButton.interactable = true;
+            _startVerifyingButton.interactable = true;
         }
 
         public void OnAddItemClicked()
@@ -198,7 +198,7 @@ namespace OverhaulMod.UI
         {
             ShowTaskPanel();
 
-            m_currentItemIndex = 0;
+            _currentItemIndex = 0;
             refreshTaskProgressBar();
             importAndEditCurrentItem();
         }

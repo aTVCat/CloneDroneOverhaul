@@ -9,22 +9,22 @@ namespace OverhaulMod.UI
     public class UIElementPersonalizationExclusiveForField : OverhaulUIBehaviour
     {
         [UIElement("Text")]
-        private readonly Text m_text;
+        private readonly Text _text;
 
         [UIElementAction(nameof(OnEditButtonClicked))]
         [UIElement("EditButton")]
-        private readonly Button m_editButton;
+        private readonly Button _editButton;
 
-        private List<PersonalizationItemLockInfo> m_referenceList;
+        private List<PersonalizationItemLockInfo> _referenceList;
         public List<PersonalizationItemLockInfo> referenceList
         {
             get
             {
-                return m_referenceList;
+                return _referenceList;
             }
             set
             {
-                m_referenceList = value;
+                _referenceList = value;
                 refreshText();
             }
         }
@@ -34,7 +34,7 @@ namespace OverhaulMod.UI
             List<PersonalizationItemLockInfo> list = PersonalizationEditorManager.Instance?.currentEditingItemInfo?.ExclusiveFor_V2;
             if (list.IsNullOrEmpty())
             {
-                m_text.text = "None";
+                _text.text = "None";
                 return;
             }
 
@@ -73,7 +73,7 @@ namespace OverhaulMod.UI
 
                 index++;
             }
-            m_text.text = stringBuilder.ToString();
+            _text.text = stringBuilder.ToString();
         }
 
         public void OnEditButtonClicked()

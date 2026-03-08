@@ -12,25 +12,25 @@ namespace OverhaulMod.UI
     {
         [UIElementAction(nameof(Hide))]
         [UIElement("CloseButton")]
-        private readonly Button m_exitButton;
+        private readonly Button _exitButton;
 
         [UIElementAction(nameof(OnAddButtonClicked))]
         [UIElement("AddButton")]
-        private readonly Button m_sendButton;
+        private readonly Button _sendButton;
 
         [UIElementAction(nameof(OnAddSelfButtonClicked))]
         [UIElement("AddSelfButton")]
-        private readonly Button m_sendSelfButton;
+        private readonly Button _sendSelfButton;
 
         [UIElementAction(nameof(OnCopyButtonClicked))]
         [UIElement("CopyButton")]
-        private readonly Button m_copyButton;
+        private readonly Button _copyButton;
 
         [UIElement("ItemDisplayPrefab", false)]
-        private readonly ModdedObject m_authorDisplayPrefab;
+        private readonly ModdedObject _authorDisplayPrefab;
 
         [UIElement("Content")]
-        private readonly Transform m_container;
+        private readonly Transform _container;
 
         public List<PersonalizationItemLockInfo> referenceList
         {
@@ -60,8 +60,8 @@ namespace OverhaulMod.UI
 
         private void populateContainer()
         {
-            if (m_container.childCount != 0)
-                TransformUtils.DestroyAllChildren(m_container);
+            if (_container.childCount != 0)
+                TransformUtils.DestroyAllChildren(_container);
 
             List<PersonalizationItemLockInfo> list = referenceList;
             if (list.IsNullOrEmpty())
@@ -74,7 +74,7 @@ namespace OverhaulMod.UI
 
                 bool hasPlayFabId = !lockInfo.PlayerPlayFabID.IsNullOrEmpty() && !lockInfo.PlayerPlayFabID.IsNullOrWhiteSpace();
 
-                ModdedObject moddedObject = Instantiate(m_authorDisplayPrefab, m_container);
+                ModdedObject moddedObject = Instantiate(_authorDisplayPrefab, _container);
                 moddedObject.gameObject.SetActive(true);
 
                 InputField playFabIdField = moddedObject.GetObject<InputField>(0);
@@ -141,11 +141,11 @@ namespace OverhaulMod.UI
         public void OnCopyButtonClicked()
         {
             GUIUtility.systemCopyBuffer = "getplayfabids true";
-            m_copyButton.interactable = false;
+            _copyButton.interactable = false;
             DelegateScheduler.Instance.Schedule(delegate
             {
-                if (m_copyButton)
-                    m_copyButton.interactable = true;
+                if (_copyButton)
+                    _copyButton.interactable = true;
             }, 2f);
         }
     }

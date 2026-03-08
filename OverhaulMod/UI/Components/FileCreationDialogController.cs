@@ -24,11 +24,11 @@ namespace OverhaulMod.UI
         public FileNameProcessedEvent OnProcessedName = new FileNameProcessedEvent();
 
 
-        private bool m_isProcessingInput;
+        private bool _isProcessingInput;
 
-        private float m_timeLeftToProcessInput;
+        private float _timeLeftToProcessInput;
 
-        private bool m_hasSucceed;
+        private bool _hasSucceed;
 
         public void Initialize(InputField inputField)
         {
@@ -49,12 +49,12 @@ namespace OverhaulMod.UI
 
         public bool HasSucceed()
         {
-            return m_hasSucceed;
+            return _hasSucceed;
         }
 
         public bool IsProcessingInput()
         {
-            return m_isProcessingInput;
+            return _isProcessingInput;
         }
 
         public void ProcessInput()
@@ -65,9 +65,9 @@ namespace OverhaulMod.UI
                 return;
             }
 
-            m_hasSucceed = false;
-            m_isProcessingInput = true;
-            m_timeLeftToProcessInput = TimeToProcessInput;
+            _hasSucceed = false;
+            _isProcessingInput = true;
+            _timeLeftToProcessInput = TimeToProcessInput;
 
             FileNameProcessResult fileNameProcessResult = new FileNameProcessResult
             {
@@ -80,8 +80,8 @@ namespace OverhaulMod.UI
 
         public void ProcessInputNow()
         {
-            m_isProcessingInput = false;
-            m_timeLeftToProcessInput = 0f;
+            _isProcessingInput = false;
+            _timeLeftToProcessInput = 0f;
 
             processInput();
         }
@@ -135,7 +135,7 @@ namespace OverhaulMod.UI
             }
             else
             {
-                m_hasSucceed = true;
+                _hasSucceed = true;
 
                 fileNameProcessResult.Message = SuccessMessage;
                 fileNameProcessResult.DisplayColor = Color.green;
@@ -174,11 +174,11 @@ namespace OverhaulMod.UI
         /// </summary>
         public void UpdateController()
         {
-            if (!m_isProcessingInput)
+            if (!_isProcessingInput)
                 return;
 
-            m_timeLeftToProcessInput = Mathf.Max(0f, m_timeLeftToProcessInput - Time.unscaledDeltaTime);
-            if (m_timeLeftToProcessInput == 0f)
+            _timeLeftToProcessInput = Mathf.Max(0f, _timeLeftToProcessInput - Time.unscaledDeltaTime);
+            if (_timeLeftToProcessInput == 0f)
             {
                 ProcessInputNow();
             }

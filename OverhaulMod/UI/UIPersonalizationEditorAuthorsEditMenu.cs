@@ -11,21 +11,21 @@ namespace OverhaulMod.UI
     {
         [UIElementAction(nameof(Hide))]
         [UIElement("CloseButton")]
-        private readonly Button m_exitButton;
+        private readonly Button _exitButton;
 
         [UIElementAction(nameof(OnAddButtonClicked))]
         [UIElement("AddButton")]
-        private readonly Button m_sendButton;
+        private readonly Button _sendButton;
 
         [UIElementAction(nameof(OnAddSelfButtonClicked))]
         [UIElement("AddSelfButton")]
-        private readonly Button m_sendSelfButton;
+        private readonly Button _sendSelfButton;
 
         [UIElement("ItemDisplayPrefab", false)]
-        private readonly ModdedObject m_authorDisplayPrefab;
+        private readonly ModdedObject _authorDisplayPrefab;
 
         [UIElement("Content")]
-        private readonly Transform m_container;
+        private readonly Transform _container;
 
         public List<string> referenceList
         {
@@ -55,8 +55,8 @@ namespace OverhaulMod.UI
 
         private void populateContainer()
         {
-            if (m_container.childCount != 0)
-                TransformUtils.DestroyAllChildren(m_container);
+            if (_container.childCount != 0)
+                TransformUtils.DestroyAllChildren(_container);
 
             List<string> list = referenceList;
             if (list.IsNullOrEmpty())
@@ -66,7 +66,7 @@ namespace OverhaulMod.UI
             foreach (string author in list)
             {
                 int i = index;
-                ModdedObject moddedObject = Instantiate(m_authorDisplayPrefab, m_container);
+                ModdedObject moddedObject = Instantiate(_authorDisplayPrefab, _container);
                 moddedObject.gameObject.SetActive(true);
                 moddedObject.GetObject<Text>(0).text = author;
                 moddedObject.GetObject<Button>(1).onClick.AddListener(delegate
