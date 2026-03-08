@@ -262,6 +262,18 @@ namespace OverhaulMod
                 if (particlesPatch)
                     particlesPatch.RefreshVisibility();
             }, ModSettingsConstants.CLONE_DRONE_LOGO_FIRE);
+
+            modSettingsManager.AddSettingValueChangedListener(delegate (object obj)
+            {
+                if (obj is bool boolVal && !boolVal)
+                {
+                    FirstPersonMover player = CharacterTracker.Instance.GetPlayerRobot();
+                    if (player && player._cameraMover)
+                    {
+                        player._cameraMover.ShortenedDistanceAddition = CameraFOVController.DEFAULT_SHORTENED_DISTANCE_ADDITION;
+                    }
+                }
+            }, ModSettingsConstants.ENABLE_FOV_OVERRIDE);
         }
 
         private static void refreshCameraPostEffects(object obj)

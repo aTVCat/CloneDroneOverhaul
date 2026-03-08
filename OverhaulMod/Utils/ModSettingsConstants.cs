@@ -675,5 +675,10 @@ namespace OverhaulMod.Utils
         /// <see cref="Patches.Behaviours.CloneDroneLogoParticlesBehaviour"/>
         /// </summary>
         public const string CLONE_DRONE_LOGO_FIRE = "CloneDroneLogoFire";
+
+        /// <summary>
+        /// <see cref="Combat.CharacterExtension"/>
+        /// </summary>
+        public const string WEAPON_SWITCH_COOLDOWN = "WeaponSwitchCooldown";
     }
 }

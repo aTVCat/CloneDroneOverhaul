@@ -193,7 +193,7 @@ namespace OverhaulMod.Engine
             {
                 cameraFovController = camera.gameObject.AddComponent<CameraFOVController>();
             }
-            cameraFovController.Initialize(this, camera, animator, firstPersonMover);
+            cameraFovController.Initialize(this, camera, animator, playerCameraMover, firstPersonMover);
 
             CameraModeController cameraModeController = camera.GetComponent<CameraModeController>();
             if (!cameraModeController)

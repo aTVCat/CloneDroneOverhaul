@@ -553,21 +553,22 @@ namespace OverhaulMod.Content.Personalization
         {
             _weaponTypeToParts.Clear();
             CharacterModel characterModel = ownerModel;
-            if (!characterModel || characterModel.WeaponModels.IsNullOrEmpty())
-                return;
+            if (!characterModel || characterModel.WeaponModels.IsNullOrEmpty()) return;
 
             foreach (WeaponModel weaponModel in characterModel.WeaponModels)
             {
-                if (!weaponModel)
-                    continue;
-
-                WeaponType weaponType = weaponModel.WeaponType;
-                if (PersonalizationManager.IsWeaponCustomizationSupported(weaponType))
-                    if (_weaponTypeToParts.ContainsKey(weaponType))
-                        _weaponTypeToParts[weaponType] = weaponModel.PartsToDrop;
-                    else
-                        _weaponTypeToParts.Add(weaponModel.WeaponType, weaponModel.PartsToDrop);
+                if (weaponModel) RefreshRenderersOfWeapon(weaponModel);
             }
+        }
+
+        public void RefreshRenderersOfWeapon(WeaponModel weaponModel)
+        {
+            WeaponType weaponType = weaponModel.WeaponType;
+            if (PersonalizationManager.IsWeaponCustomizationSupported(weaponType))
+                if (_weaponTypeToParts.ContainsKey(weaponType))
+                    _weaponTypeToParts[weaponType] = weaponModel.PartsToDrop;
+                else
+                    _weaponTypeToParts.Add(weaponModel.WeaponType, weaponModel.PartsToDrop);
         }
 
         public void SpawnEquippedSkins()
@@ -639,6 +640,7 @@ namespace OverhaulMod.Content.Personalization
                         if (info.Category == PersonalizationCategory.WeaponSkins)
                         {
                             DestroyItem(info);
+                            RefreshRenderersOfWeapon(owner.GetCharacterModel().GetWeaponModel(info.Weapon));
                             _ = SpawnItem(GetWeaponSkinDependingOnOwner(info.Weapon));
                         }
                     }

@@ -10,6 +10,9 @@ namespace OverhaulMod.Combat
         [ModSetting(ModSettingsConstants.ENABLE_SCROLL_TO_SWITCH_WEAPON, true)]
         public static bool EnableScrollToSwitchWeapon;
 
+        [ModSetting(ModSettingsConstants.WEAPON_SWITCH_COOLDOWN, 0.1f)]
+        public static float WeaponSwitchCooldown;
+
         private float _weaponSwitchCooldown;
 
         private bool _hasNotSwitchedWeaponWithScrolling;
@@ -72,7 +75,7 @@ namespace OverhaulMod.Combat
 
         private void selectNextWeapon(FirstPersonMover firstPersonMover)
         {
-            _weaponSwitchCooldown = 0.1f;
+            _weaponSwitchCooldown = WeaponSwitchCooldown;
             _hasNotSwitchedWeaponWithScrolling = true;
 
             ModGameUtils.WaitForPlayerInputUpdate(delegate (IFPMoveCommandInput commandInput)
@@ -84,7 +87,7 @@ namespace OverhaulMod.Combat
 
         private void selectPreviousWeapon(FirstPersonMover firstPersonMover)
         {
-            _weaponSwitchCooldown = 0.1f;
+            _weaponSwitchCooldown = WeaponSwitchCooldown;
             _hasNotSwitchedWeaponWithScrolling = true;
 
             ModGameUtils.WaitForPlayerInputUpdate(delegate (IFPMoveCommandInput commandInput)

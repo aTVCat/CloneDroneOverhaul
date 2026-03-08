@@ -5,7 +5,11 @@ namespace OverhaulMod.Engine
 {
     public class CameraFOVController : MonoBehaviour
     {
-        public const float FOV_MAX_POSITIVE_OFFSET = 55F;
+        public const float DEFAULT_SHORTENED_DISTANCE_ADDITION = 0.1f;
+
+        public const float DEFAULT_FOV = 60f;
+
+        public const float FOV_MAX_POSITIVE_OFFSET = 55f;
 
         [ModSetting(ModSettingsConstants.ENABLE_FOV_OVERRIDE, false)]
         public static bool EnableFOVOverride;
@@ -19,31 +23,19 @@ namespace OverhaulMod.Engine
 
         private Camera _camera;
 
+        private PlayerCameraMover _playerCameraMover;
+
         private FirstPersonMover _owner;
 
         private float _timeToAllowUnclampedFovUntil;
 
         private float _lerpedOffset;
 
-        // private bool _hasAddedEventListeners;
-
         private void Start()
         {
-            //refreshReferences();
             _timeToAllowUnclampedFovUntil = Time.time + 1f;
             _lerpedOffset = getFovOffset();
-
-            /*GlobalEventManager.Instance.AddEventListener(CameraManager.CINEMATIC_CAMERA_TURNED_OFF_EVENT, refreshReferences);
-            _hasAddedEventListeners = true;*/
         }
-
-        /*private void OnDestroy()
-        {
-            if (_hasAddedEventListeners)
-            {
-                GlobalEventManager.Instance.RemoveEventListener(CameraManager.CINEMATIC_CAMERA_TURNED_OFF_EVENT, refreshReferences);
-            }
-        }*/
 
         private void LateUpdate()
         {
@@ -54,35 +46,33 @@ namespace OverhaulMod.Engine
             if (!owner || owner._isGrabbedForUpgrade)
                 return;
 
+            PlayerCameraMover playerCameraMover = _playerCameraMover;
+            if (!playerCameraMover || !playerCameraMover.enabled)
+                return;
+
             Animator animator = _cameraAnimator;
-            if (!animator || !animator.enabled /*|| (Time.timeScale <= 0f && animator.updateMode != AnimatorUpdateMode.UnscaledTime)*/)
+            if (!animator || !animator.enabled)
                 return;
 
             Camera camera = _camera;
             if (!camera)
                 return;
 
-            _lerpedOffset = Mathf.Lerp(_lerpedOffset, !GameModeManager.UsesMultiplayerSpawnPoints() || owner.HasConstructionFinished() ? getFovOffset() : 0f, Time.unscaledDeltaTime * 9f);
-            camera.fieldOfView = Mathf.Min(camera.fieldOfView + _lerpedOffset, Time.time < _timeToAllowUnclampedFovUntil ? 165f : 110f);
+            float expectedFovOffset = getFovOffset();
+            _playerCameraMover.ShortenedDistanceAddition = Mathf.Lerp(DEFAULT_SHORTENED_DISTANCE_ADDITION, 0.7f, expectedFovOffset / FOV_MAX_POSITIVE_OFFSET);
+
+            _lerpedOffset = Mathf.Lerp(_lerpedOffset, !GameModeManager.UsesMultiplayerSpawnPoints() || owner.HasConstructionFinished() ? expectedFovOffset : 0f, Time.unscaledDeltaTime * 9f);
+            float finalFieldOfView = Mathf.Min(camera.fieldOfView + _lerpedOffset, Time.time < _timeToAllowUnclampedFovUntil ? 165f : 120f);
+
+            camera.fieldOfView = finalFieldOfView;
         }
 
-        /*private void refreshReferences()
-        {
-            if (!_cameraManager)
-                _cameraManager = CameraManager.Instance;
-
-            if (!_camera)
-                _camera = base.GetComponent<Camera>();
-
-            if (!_cameraAnimator)
-                _cameraAnimator = base.GetComponentInParent<Animator>();
-        }*/
-
-        public void Initialize(CameraManager cameraManager, Camera camera, Animator animator, FirstPersonMover firstPersonMover)
+        public void Initialize(CameraManager cameraManager, Camera camera, Animator animator, PlayerCameraMover playerCameraMover, FirstPersonMover firstPersonMover)
         {
             _cameraManager = cameraManager;
             _camera = camera;
             _cameraAnimator = animator;
+            _playerCameraMover = playerCameraMover;
             _owner = firstPersonMover;
         }
 

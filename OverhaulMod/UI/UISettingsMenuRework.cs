@@ -1,6 +1,7 @@
 ﻿using AmplifyOcclusion;
 using InternalModBot;
 using ModBotWebsiteAPI;
+using OverhaulMod.Combat;
 using OverhaulMod.Content;
 using OverhaulMod.Engine;
 using OverhaulMod.Patches.Behaviours;
@@ -859,7 +860,19 @@ namespace OverhaulMod.UI
             _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_SCROLL_TO_SWITCH_WEAPON), delegate (bool value)
             {
                 ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_SCROLL_TO_SWITCH_WEAPON, value, true);
+                PopulatePage("Gameplay");
             }, "Scroll to switch weapon");
+            if (CharacterExtension.EnableScrollToSwitchWeapon)
+            {
+                _ = pageBuilder.Header3("Cooldown");
+                _ = pageBuilder.Slider(2, 50, true, Mathf.RoundToInt(ModSettingsManager.GetFloatValue(ModSettingsConstants.WEAPON_SWITCH_COOLDOWN) * 100f), delegate (float value)
+                {
+                    ModSettingsManager.SetFloatValue(ModSettingsConstants.WEAPON_SWITCH_COOLDOWN, value / 100f, true);
+                }, true, (float val) =>
+                {
+                    return $"{Mathf.RoundToInt(val * 10f)} ms";
+                });
+            }
 
             _ = pageBuilder.Header1("Camera");
             _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.DISABLE_SCREEN_SHAKING), delegate (bool value)
@@ -884,7 +897,7 @@ namespace OverhaulMod.UI
                 }, true, (float val) =>
                 {
                     float roundedValue = Mathf.Round(val * 10f) / 10f;
-                    return $"{(val > 0f ? "+" : string.Empty)}{roundedValue} ({60f + roundedValue})";
+                    return $"{(val > 0f ? "+" : string.Empty)}{roundedValue} ({CameraFOVController.DEFAULT_FOV + roundedValue})";
                 });
             }
 
