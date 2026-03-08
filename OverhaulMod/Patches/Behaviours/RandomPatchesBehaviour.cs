@@ -4,13 +4,14 @@ using UnityEngine.UI;
 
 namespace OverhaulMod.Patches.Behaviours
 {
-    internal class MinorPatchBehaviour : GamePatchBehaviour
+    internal class RandomPatchesBehaviour : GamePatchBehaviour
     {
         public override void Patch()
         {
             GameUIRoot gameUIRoot = ModCache.gameUIRoot;
             if (gameUIRoot)
             {
+                // reduce camera resolution
                 foreach (Camera cam in Camera.allCameras)
                     if (cam.name == "ArenaCamera")
                     {
@@ -29,6 +30,7 @@ namespace OverhaulMod.Patches.Behaviours
                     }
                 }*/
 
+                // remove background from emote selection screen
                 GameObject emoteSelectionUIObject = gameUIRoot.EmoteSelectionUI?.gameObject;
                 if (emoteSelectionUIObject)
                 {
@@ -36,6 +38,7 @@ namespace OverhaulMod.Patches.Behaviours
                     image.enabled = false;
                 }
 
+                // remove background from control mapper
                 GameObject controlMapperObject = gameUIRoot.ControlMapper?.gameObject;
                 if (controlMapperObject)
                 {
@@ -55,11 +58,13 @@ namespace OverhaulMod.Patches.Behaviours
                     }
                 }
 
+                // refresh game ui after toggling visiblity setting
                 gameUIRoot.SettingsMenu.HideGameUIToggle.onValueChanged.AddListener(delegate
                 {
                     ModUIManager.Instance.RefreshUIVisibility();
                 });
 
+                // make spectator ui not overlap pause menu
                 gameUIRoot.CurrentlySpectatingUI.transform.SetSiblingIndex(gameUIRoot.EndlessResultScreen.transform.GetSiblingIndex());
             }
 
@@ -74,6 +79,7 @@ namespace OverhaulMod.Patches.Behaviours
                 }
             }*/
 
+            // fix directional light shadow stripes
             DirectionalLightManager directionalLightManager = DirectionalLightManager.Instance;
             if (directionalLightManager)
             {
@@ -85,6 +91,7 @@ namespace OverhaulMod.Patches.Behaviours
                 }
             }
 
+            // add reverb filter to audio sources
             AudioManager audioManager = AudioManager.Instance;
             if (audioManager)
             {

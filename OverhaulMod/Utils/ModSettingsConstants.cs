@@ -670,5 +670,10 @@ namespace OverhaulMod.Utils
         /// <see cref="Visuals.PostEffectsManager"/>
         /// </summary>
         public const string BLOO_MODE = "BloomMode";
+
+        /// <summary>
+        /// <see cref="Patches.Behaviours.CloneDroneLogoParticlesBehaviour"/>
+        /// </summary>
+        public const string CLONE_DRONE_LOGO_FIRE = "CloneDroneLogoFire";
     }
 }

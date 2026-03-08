@@ -37,7 +37,7 @@ namespace OverhaulMod.UI
         [UIElement("InspectorWindow", typeof(UIElementPersonalizationEditorItemConfigPanel), false)]
         public readonly UIElementPersonalizationEditorItemConfigPanel Inspector;
 
-        [UIElement("BottomBar", typeof(UIElementPersonalizationEditorUtilitiesPanel), false)]
+        [UIElement("RightSide", typeof(UIElementPersonalizationEditorUtilitiesPanel), false)]
         public readonly UIElementPersonalizationEditorUtilitiesPanel Utilities;
 
         [UIElement("ObjectPropertiesWindow", typeof(UIElementPersonalizationEditorInspectorPanel), false)]
@@ -55,10 +55,6 @@ namespace OverhaulMod.UI
         [UIElementAction(nameof(OnFileButtonClicked))]
         [UIElement("FileButton")]
         private readonly Button _toolbarFileButton;
-
-        [UIElementAction(nameof(OnViewButtonClicked))]
-        [UIElement("ViewButton")]
-        private readonly Button _toolbarViewButton;
 
         [UIElementAction(nameof(OnWindowButtonClicked))]
         [UIElement("WindowButton")]
@@ -335,11 +331,6 @@ namespace OverhaulMod.UI
         public void OnFileButtonClicked()
         {
             Dropdown.ShowWithOptions(s_fileOptions, _toolbarFileButton.transform as RectTransform);
-        }
-
-        public void OnViewButtonClicked()
-        {
-            Dropdown.ShowWithOptions(s_viewOptions, _toolbarViewButton.transform as RectTransform);
         }
 
         public void OnWindowButtonClicked()

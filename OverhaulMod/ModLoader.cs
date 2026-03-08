@@ -255,6 +255,13 @@ namespace OverhaulMod
                         energyUIPatch.PatchEnergyUI();
                 });
             }, ModSettingsConstants.ENERGY_UI_REWORK);
+
+            modSettingsManager.AddSettingValueChangedListener(delegate
+            {
+                CloneDroneLogoParticlesBehaviour particlesPatch = GamePatchBehaviour.GetBehaviour<CloneDroneLogoParticlesBehaviour>();
+                if (particlesPatch)
+                    particlesPatch.RefreshVisibility();
+            }, ModSettingsConstants.CLONE_DRONE_LOGO_FIRE);
         }
 
         private static void refreshCameraPostEffects(object obj)

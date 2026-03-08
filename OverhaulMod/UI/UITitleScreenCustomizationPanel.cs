@@ -1,5 +1,7 @@
 ﻿using OverhaulMod.Engine;
+using OverhaulMod.Patches.Behaviours;
 using OverhaulMod.Utils;
+using System.Reflection;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -34,6 +36,10 @@ namespace OverhaulMod.UI
         [UIElement("LockedOverlay", false)]
         private readonly GameObject _lockedOverlay;
 
+        [UIElementAction(nameof(OnLogoParticlesToggled))]
+        [UIElement("LogoParticlesToggle")]
+        private readonly Toggle _logoParticlesToggle;
+
         private bool _isPreviewing;
 
         public override bool hideTitleScreen => true;
@@ -48,6 +54,8 @@ namespace OverhaulMod.UI
 
             _staticBgConfig.refreshWhenEdited = true;
             _staticBgConfig.levelIsLoadingBG = _loadingLevelBg;
+
+            _logoParticlesToggle.isOn = CloneDroneLogoParticlesBehaviour.EnableFire;
         }
 
         public override void OnDisable()
@@ -98,6 +106,11 @@ namespace OverhaulMod.UI
         public void OnVolumeSliderChanged(float value)
         {
             SettingsManager.Instance.SetMusicVolume(value);
+        }
+
+        public void OnLogoParticlesToggled(bool value)
+        {
+            ModSettingsManager.Instance.SetSettingValueFromUI(ModSettingsConstants.CLONE_DRONE_LOGO_FIRE, value);
         }
     }
 }

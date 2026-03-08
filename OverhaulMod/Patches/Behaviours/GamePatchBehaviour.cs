@@ -17,13 +17,14 @@ namespace OverhaulMod.Patches.Behaviours
                 typeof(ProjectilePatchBehaviour),
                 typeof(SkyboxesPatchBehaviour),
                 typeof(ColorsPatchBehaviour),
-                typeof(MinorPatchBehaviour),
+                typeof(RandomPatchesBehaviour),
                 typeof(LocalizationManagerPatchBehaviour),
                 typeof(EnergyBarPatchBehaviour),
                 typeof(MenuButtonsPatchBehaviour),
                 typeof(SubtitleTextFieldPatchBehaviour),
                 typeof(ChallengeManagerPatchBehaviour),
-                typeof(CustomizationButtonPatchBehaviour)
+                typeof(CustomizationButtonPatchBehaviour),
+                typeof(CloneDroneLogoParticlesBehaviour),
             });
             gameObject.transform.SetParent(ModManagers.Instance.transform);
             s_gameObject = gameObject;
