@@ -10,58 +10,56 @@ namespace OverhaulMod
 {
     public class ModResources : Singleton<ModResources>
     {
-        internal const string ASSET_BUNDLES_FOLDER = "assets/";
-
         public const string ASSET_BUNDLE_LOADED_EVENT = "AssetBundleLoaded";
 
-        private static readonly Dictionary<string, AssetBundleInfo> s_bundles = new Dictionary<string, AssetBundleInfo>();
+        private static readonly Dictionary<AssetBundlePath, AssetBundleInfo> s_bundles = new Dictionary<AssetBundlePath, AssetBundleInfo>();
 
         private void OnDestroy()
         {
-            foreach (AssetBundleInfo bundle in s_bundles.Values)
-                bundle.Unload();
+            unloadAssets();
+        }
 
+        private void unloadAssets()
+        {
+            foreach (AssetBundleInfo bundle in s_bundles.Values) bundle.Unload();
             s_bundles.Clear();
         }
 
-        private AssetBundleInfo getOrCreateAssetBundleInfo(string fileLocation, string name, bool load)
+        private AssetBundleInfo getOrCreateAssetBundleInfo(AssetBundlePath path, bool load)
         {
-            string bundleName = name.IsNullOrEmpty() ? GetBundleName(fileLocation) : name;
-
             AssetBundleInfo assetBundleInfo;
-            if (!s_bundles.ContainsKey(bundleName))
+            if (!s_bundles.ContainsKey(path))
             {
-                assetBundleInfo = new AssetBundleInfo(fileLocation);
-                if (load)
-                    assetBundleInfo.Load();
+                assetBundleInfo = new AssetBundleInfo(path.GetPath());
+                if (load) assetBundleInfo.Load();
 
-                s_bundles.Add(bundleName, assetBundleInfo);
+                s_bundles.Add(path, assetBundleInfo);
             }
             else
             {
-                assetBundleInfo = s_bundles[bundleName];
+                assetBundleInfo = s_bundles[path];
             }
             return assetBundleInfo;
         }
 
         public T LoadAsset<T>(string bundle, string asset, string pathPrefix = null) where T : UnityEngine.Object
         {
-            return getOrCreateAssetBundleInfo(GetBundlePath(bundle, pathPrefix), bundle, true).GetAsset<T>(asset);
+            return getOrCreateAssetBundleInfo(GetBundlePath(bundle, pathPrefix), true).GetAsset<T>(asset);
         }
 
         public void LoadAssetAsync<T>(string bundle, string asset, Action<T> callback, string pathPrefix = null) where T : UnityEngine.Object
         {
-            getOrCreateAssetBundleInfo(GetBundlePath(bundle, pathPrefix), bundle, true).GetAssetAsync(asset, callback);
+            getOrCreateAssetBundleInfo(GetBundlePath(bundle, pathPrefix), true).GetAssetAsync(asset, callback);
         }
 
         public void LoadAssetBundle(string bundle, string pathPrefix = null)
         {
-            _ = getOrCreateAssetBundleInfo(GetBundlePath(bundle, pathPrefix), bundle, true);
+            _ = getOrCreateAssetBundleInfo(GetBundlePath(bundle, pathPrefix), true);
         }
 
         public void LoadAssetBundleAsync(string bundle, Action<bool> callback, string pathPrefix = null)
         {
-            AssetBundleInfo bundleInfo = getOrCreateAssetBundleInfo(GetBundlePath(bundle, pathPrefix), bundle, false);
+            AssetBundleInfo bundleInfo = getOrCreateAssetBundleInfo(GetBundlePath(bundle, pathPrefix), false);
             bundleInfo.LoadAsync(callback);
         }
 
@@ -85,9 +83,9 @@ namespace OverhaulMod
             Instance.LoadAssetBundleAsync(bundle, callback, pathPrefix);
         }
 
-        public static string GetBundlePath(string bundle, string pathPrefix = null)
+        public static AssetBundlePath GetBundlePath(string bundle, string pathPrefix = null)
         {
-            return pathPrefix == null ? Path.Combine(ModCore.folder, ASSET_BUNDLES_FOLDER, bundle) : Path.Combine(pathPrefix, bundle);
+            return pathPrefix == null ? new AssetBundlePath(AssetBundleLocation.ModAssets, bundle) : new AssetBundlePath(AssetBundleLocation.External, Path.Combine(pathPrefix, bundle));
         }
 
         public static bool IsAssetBundleNotLoadedOrBeingLoaded(string bundle, string pathPrefix = null)
@@ -96,16 +94,16 @@ namespace OverhaulMod
             return assetBundleInfo == null || assetBundleInfo.LoadingState != AssetLoadingState.Loaded;
         }
 
-        public static string GetAssetBundleInfoKey(AssetBundleInfo assetBundleInfo)
+        public static AssetBundlePath GetAssetBundleInfoKey(AssetBundleInfo assetBundleInfo)
         {
             if (assetBundleInfo == null || !s_bundles.ContainsValue(assetBundleInfo))
-                return null;
+                return new AssetBundlePath();
 
-            foreach (KeyValuePair<string, AssetBundleInfo> kv in s_bundles)
+            foreach (KeyValuePair<AssetBundlePath, AssetBundleInfo> kv in s_bundles)
                 if (kv.Value == assetBundleInfo)
                     return kv.Key;
 
-            return null;
+            return new AssetBundlePath();
         }
 
         public static GameObject Prefab(string bundle, string asset, string pathPrefix = null)
@@ -145,7 +143,7 @@ namespace OverhaulMod
 
         public static AssetBundle LoadAndGetAssetBundle(string bundle, string pathPrefix = null)
         {
-            return Instance.getOrCreateAssetBundleInfo(GetBundlePath(bundle, pathPrefix), bundle, true).GetBundle();
+            return Instance.getOrCreateAssetBundleInfo(GetBundlePath(bundle, pathPrefix), true).GetBundle();
         }
 
         public static AssetBundle AssetBundle(string bundle, string pathPrefix = null)
@@ -155,12 +153,9 @@ namespace OverhaulMod
 
         public static AssetBundleInfo GetAssetBundleInfo(string bundle, string pathPrefix = null)
         {
-            string bundleName = bundle.IsNullOrEmpty() ? GetBundleName(GetBundlePath(bundle, pathPrefix)) : bundle;
-            if (!s_bundles.ContainsKey(bundleName))
-            {
-                return null;
-            }
-            return s_bundles[bundleName];
+            AssetBundlePath path = GetBundlePath(bundle, pathPrefix);
+            if (s_bundles.ContainsKey(path)) return s_bundles[path];
+            return null;
         }
 
         public static Font EditUndoFont()
@@ -207,16 +202,61 @@ namespace OverhaulMod
             }
         }
 
-        public static string GetBundleName(string fileLocation)
+        public static string GetBundleName(AssetBundlePath assetBundlePath)
         {
-            return Path.GetFileNameWithoutExtension(fileLocation);
+            return Path.GetFileNameWithoutExtension(assetBundlePath.FileName);
         }
 
         public enum AssetLoadingState
         {
             NotLoaded,
+
             Loading,
+
             Loaded
+        }
+
+        public enum AssetBundleLocation
+        {
+            /// <summary>
+            /// Located under <see cref="ModCore.assetsFolder"/> folder
+            /// </summary>
+            ModAssets,
+
+            /// <summary>
+            /// Located outside the mod folder
+            /// </summary>
+            External,
+        }
+
+        public struct AssetBundlePath
+        {
+            public AssetBundleLocation Location;
+
+            public string FileName;
+
+            public AssetBundlePath(AssetBundleLocation location, string fileName)
+            {
+                Location = location;
+                FileName = fileName;
+            }
+
+            public string GetPath()
+            {
+                if (Location == AssetBundleLocation.ModAssets)
+                {
+                    return Path.Combine(ModCore.assetsFolder, FileName);
+                }
+                else if (Location == AssetBundleLocation.External)
+                {
+                    return FileName;
+                }
+                return string.Empty;
+            }
+
+            public bool IsInvalid() => FileName.IsNullOrEmpty();
+
+            public override string ToString() => $"Asset bundle path {Location} - {FileName}";
         }
 
         public class AssetBundleInfo
