@@ -194,12 +194,13 @@ namespace OverhaulMod.Content.Personalization
 
         private GameObject instantiateArrowSpawnPoint(Transform parent)
         {
-            GameObject obj = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+            GameObject obj = new GameObject("Arrow Spawn Point");
             Transform t = obj.transform;
             t.SetParent(parent);
             t.localPosition = Vector3.zero;
             t.localEulerAngles = Vector3.zero;
             t.localScale = Vector3.one;
+            _ = obj.gameObject.AddComponent<PersonalizationEditorObjectArrowSpawnPoint>();
             return obj;
         }
 

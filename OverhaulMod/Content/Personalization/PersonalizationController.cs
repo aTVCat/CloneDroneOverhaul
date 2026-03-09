@@ -61,6 +61,8 @@ namespace OverhaulMod.Content.Personalization
 
         private Dictionary<WeaponType, WeaponVariant2> _weaponTypeToVariant;
 
+        private Transform _defaultArrowSpawnPoint, _arrowSpawnPoint;
+
         private bool _isEnemy;
 
         private bool _isPlayer, _isMainPlayer, _isMindSpace;
@@ -271,11 +273,14 @@ namespace OverhaulMod.Content.Personalization
 
             yield return null;
 
-            if (!firstPersonMover || !firstPersonMover.IsAttachedAndAlive())
+            if (!firstPersonMover || !firstPersonMover.IsAttachedAndAlive() || !firstPersonMover.IsInitialized() || !firstPersonMover.HasCharacterModel())
             {
                 Destroy(this);
                 yield break;
             }
+
+            _defaultArrowSpawnPoint = firstPersonMover.GetCharacterModel().ArrowHolder;
+            _arrowSpawnPoint = null;
 
             RefreshOwnerInfo();
 
@@ -295,6 +300,37 @@ namespace OverhaulMod.Content.Personalization
             RefreshWeaponSkinsNextFrame();
             SpawnEquippedAccessories();
             yield break;
+        }
+
+        public void RefreshArrowSpawnPoint()
+        {
+            if (!_isEnemy)
+            {
+                PersonalizationEditorObjectBehaviour item = GetSpawnedWeaponSkin(WeaponType.Bow);
+                if (!item)
+                {
+                    _arrowSpawnPoint = null;
+                }
+                else
+                {
+                    PersonalizationEditorObjectArrowSpawnPoint spawnPoint = item.GetComponentInChildren<PersonalizationEditorObjectArrowSpawnPoint>();
+                    _arrowSpawnPoint = spawnPoint ? spawnPoint.transform : null;
+                }
+            }
+            else
+            {
+                _arrowSpawnPoint = null;
+            }
+            RefreshArrowHolderReference();
+        }
+
+        public void RefreshArrowHolderReference()
+        {
+            CharacterModel characterModel = ownerModel;
+            if (characterModel)
+            {
+                characterModel.ArrowHolder = _arrowSpawnPoint ?? _defaultArrowSpawnPoint;
+            }
         }
 
         public bool ShouldRefreshSkinOfWeapon(WeaponType weaponType)
@@ -438,7 +474,7 @@ namespace OverhaulMod.Content.Personalization
 
             if (itemInfo.Category == PersonalizationCategory.WeaponSkins)
             {
-                WeaponModel weaponModel = owner.GetCharacterModel().GetWeaponModel(itemInfo.Weapon);
+                WeaponModel weaponModel = ownerModel.GetWeaponModel(itemInfo.Weapon);
                 if (weaponModel && !weaponModel.PartsToDrop.Contains(behaviour.transform))
                 {
                     List<Transform> list = weaponModel.PartsToDrop.ToList();
@@ -449,6 +485,7 @@ namespace OverhaulMod.Content.Personalization
                 if (itemInfo.Weapon == WeaponType.Bow)
                 {
                     SetBowStringsWidth(Mathf.Clamp(itemInfo.BowStringsWidth, 0.1f, 1f));
+                    RefreshArrowSpawnPoint();
                 }
                 RefreshWeaponSkinsNextFrame();
             }
@@ -476,7 +513,7 @@ namespace OverhaulMod.Content.Personalization
 
             if (personalizationItemInfo.Category == PersonalizationCategory.WeaponSkins)
             {
-                WeaponModel weaponModel = owner.GetCharacterModel().GetWeaponModel(behaviour.ControllerInfo.ItemInfo.Weapon);
+                WeaponModel weaponModel = ownerModel.GetWeaponModel(behaviour.ControllerInfo.ItemInfo.Weapon);
                 if (weaponModel && weaponModel.PartsToDrop.Contains(behaviour.transform))
                 {
                     List<Transform> list = weaponModel.PartsToDrop.ToList();
@@ -487,6 +524,7 @@ namespace OverhaulMod.Content.Personalization
                 if (personalizationItemInfo.Weapon == WeaponType.Bow)
                 {
                     SetBowStringsWidth(1f);
+                    RefreshArrowSpawnPoint();
                 }
             }
 
@@ -540,11 +578,20 @@ namespace OverhaulMod.Content.Personalization
             return _spawnedItems.ContainsKey(personalizationItemInfo);
         }
 
-        public PersonalizationItemInfo GetItem(WeaponType weaponType)
+        public PersonalizationItemInfo GetWeaponSkinItem(WeaponType weaponType)
         {
             foreach (KeyValuePair<PersonalizationItemInfo, PersonalizationEditorObjectBehaviour> keyValue in _spawnedItems)
                 if (keyValue.Key.Category == PersonalizationCategory.WeaponSkins && keyValue.Key.Weapon == weaponType)
                     return keyValue.Key;
+
+            return null;
+        }
+
+        public PersonalizationEditorObjectBehaviour GetSpawnedWeaponSkin(WeaponType weaponType)
+        {
+            foreach (KeyValuePair<PersonalizationItemInfo, PersonalizationEditorObjectBehaviour> keyValue in _spawnedItems)
+                if (keyValue.Key.Category == PersonalizationCategory.WeaponSkins && keyValue.Key.Weapon == weaponType)
+                    return keyValue.Value;
 
             return null;
         }
@@ -640,7 +687,7 @@ namespace OverhaulMod.Content.Personalization
                         if (info.Category == PersonalizationCategory.WeaponSkins)
                         {
                             DestroyItem(info);
-                            RefreshRenderersOfWeapon(owner.GetCharacterModel().GetWeaponModel(info.Weapon));
+                            RefreshRenderersOfWeapon(ownerModel.GetWeaponModel(info.Weapon));
                             _ = SpawnItem(GetWeaponSkinDependingOnOwner(info.Weapon));
                         }
                     }
@@ -740,7 +787,7 @@ namespace OverhaulMod.Content.Personalization
             PersonalizationController personalizationController = player.GetComponent<PersonalizationController>();
             if (!personalizationController) return;
 
-            personalizationController.DestroyItem(personalizationController.GetItem(weaponType));
+            personalizationController.DestroyItem(personalizationController.GetWeaponSkinItem(weaponType));
         }
     }
 }

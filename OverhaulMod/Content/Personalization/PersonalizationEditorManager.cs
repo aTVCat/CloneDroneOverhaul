@@ -628,6 +628,9 @@ namespace OverhaulMod.Content.Personalization
                 firstPersonMover.SetPlayerCameraEnabled(true);
                 firstPersonMover.SetCameraAnimatorEnabled(true);
 
+                PersonalizationController personalizationController = firstPersonMover.GetComponent<PersonalizationController>();
+                if (personalizationController) personalizationController.RefreshArrowSpawnPoint();
+
                 _camera.gameObject.SetActive(false);
 
                 UIPersonalizationEditor.instance.Hide();
