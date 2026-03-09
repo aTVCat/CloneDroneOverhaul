@@ -17,6 +17,8 @@ namespace OverhaulMod.Content.Personalization
 {
     public class PersonalizationEditorManager : Singleton<PersonalizationEditorManager>
     {
+        public const int IMPORT_VERSION = 1;
+
         public const string ITEM_INFO_FILE = "itemInfo.json";
 
         public const string ITEM_META_DATA_FILE = "metaData.json";
@@ -345,7 +347,21 @@ namespace OverhaulMod.Content.Personalization
             return true;
         }
 
-        public void ImportItem(string path, string itemFolderName, out string error, bool editItem = false)
+        public void ImportItem(string path, out string error, bool editItem = false)
+        {
+            int importVersion = IMPORT_VERSION;
+
+            string folderName = Path.GetFileNameWithoutExtension(path);
+            if (folderName.StartsWith("PersonalizationItem_"))
+            {
+                importVersion = 0;
+                folderName = folderName.Replace("PersonalizationItem_", string.Empty).Remove(8);
+            }
+
+            ImportItem(path, folderName, out error, importVersion, true);
+        }
+
+        public void ImportItem(string path, string itemFolderName, out string error, int importVersion = IMPORT_VERSION, bool editItem = false)
         {
             error = null;
 
@@ -367,42 +383,44 @@ namespace OverhaulMod.Content.Personalization
                 return;
             }
 
-            /*
-            foreach (PersonalizationEditorObjectInfo child in info.RootObject.Children)
+            if(importVersion == 0)
             {
-                if (child.Path == "Volume")
+                foreach (PersonalizationEditorObjectInfo child in info.RootObject.Children)
                 {
-                    if (child.PropertyValues.TryGetValue(nameof(PersonalizationEditorObjectVolume.volumeSettingPresets), out object obj) && obj is Dictionary<WeaponVariant2, VolumeSettingsPreset> dictionary && !dictionary.IsNullOrEmpty())
+                    if (child.Path == "Volume")
                     {
-                        foreach (VolumeSettingsPreset value in dictionary.Values)
+                        if (child.PropertyValues.TryGetValue(nameof(PersonalizationEditorObjectVolume.volumeSettingPresets), out object obj) && obj is Dictionary<WeaponVariant2, VolumeSettingsPreset> dictionary && !dictionary.IsNullOrEmpty())
                         {
-                            string voxFilePath = value.VoxFilePath;
-                            if (!voxFilePath.IsNullOrEmpty() && !voxFilePath.StartsWith(itemFolderName))
+                            foreach (VolumeSettingsPreset value in dictionary.Values)
                             {
-                                string sub = voxFilePath.Substring(voxFilePath.IndexOf(Path.DirectorySeparatorChar) + 1);
-                                voxFilePath = $"{itemFolderName}{Path.DirectorySeparatorChar}{sub}";
-                                value.VoxFilePath = voxFilePath;
+                                string voxFilePath = value.VoxFilePath;
+                                if (!voxFilePath.IsNullOrEmpty() && !voxFilePath.StartsWith(itemFolderName))
+                                {
+                                    string sub = voxFilePath.Substring(voxFilePath.IndexOf(Path.DirectorySeparatorChar) + 1);
+                                    voxFilePath = $"{itemFolderName}{Path.DirectorySeparatorChar}{sub}";
+                                    value.VoxFilePath = voxFilePath;
+                                }
+                            }
+                        }
+                    }
+                    else if (child.Path == "CvmModel")
+                    {
+                        if (child.PropertyValues.TryGetValue(nameof(PersonalizationEditorObjectCVMModel.presets), out object obj) && obj is Dictionary<WeaponVariant2, CVMModelPreset> dictionary && !dictionary.IsNullOrEmpty())
+                        {
+                            foreach (CVMModelPreset value in dictionary.Values)
+                            {
+                                string cvmFilePath = value.CvmFilePath;
+                                if (!cvmFilePath.IsNullOrEmpty() && !cvmFilePath.StartsWith(itemFolderName))
+                                {
+                                    string sub = cvmFilePath.Substring(cvmFilePath.IndexOf(Path.DirectorySeparatorChar) + 1);
+                                    cvmFilePath = $"{itemFolderName}{Path.DirectorySeparatorChar}{sub}";
+                                    value.CvmFilePath = cvmFilePath;
+                                }
                             }
                         }
                     }
                 }
-                else if (child.Path == "CvmModel")
-                {
-                    if (child.PropertyValues.TryGetValue(nameof(PersonalizationEditorObjectCVMModel.presets), out object obj) && obj is Dictionary<WeaponVariant2, CVMModelPreset> dictionary && !dictionary.IsNullOrEmpty())
-                    {
-                        foreach (CVMModelPreset value in dictionary.Values)
-                        {
-                            string cvmFilePath = value.CvmFilePath;
-                            if (!cvmFilePath.IsNullOrEmpty() && !cvmFilePath.StartsWith(itemFolderName))
-                            {
-                                string sub = cvmFilePath.Substring(cvmFilePath.IndexOf(Path.DirectorySeparatorChar) + 1);
-                                cvmFilePath = $"{itemFolderName}{Path.DirectorySeparatorChar}{sub}";
-                                value.CvmFilePath = cvmFilePath;
-                            }
-                        }
-                    }
-                }
-            }*/
+            }
 
             Action finalAction = delegate
             {

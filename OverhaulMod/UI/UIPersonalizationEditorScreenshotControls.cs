@@ -37,26 +37,47 @@ namespace OverhaulMod.UI
         [UIElement("ModeratorControls", false)]
         private readonly GameObject _moderatorControls;
 
+        [UIElement("ProgressLabel")]
+        private readonly Text _progressLabel;
+
         public override bool closeOnEscapeButtonPress => false;
 
         protected override void OnInitialized()
         {
             _moderatorControls.SetActive(PersonalizationEditorManager.Instance.canVerifyItems);
+            _progressLabel.enabled = false;
+        }
+
+        private void onTakenScreenshot(int itemIndex, int itemCount)
+        {
+            if(itemIndex == itemCount)
+            {
+                _progressLabel.enabled = false;
+                _screenshotWeaponSkinsButton.interactable = true;
+                return;
+            }
+            _progressLabel.text = $"{itemIndex} of {itemCount} processed...";
         }
 
         public void OnScreenshotWeaponSkinsButtonClicked()
         {
-            PersonalizationEditorScreenshotManager.Instance.TakeScreenshotsOfWeaponSkins(_screenshotOnlyNewToggle.isOn);
+            if (PersonalizationEditorScreenshotManager.Instance.IsTakingScreenshots()) return;
+
+            PersonalizationEditorScreenshotManager.Instance.TakeScreenshotsOfWeaponSkins(_screenshotOnlyNewToggle.isOn, onTakenScreenshot);
+            _progressLabel.enabled = true;
+            _progressLabel.text = "...";
+
+            _screenshotWeaponSkinsButton.interactable = false;
         }
 
         public void OnScreenshotAccessoriesButtonClicked()
         {
-
+            if (PersonalizationEditorScreenshotManager.Instance.IsTakingScreenshots()) return;
         }
 
         public void OnScreenshotPetsButtonClicked()
         {
-
+            if (PersonalizationEditorScreenshotManager.Instance.IsTakingScreenshots()) return;
         }
 
         public void OnSaveAngleButtonClicked()

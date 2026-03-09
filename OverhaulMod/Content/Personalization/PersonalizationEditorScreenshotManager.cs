@@ -1,6 +1,7 @@
 ﻿using OverhaulMod.Combat;
 using OverhaulMod.UI;
 using OverhaulMod.Utils;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -59,7 +60,7 @@ namespace OverhaulMod.Content.Personalization
 
         public void HideStage()
         {
-            StopScreenshoting();
+            StopTakingScreenshots();
             if (_stageObject) _stageObject.SetActive(false);
         }
 
@@ -207,20 +208,25 @@ namespace OverhaulMod.Content.Personalization
             }
         }
 
-        public void StopScreenshoting()
+        public void StopTakingScreenshots()
         {
             _stopScreenshotting = _isScreenshotting;
         }
 
-        public void TakeScreenshotsOfWeaponSkins(bool onlyNew)
+        public bool IsTakingScreenshots()
+        {
+            return _isScreenshotting;
+        }
+
+        public void TakeScreenshotsOfWeaponSkins(bool onlyNew, Action<int, int> callback)
         {
             if (_isScreenshotting) return;
 
             List<PersonalizationItemInfo> items = PersonalizationManager.Instance.itemList.GetItems(PersonalizationCategory.WeaponSkins);
-            takeScreenshotsOfItemsCoroutine(items, onlyNew).Run();
+            takeScreenshotsOfItemsCoroutine(items, onlyNew, callback).Run();
         }
 
-        private IEnumerator takeScreenshotsOfItemsCoroutine(List<PersonalizationItemInfo> items, bool onlyNew)
+        private IEnumerator takeScreenshotsOfItemsCoroutine(List<PersonalizationItemInfo> items, bool onlyNew, Action<int, int> callback)
         {
             _isScreenshotting = true;
 
@@ -237,17 +243,23 @@ namespace OverhaulMod.Content.Personalization
 
                 for (int j = 0; j < 30; j++) yield return null;
 
-                TakeAndSaveScreenshot();
-
                 if (_stopScreenshotting)
                 {
                     _isScreenshotting = false;
-                    ModUIUtils.MessagePopupOK("Stopped screenshotting", "not b", true);
+                    if (callback != null) callback(items.Count, items.Count);
+                    ModUIUtils.MessagePopupOK("Stopped taking screenshots", "not b", true);
                     yield break;
                 }
+
+                TakeAndSaveScreenshot();
+                if (callback != null) callback(i + 1, items.Count);
+
+                yield return null;
+                yield return null;
             }
 
             _isScreenshotting = false;
+            if (callback != null) callback(items.Count, items.Count);
 
             ModUIUtils.MessagePopupOK("Done!", "bbb", true);
 

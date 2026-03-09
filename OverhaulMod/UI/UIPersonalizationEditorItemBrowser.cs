@@ -241,8 +241,7 @@ namespace OverhaulMod.UI
         {
             ModUIUtils.FileExplorer(base.transform, true, delegate (string path)
             {
-                string folderName = Path.GetFileNameWithoutExtension(path);
-                PersonalizationEditorManager.Instance.ImportItem(path, folderName, out string error, true);
+                PersonalizationEditorManager.Instance.ImportItem(path, out string error, true);
                 if (!string.IsNullOrEmpty(error))
                 {
                     ModUIUtils.MessagePopupOK("Import error", error, true);

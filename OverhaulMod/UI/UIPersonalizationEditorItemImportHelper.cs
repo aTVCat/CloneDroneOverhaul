@@ -126,10 +126,17 @@ namespace OverhaulMod.UI
 
         private void importAndEditCurrentItem()
         {
-            string path = _files[_currentItemIndex];
-            string folderName = Path.GetFileName(path).Replace("PersonalizationIte_", string.Empty).Remove(8);
+            int importVersion = PersonalizationEditorManager.IMPORT_VERSION;
 
-            PersonalizationEditorManager.Instance.ImportItem(_files[_currentItemIndex], folderName, out string error, true);
+            string path = _files[_currentItemIndex];
+            string folderName = Path.GetFileNameWithoutExtension(path);
+            if (folderName.StartsWith("PersonalizationItem_"))
+            {
+                importVersion = 0;
+                folderName = folderName.Replace("PersonalizationItem_", string.Empty).Remove(8);
+            }
+
+            PersonalizationEditorManager.Instance.ImportItem(path, folderName, out string error, importVersion, true);
             if (!string.IsNullOrEmpty(error))
             {
                 ModUIUtils.MessagePopupOK("Import error", error, true);
