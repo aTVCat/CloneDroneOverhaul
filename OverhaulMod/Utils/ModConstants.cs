@@ -8,6 +8,11 @@ namespace OverhaulMod.Utils
     {
         public static readonly string LoremIpsumText = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ut viverra diam, nec rhoncus dui. Suspendisse quis rutrum dolor.";
 
+        public const string LANG_CODE_EN = "en";
+        public const string LANG_CODE_RU = "ru";
+        public const string LANG_CODE_ZH_CN = "zh-CN";
+        public const string LANG_CODE_ZH_TW = "zh-TW";
+
         public static List<Dropdown.OptionData> CursorSkinOptions = new List<Dropdown.OptionData>()
         {
             new Dropdown.OptionData("Default"),

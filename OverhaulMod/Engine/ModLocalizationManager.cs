@@ -47,7 +47,7 @@ namespace OverhaulMod.Engine
             }
             catch
             {
-                currentLangId = "en";
+                currentLangId = ModConstants.LANG_CODE_EN;
             }
 
             PopulateTranslationDictionary(ref LocalizationManager.Instance._translatedStringsDictionary, currentLangId);
@@ -140,9 +140,13 @@ namespace OverhaulMod.Engine
         {
             switch (langId)
             {
-                case "en":
+                case ModConstants.LANG_CODE_EN:
                     return true;
-                case "ru":
+                case ModConstants.LANG_CODE_RU:
+                    return true;
+                case ModConstants.LANG_CODE_ZH_CN:
+                    return true;
+                case ModConstants.LANG_CODE_ZH_TW:
                     return true;
             }
             return false;
@@ -158,15 +162,15 @@ namespace OverhaulMod.Engine
         {
             ModUpgradesManager.Instance.DeleteLocalizationKeysOfUpgrades(keyValuePairs); // fixes a bug which corrupts the name of upgrades after switching the language 
             ModLocalizationInfo modLocalizationInfo = _localizationInfo;
-            if (modLocalizationInfo != null)
+            if (modLocalizationInfo == null) return;
+
+            Dictionary<string, string> modTranslations = modLocalizationInfo.GetDictionary(langId);
+            if (modTranslations == null && modTranslations.Count == 0) return;
+
+            foreach (KeyValuePair<string, string> translationKeyValue in modTranslations)
             {
-                Dictionary<string, string> modTranslations = langId == "ru" ? modLocalizationInfo.GetDictionary("ru") : modLocalizationInfo.GetDictionary("en");
-                if (modTranslations != null && modTranslations.Count != 0)
-                    foreach (KeyValuePair<string, string> translationKeyValue in modTranslations)
-                    {
-                        if (!keyValuePairs.ContainsKey(translationKeyValue.Key))
-                            keyValuePairs.Add(translationKeyValue.Key, !translationKeyValue.Value.IsNullOrEmpty() ? translationKeyValue.Value : translationKeyValue.Key);
-                    }
+                if (!keyValuePairs.ContainsKey(translationKeyValue.Key))
+                    keyValuePairs.Add(translationKeyValue.Key, !translationKeyValue.Value.IsNullOrEmpty() ? translationKeyValue.Value : translationKeyValue.Key);
             }
         }
     }
