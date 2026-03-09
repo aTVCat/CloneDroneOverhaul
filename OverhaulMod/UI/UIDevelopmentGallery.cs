@@ -19,7 +19,7 @@ namespace OverhaulMod.UI
         [UIElement("Content")]
         private readonly Transform _imageDisplaysContainer;
 
-        public override bool hideTitleScreen => true;
+        public override bool HideTitleScreen => true;
 
         public override void Show()
         {

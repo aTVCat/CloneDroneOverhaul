@@ -9,63 +9,26 @@ namespace OverhaulMod
 
         public static void CacheValues()
         {
-            Dictionary<FeatureType, bool> d = _cachedValues;
-            d.Clear();
-
+            _cachedValues.Clear();
             foreach (FeatureType feature in typeof(FeatureType).GetEnumValues())
-                d.Add(feature, IsEnabled(feature, false));
+                _cachedValues.Add(feature, IsEnabled(feature, false));
         }
 
         public static bool IsEnabled(FeatureType feature, bool useCaching = true)
         {
-            if (useCaching)
+            if (useCaching && _cachedValues.ContainsKey(feature))
             {
-                Dictionary<FeatureType, bool> d = _cachedValues;
-                if (d != null && d.ContainsKey(feature))
-                    return d[feature];
+                return _cachedValues[feature];
             }
 
             bool result;
             switch (feature)
             {
-                case FeatureType.WeaponBag:
-                    result = ModBuildInfo.VERSION_5_0;
-                    break;
-                case FeatureType.WeatherSystem:
-                    result = ModBuildInfo.VERSION_4_3;
-                    break;
-                case FeatureType.NightmariumDifficultyTier:
-                    result = ModBuildInfo.VERSION_5_0;
-                    break;
-                case FeatureType.WorkshopBrowserContextMenu:
-                    result = false;
-                    break;
-                case FeatureType.RevertUpgrades:
-                    result = ModBuildInfo.VERSION_5_0;
-                    break;
-                case FeatureType.DisplayNewGraphicsOptionsInSettings:
-                    result = false;
-                    break;
-                case FeatureType.WorkshopBrowserHistoryAndCheckpoints:
-                    result = ModBuildInfo.VERSION_4_3;
-                    break;
-                case FeatureType.UISounds:
-                    result = false;
-                    break;
-                case FeatureType.HyperdomeSounds:
-                    result = false;
-                    break;
-                case FeatureType.Hypocrisis3Special:
-                    result = false;
-                    break;
-                case FeatureType.ShieldSkins:
-                    result = false;
-                    break;
                 case FeatureType.Accessories:
-                    result = ModBuildInfo.VERSION_4_3;
+                    result = ModBuild.VERSION_4_3;
                     break;
                 case FeatureType.Pets:
-                    result = false;
+                    result = ModBuild.VERSION_4_3;
                     break;
                 default:
                     return false;

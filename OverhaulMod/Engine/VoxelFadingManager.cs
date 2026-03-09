@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace OverhaulMod.Engine
 {
-    public class FadingVoxelManager : Singleton<FadingVoxelManager>
+    public class VoxelFadingManager : Singleton<VoxelFadingManager>
     {
         [ModSetting(ModSettingsConstants.ENABLE_VOXEL_FIRE_FADING, true)]
         public static bool EnableFading;

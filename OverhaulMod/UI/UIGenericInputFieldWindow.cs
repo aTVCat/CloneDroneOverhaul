@@ -30,9 +30,9 @@ namespace OverhaulMod.UI
         [UIElement("Panel")]
         private readonly RectTransform _panelTransform;
 
-        public override bool refreshOnlyCursor => true;
+        public override bool RefreshOnlyCursor => true;
 
-        public override bool enableCursor => true;
+        public override bool EnableCursor => true;
 
         public Action<string> doneAction
         {

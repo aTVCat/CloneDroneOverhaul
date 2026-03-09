@@ -102,7 +102,7 @@ namespace OverhaulMod.UI
                     return;
                 }
 
-            string path = Path.Combine(ModCore.savesFolder, $"{_fileNameField.text}.json");
+            string path = Path.Combine(ModCore.SavesFolder, $"{_fileNameField.text}.json");
             if (File.Exists(path))
             {
                 SetStatusText("A file with the same name already exists.", Color.red);
@@ -116,12 +116,12 @@ namespace OverhaulMod.UI
 
         public void OnDoneButtonClicked()
         {
-            string path = Path.Combine(ModCore.savesFolder, $"{_fileNameField.text}.json");
+            string path = Path.Combine(ModCore.SavesFolder, $"{_fileNameField.text}.json");
             ModJsonUtils.WriteStream(path, ModSettingsDataManager.Instance.CreateDataContainerForExport());
 
             Hide();
             if (_openFileExplorerToggle.isOn)
-                ModFileUtils.OpenFileExplorer(ModCore.savesFolder);
+                ModFileUtils.OpenFileExplorer(ModCore.SavesFolder);
         }
 
         public void OnFileNameChanged(string value)

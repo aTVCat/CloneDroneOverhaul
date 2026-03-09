@@ -20,7 +20,7 @@ namespace OverhaulMod.UI
         [UIElement("OpenURLInBrowserButton")]
         private readonly Button _openUrlInBrowserButton;
 
-        public override bool hideTitleScreen => true;
+        public override bool HideTitleScreen => true;
 
         private string _url;
 

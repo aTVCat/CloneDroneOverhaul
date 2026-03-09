@@ -110,7 +110,7 @@ namespace OverhaulMod.UI
 
         private string _selectedTabId;
 
-        public override bool hideTitleScreen => true;
+        public override bool HideTitleScreen => true;
 
         public bool disallowUsingKey
         {
@@ -264,8 +264,8 @@ namespace OverhaulMod.UI
             _selectedTabId = id;
             ClearPageContents();
 
-            UIElementTab oldTab = _tabs.prevSelectedTab;
-            UIElementTab newTab = _tabs.selectedTab;
+            UIElementTab oldTab = _tabs.PreviousSelectedTab;
+            UIElementTab newTab = _tabs.SelectedTab;
             if (oldTab)
             {
                 RectTransform rt = oldTab.transform as RectTransform;
@@ -1029,7 +1029,7 @@ namespace OverhaulMod.UI
         {
             PageBuilder pageBuilder = new PageBuilder(this);
 
-            if (ModBuildInfo.debug)
+            if (ModBuild.IsDebugBuild)
             {
                 _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_DEBUG_MENU), delegate (bool value)
                 {
@@ -1524,7 +1524,7 @@ namespace OverhaulMod.UI
                 ModSettingsDataManager.Instance.dataContainer.SetValues(modSettingsDataContainer, true);
                 ModUIUtils.MessagePopupOK("Import successful", $"Imported the file \"{Path.GetFileNameWithoutExtension(path)}\".", true);
                 PopulatePage(_selectedTabId);
-            }, ModCore.savesFolder, "*.json");
+            }, ModCore.SavesFolder, "*.json");
         }
 
         public void OnExportSettingsButtonClicked()

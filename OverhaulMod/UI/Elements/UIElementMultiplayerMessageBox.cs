@@ -43,9 +43,9 @@ namespace OverhaulMod.UI
         {
             _colors = new (Color, Color, Color)[]
             {
-                (ModParseUtils.TryParseToColor("E62E2E", Color.white), ModParseUtils.TryParseToColor("661919", Color.gray), ModParseUtils.TryParseToColor("A60000", Color.white)),
-                (ModParseUtils.TryParseToColor("E6B92E", Color.white), ModParseUtils.TryParseToColor("998126", Color.gray), ModParseUtils.TryParseToColor("F3B500", Color.white)),
-                (ModParseUtils.TryParseToColor("00B301", Color.white), ModParseUtils.TryParseToColor("00610A", Color.gray), ModParseUtils.TryParseToColor("08AE00", Color.white))
+                (ModParseUtils.TryParseColor("E62E2E", Color.white), ModParseUtils.TryParseColor("661919", Color.gray), ModParseUtils.TryParseColor("A60000", Color.white)),
+                (ModParseUtils.TryParseColor("E6B92E", Color.white), ModParseUtils.TryParseColor("998126", Color.gray), ModParseUtils.TryParseColor("F3B500", Color.white)),
+                (ModParseUtils.TryParseColor("00B301", Color.white), ModParseUtils.TryParseColor("00610A", Color.gray), ModParseUtils.TryParseColor("08AE00", Color.white))
             };
         }
 

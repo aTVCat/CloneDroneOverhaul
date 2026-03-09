@@ -2,6 +2,6 @@
 {
     public class UITooltips : OverhaulUIBehaviour
     {
-        public override bool closeOnEscapeButtonPress => false;
+        public override bool CloseOnEscapeButtonPress => false;
     }
 }

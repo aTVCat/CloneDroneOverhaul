@@ -26,7 +26,7 @@ namespace OverhaulMod.Content
             if (ModLaunchOptions.HasLaunchOption(ModLaunchOptions.LaunchOption.LoadUnsupportedAddons))
                 return true;
 
-            return MinModVersion != null && ModBuildInfo.version >= MinModVersion;
+            return MinModVersion != null && ModBuild.Version >= MinModVersion;
         }
 
         public void GenerateUniqueID()

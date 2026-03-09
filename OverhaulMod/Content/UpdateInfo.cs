@@ -20,7 +20,7 @@ namespace OverhaulMod.Content
         public void FixValues()
         {
             if (ModVersion == null)
-                ModVersion = new Version(0, ModBuildInfo.versionMajor, ModBuildInfo.versionMinor, ModBuildInfo.versionBuild);
+                ModVersion = new Version(0, ModBuild.VersionMajor, ModBuild.VersionMinor, ModBuild.VersionBuild);
 
             DisplayVersion = new Version(ModVersion.Minor, ModVersion.Build, ModVersion.Revision);
         }
@@ -43,17 +43,17 @@ namespace OverhaulMod.Content
 
         public bool IsCurrentBuild()
         {
-            return ModBuildInfo.version == DisplayVersion;
+            return ModBuild.Version == DisplayVersion;
         }
 
         public bool IsNewerBuild()
         {
-            return ModBuildInfo.version < DisplayVersion;
+            return ModBuild.Version < DisplayVersion;
         }
 
         public bool IsOlderBuild()
         {
-            return ModBuildInfo.version > DisplayVersion;
+            return ModBuild.Version > DisplayVersion;
         }
     }
 }

@@ -65,7 +65,7 @@ namespace OverhaulMod.UI
 
         private Dictionary<string, GameObject> _cachedInstantiatedKeyDisplays;
 
-        public override bool hideTitleScreen => true;
+        public override bool HideTitleScreen => true;
 
         public string editingLangId
         {

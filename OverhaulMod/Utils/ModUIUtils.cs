@@ -15,7 +15,7 @@ namespace OverhaulMod.Utils
             string lastBuildChangelogWasShownOn = UIPatchNotes.LastBuildChangelogWasShownOn;
             if (lastBuildChangelogWasShownOn.IsNullOrEmpty())
                 showChangelog = true;
-            else if (Version.TryParse(lastBuildChangelogWasShownOn, out Version prevVersion) && ModBuildInfo.version > prevVersion)
+            else if (Version.TryParse(lastBuildChangelogWasShownOn, out Version prevVersion) && ModBuild.Version > prevVersion)
                 showChangelog = true;
             else
                 showChangelog = false;
@@ -46,7 +46,7 @@ namespace OverhaulMod.Utils
                     if (!System.Version.TryParse(savedVersion, out System.Version newVersion))
                         return;
 
-                    if (newVersion > ModBuildInfo.version && GameModeManager.IsOnTitleScreen())
+                    if (newVersion > ModBuild.Version && GameModeManager.IsOnTitleScreen())
                     {
                         MessagePopup(true, LocalizationManager.Instance.GetTranslatedString("update_available_header"), string.Format(LocalizationManager.Instance.GetTranslatedString("update_available_description"), newVersion), 150f, MessageMenu.ButtonLayout.EnableDisableButtons, "ok", "Yes", "No", null, delegate
                         {

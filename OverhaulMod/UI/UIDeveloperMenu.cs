@@ -23,7 +23,7 @@ namespace OverhaulMod.UI
 
         public void OnGUI()
         {
-            if (!ModBuildInfo.debug || !EnableDebugMenu)
+            if (!ModBuild.IsDebugBuild || !EnableDebugMenu)
                 return;
 
             GUILayout.BeginArea(new Rect(10f, 100f, 200f, 200f));
@@ -51,7 +51,7 @@ namespace OverhaulMod.UI
 
         public override void Update()
         {
-            if (!ModBuildInfo.debug && !ModUserInfo.isDeveloper)
+            if (!ModBuild.IsDebugBuild && !ModUserInfo.isDeveloper)
                 return;
 
             if (Input.GetKeyDown(KeyCode.Alpha7) && InputManager.Instance.GetKeyMode() != KeyMode.EditingInputField)
@@ -72,7 +72,7 @@ namespace OverhaulMod.UI
 
         public static void SetKeyValue(string key, string value)
         {
-            if (!ModBuildInfo.debug)
+            if (!ModBuild.IsDebugBuild)
                 return;
 
             if (!s_debugValues.ContainsKey(key))

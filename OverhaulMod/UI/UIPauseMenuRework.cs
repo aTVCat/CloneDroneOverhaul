@@ -160,7 +160,7 @@ namespace OverhaulMod.UI
 
         private float _refreshPlayerListTime;
 
-        public override bool enableCursor
+        public override bool EnableCursor
         {
             get
             {
@@ -236,7 +236,7 @@ namespace OverhaulMod.UI
 
         private void refreshPlayersIfActive()
         {
-            if (isVisible)
+            if (IsVisible)
             {
                 _refreshPlayerListTime = Time.unscaledTime + 1f;
             }
@@ -311,7 +311,7 @@ namespace OverhaulMod.UI
 
             bool canShowIcons = _extrasAddonEmbed.ShouldBeHidden();
             bool canShowWins = BattleRoyaleManager.Instance;
-            Color killsColor = ModParseUtils.TryParseToColor("EC2711", Color.red);
+            Color killsColor = ModParseUtils.TryParseColor("EC2711", Color.red);
             Color winsColor = Color.white;
 
             Text specialStatLabel = _playerInfoSpecialStatLabel;
@@ -406,7 +406,7 @@ namespace OverhaulMod.UI
                 if (item.Title.Contains("color="))
                     titleText.color = Color.white;
                 else
-                    titleText.color = ModParseUtils.TryParseToColor("#FF4040", Color.red);
+                    titleText.color = ModParseUtils.TryParseColor("#FF4040", Color.red);
 
                 if (!item.CreatorName.IsNullOrEmpty() && item.CreatorName != "[unknown]")
                     _workshopLevelCreatorText.text = $"By {item.CreatorName}";

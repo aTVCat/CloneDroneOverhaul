@@ -12,7 +12,7 @@ namespace OverhaulMod.Patches
         private static void AnimateShowError_Postfix(string errorLabel, string errorDetails, bool autoHide = true, bool showRulesButton = false, bool isWarning = false)
         {
             UITitleScreenRework titleScreenRework = ModUIManager.Instance.Get<UITitleScreenRework>(AssetBundleConstants.UI, ModUIConstants.UI_TITLE_SCREEN);
-            if (titleScreenRework && titleScreenRework.isVisible)
+            if (titleScreenRework && titleScreenRework.IsVisible)
             {
                 UIElementMultiplayerMessageBox em = titleScreenRework.ErrorMessage;
                 if (!em.hasEverShowed)

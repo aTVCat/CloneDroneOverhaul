@@ -49,7 +49,7 @@ namespace OverhaulMod.UI
 
         private LevelDescription _editingLevelDescription;
 
-        public override bool hideTitleScreen => true;
+        public override bool HideTitleScreen => true;
 
         protected override void OnInitialized()
         {
@@ -116,7 +116,7 @@ namespace OverhaulMod.UI
             levelDescription.LevelJSONPath = _levelPathInputField.text;
             levelDescription.LevelID = _levelIdField.text;
             levelDescription.DifficultyTier = (DifficultyTier)_difficultyDropdown.value;
-            levelDescription.LevelEditorDifficultyIndex = ModParseUtils.TryParseToInt(_difficultyIndexInputField.text, 0);
+            levelDescription.LevelEditorDifficultyIndex = ModParseUtils.TryParseInt(_difficultyIndexInputField.text, 0);
 
             ModFileUtils.WriteText(ModJsonUtils.Serialize(ModLevelManager.Instance.modLevelDescriptions), Path.Combine(ModLevelManager.Instance.levelsFolder, ModLevelManager.LEVEL_DESCRIPTIONS_FILE));
             RefreshDisplays();

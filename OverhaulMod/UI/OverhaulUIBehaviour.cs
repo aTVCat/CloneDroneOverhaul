@@ -17,61 +17,19 @@ namespace OverhaulMod.UI
 
         protected bool _initialized;
 
-        public bool isVisible
-        {
-            get
-            {
-                return isActiveAndEnabled;
-            }
-        }
+        public bool IsVisible => isActiveAndEnabled;
 
-        public virtual bool forceCancelHide
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public virtual bool ForceCancelHide => false;
 
-        public virtual bool enableCursor
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public virtual bool EnableCursor => false;
 
-        public virtual bool enableUIOverLogoMode
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public virtual bool EnableUIOverLogoMode => false;
 
-        public virtual bool hideTitleScreen
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public virtual bool HideTitleScreen => false;
 
-        public virtual bool refreshOnlyCursor
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public virtual bool RefreshOnlyCursor => false;
 
-        public virtual bool closeOnEscapeButtonPress
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public virtual bool CloseOnEscapeButtonPress => true;
 
         public void InitializeUI()
         {
@@ -369,21 +327,21 @@ namespace OverhaulMod.UI
         {
             base.gameObject.SetActive(true);
             if (!IsElement)
-                ModUIManager.Instance.RefreshUI(refreshOnlyCursor);
+                ModUIManager.Instance.RefreshUI(RefreshOnlyCursor);
         }
 
         public virtual void Hide()
         {
             base.gameObject.SetActive(false);
             if (!IsElement)
-                ModUIManager.Instance.RefreshUI(refreshOnlyCursor);
+                ModUIManager.Instance.RefreshUI(RefreshOnlyCursor);
 
             ModUIManager.Instance.RemoveUIFromLastShown(this);
         }
 
         public virtual void ToggleVisibility()
         {
-            if (isVisible)
+            if (IsVisible)
                 Hide();
             else
                 Show();

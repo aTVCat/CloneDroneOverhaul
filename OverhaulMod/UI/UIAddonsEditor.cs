@@ -199,14 +199,14 @@ namespace OverhaulMod.UI
 
         private void onAddonCreation(string folderName)
         {
-            string folderPath = Path.Combine(ModCore.addonsFolder, folderName);
+            string folderPath = Path.Combine(ModCore.AddonsFolder, folderName);
             Directory.CreateDirectory(folderPath);
 
             AddonInfo addonInfo = new AddonInfo
             {
                 DisplayName = new System.Collections.Generic.Dictionary<string, string>(),
                 Description = new System.Collections.Generic.Dictionary<string, string>(),
-                MinModVersion = ModBuildInfo.version,
+                MinModVersion = ModBuild.Version,
                 FolderPath = folderPath
             };
             addonInfo.GenerateUniqueID();
@@ -310,7 +310,7 @@ namespace OverhaulMod.UI
 
         public void OnSetCurrentModVersionButtonClicked()
         {
-            _minModVersionField.text = ModBuildInfo.versionStringNoBranch;
+            _minModVersionField.text = ModBuild.VersionString;
         }
     }
 }

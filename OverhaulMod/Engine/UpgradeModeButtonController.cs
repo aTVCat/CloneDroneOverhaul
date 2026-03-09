@@ -34,7 +34,7 @@ namespace OverhaulMod.Engine
 
         public override void OnEnable()
         {
-            bool shouldBeActive = !GameModeManager.IsOnTitleScreen() && !GameModeManager.IsMultiplayer() && !ModIntegrationUtils.ModdedMultiplayer.IsInModdedMultiplayer();
+            bool shouldBeActive = !GameModeManager.IsOnTitleScreen() && !GameModeManager.IsMultiplayer();
             _button.interactable = shouldBeActive;
             _graphic.enabled = shouldBeActive;
             _getUpgradesTextObject.SetActive(shouldBeActive);

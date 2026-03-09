@@ -74,7 +74,7 @@ namespace OverhaulMod.UI
 
         private GameObject _instantiatedNewButton;
 
-        public override bool refreshOnlyCursor => true;
+        public override bool RefreshOnlyCursor => true;
 
         public bool isShowingUpgradeUI
         {

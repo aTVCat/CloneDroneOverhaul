@@ -21,19 +21,19 @@ namespace OverhaulMod.UI
 
         public string[] PreconfiguredTabs;
 
-        public UIElementTab prevSelectedTab
+        public UIElementTab PreviousSelectedTab
         {
             get;
             private set;
         }
 
-        public UIElementTab selectedTab
+        public UIElementTab SelectedTab
         {
             get;
             private set;
         }
 
-        public bool interactable { get; set; }
+        public bool IsInteractable { get; set; }
 
         /// <summary>
         /// 
@@ -52,7 +52,7 @@ namespace OverhaulMod.UI
             _onTabCreate = onTabCreate;
             _onTabSelect = onTabSelect;
             _type = type;
-            interactable = true;
+            IsInteractable = true;
 
             _instantiatedTabs = new Dictionary<string, UIElementTab>();
         }
@@ -96,19 +96,19 @@ namespace OverhaulMod.UI
             callOnTabCreateMethod(tab);
             tab.InitializeElement();
             Button button = tab.GetButton();
-            button.interactable = interactable;
+            button.interactable = IsInteractable;
             button.onClick.AddListener(delegate
             {
-                UIElementTab oldTab = selectedTab;
-                if (!interactable || oldTab == tab)
+                UIElementTab oldTab = SelectedTab;
+                if (!IsInteractable || oldTab == tab)
                     return;
 
-                prevSelectedTab = oldTab;
-                selectedTab = tab;
+                PreviousSelectedTab = oldTab;
+                SelectedTab = tab;
                 if (oldTab)
                 {
                     oldTab.OnTabDeselected();
-                    oldTab.GetButton().interactable = interactable;
+                    oldTab.GetButton().interactable = IsInteractable;
                 }
 
                 tab.OnTabSelected();
@@ -131,8 +131,8 @@ namespace OverhaulMod.UI
 
         public void DeselectAllTabs()
         {
-            prevSelectedTab = null;
-            selectedTab = null;
+            PreviousSelectedTab = null;
+            SelectedTab = null;
             foreach (UIElementTab tab in _instantiatedTabs.Values)
                 if (tab)
                     tab.GetButton().interactable = true;

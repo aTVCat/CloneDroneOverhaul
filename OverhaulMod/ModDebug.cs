@@ -6,6 +6,8 @@ namespace OverhaulMod
 {
     public static class ModDebug
     {
+        public const string PREFIX = "[Overhaul]";
+
         private static int s_lastFrameDownloadProgressWasDisplayed;
 
         public static bool forceDisableCursor
@@ -16,25 +18,25 @@ namespace OverhaulMod
 
         public static void Log(object obj, bool logInReleaseBuilds = false)
         {
-            if (ModBuildInfo.debug || logInReleaseBuilds)
-                Debug.Log(obj);
+            if (ModBuild.IsDebugBuild || logInReleaseBuilds)
+                Debug.Log($"{PREFIX} {obj}");
         }
 
         public static void LogWarning(object obj, bool logInReleaseBuilds = false)
         {
-            if (ModBuildInfo.debug || logInReleaseBuilds)
-                Debug.LogWarning(obj);
+            if (ModBuild.IsDebugBuild || logInReleaseBuilds)
+                Debug.LogWarning($"{PREFIX} {obj}");
         }
 
         public static void LogError(object obj, bool logInReleaseBuilds = false)
         {
-            if (ModBuildInfo.debug || logInReleaseBuilds)
-                Debug.LogError(obj);
+            if (ModBuild.IsDebugBuild || logInReleaseBuilds)
+                Debug.LogError($"{PREFIX} {obj}");
         }
 
         public static void LogException(Exception obj, bool logInReleaseBuilds = false)
         {
-            if (ModBuildInfo.debug || logInReleaseBuilds)
+            if (ModBuild.IsDebugBuild || logInReleaseBuilds)
                 Debug.LogException(obj);
         }
 

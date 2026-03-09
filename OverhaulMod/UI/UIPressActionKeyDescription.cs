@@ -33,7 +33,7 @@ namespace OverhaulMod.UI
 
         private BetterOutline _textOutline;
 
-        public override bool closeOnEscapeButtonPress => false;
+        public override bool CloseOnEscapeButtonPress => false;
 
         private float _expandProgress;
 

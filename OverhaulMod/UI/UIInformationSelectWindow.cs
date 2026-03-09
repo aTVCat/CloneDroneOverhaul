@@ -26,7 +26,7 @@ namespace OverhaulMod.UI
         [UIElement("GalleryButton")]
         private readonly Button _galleryButton;
 
-        public override bool hideTitleScreen => true;
+        public override bool HideTitleScreen => true;
 
         public override void Show()
         {

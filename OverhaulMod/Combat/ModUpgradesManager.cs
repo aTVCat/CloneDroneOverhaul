@@ -93,7 +93,7 @@ namespace OverhaulMod.Combat
 
         public void AddUpgrades()
         {
-            Mod mod = ModCore.instance;
+            Mod mod = ModCore.Instance;
             UpgradeManager upgradeManager = UpgradeManager.Instance;
             foreach (UpgradeDescription upgrade in _upgrades)
                 if (!upgradeManager.HasUpgrade(upgrade.UpgradeType, upgrade.Level))

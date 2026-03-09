@@ -831,7 +831,7 @@ namespace OverhaulMod.UI
                             if (!allowCallback)
                                 return;
 
-                            float newValue = ModParseUtils.TryParseToFloat(value, prevValue);
+                            float newValue = ModParseUtils.TryParseFloat(value, prevValue);
                             if (newValue <= 0f)
                             {
                                 newValue = 0.01f;

@@ -6,24 +6,24 @@ namespace OverhaulMod
     public class ModDataManager : Singleton<ModDataManager>
     {
         /// <summary>
-        /// A folder where all game data is stored
+        /// A Folder where all game data is stored
         /// </summary>
         public static string userDataFolder
         {
             get
             {
-                return ModCore.modUserDataFolder;
+                return ModCore.ModUserDataFolder;
             }
         }
 
         /// <summary>
-        /// "saves" folder located under mod folder
+        /// "saves" Folder located under mod Folder
         /// </summary>
         public static string savesFolder
         {
             get
             {
-                return ModCore.savesFolder;
+                return ModCore.SavesFolder;
             }
         }
 

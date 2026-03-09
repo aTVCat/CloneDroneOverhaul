@@ -35,6 +35,9 @@ namespace OverhaulMod.UI
         [UIElement("UpdatedIndicator")]
         private readonly GameObject _wasUpdatedIndicator;
 
+        [UIElement("EquippedIndicator")]
+        private readonly GameObject _equippedIndicator;
+
         [UIElement("PreviewImage", true)]
         private readonly RawImage _previewImage;
 
@@ -90,15 +93,17 @@ namespace OverhaulMod.UI
 
             PersonalizationUserInfo personalizationUserInfo = PersonalizationManager.Instance.userInfo;
 
+            bool equipped = itemInfo.IsEquipped();
             bool wasUpdated = personalizationUserInfo.GetItemVersion(itemInfo) != itemInfo.Version;
             bool wasVerified = personalizationUserInfo.IsItemUnverified(itemInfo) && itemInfo.IsVerified;
             bool isDiscovered = personalizationUserInfo.IsItemDiscovered(itemInfo);
             bool isFavorite = personalizationUserInfo.IsItemFavorite(itemInfo);
 
             _favoriteIndicator.SetActive(isFavorite);
-            _newIndicator.SetActive(!isDiscovered && !wasVerified && !wasUpdated);
-            _wasVerifiedIndicator.SetActive(wasVerified);
-            _wasUpdatedIndicator.SetActive(wasUpdated && !wasVerified && isDiscovered);
+            _newIndicator.SetActive(!equipped && !isDiscovered && !wasVerified && !wasUpdated);
+            _wasVerifiedIndicator.SetActive(!equipped && wasVerified);
+            _wasUpdatedIndicator.SetActive(!equipped && wasUpdated && !wasVerified && isDiscovered);
+            _equippedIndicator.SetActive(equipped);
 
             RefreshColor();
         }
@@ -126,7 +131,7 @@ namespace OverhaulMod.UI
                 else colorString = ITE_UNVERIFIED_FRAME_COLOR;
             }
 
-            Color frameColor = ModParseUtils.TryParseToColor(colorString);
+            Color frameColor = ModParseUtils.TryParseColor(colorString);
 
             _frame.color = frameColor;
             _glow.color = frameColor;
@@ -137,7 +142,8 @@ namespace OverhaulMod.UI
             string path = PersonalizationItemInfo.GetPreviewFileFullPath(ItemInfo);
             if (!File.Exists(path))
             {
-                // todo: placeholder image
+                _previewImage.texture = MultiplayerCharacterCustomizationManager.Instance.FavColorRandomSpriteOpaque.texture;
+                _previewImage.color = Color.white;
                 return;
             }
             loadIconCoroutine(path).Run();

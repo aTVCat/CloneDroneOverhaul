@@ -32,7 +32,7 @@ namespace OverhaulMod.UI
         [UIElement("NoRecordsIndicator")]
         private readonly GameObject _noRecordsIndicatorObject;
 
-        public override bool refreshOnlyCursor => true;
+        public override bool RefreshOnlyCursor => true;
 
         public List<HighScoreData> displayingList
         {
@@ -97,14 +97,14 @@ namespace OverhaulMod.UI
                 position++;
             }
 
-            string file = ModCore.savesFolder + "LeaderboardExport.txt";
+            string file = ModCore.SavesFolder + "LeaderboardExport.txt";
             ModFileUtils.WriteText(stringBuilder.ToString(), file);
             _ = ModFileUtils.OpenFile(file);
         }
 
         public void OnSavesFolderButtonClicked()
         {
-            _ = ModFileUtils.OpenFileExplorer(ModCore.savesFolder);
+            _ = ModFileUtils.OpenFileExplorer(ModCore.SavesFolder);
         }
 
         public void OnClearButtonClicked()

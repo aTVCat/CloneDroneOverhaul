@@ -31,16 +31,16 @@ namespace OverhaulMod.UI
 
         protected override void OnInitialized()
         {
-            _versionText.text = ModBuildInfo.versionString;
+            _versionText.text = ModBuild.VersionString;
 
-            ModBuildInfo.ExtraInfo extraInfo = ModBuildInfo.extraInfo;
-            if (extraInfo != null && !ModBuildInfo.extraInfoError)
+            ModBuild.Info buildInfo = ModBuild.BuildInfo;
+            if (buildInfo != null)
             {
-                _compilationTimeText.text = extraInfo.CompileTime.ToShortDateString();
+                _compilationTimeText.text = buildInfo.CompilationTime.ToShortDateString();
             }
             else
             {
-                _compilationTimeText.text = "Unknown";
+                _compilationTimeText.text = "unknown";
             }
         }
 

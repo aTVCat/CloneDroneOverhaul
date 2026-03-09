@@ -219,12 +219,12 @@ namespace OverhaulMod
         public enum AssetBundleLocation
         {
             /// <summary>
-            /// Located under <see cref="ModCore.assetsFolder"/> folder
+            /// Located under <see cref="ModCore.AssetsFolder"/> Folder
             /// </summary>
             ModAssets,
 
             /// <summary>
-            /// Located outside the mod folder
+            /// Located outside the mod Folder
             /// </summary>
             External,
         }
@@ -245,7 +245,7 @@ namespace OverhaulMod
             {
                 if (Location == AssetBundleLocation.ModAssets)
                 {
-                    return Path.Combine(ModCore.assetsFolder, FileName);
+                    return Path.Combine(ModCore.AssetsFolder, FileName);
                 }
                 else if (Location == AssetBundleLocation.External)
                 {

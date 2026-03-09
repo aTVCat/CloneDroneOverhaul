@@ -55,7 +55,7 @@ namespace OverhaulMod.Engine
                 if (manager == null)
                     return;
 
-                bool isInModdedMultiplayer = ModIntegrationUtils.ModdedMultiplayer.IsInModdedMultiplayer();
+                /*bool isInModdedMultiplayer = ModIntegrationUtils.ModdedMultiplayer.IsInModdedMultiplayer();
                 string id = isInModdedMultiplayer ? $"{ModIntegrationUtils.ModdedMultiplayer.GetCurrentGameModeInfoID()}_{ModIntegrationUtils.ModdedMultiplayer.GetLobbyID()}" : null;
 
                 PartySize partySize = _partySize;
@@ -67,13 +67,13 @@ namespace OverhaulMod.Engine
 
                 ActivityParty party = _party;
                 party.Id = isInModdedMultiplayer ? $"cdo_{id}" : null;
-                party.Size = partySize;
+                party.Size = partySize;*/
 
                 Activity activity = _activity;
                 activity.State = !gameModeDetailsString.IsNullOrEmpty() ? gameModeDetailsString : string.Empty;
-                activity.Details = $"v{ModBuildInfo.version} · {gameModeString}";
-                activity.Party = party;
-                activity.Secrets = activitySecrets;
+                activity.Details = $"v{ModBuild.Version} · {gameModeString}";
+                //activity.Party = party;
+                //activity.Secrets = activitySecrets;
 
                 manager.UpdateActivity(activity, _activityHandler);
             }
@@ -101,7 +101,7 @@ namespace OverhaulMod.Engine
                         }
                     });
 #endif
-                    RelationshipManager relationshipManager = client.GetRelationshipManager();
+                    /*RelationshipManager relationshipManager = client.GetRelationshipManager();
                     ActivityManager activityManager = client.GetActivityManager();
                     activityManager.OnActivityJoin += secret =>
                     {
@@ -109,7 +109,6 @@ namespace OverhaulMod.Engine
                         string gameModeId = split[1];
                         string lobbyCode = split[2];
 
-                        ModIntegrationUtils.ModdedMultiplayer.OnInvite(gameModeId, lobbyCode);
                     };
                     activityManager.OnActivityJoinRequest += (ref User user) =>
                     {
@@ -128,7 +127,7 @@ namespace OverhaulMod.Engine
                         }
 
                         activityManager.SendRequestReply(user.Id, reply, _ => { });
-                    };
+                    };*/
 
                     _client = client;
 

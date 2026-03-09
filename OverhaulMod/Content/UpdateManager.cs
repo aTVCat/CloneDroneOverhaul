@@ -63,7 +63,7 @@ namespace OverhaulMod.Content
         {
             if (!CheckForUpdatesOnStartup)
             {
-                downloadedVersion = ModBuildInfo.version;
+                downloadedVersion = ModBuild.Version;
                 return;
             }
 
@@ -94,7 +94,7 @@ namespace OverhaulMod.Content
             UpdateInfoList infoList;
             try
             {
-                infoList = ModJsonUtils.DeserializeStream<UpdateInfoList>(Path.Combine(ModCore.developerFolder, REPOSITORY_FILE));
+                infoList = ModJsonUtils.DeserializeStream<UpdateInfoList>(Path.Combine(ModCore.DeveloperFolder, REPOSITORY_FILE));
             }
             catch
             {
@@ -129,7 +129,7 @@ namespace OverhaulMod.Content
 
         public bool ShouldHighlightUpdatesButton()
         {
-            return downloadedVersion > ModBuildInfo.version;
+            return downloadedVersion > ModBuild.Version;
         }
 
         public void DownloadUpdatesList(Action<GetUpdatesResult> callback)
@@ -338,7 +338,7 @@ namespace OverhaulMod.Content
 
         private void prepareCurrentBuildForAnUpdate()
         {
-            string modFolder = ModCore.instance.ModInfo.FolderPath;
+            string modFolder = ModCore.Instance.ModInfo.FolderPath;
             string filePath = Path.Combine(modFolder, "ModInfo.json");
             string backupFilePath = Path.Combine(modFolder, "ModInfo.json.bak");
             if (File.Exists(filePath))

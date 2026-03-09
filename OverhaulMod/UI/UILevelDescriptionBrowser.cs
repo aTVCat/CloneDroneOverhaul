@@ -60,7 +60,7 @@ namespace OverhaulMod.UI
             set;
         }
 
-        public override bool hideTitleScreen => true;
+        public override bool HideTitleScreen => true;
 
         public override void Update()
         {
@@ -106,7 +106,7 @@ namespace OverhaulMod.UI
                 moddedObject.GetObject<Text>(0).text = isWorkshop ? steamWorkshopItem.Title : StringUtils.AddSpacesToCamelCasedString(keyValue.Key.Substring(keyValue.Key.LastIndexOf("/") + 1).Replace(".json", string.Empty));
 
                 Graphic graphic = moddedObject.GetComponent<Graphic>();
-                graphic.color = ModParseUtils.TryParseToColor(DESELECTED_COLOR, Color.gray);
+                graphic.color = ModParseUtils.TryParseColor(DESELECTED_COLOR, Color.gray);
 
                 Button button = moddedObject.GetComponent<Button>();
                 button.onClick.AddListener(delegate
@@ -144,16 +144,16 @@ namespace OverhaulMod.UI
                 moddedObject.GetObject<Text>(0).color = difficultyColor;
 
                 Graphic graphic = moddedObject.GetComponent<Graphic>();
-                graphic.color = ModParseUtils.TryParseToColor(DESELECTED_COLOR, Color.gray);
+                graphic.color = ModParseUtils.TryParseColor(DESELECTED_COLOR, Color.gray);
 
                 Button button = moddedObject.GetComponent<Button>();
                 button.onClick.AddListener(delegate
                 {
                     if (_prevGraphic && _prevGraphic != graphic)
                     {
-                        _prevGraphic.color = ModParseUtils.TryParseToColor(DESELECTED_COLOR, Color.gray);
+                        _prevGraphic.color = ModParseUtils.TryParseColor(DESELECTED_COLOR, Color.gray);
                     }
-                    graphic.color = ModParseUtils.TryParseToColor(SELECTED_COLOR, Color.cyan);
+                    graphic.color = ModParseUtils.TryParseColor(SELECTED_COLOR, Color.cyan);
                     _prevGraphic = graphic;
 
                     _selectedLevel = level;

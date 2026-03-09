@@ -29,8 +29,8 @@ namespace OverhaulMod.Engine
         {
             _canvasGroup = base.GetComponent<CanvasGroup>();
             _bg = base.GetComponent<Image>();
-            _loadingIndicator = moddedObjectReference.GetObject<GameObject>(0);
-            _loadingLabelOutline = moddedObjectReference.GetObject<Outline>(1);
+            _loadingIndicator = ModdedObjectComponent.GetObject<GameObject>(0);
+            _loadingLabelOutline = ModdedObjectComponent.GetObject<Outline>(1);
         }
 
         public override void Start()

@@ -103,7 +103,7 @@ namespace OverhaulMod.UI
                 bgColor = ALL_WEAPON_VARIANTS_NOT_PRESENT_COLOR;
             }
 
-            _scrollRectBG.color = ModParseUtils.TryParseToColor(bgColor, Color.gray);
+            _scrollRectBG.color = ModParseUtils.TryParseColor(bgColor, Color.gray);
         }
 
         public void RefreshButtonAndStatusText(PersonalizationItemInfo personalizationItemInfo)

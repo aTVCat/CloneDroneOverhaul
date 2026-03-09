@@ -42,7 +42,7 @@ namespace OverhaulMod.UI
 
         private bool _shouldSuggestGameRestart;
 
-        public override bool hideTitleScreen => true;
+        public override bool HideTitleScreen => true;
 
         protected override void OnInitialized()
         {
@@ -83,8 +83,8 @@ namespace OverhaulMod.UI
         {
             bool local = elementTab.tabId == "local addons";
 
-            UIElementTab oldTab = _tabs.prevSelectedTab;
-            UIElementTab newTab = _tabs.selectedTab;
+            UIElementTab oldTab = _tabs.PreviousSelectedTab;
+            UIElementTab newTab = _tabs.SelectedTab;
             if (oldTab)
             {
                 RectTransform rt = oldTab.transform as RectTransform;
@@ -142,13 +142,13 @@ namespace OverhaulMod.UI
             }
 
             _loadingIndicator.SetActive(true);
-            _tabs.interactable = false;
+            _tabs.IsInteractable = false;
             AddonManager.Instance.DownloadAddonsList(out _, populate, delegate (string error)
             {
                 ModUIUtils.MessagePopupOK("Error", error, true);
 
                 _loadingIndicator.SetActive(false);
-                _tabs.interactable = true;
+                _tabs.IsInteractable = true;
                 _tabs.SelectTab("local addons");
             });
         }
@@ -165,7 +165,7 @@ namespace OverhaulMod.UI
             }
 
             _loadingIndicator.SetActive(false);
-            _tabs.interactable = true;
+            _tabs.IsInteractable = true;
         }
 
         public void OnAddonsEditorButtonClicked()

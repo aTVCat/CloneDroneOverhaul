@@ -52,7 +52,7 @@ namespace OverhaulMod.UI
 
         private bool _shouldRefreshText;
 
-        public override bool refreshOnlyCursor => true;
+        public override bool RefreshOnlyCursor => true;
 
         public Action okButtonAction
         {

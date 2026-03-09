@@ -17,7 +17,7 @@ namespace OverhaulMod.Patches.Behaviours
             }
         }
 
-        public override void UnPatch()
+        public override void Unpatch()
         {
             ProjectileManager projectileManager = ProjectileManager.Instance;
             if (projectileManager)

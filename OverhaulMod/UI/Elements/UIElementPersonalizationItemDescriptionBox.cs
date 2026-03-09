@@ -13,6 +13,9 @@ namespace OverhaulMod.UI
         [UIElement("ItemDescription")]
         private readonly Text _itemDescriptionText;
 
+        [UIElement("ItemAuthor")]
+        private readonly Text _itemAuthorText;
+
         [UIElement("LockedOverlay")]
         private readonly GameObject _lockedOverlay;
 
@@ -109,19 +112,20 @@ namespace OverhaulMod.UI
                 prefix = LocalizationManager.Instance.GetTranslatedString("customization_vanilla_hd");
             }
             else
-                prefix = $"{((itemInfo.Authors.IsNullOrEmpty() || itemInfo.Authors.Count <= 1) ? LocalizationManager.Instance.GetTranslatedString("customization_author") : LocalizationManager.Instance.GetTranslatedString("customization_authors"))} ";
+                prefix = itemInfo.Authors.Count <= 1 ? LocalizationManager.Instance.GetTranslatedString("customization_author") : LocalizationManager.Instance.GetTranslatedString("customization_authors");
 
             string authorsStringToDisplay;
             if (noSpecificAuthor)
             {
-                authorsStringToDisplay = prefix;
+                authorsStringToDisplay = prefix.AddColor(Color.yellow);
             }
             else
             {
-                authorsStringToDisplay = $"{prefix}{authorsString.AddColor(Color.white)}";
+                authorsStringToDisplay = $"{prefix} {authorsString.AddColor(Color.white)}";
             }
 
             _itemNameText.text = itemInfo.Name;
+            _itemAuthorText.text = authorsStringToDisplay;
             _itemDescriptionText.text = itemInfo.Description;
 
             bool isLocked = !itemInfo.IsUnlocked();

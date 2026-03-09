@@ -17,7 +17,7 @@ namespace OverhaulMod.UI
 
         private CanvasGroup _canvasGroup;
 
-        public override bool hideTitleScreen => true;
+        public override bool HideTitleScreen => true;
 
         protected override void OnInitialized()
         {

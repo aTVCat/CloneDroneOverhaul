@@ -38,26 +38,24 @@ namespace OverhaulMod
 
         public static bool ShouldStartCustomizationEditor;
 
-        public static event Action GameInitialized;
-        public static event Action<bool> ModStateChanged;
         public static event Action<Camera, Camera> OnCameraSwitched;
 
-        public static ModCore instance { get; private set; }
+        public static ModCore Instance { get; private set; }
 
         //public static StringBuilder TempStringBuilder = new StringBuilder();
 
-        public static bool isEnabled
+        public static bool IsEnabled
         {
             get;
             private set;
         }
 
         private static string s_folder;
-        public static string folder
+        public static string Folder
         {
             get
             {
-                ModCore modCore = instance;
+                ModCore modCore = Instance;
                 if (modCore == null)
                 {
                     return null;
@@ -72,46 +70,46 @@ namespace OverhaulMod
         }
 
         private static string s_savesFolder;
-        public static string savesFolder
+        public static string SavesFolder
         {
             get
             {
                 if (s_savesFolder == null)
                 {
-                    s_savesFolder = $"{Path.Combine(modUserDataFolder, "saves")}/";
+                    s_savesFolder = $"{Path.Combine(ModUserDataFolder, "saves")}/";
                 }
                 return s_savesFolder;
             }
         }
 
         private static string s_assetsFolder;
-        public static string assetsFolder
+        public static string AssetsFolder
         {
             get
             {
                 if (s_assetsFolder == null)
                 {
-                    s_assetsFolder = $"{Path.Combine(folder, "assets")}/";
+                    s_assetsFolder = $"{Path.Combine(Folder, "assets")}/";
                 }
                 return s_assetsFolder;
             }
         }
 
         private static string s_dataFolder;
-        public static string dataFolder
+        public static string DataFolder
         {
             get
             {
                 if (s_dataFolder == null)
                 {
-                    s_dataFolder = $"{Path.Combine(assetsFolder, "data")}/";
+                    s_dataFolder = $"{Path.Combine(AssetsFolder, "data")}/";
                 }
                 return s_dataFolder;
             }
         }
 
         private static string s_modUserDataFolder;
-        public static string modUserDataFolder
+        public static string ModUserDataFolder
         {
             get
             {
@@ -124,116 +122,124 @@ namespace OverhaulMod
         }
 
         private static string s_developerFolder;
-        public static string developerFolder
+        public static string DeveloperFolder
         {
             get
             {
                 if (s_developerFolder == null)
                 {
-                    s_developerFolder = $"{Path.Combine(modUserDataFolder, "devFolder")}/";
+                    s_developerFolder = $"{Path.Combine(ModUserDataFolder, "devFolder")}/";
                 }
                 return s_developerFolder;
             }
         }
 
         private static string s_contentFolder;
-        public static string contentFolder
+        public static string ContentFolder
         {
             get
             {
                 if (s_contentFolder == null)
                 {
-                    s_contentFolder = $"{Path.Combine(modUserDataFolder, "content")}/";
+                    s_contentFolder = $"{Path.Combine(ModUserDataFolder, "content")}/";
                 }
                 return s_contentFolder;
             }
         }
 
         private static string s_addonsFolder;
-        public static string addonsFolder
+        public static string AddonsFolder
         {
             get
             {
                 if (s_addonsFolder == null)
                 {
-                    s_addonsFolder = $"{Path.Combine(contentFolder, "addons")}/";
+                    s_addonsFolder = $"{Path.Combine(ContentFolder, "addons")}/";
                 }
                 return s_addonsFolder;
             }
         }
 
         private static string s_customizationFolder;
-        public static string customizationFolder
+        public static string CustomizationFolder
         {
             get
             {
                 if (s_customizationFolder == null)
                 {
-                    s_customizationFolder = $"{Path.Combine(contentFolder, CUSTOMIZATION_FOLDER_NAME)}/";
+                    s_customizationFolder = $"{Path.Combine(ContentFolder, CUSTOMIZATION_FOLDER_NAME)}/";
                 }
                 return s_customizationFolder;
             }
         }
 
         private static string s_persistentCustomizationFolder;
-        public static string customizationPersistentFolder
+        public static string CustomizationPersistentFolder
         {
             get
             {
                 if (s_persistentCustomizationFolder == null)
                 {
-                    s_persistentCustomizationFolder = $"{Path.Combine(contentFolder, CUSTOMIZATION_PERSISTENT_FOLDER_NAME)}/";
+                    s_persistentCustomizationFolder = $"{Path.Combine(ContentFolder, CUSTOMIZATION_PERSISTENT_FOLDER_NAME)}/";
                 }
                 return s_persistentCustomizationFolder;
             }
         }
 
         private static string s_textureFolder;
-        public static string texturesFolder
+        public static string TexturesFolder
         {
             get
             {
                 if (s_textureFolder == null)
                 {
-                    s_textureFolder = $"{Path.Combine(assetsFolder, "textures")}/";
+                    s_textureFolder = $"{Path.Combine(AssetsFolder, "textures")}/";
                 }
                 return s_textureFolder;
             }
         }
 
         private static string s_editorTexturesFolder;
-        public static string editorTexturesFolder
+        public static string EditorTexturesFolder
         {
             get
             {
                 if (s_editorTexturesFolder == null)
                 {
-                    s_editorTexturesFolder = $"{Path.Combine(texturesFolder, "editor")}/";
+                    s_editorTexturesFolder = $"{Path.Combine(TexturesFolder, "editor")}/";
                 }
                 return s_editorTexturesFolder;
             }
         }
 
+        private bool _hasAttemptedToLoadOnThisScene;
+
         public override void OnModLoaded()
         {
-            instance = this;
-            GlobalEventManager.Instance.AddEventListenerOnce(GlobalEvents.GameInitializtionCompleted, onGameInitialized);
+            Instance = this;
+            IsEnabled = true;
+
             ModLoader.Load();
+            _hasAttemptedToLoadOnThisScene = true;
 
             TVCat.Launcher.Launcher.LoadAssembly(this, "TVCat.CloneDrone.dll");
             TVCat.Launcher.Launcher.AddModsLoadedEventListener(ModLoader.AddLevelObjectListeners);
+
+            GlobalEventManager.Instance.AddEventListenerOnce(GlobalEvents.GameInitializtionCompleted, onGameInitialized);
         }
 
         public override void OnModEnabled()
         {
-            instance = this;
-            isEnabled = true;
+            Instance = this;
+            IsEnabled = true;
 
-            ModLoader.Load();
+            if (!_hasAttemptedToLoadOnThisScene)
+            {
+                ModLoader.Load();
+                _hasAttemptedToLoadOnThisScene = true;
+            }
+
             GamePatchBehaviour.Load();
-
-            // TriggerGameInitializedEvent();
-            TriggerModStateChangedEvent(true);
 
             ModSpecialUtils.SetTitleBarStateDependingOnSettings();
 
@@ -242,8 +248,9 @@ namespace OverhaulMod
 
         public override void OnModDeactivated()
         {
-            instance = null;
-            isEnabled = false;
+            Instance = null;
+            IsEnabled = false;
+            _hasAttemptedToLoadOnThisScene = false;
 
             GameUIRoot gameUIRoot = ModCache.gameUIRoot;
             if (gameUIRoot)
@@ -260,11 +267,10 @@ namespace OverhaulMod
                 }
             }
 
-            TriggerModStateChangedEvent(false);
-
             ModSpecialUtils.SetTitleBarStateDependingOnSettings();
 
             GamePatchBehaviour.Unload();
+
             ModLoader.RemoveLevelObjectListeners();
             ModLoader.Unload();
         }
@@ -425,23 +431,13 @@ namespace OverhaulMod
 
         private void onGameInitialized()
         {
+            ModManagers.Instance.TriggerGameLoadedEvent();
             if (ShouldStartCustomizationEditor)
             {
                 ShouldStartCustomizationEditor = false;
                 if (PersonalizationEditorManager.Instance)
                     PersonalizationEditorManager.Instance.StartEditorGameMode(true);
             }
-            TriggerGameInitializedEvent();
-        }
-
-        public static void TriggerGameInitializedEvent()
-        {
-            GameInitialized?.Invoke();
-        }
-
-        public static void TriggerModStateChangedEvent(bool enabled)
-        {
-            ModStateChanged?.Invoke(enabled);
         }
 
         public static void TriggerOnCameraSwitchedEvent(Camera oldCamera, Camera newCamera)

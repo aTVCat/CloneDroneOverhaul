@@ -91,7 +91,7 @@ namespace OverhaulMod.Content
 
         public bool IsUnlockedForUser(string playFabId, CSteamID steamId)
         {
-            if (ModBuildInfo.disableExclusivePerks) return false;
+            if (ModBuild.DisableExclusivePerks) return false;
 
             bool hasSteamId = HasSteamID();
             bool hasPlayFabId = HasPlayFabID();

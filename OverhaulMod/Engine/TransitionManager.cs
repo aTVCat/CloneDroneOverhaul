@@ -31,7 +31,7 @@ namespace OverhaulMod.Engine
 
         public static Color GetBlackScreenColor()
         {
-            return ModParseUtils.TryParseToColor("#050D1A", Color.black);
+            return ModParseUtils.TryParseColor("#050D1A", Color.black);
         }
 
         public bool IsDoingTransition()

@@ -137,7 +137,7 @@ namespace OverhaulMod.Engine
 
             Transform transform = base.transform;
             Vector3 difference = transform.position;
-            transform.position = ModUnityUtils.LerpVector3(_targetTransform.position + _offset + forwardVector + upVector, difference, NumberUtils.EaseInOutCubic(0f, 1f, _lerp)) + ShakePositionOffset;
+            transform.position = Vector3.Lerp(_targetTransform.position + _offset + forwardVector + upVector, difference, NumberUtils.EaseInOutCubic(0f, 1f, _lerp)) + ShakePositionOffset;
 
             if (_lerp <= 0.99f)
             {

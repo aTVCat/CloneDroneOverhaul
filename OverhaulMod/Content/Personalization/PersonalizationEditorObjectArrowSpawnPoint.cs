@@ -15,7 +15,7 @@ namespace OverhaulMod.Content.Personalization
         {
             _transform = base.transform;
 
-            if (!PersonalizationEditorManager.IsInEditor()) return;
+            if (!PersonalizationEditorManager.IsInEditor() || PersonalizationEditorManager.Instance.IsInScreenshotMode()) return;
 
             GameObject previewModel = Instantiate(ModResources.Prefab(AssetBundleConstants.MODELS, "ArrowSpawnPoint"), base.transform, false);
             _preview = previewModel;

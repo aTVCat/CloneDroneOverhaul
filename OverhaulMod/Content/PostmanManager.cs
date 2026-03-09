@@ -66,7 +66,7 @@ namespace OverhaulMod
 
             WebhookObject obj1 = new WebhookObject()
             {
-                content = $"## __Game crashed. v{ModBuildInfo.version}__",
+                content = $"## __Game crashed. v{ModBuild.Version}__",
                 embeds = new Embed[]
                 {
                     new Embed()
@@ -117,7 +117,7 @@ namespace OverhaulMod
             int color = int.Parse("32a852", System.Globalization.NumberStyles.HexNumber);
             WebhookObject obj1 = new WebhookObject()
             {
-                content = $"## __Feedback. v{ModBuildInfo.version}__ {rankText}",
+                content = $"## __Feedback. v{ModBuild.Version}__ {rankText}",
                 embeds = new Embed[]
                 {
                     new Embed()
@@ -161,7 +161,7 @@ namespace OverhaulMod
             string userInfo = $"- **User:** {SteamFriends.GetPersonaName()} [[Profile]](<https://steamcommunity.com/profiles/{SteamUser.GetSteamID()}>)";
             WebhookObject obj1 = new WebhookObject()
             {
-                content = $"## __Survey answer. v{ModBuildInfo.version}__ {newsTitle}",
+                content = $"## __Survey answer. v{ModBuild.Version}__ {newsTitle}",
                 embeds = new Embed[]
                 {
                     new Embed()
@@ -211,7 +211,7 @@ namespace OverhaulMod
 
             WebhookObject obj1 = new WebhookObject()
             {
-                content = $"## __{(personalizationItem.IsVerified ? "An item to update" : "New item to verify")}. v{ModBuildInfo.version}__{(personalizationItem.IsSentForVerification ? "\n# REUPLOAD" : string.Empty)}\nid: {personalizationItem.ItemID}",
+                content = $"## __{(personalizationItem.IsVerified ? "An item to update" : "New item to verify")}. v{ModBuild.Version}__{(personalizationItem.IsSentForVerification ? "\n# REUPLOAD" : string.Empty)}\nid: {personalizationItem.ItemID}",
                 embeds = new Embed[]
                 {
                     new Embed()
@@ -264,7 +264,7 @@ namespace OverhaulMod
 
             WebhookObject obj1 = new WebhookObject()
             {
-                content = $"## __DELETION REQUEST. v{ModBuildInfo.version}__\nid: {personalizationItem.ItemID}",
+                content = $"## __DELETION REQUEST. v{ModBuild.Version}__\nid: {personalizationItem.ItemID}",
                 embeds = new Embed[]
                 {
                     new Embed()
@@ -398,7 +398,7 @@ namespace OverhaulMod
             public static void Serialize(Destinations destinations, string path = null)
             {
                 if (path.IsNullOrEmpty())
-                    path = Path.Combine(ModCore.savesFolder, "Destinations.json");
+                    path = Path.Combine(ModCore.SavesFolder, "Destinations.json");
 
                 ModJsonUtils.WriteStream(path, destinations);
             }

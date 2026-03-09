@@ -46,7 +46,7 @@ namespace OverhaulMod.UI
 
         private bool _fadeInLabel;
 
-        public override bool closeOnEscapeButtonPress => false;
+        public override bool CloseOnEscapeButtonPress => false;
 
         public static UIVersionLabel instance
         {
@@ -83,7 +83,7 @@ namespace OverhaulMod.UI
             instance = this;
             _gameplayVersionText.font = ModResources.EditUndoFont();
             _gameplayVersionText.fontSize = 10;
-            _gameplayWatermarkTransform.localScale = Vector3.one * 0.9f;
+            _gameplayWatermarkTransform.localScale = Vector3.one * 0.8f;
             RefreshLabels();
 
             ModSettingsManager.Instance.AddSettingValueChangedListener(onDevBuildLabelSettingChanged, ModSettingsConstants.SHOW_DEVELOPER_BUILD_LABEL);
@@ -137,10 +137,10 @@ namespace OverhaulMod.UI
 
         public void RefreshLabels()
         {
-            bool debug = ModBuildInfo.debug;
-            _versionText.text = $"OVERHAUL {ModBuildInfo.fullVersionString.ToUpper()}\nCLONE DRONE {VersionNumberManager.Instance.GetVersionString()}";
+            bool debug = ModBuild.IsDebugBuild;
+            _versionText.text = $"OVERHAUL MOD {ModBuild.FullVersionString.ToUpper()}\nCLONE DRONE {VersionNumberManager.Instance.GetVersionString()}";
             _debugIcon.SetActive(debug);
-            _gameplayVersionText.text = $"OVERHAUL {ModBuildInfo.versionString.ToUpper()}";
+            _gameplayVersionText.text = $"OVERHAUL {ModBuild.VersionString.ToUpper()}";
             _gameplayDebugIcon.SetActive(debug);
             _refreshWidth = true;
         }
@@ -152,7 +152,7 @@ namespace OverhaulMod.UI
 
         private void onDevBuildLabelSettingChanged(object obj)
         {
-            _devBuildLabelObject.SetActive(obj is bool b && ModBuildInfo.isDeveloperBuild && ModBuildInfo.debug && b);
+            _devBuildLabelObject.SetActive(obj is bool b && ModBuild.IsDeveloperBuild && ModBuild.IsDebugBuild && b);
         }
     }
 }

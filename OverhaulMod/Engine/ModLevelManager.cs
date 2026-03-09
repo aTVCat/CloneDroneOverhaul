@@ -20,7 +20,7 @@ namespace OverhaulMod.Engine
             {
                 if (_chapterSectionsFolder == null)
                 {
-                    _chapterSectionsFolder = Path.Combine(ModCore.dataFolder, CHAPTER_SECTIONS_FOLDER);
+                    _chapterSectionsFolder = Path.Combine(ModCore.DataFolder, CHAPTER_SECTIONS_FOLDER);
                 }
                 return _chapterSectionsFolder;
             }
@@ -33,7 +33,7 @@ namespace OverhaulMod.Engine
             {
                 if (_levelsFolder == null)
                 {
-                    _levelsFolder = Path.Combine(ModCore.dataFolder, LEVELS_FOLDER);
+                    _levelsFolder = Path.Combine(ModCore.DataFolder, LEVELS_FOLDER);
                 }
                 return _levelsFolder;
             }
@@ -210,7 +210,7 @@ namespace OverhaulMod.Engine
                 if (level == null || level.LevelID.IsNullOrEmpty())
                     continue;
 
-                int chapterLevel = ModParseUtils.TryParseToInt(level.LevelID.Replace("Story", string.Empty), -1) - (isSecondChapter ? 10 : 0);
+                int chapterLevel = ModParseUtils.TryParseInt(level.LevelID.Replace("Story", string.Empty), -1) - (isSecondChapter ? 10 : 0);
                 if (chapterLevel >= 1 && chapterLevel <= 10)
                 {
                     list.Add(new ModLevelSectionInfo()

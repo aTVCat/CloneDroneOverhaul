@@ -82,7 +82,7 @@ namespace OverhaulMod.Content
             if (_addonDownloadListInfo != null)
                 return _addonDownloadListInfo;
 
-            string path = Path.Combine(ModCore.developerFolder, ADDONS_LIST_REPOSITORY_FILE);
+            string path = Path.Combine(ModCore.DeveloperFolder, ADDONS_LIST_REPOSITORY_FILE);
             if (!File.Exists(path))
             {
                 _addonDownloadListInfo = new AddonDownloadListInfo();
@@ -100,7 +100,7 @@ namespace OverhaulMod.Content
             if (_addonDownloadListInfo == null)
                 return;
 
-            string path = Path.Combine(ModCore.developerFolder, ADDONS_LIST_REPOSITORY_FILE);
+            string path = Path.Combine(ModCore.DeveloperFolder, ADDONS_LIST_REPOSITORY_FILE);
             ModJsonUtils.WriteStream(path, _addonDownloadListInfo);
         }
 
@@ -214,7 +214,7 @@ namespace OverhaulMod.Content
 
                 try
                 {
-                    string dest = Path.Combine(ModCore.addonsFolder, folderName);
+                    string dest = Path.Combine(ModCore.AddonsFolder, folderName);
                     if (!Directory.Exists(dest))
                         _ = Directory.CreateDirectory(dest);
 
@@ -331,7 +331,7 @@ namespace OverhaulMod.Content
         }
 
         /// <summary>
-        /// Check if specified addon version is installed
+        /// Check if specified addon Version is installed
         /// </summary>
         /// <param name="addonId"></param>
         /// <param name="quick">If true, it check if addon is cached</param>
@@ -358,10 +358,10 @@ namespace OverhaulMod.Content
         }
 
         /// <summary>
-        /// Get the version of installed addon with specified id
+        /// Get the Version of installed addon with specified id
         /// </summary>
         /// <param name="uniqueId"></param>
-        /// <returns>-1 if addon is not installed, otherwise the installed addon version</returns>
+        /// <returns>-1 if addon is not installed, otherwise the installed addon Version</returns>
         public int GetAddonVersion(string uniqueId)
         {
             AddonInfo info = GetAddonInfo(uniqueId);
@@ -417,7 +417,7 @@ namespace OverhaulMod.Content
                 list.Clear();
             }
 
-            string[] folders = Directory.GetDirectories(ModCore.addonsFolder);
+            string[] folders = Directory.GetDirectories(ModCore.AddonsFolder);
             if (folders.IsNullOrEmpty())
                 return list;
 
@@ -461,7 +461,7 @@ namespace OverhaulMod.Content
                             Version = -1,
                             UniqueID = newId,
                             FolderPath = folder,
-                            MinModVersion = ModBuildInfo.version
+                            MinModVersion = ModBuild.Version
                         };
                         list.Add(addonInfo);
                     }

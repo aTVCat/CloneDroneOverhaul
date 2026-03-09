@@ -32,9 +32,9 @@ namespace OverhaulMod.Content.Personalization
             try
             {
                 directories = new List<string>();
-                directories.AddRange(Directory.GetDirectories(ModCore.customizationFolder));
+                directories.AddRange(Directory.GetDirectories(ModCore.CustomizationFolder));
                 userItemsStartIndex = directories.Count;
-                directories.AddRange(Directory.GetDirectories(ModCore.customizationPersistentFolder));
+                directories.AddRange(Directory.GetDirectories(ModCore.CustomizationPersistentFolder));
             }
             catch (Exception exc)
             {
@@ -95,7 +95,7 @@ namespace OverhaulMod.Content.Personalization
             else
             {
                 updateMetaDataFile = true;
-                personalizationItemMetaData = new PersonalizationItemMetaData() // the first version of customization system (0) didn't have meta data files
+                personalizationItemMetaData = new PersonalizationItemMetaData() // the first Version of customization system (0) didn't have meta data files
                 {
                     CustomizationSystemVersion = 0,
                 };

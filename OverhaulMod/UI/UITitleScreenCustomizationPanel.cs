@@ -42,9 +42,9 @@ namespace OverhaulMod.UI
 
         private bool _isPreviewing;
 
-        public override bool hideTitleScreen => true;
+        public override bool HideTitleScreen => true;
 
-        public override bool enableUIOverLogoMode => true;
+        public override bool EnableUIOverLogoMode => true;
 
         protected override void OnInitialized()
         {

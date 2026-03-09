@@ -73,7 +73,7 @@ namespace OverhaulMod.UI
 
         private Dictionary<string, GameObject> _cachedInstantiatedDisplays;
 
-        public override bool enableCursor => true;
+        public override bool EnableCursor => true;
 
         public Action<string> singleFileCallback
         {
@@ -307,7 +307,7 @@ namespace OverhaulMod.UI
             if (!selectMany && _prevSelectedIndicator)
                 _prevSelectedIndicator.SetActive(false);
 
-            _prevSelectedIndicator = itemDisplay.moddedObjectReference.GetObject<GameObject>(3);
+            _prevSelectedIndicator = itemDisplay.ModdedObjectComponent.GetObject<GameObject>(3);
             _selectedEntryPath = itemDisplay.fullName;
 
             if (selectMany)

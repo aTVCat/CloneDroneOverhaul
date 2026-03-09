@@ -45,18 +45,18 @@ namespace OverhaulMod.Engine
             Color startSkyColor = a.SkyboxIndex == 1 && b.SkyboxIndex == 3 ? a.SkyTint : a.SkyColor;
 
             refreshAmbient(b.AmbientUsesSkybox,
-                ModUnityUtils.LerpRGB(a.AmbientColor, b.AmbientColor, d));
+                Color.Lerp(a.AmbientColor, b.AmbientColor, d));
 
             refreshSkybox(b.SkyboxIndex,
                 Mathf.Lerp(a.SkyExposure, b.SkyExposure, d),
                 Mathf.Lerp(a.SunSize, b.SunSize, d),
                 Mathf.Lerp(a.SunSizeConvergence, b.SunSizeConvergence, d),
                 Mathf.Lerp(startAtmosphereThickness, b.AtmosphereThickness, d),
-                ModUnityUtils.LerpRGB(startSkyTint, b.SkyTint, d),
-                ModUnityUtils.LerpRGB(a.GroundTint, b.GroundTint, d),
-                ModUnityUtils.LerpRGB(startSkyColor, b.SkyColor, d),
-                ModUnityUtils.LerpRGB(a.HorizonColor, b.HorizonColor, d),
-                ModUnityUtils.LerpRGB(a.GroundColor, b.GroundColor, d),
+                Color.Lerp(startSkyTint, b.SkyTint, d),
+                Color.Lerp(a.GroundTint, b.GroundTint, d),
+                Color.Lerp(startSkyColor, b.SkyColor, d),
+                Color.Lerp(a.HorizonColor, b.HorizonColor, d),
+                Color.Lerp(a.GroundColor, b.GroundColor, d),
                 Mathf.Lerp(a.SkyTopExponent, b.SkyTopExponent, d),
                 Mathf.Lerp(a.SkyBottomExponent, b.SkyBottomExponent, d),
                 Mathf.Lerp(a.SkyIntensity, b.SkyIntensity, d),
@@ -65,7 +65,7 @@ namespace OverhaulMod.Engine
             refreshFog(b.FogEnabled,
                 Mathf.Lerp(a.FogEndDistance, b.FogEndDistance, d),
                 Mathf.Lerp(a.FogStartDistance, b.FogStartDistance, d),
-                ModUnityUtils.LerpRGB(a.FogColor, b.FogColor, d));
+                Color.Lerp(a.FogColor, b.FogColor, d));
 
             /*
             refreshDirectionalLight(d < 0.5f ? a.EnableDirectionalLight : b.EnableDirectionalLight,
@@ -77,7 +77,7 @@ namespace OverhaulMod.Engine
 
             Vector3 dirLightRotation = Quaternion.Lerp(Quaternion.Euler(a.DirectionalRotationX, a.DirectionalRotationY, 0f), Quaternion.Euler(b.DirectionalRotationX, b.DirectionalRotationY, 0f), d).eulerAngles;
             refreshDirectionalLight(d < 0.985f || b.EnableDirectionalLight,
-                ModUnityUtils.LerpRGB(a.DirectionalColor, b.DirectionalColor, d),
+                Color.Lerp(a.DirectionalColor, b.DirectionalColor, d),
                 Mathf.Lerp(a.EnableDirectionalLight ? a.DirectionalIntensity : 0f, b.EnableDirectionalLight ? b.DirectionalIntensity : 0f, d),
                 dirLightRotation,
                 Mathf.Lerp(a.DirectionalShadowStrength, b.DirectionalShadowStrength, d));

@@ -191,7 +191,7 @@ namespace OverhaulMod.Content.Personalization
                 LevelEditorLevelData levelEditorLevelData = null;
                 try
                 {
-                    levelEditorLevelData = ModJsonUtils.DeserializeStream<LevelEditorLevelData>(Path.Combine(ModCore.dataFolder, "levels/personalizationEditorLevel.json"));
+                    levelEditorLevelData = ModJsonUtils.DeserializeStream<LevelEditorLevelData>(Path.Combine(ModCore.DataFolder, "levels/personalizationEditorLevel.json"));
                 }
                 catch
                 {
@@ -204,7 +204,7 @@ namespace OverhaulMod.Content.Personalization
 
         public bool CreateItem(string directoryName, string name, string uniqueId, bool usePersistentFolder, PersonalizationItemInfo templateSource, out PersonalizationItemInfo personalizationItem)
         {
-            string rootDirectory = usePersistentFolder ? ModCore.customizationPersistentFolder : ModCore.customizationFolder;
+            string rootDirectory = usePersistentFolder ? ModCore.CustomizationPersistentFolder : ModCore.CustomizationFolder;
             string directoryPath = Path.Combine(rootDirectory, directoryName);
             string filesDirectoryPath = Path.Combine(directoryPath, "files");
 
@@ -365,7 +365,7 @@ namespace OverhaulMod.Content.Personalization
         {
             error = null;
 
-            string folderPath = Path.Combine(ModCore.customizationFolder, itemFolderName);
+            string folderPath = Path.Combine(ModCore.CustomizationFolder, itemFolderName);
             _ = Directory.CreateDirectory(folderPath);
 
             FastZip fastZip = new FastZip();
@@ -838,8 +838,8 @@ namespace OverhaulMod.Content.Personalization
                 string[] oldAndNewColors = oldAndNewColorsString.Split('-');
                 if (oldAndNewColors.Length == 2)
                 {
-                    Color a = ModParseUtils.TryParseToColor(oldAndNewColors[0], Color.white);
-                    Color b = ModParseUtils.TryParseToColor(oldAndNewColors[1], Color.white);
+                    Color a = ModParseUtils.TryParseColor(oldAndNewColors[0], Color.white);
+                    Color b = ModParseUtils.TryParseColor(oldAndNewColors[1], Color.white);
                     list.Add(new ColorPairFloat(a, b));
                 }
             }

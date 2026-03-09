@@ -22,7 +22,7 @@ namespace OverhaulMod.UI
 
         private bool _show;
 
-        public override bool closeOnEscapeButtonPress => false;
+        public override bool CloseOnEscapeButtonPress => false;
 
         protected override void OnInitialized()
         {

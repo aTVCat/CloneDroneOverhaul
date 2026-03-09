@@ -184,37 +184,37 @@ namespace OverhaulMod.UI
 
         public void OnFolderButtonClicked()
         {
-            _ = ModFileUtils.OpenFileExplorer(_usePersistentDirectoryToggle.isOn ? ModCore.customizationPersistentFolder : ModCore.customizationFolder);
+            _ = ModFileUtils.OpenFileExplorer(_usePersistentDirectoryToggle.isOn ? ModCore.CustomizationPersistentFolder : ModCore.CustomizationFolder);
         }
 
         public void OnCreateNewButtonClicked()
         {
             UIPersonalizationEditorItemCreationDialog panel = ModUIConstants.ShowPersonalizationEditorItemCreationDialog(base.transform);
-            panel.TargetDirectory = _usePersistentDirectoryToggle.isOn ? ModCore.customizationPersistentFolder : ModCore.customizationFolder;
+            panel.TargetDirectory = _usePersistentDirectoryToggle.isOn ? ModCore.CustomizationPersistentFolder : ModCore.CustomizationFolder;
             panel.UsePersistentFolder = _usePersistentDirectoryToggle.isOn;
             panel.ItemCreatedCallback = Hide;
 
             /*
-            ModUIUtils.InputFieldWindow("Create new item", "Enter folder name", 150f, delegate (string str)
+            ModUIUtils.InputFieldWindow("Create new item", "Enter Folder name", 150f, delegate (string str)
             {
-                string rootDirectory = _usePersistentDirectoryToggle.isOn ? ModCore.customizationPersistentFolder : ModCore.customizationFolder;
+                string rootDirectory = _usePersistentDirectoryToggle.isOn ? ModCore.CustomizationPersistentFolder : ModCore.CustomizationFolder;
                 string directoryName = str.Replace(" ", string.Empty);
                 string directoryPath = $"{Path.Combine(rootDirectory, directoryName)}/";
                 if (Directory.Exists(directoryPath))
                 {
-                    ModUIUtils.MessagePopupOK("Directory with the same name already exists", "Try naming the folder differently", true);
+                    ModUIUtils.MessagePopupOK("Directory with the same name already exists", "Try naming the Folder differently", true);
                     return;
                 }
 
                 if (PersonalizationEditorManager.Instance.CreateItem(str, _usePersistentDirectoryToggle.isOn, out PersonalizationItemInfo personalizationItem))
                 {
-                    UIPersonalizationEditor.instance.ShowEverything();
+                    UIPersonalizationEditor.Instance.ShowEverything();
                     PersonalizationEditorManager.Instance.EditItem(personalizationItem, personalizationItem.FolderPath);
                     Hide();
                 }
                 else
                 {
-                    ModUIUtils.MessagePopupOK("Item creation error", "A folder with the name has been already created.\nTry giving your folder an alternate name.", true);
+                    ModUIUtils.MessagePopupOK("Item creation error", "A Folder with the name has been already created.\nTry giving your Folder an alternate name.", true);
                 }
             });*/
         }

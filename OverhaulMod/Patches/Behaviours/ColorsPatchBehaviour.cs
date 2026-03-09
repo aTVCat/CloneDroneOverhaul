@@ -26,7 +26,7 @@ namespace OverhaulMod.Patches.Behaviours
             Refresh();
         }
 
-        public override void UnPatch()
+        public override void Unpatch()
         {
             GlobalEventManager.Instance.RemoveEventListener(ModSettingsManager.SETTING_CHANGED_EVENT, Refresh);
             Refresh(false);

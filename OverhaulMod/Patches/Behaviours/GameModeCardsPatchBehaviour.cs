@@ -119,7 +119,7 @@ namespace OverhaulMod.Patches.Behaviours
             ReplaceSprite(multiplayerDatas, 3, "DuelHumans");
         }
 
-        public override void UnPatch()
+        public override void Unpatch()
         {
             GameModeCardData[] multiplayerDatas = ModCache.titleScreenUI.MultiplayerModeSelectScreen.GameModeData;
             GameModeCardData[] singleplayerDatas = ModCache.titleScreenUI.SingleplayerModeSelectScreen.GameModeData;
@@ -142,7 +142,7 @@ namespace OverhaulMod.Patches.Behaviours
                 return;
             }
 
-            RepositoryManager.Instance.GetLocalTexture(Path.Combine(ModCore.texturesFolder, "gamemodes", $"{imageName}.jpg"), delegate (Texture2D texture2D)
+            RepositoryManager.Instance.GetLocalTexture(Path.Combine(ModCore.TexturesFolder, "gamemodes", $"{imageName}.jpg"), delegate (Texture2D texture2D)
             {
                 Sprite sprite = texture2D.ToSprite();
                 array[index].ThumbnailSprite = sprite;

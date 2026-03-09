@@ -163,7 +163,7 @@ namespace OverhaulMod.UI
         [UIElement("hcLabel", false)]
         private readonly GameObject _skinButtonHCLabel;
 
-        public override bool closeOnEscapeButtonPress => false;
+        public override bool CloseOnEscapeButtonPress => false;
 
         private TitleScreenUI _titleScreenUI;
         private CanvasGroup _canvasGroup;
@@ -228,7 +228,7 @@ namespace OverhaulMod.UI
 
         protected override void OnInitialized()
         {
-            bool debug = ModBuildInfo.debug;
+            bool debug = ModBuild.IsDebugBuild;
 
             _modBotLogonText.text = "Not logged in";
             _debugButtonsObject.SetActive(debug);
@@ -324,7 +324,7 @@ namespace OverhaulMod.UI
 
         public void SetSkinAccordingToSettings()
         {
-            bool hypocrisisModEnabled = ModBuildInfo.ShouldShowHypocrisis3Special();
+            bool hypocrisisModEnabled = ModBuild.ShouldShowHypocrisis3Special();
             if (hypocrisisModEnabled)
             {
                 skin = TitleScreenSkinType.Hypocrisis3;
@@ -527,7 +527,7 @@ namespace OverhaulMod.UI
                     skin = TitleScreenSkinType.Overhaul;
                     break;
                 case TitleScreenSkinType.Overhaul:
-                    if (ModBuildInfo.ShouldShowHypocrisis3Special())
+                    if (ModBuild.ShouldShowHypocrisis3Special())
                     {
                         skin = TitleScreenSkinType.Hypocrisis3;
                     }

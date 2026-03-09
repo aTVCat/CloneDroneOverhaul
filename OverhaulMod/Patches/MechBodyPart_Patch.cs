@@ -27,9 +27,9 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(MechBodyPart.createNewVoxelBeingDestroyed), new Type[] { typeof(PicaVoxelPoint), typeof(FireSpreadDefinition), typeof(float) })]
         private static void createNewVoxelBeingDestroyed_Postfix(MechBodyPart __instance, ref VoxelBeingDestroyed __result, PicaVoxelPoint picaVoxelPoint, FireSpreadDefinition fireSpreadDefinition, float probabilityOfFireSpread)
         {
-            if (FadingVoxelManager.EnableFading && fireSpreadDefinition != null && !__instance.IgnoreColorBurnForGlowingVoxels)
+            if (VoxelFadingManager.EnableFading && fireSpreadDefinition != null && !__instance.IgnoreColorBurnForGlowingVoxels)
             {
-                FadingVoxelManager manager = FadingVoxelManager.Instance;
+                VoxelFadingManager manager = VoxelFadingManager.Instance;
                 if (manager)
                 {
                     __result.TimeToDestroy += manager.timeToDestroyOffset;
@@ -61,9 +61,9 @@ namespace OverhaulMod.Patches
                     if (ParticleManager.EnableParticles && UnityEngine.Random.value < 0.1f)
                         ParticleManager.Instance.SpawnLaserCutParticles(vector);
 
-                    if (FadingVoxelManager.EnableBurning)
+                    if (VoxelFadingManager.EnableBurning)
                     {
-                        FadingVoxelManager fadingVoxelManager = ModCache.fadingVoxelManager;
+                        VoxelFadingManager fadingVoxelManager = ModCache.fadingVoxelManager;
                         foreach (PicaVoxelPoint p in fadingVoxelManager.GetSurroundingPoints(picaVoxelPoint))
                         {
                             if (__instance.IsVoxelWaitingToBeDestroyed(p))

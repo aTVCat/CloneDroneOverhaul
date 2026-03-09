@@ -24,9 +24,9 @@ namespace OverhaulMod.UI
         [UIElement("ButtonsContainer", true)]
         private readonly GameObject _buttonsContainer;
 
-        public override bool hideTitleScreen => true;
+        public override bool HideTitleScreen => true;
 
-        public override bool closeOnEscapeButtonPress => _allowHidingThisMenu;
+        public override bool CloseOnEscapeButtonPress => _allowHidingThisMenu;
 
         private bool _allowHidingThisMenu;
 

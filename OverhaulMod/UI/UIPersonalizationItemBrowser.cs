@@ -118,7 +118,9 @@ namespace OverhaulMod.UI
 
         private float _cameraHolderRotationY;
 
-        public override bool enableCursor => true;
+        public override bool EnableCursor => true;
+
+        public bool HasSearchBar = false;
 
         protected override void OnInitialized()
         {
@@ -156,9 +158,9 @@ namespace OverhaulMod.UI
             _isOpen = true;
             _showContents = !_hasEverShown;
             _transitionProgress = 0f;
-            _categoryTabs.interactable = true;
+            _categoryTabs.IsInteractable = true;
 
-            if (_categoryTabs.selectedTab && _prevTab != _categoryTabs.selectedTab.tabId)
+            if (_categoryTabs.SelectedTab && _prevTab != _categoryTabs.SelectedTab.tabId)
             {
                 if (_container.childCount != 0)
                     TransformUtils.DestroyAllChildren(_container);
@@ -283,8 +285,8 @@ namespace OverhaulMod.UI
 
         public void OnCategoryTabSelected(UIElementTab elementTab)
         {
-            UIElementTab oldTab = _categoryTabs.prevSelectedTab;
-            UIElementTab newTab = _categoryTabs.selectedTab;
+            UIElementTab oldTab = _categoryTabs.PreviousSelectedTab;
+            UIElementTab newTab = _categoryTabs.SelectedTab;
             if (oldTab)
             {
                 _prevTab = oldTab.tabId;
@@ -359,8 +361,8 @@ namespace OverhaulMod.UI
         private IEnumerator populateCoroutine()
         {
             _showContents = false;
-            _categoryTabs.interactable = false;
-            _subcategoryTabs.interactable = false;
+            _categoryTabs.IsInteractable = false;
+            _subcategoryTabs.IsInteractable = false;
             _notImplementedTextObject.SetActive(false);
 
             refreshScrollRectSize();
@@ -471,9 +473,9 @@ namespace OverhaulMod.UI
             while (Time.unscaledTime < waitTime)
                 yield return null;
 
-            _prevTab = _categoryTabs.selectedTab?.tabId;
-            _categoryTabs.interactable = true;
-            _subcategoryTabs.interactable = true;
+            _prevTab = _categoryTabs.SelectedTab?.tabId;
+            _categoryTabs.IsInteractable = true;
+            _subcategoryTabs.IsInteractable = true;
             _showContents = true;
             _isPopulating = false;
             yield break;
@@ -554,6 +556,8 @@ namespace OverhaulMod.UI
                 offsetMax.y = -125f;
             else
                 offsetMax.y = -155f;
+
+            if (!HasSearchBar) offsetMax.y += 40f;
             scrollRectTransform.offsetMax = offsetMax;
         }
 

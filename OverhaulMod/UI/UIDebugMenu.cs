@@ -8,9 +8,9 @@ namespace OverhaulMod.UI
 {
     public class UIDebugMenu : OverhaulUIBehaviour
     {
-        public override bool enableUIOverLogoMode => true;
+        public override bool EnableUIOverLogoMode => true;
 
-        public override bool enableCursor => true;
+        public override bool EnableCursor => true;
 
         [UIElementAction(nameof(OnUpdateBuildCompilationInfoButtonClicked))]
         [UIElement("UpdateBuildInfoButton")]
@@ -73,7 +73,7 @@ namespace OverhaulMod.UI
 
         public void OnUpdateBuildCompilationInfoButtonClicked()
         {
-            ModBuildInfo.GenerateExtraInfo();
+            ModBuild.GenerateBuildInfo();
             ModUIUtils.MessagePopupOK("Successfully saved compilation date.", "Successfully saved compilation date.");
 
             UIVersionLabel versionLabel = UIVersionLabel.instance;
@@ -102,7 +102,7 @@ namespace OverhaulMod.UI
             }
 
             ModDataManager.Instance.WriteFile("AllUpgradesExport.txt", stringBuilder.ToString(), true);
-            _ = ModFileUtils.OpenFileExplorer(ModCore.savesFolder);
+            _ = ModFileUtils.OpenFileExplorer(ModCore.SavesFolder);
         }
 
         public void OnWipLabelToggleChanged(bool value)

@@ -13,11 +13,7 @@ namespace OverhaulMod.Visuals
         [ModSetting(ModSettingsConstants.ENABLE_WEAPON_BAG, true)]
         public static bool EnableWeaponBag;
 
-        private FirstPersonMover _firstPersonMover;
-
-        private WeaponType _lastEquippedWeapon;
-
-        public static readonly Dictionary<WeaponType, TransformInfo> WeaponToPosition = new Dictionary<WeaponType, TransformInfo>()
+        public static readonly Dictionary<WeaponType, TransformInfo> WeaponPositions = new Dictionary<WeaponType, TransformInfo>()
         {
             { WeaponType.Sword, new TransformInfo(new Vector3(1.15f, 1.75f, -0.85f), new Vector3(60f, 260f, 260f))},
             { WeaponType.Bow, new TransformInfo(new Vector3(-0.15f, 0.35f, -0.6f), new Vector3(0f, 0f, 35f))},
@@ -26,9 +22,13 @@ namespace OverhaulMod.Visuals
             { ModWeaponsManager.SCYTHE_TYPE, new TransformInfo(new Vector3(0.1f, 0.5f, -0.6f), new Vector3(290f, 280f, 70f), Vector3.one)},
         };
 
+        private FirstPersonMover _firstPersonMover;
+
+        private WeaponType _lastEquippedWeapon;
+
         private Dictionary<WeaponType, GameObject> _weaponToRenderer;
 
-        public Transform bag { get; private set; }
+        public Transform Bag;
 
         public bool IsSupported;
 
@@ -74,16 +74,16 @@ namespace OverhaulMod.Visuals
 
         public void DestroySelf()
         {
-            if (bag)
+            if (Bag)
             {
-                Destroy(bag.gameObject);
+                Destroy(Bag.gameObject);
             }
             Destroy(this);
         }
 
         public void CreateContainers()
         {
-            if (!bag)
+            if (!Bag)
             {
                 Transform torso = TransformUtils.FindChildRecursive(base.transform, "Torso");
                 if (!torso)
@@ -95,7 +95,7 @@ namespace OverhaulMod.Visuals
                 GameObject bagObject = new GameObject("WeaponBag");
                 bagObject.transform.SetParent(torso, false);
                 bagObject.transform.SetLocalTransform(Vector3.zero, Vector3.zero, Vector3.one * 0.75f);
-                bag = bagObject.transform;
+                Bag = bagObject.transform;
             }
             IsSupported = true;
         }
@@ -155,7 +155,7 @@ namespace OverhaulMod.Visuals
 
         public void AddRenderer(WeaponType weaponType, List<WeaponType> equippedWeapons, WeaponModel[] equippedWeaponModels)
         {
-            if (!WeaponToPosition.ContainsKey(weaponType) || equippedWeapons == null || equippedWeaponModels == null)
+            if (!WeaponPositions.ContainsKey(weaponType) || equippedWeapons == null || equippedWeaponModels == null)
                 return;
 
             WeaponModel weaponModel = null;
@@ -208,10 +208,10 @@ namespace OverhaulMod.Visuals
 
         public GameObject InstantiateNewRenderer(Transform transform, WeaponType weaponType)
         {
-            if (!WeaponToPosition.TryGetValue(weaponType, out TransformInfo transformInfo))
+            if (!WeaponPositions.TryGetValue(weaponType, out TransformInfo transformInfo))
                 return null;
 
-            Transform renderer = Instantiate(transform, bag, false);
+            Transform renderer = Instantiate(transform, Bag, false);
             renderer.SetLocalTransform(transformInfo);
             renderer.RandomizeLocalTransform(0.950f, 1.050f, false, true, false);
             return renderer.gameObject;

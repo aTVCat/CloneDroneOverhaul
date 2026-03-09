@@ -31,7 +31,7 @@ namespace OverhaulMod.UI
         [UIElement("KeyBindText", false)]
         private readonly Text _keyBindText;
 
-        public override bool refreshOnlyCursor => true;
+        public override bool RefreshOnlyCursor => true;
 
         private KeyCode _defaultKey;
         private KeyCode _setKey;

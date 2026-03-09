@@ -9,16 +9,20 @@ namespace OverhaulMod.Utils
     {
         public static readonly char[] SupportedCharacters = "1234567890()[]-_abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ".ToCharArray();
 
-        public static bool HasUnsupportedCharacters(string inputString)
+        public static bool HasUnsupportedCharacters(string inputString, out char unsupportedCharacter)
         {
             // https://www.dotnetperls.com/ascii-table
 
             foreach (char c in inputString)
             {
                 if (!SupportedCharacters.Contains(c))
+                {
+                    unsupportedCharacter = c;
                     return true;
+                }
             }
 
+            unsupportedCharacter = char.MinValue;
             return false;
         }
 

@@ -92,7 +92,7 @@ namespace OverhaulMod.UI
 
         public void AddSection(string name, string hexColor)
         {
-            Color color1 = ModParseUtils.TryParseToColor(hexColor, Color.white);
+            Color color1 = ModParseUtils.TryParseColor(hexColor, Color.white);
             Color color2 = color1;
             color2.a = 0.25f;
 

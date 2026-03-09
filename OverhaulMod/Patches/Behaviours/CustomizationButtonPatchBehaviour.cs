@@ -17,7 +17,7 @@ namespace OverhaulMod.Patches.Behaviours
             onLevelSpawned();
         }
 
-        public override void UnPatch()
+        public override void Unpatch()
         {
             GlobalEventManager.Instance.RemoveEventListener(GlobalEvents.LevelSpawned, onLevelSpawned);
         }

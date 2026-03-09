@@ -57,7 +57,7 @@ namespace OverhaulMod.Content.Personalization
             {
                 if (_assetsVersionFile == null)
                 {
-                    _assetsVersionFile = Path.Combine(ModCore.contentFolder, ASSETS_VERSION_FILE);
+                    _assetsVersionFile = Path.Combine(ModCore.ContentFolder, ASSETS_VERSION_FILE);
                 }
                 return _assetsVersionFile;
             }
@@ -70,7 +70,7 @@ namespace OverhaulMod.Content.Personalization
             {
                 if (_remoteAssetsVersionFile == null)
                 {
-                    _remoteAssetsVersionFile = Path.Combine(ModCore.contentFolder, REMOTE_ASSETS_VERSION_FILE);
+                    _remoteAssetsVersionFile = Path.Combine(ModCore.ContentFolder, REMOTE_ASSETS_VERSION_FILE);
                 }
                 return _remoteAssetsVersionFile;
             }
@@ -138,13 +138,13 @@ namespace OverhaulMod.Content.Personalization
                 _webRequest = null;
                 try
                 {
-                    if (!Directory.Exists(ModCore.customizationFolder))
+                    if (!Directory.Exists(ModCore.CustomizationFolder))
                     {
-                        _ = Directory.CreateDirectory(ModCore.customizationFolder);
+                        _ = Directory.CreateDirectory(ModCore.CustomizationFolder);
                     }
                     else
                     {
-                        foreach (string folder in Directory.GetDirectories(ModCore.customizationFolder))
+                        foreach (string folder in Directory.GetDirectories(ModCore.CustomizationFolder))
                         {
                             Directory.Delete(folder, true);
                         }
@@ -152,7 +152,7 @@ namespace OverhaulMod.Content.Personalization
                     /*
                     else
                     {
-                        foreach (var directory in Directory.GetDirectories(ModCore.customizationFolder))
+                        foreach (var directory in Directory.GetDirectories(ModCore.CustomizationFolder))
                         {
                             Directory.Delete(directory, true);
                         }
@@ -162,7 +162,7 @@ namespace OverhaulMod.Content.Personalization
                     ModFileUtils.WriteBytes(bytes, tempFile);
 
                     FastZip fastZip = new FastZip();
-                    fastZip.ExtractZip(tempFile, ModCore.customizationFolder, null);
+                    fastZip.ExtractZip(tempFile, ModCore.CustomizationFolder, null);
 
                     if (remoteAssetsInfo != null)
                     {

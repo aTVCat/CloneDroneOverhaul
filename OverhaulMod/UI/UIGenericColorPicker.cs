@@ -127,7 +127,7 @@ namespace OverhaulMod.UI
 
         public Action<Color> callback { get; set; }
 
-        public override bool enableCursor => true;
+        public override bool EnableCursor => true;
 
         protected override void OnInitialized()
         {
@@ -153,8 +153,8 @@ namespace OverhaulMod.UI
         {
             bool rgb = elementTab.tabId == "rgb";
 
-            UIElementTab oldTab = _tabs.prevSelectedTab;
-            UIElementTab newTab = _tabs.selectedTab;
+            UIElementTab oldTab = _tabs.PreviousSelectedTab;
+            UIElementTab newTab = _tabs.SelectedTab;
             if (oldTab)
             {
                 RectTransform rt = oldTab.transform as RectTransform;
@@ -205,7 +205,7 @@ namespace OverhaulMod.UI
             if (_disallowHexCodeFieldCallbacks)
                 return;
 
-            outputColor = ModParseUtils.TryParseToColor(value, Color.white);
+            outputColor = ModParseUtils.TryParseColor(value, Color.white);
             InvokeCallback();
         }
 

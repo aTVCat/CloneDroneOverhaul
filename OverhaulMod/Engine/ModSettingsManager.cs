@@ -33,7 +33,7 @@ namespace OverhaulMod.Engine
         {
             _idToDescription.Clear();
 
-            string fn = Path.Combine(ModCore.dataFolder, "settingDescriptions.txt");
+            string fn = Path.Combine(ModCore.DataFolder, "settingDescriptions.txt");
             if (File.Exists(fn))
             {
                 string content;

@@ -23,26 +23,23 @@ namespace OverhaulMod
 
         public static void Load()
         {
-            if (!HasToLoad())
+            ModDebug.Log("Attempted to load the mod");
+            if (ModManagers.Instance)
             {
                 ModManagers.Instance.TriggerModLoadedEvent();
                 return;
             }
 
             loadAssemblies();
+            createDirectories();
             loadGameUIThemeData();
 
-            ModLaunchOptions.Initialize();
+            ModBuild.Load();
             ModFeatures.CacheValues();
+            ModLaunchOptions.Initialize();
             ModUserInfo.Load();
-            ModBuildInfo.Load();
 
-            GameObject gameObject = new GameObject("OverhaulManagers", new Type[] { typeof(ModManagers) });
-            UnityEngine.Object.DontDestroyOnLoad(gameObject);
-
-            createDirectories();
             addManagers();
-            ModManagers.Instance.TriggerModLoadedEvent();
 
             loadMiscellaneousAssets();
             addLevelEditorObjects();
@@ -52,6 +49,8 @@ namespace OverhaulMod
             FPSManager.RefreshFPSCap();
 
             ModCore.RefreshCursor();
+
+            ModManagers.Instance.TriggerModLoadedEvent();
         }
 
         public static void Unload()
@@ -65,69 +64,89 @@ namespace OverhaulMod
 
         private static void addManagers()
         {
-            _ = ModManagers.NewSingleton<ModSettingsDataManager>();
-            _ = ModManagers.NewSingleton<ModSettingsManager>();
-            _ = ModManagers.NewSingleton<ModDataManager>();
-            _ = ModManagers.NewSingleton<RepositoryManager>();
-            _ = ModManagers.NewSingleton<GoogleDriveManager>();
-            _ = ModManagers.NewSingleton<ScheduledActionsManager>();
-            _ = ModManagers.NewSingleton<ExclusivePerkManager>();
-            _ = ModManagers.NewSingleton<ModLocalizationManager>();
-            _ = ModManagers.NewSingleton<ModAudioManager>();
-            _ = ModManagers.NewSingleton<ModAudioLibrary>();
-            _ = ModManagers.NewSingleton<ModResources>();
-            _ = ModManagers.NewSingleton<ModTime>();
-            _ = ModManagers.NewSingleton<ModUIManager>();
-            _ = ModManagers.NewSingleton<ModLevelManager>();
-            _ = ModManagers.NewSingleton<ModWeaponsManager>();
-            _ = ModManagers.NewSingleton<ModUpgradesManager>();
-            _ = ModManagers.NewSingleton<DifficultyTierManager>();
-            _ = ModManagers.NewSingleton<ModGameModifiersManager>();
-            _ = ModManagers.NewSingleton<TitleScreenCustomizationManager>();
+            GameObject managersObject = new GameObject("Overhaul Mod Managers");
+            ModManagers modManagers = managersObject.AddComponent<ModManagers>();
+            UnityEngine.Object.DontDestroyOnLoad(modManagers);
 
-            _ = ModManagers.NewSingleton<PostmanManager>();
-            _ = ModManagers.NewSingleton<AddonManager>();
-            _ = ModManagers.NewSingleton<UpdateManager>();
-            _ = ModManagers.NewSingleton<NewsManager>();
-            _ = ModManagers.NewSingleton<PersonalizationCacheManager>();
-            _ = ModManagers.NewSingleton<PersonalizationManager>();
-            _ = ModManagers.NewSingleton<PersonalizationEditorManager>();
-            _ = ModManagers.NewSingleton<PersonalizationEditorObjectManager>();
-            _ = ModManagers.NewSingleton<PersonalizationEditorCopyPasteManager>();
-            _ = ModManagers.NewSingleton<PersonalizationItemVerificationManager>();
-            _ = ModManagers.NewSingleton<PersonalizationEditorGuideManager>();
-            _ = ModManagers.NewSingleton<PersonalizationMultiplayerManager>();
-            _ = ModManagers.NewSingleton<PersonalizationEditorTemplateManager>();
-            _ = ModManagers.NewSingleton<PersonalizationEditorScreenshotManager>();
+            GameObject coreManagers = new GameObject("Core");
+            coreManagers.transform.SetParent(managersObject.transform, false);
+            modManagers.AddSingleton<ModResources>(coreManagers);
+            modManagers.AddSingleton<ModDataManager>(coreManagers);
+            modManagers.AddSingleton<ModSettingsDataManager>(coreManagers);
+            modManagers.AddSingleton<ModSettingsManager>(coreManagers);
+            modManagers.AddSingleton<ModAudioManager>(coreManagers);
+            modManagers.AddSingleton<ModAudioLibrary>(coreManagers);
+            modManagers.AddSingleton<ModTime>(coreManagers);
+            modManagers.AddSingleton<ModPhysicsManager>(coreManagers);
+            modManagers.AddSingleton<ModUIManager>(coreManagers);
+            modManagers.AddSingleton<CameraManager>(coreManagers);
+            modManagers.AddSingleton<PooledPrefabManager>(coreManagers);
+            modManagers.AddSingleton<ScheduledActionsManager>(coreManagers);
+            modManagers.AddSingleton<ModLocalizationManager>(coreManagers);
+            modManagers.AddSingleton<TransitionManager>(coreManagers);
 
-            _ = ModManagers.NewSingleton<WeatherManager>();
-            _ = ModManagers.NewSingleton<FloatingDustManager>();
-            _ = ModManagers.NewSingleton<FadingVoxelManager>();
+            GameObject gameplayManagers = new GameObject("Gameplay");
+            gameplayManagers.transform.SetParent(managersObject.transform, false);
+            modManagers.AddSingleton<ModUpgradesManager>(gameplayManagers);
+            modManagers.AddSingleton<ModWeaponsManager>(gameplayManagers);
+            modManagers.AddSingleton<ModLevelManager>(gameplayManagers);
+            modManagers.AddSingleton<DifficultyTierManager>(gameplayManagers);
+            modManagers.AddSingleton<ModGameModifiersManager>(gameplayManagers);
+            if (ModFeatures.IsEnabled(ModFeatures.FeatureType.RevertUpgrades)) modManagers.AddSingleton<UpgradeModesManager>(gameplayManagers);
+            modManagers.AddSingleton<AutoBuildManager>(gameplayManagers);
 
-            _ = ModManagers.NewSingleton<UseKeyTriggerManager>();
-            _ = ModManagers.NewSingleton<ArenaRemodelManager>();
-            _ = ModManagers.NewSingleton<ArenaAudienceManager>();
-            _ = ModManagers.NewSingleton<LightingTransitionManager>();
-            _ = ModManagers.NewSingleton<AdvancedPhotoModeManager>();
-            if (ModFeatures.IsEnabled(ModFeatures.FeatureType.RevertUpgrades)) _ = ModManagers.NewSingleton<UpgradeModesManager>();
-            _ = ModManagers.NewSingleton<TransitionManager>();
-            _ = ModManagers.NewSingleton<CameraManager>();
-            _ = ModManagers.NewSingleton<RichPresenceManager>();
-            _ = ModManagers.NewSingleton<PooledPrefabManager>();
-            _ = ModManagers.NewSingleton<AdditionalSkyboxesManager>();
-            _ = ModManagers.NewSingleton<RealisticLightingManager>();
-            _ = ModManagers.NewSingleton<ParticleManager>();
-            _ = ModManagers.NewSingleton<PostEffectsManager>();
-            _ = ModManagers.NewSingleton<QualityManager>();
-            _ = ModManagers.NewSingleton<FPSManager>();
-            _ = ModManagers.NewSingleton<AutoBuildManager>();
+            GameObject visualManagers = new GameObject("Visuals");
+            visualManagers.transform.SetParent(managersObject.transform, false);
+            modManagers.AddSingleton<QualityManager>(visualManagers);
+            modManagers.AddSingleton<FPSManager>(visualManagers);
+            modManagers.AddSingleton<PostEffectsManager>(visualManagers);
+            modManagers.AddSingleton<ParticleManager>(visualManagers);
+            modManagers.AddSingleton<VoxelFadingManager>(visualManagers);
 
-            _ = ModManagers.NewSingleton<ModPhysicsManager>();
+            GameObject environmentManagers = new GameObject("Environment");
+            environmentManagers.transform.SetParent(visualManagers.transform, false);
+            modManagers.AddSingleton<AdditionalSkyboxesManager>(environmentManagers);
+            modManagers.AddSingleton<RealisticLightingManager>(environmentManagers);
+            modManagers.AddSingleton<LightingTransitionManager>(environmentManagers);
+            modManagers.AddSingleton<FloatingDustManager>(environmentManagers);
+            modManagers.AddSingleton<WeatherManager>(environmentManagers);
+            modManagers.AddSingleton<ArenaRemodelManager>(environmentManagers);
+            modManagers.AddSingleton<ArenaAudienceManager>(environmentManagers);
+
+            GameObject contentManagers = new GameObject("Content");
+            contentManagers.transform.SetParent(managersObject.transform, false);
+            modManagers.AddSingleton<RepositoryManager>(contentManagers);
+            modManagers.AddSingleton<GoogleDriveManager>(contentManagers);
+            modManagers.AddSingleton<PostmanManager>(contentManagers);
+            modManagers.AddSingleton<ExclusivePerkManager>(contentManagers);
+            modManagers.AddSingleton<AddonManager>(contentManagers);
+            modManagers.AddSingleton<UpdateManager>(contentManagers);
+            modManagers.AddSingleton<NewsManager>(contentManagers);
+
+            GameObject personalizationManagers = new GameObject("Customization");
+            personalizationManagers.transform.SetParent(managersObject.transform, false);
+            modManagers.AddSingleton<TitleScreenCustomizationManager>(personalizationManagers);
+            modManagers.AddSingleton<PersonalizationCacheManager>(personalizationManagers);
+            modManagers.AddSingleton<PersonalizationManager>(personalizationManagers);
+            modManagers.AddSingleton<PersonalizationEditorManager>(personalizationManagers);
+            modManagers.AddSingleton<PersonalizationEditorObjectManager>(personalizationManagers);
+            modManagers.AddSingleton<PersonalizationEditorCopyPasteManager>(personalizationManagers);
+            modManagers.AddSingleton<PersonalizationEditorGuideManager>(personalizationManagers);
+            modManagers.AddSingleton<PersonalizationEditorTemplateManager>(personalizationManagers);
+            modManagers.AddSingleton<PersonalizationEditorScreenshotManager>(personalizationManagers);
+            modManagers.AddSingleton<PersonalizationItemVerificationManager>(personalizationManagers);
+            modManagers.AddSingleton<PersonalizationMultiplayerManager>(personalizationManagers);
+
+            GameObject miscManagers = new GameObject("Misc.");
+            miscManagers.transform.SetParent(managersObject.transform, false);
+            modManagers.AddSingleton<AdvancedPhotoModeManager>(miscManagers);
+            modManagers.AddSingleton<UseKeyTriggerManager>(miscManagers);
+            modManagers.AddSingleton<RichPresenceManager>(miscManagers);
         }
 
         private static void loadAssemblies()
         {
-            LevelEditorPatch.Patch.Apply();
+            Patch.Apply();
             ModIntegrationUtils.Load();
         }
 
@@ -141,10 +160,10 @@ namespace OverhaulMod
         {
             if (!s_hasAddedObjects)
             {
-                Patch.AddObject("WeatherSettingsOverride", "OverhaulMod", "", GameObject.CreatePrimitive(PrimitiveType.Cylinder).transform, new Type[] { typeof(LevelEditorWeatherSettingsOverride) }, Path.Combine(ModCore.editorTexturesFolder, "WeatherSettingsOverride.png"));
+                Patch.AddObject("WeatherSettingsOverride", "OverhaulMod", "", GameObject.CreatePrimitive(PrimitiveType.Cylinder).transform, new Type[] { typeof(LevelEditorWeatherSettingsOverride) }, Path.Combine(ModCore.EditorTexturesFolder, "WeatherSettingsOverride.png"));
 
                 /*
-                if (ModBuildInfo.debug)
+                if (ModBuild.IsDebugBuild)
                     Patch.AddObject("ArenaAudienceLinePoint", "OverhaulMod", "", GameObject.CreatePrimitive(PrimitiveType.Sphere).transform, new Type[] { typeof(ArenaAudienceLinePoint) }, null);*/
 
                 s_hasAddedObjects = true;
@@ -153,8 +172,7 @@ namespace OverhaulMod
 
         public static void AddLevelObjectListeners()
         {
-            if (s_hasInitializedTVCatLibrary)
-                return;
+            if (s_hasInitializedTVCatLibrary) return;
 
             TVCat.CloneDrone.ObjectPlacedInLevelUtils.AddPreInitializeCallback(onLevelObjectPreInitialized);
             s_hasInitializedTVCatLibrary = true;
@@ -162,8 +180,7 @@ namespace OverhaulMod
 
         public static void RemoveLevelObjectListeners()
         {
-            if (!s_hasInitializedTVCatLibrary)
-                return;
+            if (!s_hasInitializedTVCatLibrary) return;
 
             TVCat.CloneDrone.ObjectPlacedInLevelUtils.RemovePreInitializeCallback(onLevelObjectPreInitialized);
             s_hasInitializedTVCatLibrary = false;
@@ -180,13 +197,13 @@ namespace OverhaulMod
 
         private static void createDirectories()
         {
-            _ = ModFileUtils.CreateDirectoryIfNotExists(ModCore.modUserDataFolder);
-            _ = ModFileUtils.CreateDirectoryIfNotExists(ModCore.contentFolder);
-            _ = ModFileUtils.CreateDirectoryIfNotExists(ModCore.savesFolder);
-            _ = ModFileUtils.CreateDirectoryIfNotExists(ModCore.addonsFolder);
-            _ = ModFileUtils.CreateDirectoryIfNotExists(ModCore.customizationFolder);
-            _ = ModFileUtils.CreateDirectoryIfNotExists(ModCore.customizationPersistentFolder);
-            _ = ModFileUtils.CreateDirectoryIfNotExists(ModCore.developerFolder);
+            _ = ModFileUtils.CreateDirectoryIfNotExists(ModCore.ModUserDataFolder);
+            _ = ModFileUtils.CreateDirectoryIfNotExists(ModCore.ContentFolder);
+            _ = ModFileUtils.CreateDirectoryIfNotExists(ModCore.SavesFolder);
+            _ = ModFileUtils.CreateDirectoryIfNotExists(ModCore.AddonsFolder);
+            _ = ModFileUtils.CreateDirectoryIfNotExists(ModCore.CustomizationFolder);
+            _ = ModFileUtils.CreateDirectoryIfNotExists(ModCore.CustomizationPersistentFolder);
+            _ = ModFileUtils.CreateDirectoryIfNotExists(ModCore.DeveloperFolder);
         }
 
         private static void addListeners()
@@ -293,8 +310,7 @@ namespace OverhaulMod
 
         private static void loadGameUIThemeData()
         {
-            if (ModCache.gameUIThemeData)
-                return;
+            if (ModCache.gameUIThemeData) return;
 
             GameUIThemeData gameUIThemeData = null;
             foreach (SelectableUI selectableUi in Resources.FindObjectsOfTypeAll<SelectableUI>())
@@ -315,11 +331,6 @@ namespace OverhaulMod
                 gameUIThemeData.ButtonTextOutline[1].Color = new Color(0.1f, 0.1f, 0.1f, 0.6f);
                 ModCache.gameUIThemeData = gameUIThemeData;
             }
-        }
-
-        public static bool HasToLoad()
-        {
-            return !ModManagers.Instance;
         }
     }
 }

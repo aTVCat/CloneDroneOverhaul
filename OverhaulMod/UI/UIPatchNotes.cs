@@ -58,9 +58,9 @@ namespace OverhaulMod.UI
 
         private Image _shading;
 
-        public override bool hideTitleScreen => true;
+        public override bool HideTitleScreen => true;
 
-        public override bool closeOnEscapeButtonPress => _allowHidingThisMenu;
+        public override bool CloseOnEscapeButtonPress => _allowHidingThisMenu;
 
         private bool _allowHidingThisMenu;
 
@@ -74,7 +74,7 @@ namespace OverhaulMod.UI
             _shading = base.GetComponent<Image>();
             _textLine.gameObject.AddComponent<BetterOutline>().effectColor = Color.black;
 
-            string path = Path.Combine(ModCore.dataFolder, "changelogs");
+            string path = Path.Combine(ModCore.DataFolder, "changelogs");
             if (!Directory.Exists(path)) return;
 
             List<Version> versions = new List<Version>();
@@ -83,7 +83,7 @@ namespace OverhaulMod.UI
                 string dirName = ModFileUtils.GetDirectoryName(directory);
                 if (!Version.TryParse(dirName, out Version version)) version = new Version(0, 0, 0);
 
-                if (ModBuildInfo.version < version) continue;
+                if (ModBuild.Version < version) continue;
 
                 versions.Add(version);
             }
@@ -94,8 +94,8 @@ namespace OverhaulMod.UI
 
             versions.Sort(CompareByVersion);
 
-            int majorVersion = ModBuildInfo.versionMinor;
-            int minorVersion = ModBuildInfo.versionBuild;
+            int majorVersion = ModBuild.VersionMinor;
+            int minorVersion = ModBuild.VersionBuild;
             foreach (Version version in versions)
             {
                 string updateString;
@@ -150,7 +150,7 @@ namespace OverhaulMod.UI
         {
             base.Hide();
 
-            ModSettingsManager.SetStringValue(ModSettingsConstants.LAST_BUILD_CHANGELOG_WAS_SHOWN, ModBuildInfo.version.ToString());
+            ModSettingsManager.SetStringValue(ModSettingsConstants.LAST_BUILD_CHANGELOG_WAS_SHOWN, ModBuild.Version.ToString());
             ModSettingsDataManager.Instance.Save();
         }
 
@@ -229,7 +229,7 @@ namespace OverhaulMod.UI
 
         public void PopulateChangelog(string updateString, string header, string folderName)
         {
-            string path = Path.Combine(ModCore.dataFolder, "changelogs", folderName);
+            string path = Path.Combine(ModCore.DataFolder, "changelogs", folderName);
             string langCode = LocalizationManager.Instance.GetCurrentLanguageCode();
             if (langCode != "ru" && langCode != "en")
                 langCode = "en";
@@ -369,7 +369,7 @@ namespace OverhaulMod.UI
                 case "4.2.1052":
                     return $"{patch} 10";
                 case "4.2.1065":
-                    return $"{patch} 11";
+                    return $"{patch} 11 Test";
 
                 default:
                     return string.Empty;

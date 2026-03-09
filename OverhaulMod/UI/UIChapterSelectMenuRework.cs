@@ -52,7 +52,7 @@ namespace OverhaulMod.UI
         [UIElement("ContinueText")]
         private readonly Text _continueButtonText;
 
-        public override bool refreshOnlyCursor => true;
+        public override bool RefreshOnlyCursor => true;
 
         public override void Show()
         {

@@ -74,9 +74,9 @@ namespace OverhaulMod.UI
 
         public string InspectorWindowID, DeveloperWindowID, ObjectPropertiesWindowID;
 
-        public override bool enableCursor => true;
+        public override bool EnableCursor => true;
 
-        public override bool closeOnEscapeButtonPress => false;
+        public override bool CloseOnEscapeButtonPress => false;
 
         public static UIPersonalizationEditor instance
         {

@@ -6,36 +6,36 @@ namespace OverhaulMod
 {
     public class ModBehaviour : MonoBehaviour
     {
-        private ModdedObject _moddedObject;
-        public ModdedObject moddedObjectReference
+        private ModdedObject _moddedObjectComponent;
+        public ModdedObject ModdedObjectComponent
         {
             get
             {
-                if (!_moddedObject)
+                if (!_moddedObjectComponent)
                 {
-                    _moddedObject = base.GetComponent<ModdedObject>();
+                    _moddedObjectComponent = base.GetComponent<ModdedObject>();
                 }
-                return _moddedObject;
+                return _moddedObjectComponent;
             }
         }
 
         public T GetObject<T>(int index) where T : UnityEngine.Object
         {
-            return moddedObjectReference.GetObject<T>(index);
+            return ModdedObjectComponent.GetObject<T>(index);
         }
         public UnityEngine.Object GetObject(int index, Type type)
         {
-            return moddedObjectReference.GetObject(type, index);
+            return ModdedObjectComponent.GetObject(type, index);
         }
 
         public T GetObject<T>(string name) where T : UnityEngine.Object
         {
-            return moddedObjectReference.GetObject<T>(name);
+            return ModdedObjectComponent.GetObject<T>(name);
         }
 
         public UnityEngine.Object GetObject(string name, Type type)
         {
-            return moddedObjectReference.GetObject(type, name);
+            return ModdedObjectComponent.GetObject(type, name);
         }
 
         public virtual void Awake()

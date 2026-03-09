@@ -18,7 +18,7 @@ namespace OverhaulMod.UI
 
         private Action _closedCallback;
 
-        public override bool enableCursor => true;
+        public override bool EnableCursor => true;
 
         public override void Hide()
         {

@@ -294,7 +294,7 @@
     <Compile Include="Engine\ModSettingsManager.cs" />
     <Compile Include="Content\UpdateInfoList.cs" />
     <Compile Include="Content\UpdateInfo.cs" />
-    <Compile Include="Engine\FadingVoxelManager.cs" />
+    <Compile Include="Engine\VoxelFadingManager.cs" />
     <Compile Include="Engine\PooledPrefabBehaviour.cs" />
     <Compile Include="Engine\PooledPrefabInfo.cs" />
     <Compile Include="Engine\PooledPrefabManager.cs" />
@@ -323,7 +323,6 @@
     <Compile Include="Content\ExclusivePerkManager.cs" />
     <Compile Include="Engine\ModLevelManager.cs" />
     <Compile Include="Content\NewsManager.cs" />
-    <Compile Include="ModFeaturesData.cs" />
     <Compile Include="ModLaunchOptions.cs" />
     <Compile Include="ModLoader.cs" />
     <Compile Include="ModTime.cs" />
@@ -578,7 +577,7 @@
     <Compile Include="ModUIManager.cs" />
     <Compile Include="Combat\ModUpgradesManager.cs" />
     <Compile Include="Combat\ModWeaponsManager.cs" />
-    <Compile Include="ModBuildInfo.cs" />
+    <Compile Include="ModBuild.cs" />
     <Compile Include="Utils\ModCache.cs" />
     <Compile Include="ModCore.cs" />
     <Compile Include="ModFeatures.cs" />
@@ -586,7 +585,6 @@
     <Compile Include="ModResources.cs" />
     <Compile Include="Patches\Behaviours\GameModeCardsPatchBehaviour.cs" />
     <Compile Include="Patches\Behaviours\GamePatchBehaviour.cs" />
-    <Compile Include="Utils\ModPrefabUtils.cs" />
     <Compile Include="UI\UIEndlessModeLeaderboard.cs" />
     <Compile Include="UI\UIEndlessModeMenu.cs" />
     <Compile Include="UI\OverhaulUIBehaviour.cs" />

@@ -41,7 +41,7 @@ namespace OverhaulMod.Patches.Behaviours
             }
         }
 
-        public override void UnPatch()
+        public override void Unpatch()
         {
             Transform transform = targetTransform;
             if (transform)

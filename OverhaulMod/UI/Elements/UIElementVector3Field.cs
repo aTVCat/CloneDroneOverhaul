@@ -50,7 +50,7 @@ namespace OverhaulMod.UI
             if (_disableCallbacks)
                 return;
 
-            onXChanged(ModParseUtils.TryParseToFloat(val, 0f));
+            onXChanged(ModParseUtils.TryParseFloat(val, 0f));
         }
 
         public void OnYFieldChanged(string val)
@@ -58,7 +58,7 @@ namespace OverhaulMod.UI
             if (_disableCallbacks)
                 return;
 
-            onYChanged(ModParseUtils.TryParseToFloat(val, 0f));
+            onYChanged(ModParseUtils.TryParseFloat(val, 0f));
         }
 
         public void OnZFieldChanged(string val)
@@ -66,7 +66,7 @@ namespace OverhaulMod.UI
             if (_disableCallbacks)
                 return;
 
-            onZChanged(ModParseUtils.TryParseToFloat(val, 0f));
+            onZChanged(ModParseUtils.TryParseFloat(val, 0f));
         }
 
         private void onXChanged(float val)

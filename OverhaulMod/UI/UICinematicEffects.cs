@@ -22,8 +22,8 @@ namespace OverhaulMod.UI
 
         private PhotoManager _photoManager;
 
-        public override bool refreshOnlyCursor => true;
-        public override bool closeOnEscapeButtonPress => false;
+        public override bool RefreshOnlyCursor => true;
+        public override bool CloseOnEscapeButtonPress => false;
 
         public bool borders { get; set; }
 

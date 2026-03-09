@@ -7,12 +7,12 @@ namespace OverhaulMod.Utils
         public const string UI_PREFIX = "ModUI_";
 
         /// <summary>
-        /// <see cref="Engine.FadingVoxelManager"/>
+        /// <see cref="Engine.VoxelFadingManager"/>
         /// </summary>
         public const string ENABLE_VOXEL_FIRE_FADING = "EnableVoxelFireFading";
 
         /// <summary>
-        /// <see cref="Engine.FadingVoxelManager"/>
+        /// <see cref="Engine.VoxelFadingManager"/>
         /// </summary>
         public const string ENABLE_VOXEL_BURNING = "EnableVoxelBurning";
 

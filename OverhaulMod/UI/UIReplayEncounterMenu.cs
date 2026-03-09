@@ -35,7 +35,7 @@ namespace OverhaulMod.UI
             private set;
         }
 
-        public override bool refreshOnlyCursor => true;
+        public override bool RefreshOnlyCursor => true;
 
         protected override void OnInitialized()
         {

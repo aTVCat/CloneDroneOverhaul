@@ -28,7 +28,7 @@ namespace OverhaulMod.UI
         [UIElement("CurrentGameplayProgress")]
         private readonly Text _progressText;
 
-        public override bool refreshOnlyCursor => true;
+        public override bool RefreshOnlyCursor => true;
 
         public void RefreshProgressDisplays()
         {

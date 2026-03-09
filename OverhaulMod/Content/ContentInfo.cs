@@ -3,7 +3,7 @@
 namespace OverhaulMod.Content
 {
     /// <summary>
-    /// Old version of <see cref="AddonDownloadInfo"/>. It is used to store legacy addons data
+    /// Old Version of <see cref="AddonDownloadInfo"/>. It is used to store legacy addons data
     /// </summary>
     public class ContentInfo
     {

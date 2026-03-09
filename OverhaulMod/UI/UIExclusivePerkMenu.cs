@@ -28,7 +28,7 @@ namespace OverhaulMod.UI
         [UIElement("NothingIndicator")]
         private readonly GameObject _nothingIndicator;
 
-        public override bool hideTitleScreen => true;
+        public override bool HideTitleScreen => true;
 
         public override void Show()
         {

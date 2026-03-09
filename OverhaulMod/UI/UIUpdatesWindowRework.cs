@@ -60,11 +60,11 @@ namespace OverhaulMod.UI
         [UIElement("Content")]
         private readonly Transform _content;
 
-        public override bool hideTitleScreen => true;
+        public override bool HideTitleScreen => true;
 
         protected override void OnInitialized()
         {
-            _installedVersionText.text = ModBuildInfo.versionStringNoBranch;
+            _installedVersionText.text = ModBuild.VersionString;
             _checkUpdatesOnStartToggle.isOn = UpdateManager.CheckForUpdatesOnStartup;
             _notifyAboutTestBuildsToggle.isOn = UpdateManager.NotifyAboutNewTestBuilds;
             _notifyAboutTestBuildsToggle.interactable = UpdateManager.CheckForUpdatesOnStartup;

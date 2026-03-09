@@ -77,7 +77,7 @@ namespace OverhaulMod.Engine
 
         public bool ShouldLockUserCustomization()
         {
-            return ModBuildInfo.ShouldShowHypocrisis3Special();
+            return ModBuild.ShouldShowHypocrisis3Special();
         }
 
         public void StopTitleScreenMusic()
@@ -273,7 +273,7 @@ namespace OverhaulMod.Engine
             if (list.IsNullOrEmpty() || MusicTrackIndex < 0 || MusicTrackIndex >= list.Count)
                 return;
 
-            bool isHcModEnabled = ModBuildInfo.ShouldShowHypocrisis3Special();
+            bool isHcModEnabled = ModBuild.ShouldShowHypocrisis3Special();
             if (!isHcModEnabled && MusicTrackIndex == 0)
             {
                 AudioManager.Instance.StopMusic();

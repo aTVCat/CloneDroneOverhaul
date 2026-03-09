@@ -13,7 +13,7 @@ namespace OverhaulMod.Patches
         private static void onSignedIn_Postfix(WorldAudioSource __instance)
         {
             UISettingsMenuRework settingsMenuRework = ModUIManager.Instance.Get<UISettingsMenuRework>(AssetBundleConstants.UI, ModUIConstants.UI_SETTINGS_MENU);
-            if (settingsMenuRework && settingsMenuRework.isVisible && settingsMenuRework.GetSelectedTabID() == "Advanced")
+            if (settingsMenuRework && settingsMenuRework.IsVisible && settingsMenuRework.GetSelectedTabID() == "Advanced")
                 settingsMenuRework.PopulatePage("Advanced");
         }
     }

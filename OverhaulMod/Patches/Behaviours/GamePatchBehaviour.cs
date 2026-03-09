@@ -9,9 +9,7 @@ namespace OverhaulMod.Patches.Behaviours
 
         public static void Load()
         {
-            Unload();
-
-            GameObject gameObject = new GameObject("PatchBehaviours", new Type[]
+            s_gameObject = new GameObject("Overhaul Patches", new Type[]
             {
                 typeof(GameModeCardsPatchBehaviour),
                 typeof(ProjectilePatchBehaviour),
@@ -26,8 +24,6 @@ namespace OverhaulMod.Patches.Behaviours
                 typeof(CustomizationButtonPatchBehaviour),
                 typeof(CloneDroneLogoParticlesBehaviour),
             });
-            gameObject.transform.SetParent(ModManagers.Instance.transform);
-            s_gameObject = gameObject;
         }
 
         public static void Unload()
@@ -58,15 +54,14 @@ namespace OverhaulMod.Patches.Behaviours
 
         }
 
-        public virtual void UnPatch()
+        public virtual void Unpatch()
         {
 
         }
 
         public override void OnDestroy()
         {
-            if (!ModCore.isEnabled)
-                UnPatch();
+            if (!ModCore.IsEnabled) Unpatch();
         }
     }
 }

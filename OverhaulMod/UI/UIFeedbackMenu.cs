@@ -82,7 +82,7 @@ namespace OverhaulMod.UI
         [UIElement("charLeftText_Favorite")]
         private readonly Text _favoriteFieldCharsLeftText;
 
-        public override bool hideTitleScreen => true;
+        public override bool HideTitleScreen => true;
 
         private bool _refreshElementsNextFrame;
 

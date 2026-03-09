@@ -9,9 +9,9 @@ namespace OverhaulMod.UI
     {
         public static bool HasSentReport;
 
-        public override bool enableCursor => true;
+        public override bool EnableCursor => true;
 
-        public override bool closeOnEscapeButtonPress => false;
+        public override bool CloseOnEscapeButtonPress => false;
 
         [UIElement("StackTrace")]
         private readonly Text _stackTraceText;

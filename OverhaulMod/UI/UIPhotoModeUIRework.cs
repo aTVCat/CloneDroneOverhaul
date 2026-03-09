@@ -161,9 +161,9 @@ namespace OverhaulMod.UI
 
         private List<GarbageTarget> _garbageTargets;
 
-        public override bool closeOnEscapeButtonPress => false;
+        public override bool CloseOnEscapeButtonPress => false;
 
-        public override bool enableCursor => true;
+        public override bool EnableCursor => true;
 
         protected override void OnInitialized()
         {

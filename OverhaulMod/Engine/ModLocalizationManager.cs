@@ -31,7 +31,7 @@ namespace OverhaulMod.Engine
 
             try
             {
-                info = ModJsonUtils.DeserializeStream<ModLocalizationInfo>(Path.Combine(ModCore.dataFolder, FILE_NAME));
+                info = ModJsonUtils.DeserializeStream<ModLocalizationInfo>(Path.Combine(ModCore.DataFolder, FILE_NAME));
             }
             catch
             {
@@ -58,7 +58,7 @@ namespace OverhaulMod.Engine
             ModLocalizationInfo info = _localizationInfo;
             if (info != null)
             {
-                ModJsonUtils.WriteStream(Path.Combine(ModCore.dataFolder, FILE_NAME), info);
+                ModJsonUtils.WriteStream(Path.Combine(ModCore.DataFolder, FILE_NAME), info);
             }
         }
 

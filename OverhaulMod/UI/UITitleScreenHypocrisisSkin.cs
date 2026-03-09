@@ -68,7 +68,7 @@ namespace OverhaulMod.UI
         [UIElement("RestartButton")]
         private readonly Button _restartButton;
 
-        public override bool closeOnEscapeButtonPress => false;
+        public override bool CloseOnEscapeButtonPress => false;
 
         private bool _getCallbacks;
 

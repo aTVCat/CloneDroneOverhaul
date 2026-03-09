@@ -55,7 +55,7 @@ namespace OverhaulMod.UI
         [TabManager(typeof(UIElementTab), null, null, null, nameof(OnTabSelected))]
         private readonly TabManager _tabs;
 
-        public override bool hideTitleScreen => true;
+        public override bool HideTitleScreen => true;
 
         private bool _hasUpdatedLabels;
 
@@ -72,8 +72,8 @@ namespace OverhaulMod.UI
         {
             bool local = elementTab.tabId == "local advancements";
 
-            UIElementTab oldTab = _tabs.prevSelectedTab;
-            UIElementTab newTab = _tabs.selectedTab;
+            UIElementTab oldTab = _tabs.PreviousSelectedTab;
+            UIElementTab newTab = _tabs.SelectedTab;
             if (oldTab)
             {
                 RectTransform rt = oldTab.transform as RectTransform;
@@ -160,11 +160,11 @@ namespace OverhaulMod.UI
                 return;
             }
 
-            _tabs.interactable = false;
+            _tabs.IsInteractable = false;
             _loadingIndicator.SetActive(true);
             ModSteamUserStatsUtils.RefreshAllStats(delegate (bool result)
             {
-                _tabs.interactable = true;
+                _tabs.IsInteractable = true;
                 _loadingIndicator.SetActive(false);
                 if (!result)
                 {

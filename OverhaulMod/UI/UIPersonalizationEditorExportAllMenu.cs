@@ -73,7 +73,7 @@ namespace OverhaulMod.UI
             string folder;
             if (string.IsNullOrEmpty(ExportFolderPath))
             {
-                folder = ModCore.savesFolder;
+                folder = ModCore.SavesFolder;
             }
             else
             {
@@ -87,7 +87,7 @@ namespace OverhaulMod.UI
             }
 
             FastZip fastZip = new FastZip();
-            fastZip.CreateZip(Path.Combine(folder, "customization.zip"), ModCore.customizationFolder, true, string.Empty);
+            fastZip.CreateZip(Path.Combine(folder, "customization.zip"), ModCore.CustomizationFolder, true, string.Empty);
 
             PersonalizationAssetsInfo personalizationAssetsInfo = new PersonalizationAssetsInfo
             {

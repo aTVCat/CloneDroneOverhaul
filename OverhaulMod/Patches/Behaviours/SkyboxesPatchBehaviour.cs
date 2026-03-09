@@ -14,7 +14,7 @@ namespace OverhaulMod.Patches.Behaviours
             _ = ModActionUtils.RunCoroutine(patchCoroutine());
         }
 
-        public override void UnPatch()
+        public override void Unpatch()
         {
             ModAdvancedCache.Remove("Chapter4Skybox_Rework");
             ModAdvancedCache.Remove("Chapter5Skybox_Rework");

@@ -77,7 +77,7 @@ namespace OverhaulMod.UI
         [UIElement("GarbageBotSkinDropdownOverlay")]
         private readonly GameObject _garbageBotSkinDropdownOverlayObject;
 
-        public override bool refreshOnlyCursor => true;
+        public override bool RefreshOnlyCursor => true;
 
         public GameMode displayingGameMode
         {

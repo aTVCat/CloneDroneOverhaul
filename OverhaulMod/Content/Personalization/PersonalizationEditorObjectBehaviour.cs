@@ -153,7 +153,7 @@ namespace OverhaulMod.Content.Personalization
                 return (T)(object)Convert.ToInt32(obj);
 
             if (typeof(T) == typeof(Color) && obj is string str)
-                return (T)(object)ModParseUtils.TryParseToColor(str, Color.white);
+                return (T)(object)ModParseUtils.TryParseColor(str, Color.white);
 
             return (T)obj;
         }

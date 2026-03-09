@@ -138,7 +138,7 @@ namespace OverhaulMod.Utils
         public static UITitleScreenRework ShowTitleScreenReworkIfHaventBefore()
         {
             UITitleScreenRework result = ModUIManager.Instance.Get<UITitleScreenRework>(AssetBundleConstants.UI, UI_TITLE_SCREEN);
-            if (result && result.isVisible)
+            if (result && result.IsVisible)
                 return result;
 
             return ModUIManager.Instance.Show<UITitleScreenRework>(AssetBundleConstants.UI, UI_TITLE_SCREEN, ModUIManager.UILayer.AfterTitleScreen);

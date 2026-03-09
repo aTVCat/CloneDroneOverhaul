@@ -21,7 +21,7 @@ namespace OverhaulMod
             Info info;
             try
             {
-                info = ModJsonUtils.DeserializeStream<Info>(Path.Combine(ModCore.modUserDataFolder, FILE_NAME));
+                info = ModJsonUtils.DeserializeStream<Info>(Path.Combine(ModCore.ModUserDataFolder, FILE_NAME));
             }
             catch
             {
@@ -52,7 +52,7 @@ namespace OverhaulMod
             }
 
             if (hasChanged)
-                ModJsonUtils.WriteStream(Path.Combine(ModCore.modUserDataFolder, FILE_NAME), s_info);
+                ModJsonUtils.WriteStream(Path.Combine(ModCore.ModUserDataFolder, FILE_NAME), s_info);
         }
 
         private static CSteamID s_localPlayerSteamID;

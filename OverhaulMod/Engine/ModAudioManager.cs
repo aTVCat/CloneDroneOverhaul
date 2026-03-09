@@ -68,7 +68,7 @@ namespace OverhaulMod.Engine
 
         private void Update()
         {
-            if (ModBuildInfo.debug)
+            if (ModBuild.IsDebugBuild)
             {
                 UIDeveloperMenu.SetKeyValue("Master volume", (_masterVolume * (MuteMasterVolumeWhenUnfocused ? _volumeMultiplier : 1f)).ToString());
                 UIDeveloperMenu.SetKeyValue("Music volume", (_musicVolume * (MuteMusicWhenUnfocused && !MuteMasterVolumeWhenUnfocused ? _volumeMultiplier : 1f)).ToString());

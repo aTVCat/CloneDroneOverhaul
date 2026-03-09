@@ -1,6 +1,8 @@
 ﻿using OverhaulMod.Engine;
 using OverhaulMod.UI;
 using OverhaulMod.Utils;
+using System.Collections.Generic;
+using System.Diagnostics;
 using UnityEngine;
 
 namespace OverhaulMod
@@ -10,31 +12,35 @@ namespace OverhaulMod
         [ModSetting(ModSettingsConstants.SHOW_MOD_SETUP_SCREEN_ON_START, true)]
         public static bool ShowModSetupScreenOnStart;
 
+        private List<IGameLoadListener> _gameLoadListeners;
+
+        private List<IModLoadListener> _modLoadListeners;
+
         public override void Awake()
         {
             base.Awake();
 
-            ModCore.GameInitialized += onGameInitialized;
+            _gameLoadListeners = new List<IGameLoadListener>();
+            _modLoadListeners = new List<IModLoadListener>();
 
             _ = base.gameObject.AddComponent<UIDeveloperMenu>();
         }
 
-        private void OnDestroy()
-        {
-            ModCore.GameInitialized -= onGameInitialized;
-        }
-
-        private void onGameInitialized()
-        {
-            TriggerGameLoadedEvent();
-        }
-
         public void TriggerModLoadedEvent()
         {
-            foreach (MonoBehaviour behaviour in base.GetComponents<MonoBehaviour>())
+            ModDebug.Log($"Triggering OnModLoaded event");
+            for (int i = 0; i < _modLoadListeners.Count; i++)
             {
-                if (behaviour is IModLoadListener modLoadListener)
-                    modLoadListener.OnModLoaded();
+                _modLoadListeners[i].OnModLoaded();
+            }
+        }
+
+        public void TriggerGameLoadedEvent()
+        {
+            ModDebug.Log($"Triggering OnGameLoaded event");
+            for (int i = 0; i < _gameLoadListeners.Count; i++)
+            {
+                _gameLoadListeners[i].OnGameLoaded();
             }
         }
 
@@ -43,23 +49,14 @@ namespace OverhaulMod
             GlobalEventManager.Instance.Dispatch(Content.AddonManager.ADDON_DOWNLOADED_EVENT, errorString);
         }
 
-        public void TriggerGameLoadedEvent()
+        public void AddSingleton<T>(GameObject gameObject) where T : Singleton<T>
         {
-            foreach (MonoBehaviour behaviour in base.GetComponents<MonoBehaviour>())
-            {
-                if (behaviour is IGameLoadListener gameLoadListener)
-                    gameLoadListener.OnGameLoaded();
-            }
-        }
+            GameObject newGameObject = new GameObject(typeof(T).Name);
+            newGameObject.transform.SetParent(gameObject.transform, false);
+            T singletonInstance = newGameObject.AddComponent<T>();
 
-        public static T NewSingleton<T>() where T : Singleton<T>
-        {
-            return Instance.gameObject.AddComponent<T>();
-        }
-
-        public static T NewBoltSingleton<T>() where T : BoltGlobalEventListenerSingleton<T>
-        {
-            return Instance.gameObject.AddComponent<T>();
+            if (singletonInstance is IGameLoadListener gameLoadListener) _gameLoadListeners.Add(gameLoadListener);
+            if (singletonInstance is IModLoadListener modLoadListener) _modLoadListeners.Add(modLoadListener);
         }
     }
 }

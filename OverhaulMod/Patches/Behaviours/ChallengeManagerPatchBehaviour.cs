@@ -29,7 +29,7 @@ namespace OverhaulMod.Patches.Behaviours
             }
         }
 
-        public override void UnPatch()
+        public override void Unpatch()
         {
             ChallengeManager challengeManager = ChallengeManager.Instance;
             foreach (ChallengeDefinition challenge in challengeManager.Challenges)

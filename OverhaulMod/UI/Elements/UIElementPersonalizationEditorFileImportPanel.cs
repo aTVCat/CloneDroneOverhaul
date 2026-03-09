@@ -85,9 +85,9 @@ namespace OverhaulMod.UI
 
                 string fn = Path.GetFileName(path);
                 string fnNoExtension = Path.GetFileNameWithoutExtension(path);
-                if (ModFileUtils.HasUnsupportedCharacters(fnNoExtension))
+                if (ModFileUtils.HasUnsupportedCharacters(fnNoExtension, out char character))
                 {
-                    ModUIUtils.MessagePopupOK("This file contains unsupported characters.", "Only Latin, number and a few special characters are supported for technical reasons.", 150f, true);
+                    ModUIUtils.MessagePopupOK($"This file contains unsupported character: {character}", "Only Latin, numbers and a few special characters are supported due to technical reasons.", 150f, true);
                     return;
                 }
 

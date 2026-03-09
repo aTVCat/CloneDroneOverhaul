@@ -56,8 +56,6 @@ namespace OverhaulMod.Visuals
 
         private List<ModSettingsPreset> _graphicsPresets;
 
-        private CameraManager _cameraManager;
-
         public static List<Dropdown.OptionData> ColorBlindnessOptions = new List<Dropdown.OptionData>()
         {
             new Dropdown.OptionData("Normal vision"),
@@ -90,13 +88,8 @@ namespace OverhaulMod.Visuals
         public override void Awake()
         {
             base.Awake();
-            ModCore.OnCameraSwitched += onCameraSwitched;
-        }
-
-        private void Start()
-        {
-            _cameraManager = CameraManager.Instance;
             createGraphicsPresets();
+            ModCore.OnCameraSwitched += onCameraSwitched;
         }
 
         private void OnDestroy()

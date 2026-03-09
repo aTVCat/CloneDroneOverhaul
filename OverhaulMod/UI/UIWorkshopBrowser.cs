@@ -196,7 +196,7 @@ namespace OverhaulMod.UI
 
         private Transform _container;
 
-        public override bool hideTitleScreen => true;
+        public override bool HideTitleScreen => true;
 
         private bool _steamInitialized, _initializedTabs, _getWorkshopItemsNextFrame, _isLoading;
 
@@ -342,8 +342,8 @@ namespace OverhaulMod.UI
         {
             page = 1;
 
-            UIElementTab oldTab = _levelTypeTabs.prevSelectedTab;
-            UIElementTab newTab = _levelTypeTabs.selectedTab;
+            UIElementTab oldTab = _levelTypeTabs.PreviousSelectedTab;
+            UIElementTab newTab = _levelTypeTabs.SelectedTab;
             if (oldTab)
             {
                 RectTransform rt = oldTab.transform as RectTransform;
@@ -367,8 +367,8 @@ namespace OverhaulMod.UI
         {
             page = 1;
 
-            UIElementTab oldTab = _levelTypeTabs.prevSelectedTab;
-            UIElementTab newTab = _levelTypeTabs.selectedTab;
+            UIElementTab oldTab = _levelTypeTabs.PreviousSelectedTab;
+            UIElementTab newTab = _levelTypeTabs.SelectedTab;
             if (oldTab)
             {
                 RectTransform rt = oldTab.transform as RectTransform;
@@ -590,9 +590,9 @@ namespace OverhaulMod.UI
 
             _backButton.interactable = !value;
             _reloadButton.interactable = !value;
-            _sourceTabs.interactable = !value;
-            _levelTypeTabs.interactable = !value && !browseCollections;
-            _queryTabs.interactable = !value && !browseCollections;
+            _sourceTabs.IsInteractable = !value;
+            _levelTypeTabs.IsInteractable = !value && !browseCollections;
+            _queryTabs.IsInteractable = !value && !browseCollections;
             _loadingIndicator.SetActive(value);
             _nothingToDisplayLabel.SetActive(false);
             _pageDropdownObject.SetActive(false);

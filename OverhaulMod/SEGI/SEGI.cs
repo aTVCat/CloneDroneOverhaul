@@ -308,7 +308,7 @@ public class SEGI : MonoBehaviour
     #endregion
 
 
-    ///<summary>Applies an SEGIPreset to this instance of SEGI.</summary>
+    ///<summary>Applies an SEGIPreset to this Instance of SEGI.</summary>
     public void ApplyPreset(SEGIPreset preset)
     {
         voxelResolution = preset.voxelResolution;

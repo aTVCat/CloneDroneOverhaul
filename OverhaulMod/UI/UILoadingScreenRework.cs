@@ -22,7 +22,7 @@ namespace OverhaulMod.UI
         [UIElement("ProgressBar")]
         private readonly GameObject _progressBarObject;
 
-        public override bool closeOnEscapeButtonPress => false;
+        public override bool CloseOnEscapeButtonPress => false;
 
         public override void Show()
         {

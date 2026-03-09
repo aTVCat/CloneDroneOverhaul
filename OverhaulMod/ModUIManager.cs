@@ -186,13 +186,13 @@ namespace OverhaulMod
                 System.Diagnostics.Stopwatch stopwatch = System.Diagnostics.Stopwatch.StartNew();
                 result1.InitializeUI();
                 stopwatch.Stop();
-                ModDebug.Log($"Initialized an UI in {stopwatch.ElapsedMilliseconds} ms, {stopwatch.ElapsedTicks} ticks");
+                ModDebug.Log($"Initialized {assetBundle}.{assetKey} in {stopwatch.ElapsedMilliseconds} ms, {stopwatch.ElapsedTicks} ticks");
 #else
                 result1.InitializeUI();
 #endif
                 result1.Show();
 
-                if (result1.closeOnEscapeButtonPress)
+                if (result1.CloseOnEscapeButtonPress)
                     _shownUIs.Add(result1);
 
                 return result1;
@@ -205,7 +205,7 @@ namespace OverhaulMod
             T result = _instantiatedUIs[fullName].GetComponent<T>();
             result.Show();
 
-            if (result.closeOnEscapeButtonPress)
+            if (result.CloseOnEscapeButtonPress)
                 _shownUIs.Add(result);
 
             return result;
@@ -241,7 +241,7 @@ namespace OverhaulMod
         public bool Hide(string assetBundle, string assetKey)
         {
             OverhaulUIBehaviour overhaulUIBehaviour = Get<OverhaulUIBehaviour>(assetBundle, assetKey);
-            if (overhaulUIBehaviour && overhaulUIBehaviour.isVisible && !overhaulUIBehaviour.forceCancelHide)
+            if (overhaulUIBehaviour && overhaulUIBehaviour.IsVisible && !overhaulUIBehaviour.ForceCancelHide)
             {
                 overhaulUIBehaviour.Hide();
                 return true;
@@ -311,7 +311,7 @@ namespace OverhaulMod
                     continue;
 
                 OverhaulUIBehaviour behaviour = gameObject.GetComponent<OverhaulUIBehaviour>();
-                if (behaviour && !behaviour.IsElement && behaviour.enableCursor)
+                if (behaviour && !behaviour.IsElement && behaviour.EnableCursor)
                     return true;
             }
             return false;
@@ -325,7 +325,7 @@ namespace OverhaulMod
                     continue;
 
                 OverhaulUIBehaviour behaviour = gameObject.GetComponent<OverhaulUIBehaviour>();
-                if (behaviour && !behaviour.IsElement && behaviour.enableUIOverLogoMode)
+                if (behaviour && !behaviour.IsElement && behaviour.EnableUIOverLogoMode)
                     return true;
             }
             return false;
@@ -339,7 +339,7 @@ namespace OverhaulMod
                     continue;
 
                 OverhaulUIBehaviour behaviour = gameObject.GetComponent<OverhaulUIBehaviour>();
-                if (behaviour && !behaviour.IsElement && behaviour.hideTitleScreen)
+                if (behaviour && !behaviour.IsElement && behaviour.HideTitleScreen)
                     return true;
             }
             return false;

@@ -62,7 +62,7 @@ namespace OverhaulMod.Visuals
 
         public override void OnEnable()
         {
-            if (!ModCore.isEnabled)
+            if (!ModCore.IsEnabled)
             {
                 Destroy(this);
                 return;
@@ -75,7 +75,7 @@ namespace OverhaulMod.Visuals
             if (!_arrowProjectile || !_hasStarted)
                 return;
 
-            bool featureEnabled = ModCore.isEnabled && EnableArrowRework;
+            bool featureEnabled = ModCore.IsEnabled && EnableArrowRework;
             if (!featureEnabled)
             {
                 SetDefaultVisuals(true);
@@ -125,7 +125,7 @@ namespace OverhaulMod.Visuals
 
         public void InstantiateNewModels()
         {
-            bool featureEnabled = ModCore.isEnabled;
+            bool featureEnabled = ModCore.IsEnabled;
             if (!featureEnabled)
                 return;
 

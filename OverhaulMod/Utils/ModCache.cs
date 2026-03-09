@@ -206,14 +206,14 @@ namespace OverhaulMod.Utils
             }
         }
 
-        private static FadingVoxelManager s_fadingVoxelManager;
-        public static FadingVoxelManager fadingVoxelManager
+        private static VoxelFadingManager s_fadingVoxelManager;
+        public static VoxelFadingManager fadingVoxelManager
         {
             get
             {
                 if (!s_fadingVoxelManager)
                 {
-                    s_fadingVoxelManager = FadingVoxelManager.Instance;
+                    s_fadingVoxelManager = VoxelFadingManager.Instance;
                 }
                 return s_fadingVoxelManager;
             }

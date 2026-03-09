@@ -59,7 +59,7 @@ namespace OverhaulMod.UI
 
         private bool _isExecutingTasks;
 
-        public override bool closeOnEscapeButtonPress => !_isExecutingTasks;
+        public override bool CloseOnEscapeButtonPress => !_isExecutingTasks;
 
         protected override void OnInitialized()
         {

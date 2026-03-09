@@ -25,7 +25,7 @@ namespace OverhaulMod.Engine
             {
                 LevelDescription levelDescription = new LevelDescription()
                 {
-                    LevelJSONPath = Path.Combine(ModCore.dataFolder, "levels", level.LevelJSONPath),
+                    LevelJSONPath = Path.Combine(ModCore.DataFolder, "levels", level.LevelJSONPath),
                     LevelID = level.LevelID,
                     LevelEditorDifficultyIndex = level.LevelEditorDifficultyIndex,
                     DifficultyTier = level.DifficultyTier,

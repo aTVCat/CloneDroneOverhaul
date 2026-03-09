@@ -428,7 +428,7 @@ namespace OverhaulMod.UI
         {
             if (PersonalizationEditorManager.Instance.SaveItem(out string error))
             {
-                PersonalizationEditorManager.Instance.ExportItem(PersonalizationEditorManager.Instance.currentEditingItemInfo, out _, ModCore.savesFolder, getExportedItemFileName());
+                PersonalizationEditorManager.Instance.ExportItem(PersonalizationEditorManager.Instance.currentEditingItemInfo, out _, ModCore.SavesFolder, getExportedItemFileName());
                 ModUIUtils.MessagePopupOK("Exported the item", "for real", false);
             }
             else
@@ -439,7 +439,7 @@ namespace OverhaulMod.UI
 
         public void OnSavesFolderButtonClicked()
         {
-            ModFileUtils.OpenFileExplorer(ModCore.savesFolder);
+            ModFileUtils.OpenFileExplorer(ModCore.SavesFolder);
         }
 
         public void OnRevealEditorIDButtonClicked()

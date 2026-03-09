@@ -40,7 +40,7 @@ namespace OverhaulMod.UI
         [UIElement("ProgressLabel")]
         private readonly Text _progressLabel;
 
-        public override bool closeOnEscapeButtonPress => false;
+        public override bool CloseOnEscapeButtonPress => false;
 
         protected override void OnInitialized()
         {
