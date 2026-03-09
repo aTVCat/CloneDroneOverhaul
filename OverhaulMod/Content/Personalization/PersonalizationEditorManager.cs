@@ -811,12 +811,14 @@ namespace OverhaulMod.Content.Personalization
         public void WelcomeMessage()
         {
             UIPersonalizationEditor.instance.Dropdown.Hide();
-            ModUIUtils.MessagePopupOK("Welcome to customization editor!", "Here you can make weapon skins, accessories and pets." +
+            ModUIUtils.MessagePopupOK("Welcome to customization editor!", "Here you can make weapon skins. Accessories and pets are coming soon." +
                 "\n\n<color=#FFFFFF><size=14>HOW TO MAKE STUFF?</size></color>" +
                 "\nTo open or create a project, click on 'File' at the top left and click on 'Open'." +
                 "\n\n<color=#FFFFFF><size=14>HOW TO UPLOAD STUFF?</size></color>" +
-                "\nTo upload your project, click on 'File' at the top left and click on 'Upload'." +
-                "\nOnce you upload an item, you'll have to wait until it's verified and when it is, customization assets will get an update." +
+                "\nTo upload your project, click on 'Verify' at the top left and click on 'Upload item'." +
+                "\n\nOnce the item's uploaded, you'll have to wait until it's verified in the next customization assets update." +
+                "\n\nBefore uploading, you might want to make a preview image of your item, click on 'Screenshot' at the top, pick cool angle and click 'Take screenshot'." +
+                "\n(Moderators can redo the preview image to align with others)" +
                 "\n\n<color=#FFCB23>This editor is still in development, so you can experience issues while editing!</color>", 400f, true);
         }
 

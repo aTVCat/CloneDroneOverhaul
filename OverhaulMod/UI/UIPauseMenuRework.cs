@@ -88,6 +88,10 @@ namespace OverhaulMod.UI
         [UIElement("ReconnectButton")]
         private readonly Button _reconnectButton;
 
+        [UIElementAction(nameof(OnRestartAdventureButtonClicked), false)]
+        [UIElement("RestartAdventureButton")]
+        private readonly Button _restartAdventureButton;
+
         [UIElement("ConfirmExitGameText", false)]
         private readonly GameObject _confirmExitGameTextObject;
 
@@ -273,6 +277,8 @@ namespace OverhaulMod.UI
             _skipLevelButton.gameObject.SetActive(GameModeManager.CanSkipCurrentLevel());
             _returnToLevelEditorButton.gameObject.SetActive(WorkshopLevelManager.Instance.IsPlaytestActive());
             _reconnectButton.gameObject.SetActive(GameModeManager.IsBattleRoyale() && MultiplayerMatchmakingManager.LastDuelRequest.GameType == GameRequestType.RandomBattleRoyale);
+
+            _restartAdventureButton.gameObject.SetActive(GameModeManager.IsAdventureLevel());
 
             _confirmExitGameTextObject.SetActive(false);
             _confirmMainMenuTextObject.SetActive(false);
@@ -635,6 +641,12 @@ namespace OverhaulMod.UI
         {
             MultiplayerMatchmakingManager.ShouldStartBattleRoyaleGameOnLoad = true;
             SceneTransitionManager.Instance.DisconnectAndExitToMainMenu();
+        }
+
+        public void OnRestartAdventureButtonClicked()
+        {
+            Hide();
+            ModCache.gameUIRoot.EscMenu.OnResetAdventureClicked();
         }
 
         public static string GetPlatformString(PlayFab.ClientModels.LoginIdentityProvider login, bool colored = true)
