@@ -1,5 +1,5 @@
 ﻿using HarmonyLib;
-using OverhaulMod.Visuals.Environment;
+using OverhaulMod.Visuals;
 using UnityEngine;
 
 namespace OverhaulMod.Patches
@@ -17,10 +17,12 @@ namespace OverhaulMod.Patches
             if (!GameModeManager.TimeScaleChangesAllowed())
                 return;
 
-            Rigidbody rigidBody = __result.gameObject.GetComponent<Rigidbody>(); // todo: interpolate garbage only for a few seconds
+            Rigidbody rigidBody = __result.gameObject.GetComponent<Rigidbody>();
             if (rigidBody)
             {
                 rigidBody.interpolation = RigidbodyInterpolation.Interpolate;
+                DisableRigidBodyInterpolation disableInterpolation = __result.gameObject.AddComponent<DisableRigidBodyInterpolation>();
+                disableInterpolation.Initialize(rigidBody, 1f);
             }
         }
     }

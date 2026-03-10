@@ -2,7 +2,7 @@
 using OverhaulMod.Utils;
 using UnityEngine;
 
-namespace OverhaulMod.Visuals.Environment
+namespace OverhaulMod.Visuals
 {
     public class SeveredBodyPartSparks : MonoBehaviour
     {
@@ -16,21 +16,22 @@ namespace OverhaulMod.Visuals.Environment
         private void Start()
         {
             _cameraManager = CameraManager.Instance;
-            setTime();
+            resetTimer();
         }
 
         private void Update()
         {
-            if (Time.frameCount % 20 == 0 && Time.time >= _timeLeftToSpark)
+            _timeLeftToSpark = Mathf.Max(0f, _timeLeftToSpark - Time.deltaTime);
+            if (_timeLeftToSpark == 0f)
             {
-                setTime();
+                resetTimer();
                 spark();
             }
         }
 
-        private void setTime()
+        private void resetTimer()
         {
-            _timeLeftToSpark = Time.time + UnityEngine.Random.Range(4f, 25f);
+            _timeLeftToSpark = UnityEngine.Random.Range(4f, 25f);
         }
 
         private void spark()

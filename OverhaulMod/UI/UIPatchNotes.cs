@@ -368,7 +368,7 @@ namespace OverhaulMod.UI
                     return $"{patch} 9";
                 case "4.2.1052":
                     return $"{patch} 10";
-                case "4.2.1065":
+                case "4.2.1073":
                     return $"{patch} 11 Test";
 
                 default:

@@ -3,6 +3,7 @@ using OverhaulMod.Combat;
 using OverhaulMod.Combat.Weapons;
 using OverhaulMod.Engine;
 using OverhaulMod.Utils;
+using OverhaulMod.Visuals;
 using UnityEngine;
 
 namespace OverhaulMod.Patches
@@ -16,6 +17,29 @@ namespace OverhaulMod.Patches
         {
             if (__instance.HasCharacterModel() && __instance._playerCamera)
                 CameraManager.Instance.AddControllers(__instance._playerCamera, __instance); // fix camera controllers not adding to enemies in story mode
+        }
+
+        [HarmonyPrefix]
+        [HarmonyPatch(nameof(FirstPersonMover.onDeath))]
+        private static void onDeath_Prefix(FirstPersonMover __instance, out CharacterModel __state)
+        {
+            __state = __instance.GetCharacterModel();
+        }
+
+        [HarmonyPostfix]
+        [HarmonyPatch(nameof(FirstPersonMover.onDeath))]
+        private static void onDeath_Postfix(FirstPersonMover __instance, CharacterModel __state)
+        {
+            if (__state)
+            {
+                Rigidbody rigidbody = __state.GetComponent<Rigidbody>();
+                if (rigidbody)
+                {
+                    rigidbody.interpolation = RigidbodyInterpolation.Interpolate;
+                    DisableRigidBodyInterpolation disableInterpolation = __state.gameObject.AddComponent<DisableRigidBodyInterpolation>();
+                    disableInterpolation.Initialize(rigidbody, 1f);
+                }
+            }
         }
 
         [HarmonyPrefix]
