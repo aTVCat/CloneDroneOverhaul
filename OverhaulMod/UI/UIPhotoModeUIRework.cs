@@ -150,6 +150,15 @@ namespace OverhaulMod.UI
         [UIElement("RealisticSkyboxDropdownField")]
         private readonly GameObject _realisticSkyBoxDropdownFieldObject;
 
+        [ColorPicker(false)]
+        [UIElementAction(nameof(OnRealisticSkyboxTintChanged))]
+        [UIElement("RealisticSkyboxColor")]
+        private readonly UIElementColorPickerButton _realisticSkyboxColor;
+
+        [UIElementAction(nameof(OnRealisticSkyboxRotationChanged))]
+        [UIElement("RealisticSkyboxRotationSlider")]
+        private readonly Slider _realisticSkyboxRotationColor;
+
 
         [UIElementAction(nameof(OnAutoResetLightingSettingsToggleChanged))]
         [UIElement("AutoResetLightingToggle")]
@@ -255,6 +264,10 @@ namespace OverhaulMod.UI
             bool hasAdditionalSkybox = !lightingInfo.AdditonalSkybox.IsNullOrEmpty();
             _realisticSkyBoxToggle.isOn = hasAdditionalSkybox;
             _realisticSkyBoxDropdownFieldObject.SetActive(hasAdditionalSkybox);
+            _realisticSkyboxColor.gameObject.SetActive(hasAdditionalSkybox);
+            _realisticSkyboxColor.color = lightingInfo.AdditionalSkyboxTint;
+            _realisticSkyboxRotationColor.gameObject.SetActive(hasAdditionalSkybox);
+            _realisticSkyboxRotationColor.value = Mathf.RoundToInt(lightingInfo.AdditionalSkyboxRotation) % 360;
 
             List<Dropdown.OptionData> additonalSkyboxOptions = AdditionalSkyboxesManager.Instance.GetSkyboxOptions();
             _realisticSkyBoxDropdown.options = additonalSkyboxOptions;
@@ -294,7 +307,7 @@ namespace OverhaulMod.UI
 
         public void OnSaveRLightInfoButtonClicked()
         {
-            RealisticLightingManager.Instance.SaveCurrentLightingInfo(_realisticSkyBoxToggle.isOn ? (_realisticSkyBoxDropdown.options[_realisticSkyBoxDropdown.value] as DropdownStringOptionData).StringValue : string.Empty);
+            RealisticLightingManager.Instance.SaveCurrentLighting();
         }
 
         public void OnRestoreDefaultsButtonClicked()
@@ -567,6 +580,8 @@ namespace OverhaulMod.UI
             AdvancedPhotoModeManager.Instance.SetEditedLighting();
 
             _realisticSkyBoxDropdownFieldObject.SetActive(value);
+            _realisticSkyboxColor.gameObject.SetActive(value);
+            _realisticSkyboxRotationColor.gameObject.SetActive(value);
         }
 
         public void OnRealisticSkyBoxDropdownChanged(int value)
@@ -577,6 +592,25 @@ namespace OverhaulMod.UI
             string skyboxName = (_realisticSkyBoxDropdown.options[value] as DropdownStringOptionData).StringValue;
 
             _lightingInfo.AdditonalSkybox = _realisticSkyBoxToggle.isOn ? skyboxName : string.Empty;
+            AdvancedPhotoModeManager.Instance.SetEditedLighting();
+        }
+
+        public void OnRealisticSkyboxTintChanged(Color value)
+        {
+            if (_disallowCallbacks)
+                return;
+
+            _lightingInfo.AdditionalSkyboxTint = value;
+            AdvancedPhotoModeManager.Instance.SetEditedLighting();
+        }
+
+
+        public void OnRealisticSkyboxRotationChanged(float value)
+        {
+            if (_disallowCallbacks)
+                return;
+
+            _lightingInfo.AdditionalSkyboxRotation = value;
             AdvancedPhotoModeManager.Instance.SetEditedLighting();
         }
 

@@ -60,7 +60,9 @@ namespace OverhaulMod.Engine
                 Mathf.Lerp(a.SkyTopExponent, b.SkyTopExponent, d),
                 Mathf.Lerp(a.SkyBottomExponent, b.SkyBottomExponent, d),
                 Mathf.Lerp(a.SkyIntensity, b.SkyIntensity, d),
-                b.AdditonalSkybox);
+                b.AdditonalSkybox,
+                Color.Lerp(a.AdditionalSkyboxTint, b.AdditionalSkyboxTint, d),
+                Mathf.Lerp(a.AdditionalSkyboxRotation, b.AdditionalSkyboxRotation, d));
 
             refreshFog(b.FogEnabled,
                 Mathf.Lerp(a.FogEndDistance, b.FogEndDistance, d),
@@ -111,7 +113,9 @@ namespace OverhaulMod.Engine
             float skyTopExponent,
             float skyBottomExponent,
             float skyIntensity,
-            string additSkybox)
+            string additSkybox,
+            Color additSkyboxTint,
+            float additSkyboxRotation)
         {
             SkyBoxManager skyBoxManager = SkyBoxManager.Instance;
             Material material;
@@ -146,7 +150,10 @@ namespace OverhaulMod.Engine
 
             if (!additSkybox.IsNullOrEmpty())
             {
-                AdditionalSkyboxesManager.Instance.SetSkybox(additSkybox);
+                AdditionalSkyboxesManager additionalSkyboxManager = AdditionalSkyboxesManager.Instance;
+                additionalSkyboxManager.SetSkybox(additSkybox);
+                additionalSkyboxManager.SetTint(additSkyboxTint);
+                additionalSkyboxManager.SetRotation(additSkyboxRotation);
                 return;
             }
 

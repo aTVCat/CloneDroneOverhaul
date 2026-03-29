@@ -16,32 +16,13 @@ namespace OverhaulMod.Engine
         [IncludeInLevelEditor]
         public float Rotation = 0f;
 
-        private void Start()
+        private void Awake()
         {
-            if (GameModeManager.IsInLevelEditor())
-            {
-                ObjectPlacedInLevel objectPlacedInLevel = base.GetComponent<ObjectPlacedInLevel>();
-                if (objectPlacedInLevel)
-                {
-                    objectPlacedInLevel.AddValueChangedListener(delegate (string value)
-                    {
-                        SkyBoxManager.Instance.RefreshSkyboxAmbientLightAndFog(LevelEditorLightManager.Instance.GetActiveLightSettings());
-                    });
-                }
-            }
-            else
-            {
-                RealisticLightingInfo realisticLightingInfo = RealisticLightingManager.Instance.GetCurrentRealisticLightingInfo();
-                if (realisticLightingInfo != null)
-                {
-                    Skybox = realisticLightingInfo.SkyboxName;
-                    Tint = realisticLightingInfo.Tint;
-                    Rotation = realisticLightingInfo.Rotation;
-                }
-            }
+            if (!GameModeManager.IsInLevelEditor()) return;
+            base.GetComponent<ObjectPlacedInLevel>().AddValueChangedListener(onValueChanged);
         }
 
-        private void OnDestroy()
+        private void onValueChanged(string fieldName)
         {
             SkyBoxManager.Instance.RefreshSkyboxAmbientLightAndFog(LevelEditorLightManager.Instance.GetActiveLightSettings());
         }
@@ -55,19 +36,10 @@ namespace OverhaulMod.Engine
             return null;
         }
 
-        public bool HasDropDownForValue(string fieldName)
-        {
-            return fieldName == nameof(Skybox);
-        }
+        public bool HasDropDownForValue(string fieldName) => fieldName == nameof(Skybox);
 
-        public bool ShouldShowDropdownOptions(string fieldName)
-        {
-            return fieldName == nameof(Skybox);
-        }
+        public bool ShouldShowDropdownOptions(string fieldName) => fieldName == nameof(Skybox);
 
-        public bool ShouldHideField(string fieldName)
-        {
-            return false;
-        }
+        public bool ShouldHideField(string fieldName) => false;
     }
 }

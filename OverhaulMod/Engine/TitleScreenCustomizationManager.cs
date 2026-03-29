@@ -19,6 +19,24 @@ namespace OverhaulMod.Engine
         [ModSetting(ModSettingsConstants.TITLE_SCREEN_MUSIC_TRACK_INDEX, 0)]
         public static int MusicTrackIndex;
 
+        [ModSetting(ModSettingsConstants.TITLE_SCREEN_PANEL_POSITION, TitleScreenPanelPosition.LeftSide)]
+        public static TitleScreenPanelPosition PanelPosition;
+
+        [ModSetting(ModSettingsConstants.TITLE_SCREEN_BACKGROUND_FADE_POWER, 1f)]
+        public static float BackgroundFadePower;
+
+        [ModSetting(ModSettingsConstants.CLONE_DRONE_LOGO_FIRE, false)]
+        public static bool ShowLogoFireParticles;
+
+        [ModSetting(ModSettingsConstants.TITLE_SCREEN_SHOW_MODBOT_ACCOUNT_INFO, true)]
+        public static bool ShowModBotAccountInfo;
+
+        [ModSetting(ModSettingsConstants.TITLE_SCREEN_SOCIAL_MEDIA_POPUPS, true)]
+        public static bool ShowSocialMediaPopups;
+
+        [ModSetting(ModSettingsConstants.TITLE_SCREEN_SOCIAL_MEDIA_BUTTONS, true)]
+        public static bool ShowSocialMediaButtons;
+
         private TitleScreenCustomizationInfo _customizationInfo;
 
         private GameObject _levelIsLoadingBg;

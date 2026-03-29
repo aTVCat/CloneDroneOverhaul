@@ -89,7 +89,7 @@ namespace OverhaulMod.UI
 
         public void OnResetProgressButtonClicked()
         {
-            ModUIUtils.MessagePopup(true, "Do you want to erase the progress?", "This action will reset your current progress in endless mode leaving the leaderboard untouched.\nThis action cannot be undone.", 150f, MessageMenu.ButtonLayout.EnableDisableButtons, "ok", "Yes", "No", null, delegate
+            ModUIUtils.MessagePopup(true, LocalizationManager.Instance.GetTranslatedString("endless_mode_erase_progress_header  "), LocalizationManager.Instance.GetTranslatedString("endless_mode_erase_progress_description"), 150f, MessageMenu.ButtonLayout.EnableDisableButtons, "ok", "Yes", "No", null, delegate
             {
                 GameData gameData = new GameData
                 {

@@ -40,6 +40,26 @@ namespace OverhaulMod.UI
         [UIElement("LogoParticlesToggle")]
         private readonly Toggle _logoParticlesToggle;
 
+        [UIElementAction(nameof(OnLogoParticlesToggled))]
+        [UIElement("SocialMediaPopupsToggle")]
+        private readonly Toggle _socialMediaPopupsToggle;
+
+        [UIElementAction(nameof(OnLogoParticlesToggled))]
+        [UIElement("SocialMediaButtonsToggle")]
+        private readonly Toggle _socialMediaButtonsToggle;
+
+        [UIElementAction(nameof(OnLogoParticlesToggled))]
+        [UIElement("ShowModBotAccountInfoToggle")]
+        private readonly Toggle _showModBotAccountInfoToggle;
+
+        [UIElementAction(nameof(OnBGFadePowerChanged))]
+        [UIElement("FadePowerSlider")]
+        private readonly Slider _bgFadePowerSlider;
+
+        [UIElementAction(nameof(OnPanelPositionChanged))]
+        [UIElement("PanelSideDropdown")]
+        private readonly Dropdown _panelPositionDropdown;
+
         private bool _isPreviewing;
 
         public override bool HideTitleScreen => true;
@@ -55,7 +75,13 @@ namespace OverhaulMod.UI
             _staticBgConfig.refreshWhenEdited = true;
             _staticBgConfig.levelIsLoadingBG = _loadingLevelBg;
 
-            _logoParticlesToggle.isOn = CloneDroneLogoParticlesBehaviour.EnableFire;
+            _logoParticlesToggle.isOn = TitleScreenCustomizationManager.ShowLogoFireParticles;
+            _socialMediaPopupsToggle.isOn = TitleScreenCustomizationManager.ShowSocialMediaPopups;
+            _socialMediaButtonsToggle.isOn = TitleScreenCustomizationManager.ShowSocialMediaButtons;
+            _showModBotAccountInfoToggle.isOn = TitleScreenCustomizationManager.ShowModBotAccountInfo;
+
+            _bgFadePowerSlider.value = TitleScreenCustomizationManager.BackgroundFadePower;
+            _panelPositionDropdown.value = (int)TitleScreenCustomizationManager.PanelPosition;
         }
 
         public override void OnDisable()
@@ -111,6 +137,31 @@ namespace OverhaulMod.UI
         public void OnLogoParticlesToggled(bool value)
         {
             ModSettingsManager.Instance.SetSettingValueFromUI(ModSettingsConstants.CLONE_DRONE_LOGO_FIRE, value);
+        }
+
+        public void OnSocialMediaPopupsToggled(bool value)
+        {
+            ModSettingsManager.Instance.SetSettingValueFromUI(ModSettingsConstants.TITLE_SCREEN_SOCIAL_MEDIA_POPUPS, value);
+        }
+
+        public void OnSocialMediaButtonsToggled(bool value)
+        {
+            ModSettingsManager.Instance.SetSettingValueFromUI(ModSettingsConstants.TITLE_SCREEN_SOCIAL_MEDIA_BUTTONS, value);
+        }
+
+        public void OnModBotAccountInfoToggled(bool value)
+        {
+            ModSettingsManager.Instance.SetSettingValueFromUI(ModSettingsConstants.TITLE_SCREEN_SHOW_MODBOT_ACCOUNT_INFO, value);
+        }
+
+        public void OnBGFadePowerChanged(float value)
+        {
+            ModSettingsManager.Instance.SetSettingValueFromUI(ModSettingsConstants.TITLE_SCREEN_BACKGROUND_FADE_POWER, value);
+        }
+
+        public void OnPanelPositionChanged(int value)
+        {
+            ModSettingsManager.Instance.SetSettingValueFromUI(ModSettingsConstants.TITLE_SCREEN_PANEL_POSITION, value);
         }
     }
 }

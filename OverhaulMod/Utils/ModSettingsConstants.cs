@@ -672,7 +672,7 @@ namespace OverhaulMod.Utils
         public const string BLOO_MODE = "BloomMode";
 
         /// <summary>
-        /// <see cref="Patches.Behaviours.CloneDroneLogoParticlesBehaviour"/>
+        /// <see cref="Engine.TitleScreenCustomizationManager"/>
         /// </summary>
         public const string CLONE_DRONE_LOGO_FIRE = "CloneDroneLogoFire";
 
@@ -680,5 +680,30 @@ namespace OverhaulMod.Utils
         /// <see cref="Combat.CharacterExtension"/>
         /// </summary>
         public const string WEAPON_SWITCH_COOLDOWN = "WeaponSwitchCooldown";
+
+        /// <summary>
+        /// <see cref="Engine.TitleScreenCustomizationManager"/>
+        /// </summary>
+        public const string TITLE_SCREEN_PANEL_POSITION = "TitleScreenPanelPosition";
+
+        /// <summary>
+        /// <see cref="Engine.TitleScreenCustomizationManager"/>
+        /// </summary>
+        public const string TITLE_SCREEN_BACKGROUND_FADE_POWER = "TitleScreenBackgroundFadePower";
+
+        /// <summary>
+        /// <see cref="Engine.TitleScreenCustomizationManager"/>
+        /// </summary>
+        public const string TITLE_SCREEN_SHOW_MODBOT_ACCOUNT_INFO = "TitleScreenShowModBotAccountInfo";
+
+        /// <summary>
+        /// <see cref="Engine.TitleScreenCustomizationManager"/>
+        /// </summary>
+        public const string TITLE_SCREEN_SOCIAL_MEDIA_POPUPS = "TitleScreenSocialMediaPopups";
+
+        /// <summary>
+        /// <see cref="Engine.TitleScreenCustomizationManager"/>
+        /// </summary>
+        public const string TITLE_SCREEN_SOCIAL_MEDIA_BUTTONS = "TitleScreenSocialMediaButtons";
     }
 }

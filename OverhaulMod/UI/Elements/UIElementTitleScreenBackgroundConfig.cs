@@ -55,6 +55,12 @@ namespace OverhaulMod.UI
         {
             ModUIUtils.FileExplorer(null, true, delegate (string levelPath)
             {
+                if(levelPath.IsNullOrEmpty() || levelPath.IsNullOrWhiteSpace())
+                {
+                    onSetLevel(null);
+                    return;
+                }
+
                 if (!File.Exists(levelPath))
                 {
                     onSetLevel(null);

@@ -13,9 +13,6 @@ namespace OverhaulMod.UI
         [UIElement("ButtonsBG")]
         private readonly GameObject _container;
 
-        [UIElement("DebugButtons", false)]
-        private readonly GameObject _debugButtonsObject;
-
         [ButtonWithSound(ButtonWithSound.SoundType.Choose)]
         [UIElementAction(nameof(OnPlaySinglePlayerButtonClicked))]
         [UIElement("PlaySingleplayerButton")]
@@ -37,7 +34,7 @@ namespace OverhaulMod.UI
         private readonly Button _modsButton;
 
         [ButtonWithSound(ButtonWithSound.SoundType.Click)]
-        [UIElementAction(nameof(OnExcContentMenuButtonClicked))]
+        [UIElementAction(nameof(OnExclusivePerksMenuButtonClicked))]
         [UIElement("NewExclusiveContentMenuButton")]
         private readonly Button _newExcContentMenuButton;
 
@@ -61,22 +58,10 @@ namespace OverhaulMod.UI
         [UIElement("WorkshopBrowserButton")]
         private readonly Button _workshopBrowserButton;
 
-        [UIElementAction(nameof(OnLevelDescriptionsEditorButtonClicked))]
-        [UIElement("LevelDescriptionsEditorButton")]
-        private readonly Button _levelDescriptionsEditorButton;
-
         [ButtonWithSound(ButtonWithSound.SoundType.Choose)]
         [UIElementAction(nameof(OnPersonalizationEditorButtonClicked))]
         [UIElement("PersonalizationEditorButton")]
         private readonly Button _personalizationEditorButton;
-
-        [UIElementAction(nameof(OnLocalizationEditorButtonClicked))]
-        [UIElement("LocalizationEditorButton")]
-        private readonly Button _localizationEditorButton;
-
-        [UIElementAction(nameof(OnSetupButtonClicked))]
-        [UIElement("SetupScreenButton")]
-        private readonly Button _setupButton;
 
         [ButtonWithSound(ButtonWithSound.SoundType.Click)]
         [UIElementAction(nameof(OnAddonsButtonClicked))]
@@ -122,11 +107,6 @@ namespace OverhaulMod.UI
         private readonly Text _skinNameLabelButton;
 
         [ButtonWithSound(ButtonWithSound.SoundType.Click)]
-        [UIElementAction(nameof(OnBehindTheScenesButtonClicked))]
-        [UIElement("BehindTheScenesButton")]
-        private readonly Button _behindTheScenesButton;
-
-        [ButtonWithSound(ButtonWithSound.SoundType.Click)]
         [UIElementAction(nameof(OnDiscordServerButtonClicked))]
         [UIElement("DiscordServerButton")]
         private readonly Button _discordServerButton;
@@ -135,6 +115,11 @@ namespace OverhaulMod.UI
         [UIElementAction(nameof(OnPatchNotesButtonClicked))]
         [UIElement("PatchNotesButton")]
         private readonly Button _patchNotesButton;
+
+        [ButtonWithSound(ButtonWithSound.SoundType.Click)]
+        [UIElementAction(nameof(OnPatchNotesButtonClicked))]
+        [UIElement("DebugButton")]
+        private readonly Button _debugButton;
 
         [UIElement("MiscElements")]
         private readonly GameObject _miscElementsObject;
@@ -231,7 +216,7 @@ namespace OverhaulMod.UI
             bool debug = ModBuild.IsDebugBuild;
 
             _modBotLogonText.text = "Not logged in";
-            _debugButtonsObject.SetActive(debug);
+            _debugButton.gameObject.SetActive(debug);
 
             float fraction = GameplayAchievementManager.Instance.GetFractionOfAchievementsCompleted();
             _advancementsProgressImage.fillAmount = fraction;
@@ -259,10 +244,10 @@ namespace OverhaulMod.UI
                     {
                         _socialButtonContainer = socialButtonContainer;
                         _initialSocialButtonContainerPosition = socialButtonContainer.anchoredPosition;
-                        _newSocialButtonContainerPosition = socialButtonContainer.anchoredPosition + (Vector2.up * 65f);
+                        _newSocialButtonContainerPosition = socialButtonContainer.anchoredPosition + (Vector2.up * 35f);
                         _socialButtonPopoutHolder = socialButtonPopoutHolder;
                         _initialSocialButtonPopoutHolderPosition = socialButtonPopoutHolder.anchoredPosition;
-                        _newSocialButtonPopoutHolderPosition = socialButtonPopoutHolder.anchoredPosition + (Vector2.up * 65f);
+                        _newSocialButtonPopoutHolderPosition = socialButtonPopoutHolder.anchoredPosition + (Vector2.up * 35f);
                     }
                 }
             }
@@ -415,22 +400,12 @@ namespace OverhaulMod.UI
             ModsPanelManager.Instance.openModsMenu();
         }
 
-        public void OnLevelDescriptionsEditorButtonClicked()
-        {
-            _ = ModUIConstants.ShowLevelDescriptionListEditor();
-        }
-
         public void OnPersonalizationEditorButtonClicked()
         {
             PersonalizationEditorManager.Instance.StartEditorGameMode();
         }
 
-        public void OnLocalizationEditorButtonClicked()
-        {
-            _ = ModUIConstants.ShowLocalizationEditor();
-        }
-
-        public void OnExcContentMenuButtonClicked()
+        public void OnExclusivePerksMenuButtonClicked()
         {
             _ = ModUIConstants.ShowExclusivePerksMenu();
         }
@@ -513,11 +488,6 @@ namespace OverhaulMod.UI
             _ = ModUIConstants.ShowTitleScreenCustomizationPanel(base.transform);
         }
 
-        public void OnSetupButtonClicked()
-        {
-            _ = ModUIConstants.ShowSettingsMenuRework(true);
-        }
-
         public void OnSkinButtonClicked()
         {
             switch (skin)
@@ -540,11 +510,6 @@ namespace OverhaulMod.UI
                     break;
             }
             refreshSkinButtonLabel();
-        }
-
-        public void OnBehindTheScenesButtonClicked()
-        {
-            _ = ModUIConstants.ShowDevelopmentGallery(base.transform);
         }
 
         public void OnDiscordServerButtonClicked()

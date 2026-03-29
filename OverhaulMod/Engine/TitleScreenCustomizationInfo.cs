@@ -1,5 +1,4 @@
 ﻿using OverhaulMod.Utils;
-using System.Collections.Generic;
 using System.IO;
 
 namespace OverhaulMod.Engine
@@ -8,19 +7,12 @@ namespace OverhaulMod.Engine
     {
         public TitleScreenBackgroundInfo StaticBackgroundInfo;
 
-        public List<TitleScreenBackgroundInfo> SlideshowInfo;
-
         public void FixValues()
         {
-            if (StaticBackgroundInfo == null)
-                StaticBackgroundInfo = new TitleScreenBackgroundInfo();
-
-            if (SlideshowInfo == null)
-                SlideshowInfo = new List<TitleScreenBackgroundInfo>();
+            if (StaticBackgroundInfo == null) StaticBackgroundInfo = new TitleScreenBackgroundInfo();
 
             LevelDescription levelDescription = StaticBackgroundInfo.Level;
-            if (levelDescription == null)
-                return;
+            if (levelDescription == null) return;
 
             if (levelDescription.LevelJSONPath.IsNullOrEmpty() || !File.Exists(levelDescription.LevelJSONPath))
             {

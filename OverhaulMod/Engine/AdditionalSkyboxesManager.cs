@@ -19,17 +19,14 @@ namespace OverhaulMod.Engine
 
         public void SetSkybox(string skybox)
         {
-            if (skybox.IsNullOrEmpty() || _skyboxes.IsNullOrEmpty())
-                return;
-
+            if (_skyboxes.IsNullOrEmpty()) return;
             foreach (AdditionalSkyboxInfo info in _skyboxes)
             {
-                if (info.GetKey() == skybox)
-                {
-                    SkyBoxManager.Instance._currentSkybox = info.SkyboxMaterial;
-                    RenderSettings.skybox = info.SkyboxMaterial;
-                    break;
-                }
+                if (info.GetKey() != skybox) continue;
+
+                SkyBoxManager.Instance._currentSkybox = info.SkyboxMaterial;
+                RenderSettings.skybox = info.SkyboxMaterial;
+                break;
             }
         }
 

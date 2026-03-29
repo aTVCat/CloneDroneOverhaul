@@ -6,9 +6,6 @@ namespace OverhaulMod.Patches.Behaviours
 {
     internal class CloneDroneLogoParticlesBehaviour : GamePatchBehaviour
     {
-        [ModSetting(ModSettingsConstants.CLONE_DRONE_LOGO_FIRE, false)]
-        public static bool EnableFire;
-
         private Transform _particlesParent;
 
         private GameObject[] _vfxObjects;
@@ -36,7 +33,7 @@ namespace OverhaulMod.Patches.Behaviours
 
             for (int i = 0; i < _vfxObjects.Length; i++)
             {
-                _vfxObjects[i].SetActive(EnableFire);
+                _vfxObjects[i].SetActive(TitleScreenCustomizationManager.ShowLogoFireParticles);
             }
         }
 

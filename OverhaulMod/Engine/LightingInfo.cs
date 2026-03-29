@@ -24,6 +24,10 @@ namespace OverhaulMod.Engine
 
         public string AdditonalSkybox;
 
+        public Color AdditionalSkyboxTint = new Color(0.5f, 0.5f, 0.5f, 0.5f);
+
+        public float AdditionalSkyboxRotation;
+
         public float SunSize;
 
         public float SunSizeConvergence;
@@ -103,14 +107,20 @@ namespace OverhaulMod.Engine
             CameraColorBlend = levelLightSettings.CameraColorBlend;
             CameraExposure = levelLightSettings.CameraExposure;
 
-            AdditionalSkyboxSettings realisticLightUserSettings = levelLightSettings.GetComponent<AdditionalSkyboxSettings>();
-            if (realisticLightUserSettings)
-                AdditonalSkybox = realisticLightUserSettings.Skybox;
+            AdditionalSkyboxSettings additionalSettings = levelLightSettings.GetComponent<AdditionalSkyboxSettings>();
+            if (additionalSettings)
+            {
+                AdditonalSkybox = additionalSettings.Skybox;
+                AdditionalSkyboxTint = additionalSettings.Tint;
+                AdditionalSkyboxRotation = additionalSettings.Rotation;
+            }
             else
+            {
                 AdditonalSkybox = null;
+            }
         }
 
-        public void SetValuesUsingEnvironmentSettings()
+        public void SetValuesFromEnvironment()
         {
             EnableDirectionalLight = DirectionalLightManager.Instance.DirectionalLight.gameObject.activeInHierarchy;
             DirectionalRotationX = DirectionalLightManager.Instance.DirectionalLight.transform.eulerAngles.x;
@@ -149,28 +159,37 @@ namespace OverhaulMod.Engine
             }
 
             LevelLightSettings levelLightSettings = LevelEditorLightManager.Instance?.GetActiveLightSettings();
-            if (!levelLightSettings)
-                return;
-
-            SkyboxIndex = levelLightSettings.SkyboxIndex;
-            CameraColorGrading = levelLightSettings.CameraColorGrading;
-            CameraColorBlend = levelLightSettings.CameraColorBlend;
-            CameraExposure = levelLightSettings.CameraExposure;
-
-            AdditionalSkyboxSettings additionalSkyboxSettings = levelLightSettings.GetComponent<AdditionalSkyboxSettings>();
-            if (!additionalSkyboxSettings)
+            if (levelLightSettings)
             {
-                AdditonalSkybox = null;
-                return;
-            }
+                SkyboxIndex = levelLightSettings.SkyboxIndex;
+                CameraColorGrading = levelLightSettings.CameraColorGrading;
+                CameraColorBlend = levelLightSettings.CameraColorBlend;
+                CameraExposure = levelLightSettings.CameraExposure;
 
-            AdditonalSkybox = additionalSkyboxSettings.Skybox;
+                AdditionalSkyboxSettings additionalSkyboxSettings = levelLightSettings.GetComponent<AdditionalSkyboxSettings>();
+                if (additionalSkyboxSettings)
+                {
+                    AdditonalSkybox = additionalSkyboxSettings.Skybox;
+                    AdditionalSkyboxTint = additionalSkyboxSettings.Tint;
+                    AdditionalSkyboxRotation = additionalSkyboxSettings.Rotation;
+                }
+                else
+                {
+                    AdditonalSkybox = null;
+                }
+            }
+            else
+            {
+                SkyboxIndex = 0;
+                CameraColorGrading = 0;
+                CameraColorBlend = 0f;
+                CameraExposure = 1f;
+            }
         }
 
         public void ApplyValues(LevelLightSettings levelLightSettings)
         {
-            if (!levelLightSettings)
-                return;
+            if (!levelLightSettings) return;
 
             levelLightSettings.EnableDirectionalLight = EnableDirectionalLight;
             levelLightSettings.DirectionalRotationX = DirectionalRotationX;
@@ -201,80 +220,52 @@ namespace OverhaulMod.Engine
             levelLightSettings.CameraColorBlend = CameraColorBlend;
             levelLightSettings.CameraExposure = CameraExposure;
 
-            ObjectPlacedInLevel opil = levelLightSettings.GetComponent<ObjectPlacedInLevel>();
-            if (opil)
+            AdditionalSkyboxSettings additionalSkyboxSettings = levelLightSettings.GetComponent<AdditionalSkyboxSettings>();
+            if (additionalSkyboxSettings)
             {
-                opil.SetCustomInspectorStringValue(nameof(AdditionalSkyboxSettings), nameof(AdditionalSkyboxSettings.Skybox), AdditonalSkybox);
+                additionalSkyboxSettings.Skybox = AdditonalSkybox;
+                additionalSkyboxSettings.Tint = AdditionalSkyboxTint;
+                additionalSkyboxSettings.Rotation = AdditionalSkyboxRotation;
             }
         }
 
         public override bool Equals(object obj)
         {
-            if (obj == null)
-                return false;
+            if (obj == null) return false;
+            if (ReferenceEquals(this, obj)) return true;
 
-            if (ReferenceEquals(this, obj))
-                return true;
-
-            if (!(obj is LightingInfo lightingInfo))
-                return false;
-
-            if (EnableDirectionalLight != lightingInfo.EnableDirectionalLight)
-                return false;
-            if (DirectionalRotationX != lightingInfo.DirectionalRotationX)
-                return false;
-            if (DirectionalRotationY != lightingInfo.DirectionalRotationY)
-                return false;
-            if (DirectionalColor != lightingInfo.DirectionalColor)
-                return false;
-            if (DirectionalIntensity != lightingInfo.DirectionalIntensity)
-                return false;
-            if (DirectionalShadowStrength != lightingInfo.DirectionalShadowStrength)
-                return false;
-            if (AmbientUsesSkybox != lightingInfo.AmbientUsesSkybox)
-                return false;
-            if (AmbientColor != lightingInfo.AmbientColor)
-                return false;
-            if (SkyboxIndex != lightingInfo.SkyboxIndex)
-                return false;
-            if (SunSize != lightingInfo.SunSize)
-                return false;
-            if (SunSizeConvergence != lightingInfo.SunSizeConvergence)
-                return false;
-            if (AtmosphereThickness != lightingInfo.AtmosphereThickness)
-                return false;
-            if (SkyTint != lightingInfo.SkyTint)
-                return false;
-            if (GroundTint != lightingInfo.GroundTint)
-                return false;
-            if (SkyExposure != lightingInfo.SkyExposure)
-                return false;
-            if (SkyColor != lightingInfo.SkyColor)
-                return false;
-            if (HorizonColor != lightingInfo.HorizonColor)
-                return false;
-            if (GroundColor != lightingInfo.GroundColor)
-                return false;
-            if (SkyTopExponent != lightingInfo.SkyTopExponent)
-                return false;
-            if (SkyBottomExponent != lightingInfo.SkyBottomExponent)
-                return false;
-            if (SkyIntensity != lightingInfo.SkyIntensity)
-                return false;
-            if (FogEnabled != lightingInfo.FogEnabled)
-                return false;
-            if (FogColor != lightingInfo.FogColor)
-                return false;
-            if (FogStartDistance != lightingInfo.FogStartDistance)
-                return false;
-            if (FogEndDistance != lightingInfo.FogEndDistance)
-                return false;
-            if (CameraColorGrading != lightingInfo.CameraColorGrading)
-                return false;
-            if (CameraColorBlend != lightingInfo.CameraColorBlend)
-                return false;
-            if (CameraExposure != lightingInfo.CameraExposure)
-                return false;
+            if (!(obj is LightingInfo lightingInfo)) return false;
+            if (EnableDirectionalLight != lightingInfo.EnableDirectionalLight) return false;
+            if (DirectionalRotationX != lightingInfo.DirectionalRotationX) return false;
+            if (DirectionalRotationY != lightingInfo.DirectionalRotationY) return false;
+            if (DirectionalColor != lightingInfo.DirectionalColor) return false;
+            if (DirectionalIntensity != lightingInfo.DirectionalIntensity) return false;
+            if (DirectionalShadowStrength != lightingInfo.DirectionalShadowStrength) return false;
+            if (AmbientUsesSkybox != lightingInfo.AmbientUsesSkybox) return false;
+            if (AmbientColor != lightingInfo.AmbientColor) return false;
+            if (SkyboxIndex != lightingInfo.SkyboxIndex) return false;
+            if (AdditonalSkybox != lightingInfo.AdditonalSkybox) return false;
+            if (AdditionalSkyboxTint != lightingInfo.AdditionalSkyboxTint) return false;
+            if (AdditionalSkyboxRotation != lightingInfo.AdditionalSkyboxRotation) return false;
+            if (SunSize != lightingInfo.SunSize) return false;
+            if (SunSizeConvergence != lightingInfo.SunSizeConvergence) return false;
+            if (AtmosphereThickness != lightingInfo.AtmosphereThickness) return false;
+            if (SkyTint != lightingInfo.SkyTint) return false;
+            if (GroundTint != lightingInfo.GroundTint) return false;
+            if (SkyExposure != lightingInfo.SkyExposure) return false;
+            if (SkyColor != lightingInfo.SkyColor) return false;
+            if (HorizonColor != lightingInfo.HorizonColor) return false;
+            if (GroundColor != lightingInfo.GroundColor) return false;
+            if (SkyTopExponent != lightingInfo.SkyTopExponent) return false;
+            if (SkyBottomExponent != lightingInfo.SkyBottomExponent) return false;
+            if (SkyIntensity != lightingInfo.SkyIntensity) return false;
+            if (FogEnabled != lightingInfo.FogEnabled) return false;
+            if (FogColor != lightingInfo.FogColor) return false;
+            if (FogStartDistance != lightingInfo.FogStartDistance) return false;
+            if (FogEndDistance != lightingInfo.FogEndDistance) return false;
+            if (CameraColorGrading != lightingInfo.CameraColorGrading) return false;
+            if (CameraColorBlend != lightingInfo.CameraColorBlend) return false;
+            if (CameraExposure != lightingInfo.CameraExposure) return false;
 
             return true;
         }

@@ -109,7 +109,7 @@ namespace OverhaulMod.UI
 
         public void OnClearButtonClicked()
         {
-            ModUIUtils.MessagePopup(true, "Confirm clearing leaderboard data?", LocalizationManager.Instance.GetTranslatedString("action_cannot_be_undone"), 125f, MessageMenu.ButtonLayout.EnableDisableButtons, string.Empty, "Yes", "No", null, delegate
+            ModUIUtils.MessagePopup(true, LocalizationManager.Instance.GetTranslatedString("endless_mode_clear_leaderboard_header"), LocalizationManager.Instance.GetTranslatedString("action_cannot_be_undone"), 125f, MessageMenu.ButtonLayout.EnableDisableButtons, string.Empty, "Yes", "No", null, delegate
             {
                 List<HighScoreData> list = displayingList;
                 list.Clear();

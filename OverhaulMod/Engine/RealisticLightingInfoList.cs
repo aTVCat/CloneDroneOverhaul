@@ -14,7 +14,14 @@ namespace OverhaulMod.Engine
         public void FixValues()
         {
             if (LightingInfos == null)
+            {
                 LightingInfos = new List<RealisticLightingInfo>();
+            }
+            else
+            {
+                foreach (RealisticLightingInfo lightingInfo in LightingInfos)
+                    lightingInfo.FixValues();
+            }
 
             if (_prefabNameToInfo == null)
                 _prefabNameToInfo = new Dictionary<string, RealisticLightingInfo>();

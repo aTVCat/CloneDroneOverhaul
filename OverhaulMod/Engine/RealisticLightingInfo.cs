@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-namespace OverhaulMod.Engine
+﻿namespace OverhaulMod.Engine
 {
     public class RealisticLightingInfo
     {
@@ -8,21 +6,9 @@ namespace OverhaulMod.Engine
 
         public string LevelPrefabName;
 
-        public string SkyboxName;
-
-        public Color Tint = new Color(0.5f, 0.5f, 0.5f, 0.5f);
-
-        public float Rotation;
-
         public void FixValues()
         {
-            if (Lighting == null)
-                Lighting = new LightingInfo();
-        }
-
-        public static Color GetDefaultTint()
-        {
-            return new Color(0.5f, 0.5f, 0.5f, 0.5f);
+            if (Lighting == null) Lighting = new LightingInfo();
         }
     }
 }

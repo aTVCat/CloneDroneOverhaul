@@ -30,6 +30,11 @@ namespace OverhaulMod.Patches
                 _ = __instance._lightSettingsInScene.Remove(lightSettings);
                 return false;
             }
+            if (!GameModeManager.IsInLevelEditor() && LightingTransitionManager.EnableLightTransitions)
+            {
+                _ = __instance._lightSettingsInScene.Remove(lightSettings);
+                return __instance._lightSettingsInScene.Count != 0;
+            }
             return true;
         }
 
