@@ -551,6 +551,31 @@ namespace OverhaulMod.UI
             {
                 populateSubtitlesReworkSettingsPage(_selectedTabId);
             });
+
+
+            _ = pageBuilder.Header1("Transitions");
+            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.OVERHAUL_SCENE_TRANSITIONS), delegate (bool value)
+            {
+                ModSettingsManager.SetBoolValue(ModSettingsConstants.OVERHAUL_SCENE_TRANSITIONS, value, true);
+                PopulatePage("Interface");
+            }, "Better scene transitions");
+            if (TransitionManager.OverhaulSceneTransitions)
+            {
+                _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.OVERHAUL_NON_SCENE_TRANSITIONS), delegate (bool value)
+                {
+                    ModSettingsManager.SetBoolValue(ModSettingsConstants.OVERHAUL_NON_SCENE_TRANSITIONS, value, true);
+                }, "Better in-game transitions");
+                _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.TRANSITION_SOUND), delegate (bool value)
+                {
+                    ModSettingsManager.SetBoolValue(ModSettingsConstants.TRANSITION_SOUND, value, true);
+                }, "Transition sound");
+            }
+
+            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.TRANSITION_ON_STARTUP), delegate (bool value)
+            {
+                ModSettingsManager.SetBoolValue(ModSettingsConstants.TRANSITION_ON_STARTUP, value, true);
+            }, "Transition on startup");
+            _ = pageBuilder.Header4("Doborog logo will be smoothly faded out on game start");
         }
 
         private void populateGraphicsPage(SettingsMenu settingsMenu)
@@ -804,25 +829,6 @@ namespace OverhaulMod.UI
             {
                 ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_GARBAGE_PARTICLES, value, true);
             }, "Enable sparks");
-
-            _ = pageBuilder.Header1("Transitions");
-            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.OVERHAUL_SCENE_TRANSITIONS), delegate (bool value)
-            {
-                ModSettingsManager.SetBoolValue(ModSettingsConstants.OVERHAUL_SCENE_TRANSITIONS, value, true);
-            }, "Better scene transitions");
-            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.OVERHAUL_NON_SCENE_TRANSITIONS), delegate (bool value)
-            {
-                ModSettingsManager.SetBoolValue(ModSettingsConstants.OVERHAUL_NON_SCENE_TRANSITIONS, value, true);
-            }, "Better in-game transitions");
-            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.TRANSITION_SOUND), delegate (bool value)
-            {
-                ModSettingsManager.SetBoolValue(ModSettingsConstants.TRANSITION_SOUND, value, true);
-            }, "Transition sound");
-            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.TRANSITION_ON_STARTUP), delegate (bool value)
-            {
-                ModSettingsManager.SetBoolValue(ModSettingsConstants.TRANSITION_ON_STARTUP, value, true);
-            }, "Transition on startup");
-            _ = pageBuilder.Header4("Doborog logo will be smoothly faded out on game start");
         }
 
         private void populateGameplayPage(SettingsMenu settingsMenu)

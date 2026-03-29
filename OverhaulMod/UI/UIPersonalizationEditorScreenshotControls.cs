@@ -42,6 +42,8 @@ namespace OverhaulMod.UI
 
         public override bool CloseOnEscapeButtonPress => false;
 
+        public override bool EnableCursor => true;
+
         protected override void OnInitialized()
         {
             _moderatorControls.SetActive(PersonalizationEditorManager.Instance.canVerifyItems);

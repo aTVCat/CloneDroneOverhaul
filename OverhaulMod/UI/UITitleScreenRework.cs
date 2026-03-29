@@ -398,7 +398,6 @@ namespace OverhaulMod.UI
         public void OnPlayMultiPlayerButtonClicked()
         {
             _titleScreenUI.OnMultiplayerButtonClicked();
-            _titleScreenUI.MultiplayerModeSelectScreen.SetMainScreenVisible(true);
         }
 
         public void OnModBotLogInButtonClicked()

@@ -1,6 +1,7 @@
 ﻿using HarmonyLib;
 using OverhaulMod.Combat;
 using OverhaulMod.Combat.Weapons;
+using OverhaulMod.Content.Personalization;
 using OverhaulMod.Engine;
 using OverhaulMod.Utils;
 using OverhaulMod.Visuals;
@@ -145,6 +146,14 @@ namespace OverhaulMod.Patches
         private static void CreateCharacterModel_Postfix(FirstPersonMover __instance)
         {
             ModWeaponsManager.Instance.AddWeaponsToRobot(__instance);
+        }
+
+        [HarmonyPostfix]
+        [HarmonyPatch(nameof(FirstPersonMover.SetEquippedWeaponType))]
+        private static void SetEquippedWeaponType_Postfix(FirstPersonMover __instance)
+        {
+            PersonalizationController personalizationController = __instance.GetComponent<PersonalizationController>();
+            if (personalizationController) personalizationController.RefreshWeaponSkinsVisibility();
         }
     }
 }

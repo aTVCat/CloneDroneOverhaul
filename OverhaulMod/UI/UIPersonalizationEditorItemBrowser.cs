@@ -193,30 +193,6 @@ namespace OverhaulMod.UI
             panel.TargetDirectory = _usePersistentDirectoryToggle.isOn ? ModCore.CustomizationPersistentFolder : ModCore.CustomizationFolder;
             panel.UsePersistentFolder = _usePersistentDirectoryToggle.isOn;
             panel.ItemCreatedCallback = Hide;
-
-            /*
-            ModUIUtils.InputFieldWindow("Create new item", "Enter Folder name", 150f, delegate (string str)
-            {
-                string rootDirectory = _usePersistentDirectoryToggle.isOn ? ModCore.CustomizationPersistentFolder : ModCore.CustomizationFolder;
-                string directoryName = str.Replace(" ", string.Empty);
-                string directoryPath = $"{Path.Combine(rootDirectory, directoryName)}/";
-                if (Directory.Exists(directoryPath))
-                {
-                    ModUIUtils.MessagePopupOK("Directory with the same name already exists", "Try naming the Folder differently", true);
-                    return;
-                }
-
-                if (PersonalizationEditorManager.Instance.CreateItem(str, _usePersistentDirectoryToggle.isOn, out PersonalizationItemInfo personalizationItem))
-                {
-                    UIPersonalizationEditor.Instance.ShowEverything();
-                    PersonalizationEditorManager.Instance.EditItem(personalizationItem, personalizationItem.FolderPath);
-                    Hide();
-                }
-                else
-                {
-                    ModUIUtils.MessagePopupOK("Item creation error", "A Folder with the name has been already created.\nTry giving your Folder an alternate name.", true);
-                }
-            });*/
         }
 
         public void OnSearchBoxChanged(string text)

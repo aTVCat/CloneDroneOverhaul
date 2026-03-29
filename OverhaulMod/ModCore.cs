@@ -222,9 +222,6 @@ namespace OverhaulMod
             ModLoader.Load();
             _hasAttemptedToLoadOnThisScene = true;
 
-            TVCat.Launcher.Launcher.LoadAssembly(this, "TVCat.CloneDrone.dll");
-            TVCat.Launcher.Launcher.AddModsLoadedEventListener(ModLoader.AddLevelObjectListeners);
-
             GlobalEventManager.Instance.AddEventListenerOnce(GlobalEvents.GameInitializtionCompleted, onGameInitialized);
         }
 
@@ -271,7 +268,6 @@ namespace OverhaulMod
 
             GamePatchBehaviour.Unload();
 
-            ModLoader.RemoveLevelObjectListeners();
             ModLoader.Unload();
         }
 
@@ -322,7 +318,7 @@ namespace OverhaulMod
             PersonalizationController personalizationController = owner.GetComponent<PersonalizationController>();
             if (personalizationController)
             {
-                personalizationController.RespawnSkinsIfRequired();
+                personalizationController.RespawnWeaponSkinsIfRequired();
             }
         }
 

@@ -271,6 +271,9 @@ namespace OverhaulMod.Content.Personalization
             personalizationItem.SetAuthor(SteamFriends.GetPersonaName());
             PersonalizationManager.Instance.itemList.Items.Add(personalizationItem);
 
+            PersonalizationManager.Instance.UserInfo.SetIsItemUnverified(personalizationItem, true);
+            PersonalizationManager.Instance.SaveUserInfo();
+
             ModJsonUtils.WriteStream(Path.Combine(directoryPath, ITEM_INFO_FILE), personalizationItem);
             ModJsonUtils.WriteStream(Path.Combine(directoryPath, ITEM_META_DATA_FILE), personalizationItem.MetaData);
             return true;
@@ -515,6 +518,9 @@ namespace OverhaulMod.Content.Personalization
             if (bot._playerCamera)
                 bot._playerCamera.gameObject.SetActive(false);
 
+            EnergySource energySource = bot.GetEnergySource();
+            energySource.HasInfiniteEnergy = true;
+
             _bot = bot;
             _greatSwordPreviewController = bot.gameObject.AddComponent<GreatSwordPreviewController>();
 
@@ -722,12 +728,11 @@ namespace OverhaulMod.Content.Personalization
             stage.SpawnItemInHolder(_editingItemBeforeScreenshoting);
             stage.AdjustCameraPositionForCurrentItem();
 
-            ModUIConstants.ShowPersonalizationEditorScreenshotControls();
-
             PersonalizationEditorCamera cameraController = stage.GetCameraController();
             cameraController.gameObject.SetActive(true);
 
             _ = ModUIConstants.ShowPersonalizationEditorPlaytestHUD();
+            ModUIConstants.ShowPersonalizationEditorScreenshotControls();
         }
 
         public void ExitScreenshotMode()
@@ -747,14 +752,13 @@ namespace OverhaulMod.Content.Personalization
             stage.HideStage();
             stage.HideOverlay();
 
-            ModUIConstants.HidePersonalizationEditorScreenshotControls();
-
             EditItem(_editingItemBeforeScreenshoting);
 
             PersonalizationEditorCamera cameraController = stage.GetCameraController();
             cameraController.gameObject.SetActive(false);
 
             ModUIConstants.HidePersonalizationEditorPlaytestHUD();
+            ModUIConstants.HidePersonalizationEditorScreenshotControls();
         }
 
         public bool IsInScreenshotMode()

@@ -18,7 +18,7 @@ namespace OverhaulMod.Content.Personalization
 
         public const string CUSTOMIZATION_ASSETS_FILE_DOWNLOADED_EVENT = "CustomizationAssetsFileDownloaded";
 
-        public const string ITE_EQUIPPED_OR_UNEQUIPPED_EVENT = "PersonalizationItemEquippedOrUnequipped";
+        public const string ITEM_EQUIPPED_OR_UNEQUIPPED_EVENT = "PersonalizationItemEquippedOrUnequipped";
 
         public const string USER_INFO_FILE = "PersonalizationUserInfo.json";
 
@@ -86,7 +86,7 @@ namespace OverhaulMod.Content.Personalization
             private set;
         }
 
-        public PersonalizationUserInfo userInfo
+        public PersonalizationUserInfo UserInfo
         {
             get;
             private set;
@@ -118,7 +118,7 @@ namespace OverhaulMod.Content.Personalization
 
         public void OnGameLoaded()
         {
-            PersonalizationUserInfo userInfo = this.userInfo;
+            PersonalizationUserInfo userInfo = this.UserInfo;
             if (userInfo != null)
             {
                 userInfo.RefreshAllItemsVerification();
@@ -365,12 +365,12 @@ namespace OverhaulMod.Content.Personalization
             /*if (personalizationUserInfo.DiscoveredItems.Count == 0)
                 personalizationUserInfo.DiscoverAllItems();*/
 
-            userInfo = personalizationUserInfo;
+            UserInfo = personalizationUserInfo;
         }
 
         public void SaveUserInfo()
         {
-            PersonalizationUserInfo personalizationUserInfo = userInfo;
+            PersonalizationUserInfo personalizationUserInfo = UserInfo;
             if (personalizationUserInfo != null)
             {
                 ModDataManager.Instance.SerializeToFile(USER_INFO_FILE, personalizationUserInfo, false);
@@ -386,6 +386,17 @@ namespace OverhaulMod.Content.Personalization
                 || weaponType == WeaponType.Spear
                 || weaponType == WeaponType.Shield
                 || weaponType == ModWeaponsManager.SCYTHE_TYPE);
+        }
+
+        public void DestroyWeaponSkinOnMainPlayer(WeaponType weaponType)
+        {
+            FirstPersonMover player = CharacterTracker.Instance.GetPlayerRobot();
+            if (!player || !player.IsAttachedAndAlive()) return;
+
+            PersonalizationController personalizationController = player.GetComponent<PersonalizationController>();
+            if (!personalizationController) return;
+
+            personalizationController.DestroyItem(personalizationController.GetSpawnedWeaponSkinInfo(weaponType));
         }
 
         public void EquipItem(PersonalizationItemInfo item)
@@ -436,7 +447,7 @@ namespace OverhaulMod.Content.Personalization
                     break;
             }
 
-            GlobalEventManager.Instance.Dispatch(ITE_EQUIPPED_OR_UNEQUIPPED_EVENT);
+            GlobalEventManager.Instance.Dispatch(ITEM_EQUIPPED_OR_UNEQUIPPED_EVENT);
         }
 
         public static bool GetIsItemEquipped(PersonalizationItemInfo item)

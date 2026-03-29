@@ -59,7 +59,7 @@ namespace OverhaulMod.UI
             _button = base.GetComponent<Button>();
             _button.onClick.AddListener(onClicked);
 
-            GlobalEventManager.Instance.AddEventListener(PersonalizationManager.ITE_EQUIPPED_OR_UNEQUIPPED_EVENT, RefreshDisplays);
+            GlobalEventManager.Instance.AddEventListener(PersonalizationManager.ITEM_EQUIPPED_OR_UNEQUIPPED_EVENT, RefreshDisplays);
             RefreshDisplays();
 
             LoadIcon();
@@ -68,7 +68,7 @@ namespace OverhaulMod.UI
         public override void OnDestroy()
         {
             base.OnDestroy();
-            GlobalEventManager.Instance.RemoveEventListener(PersonalizationManager.ITE_EQUIPPED_OR_UNEQUIPPED_EVENT, RefreshDisplays);
+            GlobalEventManager.Instance.RemoveEventListener(PersonalizationManager.ITEM_EQUIPPED_OR_UNEQUIPPED_EVENT, RefreshDisplays);
 
             Texture2D texture = _texture;
             if (texture)
@@ -91,7 +91,7 @@ namespace OverhaulMod.UI
             PersonalizationItemInfo itemInfo = ItemInfo;
             if (itemInfo == null) return;
 
-            PersonalizationUserInfo personalizationUserInfo = PersonalizationManager.Instance.userInfo;
+            PersonalizationUserInfo personalizationUserInfo = PersonalizationManager.Instance.UserInfo;
 
             bool equipped = itemInfo.IsEquipped();
             bool wasUpdated = personalizationUserInfo.GetItemVersion(itemInfo) != itemInfo.Version;
@@ -187,7 +187,7 @@ namespace OverhaulMod.UI
             if (itemInfo == null)
                 return;
 
-            PersonalizationUserInfo userInfo = PersonalizationManager.Instance?.userInfo;
+            PersonalizationUserInfo userInfo = PersonalizationManager.Instance?.UserInfo;
             if (userInfo == null)
                 return;
 

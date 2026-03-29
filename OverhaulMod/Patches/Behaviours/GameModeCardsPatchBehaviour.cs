@@ -9,23 +9,22 @@ namespace OverhaulMod.Patches.Behaviours
 {
     internal class GameModeCardsPatchBehaviour : GamePatchBehaviour
     {
-        private UnityEvent _storyModeEvent, _endlessModeEvent, _soloChallengesEvent, _coopEndlessEvent, _coopChallengesEvent, _lastBotStandingEvent, _duelEvent;
+        private UnityEvent _storyModeEvent, _endlessModeEvent, _soloChallengesEvent;
 
         public override void Patch()
         {
             patchGameModeCardPrefab(ModCache.titleScreenUI.MultiplayerModeSelectScreen);
             patchGameModeCardPrefab(ModCache.titleScreenUI.SingleplayerModeSelectScreen);
 
-            GameModeCardData[] multiplayerDatas = ModCache.titleScreenUI.MultiplayerModeSelectScreen.GameModeData;
+            MultiplayerModeSelectScreenV2 multiplayerModeSelectScreen = ModCache.titleScreenUI.MultiplayerModeSelectScreenV2;
+            if (multiplayerModeSelectScreen._modeButtons == null) multiplayerModeSelectScreen.Awake();
+
+            MultiplayerModeCardButton[] multiplayerDatas = multiplayerModeSelectScreen._modeButtons;
             GameModeCardData[] singleplayerDatas = ModCache.titleScreenUI.SingleplayerModeSelectScreen.GameModeData;
 
             _storyModeEvent = singleplayerDatas[0].ClickedCallback;
             _endlessModeEvent = singleplayerDatas[1].ClickedCallback;
             _soloChallengesEvent = singleplayerDatas[2].ClickedCallback;
-            _coopEndlessEvent = multiplayerDatas[0].ClickedCallback;
-            _coopChallengesEvent = multiplayerDatas[1].ClickedCallback;
-            _lastBotStandingEvent = multiplayerDatas[2].ClickedCallback;
-            _duelEvent = multiplayerDatas[3].ClickedCallback;
 
             UnityEvent storyModeEvent = new UnityEvent();
             storyModeEvent.AddListener(delegate
@@ -51,72 +50,13 @@ namespace OverhaulMod.Patches.Behaviours
             });
             singleplayerDatas[1].ClickedCallback = endlessModeEvent;
 
-            UnityEvent coopEndlessModeEvent = new UnityEvent();
-            coopEndlessModeEvent.AddListener(delegate
-            {
-                if (!ModUIManager.ShowDuelInviteMenuRework)
-                {
-                    ModCache.titleScreenUI.OnPlayCoopButtonClicked();
-                    return;
-                }
-                _ = ModUIConstants.ShowDuelInviteMenuRework(GameMode.EndlessCoop);
-            });
-            multiplayerDatas[0].ClickedCallback = coopEndlessModeEvent;
-
-            UnityEvent coopChallengesModeEvent = new UnityEvent();
-            coopChallengesModeEvent.AddListener(delegate
-            {
-                if (!ModUIManager.ShowDuelInviteMenuRework)
-                {
-                    ModCache.titleScreenUI.OnPlayCoopChallengesButtonClicked();
-                    return;
-                }
-                _ = ModUIConstants.ShowDuelInviteMenuRework(GameMode.CoopChallenge);
-            });
-            multiplayerDatas[1].ClickedCallback = coopChallengesModeEvent;
-
-            UnityEvent battleRoyaleModeEvent = new UnityEvent();
-            battleRoyaleModeEvent.AddListener(delegate
-            {
-                if (!ModUIManager.ShowDuelInviteMenuRework)
-                {
-                    ModCache.titleScreenUI.OnPlayBattleRoyaleButtonClicked();
-                    return;
-                }
-                _ = ModUIConstants.ShowDuelInviteMenuRework(GameMode.BattleRoyale);
-            });
-            multiplayerDatas[2].ClickedCallback = battleRoyaleModeEvent;
-
-            UnityEvent duelModeEvent = new UnityEvent();
-            duelModeEvent.AddListener(delegate
-            {
-                if (!ModUIManager.ShowDuelInviteMenuRework)
-                {
-                    ModCache.titleScreenUI.OnDuelInviteMenuClicked();
-                    return;
-                }
-                _ = ModUIConstants.ShowDuelInviteMenuRework(GameMode.MultiplayerDuel);
-            });
-            multiplayerDatas[3].ClickedCallback = duelModeEvent;
-
-            UnityEvent spChallengesEvent = new UnityEvent();
-            spChallengesEvent.AddListener(delegate
-            {
-                if (!ModUIManager.ShowChallengesMenuRework)
-                {
-                    ModCache.titleScreenUI.OnChallengeButtonClicked();
-                    return;
-                }
-                _ = ModUIConstants.ShowChallengesMenuRework(false, false);
-            });
-            singleplayerDatas[2].ClickedCallback = spChallengesEvent;
-
             ReplaceSprite(singleplayerDatas, 1, "Endless");
             ReplaceSprite(singleplayerDatas, 2, "Bot");
-            ReplaceSprite(multiplayerDatas, 0, "Humans");
-            ReplaceSprite(multiplayerDatas, 1, "Bot");
-            ReplaceSprite(multiplayerDatas, 2, "Raptor");
-            ReplaceSprite(multiplayerDatas, 3, "DuelHumans");
+            //ReplaceSprite(multiplayerDatas, 0, "Humans");
+            ReplaceSprite(multiplayerDatas, 1, "Raptor");
+            ReplaceSprite(multiplayerDatas, 2, "DuelHumans");
+            ReplaceSprite(multiplayerDatas, 3, "Bot");
+            ReplaceSprite(multiplayerDatas, 4, "Humans");
         }
 
         public override void Unpatch()
@@ -127,10 +67,6 @@ namespace OverhaulMod.Patches.Behaviours
             singleplayerDatas[0].ClickedCallback = _storyModeEvent;
             singleplayerDatas[1].ClickedCallback = _endlessModeEvent;
             singleplayerDatas[2].ClickedCallback = _soloChallengesEvent;
-            multiplayerDatas[0].ClickedCallback = _coopEndlessEvent;
-            multiplayerDatas[1].ClickedCallback = _coopChallengesEvent;
-            multiplayerDatas[2].ClickedCallback = _lastBotStandingEvent;
-            multiplayerDatas[3].ClickedCallback = _duelEvent;
         }
 
         public void ReplaceSprite(GameModeCardData[] array, int index, string imageName)
@@ -146,6 +82,23 @@ namespace OverhaulMod.Patches.Behaviours
             {
                 Sprite sprite = texture2D.ToSprite();
                 array[index].ThumbnailSprite = sprite;
+                ModAdvancedCache.Add(key, sprite);
+            }, null, out _);
+        }
+
+        public void ReplaceSprite(MultiplayerModeCardButton[] array, int index, string imageName)
+        {
+            string key = $"OverhaulGameModeImage_{imageName}";
+            if (ModAdvancedCache.TryGet(key, out Sprite item))
+            {
+                array[index].GameModeSelectData.ThumbnailSprite = item;
+                return;
+            }
+
+            RepositoryManager.Instance.GetLocalTexture(Path.Combine(ModCore.TexturesFolder, "gamemodes", $"{imageName}.jpg"), delegate (Texture2D texture2D)
+            {
+                Sprite sprite = texture2D.ToSprite();
+                array[index].GameModeSelectData.ThumbnailSprite = sprite;
                 ModAdvancedCache.Add(key, sprite);
             }, null, out _);
         }

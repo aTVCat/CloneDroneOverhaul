@@ -8,9 +8,7 @@ namespace OverhaulMod.UI
 {
     public class UIPersonalizationEditor : OverhaulUIBehaviour
     {
-        private static List<UIElementPersonalizationEditorDropdown.OptionData> s_fileOptions, s_viewOptions, s_windowOptions, s_helpOptions, s_screenshotOptions;
-
-        private static bool s_hasInitializedOptions;
+        private List<UIElementPersonalizationEditorDropdown.OptionData> s_fileOptions, s_viewOptions, s_windowOptions, s_helpOptions, s_screenshotOptions;
 
         [UIElementAction(nameof(OnSelectItemButtonClicked))]
         [UIElement("SelectItemButton")]
@@ -87,7 +85,7 @@ namespace OverhaulMod.UI
         protected override void OnInitialized()
         {
             instance = this;
-            tryInitializeOptions();
+            initializeOptions();
 
             _toolbarScreenshotButton.gameObject.SetActive(PersonalizationEditorManager.Instance.canVerifyItems);
             _toolbarWindowButton.interactable = false;
@@ -129,15 +127,11 @@ namespace OverhaulMod.UI
             base.Hide();
         }
 
-        private void tryInitializeOptions()
+        private void initializeOptions()
         {
-            if (s_hasInitializedOptions) return;
-            s_hasInitializedOptions = true;
-
             s_fileOptions = new List<UIElementPersonalizationEditorDropdown.OptionData>()
             {
                 new UIElementPersonalizationEditorDropdown.OptionData("Open", "Redirect-16x16", instance.OnSelectItemButtonClicked),
-                new UIElementPersonalizationEditorDropdown.OptionData("Save (Ctrl+S)", "Save16x16", instance.OnSaveButtonClicked),
                 new UIElementPersonalizationEditorDropdown.OptionData("Import items", "Import-16x16", instance.OnImportItemsButtonClicked)
                 {
                     DisplayedForVerifiers = true
@@ -168,7 +162,6 @@ namespace OverhaulMod.UI
                 new UIElementPersonalizationEditorDropdown.OptionData("Welcome message", "Redirect-16x16", PersonalizationEditorManager.Instance.WelcomeMessage),
                 new UIElementPersonalizationEditorDropdown.OptionData("Guide: Introduction", "Redirect-16x16", instance.DropdownGuide),
                 new UIElementPersonalizationEditorDropdown.OptionData("Tutorial video", "Redirect-16x16", instance.TutorialVideo),
-                new UIElementPersonalizationEditorDropdown.OptionData("About", "Redirect-16x16", instance.OnAboutButtonClicked)
             };
 
             s_screenshotOptions = new List<UIElementPersonalizationEditorDropdown.OptionData>

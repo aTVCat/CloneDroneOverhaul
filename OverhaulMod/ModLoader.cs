@@ -19,8 +19,6 @@ namespace OverhaulMod
     {
         private static bool s_hasAddedObjects;
 
-        private static bool s_hasInitializedTVCatLibrary;
-
         public static void Load()
         {
             ModDebug.Log("Attempted to load the mod");
@@ -167,31 +165,6 @@ namespace OverhaulMod
                     Patch.AddObject("ArenaAudienceLinePoint", "OverhaulMod", "", GameObject.CreatePrimitive(PrimitiveType.Sphere).transform, new Type[] { typeof(ArenaAudienceLinePoint) }, null);*/
 
                 s_hasAddedObjects = true;
-            }
-        }
-
-        public static void AddLevelObjectListeners()
-        {
-            if (s_hasInitializedTVCatLibrary) return;
-
-            TVCat.CloneDrone.ObjectPlacedInLevelUtils.AddPreInitializeCallback(onLevelObjectPreInitialized);
-            s_hasInitializedTVCatLibrary = true;
-        }
-
-        public static void RemoveLevelObjectListeners()
-        {
-            if (!s_hasInitializedTVCatLibrary) return;
-
-            TVCat.CloneDrone.ObjectPlacedInLevelUtils.RemovePreInitializeCallback(onLevelObjectPreInitialized);
-            s_hasInitializedTVCatLibrary = false;
-        }
-
-        private static void onLevelObjectPreInitialized(ObjectPlacedInLevel objectPlacedInLevel)
-        {
-            LevelObjectEntry levelObjectEntry = objectPlacedInLevel.LevelObjectEntry;
-            if (levelObjectEntry != null && (levelObjectEntry.PathUnderResources == RealisticLightingManager.LightSettingsObjectResourcePath || levelObjectEntry.PathUnderResources == RealisticLightingManager.LightSettingsOverrideObjectResourcePath) && !objectPlacedInLevel.GetComponent<AdditionalSkyboxSettings>())
-            {
-                objectPlacedInLevel.gameObject.AddComponent<AdditionalSkyboxSettings>();
             }
         }
 

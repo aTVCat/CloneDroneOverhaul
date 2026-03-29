@@ -192,7 +192,7 @@ namespace OverhaulMod.UI
             setCameraZoomedIn(false);
             UIVersionLabel.instance.offsetX = 0f;
 
-            PersonalizationManager.Instance.userInfo.SaveIfDirty();
+            PersonalizationManager.Instance.UserInfo.SaveIfDirty();
             ModSettingsDataManager.Instance.Save();
 
             PersonalizationMultiplayerManager.Instance.SendPlayerCustomizationDataEvent(false);
@@ -415,8 +415,8 @@ namespace OverhaulMod.UI
                 {
                     defaultSkinButton.interactable = false;
                     PersonalizationUserInfo.SetWeaponSkin(weaponType, null);
-                    PersonalizationController.DestroyWeaponSkinOnMainPlayer(weaponType);
-                    GlobalEventManager.Instance.Dispatch(PersonalizationManager.ITE_EQUIPPED_OR_UNEQUIPPED_EVENT);
+                    PersonalizationManager.Instance.DestroyWeaponSkinOnMainPlayer(weaponType);
+                    GlobalEventManager.Instance.Dispatch(PersonalizationManager.ITEM_EQUIPPED_OR_UNEQUIPPED_EVENT);
                 });
                 defaultSkinButton.interactable = !PersonalizationUserInfo.GetWeaponSkin(weaponType).IsNullOrEmpty();
                 _defaultSkinButton = defaultSkinButton;
