@@ -128,7 +128,7 @@ namespace OverhaulMod.Content.Personalization
 
         public void StartEditorGameMode(bool noTransition = false)
         {
-            if (noTransition || !TransitionManager.OverhaulNonSceneTransitions)
+            if (noTransition || !TransitionManager.OverhaulSceneTransitions)
             {
                 _ = base.StartCoroutine(startEditorGameModeCoroutine(false));
                 return;
@@ -144,7 +144,7 @@ namespace OverhaulMod.Content.Personalization
                 ModAudioManager.Instance.PlayCustomizationEditorAmbiance();
 
             if (useTransitionManager)
-                yield return new WaitForSecondsRealtime(0.25f);
+                yield return new WaitForSecondsRealtime(1f);
 
             yield return null;
 

@@ -11,9 +11,6 @@ namespace OverhaulMod.Engine
         [ModSetting(ModSettingsConstants.OVERHAUL_SCENE_TRANSITIONS, true)]
         public static bool OverhaulSceneTransitions;
 
-        [ModSetting(ModSettingsConstants.OVERHAUL_NON_SCENE_TRANSITIONS, true)]
-        public static bool OverhaulNonSceneTransitions;
-
         [ModSetting(ModSettingsConstants.TRANSITION_ON_STARTUP, true)]
         public static bool TransitionOnStartup;
 
@@ -77,7 +74,7 @@ namespace OverhaulMod.Engine
 
         public static IEnumerator SceneTransitionCoroutine(SceneTransitionManager sceneTransitionManager)
         {
-            yield return new WaitForSecondsRealtime(0.4f);
+            yield return new WaitForSecondsRealtime(0.5f);
             sceneTransitionManager._isExitingToMainMenu = true;
             GlobalEventManager.Instance.Dispatch("ExitingToMainMenu");
             sceneTransitionManager._isDisconnecting = true;

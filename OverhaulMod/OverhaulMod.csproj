@@ -421,6 +421,7 @@
     <Compile Include="UI\DropdownWeaponTypeOptionData.cs" />
     <Compile Include="UI\Elements\UIElementAddonEditorDownloadDisplay.cs" />
     <Compile Include="UI\Elements\UIElementBattleRoyaleStatsBox.cs" />
+    <Compile Include="UI\Components\CDHDLoadingAnimation.cs" />
     <Compile Include="UI\Elements\UIElementColorPickerButton.cs" />
     <Compile Include="UI\Elements\UIElementGalleryImage.cs" />
     <Compile Include="UI\Elements\UIElementImageDisplay.cs" />

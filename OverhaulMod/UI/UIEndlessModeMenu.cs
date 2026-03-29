@@ -73,7 +73,7 @@ namespace OverhaulMod.UI
 
         public void OnPlayButtonClicked()
         {
-            if (!TransitionManager.OverhaulNonSceneTransitions)
+            if (!TransitionManager.OverhaulSceneTransitions)
             {
                 Hide();
                 ModCache.titleScreenUI.OnPlayEndlessButtonClicked();
@@ -105,7 +105,7 @@ namespace OverhaulMod.UI
 
         private IEnumerator transitionCoroutine()
         {
-            yield return new WaitForSecondsRealtime(0.25f);
+            yield return new WaitForSecondsRealtime(1f);
             Hide();
             ModCache.titleScreenUI.OnPlayEndlessButtonClicked();
             yield return new WaitUntil(() => CharacterTracker.Instance._player);

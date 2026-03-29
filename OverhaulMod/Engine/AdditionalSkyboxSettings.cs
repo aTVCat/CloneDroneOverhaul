@@ -16,10 +16,12 @@ namespace OverhaulMod.Engine
         [IncludeInLevelEditor]
         public float Rotation = 0f;
 
-        private void Awake()
+        private void Start()
         {
             if (!GameModeManager.IsInLevelEditor()) return;
-            base.GetComponent<ObjectPlacedInLevel>().AddValueChangedListener(onValueChanged);
+
+            ObjectPlacedInLevel objectPlacedInLevel = base.GetComponent<ObjectPlacedInLevel>();
+            if (objectPlacedInLevel) objectPlacedInLevel.AddValueChangedListener(onValueChanged);
         }
 
         private void onValueChanged(string fieldName)

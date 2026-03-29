@@ -4,6 +4,7 @@
     {
         public const string UI = "overhaul_ui";
         public const string UI_EXTRA = "overhaul_ui_extra";
+        public const string UI_TRANSTION = "overhaul_ui_transition";
         public const string WEAPONS = "overhaul_weapons";
         public const string MODELS = "overhaul_models";
         public const string VFX = "overhaul_vfx";

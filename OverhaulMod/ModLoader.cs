@@ -5,6 +5,7 @@ using OverhaulMod.Content.LevelEditor;
 using OverhaulMod.Content.Personalization;
 using OverhaulMod.Engine;
 using OverhaulMod.Patches.Behaviours;
+using OverhaulMod.UI;
 using OverhaulMod.Utils;
 using OverhaulMod.Visuals;
 using OverhaulMod.Visuals.Environment;
@@ -264,6 +265,18 @@ namespace OverhaulMod
                     }
                 }
             }, ModSettingsConstants.ENABLE_FOV_OVERRIDE);
+
+            modSettingsManager.AddSettingValueChangedListener(delegate (object obj)
+            {
+                UITitleScreenRework titleScreenRework = ModUIManager.Instance.Get<UITitleScreenRework>(AssetBundleConstants.UI, ModUIConstants.UI_TITLE_SCREEN);
+                if (titleScreenRework) titleScreenRework.RefreshPosition();
+            }, ModSettingsConstants.TITLE_SCREEN_PANEL_POSITION);
+
+            modSettingsManager.AddSettingValueChangedListener(delegate (object obj)
+            {
+                UITitleScreenRework titleScreenRework = ModUIManager.Instance.Get<UITitleScreenRework>(AssetBundleConstants.UI, ModUIConstants.UI_TITLE_SCREEN);
+                if (titleScreenRework) titleScreenRework.RefreshFade();
+            }, ModSettingsConstants.TITLE_SCREEN_BACKGROUND_FADE_POWER);
         }
 
         private static void refreshCameraPostEffects(object obj)

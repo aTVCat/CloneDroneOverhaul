@@ -57,5 +57,12 @@ namespace OverhaulMod.Patches
         {
             ModUIConstants.HideTitleScreenRework();
         }
+
+        [HarmonyPostfix]
+        [HarmonyPatch(nameof(TitleScreenUI.setLogoAndRootButtonsVisible))]
+        private static void setLogoAndRootButtonsVisible_Postfix(TitleScreenUI __instance, bool visible)
+        {
+            __instance.LeftFadeBG.SetActive(visible && TitleScreenCustomizationManager.PanelPosition == TitleScreenPanelPosition.LeftSide);
+        }
     }
 }

@@ -40,15 +40,15 @@ namespace OverhaulMod.UI
         [UIElement("LogoParticlesToggle")]
         private readonly Toggle _logoParticlesToggle;
 
-        [UIElementAction(nameof(OnLogoParticlesToggled))]
+        [UIElementAction(nameof(OnSocialMediaPopupsToggled))]
         [UIElement("SocialMediaPopupsToggle")]
         private readonly Toggle _socialMediaPopupsToggle;
 
-        [UIElementAction(nameof(OnLogoParticlesToggled))]
+        [UIElementAction(nameof(OnSocialMediaPopupsToggled))]
         [UIElement("SocialMediaButtonsToggle")]
         private readonly Toggle _socialMediaButtonsToggle;
 
-        [UIElementAction(nameof(OnLogoParticlesToggled))]
+        [UIElementAction(nameof(OnModBotAccountInfoToggled))]
         [UIElement("ShowModBotAccountInfoToggle")]
         private readonly Toggle _showModBotAccountInfoToggle;
 
@@ -104,6 +104,12 @@ namespace OverhaulMod.UI
             base.Show();
             _volumeSlider.value = SettingsManager.Instance.GetMusicVolume();
             _lockedOverlay.SetActive(TitleScreenCustomizationManager.Instance.ShouldLockUserCustomization());
+        }
+
+        public override void Hide()
+        {
+            base.Hide();
+            ModSettingsDataManager.Instance.Save();
         }
 
         private void startPreviewing()

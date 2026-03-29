@@ -373,7 +373,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 993799794573578828}
   m_HandleRect: {fileID: 5632314628573521044}
   m_Direction: 2
-  m_Value: 0
+  m_Value: 1
   m_Size: 0.58867925
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -3303,7 +3303,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 2, y: 218}
+  m_AnchoredPosition: {x: 2, y: 0}
   m_SizeDelta: {x: -7, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &3232829070030363034
@@ -6213,12 +6213,12 @@ PrefabInstance:
     - target: {fileID: 6314812432652991794, guid: 117e260d9e6a31e4cb26e42d3139dd98,
         type: 3}
       propertyPath: m_Options.m_Options.Array.data[0].m_Text
-      value: Left sided
+      value: Left
       objectReference: {fileID: 0}
     - target: {fileID: 6314812432652991794, guid: 117e260d9e6a31e4cb26e42d3139dd98,
         type: 3}
       propertyPath: m_Options.m_Options.Array.data[1].m_Text
-      value: Centered
+      value: Center
       objectReference: {fileID: 0}
     - target: {fileID: 6314812432652991794, guid: 117e260d9e6a31e4cb26e42d3139dd98,
         type: 3}
@@ -6238,7 +6238,7 @@ PrefabInstance:
     - target: {fileID: 8065122747796991923, guid: 117e260d9e6a31e4cb26e42d3139dd98,
         type: 3}
       propertyPath: m_Text
-      value: Left sided
+      value: Left
       objectReference: {fileID: 0}
     - target: {fileID: 9147604316640116552, guid: 117e260d9e6a31e4cb26e42d3139dd98,
         type: 3}

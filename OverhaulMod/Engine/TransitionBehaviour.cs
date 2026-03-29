@@ -1,4 +1,5 @@
-﻿using OverhaulMod.Utils;
+﻿using OverhaulMod.UI;
+using OverhaulMod.Utils;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
@@ -21,6 +22,8 @@ namespace OverhaulMod.Engine
 
         private Outline _loadingLabelOutline;
 
+        private CDHDLoadingAnimation _loadingAnimation;
+
         private ErrorManager _errorManager;
 
         private float _timeToFade;
@@ -31,6 +34,9 @@ namespace OverhaulMod.Engine
             _bg = base.GetComponent<Image>();
             _loadingIndicator = ModdedObjectComponent.GetObject<GameObject>(0);
             _loadingLabelOutline = ModdedObjectComponent.GetObject<Outline>(1);
+
+            _loadingAnimation = base.gameObject.AddComponent<CDHDLoadingAnimation>();
+            _loadingAnimation.SetImage(ModdedObjectComponent.GetObject<Image>(2));
         }
 
         public override void Start()

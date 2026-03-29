@@ -13,6 +13,15 @@ namespace OverhaulMod.UI
         [UIElement("ButtonsBG")]
         private readonly GameObject _container;
 
+        [UIElement("ButtonsBG")]
+        private readonly RectTransform _containerTransform;
+
+        [UIElement("CenterFade")]
+        private readonly GameObject _centerFade;
+
+        [UIElement("CenterFade")]
+        private readonly Graphic _centerFadeGraphic;
+
         [ButtonWithSound(ButtonWithSound.SoundType.Choose)]
         [UIElementAction(nameof(OnPlaySinglePlayerButtonClicked))]
         [UIElement("PlaySingleplayerButton")]
@@ -150,15 +159,27 @@ namespace OverhaulMod.UI
 
         public override bool CloseOnEscapeButtonPress => false;
 
+        private Vector2 _oldOffsetMin, _oldOffsetMax, _oldAnchorMax;
+        private Vector2 _newOffsetMin, _newOffsetMax, _newAnchorMax;
+
+        private Vector2 _oldVanillaAnchoredPosition, _oldVanillaAnchorMax, _oldVanillaOffsetMax;
+        private Vector2 _newVanillaAnchoredPosition, _newVanillaAnchorMax, _newVanillaOffsetMax;
+
         private TitleScreenUI _titleScreenUI;
         private CanvasGroup _canvasGroup;
-        private GameObject _legacyContainer;
+        private GameObject _vanillaContainer;
+        private Graphic _leftFadeGraphic;
+        private RectTransform _vanillaTitleScreenButtonsContainer;
+
+        private Camera _logoCamera;
+
+        private Graphic _leftSideFadeGraphic;
 
         private RectTransform _socialButtonContainer;
         private RectTransform _socialButtonPopoutHolder;
 
-        private Vector2 _initialSocialButtonContainerPosition, _newSocialButtonContainerPosition;
-        private Vector2 _initialSocialButtonPopoutHolderPosition, _newSocialButtonPopoutHolderPosition;
+        private Vector2 _oldSocialButtonContainerPosition, _newSocialButtonContainerPosition;
+        private Vector2 _oldSocialButtonPopoutHolderPosition, _newSocialButtonPopoutHolderPosition;
 
         private bool _hasSpawnedHypocrisisSkin;
 
@@ -199,8 +220,8 @@ namespace OverhaulMod.UI
 
                 if (_socialButtonContainer && _socialButtonPopoutHolder)
                 {
-                    _socialButtonContainer.anchoredPosition = overhaul ? _newSocialButtonContainerPosition : _initialSocialButtonContainerPosition;
-                    _socialButtonPopoutHolder.anchoredPosition = overhaul ? _newSocialButtonPopoutHolderPosition : _initialSocialButtonPopoutHolderPosition;
+                    _socialButtonContainer.anchoredPosition = overhaul ? _newSocialButtonContainerPosition : _oldSocialButtonContainerPosition;
+                    _socialButtonPopoutHolder.anchoredPosition = overhaul ? _newSocialButtonPopoutHolderPosition : _oldSocialButtonPopoutHolderPosition;
                 }
 
                 if (hypocrisis && !_hasSpawnedHypocrisisSkin)
@@ -214,45 +235,59 @@ namespace OverhaulMod.UI
         protected override void OnInitialized()
         {
             bool debug = ModBuild.IsDebugBuild;
-
-            _modBotLogonText.text = "Not logged in";
             _debugButton.gameObject.SetActive(debug);
+            _modBotLogonText.text = "Not logged in";
 
             float fraction = GameplayAchievementManager.Instance.GetFractionOfAchievementsCompleted();
             _advancementsProgressImage.fillAmount = fraction;
             _advancementsProgressText.text = $"{ModGameUtils.GetNumOfAchievementsCompleted()}/{ModGameUtils.GetNumOfAchievements()}";
             _advancementsProgressPercentageText.text = $"({Mathf.FloorToInt(fraction * 100f)}%)";
 
-            TitleScreenUI titleScreenUI = ModCache.titleScreenUI;
-            if (titleScreenUI)
-            {
-                _titleScreenUI = titleScreenUI;
-                if (titleScreenUI.RootButtonsContainerBG)
-                {
-                    CanvasGroup group = titleScreenUI.RootButtonsContainerBG.GetComponent<CanvasGroup>() ?? titleScreenUI.RootButtonsContainerBG.AddComponent<CanvasGroup>();
-                    group.blocksRaycasts = true;
-                    _canvasGroup = group;
-                    _legacyContainer = group.gameObject;
-                }
+            _oldOffsetMin = _containerTransform.offsetMin;
+            _oldOffsetMax = _containerTransform.offsetMax;
+            _oldAnchorMax = _containerTransform.anchorMax;
+            _newOffsetMin = new Vector2(0f, _oldOffsetMin.y);
+            _newOffsetMax = new Vector2(0f, _oldOffsetMax.y);
+            _newAnchorMax = new Vector2(1f, 0f);
 
-                Transform socialButtons = titleScreenUI.SocialButtonPanel?.transform;
-                if (socialButtons)
-                {
-                    RectTransform socialButtonContainer = TransformUtils.FindChildRecursive(socialButtons, "VerticalSocialButtons") as RectTransform;
-                    RectTransform socialButtonPopoutHolder = TransformUtils.FindChildRecursive(socialButtons, "PopoutHolder") as RectTransform;
-                    if (socialButtonContainer && socialButtonPopoutHolder)
-                    {
-                        _socialButtonContainer = socialButtonContainer;
-                        _initialSocialButtonContainerPosition = socialButtonContainer.anchoredPosition;
-                        _newSocialButtonContainerPosition = socialButtonContainer.anchoredPosition + (Vector2.up * 35f);
-                        _socialButtonPopoutHolder = socialButtonPopoutHolder;
-                        _initialSocialButtonPopoutHolderPosition = socialButtonPopoutHolder.anchoredPosition;
-                        _newSocialButtonPopoutHolderPosition = socialButtonPopoutHolder.anchoredPosition + (Vector2.up * 35f);
-                    }
-                }
+            TitleScreenUI titleScreenUI = ModCache.titleScreenUI;
+            _titleScreenUI = titleScreenUI;
+            _vanillaTitleScreenButtonsContainer = titleScreenUI.RootButtonsContainer;
+            _leftSideFadeGraphic = titleScreenUI.LeftFadeBG.GetComponent<Graphic>();
+
+            _oldVanillaAnchoredPosition = _vanillaTitleScreenButtonsContainer.anchoredPosition;
+            _oldVanillaAnchorMax = _vanillaTitleScreenButtonsContainer.anchorMax;
+            _oldVanillaOffsetMax = _vanillaTitleScreenButtonsContainer.offsetMax;
+            _newVanillaAnchoredPosition = new Vector2(0f, _oldVanillaAnchoredPosition.y);
+            _newVanillaAnchorMax = new Vector2(1f, _oldVanillaAnchorMax.y);
+            _newVanillaOffsetMax = new Vector2(0f, _oldVanillaOffsetMax.y);
+
+            _logoCamera = ArenaCameraManager.Instance.TitleScreenLogoCamera;
+
+            // add canvas group
+            CanvasGroup group = titleScreenUI.RootButtonsContainerBG.GetComponent<CanvasGroup>() ?? titleScreenUI.RootButtonsContainerBG.AddComponent<CanvasGroup>();
+            group.blocksRaycasts = true;
+            _canvasGroup = group;
+            _vanillaContainer = group.gameObject;
+
+            // adjust social buttons
+            Transform socialButtons = titleScreenUI.SocialButtonPanel?.transform;
+            RectTransform socialButtonContainer = TransformUtils.FindChildRecursive(socialButtons, "VerticalSocialButtons") as RectTransform;
+            RectTransform socialButtonPopoutHolder = TransformUtils.FindChildRecursive(socialButtons, "PopoutHolder") as RectTransform;
+            if (socialButtonContainer && socialButtonPopoutHolder)
+            {
+                _socialButtonContainer = socialButtonContainer;
+                _oldSocialButtonContainerPosition = socialButtonContainer.anchoredPosition;
+                _newSocialButtonContainerPosition = socialButtonContainer.anchoredPosition + (Vector2.up * 35f);
+                _socialButtonPopoutHolder = socialButtonPopoutHolder;
+                _oldSocialButtonPopoutHolderPosition = socialButtonPopoutHolder.anchoredPosition;
+                _newSocialButtonPopoutHolderPosition = socialButtonPopoutHolder.anchoredPosition + (Vector2.up * 35f);
             }
 
             SetSkinAccordingToSettings();
+
+            RefreshPosition();
+            RefreshFade();
 
             refreshSkinButtonLabel();
 
@@ -262,7 +297,7 @@ namespace OverhaulMod.UI
         public override void Update()
         {
             bool reworkEnabled = skin == TitleScreenSkinType.Overhaul;
-            bool shouldBeActive = _legacyContainer.activeInHierarchy;
+            bool shouldBeActive = _vanillaContainer.activeInHierarchy;
             bool flag = reworkEnabled && shouldBeActive;
             _container.SetActive(flag);
             _miscElementsObject.SetActive(flag);
@@ -270,7 +305,7 @@ namespace OverhaulMod.UI
 
             if (Time.frameCount % 20 == 0)
             {
-                if (_mobBotUsernameAvailable)
+                if (TitleScreenCustomizationManager.ShowModBotAccountInfo && _mobBotUsernameAvailable)
                 {
                     string userName = ModIntegrationUtils.ModBot.GetModBotUsername();
                     if (!userName.IsNullOrEmpty())
@@ -307,6 +342,28 @@ namespace OverhaulMod.UI
             skin = TitleScreenSkinType.Vanilla;
         }
 
+        public void RefreshFade()
+        {
+            _centerFadeGraphic.color = new Color(0f, 0f, 0f, TitleScreenCustomizationManager.BackgroundFadePower);
+            _leftSideFadeGraphic.color = new Color(0f, 0f, 0f, TitleScreenCustomizationManager.BackgroundFadePower);
+        }
+
+        public void RefreshPosition()
+        {
+            bool isLeftSide = TitleScreenCustomizationManager.PanelPosition == TitleScreenPanelPosition.LeftSide;
+            _containerTransform.anchorMax = isLeftSide ? _oldAnchorMax : _newAnchorMax;
+            _containerTransform.offsetMin = isLeftSide ? _oldOffsetMin : _newOffsetMin;
+            _containerTransform.offsetMax = isLeftSide ? _oldOffsetMax : _newOffsetMax;
+
+            _vanillaTitleScreenButtonsContainer.anchoredPosition = isLeftSide ? _oldVanillaAnchoredPosition : _newVanillaAnchoredPosition;
+            _vanillaTitleScreenButtonsContainer.anchorMax = isLeftSide ? _oldVanillaAnchorMax : _newVanillaAnchorMax;
+            _vanillaTitleScreenButtonsContainer.offsetMax = isLeftSide ? _oldVanillaOffsetMax : _newVanillaOffsetMax;
+
+            _centerFade.SetActive(!isLeftSide);
+
+            ArenaCameraManager.Instance.updateLogoCameraRect();
+        }
+
         public void SetSkinAccordingToSettings()
         {
             bool hypocrisisModEnabled = ModBuild.ShouldShowHypocrisis3Special();
@@ -340,7 +397,7 @@ namespace OverhaulMod.UI
 
         private IEnumerator levelEditorTransitionCoroutine()
         {
-            yield return new WaitForSecondsRealtime(0.4f);
+            yield return new WaitForSecondsRealtime(1f);
             while (LevelManager.Instance.IsSpawningCurrentLevel())
                 yield return null;
 
@@ -442,7 +499,7 @@ namespace OverhaulMod.UI
 
         public void OnLevelEditorButtonClicked()
         {
-            if (!TransitionManager.OverhaulNonSceneTransitions)
+            if (!TransitionManager.OverhaulSceneTransitions)
             {
                 if (LevelManager.Instance.IsSpawningCurrentLevel())
                     return;

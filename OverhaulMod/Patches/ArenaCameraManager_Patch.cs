@@ -1,4 +1,7 @@
 ﻿using HarmonyLib;
+using OverhaulMod.Engine;
+using OverhaulMod.Utils;
+using UnityEngine;
 
 namespace OverhaulMod.Patches
 {
@@ -10,6 +13,22 @@ namespace OverhaulMod.Patches
         private static void SetTitleScreenLogoVisible_Postfix(ArenaCameraManager __instance, bool visible)
         {
             __instance.TitleScreenLogoCamera.enabled = visible;
+        }
+
+        [HarmonyPrefix]
+        [HarmonyPatch(nameof(ArenaCameraManager.updateLogoCameraRect))]
+        private static bool updateLogoCameraRect_Prefix(ArenaCameraManager __instance)
+        {
+            if (__instance.TitleScreenLogoCamera && __instance.TitleScreenLogoCamera.gameObject && __instance.TitleScreenLogoCamera.gameObject.activeInHierarchy)
+            {
+                bool leftSide = TitleScreenCustomizationManager.PanelPosition == TitleScreenPanelPosition.LeftSide;
+
+                RectTransform rootButtonsContainer = ModCache.titleScreenUI.RootButtonsContainer;
+                float num = rootButtonsContainer.anchoredPosition.x + rootButtonsContainer.rect.width / 2f;
+                float width = leftSide ? (2f * num / UIManager.Instance.UIRoot.rect.width) : 1f;
+                __instance.TitleScreenLogoCamera.rect = new Rect(0f, __instance.TitleScreenLogoCamera.rect.y, width, __instance.TitleScreenLogoCamera.rect.height);
+            }
+            return false;
         }
     }
 }
