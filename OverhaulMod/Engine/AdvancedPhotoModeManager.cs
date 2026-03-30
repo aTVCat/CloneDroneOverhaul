@@ -45,28 +45,27 @@ namespace OverhaulMod.Engine
 
         public void OnLevelLightSettingsChanged(LevelLightSettings changedLightSettings)
         {
-            LevelLightSettings editingLightSettings = editingLevelLightSettings;
-            if (editingLightSettings != changedLightSettings && !IsActive())
+            if (IsActive())
+            {
+                editingLevelLightSettings = changedLightSettings;
+                _nonEditedLightingInfo.SetValues(changedLightSettings);
+                _editedLightingInfo.ApplyValues(changedLightSettings);
+            }
+            else if (editingLevelLightSettings != changedLightSettings)
             {
                 _didActiveLightingChangedInGameplay = true;
-                return;
             }
-
-            editingLevelLightSettings = changedLightSettings;
-            _nonEditedLightingInfo.SetValues(changedLightSettings);
         }
 
         public void SetEditedLighting()
         {
-            if (!_isActive)
-                return;
+            if (!_isActive) return;
 
             LevelLightSettings currentLevelLightSettings = editingLevelLightSettings;
-            if (!currentLevelLightSettings)
-                return;
+            if (!currentLevelLightSettings) return;
 
             _editedLightingInfo.ApplyValues(currentLevelLightSettings);
-            LevelEditorLightManager.Instance.RefreshLightInScene();
+            RefreshCurrentLightInScene();
         }
 
         public void SetNormalLighting()
@@ -79,7 +78,7 @@ namespace OverhaulMod.Engine
             }
 
             _nonEditedLightingInfo.ApplyValues(currentLevelLightSettings);
-            LevelEditorLightManager.Instance.RefreshLightInScene();
+            RefreshCurrentLightInScene();
         }
 
         public void RestoreDefaults()
@@ -88,53 +87,37 @@ namespace OverhaulMod.Engine
             Settings.SetDefaultSettings();
 
             LevelLightSettings currentLevelLightSettings = editingLevelLightSettings;
-            if (!currentLevelLightSettings)
-                return;
+            if (!currentLevelLightSettings) return;
 
             _nonEditedLightingInfo.ApplyValues(currentLevelLightSettings);
             _editedLightingInfo.SetValues(currentLevelLightSettings);
-            LevelEditorLightManager.Instance.RefreshLightInScene();
+            RefreshCurrentLightInScene();
         }
 
-        public LightingInfo GetNormalLightingInfo()
+        public void RefreshCurrentLightInScene()
         {
-            return _nonEditedLightingInfo;
+            LevelLightSettings currentLevelLightSettings = editingLevelLightSettings;
+            if (!currentLevelLightSettings) return;
+
+            DirectionalLightManager.Instance.RefreshDirectionalLight(currentLevelLightSettings);
+            SkyBoxManager.Instance.RefreshSkyboxAmbientLightAndFog(currentLevelLightSettings);
+            GlobalEventManager.Instance.Dispatch(GlobalEvents.LightSettingsRefreshed);
         }
 
-        public LightingInfo GetEditedLightingInfo()
-        {
-            return _editedLightingInfo;
-        }
+        public LightingInfo GetNormalLightingInfo() => _nonEditedLightingInfo;
 
-        public bool IsActive()
-        {
-            return _isActive;
-        }
+        public LightingInfo GetEditedLightingInfo() => _editedLightingInfo;
 
-        public bool DidActiveLightingChangedInGameplay()
-        {
-            return _didActiveLightingChangedInGameplay;
-        }
-
-        public void SetActiveLightingChangedInGameplay(bool value)
-        {
-            _didActiveLightingChangedInGameplay = value;
-        }
+        public bool IsActive() => _isActive;
 
         private void onEnteredPhotoMode()
         {
-            if (!EnableAdvancedPhotoMode)
-                return;
-
+            if (!EnableAdvancedPhotoMode || _isActive) return;
             _isActive = true;
 
-            LevelLightSettings levelLightSettings = LevelEditorLightManager.Instance.GetActiveLightSettings();
-            if (!levelLightSettings)
-            {
-                editingLevelLightSettings = null;
-                return;
-            }
+            LevelLightSettings levelLightSettings = LevelEditorLightManager.Instance._selectedLightSettings;
             editingLevelLightSettings = levelLightSettings;
+            if (!levelLightSettings) return;
 
             _nonEditedLightingInfo.SetValues(levelLightSettings);
 
@@ -142,9 +125,9 @@ namespace OverhaulMod.Engine
             {
                 _editedLightingInfo.SetValues(levelLightSettings);
                 Settings.SetDefaultSettings();
-
-                _hasEverEnteredPhotoMode = true;
             }
+
+            _hasEverEnteredPhotoMode = true;
             _didActiveLightingChangedInGameplay = false;
 
             SetEditedLighting();
@@ -152,16 +135,13 @@ namespace OverhaulMod.Engine
 
         private void onExitedPhotoMode()
         {
-            if (_isActive)
-            {
-                _isActive = false;
+            if (!_isActive) return;
+            _isActive = false;
 
-                SetNormalLighting();
+            SetNormalLighting();
 
-                UIPhotoModeUIRework photoModeUI = ModUIManager.Instance?.Get<UIPhotoModeUIRework>(AssetBundleConstants.UI, ModUIConstants.UI_PHOTO_MODE_UI_REWORK);
-                if (photoModeUI)
-                    photoModeUI.ResetEnvironmentFields();
-            }
+            UIPhotoModeUIRework photoModeUI = ModUIManager.Instance?.Get<UIPhotoModeUIRework>(AssetBundleConstants.UI, ModUIConstants.UI_PHOTO_MODE_UI_REWORK);
+            if (photoModeUI) photoModeUI.ResetEnvironmentFields();
         }
 
         public static class Settings
