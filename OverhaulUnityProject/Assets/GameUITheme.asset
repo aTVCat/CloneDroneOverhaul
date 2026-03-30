@@ -12,8 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c2c871b4dea5304db7992945f66f852, type: 3}
   m_Name: GameUITheme
   m_EditorClassIdentifier: 
-  SelectionCornerPrefab: {fileID: 1967730701674614, guid: 9720904b56442e7428f08efd5bc5e596,
-    type: 3}
+  SelectionCornerPrefab: {fileID: 0}
   ButtonBackground:
   - Color: {r: 0.1882353, g: 0.36862746, b: 0.8784314, a: 1}
     State: 0

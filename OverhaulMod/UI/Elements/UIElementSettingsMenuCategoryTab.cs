@@ -34,17 +34,32 @@ namespace OverhaulMod.UI
 
             switch (tabId)
             {
-                case "Home":
-                    InitializeSubcategoryDisplay("Game interface", false);
-                    InitializeSubcategoryDisplay("Camera", false);
-                    InitializeSubcategoryDisplay("Multiplayer settings", false);
-                    break;
                 case "Gameplay":
                     InitializeSubcategoryDisplay("Difficulty", false);
                     InitializeSubcategoryDisplay("Endless levels", false);
                     InitializeSubcategoryDisplay("Twitch", false);
                     InitializeSubcategoryDisplay("Player", false);
                     InitializeSubcategoryDisplay("Camera", false);
+                    break;
+                case "Interface":
+                    InitializeSubcategoryDisplay("Game interface", false);
+                    InitializeSubcategoryDisplay("Energy bar enhancements", false);
+                    InitializeSubcategoryDisplay("Photo mode", false);
+                    InitializeSubcategoryDisplay("Labels", false);
+                    InitializeSubcategoryDisplay("Transitions", false);
+                    break;
+                case "Graphics":
+                    InitializeSubcategoryDisplay("Window", false);
+                    InitializeSubcategoryDisplay("Render", false);
+                    InitializeSubcategoryDisplay("Post effects", false);
+                    InitializeSubcategoryDisplay("Color blindness mode", false);
+                    break;
+                case "Effects":
+                    InitializeSubcategoryDisplay("Particles", false);
+                    InitializeSubcategoryDisplay("Voxel engine", false);
+                    InitializeSubcategoryDisplay("Robots", false);
+                    InitializeSubcategoryDisplay("Environment", false);
+                    InitializeSubcategoryDisplay("Garbage", false);
                     break;
                 case "Sounds":
                     InitializeSubcategoryDisplay("Volume", false);
@@ -59,26 +74,6 @@ namespace OverhaulMod.UI
                     InitializeSubcategoryDisplay("Mod-bot", false);
                     InitializeSubcategoryDisplay("Rich presence", false);
                     InitializeSubcategoryDisplay("Reset settings", false);
-                    break;
-                case "Graphics":
-                    InitializeSubcategoryDisplay("Window", false);
-                    InitializeSubcategoryDisplay("Render", false);
-                    InitializeSubcategoryDisplay("Post effects", false);
-                    InitializeSubcategoryDisplay("Color blindness mode", false);
-                    break;
-                case "Effects":
-                    InitializeSubcategoryDisplay("Particles", false);
-                    InitializeSubcategoryDisplay("Voxel engine", false);
-                    InitializeSubcategoryDisplay("Robots", false);
-                    InitializeSubcategoryDisplay("Environment", false);
-                    InitializeSubcategoryDisplay("Garbage", false);
-                    InitializeSubcategoryDisplay("Transitions", false);
-                    break;
-                case "Interface":
-                    InitializeSubcategoryDisplay("Game interface", false);
-                    InitializeSubcategoryDisplay("Energy bar enhancements", false);
-                    InitializeSubcategoryDisplay("Photo mode", false);
-                    InitializeSubcategoryDisplay("Labels", false);
                     break;
             }
         }

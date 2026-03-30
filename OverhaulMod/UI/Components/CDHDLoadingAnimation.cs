@@ -56,7 +56,7 @@ namespace OverhaulMod.UI
 
             float frameDuration = 1f / (float)LOADING_ANIMATION_FRAMERATE;
             _timeLeftToSwapFrame -= Time.unscaledDeltaTime;
-            if(_timeLeftToSwapFrame <= 0f)
+            if (_timeLeftToSwapFrame <= 0f)
             {
                 _frame += 1 + Mathf.FloorToInt(Mathf.Abs(_timeLeftToSwapFrame) / frameDuration);
                 _frame = _frame % (LOADING_ANIMATION_FRAME_COUNT - 1);

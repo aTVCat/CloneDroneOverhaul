@@ -48,13 +48,19 @@ namespace OverhaulMod.UI
         private readonly GameObject _versionListBG;
 
         [UIElement("VersionListScrollRect")]
-        private readonly GameObject _versionListScrollRect;
+        private readonly GameObject _versionListScrollRectObject;
+
+        [UIElement("VersionListScrollRect")]
+        private readonly ScrollRect _versionListScrollRect;
 
         [UIElement("MainPart")]
         private readonly RectTransform _mainPartTransform;
 
         [UIElement("Panel")]
         private readonly RectTransform _panelTransform;
+
+        [UIElement("ChangelogScrollRect")]
+        private readonly ScrollRect _changelogScrollRect;
 
         private Image _shading;
 
@@ -144,6 +150,8 @@ namespace OverhaulMod.UI
 
             if (firstButton)
                 firstButton.OnPointerClick(new UnityEngine.EventSystems.PointerEventData(null));
+
+            ModActionUtils.DoInFrames(refreshVersionsScrollRect, 2);
         }
 
         public override void Hide()
@@ -157,7 +165,7 @@ namespace OverhaulMod.UI
         public void ShowVersionList()
         {
             _versionListBG.SetActive(true);
-            _versionListScrollRect.SetActive(true);
+            _versionListScrollRectObject.SetActive(true);
 
             Vector2 offset = _mainPartTransform.offsetMin;
             offset.x = 265f;
@@ -167,7 +175,7 @@ namespace OverhaulMod.UI
         public void HideVersionList()
         {
             _versionListBG.SetActive(false);
-            _versionListScrollRect.SetActive(false);
+            _versionListScrollRectObject.SetActive(false);
 
             Vector2 offset = _mainPartTransform.offsetMin;
             offset.x = 10f;
@@ -204,7 +212,7 @@ namespace OverhaulMod.UI
             _shading.enabled = value;
         }
 
-        public void SetElementsViaArguments(ShowArguments showArguments)
+        public void SetContext(ShowArguments showArguments)
         {
             if (showArguments.ShrinkPanel)
                 ShrinkPanel();
@@ -276,6 +284,8 @@ namespace OverhaulMod.UI
 
             if (text.IsNullOrEmpty() || text.IsNullOrWhiteSpace())
                 return;
+
+            ModActionUtils.DoInFrames(refreshChangelogScrollRect, 2);
 
             if (text.Contains(Environment.NewLine))
             {
@@ -368,12 +378,22 @@ namespace OverhaulMod.UI
                     return $"{patch} 9";
                 case "4.2.1052":
                     return $"{patch} 10";
-                case "4.2.1073":
-                    return $"{patch} 11 Test";
+                case "4.2.1081":
+                    return $"{patch} 11";
 
                 default:
                     return string.Empty;
             }
+        }
+
+        private void refreshVersionsScrollRect()
+        {
+            _versionListScrollRect.verticalNormalizedPosition = 1f; // for some reason it sometimes auto scrolls to anywhere, but the top
+        }
+
+        private void refreshChangelogScrollRect()
+        {
+            _changelogScrollRect.verticalNormalizedPosition = 1f;
         }
 
         public void OnCloseButtonClicked()

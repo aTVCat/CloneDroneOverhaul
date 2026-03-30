@@ -38,22 +38,8 @@ namespace OverhaulMod.UI
             _layoutElement = GetComponent<LayoutElement>();
             _layoutElement.minHeight = 20f;
 
-            RepositoryManager.Instance.GetTexture(URL, delegate (Texture2D texture)
-            {
-                _webRequest = null;
-
-                _texture = texture;
-                _image.gameObject.SetActive(true);
-                _image.rectTransform.sizeDelta = new Vector2(Mathf.Min(400f, texture.width / 2f), 0f);
-                _image.texture = texture;
-                _imageARF.aspectRatio = texture.width / (float)texture.height;
-                _refreshSizeNextFrame = true;
-            }, delegate
-            {
-                _webRequest = null;
-                if (_notAvailableLabelObject)
-                    _notAvailableLabelObject.SetActive(true);
-            }, out UnityWebRequest unityWebRequest);
+            // todo: cache downloaded images in temp folder
+            RepositoryManager.Instance.GetTexture(URL, onDownloadedTheImage, onFailedToDownloadTheImage, out UnityWebRequest unityWebRequest);
             _webRequest = unityWebRequest;
         }
 
@@ -81,6 +67,25 @@ namespace OverhaulMod.UI
                 _refreshSizeNextFrame = false;
                 _layoutElement.minHeight = _image.rectTransform.rect.height;
             }
+        }
+
+        private void onDownloadedTheImage(Texture2D texture)
+        {
+            _webRequest = null;
+
+            _texture = texture;
+            _image.gameObject.SetActive(true);
+            _image.rectTransform.sizeDelta = new Vector2(Mathf.Min(400f, texture.width / 2f), 0f);
+            _image.texture = texture;
+            _imageARF.aspectRatio = texture.width / (float)texture.height;
+            _refreshSizeNextFrame = true;
+        }
+
+        private void onFailedToDownloadTheImage(string error)
+        {
+            _webRequest = null;
+            if (_notAvailableLabelObject)
+                _notAvailableLabelObject.SetActive(true);
         }
 
         public void OnClickedOnImage()

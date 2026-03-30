@@ -135,7 +135,7 @@ namespace OverhaulMod.UI
                 return;
             }
 
-            if(ModFileUtils.HasUnsupportedCharacters(_folderName, out char character))
+            if (ModFileUtils.HasUnsupportedCharacters(_folderName, out char character))
             {
                 SetStatusText($"The name contains invalid character: {character}", Color.red);
                 _doneButton.interactable = false;

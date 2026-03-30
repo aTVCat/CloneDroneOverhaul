@@ -34,7 +34,7 @@ namespace OverhaulMod.UI
 
         public override void Update()
         {
-            if (!_fadeOut && (!_errorManager || _errorManager.HasCrashed() ||  Time.unscaledTime > _timeout))
+            if (!_fadeOut && (!_errorManager || _errorManager.HasCrashed() || Time.unscaledTime > _timeout))
             {
                 _fadeOut = true;
             }

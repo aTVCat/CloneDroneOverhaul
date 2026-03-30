@@ -48,6 +48,10 @@ namespace OverhaulMod.UI
         [UIElement("ScrollRect")]
         private readonly GameObject _scrollRectObject;
 
+        [UIElementIgnoreIfMissing]
+        [UIElement("ScrollRect")]
+        private readonly ScrollRect _scrollRect;
+
         public bool IsFullscreen;
 
         private bool _shouldRefreshText;
@@ -90,7 +94,14 @@ namespace OverhaulMod.UI
                 Vector2 sizeDelta = _descriptionText.rectTransform.sizeDelta;
                 sizeDelta.y = _descriptionText.preferredHeight + 30f;
                 _descriptionText.rectTransform.sizeDelta = sizeDelta;
+
+                ModActionUtils.DoInFrames(refreshScrollRect, 2);
             }
+        }
+
+        private void refreshScrollRect()
+        {
+            if (_scrollRect) _scrollRect.verticalNormalizedPosition = 1f; // for some reason it sometimes auto scrolls to anywhere, but the top
         }
 
         public void OnOkButtonClicked()

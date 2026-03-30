@@ -17,7 +17,7 @@ namespace OverhaulMod.Visuals
         private void Update()
         {
             _timer = Mathf.Max(0f, _timer - Time.deltaTime);
-            if(_timer == 0f)
+            if (_timer == 0f)
             {
                 if (_rigidBody) _rigidBody.interpolation = RigidbodyInterpolation.None;
                 Destroy(this);

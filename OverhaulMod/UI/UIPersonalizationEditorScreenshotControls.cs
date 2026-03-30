@@ -1,5 +1,4 @@
 ﻿using OverhaulMod.Content.Personalization;
-using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -52,7 +51,7 @@ namespace OverhaulMod.UI
 
         private void onTakenScreenshot(int itemIndex, int itemCount)
         {
-            if(itemIndex == itemCount)
+            if (itemIndex == itemCount)
             {
                 _progressLabel.enabled = false;
                 _screenshotWeaponSkinsButton.interactable = true;

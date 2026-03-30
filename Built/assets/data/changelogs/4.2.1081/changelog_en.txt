@@ -1,0 +1,33 @@
+# Changes
+- Reworked customization items list. All customization items now have previews
+- Added arrow spawn point object customization editor
+- Added new options to title screen customization
+- Slightly updated the overhauled title screen
+- Added restart adventure button to reworked pause menu
+- Added animation to hyperdome-like transitions
+- Added back great swords modifier to story mode
+- Increased scythe speed
+- Reorganized and renamed many settings, removed the home page
+- Added cooldown slider for "Scroll to switch weapon" setting
+- Added more FPS options and increased the FPS limit
+- Increased the camera FOV limit
+- Added tint color and rotation settings to realistic skyboxes
+- Improved light settings handling in advanced photo mode
+- Made business bots ties no longer visible in first person mode
+- Made garbage physics interpolate only for a second after appearing
+- Made patch notes cache downloaded images on disk
+- Various internal changes and optimizations
+- Reduced the size of the mod
+# Realistic skyboxes addon changes
+Note: You'll have to update the addon to get following changes.
+- Added new lighting to team battle levels
+- Reworked lighting for few endless mode levels
+# Fixes
+- Crashes caused by new game update
+- First person mode not working after mind trasnfer in story mode
+- Weapon skins disappearing after death
+- Realistic skyboxes applying to Last bot standing and Team battle waiting rooms
+- Realistic skyboxes not working for some players
+- Being able to see through walls with high FOV
+- Physics intepolation not applying to main part of robot's body
+- Some lists in UIs not getting scrolled to the top automatically

@@ -9,7 +9,7 @@ namespace OverhaulMod.Patches
         [HarmonyPrefix]
         [HarmonyPatch(nameof(LevelLightSettings.Start))]
         private static void Start_Prefix(LevelLightSettings __instance)
-        {              
+        {
             // change the lighting only of main level
             if (GameModeManager.ShouldPickAdditionallyLoadedLightSettingsOverMainLightSettings() && !LevelManager.Instance.IsChildOfPrimaryLevelRoot(__instance.transform)) return;
 

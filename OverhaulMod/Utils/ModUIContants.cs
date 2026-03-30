@@ -479,14 +479,14 @@ namespace OverhaulMod.Utils
         public static UIPatchNotes ShowPatchNotes(UIPatchNotes.ShowArguments showArguments)
         {
             UIPatchNotes patchNotes = ModUIManager.Instance.Show<UIPatchNotes>(AssetBundleConstants.UI, UI_PATCH_NOTES, ModUIManager.UILayer.AfterTitleScreen, 1);
-            patchNotes.SetElementsViaArguments(showArguments);
+            patchNotes.SetContext(showArguments);
             return patchNotes;
         }
 
         public static UIPatchNotes ShowPatchNotes(Transform parent, UIPatchNotes.ShowArguments showArguments)
         {
             UIPatchNotes patchNotes = ModUIManager.Instance.Show<UIPatchNotes>(AssetBundleConstants.UI, UI_PATCH_NOTES, parent);
-            patchNotes.SetElementsViaArguments(showArguments);
+            patchNotes.SetContext(showArguments);
             return patchNotes;
         }
 

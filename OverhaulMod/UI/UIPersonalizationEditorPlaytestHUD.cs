@@ -1,6 +1,4 @@
-﻿using OverhaulMod.Content.Personalization;
-
-namespace OverhaulMod.UI
+﻿namespace OverhaulMod.UI
 {
     public class UIPersonalizationEditorPlaytestHUD : OverhaulUIBehaviour
     {

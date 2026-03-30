@@ -386,7 +386,7 @@ namespace OverhaulMod.Content.Personalization
                 return;
             }
 
-            if(importVersion == 0)
+            if (importVersion == 0)
             {
                 foreach (PersonalizationEditorObjectInfo child in info.RootObject.Children)
                 {
