@@ -1,4 +1,5 @@
 ﻿using OverhaulMod.Content;
+using OverhaulMod.Engine;
 using OverhaulMod.Utils;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -38,9 +39,7 @@ namespace OverhaulMod.UI
             _layoutElement = GetComponent<LayoutElement>();
             _layoutElement.minHeight = 20f;
 
-            // todo: cache downloaded images in temp folder
-            RepositoryManager.Instance.GetTexture(URL, onDownloadedTheImage, onFailedToDownloadTheImage, out UnityWebRequest unityWebRequest);
-            _webRequest = unityWebRequest;
+            RepositoryManager.Instance.GetTexture(URL, onDownloadedTheImage, onFailedToDownloadTheImage, out _webRequest, 20, true);
         }
 
         public override void OnDestroy()

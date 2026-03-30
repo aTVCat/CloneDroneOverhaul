@@ -115,6 +115,7 @@ namespace OverhaulMod
             GameObject contentManagers = new GameObject("Content");
             contentManagers.transform.SetParent(managersObject.transform, false);
             modManagers.AddSingleton<RepositoryManager>(contentManagers);
+            modManagers.AddSingleton<ModDownloadCacheManager>(contentManagers);
             modManagers.AddSingleton<GoogleDriveManager>(contentManagers);
             modManagers.AddSingleton<PostmanManager>(contentManagers);
             modManagers.AddSingleton<ExclusivePerkManager>(contentManagers);

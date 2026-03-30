@@ -32,6 +32,12 @@ namespace OverhaulMod.Engine
             _timeSpawned = Time.unscaledTime - volumeOffset;
         }
 
+        public void PlayAgain(float volumeOffset)
+        {
+            _aboutToDestroy = false;
+            _timeSpawned = Time.unscaledTime - volumeOffset;
+        }
+
         public void FadeOutSoundThenDestroySelf()
         {
             _aboutToDestroy = true;

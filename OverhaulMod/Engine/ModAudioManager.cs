@@ -151,7 +151,10 @@ namespace OverhaulMod.Engine
         public void PlayTransitionSound(float volumeOffset = 0f)
         {
             if (TransitionSoundBehaviour.Instance)
+            {
+                TransitionSoundBehaviour.Instance.PlayAgain(volumeOffset);
                 return;
+            }
 
             GameObject gameObject = Instantiate(_loadingSoundSourcePrefab);
             DontDestroyOnLoad(gameObject);

@@ -36,10 +36,10 @@ namespace OverhaulMod.UI
         {
             if (isCustomLink)
             {
-                RepositoryManager.Instance.GetCustomTexture(link, onGetTexture, onFailedToGetTexture, out _webRequest);
+                RepositoryManager.Instance.GetCustomTexture(link, onGetTexture, onFailedToGetTexture, out _webRequest, 20, true);
                 return;
             }
-            RepositoryManager.Instance.GetTexture(link, onGetTexture, onFailedToGetTexture, out _webRequest);
+            RepositoryManager.Instance.GetTexture(link, onGetTexture, onFailedToGetTexture, out _webRequest, 20, true);
         }
 
         private void onGetTexture(Texture2D texture)

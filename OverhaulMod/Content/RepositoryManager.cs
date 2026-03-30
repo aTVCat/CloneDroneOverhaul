@@ -1,4 +1,5 @@
-﻿using OverhaulMod.Utils;
+﻿using OverhaulMod.Engine;
+using OverhaulMod.Utils;
 using System;
 using System.Collections;
 using UnityEngine;
@@ -15,7 +16,7 @@ namespace OverhaulMod.Content
             unityWebRequest = UnityWebRequest.Get(REPOSITORY_URL + path);
             _ = ModActionUtils.RunCoroutine(getFileCoroutine(unityWebRequest, true, delegate (object obj)
             {
-                doneCallback?.Invoke((string)obj);
+                if (doneCallback != null) doneCallback((string)obj);
             }, errorCallback, timeOut));
         }
 
@@ -24,14 +25,22 @@ namespace OverhaulMod.Content
             unityWebRequest = UnityWebRequest.Get(REPOSITORY_URL + path);
             _ = ModActionUtils.RunCoroutine(getFileCoroutine(unityWebRequest, false, delegate (object obj)
             {
-                doneCallback?.Invoke((byte[])obj);
+                if (doneCallback != null) doneCallback((byte[])obj);
             }, errorCallback, timeOut));
         }
 
-        public void GetTexture(string link, Action<Texture2D> doneCallback, Action<string> errorCallback, out UnityWebRequest unityWebRequest, int timeOut = 20)
+        public void GetTexture(string link, Action<Texture2D> doneCallback, Action<string> errorCallback, out UnityWebRequest unityWebRequest, int timeOut = 20, bool cache = false)
         {
-            unityWebRequest = UnityWebRequestTexture.GetTexture(REPOSITORY_URL + link);
-            _ = ModActionUtils.RunCoroutine(getTextureCoroutine(unityWebRequest, doneCallback, errorCallback, timeOut));
+            string fullUrl = REPOSITORY_URL + link;
+            ModDownloadCacheManager downloadCacheManager = ModDownloadCacheManager.Instance;
+            if (cache && downloadCacheManager.HasCachedDownload(fullUrl))
+            {
+                GetLocalTexture(downloadCacheManager.GetPathOfDownload(fullUrl), doneCallback, errorCallback, out unityWebRequest);
+                return;
+            }
+
+            unityWebRequest = UnityWebRequestTexture.GetTexture(fullUrl);
+            _ = ModActionUtils.RunCoroutine(getTextureCoroutine(unityWebRequest, doneCallback, errorCallback, timeOut, cache));
         }
 
         public void GetCustomTextFile(string link, Action<string> doneCallback, Action<string> errorCallback, out UnityWebRequest unityWebRequest, int timeOut = 20)
@@ -39,7 +48,7 @@ namespace OverhaulMod.Content
             unityWebRequest = UnityWebRequest.Get(link);
             _ = ModActionUtils.RunCoroutine(getFileCoroutine(unityWebRequest, true, delegate (object obj)
             {
-                doneCallback?.Invoke((string)obj);
+                if (doneCallback != null) doneCallback((string)obj);
             }, errorCallback, timeOut));
         }
 
@@ -48,14 +57,21 @@ namespace OverhaulMod.Content
             unityWebRequest = UnityWebRequest.Get(link);
             _ = ModActionUtils.RunCoroutine(getFileCoroutine(unityWebRequest, false, delegate (object obj)
             {
-                doneCallback?.Invoke((byte[])obj);
+                if (doneCallback != null) doneCallback((byte[])obj);
             }, errorCallback, timeOut));
         }
 
-        public void GetCustomTexture(string link, Action<Texture2D> doneCallback, Action<string> errorCallback, out UnityWebRequest unityWebRequest, int timeOut = 20)
+        public void GetCustomTexture(string link, Action<Texture2D> doneCallback, Action<string> errorCallback, out UnityWebRequest unityWebRequest, int timeOut = 20, bool cache = false)
         {
+            ModDownloadCacheManager downloadCacheManager = ModDownloadCacheManager.Instance;
+            if (cache && downloadCacheManager.HasCachedDownload(link))
+            {
+                GetLocalTexture(downloadCacheManager.GetPathOfDownload(link), doneCallback, errorCallback, out unityWebRequest);
+                return;
+            }
+
             unityWebRequest = UnityWebRequestTexture.GetTexture(link);
-            _ = ModActionUtils.RunCoroutine(getTextureCoroutine(unityWebRequest, doneCallback, errorCallback, timeOut));
+            _ = ModActionUtils.RunCoroutine(getTextureCoroutine(unityWebRequest, doneCallback, errorCallback, timeOut, cache));
         }
 
         public void GetLocalTextFile(string path, Action<string> doneCallback, Action<string> errorCallback, out UnityWebRequest unityWebRequest)
@@ -63,7 +79,7 @@ namespace OverhaulMod.Content
             unityWebRequest = UnityWebRequest.Get("file://" + path);
             _ = ModActionUtils.RunCoroutine(getFileCoroutine(unityWebRequest, true, delegate (object obj)
             {
-                doneCallback?.Invoke((string)obj);
+                if (doneCallback != null) doneCallback((string)obj);
             }, errorCallback, -1));
         }
 
@@ -72,20 +88,19 @@ namespace OverhaulMod.Content
             unityWebRequest = UnityWebRequest.Get("file://" + path);
             _ = ModActionUtils.RunCoroutine(getFileCoroutine(unityWebRequest, false, delegate (object obj)
             {
-                doneCallback?.Invoke((byte[])obj);
+                if (doneCallback != null) doneCallback((byte[])obj);
             }, errorCallback, -1));
         }
 
         public void GetLocalTexture(string path, Action<Texture2D> doneCallback, Action<string> errorCallback, out UnityWebRequest unityWebRequest)
         {
             unityWebRequest = UnityWebRequestTexture.GetTexture("file://" + path);
-            _ = ModActionUtils.RunCoroutine(getTextureCoroutine(unityWebRequest, doneCallback, errorCallback, -1));
+            _ = ModActionUtils.RunCoroutine(getTextureCoroutine(unityWebRequest, doneCallback, errorCallback, -1, false));
         }
 
         private IEnumerator getFileCoroutine(UnityWebRequest webRequest, bool returnText, Action<object> doneCallback, Action<string> errorCallback, int timeOut)
         {
-            if (timeOut != -1)
-                webRequest.timeout = timeOut;
+            if (timeOut != -1) webRequest.timeout = timeOut;
 
             yield return webRequest.SendWebRequest();
 
@@ -93,14 +108,17 @@ namespace OverhaulMod.Content
             {
                 if (!webRequest.isNetworkError && !webRequest.isHttpError)
                 {
-                    if (returnText)
-                        doneCallback?.Invoke(webRequest.downloadHandler.text);
-                    else
-                        doneCallback?.Invoke(webRequest.downloadHandler.data);
+                    if (doneCallback != null)
+                    {
+                        if (returnText)
+                            doneCallback(webRequest.downloadHandler.text);
+                        else
+                            doneCallback(webRequest.downloadHandler.data);
+                    }
                 }
                 else
                 {
-                    errorCallback?.Invoke(webRequest.error);
+                    if (errorCallback != null) errorCallback(webRequest.error);
                 }
             }
             finally
@@ -110,10 +128,9 @@ namespace OverhaulMod.Content
             yield break;
         }
 
-        private IEnumerator getTextureCoroutine(UnityWebRequest webRequest, Action<Texture2D> doneCallback, Action<string> errorCallback, int timeOut)
+        private IEnumerator getTextureCoroutine(UnityWebRequest webRequest, Action<Texture2D> doneCallback, Action<string> errorCallback, int timeOut, bool cache)
         {
-            if (timeOut != -1)
-                webRequest.timeout = timeOut;
+            if (timeOut != -1) webRequest.timeout = timeOut;
 
             yield return webRequest.SendWebRequest();
 
@@ -121,11 +138,17 @@ namespace OverhaulMod.Content
             {
                 if (!webRequest.isNetworkError && !webRequest.isHttpError)
                 {
-                    doneCallback?.Invoke((webRequest.downloadHandler as DownloadHandlerTexture).texture);
+                    if (cache)
+                    {
+                        string file = ModDownloadCacheManager.Instance.GetPathOfDownload(webRequest.url);
+                        ModFileUtils.WriteBytes(webRequest.downloadHandler.data, file);
+                    }
+
+                    if (doneCallback != null) doneCallback((webRequest.downloadHandler as DownloadHandlerTexture).texture);
                 }
                 else
                 {
-                    errorCallback?.Invoke(webRequest.error);
+                    if (errorCallback != null) errorCallback(webRequest.error);
                 }
             }
             finally
