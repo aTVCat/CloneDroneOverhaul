@@ -2,9 +2,10 @@
 - Reworked customization items list. All weapon skins now have previews
 - Fundamental changes across the mod
 - Added arrow spawn point object customization editor
-- Added logo particles option to title screen customization
+- Added new options to title screen customization + rework
 - Added restart adventure button to reworked pause menu (finally)
-- Added great swords modifier to story mode
+- Added animation to hyperdome-like transitions
+- Added back great swords modifier to story mode
 - Increased scythe speed
 - Reorganized settings
 - Removed home page in settings menu
@@ -14,12 +15,17 @@
 - Added tint color and rotation settings to realistic skyboxes
 - Improved customization items export-import process
 - Business bots ties are no longer visible in first person mode
-- Various code changes
+- Various code changes and optimizations
 - Reduced mod size
+# Realistic skyboxes addon changes
+Note: You'll have to update the addon to get following changes.
+- Added new lighting to team battle levels
+- Reworked lighting for few endless mode levels
 # Fixes
+- Crashes caused by new game update
 - First person mode not working after mind trasnfer in story mode
 - Weapon skins disappearing after death
-- Realistic skyboxes applying to Last bot standing waiting room
+- Realistic skyboxes applying to Last bot standing and Team battle waiting room
 - Realistic skyboxes not working for some players
 - Being able to see through walls with high FOV
 - Physics intepolation not working for some garbage

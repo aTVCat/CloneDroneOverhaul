@@ -12,9 +12,12 @@ namespace OverhaulMod.UI
 
         private float _timeout;
 
+        private ErrorManager _errorManager;
+
         protected override void OnInitialized()
         {
             _canvasGroup = base.GetComponent<CanvasGroup>();
+            _errorManager = ErrorManager.Instance;
         }
 
         public override void Show()
@@ -31,7 +34,7 @@ namespace OverhaulMod.UI
 
         public override void Update()
         {
-            if (!_fadeOut && Time.unscaledTime > _timeout)
+            if (!_fadeOut && (!_errorManager || _errorManager.HasCrashed() ||  Time.unscaledTime > _timeout))
             {
                 _fadeOut = true;
             }

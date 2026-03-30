@@ -391,6 +391,7 @@
     <Compile Include="Patches\SingleplayerServerStarter_Patch.cs" />
     <Compile Include="Patches\SkyBoxManager_Patch.cs" />
     <Compile Include="Patches\SubtitleTextField_Patch.cs" />
+    <Compile Include="Patches\SocialButtonPanel_Patch.cs" />
     <Compile Include="Patches\TitleScreenUI_Patch.cs" />
     <Compile Include="Patches\UpgradeDescription_Patch.cs" />
     <Compile Include="Patches\UpgradeManager_Patch.cs" />

@@ -64,5 +64,12 @@ namespace OverhaulMod.Patches
         {
             __instance.LeftFadeBG.SetActive(visible && TitleScreenCustomizationManager.PanelPosition == TitleScreenPanelPosition.LeftSide);
         }
+
+        [HarmonyPrefix]
+        [HarmonyPatch(nameof(TitleScreenUI.showSocialButtonPanel))]
+        private static bool showSocialButtonPanel_Prefix(TitleScreenUI __instance)
+        {
+            return TitleScreenCustomizationManager.ShowSocialMediaButtons;
+        }
     }
 }

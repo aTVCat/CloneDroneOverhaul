@@ -294,6 +294,12 @@ namespace OverhaulMod.UI
             _mobBotUsernameAvailable = checkIfModBotUserNameIsAvailable();
         }
 
+        public override void Hide()
+        {
+            base.Hide();
+            if (UIVersionLabel.instance) UIVersionLabel.instance.ResetGameplayWatermark();
+        }
+
         public override void Update()
         {
             bool reworkEnabled = skin == TitleScreenSkinType.Overhaul;
@@ -362,6 +368,22 @@ namespace OverhaulMod.UI
             _centerFade.SetActive(!isLeftSide);
 
             ArenaCameraManager.Instance.updateLogoCameraRect();
+
+            ModActionUtils.DoInFrames(delegate
+            {
+                UIVersionLabel versionLabel = UIVersionLabel.instance;
+                if (versionLabel)
+                {
+                    if (isLeftSide)
+                    {
+                        versionLabel.ResetGameplayWatermark();
+                    }
+                    else
+                    {
+                        versionLabel.CenterGameplayWatermark();
+                    }
+                }
+            }, 10);
         }
 
         public void SetSkinAccordingToSettings()

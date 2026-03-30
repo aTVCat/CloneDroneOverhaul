@@ -1,7 +1,5 @@
 ﻿using OverhaulMod.Engine;
-using OverhaulMod.Patches.Behaviours;
 using OverhaulMod.Utils;
-using System.Reflection;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -17,6 +15,7 @@ namespace OverhaulMod.UI
         [UIElement("PreviewButton")]
         private readonly Button _previewButton;
 
+        [UIElementAction(nameof(OnMusicTrackDropdownChanged))]
         [UIElement("MusicDropdown")]
         private readonly Dropdown _musicDropdown;
 
@@ -44,7 +43,7 @@ namespace OverhaulMod.UI
         [UIElement("SocialMediaPopupsToggle")]
         private readonly Toggle _socialMediaPopupsToggle;
 
-        [UIElementAction(nameof(OnSocialMediaPopupsToggled))]
+        [UIElementAction(nameof(OnSocialMediaButtonsToggled))]
         [UIElement("SocialMediaButtonsToggle")]
         private readonly Toggle _socialMediaButtonsToggle;
 
@@ -62,15 +61,17 @@ namespace OverhaulMod.UI
 
         private bool _isPreviewing;
 
+        private bool _ignoreCallbacks;
+
         public override bool HideTitleScreen => true;
 
         public override bool EnableUIOverLogoMode => true;
 
         protected override void OnInitialized()
         {
+            _ignoreCallbacks = true;
             _musicDropdown.options = TitleScreenCustomizationManager.Instance.GetMusicTracks();
             _musicDropdown.value = TitleScreenCustomizationManager.MusicTrackIndex;
-            _musicDropdown.onValueChanged.AddListener(onMusicTrackDropdownChanged);
 
             _staticBgConfig.refreshWhenEdited = true;
             _staticBgConfig.levelIsLoadingBG = _loadingLevelBg;
@@ -82,12 +83,26 @@ namespace OverhaulMod.UI
 
             _bgFadePowerSlider.value = TitleScreenCustomizationManager.BackgroundFadePower;
             _panelPositionDropdown.value = (int)TitleScreenCustomizationManager.PanelPosition;
+            _ignoreCallbacks = false;
+
+            refreshSocialPopupsToggle();
         }
 
         public override void OnDisable()
         {
             base.OnDisable();
             stopPreviewing();
+            ModSettingsDataManager.Instance.Save();
+
+            TitleScreenUI titleScreen = ModCache.titleScreenUI;
+            if (TitleScreenCustomizationManager.ShowSocialMediaButtons)
+            {
+                titleScreen.SocialButtonPanel.ShowAndSelectFirstButton();
+            }
+            else
+            {
+                titleScreen.SocialButtonPanel.HideOnStartup();
+            }
         }
 
         public override void Update()
@@ -104,12 +119,9 @@ namespace OverhaulMod.UI
             base.Show();
             _volumeSlider.value = SettingsManager.Instance.GetMusicVolume();
             _lockedOverlay.SetActive(TitleScreenCustomizationManager.Instance.ShouldLockUserCustomization());
-        }
 
-        public override void Hide()
-        {
-            base.Hide();
-            ModSettingsDataManager.Instance.Save();
+            _panelPositionDropdown.options[0].text = LocalizationManager.Instance.GetTranslatedString("on_the_left");
+            _panelPositionDropdown.options[1].text = LocalizationManager.Instance.GetTranslatedString("in_the_center");
         }
 
         private void startPreviewing()
@@ -124,49 +136,63 @@ namespace OverhaulMod.UI
             _panel.SetActive(true);
         }
 
+        private void refreshSocialPopupsToggle()
+        {
+            _socialMediaPopupsToggle.interactable = _socialMediaButtonsToggle.isOn;
+        }
+
         public void OnPreviewButtonClicked()
         {
             startPreviewing();
         }
 
-        private void onMusicTrackDropdownChanged(int index)
+        public void OnMusicTrackDropdownChanged(int index)
         {
+            if (_ignoreCallbacks) return;
             ModSettingsManager.Instance.SetSettingValueFromUI(ModSettingsConstants.TITLE_SCREEN_MUSIC_TRACK_INDEX, index);
             TitleScreenCustomizationManager.Instance.RefreshMusicTrack();
         }
 
         public void OnVolumeSliderChanged(float value)
         {
+            if (_ignoreCallbacks) return;
             SettingsManager.Instance.SetMusicVolume(value);
         }
 
         public void OnLogoParticlesToggled(bool value)
         {
+            if (_ignoreCallbacks) return;
             ModSettingsManager.Instance.SetSettingValueFromUI(ModSettingsConstants.CLONE_DRONE_LOGO_FIRE, value);
         }
 
         public void OnSocialMediaPopupsToggled(bool value)
         {
+            if (_ignoreCallbacks) return;
             ModSettingsManager.Instance.SetSettingValueFromUI(ModSettingsConstants.TITLE_SCREEN_SOCIAL_MEDIA_POPUPS, value);
         }
 
         public void OnSocialMediaButtonsToggled(bool value)
         {
+            if (_ignoreCallbacks) return;
             ModSettingsManager.Instance.SetSettingValueFromUI(ModSettingsConstants.TITLE_SCREEN_SOCIAL_MEDIA_BUTTONS, value);
+            refreshSocialPopupsToggle();
         }
 
         public void OnModBotAccountInfoToggled(bool value)
         {
+            if (_ignoreCallbacks) return;
             ModSettingsManager.Instance.SetSettingValueFromUI(ModSettingsConstants.TITLE_SCREEN_SHOW_MODBOT_ACCOUNT_INFO, value);
         }
 
         public void OnBGFadePowerChanged(float value)
         {
+            if (_ignoreCallbacks) return;
             ModSettingsManager.Instance.SetSettingValueFromUI(ModSettingsConstants.TITLE_SCREEN_BACKGROUND_FADE_POWER, value);
         }
 
         public void OnPanelPositionChanged(int value)
         {
+            if (_ignoreCallbacks) return;
             ModSettingsManager.Instance.SetSettingValueFromUI(ModSettingsConstants.TITLE_SCREEN_PANEL_POSITION, value);
         }
     }

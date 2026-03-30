@@ -373,7 +373,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 993799794573578828}
   m_HandleRect: {fileID: 5632314628573521044}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 0
   m_Size: 0.58867925
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -406,8 +406,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 696dd5c32d8af1146b8ca675c8cb77ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LocalizationID: logo_particles
-  DontTranslateText: 1
+  LocalizationID: show_modbot_account_info
+  DontTranslateText: 0
   DontTranslateOnStart: 0
   DisableWrappingForLogographicLanguages: 1
   MaxCharactersPerJapaneseLineBreak: -1
@@ -951,8 +951,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 696dd5c32d8af1146b8ca675c8cb77ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LocalizationID: mmcustomization_text_volume
-  DontTranslateText: 1
+  LocalizationID: panel
+  DontTranslateText: 0
   DontTranslateOnStart: 0
   DisableWrappingForLogographicLanguages: 1
   MaxCharactersPerJapaneseLineBreak: -1
@@ -1196,8 +1196,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 696dd5c32d8af1146b8ca675c8cb77ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LocalizationID: mmcustomization_text_volume
-  DontTranslateText: 1
+  LocalizationID: social_media
+  DontTranslateText: 0
   DontTranslateOnStart: 0
   DisableWrappingForLogographicLanguages: 1
   MaxCharactersPerJapaneseLineBreak: -1
@@ -1921,8 +1921,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 696dd5c32d8af1146b8ca675c8cb77ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LocalizationID: logo_particles
-  DontTranslateText: 1
+  LocalizationID: buttons
+  DontTranslateText: 0
   DontTranslateOnStart: 0
   DisableWrappingForLogographicLanguages: 1
   MaxCharactersPerJapaneseLineBreak: -1
@@ -2937,8 +2937,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 696dd5c32d8af1146b8ca675c8cb77ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LocalizationID: mmcustomization_subheader_background_level
-  DontTranslateText: 1
+  LocalizationID: settings_header_misc.
+  DontTranslateText: 0
   DontTranslateOnStart: 0
   DisableWrappingForLogographicLanguages: 1
   MaxCharactersPerJapaneseLineBreak: -1
@@ -3303,7 +3303,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 2, y: 0}
+  m_AnchoredPosition: {x: 2, y: 218}
   m_SizeDelta: {x: -7, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &3232829070030363034
@@ -3452,8 +3452,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 696dd5c32d8af1146b8ca675c8cb77ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LocalizationID: mmcustomization_text_volume
-  DontTranslateText: 1
+  LocalizationID: bg_fade_power
+  DontTranslateText: 0
   DontTranslateOnStart: 0
   DisableWrappingForLogographicLanguages: 1
   MaxCharactersPerJapaneseLineBreak: -1
@@ -3691,8 +3691,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 696dd5c32d8af1146b8ca675c8cb77ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LocalizationID: logo_particles
-  DontTranslateText: 1
+  LocalizationID: popups_shortened
+  DontTranslateText: 0
   DontTranslateOnStart: 0
   DisableWrappingForLogographicLanguages: 1
   MaxCharactersPerJapaneseLineBreak: -1
@@ -4112,7 +4112,7 @@ PrefabInstance:
     - target: {fileID: 315424749555345685, guid: 8ea7de3310219bf4bbbd18bd6e3150a1,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 120
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 315424749555345685, guid: 8ea7de3310219bf4bbbd18bd6e3150a1,
         type: 3}
@@ -4589,7 +4589,7 @@ PrefabInstance:
     - target: {fileID: 315424749555345685, guid: 8ea7de3310219bf4bbbd18bd6e3150a1,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 100
+      value: 145
       objectReference: {fileID: 0}
     - target: {fileID: 315424749555345685, guid: 8ea7de3310219bf4bbbd18bd6e3150a1,
         type: 3}
@@ -4634,7 +4634,7 @@ PrefabInstance:
     - target: {fileID: 315424749555345685, guid: 8ea7de3310219bf4bbbd18bd6e3150a1,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 15
+      value: 120
       objectReference: {fileID: 0}
     - target: {fileID: 315424749555345685, guid: 8ea7de3310219bf4bbbd18bd6e3150a1,
         type: 3}

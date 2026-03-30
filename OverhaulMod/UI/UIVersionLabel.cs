@@ -114,6 +114,7 @@ namespace OverhaulMod.UI
                 rectTransform.sizeDelta = sideDelta;
             }
 
+            bool showGameplayWatermarkOnTitleScreen = TitleScreenCustomizationManager.PanelPosition == TitleScreenPanelPosition.Center;
             bool isOnTitleScreen = GameModeManager.IsOnTitleScreen();
             if (isOnTitleScreen)
             {
@@ -131,8 +132,9 @@ namespace OverhaulMod.UI
                 return;
 
             bool show = !ForceHide && showWatermark;
-            _watermark.SetActive(show && ModCache.titleScreenUI.RootButtonsContainerBG.activeInHierarchy && isOnTitleScreen && !UITitleScreenHypocrisisSkin.HideVersionLabel);
-            _gameplayWatermark.SetActive(show && !isOnTitleScreen);
+            bool rootButtonsAreActive = ModCache.titleScreenUI.RootButtonsContainerBG.activeInHierarchy;
+            _watermark.SetActive(show && !showGameplayWatermarkOnTitleScreen && rootButtonsAreActive && isOnTitleScreen && !UITitleScreenHypocrisisSkin.HideVersionLabel);
+            _gameplayWatermark.SetActive(show && (!isOnTitleScreen || (showGameplayWatermarkOnTitleScreen && rootButtonsAreActive && !UITitleScreenHypocrisisSkin.HideVersionLabel)));
         }
 
         public void RefreshLabels()
@@ -143,6 +145,16 @@ namespace OverhaulMod.UI
             _gameplayVersionText.text = $"OVERHAUL {ModBuild.VersionString.ToUpper()}";
             _gameplayDebugIcon.SetActive(debug);
             _refreshWidth = true;
+        }
+
+        public void CenterGameplayWatermark()
+        {
+            offsetX = (800f / 2f) + _gameplayWatermarkTransform.sizeDelta.x;
+        }
+
+        public void ResetGameplayWatermark()
+        {
+            offsetX = 0f;
         }
 
         public void ShowTitleScreenLabel()
