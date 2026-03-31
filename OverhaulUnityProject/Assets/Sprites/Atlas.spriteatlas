@@ -76,7 +76,6 @@ SpriteAtlas:
     - {fileID: 2800000, guid: 2083c92f1bd2c2044aab21253365f82f, type: 3}
     - {fileID: 2800000, guid: 5662736a16e4aac4aa55f420d039c5fc, type: 3}
     - {fileID: 2800000, guid: d19733f68a014ea44b6b66af7c7fd9d9, type: 3}
-    - {fileID: 2800000, guid: 7305bc0e75957a84cae74e245ae17fa2, type: 3}
     - {fileID: 2800000, guid: e2f9af27e9274014db676b1883d4f5db, type: 3}
     - {fileID: 2800000, guid: b8725832719c0b841aac352d7246b113, type: 3}
     - {fileID: 2800000, guid: f52bb18389694b24782ee8cf4be5f300, type: 3}
@@ -84,7 +83,6 @@ SpriteAtlas:
     - {fileID: 2800000, guid: 0a2de8d9f7a02a947ae832b17d2003bc, type: 3}
     - {fileID: 2800000, guid: 6a7f71b9a472bd3449e0636753eae674, type: 3}
     - {fileID: 2800000, guid: 28d669f8acc2fcf45b321918c5886912, type: 3}
-    - {fileID: 2800000, guid: ab3ca4407a97a3d41a662abdda20c8b4, type: 3}
     - {fileID: 2800000, guid: ec0c2c25dc39b004990c701ba523556a, type: 3}
     - {fileID: 2800000, guid: 6f7cd18c7903bbf4b94c09d18f31448c, type: 3}
     - {fileID: 2800000, guid: 802ff8a721d76424393c606cfcbcc281, type: 3}
@@ -123,7 +121,6 @@ SpriteAtlas:
     - {fileID: 2800000, guid: 822372f6c750ebb4f86052d667a2d486, type: 3}
     - {fileID: 2800000, guid: e14d36278c5c68947aa1bb578c070930, type: 3}
     - {fileID: 2800000, guid: 4d83f3d6f24d7b949b939689d51802d6, type: 3}
-    - {fileID: 2800000, guid: daf26dd083c79e24b82369a0deaf5ee0, type: 3}
     - {fileID: 2800000, guid: 447d6b940ede914409f409ae7ca3b638, type: 3}
     - {fileID: 2800000, guid: dc0487127697f014a85763d6840f8db8, type: 3}
     - {fileID: 2800000, guid: 86ec7a32ba47c9946859293dcadd1a77, type: 3}
@@ -152,18 +149,19 @@ SpriteAtlas:
     - {fileID: 2800000, guid: bf4ea3315e5986142a91b3fff2ad53d7, type: 3}
     - {fileID: 2800000, guid: f2c1f53f66047b6489c535e5c57d6648, type: 3}
     - {fileID: 2800000, guid: 1e958a7795244ff40b6a700c71ba889f, type: 3}
+    - {fileID: 2800000, guid: a02ec1a988a01c04e857cb906b115b4e, type: 3}
+    - {fileID: 2800000, guid: 4d1f5c41e9ae18f4ca2cc15db00d1613, type: 3}
     bindAsDefault: 1
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
   - {fileID: 21300000, guid: 6f1b1c10bef13274bba0d710045d380b, type: 3}
-  - {fileID: 21300000, guid: ab3ca4407a97a3d41a662abdda20c8b4, type: 3}
   - {fileID: 21300000, guid: 407e9350558af474bb072540a69f0afd, type: 3}
   - {fileID: 21300000, guid: 882cb650b1bbce84fa01aa7f4fc8607d, type: 3}
-  - {fileID: 21300000, guid: daf26dd083c79e24b82369a0deaf5ee0, type: 3}
   - {fileID: 21300000, guid: 2ba0b511d6588cd4f95790bd1720c284, type: 3}
   - {fileID: 21300000, guid: bf4ea3315e5986142a91b3fff2ad53d7, type: 3}
   - {fileID: 21300000, guid: 6460a9312a097754a8b5a9c9b43b18ca, type: 3}
   - {fileID: 21300000, guid: 3474dd31946d7174ead3df4a4b7ad1e7, type: 3}
+  - {fileID: 21300000, guid: 4d1f5c41e9ae18f4ca2cc15db00d1613, type: 3}
   - {fileID: 21300000, guid: 84fd1151dda4b09418e9c1382dfa2a62, type: 3}
   - {fileID: 21300000, guid: 54f9ea518d4b9f04db24ec345dfffde3, type: 3}
   - {fileID: 21300000, guid: aa9a90c166261544f810a6babe74080c, type: 3}
@@ -223,6 +221,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 28d669f8acc2fcf45b321918c5886912, type: 3}
   - {fileID: 21300000, guid: 0c6c4159e0b9e0840abb5b93755058da, type: 3}
   - {fileID: 21300000, guid: cd4928599d4af2a418870cf026da903a, type: 3}
+  - {fileID: 21300000, guid: a02ec1a988a01c04e857cb906b115b4e, type: 3}
   - {fileID: 21300000, guid: 6a7f71b9a472bd3449e0636753eae674, type: 3}
   - {fileID: 21300000, guid: 94c11cb927a91d041a6e3bd8dfbd84f3, type: 3}
   - {fileID: 21300000, guid: 0a2de8d9f7a02a947ae832b17d2003bc, type: 3}
@@ -266,14 +265,13 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 41b20adfd79cd204caa7e7c240d04d1d, type: 3}
   m_PackedSpriteNamesToIndex:
   - Recent-16x16
-  - LightBulb-On-16x16
   - Hat-16x16
   - Start-16x16
-  - DiscordIcon-512x512
   - Personalization2-256x256
   - JustWhite-16x16
   - CollapseDropdown-15x15
   - FrameBGDark-Right-B-16x16_0
+  - GarbageBot-16x24
   - Favorites
   - ZA-32x32
   - CanvasDark-SQ-Attached-Right-16x16_0
@@ -333,6 +331,7 @@ SpriteAtlas:
   - LightBulb-Off-16x16
   - CanvasBright-SQ-NGO_0
   - Back-16x16
+  - Discord-16x16
   - Information-16x16
   - Search-15x15
   - Skip-16x16

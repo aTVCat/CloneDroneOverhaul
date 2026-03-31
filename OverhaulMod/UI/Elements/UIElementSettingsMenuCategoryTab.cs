@@ -39,7 +39,6 @@ namespace OverhaulMod.UI
                     InitializeSubcategoryDisplay("Endless levels", false);
                     InitializeSubcategoryDisplay("Twitch", false);
                     InitializeSubcategoryDisplay("Player", false);
-                    InitializeSubcategoryDisplay("Camera", false);
                     break;
                 case "Interface":
                     InitializeSubcategoryDisplay("Game interface", false);
@@ -51,6 +50,7 @@ namespace OverhaulMod.UI
                 case "Graphics":
                     InitializeSubcategoryDisplay("Window", false);
                     InitializeSubcategoryDisplay("Render", false);
+                    InitializeSubcategoryDisplay("Camera", false);
                     InitializeSubcategoryDisplay("Post effects", false);
                     InitializeSubcategoryDisplay("Color blindness mode", false);
                     break;

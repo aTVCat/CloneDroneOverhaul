@@ -346,11 +346,6 @@ namespace OverhaulMod.UI
                 populateCASettingsPage(_selectedTabId);
             });
             pageBuilder.AddDescriptionBoxToRecentElement(ModSettingsConstants.ENABLE_CHROMATIC_ABERRATION);
-
-            _ = pageBuilder.DropdownWithText(PostEffectsManager.BloomOptions, "Bloom", true, ModSettingsManager.GetIntValue(ModSettingsConstants.BLOO_MODE), delegate (int value)
-            {
-                ModSettingsManager.SetIntValue(ModSettingsConstants.BLOO_MODE, value, true);
-            });
             _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_DITHERING), delegate (bool value)
             {
                 ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_DITHERING, value, true);
@@ -361,6 +356,10 @@ namespace OverhaulMod.UI
                 ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_VIGNETTE, value, true);
             }, "Vignette");
             pageBuilder.AddDescriptionBoxToRecentElement(ModSettingsConstants.ENABLE_VIGNETTE);
+            _ = pageBuilder.DropdownWithText(PostEffectsManager.BloomOptions, "Bloom", true, ModSettingsManager.GetIntValue(ModSettingsConstants.BLOO_MODE), delegate (int value)
+            {
+                ModSettingsManager.SetIntValue(ModSettingsConstants.BLOO_MODE, value, true);
+            });
 
             _ = pageBuilder.Header3("Particle effects");
             _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_GARBAGE_PARTICLES), delegate (bool value)
@@ -399,6 +398,10 @@ namespace OverhaulMod.UI
             }, "Always burn voxels");
 
             _ = pageBuilder.Header3("Camera");
+            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_CAMERA_ROLLING), delegate (bool value)
+            {
+                ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_CAMERA_ROLLING, value, true);
+            }, "Camera rolling");
             _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_FIRST_PERSON_MODE), delegate (bool value)
             {
                 ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_FIRST_PERSON_MODE, value, true);
@@ -411,10 +414,6 @@ namespace OverhaulMod.UI
             {
                 ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_CAMERA_BOBBING, value, true);
             }, "Camera bobbing");
-            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_CAMERA_ROLLING), delegate (bool value)
-            {
-                ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_CAMERA_ROLLING, value, true);
-            }, "Camera rolling");
 
             _ = pageBuilder.Header1("Game interface");
             _ = pageBuilder.Header3("Cursor skin");
@@ -635,6 +634,60 @@ namespace OverhaulMod.UI
                 ClearPageContents();
                 populateAdditionalGraphicsPage(settingsMenu);
             });
+
+
+            _ = pageBuilder.Header1("Camera");
+            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_CAMERA_ROLLING), delegate (bool value)
+            {
+                ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_CAMERA_ROLLING, value, true);
+            }, "Camera rolling");
+            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.DISABLE_SCREEN_SHAKING), delegate (bool value)
+            {
+                ModSettingsManager.SetBoolValue(ModSettingsConstants.DISABLE_SCREEN_SHAKING, value, true);
+            }, "Disable shaking effects");
+            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_FOV_OVERRIDE), delegate (bool value)
+            {
+                ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_FOV_OVERRIDE, value, true);
+                PopulatePage("Graphics");
+            }, "Enable FOV override");
+            Text fovOverrideHeader4 = pageBuilder.Header4("fov_override");
+            Vector2 fovOverrideHeader4SizeDelta = (fovOverrideHeader4.transform.parent as RectTransform).sizeDelta;
+            fovOverrideHeader4SizeDelta.y += 15f;
+            (fovOverrideHeader4.transform.parent as RectTransform).sizeDelta = fovOverrideHeader4SizeDelta;
+
+            if (CameraFOVController.EnableFOVOverride)
+            {
+                _ = pageBuilder.Slider(-10f, CameraFOVController.FOV_MAX_POSITIVE_OFFSET, true, ModSettingsManager.GetFloatValue(ModSettingsConstants.CAMERA_FOV_OFFSET), delegate (float value)
+                {
+                    ModSettingsManager.SetFloatValue(ModSettingsConstants.CAMERA_FOV_OFFSET, value, true);
+                }, true, (float val) =>
+                {
+                    float roundedValue = Mathf.Round(val * 10f) / 10f;
+                    return $"{(val > 0f ? "+" : string.Empty)}{roundedValue} ({CameraFOVController.DEFAULT_FOV + roundedValue})";
+                });
+            }
+
+            _ = pageBuilder.KeyBind("Camera mode", (KeyCode)ModSettingsManager.GetIntValue(ModSettingsConstants.CAMERA_MODE_TOGGLE_KEYBIND), KeyCode.Y, delegate (KeyCode value)
+            {
+                ModSettingsManager.SetIntValue(ModSettingsConstants.CAMERA_MODE_TOGGLE_KEYBIND, (int)value, true);
+            });
+            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_FIRST_PERSON_MODE), delegate (bool value)
+            {
+                ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_FIRST_PERSON_MODE, value, true);
+            }, "First person mode");
+            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_CAMERA_BOBBING), delegate (bool value)
+            {
+                ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_CAMERA_BOBBING, value, true);
+            }, "Camera bobbing");
+
+            _ = pageBuilder.Button("Reset camera settings", delegate
+            {
+                ModSettingsManager.ResetValue(ModSettingsConstants.CAMERA_FOV_OFFSET, true);
+                ModSettingsManager.ResetValue(ModSettingsConstants.ENABLE_CAMERA_ROLLING, true);
+                ModSettingsManager.ResetValue(ModSettingsConstants.ENABLE_CAMERA_BOBBING, true);
+                PopulatePage("Graphics");
+            });
+
 
             bool showExperimentalSettings = ModFeatures.IsEnabled(ModFeatures.FeatureType.DisplayNewGraphicsOptionsInSettings);
 
@@ -882,61 +935,9 @@ namespace OverhaulMod.UI
                     ModSettingsManager.SetFloatValue(ModSettingsConstants.WEAPON_SWITCH_COOLDOWN, value / 100f, true);
                 }, true, (float val) =>
                 {
-                    return $"{Mathf.RoundToInt(val * 10f)} ms";
+                    return $"{Mathf.RoundToInt(val * 10f)} {LocalizationManager.Instance.GetTranslatedString("milliseconds_shortened")}";
                 });
             }
-
-            _ = pageBuilder.Header1("Camera");
-            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.DISABLE_SCREEN_SHAKING), delegate (bool value)
-            {
-                ModSettingsManager.SetBoolValue(ModSettingsConstants.DISABLE_SCREEN_SHAKING, value, true);
-            }, "Disable shaking effects");
-            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_FOV_OVERRIDE), delegate (bool value)
-            {
-                ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_FOV_OVERRIDE, value, true);
-                PopulatePage("Gameplay");
-            }, "Enable FOV override");
-            Text fovOverrideHeader4 = pageBuilder.Header4("fov_override");
-            Vector2 fovOverrideHeader4SizeDelta = (fovOverrideHeader4.transform.parent as RectTransform).sizeDelta;
-            fovOverrideHeader4SizeDelta.y += 15f;
-            (fovOverrideHeader4.transform.parent as RectTransform).sizeDelta = fovOverrideHeader4SizeDelta;
-
-            if (CameraFOVController.EnableFOVOverride)
-            {
-                _ = pageBuilder.Slider(-10f, CameraFOVController.FOV_MAX_POSITIVE_OFFSET, true, ModSettingsManager.GetFloatValue(ModSettingsConstants.CAMERA_FOV_OFFSET), delegate (float value)
-                {
-                    ModSettingsManager.SetFloatValue(ModSettingsConstants.CAMERA_FOV_OFFSET, value, true);
-                }, true, (float val) =>
-                {
-                    float roundedValue = Mathf.Round(val * 10f) / 10f;
-                    return $"{(val > 0f ? "+" : string.Empty)}{roundedValue} ({CameraFOVController.DEFAULT_FOV + roundedValue})";
-                });
-            }
-
-            _ = pageBuilder.KeyBind("Camera mode", (KeyCode)ModSettingsManager.GetIntValue(ModSettingsConstants.CAMERA_MODE_TOGGLE_KEYBIND), KeyCode.Y, delegate (KeyCode value)
-            {
-                ModSettingsManager.SetIntValue(ModSettingsConstants.CAMERA_MODE_TOGGLE_KEYBIND, (int)value, true);
-            });
-            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_FIRST_PERSON_MODE), delegate (bool value)
-            {
-                ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_FIRST_PERSON_MODE, value, true);
-            }, "First person mode");
-            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_CAMERA_BOBBING), delegate (bool value)
-            {
-                ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_CAMERA_BOBBING, value, true);
-            }, "Camera bobbing");
-            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_CAMERA_ROLLING), delegate (bool value)
-            {
-                ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_CAMERA_ROLLING, value, true);
-            }, "Camera rolling");
-
-            _ = pageBuilder.Button("Reset camera settings", delegate
-            {
-                ModSettingsManager.ResetValue(ModSettingsConstants.CAMERA_FOV_OFFSET, true);
-                ModSettingsManager.ResetValue(ModSettingsConstants.ENABLE_CAMERA_ROLLING, true);
-                ModSettingsManager.ResetValue(ModSettingsConstants.ENABLE_CAMERA_BOBBING, true);
-                PopulatePage("Gameplay");
-            });
         }
 
         private void populateSoundsPage(SettingsMenu settingsMenu)

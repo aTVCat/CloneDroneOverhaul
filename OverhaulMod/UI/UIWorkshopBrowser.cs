@@ -14,6 +14,7 @@ namespace OverhaulMod.UI
         public const string CHALLENGE_LEVEL_TYPE_TAB = "Challenge";
         public const string ENDLESS_LEVEL_TYPE_TAB = "Endless Level";
         public const string LBS_LEVEL_TYPE_TAB = "Last Bot Standing Level";
+        public const string TB_LEVEL_TYPE_TAB = "Team Battle Level";
         public const string COLLECTIONS_TYPE_TAB = "collections";
 
         public const string YOUR_LEVELS_SOURCE_TYPE = "user";
@@ -76,6 +77,8 @@ namespace OverhaulMod.UI
         public GameObject _endlessLevelsTab;
         [UIElement("LBSLevelsTab")]
         public GameObject _lastBotStandingLevelsTab;
+        [UIElement("TeamBattleLevelsTab")]
+        public GameObject _teamBattleLevelsTab;
         [UIElement("CollectionsTab")]
         public GameObject _collectionsTab;
 
@@ -289,6 +292,7 @@ namespace OverhaulMod.UI
                 _levelTypeTabs.AddTab(_challengesTab, CHALLENGE_LEVEL_TYPE_TAB);
                 _levelTypeTabs.AddTab(_endlessLevelsTab, ENDLESS_LEVEL_TYPE_TAB);
                 _levelTypeTabs.AddTab(_lastBotStandingLevelsTab, LBS_LEVEL_TYPE_TAB);
+                _levelTypeTabs.AddTab(_teamBattleLevelsTab, TB_LEVEL_TYPE_TAB);
                 _levelTypeTabs.SelectTab(ADVENTURE_LEVEL_TYPE_TAB);
 
                 _queryTabs.AddTab(_trendingTab, EUGCQuery.k_EUGCQuery_RankedByTrend.ToString());

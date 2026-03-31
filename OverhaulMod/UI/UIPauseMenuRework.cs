@@ -262,10 +262,11 @@ namespace OverhaulMod.UI
             ArenaCoopManager arenaCoopManager = ArenaCoopManager.Instance;
             BattleRoyaleManager battleRoyaleManager = BattleRoyaleManager.Instance;
             bool isBattleRoyale = battleRoyaleManager;
+            bool isTeamBattle = GameModeManager.IsTeamBattle();
             bool isCoop = arenaCoopManager;
 
             bool isBattleRoyaleWaitingArea = isBattleRoyale && battleRoyaleManager.IsProgress(BattleRoyaleMatchProgress.InWaitingArea);
-            bool isBattleRoyaleFightStarted = isBattleRoyale && battleRoyaleManager.IsProgress(BattleRoyaleMatchProgress.FightingStarted);
+            bool isBattleRoyaleFightStarted = isBattleRoyale && !isTeamBattle && battleRoyaleManager.IsProgress(BattleRoyaleMatchProgress.FightingStarted);
             bool isCoopMatchNotStarted = isCoop && !arenaCoopManager.IsMatchStarted();
 
             _startMatchButton.gameObject.SetActive(MultiplayerMatchmakingManager.Instance.IsLocalPlayerHostOfCustomMatch() && (isBattleRoyaleWaitingArea || isBattleRoyaleFightStarted || isCoopMatchNotStarted));
@@ -375,7 +376,7 @@ namespace OverhaulMod.UI
 
                 UIElementPlayerInfoDisplay playerInfoDisplay = playerDisplay.gameObject.AddComponent<UIElementPlayerInfoDisplay>();
                 playerInfoDisplay.InitializeElement();
-                playerInfoDisplay.LoadRobotHead(playerInfoState.CharacterModelIndex, playerInfoState.FavouriteColor);
+                playerInfoDisplay.LoadRobotHead(playerInfoState.CharacterModelHeadIndex, playerInfoState.HeadColor);
             }
         }
 

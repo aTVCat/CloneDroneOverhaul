@@ -102,6 +102,8 @@ namespace OverhaulMod.Engine
             DirectionalLightManager.Instance.RefreshDirectionalLight(currentLevelLightSettings);
             SkyBoxManager.Instance.RefreshSkyboxAmbientLightAndFog(currentLevelLightSettings);
             GlobalEventManager.Instance.Dispatch(GlobalEvents.LightSettingsRefreshed);
+
+            PostEffectsManager.Instance.RefreshCameraPostEffects();
         }
 
         public LightingInfo GetNormalLightingInfo() => _nonEditedLightingInfo;
