@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace OverhaulMod.Patches.Behaviours
 {
-    internal class ColorsPatchBehaviour : GamePatchBehaviour
+    internal class VoxelColorsPatchBehaviour : GamePatchBehaviour
     {
         [ModSetting(ModSettingsConstants.CHANGE_HIT_COLORS, true)]
         public static bool ChangeColors;

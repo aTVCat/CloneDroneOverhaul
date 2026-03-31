@@ -98,7 +98,10 @@ namespace OverhaulMod.UI
                     }
 
                     _ = ModLevelManager.Instance.SetStoryModeLevelProgress(chapterSection);
-                    GameFlowManager.Instance.StartStoryModeGame(false);
+
+                    GameFlowManager gameFlowManager = GameFlowManager.Instance;
+                    gameFlowManager._gameMode = GameMode.Story;
+                    gameFlowManager.startSingplayerGameFromTitleScreen();
                 });
             }
         }

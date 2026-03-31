@@ -775,6 +775,16 @@ namespace OverhaulMod.UI
             {
                 ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_VOXEL_BURNING, value, true);
             }, "Always burn voxels");
+            _ = pageBuilder.Header3("Chunk update delay");
+            _ = pageBuilder.Slider(0, 2, true, ModSettingsManager.GetIntValue(ModSettingsConstants.CHUNK_UPDATE_DELAY), delegate (float value)
+            {
+                ModSettingsManager.SetIntValue(ModSettingsConstants.CHUNK_UPDATE_DELAY, Mathf.RoundToInt(value), true);
+            }, true, (float val) =>
+            {
+                ChunkUpdateDelay value = (ChunkUpdateDelay)Mathf.RoundToInt(val);
+                return LocalizationManager.Instance.GetTranslatedString($"chunkupdatedelay_{value.ToString().ToLower()}");
+            });
+            _ = pageBuilder.Header4("chunkupdatedelay_desc");
 
             _ = pageBuilder.Header1("Robots");
             if (ModFeatures.IsEnabled(ModFeatures.FeatureType.WeaponBag))

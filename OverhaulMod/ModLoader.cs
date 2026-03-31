@@ -278,6 +278,13 @@ namespace OverhaulMod
                 UITitleScreenRework titleScreenRework = ModUIManager.Instance.Get<UITitleScreenRework>(AssetBundleConstants.UI, ModUIConstants.UI_TITLE_SCREEN);
                 if (titleScreenRework) titleScreenRework.RefreshFade();
             }, ModSettingsConstants.TITLE_SCREEN_BACKGROUND_FADE_POWER);
+
+            modSettingsManager.AddSettingValueChangedListener(delegate (object obj)
+            {
+                ChunkUpdateDelayPatchBehaviour chunkUpdateDelayPatch = GamePatchBehaviour.GetBehaviour<ChunkUpdateDelayPatchBehaviour>();
+                if (chunkUpdateDelayPatch)
+                    chunkUpdateDelayPatch.Refresh();
+            }, ModSettingsConstants.CHUNK_UPDATE_DELAY);
         }
 
         private static void refreshCameraPostEffects(object obj)

@@ -223,6 +223,7 @@
     <Compile Include="Engine\AdditionalSkyboxesManager.cs" />
     <Compile Include="Engine\AdditionalSkyboxInfo.cs" />
     <Compile Include="Engine\AutoBuildListInfo.cs" />
+    <Compile Include="Engine\ChunkUpdateDelay.cs" />
     <Compile Include="Engine\MeshSerializer.cs" />
     <Compile Include="Engine\ModAudioLibrary.cs" />
     <Compile Include="Engine\ModDownloadCacheManager.cs" />
@@ -336,11 +337,12 @@
     <Compile Include="Patches\AudienceManager_Patch.cs" />
     <Compile Include="Patches\AudioManager_Patch.cs" />
     <Compile Include="Patches\BaseBodyPart_Patch.cs" />
+    <Compile Include="Patches\Behaviours\ChunkUpdateDelayPatchBehaviour.cs" />
     <Compile Include="Patches\Behaviours\CustomizationButtonPatchBehaviour.cs" />
     <Compile Include="Patches\Behaviours\CloneDroneLogoParticlesBehaviour.cs" />
     <Compile Include="Patches\Behaviours\EnergyBarPatchBehaviour.cs" />
     <Compile Include="Patches\Behaviours\LocalizationManagerPatchBehaviour.cs" />
-    <Compile Include="Patches\Behaviours\ColorsPatchBehaviour.cs" />
+    <Compile Include="Patches\Behaviours\VoxelColorsPatchBehaviour.cs" />
     <Compile Include="Patches\Behaviours\MenuButtonsPatchBehaviour.cs" />
     <Compile Include="Patches\Behaviours\RandomPatchesBehaviour.cs" />
     <Compile Include="Patches\Behaviours\ChallengeManagerPatchBehaviour.cs" />

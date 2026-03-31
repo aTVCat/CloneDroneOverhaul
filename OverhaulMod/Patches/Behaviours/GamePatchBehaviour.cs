@@ -14,7 +14,7 @@ namespace OverhaulMod.Patches.Behaviours
                 typeof(GameModeCardsPatchBehaviour),
                 typeof(ProjectilePatchBehaviour),
                 typeof(SkyboxesPatchBehaviour),
-                typeof(ColorsPatchBehaviour),
+                typeof(VoxelColorsPatchBehaviour),
                 typeof(RandomPatchesBehaviour),
                 typeof(LocalizationManagerPatchBehaviour),
                 typeof(EnergyBarPatchBehaviour),
@@ -23,6 +23,7 @@ namespace OverhaulMod.Patches.Behaviours
                 typeof(ChallengeManagerPatchBehaviour),
                 typeof(CustomizationButtonPatchBehaviour),
                 typeof(CloneDroneLogoParticlesBehaviour),
+                typeof(ChunkUpdateDelayPatchBehaviour),
             });
         }
 

@@ -207,7 +207,7 @@ namespace OverhaulMod.Utils
         public const string ENABLE_WEAPON_BAG = "EnableWeaponBag";
 
         /// <summary>
-        /// <see cref="Patches.Behaviours.ColorsPatchBehaviour"/>
+        /// <see cref="Patches.Behaviours.VoxelColorsPatchBehaviour"/>
         /// </summary>
         public const string CHANGE_HIT_COLORS = "ChangeHitColors";
 
@@ -705,5 +705,10 @@ namespace OverhaulMod.Utils
         /// <see cref="Engine.TitleScreenCustomizationManager"/>
         /// </summary>
         public const string TITLE_SCREEN_SOCIAL_MEDIA_BUTTONS = "TitleScreenSocialMediaButtons";
+
+        /// <summary>
+        /// <see cref="Patches.Behaviours.ChunkUpdateDelayPatchBehaviour"/>
+        /// </summary>
+        public const string CHUNK_UPDATE_DELAY = "ChunkUpdateDelay";
     }
 }
