@@ -199,7 +199,9 @@ namespace OverhaulMod
             }
             else
             {
-                reparentUI(_instantiatedUIs[fullName].transform as RectTransform, layer, siblingIndexOffset);
+                RectTransform uiTransform = _instantiatedUIs[fullName].transform as RectTransform;
+                if (uiTransform.parent != GameUIRootTransform) uiTransform.SetParent(GameUIRootTransform, false);
+                reparentUI(uiTransform, layer, siblingIndexOffset);
             }
 
             T result = _instantiatedUIs[fullName].GetComponent<T>();

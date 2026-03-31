@@ -235,6 +235,8 @@ namespace OverhaulMod.Content.Personalization
         {
             _isScreenshotting = true;
 
+            yield return null;
+
             for (int i = 0; i < items.Count; i++)
             {
                 PersonalizationItemInfo item = items[i];
@@ -257,7 +259,7 @@ namespace OverhaulMod.Content.Personalization
                 }
 
                 TakeAndSaveScreenshot();
-                if (callback != null) callback(i + 1, items.Count);
+                if (callback != null) callback(i, items.Count);
 
                 yield return null;
                 yield return null;

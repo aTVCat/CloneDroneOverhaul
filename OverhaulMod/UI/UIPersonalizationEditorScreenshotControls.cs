@@ -57,7 +57,7 @@ namespace OverhaulMod.UI
                 _screenshotWeaponSkinsButton.interactable = true;
                 return;
             }
-            _progressLabel.text = $"{itemIndex} of {itemCount} processed...";
+            _progressLabel.text = $"{itemIndex + 1} of {itemCount} processed...";
         }
 
         public void OnScreenshotWeaponSkinsButtonClicked()

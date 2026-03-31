@@ -141,7 +141,7 @@ namespace OverhaulMod.Visuals
                         break;
                     case BloomMode.Neonish:
                         bloom.bloomBlurIterations = 10;
-                        bloom.bloomIntensity = 0.3f;
+                        bloom.bloomIntensity = 0.35f;
                         bloom.bloomThreshold = 1f;
                         bloom.sepBlurSpread = 10f;
                         break;

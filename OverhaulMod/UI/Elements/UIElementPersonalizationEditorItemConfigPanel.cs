@@ -47,6 +47,10 @@ namespace OverhaulMod.UI
         [UIElement("SavesFolderButton")]
         private readonly Button _savesFolderButton;
 
+        [UIElementAction(nameof(OnItemFolderFolderButtonClicked))]
+        [UIElement("ItemFolderButton")]
+        private readonly Button _itemFolderButton;
+
         [UIElementAction(nameof(OnRevealEditorIDButtonClicked))]
         [UIElement("RevealEditorIDButton")]
         private readonly Button _revealEditorIDButton;
@@ -440,6 +444,11 @@ namespace OverhaulMod.UI
         public void OnSavesFolderButtonClicked()
         {
             ModFileUtils.OpenFileExplorer(ModCore.SavesFolder);
+        }
+
+        public void OnItemFolderFolderButtonClicked()
+        {
+            ModFileUtils.OpenFileExplorer(PersonalizationEditorManager.Instance.currentEditingItemInfo.FolderPath);
         }
 
         public void OnRevealEditorIDButtonClicked()
