@@ -14,20 +14,28 @@ namespace OverhaulMod.Content
         public string AllowedUsers;
         public ExclusivePerkType RequireExclusivePerk;
 
-        [NonSerialized]
-        public Version DisplayVersion;
+        private Version _displayVersion;
+        public Version DisplayVersion
+        {
+            get
+            {
+                if(_displayVersion == null || !ModParseUtils.CompareVersionsWithDiffFormats(ModVersion, _displayVersion))
+                {
+                    _displayVersion = ModParseUtils.ConvertOldVersionFormat(ModVersion);
+                }
+                return _displayVersion;
+            }
+        }
 
         public void FixValues()
         {
             if (ModVersion == null)
                 ModVersion = new Version(0, ModBuild.VersionMajor, ModBuild.VersionMinor, ModBuild.VersionBuild);
-
-            DisplayVersion = new Version(ModVersion.Minor, ModVersion.Build, ModVersion.Revision);
         }
 
         public override string ToString()
         {
-            return $"Overhaul mod {ModVersion}";
+            return $"Overhaul mod {DisplayVersion} ({ModVersion})";
         }
 
         public bool CanBeInstalledByLocalUser()

@@ -1,4 +1,6 @@
-﻿using OverhaulMod.Content;
+﻿using BestHTTP.SocketIO;
+using OverhaulMod.Content;
+using OverhaulMod.Utils;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -25,6 +27,14 @@ namespace OverhaulMod.UI
         [UIElement("NewAddonButton")]
         private readonly Button _newAddonButton;
 
+        [UIElementAction(nameof(OnGetInfoFileClicked))]
+        [UIElement("GetInfoFileButton")]
+        private readonly Button _getInfoFileButton;
+
+        [UIElementAction(nameof(OnSavesFolderButtonClicked))]
+        [UIElement("SavesFolderButton")]
+        private readonly Button _savesFolderButton;
+
         [UIElement("NeedsSaveIcon", false)]
         private readonly GameObject _needsSaveIcon;
 
@@ -33,27 +43,32 @@ namespace OverhaulMod.UI
         protected override void OnInitialized()
         {
             _instantiatedEntries = new List<UIElementAddonEditorDownloadDisplay>();
+            _saveButton.interactable = false;
+            _newAddonButton.interactable = false;
         }
 
-        public override void Show()
+        private void onGotDownloadList(AddonManager.GetDownloadListResult result)
         {
-            base.Show();
-            populate();
-        }
+            if (result.HasFailed())
+            {
+                _getInfoFileButton.interactable = true;
+                ModUIUtils.MessagePopupOK("Error", result.Error, false);
+                return;
+            }
 
-        private void populate()
-        {
+            _saveButton.interactable = true;
+            _newAddonButton.interactable = true;
+
             _instantiatedEntries.Clear();
             if (_container.childCount != 0)
                 TransformUtils.DestroyAllChildren(_container);
 
-            AddonDownloadListInfo downloads = AddonManager.Instance.GetDownloadsFromDisk();
-            foreach (AddonDownloadInfo download in downloads.Addons)
+            foreach (AddonDownloadInfo download in result.List.Addons)
             {
                 ModdedObject moddedObject = Instantiate(_addonDisplay, _container);
                 moddedObject.gameObject.SetActive(true);
                 UIElementAddonEditorDownloadDisplay addonEditorDownloadDisplay = moddedObject.gameObject.AddComponent<UIElementAddonEditorDownloadDisplay>();
-                addonEditorDownloadDisplay.Initialize(download, downloads);
+                addonEditorDownloadDisplay.Initialize(download, result.List);
                 _instantiatedEntries.Add(addonEditorDownloadDisplay);
             }
         }
@@ -69,7 +84,7 @@ namespace OverhaulMod.UI
             {
                 entry.UpdateAddonDownloadInfo();
             }
-            AddonManager.Instance.SaveDownloadsToDisk();
+            AddonManager.Instance.SaveDownloadListToDisk();
         }
 
         public void OnNewAddonButtonClicked()
@@ -82,13 +97,24 @@ namespace OverhaulMod.UI
             }, 1f);
 
             AddonDownloadInfo addonDownloadInfo = new AddonDownloadInfo();
-            AddonDownloadListInfo downloads = AddonManager.Instance.GetDownloadsFromDisk();
+            AddonDownloadListInfo downloads = AddonManager.Instance.GetCachedDownloadList();
             downloads.Addons.Add(addonDownloadInfo);
             ModdedObject moddedObject = Instantiate(_addonDisplay, _container);
             moddedObject.gameObject.SetActive(true);
             UIElementAddonEditorDownloadDisplay addonEditorDownloadDisplay = moddedObject.gameObject.AddComponent<UIElementAddonEditorDownloadDisplay>();
             addonEditorDownloadDisplay.Initialize(addonDownloadInfo, downloads);
             _instantiatedEntries.Add(addonEditorDownloadDisplay);
+        }
+
+        public void OnGetInfoFileClicked()
+        {
+            _getInfoFileButton.interactable = false;
+            AddonManager.Instance.GetDownloadList(onGotDownloadList);
+        }
+
+        public void OnSavesFolderButtonClicked()
+        {
+            ModFileUtils.OpenFileExplorer(ModCore.DeveloperFolder);
         }
     }
 }

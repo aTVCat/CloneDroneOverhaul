@@ -81,7 +81,7 @@ namespace OverhaulMod.UI
                 _progressBar.SetActive(false);
                 _buttonsContainer.SetActive(true);
 
-                if (!installUpdateResult.IsError())
+                if (!installUpdateResult.HasFailed())
                 {
                     _ = ModUIConstants.ShowRestartRequiredScreen(false);
                 }

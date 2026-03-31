@@ -2,6 +2,7 @@
 using OverhaulMod.Utils;
 using System;
 using System.IO;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,8 +10,6 @@ namespace OverhaulMod.UI
 {
     public class UIUpdatesEditor : OverhaulUIBehaviour
     {
-        private static readonly char[] s_allowedChars = "1234567890.".ToCharArray();
-
         [UIElementAction(nameof(Hide))]
         [UIElement("CloseButton")]
         private readonly Button _exitButton;
@@ -83,6 +82,9 @@ namespace OverhaulMod.UI
         [UIElement("Content")]
         private readonly Transform _content;
 
+        [UIElement("EditorPanel", false)]
+        private readonly GameObject _editorPanel;
+
         private bool _disallowCallbacks;
 
         private UpdateInfoList _updatesList;
@@ -95,8 +97,8 @@ namespace OverhaulMod.UI
         {
             base.OnInitialized();
 
-            UpdateManager.Instance.LoadDataFromDisk();
-            _updatesList = UpdateManager.Instance.GetUpdatesList();
+            _saveButton.interactable = false;
+            _newBranchButton.interactable = false;
 
             System.Collections.Generic.List<Dropdown.OptionData> list = _exclusivePerkRequirementDropdown.options;
             list.Clear();
@@ -105,8 +107,6 @@ namespace OverhaulMod.UI
                 list.Add(new Dropdown.OptionData() { text = StringUtils.AddSpacesToCamelCasedString(perk.ToString()) });
             }
             _exclusivePerkRequirementDropdown.RefreshShownValue();
-
-            populateBranches();
         }
 
         private void populateBranches()
@@ -118,7 +118,7 @@ namespace OverhaulMod.UI
             {
                 ModdedObject moddedObject = Instantiate(_branchDisplay, _content);
                 moddedObject.gameObject.SetActive(true);
-                moddedObject.GetObject<Text>(0).text = $"{update.Value.ModVersion} ({update.Value.DisplayVersion})";
+                moddedObject.GetObject<Text>(0).text = $"{update.Value.DisplayVersion} ({update.Value.ModVersion})";
                 moddedObject.GetObject<Text>(1).text = update.Key.ToUpper();
 
                 Button button = moddedObject.GetComponent<Button>();
@@ -144,6 +144,7 @@ namespace OverhaulMod.UI
             _isGoogleDriveLinkToggle.isOn = update.IsGoogleDriveLink;
 
             _needsSaveIcon.SetActive(false);
+            _editorPanel.SetActive(true);
 
             _disallowCallbacks = false;
         }
@@ -154,8 +155,14 @@ namespace OverhaulMod.UI
                 return;
 
             Version version;
-            if (!Version.TryParse(_buildVersionField.text, out version))
+            try
+            {
+                if (!Version.TryParse(_buildVersionField.text, out version)) version = new Version(0, 0, 0, 0);
+            }
+            catch
+            {
                 version = new Version(0, 0, 0, 0);
+            }
 
             OnRefreshChangelogButtonClicked();
             _editingUpdate.ModVersion = version;
@@ -163,7 +170,6 @@ namespace OverhaulMod.UI
             _editingUpdate.RequireExclusivePerk = (ExclusivePerkType)_exclusivePerkRequirementDropdown.value;
             _editingUpdate.DownloadLink = _buildFileURLField.text;
             _editingUpdate.IsGoogleDriveLink = _isGoogleDriveLinkToggle.isOn;
-            _editingUpdate.FixValues();
         }
 
         public void OnSaveButtonClicked()
@@ -187,11 +193,14 @@ namespace OverhaulMod.UI
             UpdateManager.Instance.DownloadUpdatesList(delegate (UpdateManager.GetUpdatesResult updateInfoList)
             {
                 _getUpdatesFileButton.interactable = true;
-                if (updateInfoList.IsError())
+                if (updateInfoList.HasFailed())
                 {
                     ModUIUtils.MessagePopupOK("Error", updateInfoList.Error, true);
                     return;
                 }
+
+                _saveButton.interactable = true;
+                _newBranchButton.interactable = true;
 
                 _updatesList = updateInfoList.Updates;
                 populateBranches();
@@ -258,11 +267,16 @@ namespace OverhaulMod.UI
                 return;
 
             Version version;
-            if (!Version.TryParse(_buildVersionField.text, out version))
-                version = new Version(0, 0, 0);
+            try
+            {
+                if (!Version.TryParse(_buildVersionField.text, out version)) version = new Version(0, 0, 0, 0);
+            }
+            catch
+            {
+                version = new Version(0, 0, 0, 0);
+            }
 
             _editingUpdate.ModVersion = version;
-            _editingUpdate.FixValues();
 
             _needsSaveIcon.SetActive(true);
             populateBranches();

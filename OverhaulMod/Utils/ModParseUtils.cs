@@ -1,4 +1,4 @@
-﻿using Steamworks;
+﻿using System;
 using System.Globalization;
 using UnityEngine;
 
@@ -37,9 +37,19 @@ namespace OverhaulMod.Utils
             return !ColorUtility.TryParseHtmlString(@string, out Color result) ? defaultValue : result;
         }
 
-        public static CSteamID TryParseSteamID(string @string)
+        public static Steamworks.CSteamID TryParseSteamID(string @string)
         {
-            return !ulong.TryParse(@string, out ulong result) ? default : (CSteamID)result;
+            return !ulong.TryParse(@string, out ulong result) ? default : (Steamworks.CSteamID)result;
+        }
+
+        public static Version ConvertOldVersionFormat(Version oldFormat)
+        {
+            return new Version(oldFormat.Minor, oldFormat.Build, oldFormat.Revision);
+        }
+
+        public static bool CompareVersionsWithDiffFormats(Version a, Version b)
+        {
+            return a == b || (a.Major == b.Minor && a.Minor == b.Build && a.Build == b.Revision) || (b.Major == a.Minor && b.Minor == a.Build && b.Build == a.Revision);
         }
     }
 }

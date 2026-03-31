@@ -178,7 +178,6 @@
     <Compile Include="Content\AddonDownloadInfo.cs" />
     <Compile Include="Content\AddonInfo.cs" />
     <Compile Include="Content\AddonDownloadListInfo.cs" />
-    <Compile Include="Content\ContentInfo.cs" />
     <Compile Include="Content\DownloadResult.cs" />
     <Compile Include="Content\ExclusivePerkColor.cs" />
     <Compile Include="Content\GoogleDriveManager.cs" />
@@ -531,7 +530,6 @@
     <Compile Include="UI\UIInformationSelectWindow.cs" />
     <Compile Include="UI\UIRestartRequiredScreen.cs" />
     <Compile Include="UI\UILevelDescriptionListEditor.cs" />
-    <Compile Include="UI\UIUpdateInfoEditor.cs" />
     <Compile Include="UI\UIWorkshopItemPageWindow.cs" />
     <Compile Include="Utils\ModAdvancedCache.cs" />
     <Compile Include="ModDebug.cs" />

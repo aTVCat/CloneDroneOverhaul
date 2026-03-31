@@ -6,7 +6,7 @@ namespace OverhaulMod.Content
     {
         public string Error;
 
-        public bool IsError()
+        public bool HasFailed()
         {
             return !Error.IsNullOrEmpty();
         }

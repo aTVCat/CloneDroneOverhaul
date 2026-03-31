@@ -29,11 +29,7 @@ namespace OverhaulMod.UI
 
         private Dictionary<string, int> _levelIdToSiblingIndex;
 
-        public int chapterIndex
-        {
-            get;
-            private set;
-        }
+        public int ChapterIndex;
 
         public override bool RefreshOnlyCursor => true;
 
@@ -58,7 +54,7 @@ namespace OverhaulMod.UI
             if (_sectionsContainer.childCount != 0)
                 TransformUtils.DestroyAllChildren(_sectionsContainer);
 
-            this.chapterIndex = chapterIndex;
+            ChapterIndex = chapterIndex;
 
             ModLevelSectionInfo[] sections = ModGameUtils.GetChapterSections(Path.Combine(ModLevelManager.Instance.chapterSectionsFolder, "story"), chapterIndex);
             if (sections == null || sections.Length == 0)
@@ -115,7 +111,7 @@ namespace OverhaulMod.UI
                 return;
             }
 
-            string methodName = string.Format("OnChapter{0}Clicked", chapterIndex);
+            string methodName = $"OnChapter{ChapterIndex}Clicked";
             MethodInfo methodInfo = typeof(StoryModeChapterSelect).GetMethod(methodName, BindingFlags.Public | BindingFlags.Instance);
             if (methodInfo != null)
             {

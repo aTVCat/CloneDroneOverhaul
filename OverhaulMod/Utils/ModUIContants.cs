@@ -228,11 +228,6 @@ namespace OverhaulMod.Utils
             return ModUIManager.Instance.Show<UIPersonalizationItemBrowser>(AssetBundleConstants.UI, UI_PERSONALIZATION_ITEMS_BROWSER, ModUIManager.UILayer.BeforeEscMenu);
         }
 
-        public static UIUpdateInfoEditor ShowUpdateInfoEditor(Transform parent)
-        {
-            return ModUIManager.Instance.Show<UIUpdateInfoEditor>(AssetBundleConstants.UI, UI_UPDATE_INFO_EDITOR, parent);
-        }
-
         public static UINewsInfoEditor ShowNewsInfoEditor(Transform parent)
         {
             return ModUIManager.Instance.Show<UINewsInfoEditor>(AssetBundleConstants.UI, UI_NEWS_INFO_EDITOR, parent);

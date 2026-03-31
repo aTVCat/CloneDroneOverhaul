@@ -310,7 +310,7 @@ namespace OverhaulMod.UI
 
         public void OnSetCurrentModVersionButtonClicked()
         {
-            _minModVersionField.text = ModBuild.VersionString;
+            _minModVersionField.text = $"0.{ModBuild.VersionString}";
         }
     }
 }

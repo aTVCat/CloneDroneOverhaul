@@ -6,7 +6,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using UnityEngine.Networking;
 
 namespace OverhaulMod.Content
 {
@@ -14,9 +13,9 @@ namespace OverhaulMod.Content
     {
         public const string ADDONS_LIST_REPOSITORY_FILE = "AddonDownloads.json";
 
-        public const string ADDON_INFO_FILE = "AddonInfo.json";
+        public const string ADDONS_LIST_TEST_REPOSITORY_FILE = "test/AddonDownloads.json";
 
-        public const string ADDON_INFO_FILE_OLD = "contentInfo.json";
+        public const string ADDON_INFO_FILE = "AddonInfo.json";
 
         public const string ADDON_DOWNLOADED_EVENT = "OverhaulAddonDownloaded";
 
@@ -28,6 +27,8 @@ namespace OverhaulMod.Content
 
         public const string ADDON_UPDATES_REFRESHED = "AddonUpdatesRefreshed";
 
+        public const bool USE_TEST_FILE = true;
+
         [ModSetting(ModSettingsConstants.ADDONS_TO_UPDATE, "", ModSetting.Tag.IgnoreExport)]
         public static string AddonsToUpdate;
 
@@ -37,7 +38,7 @@ namespace OverhaulMod.Content
 
         private List<AddonInfo> _loadedAddons;
 
-        private AddonDownloadListInfo _addonDownloadListInfo;
+        private AddonDownloadListInfo _addonDownloadList;
 
         public override void Awake()
         {
@@ -57,12 +58,12 @@ namespace OverhaulMod.Content
             if (!ScheduledActionsManager.Instance.ShouldExecuteAction(ScheduledActionType.RefreshAddonUpdates))
                 return;
 
-            GetDownloads(delegate (GetDownloadsResult getDownloadsResult)
+            GetDownloadList(delegate (GetDownloadListResult getDownloadsResult)
             {
-                if (!getDownloadsResult.IsError())
+                if (!getDownloadsResult.HasFailed())
                 {
                     StringBuilder stringBuilder = new StringBuilder();
-                    foreach (AddonDownloadInfo addonInfo in getDownloadsResult.Downloads.Addons)
+                    foreach (AddonDownloadInfo addonInfo in getDownloadsResult.List.Addons)
                     {
                         if (HasInstalledAddon(addonInfo.UniqueID) && !HasInstalledAddon(addonInfo.UniqueID, addonInfo.Addon.Version))
                         {
@@ -77,60 +78,49 @@ namespace OverhaulMod.Content
             });
         }
 
-        public AddonDownloadListInfo GetDownloadsFromDisk()
+        public bool HasDownloadsListOnDisk()
         {
-            if (_addonDownloadListInfo != null)
-                return _addonDownloadListInfo;
-
-            string path = Path.Combine(ModCore.DeveloperFolder, ADDONS_LIST_REPOSITORY_FILE);
-            if (!File.Exists(path))
-            {
-                _addonDownloadListInfo = new AddonDownloadListInfo();
-            }
-            else
-            {
-                _addonDownloadListInfo = ModJsonUtils.DeserializeStream<AddonDownloadListInfo>(path);
-            }
-            _addonDownloadListInfo.FixValues();
-            return _addonDownloadListInfo;
+            return File.Exists(Path.Combine(ModCore.DeveloperFolder, ADDONS_LIST_REPOSITORY_FILE));
         }
 
-        public void SaveDownloadsToDisk()
+        public void SaveDownloadListToDisk()
         {
-            if (_addonDownloadListInfo == null)
+            if (_addonDownloadList == null)
                 return;
 
             string path = Path.Combine(ModCore.DeveloperFolder, ADDONS_LIST_REPOSITORY_FILE);
-            ModJsonUtils.WriteStream(path, _addonDownloadListInfo);
+            ModJsonUtils.WriteStream(path, _addonDownloadList);
         }
 
-        public void GetDownloads(Action<GetDownloadsResult> callback)
+        public AddonDownloadListInfo GetCachedDownloadList() => _addonDownloadList;
+
+        public void GetDownloadList(Action<GetDownloadListResult> callback)
         {
-            if (_addonDownloadListInfo != null)
+            if (_addonDownloadList != null)
             {
-                callback?.Invoke(new GetDownloadsResult(_addonDownloadListInfo));
+                callback?.Invoke(new GetDownloadListResult(_addonDownloadList));
                 return;
             }
 
-            RepositoryManager.Instance.GetTextFile(ADDONS_LIST_REPOSITORY_FILE, delegate (string content)
+            RepositoryManager.Instance.GetTextFile(USE_TEST_FILE ? ADDONS_LIST_TEST_REPOSITORY_FILE : ADDONS_LIST_REPOSITORY_FILE, delegate (string content)
             {
                 AddonDownloadListInfo addonDownloadListInfo;
                 try
                 {
                     addonDownloadListInfo = ModJsonUtils.Deserialize<AddonDownloadListInfo>(content);
                     addonDownloadListInfo.FixValues();
-                    _addonDownloadListInfo = addonDownloadListInfo;
+                    _addonDownloadList = addonDownloadListInfo;
                 }
                 catch (Exception ex)
                 {
-                    callback?.Invoke(new GetDownloadsResult(ex.ToString()));
+                    callback?.Invoke(new GetDownloadListResult(ex.ToString()));
                     return;
                 }
 
-                callback?.Invoke(new GetDownloadsResult(addonDownloadListInfo));
+                callback?.Invoke(new GetDownloadListResult(addonDownloadListInfo));
             }, delegate (string error)
             {
-                callback?.Invoke(new GetDownloadsResult(error));
+                callback?.Invoke(new GetDownloadListResult(error));
             }, out _, 20);
         }
 
@@ -143,23 +133,23 @@ namespace OverhaulMod.Content
             }
 
             _downloadingAddons.Add(addonId, 0f);
-            GetDownloads(delegate (GetDownloadsResult getDownloadsResult)
+            GetDownloadList(delegate (GetDownloadListResult getDownloadsResult)
             {
                 _downloadingAddons.Remove(addonId);
-                if (getDownloadsResult.IsError())
+                if (getDownloadsResult.HasFailed())
                 {
                     callback?.Invoke(getDownloadsResult.Error);
                     return;
                 }
 
-                AddonDownloadListInfo downloads = getDownloadsResult.Downloads;
+                AddonDownloadListInfo downloads = getDownloadsResult.List;
                 foreach (AddonDownloadInfo download in downloads.Addons)
                 {
                     if (download.UniqueID == addonId)
                     {
                         if (!download.Addon.IsSupported())
                         {
-                            callback?.Invoke($"This addon requires new Overhaul mod version: {download.Addon.MinModVersion}");
+                            callback?.Invoke($"This addon requires new Overhaul mod version: {download.Addon.DisplayMinModVersion}");
                             return;
                         }
 
@@ -237,26 +227,6 @@ namespace OverhaulMod.Content
                 ModManagers.Instance.TriggerModContentLoadedEvent(null);
                 callback?.Invoke(null);
             });
-        }
-
-        public void DownloadAddonsList(out UnityWebRequest unityWebRequest, Action<AddonDownloadListInfo> callback, Action<string> errorCallback)
-        {
-            RepositoryManager.Instance.GetTextFile(ADDONS_LIST_REPOSITORY_FILE, delegate (string rawData)
-            {
-                AddonDownloadListInfo addonsList = null;
-                try
-                {
-                    addonsList = ModJsonUtils.Deserialize<AddonDownloadListInfo>(rawData);
-                    addonsList.FixValues();
-                }
-                catch (Exception exc)
-                {
-                    errorCallback?.Invoke(exc.ToString());
-                    return;
-                }
-
-                callback?.Invoke(addonsList);
-            }, errorCallback, out unityWebRequest, 20);
         }
 
         private IEnumerator waitUntilAddonIsDownloaded(Action<string> callback)
@@ -424,52 +394,7 @@ namespace OverhaulMod.Content
             foreach (string folder in folders)
             {
                 string addonInfoFilePath = Path.Combine(folder, ADDON_INFO_FILE);
-                if (!File.Exists(addonInfoFilePath))
-                {
-                    addonInfoFilePath = Path.Combine(folder, ADDON_INFO_FILE_OLD);
-                    if (!File.Exists(addonInfoFilePath))
-                        continue;
-
-                    try
-                    {
-                        string newId = null;
-
-                        ContentInfo contentInfo = ModJsonUtils.DeserializeStream<ContentInfo>(addonInfoFilePath);
-                        if (contentInfo.DisplayName == "Extras")
-                        {
-                            newId = EXTRAS_ADDON_ID;
-                        }
-                        else if (contentInfo.DisplayName == "Behind the scenes")
-                        {
-                            newId = GALLERY_ADDON_ID;
-                        }
-                        else if (contentInfo.DisplayName == "Realistic skyboxes")
-                        {
-                            newId = REALISTIC_SKYBOXES_ADDON_ID;
-                        }
-
-                        if (newId.IsNullOrEmpty())
-                            continue;
-
-                        AddonInfo addonInfo = new AddonInfo
-                        {
-                            DisplayName = new Dictionary<string, string>
-                            {
-                                { "en", contentInfo.DisplayName }
-                            },
-                            Description = new Dictionary<string, string>(),
-                            Version = -1,
-                            UniqueID = newId,
-                            FolderPath = folder,
-                            MinModVersion = ModBuild.Version
-                        };
-                        list.Add(addonInfo);
-                    }
-                    catch
-                    {
-                        continue;
-                    }
-                }
+                if (!File.Exists(addonInfoFilePath)) continue;
 
                 try
                 {
@@ -504,23 +429,23 @@ namespace OverhaulMod.Content
             return DoesAddonNeedUpdate(addonInfo.UniqueID);
         }
 
-        public class GetDownloadsResult : DownloadResult
+        public class GetDownloadListResult : DownloadResult
         {
-            public AddonDownloadListInfo Downloads;
+            public AddonDownloadListInfo List;
 
-            public GetDownloadsResult()
+            public GetDownloadListResult()
             {
 
             }
 
-            public GetDownloadsResult(string error)
+            public GetDownloadListResult(string error)
             {
                 Error = error;
             }
 
-            public GetDownloadsResult(AddonDownloadListInfo downloads)
+            public GetDownloadListResult(AddonDownloadListInfo downloads)
             {
-                Downloads = downloads;
+                List = downloads;
             }
         }
     }

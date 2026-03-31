@@ -132,7 +132,7 @@ namespace OverhaulMod.UI
                 _loadingIndicator.SetActive(false);
                 _checkForUpdatesButton.interactable = true;
 
-                if (result.IsError())
+                if (result.HasFailed())
                 {
                     _idleElements.SetActive(true);
                     _idleHeaderText.text = "An error occurred.";

@@ -24,6 +24,8 @@ namespace OverhaulMod
             foreach (object option in typeof(LaunchOption).GetEnumValues())
             {
                 LaunchOption launchOption = (LaunchOption)option;
+                if (launchOption == LaunchOption.None) continue;
+
                 if (HasLaunchOption(launchOption))
                     list.Add(launchOption);
             }

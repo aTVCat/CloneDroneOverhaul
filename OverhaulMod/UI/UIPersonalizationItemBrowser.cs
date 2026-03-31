@@ -429,7 +429,7 @@ namespace OverhaulMod.UI
                 else
                     utilsPanel.GetObject<Text>(2).text = LocalizationManager.Instance.GetTranslatedString("customization_button_update");
 
-                // populate items
+                // onGotDownloadList items
                 int spawnedCards = 0;
                 Transform lastCardsLine = null;
                 for (int i = 0; i < items.Count; i++)

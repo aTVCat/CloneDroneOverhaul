@@ -57,8 +57,6 @@ namespace OverhaulMod.Content
 
         private float _buildDownloadProgress;
 
-        private UpdateInfoList _updatesList;
-
         private void Start()
         {
             if (!CheckForUpdatesOnStartup)
@@ -87,27 +85,6 @@ namespace OverhaulMod.Content
                     _webRequest = null;
                 }
             }
-        }
-
-        public void LoadDataFromDisk()
-        {
-            UpdateInfoList infoList;
-            try
-            {
-                infoList = ModJsonUtils.DeserializeStream<UpdateInfoList>(Path.Combine(ModCore.DeveloperFolder, REPOSITORY_FILE));
-            }
-            catch
-            {
-                infoList = new UpdateInfoList();
-            }
-            infoList.FixValues();
-
-            _updatesList = infoList;
-        }
-
-        public UpdateInfoList GetUpdatesList()
-        {
-            return _updatesList;
         }
 
         public float GetBuildDownloadProgress()
@@ -179,7 +156,6 @@ namespace OverhaulMod.Content
                 }
                 ModSettingsDataManager.Instance.Save();
 
-                _updatesList = updateInfoList;
                 callback?.Invoke(new GetUpdatesResult(updateInfoList));
             }, delegate (string error)
             {

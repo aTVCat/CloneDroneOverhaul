@@ -21,12 +21,25 @@ namespace OverhaulMod.Content
         [NonSerialized]
         public string FolderPath;
 
+        private Version _displayMinModVersion;
+        public Version DisplayMinModVersion
+        {
+            get
+            {
+                if (_displayMinModVersion == null || !ModParseUtils.CompareVersionsWithDiffFormats(MinModVersion, _displayMinModVersion))
+                {
+                    _displayMinModVersion = ModParseUtils.ConvertOldVersionFormat(MinModVersion);
+                }
+                return _displayMinModVersion;
+            }
+        }
+
         public bool IsSupported()
         {
             if (ModLaunchOptions.HasLaunchOption(ModLaunchOptions.LaunchOption.LoadUnsupportedAddons))
                 return true;
 
-            return MinModVersion != null && ModBuild.Version >= MinModVersion;
+            return DisplayMinModVersion != null && ModBuild.Version >= DisplayMinModVersion;
         }
 
         public void GenerateUniqueID()

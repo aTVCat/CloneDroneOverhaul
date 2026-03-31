@@ -7,8 +7,6 @@ namespace OverhaulMod.UI
 {
     public class UIAddonsMenu : OverhaulUIBehaviour
     {
-        private static AddonDownloadListInfo s_contentLiftInfo;
-
         [UIElementAction(nameof(Hide))]
         [UIElement("CloseButton")]
         private readonly Button _exitButton;
@@ -135,28 +133,24 @@ namespace OverhaulMod.UI
             if (_container.childCount != 0)
                 TransformUtils.DestroyAllChildren(_container);
 
-            if (s_contentLiftInfo != null)
-            {
-                populate(s_contentLiftInfo);
-                return;
-            }
-
             _loadingIndicator.SetActive(true);
             _tabs.IsInteractable = false;
-            AddonManager.Instance.DownloadAddonsList(out _, populate, delegate (string error)
+            AddonManager.Instance.GetDownloadList(onGotDownloadList);
+        }
+
+        private void onGotDownloadList(AddonManager.GetDownloadListResult result)
+        {
+            if (result.HasFailed())
             {
-                ModUIUtils.MessagePopupOK("Error", error, true);
+                ModUIUtils.MessagePopupOK("Error", result.Error, true);
 
                 _loadingIndicator.SetActive(false);
                 _tabs.IsInteractable = true;
                 _tabs.SelectTab("local addons");
-            });
-        }
+                return;
+            }
 
-        private void populate(AddonDownloadListInfo contentListInfo)
-        {
-            s_contentLiftInfo = contentListInfo;
-            foreach (AddonDownloadInfo addonDownloadInfo in contentListInfo.Addons)
+            foreach (AddonDownloadInfo addonDownloadInfo in result.List.Addons)
             {
                 ModdedObject moddedObject = Instantiate(_networkContentDisplay, _container);
                 moddedObject.gameObject.SetActive(true);
