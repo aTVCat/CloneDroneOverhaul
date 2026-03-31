@@ -82,7 +82,7 @@ namespace OverhaulMod.UI
             _header.text = addonDownloadInfo.GetDisplayName();
             _addonDescription.text = addonDownloadInfo.GetDescription();
             _addonSize.text = addonDownloadInfo.GetPackageSizeString();
-            _addonVersion.text = $"Version {addonDownloadInfo.Addon.Version}";
+            _addonVersion.text = $"{LocalizationManager.Instance.GetTranslatedString("version")} {addonDownloadInfo.Addon.Version}";
             refreshElements();
             refreshImages();
         }
@@ -112,16 +112,17 @@ namespace OverhaulMod.UI
 
         private void refreshElements()
         {
-            if (_addonDownloadInfo == null)
+            if (_addonDownloadInfo == null || _addonDownloadInfo.Addon == null)
                 return;
 
+            bool isSupported = !_addonDownloadInfo.Addon.IsSupported();
             bool isInstalled = AddonManager.Instance.HasInstalledAddon(_addonDownloadInfo.UniqueID, 0);
             bool isDownloading = AddonManager.Instance.IsDownloadingAddon(_addonDownloadInfo.UniqueID);
             bool isNewVersion = AddonManager.Instance.GetAddonVersion(_addonDownloadInfo.UniqueID) < _addonDownloadInfo.Addon.Version;
 
             _downloadButton.gameObject.SetActive(!isInstalled);
             _updateButton.gameObject.SetActive(isInstalled && isNewVersion);
-            _installButtons.SetActive(!isDownloading);
+            _installButtons.SetActive(isSupported && !isDownloading);
             _loadingIndicator.SetActive(isDownloading);
         }
 

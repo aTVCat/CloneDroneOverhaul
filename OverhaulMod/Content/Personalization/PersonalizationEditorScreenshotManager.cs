@@ -6,12 +6,17 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using UnityStandardAssets.ImageEffects;
 
 namespace OverhaulMod.Content.Personalization
 {
     public class PersonalizationEditorScreenshotManager : Singleton<PersonalizationEditorScreenshotManager>
     {
         public const string CAMERA_ANGLES_FILE = "cessCameraAngles.json"; // customization editor screenshot stage camera angles
+
+        public float TonemapFixSaturationMultiplier = 1.5f;
+        public float TonemapFixBrightnessMultiplier = 2f;
+        public float TonemapFixAlphaMultiplier = 3.5f;
 
         private GameObject _stageObject;
 
@@ -285,7 +290,7 @@ namespace OverhaulMod.Content.Personalization
         {
             int antiAliasingBefore = QualitySettings.antiAliasing;
             QualitySettings.antiAliasing = 8;
-            texture = TakeScreenshot(128, 128, 1);
+            texture = TakeScreenshot(128, 128, 1, false);
             QualitySettings.antiAliasing = antiAliasingBefore;
 
             string folderPath = PersonalizationEditorManager.Instance.currentEditingItemFolder;
@@ -299,9 +304,36 @@ namespace OverhaulMod.Content.Personalization
             }
         }
 
-        public Texture2D TakeScreenshot(int width, int height, int resizeAmount)
+        public Texture2D TakeScreenshot(int width, int height, int resizeAmount, bool altMethod)
         {
             instatiateStageIfHavent();
+
+            if (altMethod)
+            {
+                Bloom bloom = _whiteCamera.GetComponent<Bloom>();
+                Color bgColorBefore = _whiteCamera.backgroundColor;
+                float bloomSpreadBefore = bloom.sepBlurSpread;
+
+                _whiteCamera.backgroundColor = Color.clear;
+                bloom.sepBlurSpread = 20f;
+
+                Texture2D texture = takeScreenshotOfCameraView(_whiteCamera, width, height);
+                for (int x = 0; x < width; x++)
+                {
+                    for (int y = 0; y < height; y++)
+                    {
+                        Color pixel = texture.GetPixel(x, y);
+                        pixel.a = 1f;
+                        texture.SetPixel(x, y, pixel);
+                    }
+                }
+                texture.Apply();
+
+                _whiteCamera.backgroundColor = bgColorBefore;
+                bloom.sepBlurSpread = bloomSpreadBefore;
+
+                return texture;
+            }
 
             Texture2D whiteTexture = takeScreenshotOfCameraView(_whiteCamera, width, height);
             Texture2D blackTexture = takeScreenshotOfCameraView(_blackCamera, width, height);
@@ -316,7 +348,7 @@ namespace OverhaulMod.Content.Personalization
 
         private static Texture2D takeScreenshotOfCameraView(Camera cameraToRender, int width, int height)
         {
-            RenderTexture renderTexture = new RenderTexture(width, height, 24);
+            RenderTexture renderTexture = new RenderTexture(width, height, 24, RenderTextureFormat.DefaultHDR);
             cameraToRender.targetTexture = renderTexture;
 
             cameraToRender.Render();
@@ -349,7 +381,7 @@ namespace OverhaulMod.Content.Personalization
                     float difference = 1f - (pixelAMagnitude - pixelBMagnitude);
 
                     Color color;
-                    if (Mathf.Abs(difference) == 0f)
+                    if (Mathf.Abs(difference) <= 0f)
                     {
                         color = Color.clear;
                     }
@@ -359,11 +391,26 @@ namespace OverhaulMod.Content.Personalization
                     }
                     color.a = difference;
 
-                    texture2D.SetPixel(Mathf.FloorToInt(x / (float)resizeAmount), Mathf.FloorToInt(y / (float)resizeAmount), color);
+                    Color finalColor = fixTonemapping(tonemapPixel(color));
+                    texture2D.SetPixel(Mathf.FloorToInt(x / (float)resizeAmount), Mathf.FloorToInt(y / (float)resizeAmount), finalColor);
                 }
             }
             texture2D.Apply();
             return texture2D;
+        }
+
+        private Color tonemapPixel(Color color)
+        {
+            return new Color(color.r / (color.r + 1f), color.g / (color.g + 1f), color.b / (color.b + 1f), color.a / (color.a + 1f));
+        }
+
+        private Color fixTonemapping(Color color)
+        {
+            HSBColor hsbColor = new HSBColor(color);
+            hsbColor.s *= TonemapFixSaturationMultiplier;
+            hsbColor.b *= TonemapFixBrightnessMultiplier;
+            hsbColor.a *= TonemapFixAlphaMultiplier;
+            return hsbColor.ToColor();
         }
     }
 }

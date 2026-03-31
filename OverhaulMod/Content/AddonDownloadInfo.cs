@@ -46,7 +46,7 @@ namespace OverhaulMod.Content
 
         public string GetPackageSizeString()
         {
-            return $"{Mathf.Round(PackageFileSize / (1024f * 1024f) * 100f) / 100f} mb";
+            return $"{Mathf.Round(PackageFileSize / (1024f * 1024f) * 100f) / 100f} {LocalizationManager.Instance.GetTranslatedString("megabytes_shortened")}";
         }
 
         public void CalculatePackageFileSize(string path)

@@ -27,7 +27,7 @@ namespace OverhaulMod.Content
 
         public const string ADDON_UPDATES_REFRESHED = "AddonUpdatesRefreshed";
 
-        public const bool USE_TEST_FILE = true;
+        public const bool USE_TEST_FILE = false;
 
         [ModSetting(ModSettingsConstants.ADDONS_TO_UPDATE, "", ModSetting.Tag.IgnoreExport)]
         public static string AddonsToUpdate;

@@ -131,22 +131,25 @@ namespace OverhaulMod.Visuals
                         bloom.bloomBlurIterations = 4;
                         bloom.bloomIntensity = 0.5f;
                         bloom.bloomThreshold = 1f;
+                        bloom.sepBlurSpread = 2.5f;
                         break;
                     case BloomMode.Fanciest:
                         bloom.bloomBlurIterations = 10;
                         bloom.bloomIntensity = 0.5f;
                         bloom.bloomThreshold = 1f;
-
+                        bloom.sepBlurSpread = 2.5f;
                         break;
                     case BloomMode.Neonish:
                         bloom.bloomBlurIterations = 10;
-                        bloom.bloomIntensity = 1f;
+                        bloom.bloomIntensity = 0.3f;
                         bloom.bloomThreshold = 1f;
+                        bloom.sepBlurSpread = 10f;
                         break;
                     default:
                         bloom.bloomBlurIterations = 2;
                         bloom.bloomIntensity = 0.5f;
                         bloom.bloomThreshold = 0.9f;
+                        bloom.sepBlurSpread = 2.5f;
                         break;
                 }
 
