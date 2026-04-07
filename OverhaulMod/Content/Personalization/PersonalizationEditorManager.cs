@@ -133,7 +133,7 @@ namespace OverhaulMod.Content.Personalization
                 _ = base.StartCoroutine(startEditorGameModeCoroutine(false));
                 return;
             }
-            TransitionManager.Instance.DoNonSceneTransition(startEditorGameModeCoroutine(true));
+            TransitionManager.Instance.DoInGameTransition(startEditorGameModeCoroutine(true));
         }
 
         private IEnumerator startEditorGameModeCoroutine(bool useTransitionManager)

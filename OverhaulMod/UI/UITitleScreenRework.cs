@@ -529,7 +529,7 @@ namespace OverhaulMod.UI
                 _titleScreenUI.OnLevelEditorButtonClicked();
                 return;
             }
-            TransitionManager.Instance.DoNonSceneTransition(levelEditorTransitionCoroutine());
+            TransitionManager.Instance.DoInGameTransition(levelEditorTransitionCoroutine());
         }
 
         public void OnOptionsButtonClicked()

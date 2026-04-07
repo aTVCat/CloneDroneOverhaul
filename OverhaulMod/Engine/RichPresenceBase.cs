@@ -52,6 +52,9 @@ namespace OverhaulMod.Engine
                 case GameMode.Adventure:
                     gameModeString = "Adventure";
                     break;
+                case GameMode.TeamBattle:
+                    gameModeString = "Team Battle";
+                    break;
                 case GameMode.BattleRoyale:
                     gameModeString = "Last Bot Standing";
                     break;

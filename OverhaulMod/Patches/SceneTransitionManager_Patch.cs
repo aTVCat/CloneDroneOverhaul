@@ -13,7 +13,7 @@ namespace OverhaulMod.Patches
             if (!TransitionManager.OverhaulSceneTransitions)
                 return true;
 
-            TransitionManager.Instance.DoTransition(TransitionManager.TransitionArgs.SceneTransition(TransitionManager.SceneTransitionCoroutine(__instance)));
+            TransitionManager.Instance.DoSceneTransition();
             return false;
         }
     }

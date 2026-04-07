@@ -79,7 +79,7 @@ namespace OverhaulMod.UI
                 ModCache.titleScreenUI.OnPlayEndlessButtonClicked();
                 return;
             }
-            TransitionManager.Instance.DoNonSceneTransition(transitionCoroutine());
+            TransitionManager.Instance.DoInGameTransition(transitionCoroutine());
         }
 
         public void OnLeaderboardButtonClicked()
