@@ -131,7 +131,7 @@ namespace OverhaulMod.Content.Personalization
 
         private void Update()
         {
-            if (!_hasInitialized || _hasOwnerDied || _isMindSpace)
+            if (!_hasInitialized || _hasOwnerDied || _isMindSpace || PersonalizationEditorManager.IsInEditor())
                 return;
 
             _timeLeftToRefreshSkins = Mathf.Max(0f, _timeLeftToRefreshSkins - Time.deltaTime);
@@ -142,6 +142,8 @@ namespace OverhaulMod.Content.Personalization
                 RefreshWeaponSkinsVisibility();
             }
         }
+
+        public bool HasInitialized() => _hasInitialized;
 
         private IEnumerator initializeCoroutine(FirstPersonMover firstPersonMover)
         {
@@ -284,6 +286,8 @@ namespace OverhaulMod.Content.Personalization
 
         public void RespawnWeaponSkinsIfRequired()
         {
+            if (PersonalizationEditorManager.IsInEditor()) return;
+
             Dictionary<PersonalizationItemInfo, PersonalizationEditorObjectBehaviour> d = _spawnedItems;
             if (d.Count == 0) return;
 
@@ -729,7 +733,7 @@ namespace OverhaulMod.Content.Personalization
 
         public string GetWeaponSkinDependingOnOwner(WeaponType weaponType)
         {
-            if (!_hasInitialized || PersonalizationEditorManager.IsInEditor()) return string.Empty;
+            if (!_hasInitialized) return string.Empty;
 
             if (_isEnemy) return PersonalizationUserInfo.AllowEnemiesUseSkins ? PersonalizationUserInfo.GetWeaponSkin(weaponType) : string.Empty;
 

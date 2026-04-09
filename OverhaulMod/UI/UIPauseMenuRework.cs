@@ -673,6 +673,8 @@ namespace OverhaulMod.UI
                         return "Twitch";
                     case PlayFab.ClientModels.LoginIdentityProvider.XBoxLive:
                         return "XBOX";
+                    case PlayFab.ClientModels.LoginIdentityProvider.OpenIdConnect: // epic games
+                        return "Epic Games";
                 }
                 return "N/A";
             }
@@ -696,8 +698,10 @@ namespace OverhaulMod.UI
                     return "<color=#A426E4>Twitch</color>";
                 case PlayFab.ClientModels.LoginIdentityProvider.XBoxLive:
                     return "<color=#0DB30F>XBOX</color>";
+                case PlayFab.ClientModels.LoginIdentityProvider.OpenIdConnect: // epic games
+                    return "Epic Games"; // white
             }
-            return "<color=#ffffff>N/A</color>";
+            return "N/A";
         }
     }
 }

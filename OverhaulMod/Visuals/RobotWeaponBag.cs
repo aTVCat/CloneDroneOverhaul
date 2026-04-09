@@ -1,220 +1,327 @@
 ﻿using OverhaulMod.Combat;
-using OverhaulMod.Combat.Weapons;
 using OverhaulMod.Content.Personalization;
 using OverhaulMod.Engine;
 using OverhaulMod.Utils;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace OverhaulMod.Visuals
 {
     public class RobotWeaponBag : MonoBehaviour
     {
+        public const bool DEBUG_CENTERS = false;
+
+        public const float BAG_SCALE = 0.75f;
+
+        public const float WEAPON_ROTATION_RANDOMNESS = 0.500f;
+
         [ModSetting(ModSettingsConstants.ENABLE_WEAPON_BAG, true)]
         public static bool EnableWeaponBag;
 
-        public static readonly Dictionary<WeaponType, TransformInfo> WeaponPositions = new Dictionary<WeaponType, TransformInfo>()
+        public static readonly WeaponType[] SupportedWeapons = new WeaponType[]
         {
-            { WeaponType.Sword, new TransformInfo(new Vector3(1.15f, 1.75f, -0.85f), new Vector3(60f, 260f, 260f))},
-            { WeaponType.Bow, new TransformInfo(new Vector3(-0.15f, 0.35f, -0.6f), new Vector3(0f, 0f, 35f))},
-            { WeaponType.Hammer, new TransformInfo(new Vector3(-0.85f, 2f, -0.95f), new Vector3(4f, 0f, 193f), Vector3.one * 0.75f)},
-            { WeaponType.Spear, new TransformInfo(new Vector3(0f, 0.6f, -0.6f), new Vector3(283f, 46f, 120f), Vector3.one * 0.85f)},
-            { ModWeaponsManager.SCYTHE_TYPE, new TransformInfo(new Vector3(0.1f, 0.5f, -0.6f), new Vector3(290f, 280f, 70f), Vector3.one)},
+            WeaponType.Sword,
+            WeaponType.Bow,
+            WeaponType.Hammer,
+            WeaponType.Spear,
+            ModWeaponsManager.SCYTHE_TYPE
+        };
+
+        public static readonly Dictionary<WeaponType, TransformInfo> PositionsWhenLonely = new Dictionary<WeaponType, TransformInfo>()
+        {
+        };
+
+        public static readonly Dictionary<WeaponType, TransformInfo> WeaponPositionsWhenMultiple = new Dictionary<WeaponType, TransformInfo>()
+        {
+            { WeaponType.Sword, new TransformInfo(new Vector3(0.5f, 0.5f, -0.125f), new Vector3(50f, 270f, 90f), Vector3.one)},
+            { WeaponType.Bow, new TransformInfo(new Vector3(0f, -0.3f, -0.075f), new Vector3(0f, 0f, 50f), Vector3.one)},
+            { WeaponType.Hammer, new TransformInfo(new Vector3(-0.4f, 0.4f, -0.2f), new Vector3(0f, 0f, 310f), Vector3.one)},
+            { WeaponType.Spear, new TransformInfo(new Vector3(0.2f, 0.6f, 0f), new Vector3(0f, 0f, 250f), Vector3.one)}
         };
 
         private FirstPersonMover _firstPersonMover;
 
-        private WeaponType _lastEquippedWeapon;
+        private Dictionary<WeaponType, Transform> _weaponToHolder;
 
         private Dictionary<WeaponType, GameObject> _weaponToRenderer;
 
-        public Transform Bag;
+        private PersonalizationController _personalizationController;
 
-        public bool IsSupported;
+        private Transform _bag;
+
+        private bool _hasStarted, _hasInitialized;
+
+        private bool _isSupportedByRobot;
+
+        private bool _hasAddedEventListeners;
+
+        private bool _hasScheduledRespawningRenderers;
+
+        private WeaponType _lastEquippedWeapon;
 
         private void Start()
         {
             _firstPersonMover = base.GetComponent<FirstPersonMover>();
+            _personalizationController = base.GetComponent<PersonalizationController>();
 
+            _weaponToHolder = new Dictionary<WeaponType, Transform>();
             _weaponToRenderer = new Dictionary<WeaponType, GameObject>();
-            CreateContainers();
-            RefreshRenderers();
+            InstantiateBag();
 
-            GlobalEventManager.Instance.AddEventListener(ModSettingsManager.SETTING_CHANGED_EVENT, RefreshRenderers);
-            GlobalEventManager.Instance.AddEventListener<FirstPersonMover>(GlobalEvents.UpgradesRefreshed, onFirstPersonMoverUpgraded);
+            GlobalEventManager.Instance.AddEventListener(PersonalizationManager.ITEM_EQUIPPED_OR_UNEQUIPPED_EVENT, onCustomize);
+            GlobalEventManager.Instance.AddEventListener<string>(PersonalizationMultiplayerManager.PLAYER_INFO_UPDATED_EVENT, onPlayedInfoUpdate);
+            _hasAddedEventListeners = true;
+            _hasStarted = true;
+
+            StartCoroutine(initializationCoroutine());
+        }
+
+        private void OnEnable()
+        {
+            if (!_hasStarted) return;
+
+            StartCoroutine(initializationCoroutine());
         }
 
         private void Update()
         {
-            if (!IsSupported)
-                return;
+            if (!_isSupportedByRobot) return;
 
             WeaponType currentWeapon = _firstPersonMover._currentWeapon;
             if (currentWeapon != _lastEquippedWeapon)
             {
-                RefreshRenderers();
+                RefreshVisibilityOfRenderers();
                 _lastEquippedWeapon = currentWeapon;
             }
         }
 
         private void OnDestroy()
         {
-            GlobalEventManager.Instance.RemoveEventListener(ModSettingsManager.SETTING_CHANGED_EVENT, RefreshRenderers);
-            GlobalEventManager.Instance.RemoveEventListener<FirstPersonMover>(GlobalEvents.UpgradesRefreshed, onFirstPersonMoverUpgraded);
-        }
-
-        private void onFirstPersonMoverUpgraded(FirstPersonMover firstPersonMover)
-        {
-            ModActionUtils.DoInFrames(delegate
+            DestroyBag();
+            if (_hasAddedEventListeners)
             {
-                if (firstPersonMover && firstPersonMover == _firstPersonMover)
-                    RespawnRenderers();
-            }, 10);
-        }
-
-        public void DestroySelf()
-        {
-            if (Bag)
-            {
-                Destroy(Bag.gameObject);
+                GlobalEventManager.Instance.RemoveEventListener(PersonalizationManager.ITEM_EQUIPPED_OR_UNEQUIPPED_EVENT, onCustomize);
+                GlobalEventManager.Instance.RemoveEventListener<string>(PersonalizationMultiplayerManager.PLAYER_INFO_UPDATED_EVENT, onPlayedInfoUpdate);
+                _hasAddedEventListeners = false;
             }
-            Destroy(this);
         }
 
-        public void CreateContainers()
+        private IEnumerator initializationCoroutine()
         {
-            if (!Bag)
+            while (_personalizationController && !_personalizationController.HasInitialized()) yield return null;
+
+            _hasInitialized = _personalizationController;
+            RespawnRenderers();
+            RefreshVisibilityOfRenderers();
+
+            yield break;
+        }
+
+        public void InstantiateBag()
+        {
+            if (!_bag)
             {
                 Transform torso = TransformUtils.FindChildRecursive(base.transform, "Torso");
                 if (!torso)
                 {
-                    IsSupported = false;
+                    _isSupportedByRobot = false;
                     return;
                 }
 
                 GameObject bagObject = new GameObject("WeaponBag");
                 bagObject.transform.SetParent(torso, false);
-                bagObject.transform.SetLocalTransform(Vector3.zero, Vector3.zero, Vector3.one * 0.75f);
-                Bag = bagObject.transform;
+                bagObject.transform.SetLocalTransform(new Vector3(0f, 0.4f, -0.325f), Vector3.zero, Vector3.one * BAG_SCALE);
+                if (DEBUG_CENTERS)
+                {
+                    Transform debugCubeTransform = GameObject.CreatePrimitive(PrimitiveType.Cube).transform;
+                    debugCubeTransform.SetParent(bagObject.transform, false);
+                    debugCubeTransform.localPosition = Vector3.zero;
+                    debugCubeTransform.localEulerAngles = Vector3.zero;
+                    debugCubeTransform.localScale = Vector3.one * 0.1f;
+                }
+
+                for (int i = 0; i < SupportedWeapons.Length; i++)
+                {
+                    GameObject holder = new GameObject($"{SupportedWeapons[i]} Holder");
+                    holder.transform.SetParent(bagObject.transform, false);
+                    _weaponToHolder.Add(SupportedWeapons[i], holder.transform);
+
+                    if (DEBUG_CENTERS)
+                    {
+                        Transform debugCubeTransform = GameObject.CreatePrimitive(PrimitiveType.Cylinder).transform;
+                        debugCubeTransform.SetParent(holder.transform, false);
+                        debugCubeTransform.localPosition = Vector3.zero;
+                        debugCubeTransform.localEulerAngles = Vector3.zero;
+                        debugCubeTransform.localScale = Vector3.one * 0.1f;
+                    }
+                }
+
+                _bag = bagObject.transform;
             }
-            IsSupported = true;
+            _isSupportedByRobot = true;
+        }
+
+        public void DestroyBag()
+        {
+            if (_bag && _bag.gameObject) Destroy(_bag.gameObject);
+        }
+
+        public void ScheduleRespawningRenderers()
+        {
+            if (_hasScheduledRespawningRenderers) return;
+            _hasScheduledRespawningRenderers = true;
+
+            ModActionUtils.DoInFrames(delegate
+            {
+                _hasScheduledRespawningRenderers = false;
+                if (_firstPersonMover)
+                {
+                    RespawnRenderers();
+                    RefreshVisibilityOfRenderers();
+                }
+            }, 10);
         }
 
         public void RespawnRenderers()
         {
-            Dictionary<WeaponType, GameObject> keyValues = _weaponToRenderer;
-            if (keyValues == null)
-                return;
-
-            foreach (GameObject obj in keyValues.Values)
-                if (obj)
-                    Destroy(obj);
-
-            keyValues.Clear();
-            RefreshRenderers();
+            DestroyRenderers();
+            InstantiateRenderers();
         }
 
-        public void RefreshRenderers()
+        public void InstantiateRenderers()
         {
-            FirstPersonMover firstPersonMover = _firstPersonMover;
-            if (!firstPersonMover)
-            {
-                DestroySelf();
-                return;
-            }
+            if (PersonalizationEditorManager.IsInEditor()) return;
 
-            if (PersonalizationEditorManager.IsInEditor() || firstPersonMover.IsMindSpaceCharacter)
-                return;
+            FirstPersonMover firstPersonMover = _firstPersonMover;
+            if (!firstPersonMover) return;
 
             List<WeaponType> equippedWeapons = firstPersonMover._equippedWeapons;
-            if (equippedWeapons == null)
-                return;
+            if (equippedWeapons == null) return;
 
             List<WeaponType> droppedWeapons = firstPersonMover._droppedWeapons;
-            if (droppedWeapons == null)
-                return;
+            if (droppedWeapons == null) return;
 
-            WeaponModel[] equippedWeaponModels = firstPersonMover.GetCharacterModel()?.WeaponModels;
-            if (equippedWeaponModels == null)
-                return;
+            WeaponModel[] availableWeaponModels = firstPersonMover.GetCharacterModel()?.WeaponModels;
+            if (availableWeaponModels == null) return;
 
-            foreach (WeaponType weaponType in equippedWeapons)
-                AddRenderer(weaponType, equippedWeapons, equippedWeaponModels);
+            List<WeaponModel> filteredWeapons = new List<WeaponModel>();
+            for (int i = 0; i < availableWeaponModels.Length; i++)
+            {
+                WeaponModel weaponModel = availableWeaponModels[i];
+                WeaponType weaponType = weaponModel.WeaponType;
+                if (SupportedWeapons.Contains(weaponType) && equippedWeapons.Contains(weaponType) && !droppedWeapons.Contains(weaponType))
+                    filteredWeapons.Add(weaponModel);
+            }
+
+            foreach (WeaponModel weapon in filteredWeapons)
+            {
+                InstantiateRendererOfWeapon(weapon, filteredWeapons.Count < 3);
+            }
+        }
+
+        public void InstantiateRendererOfWeapon(WeaponModel weapon, bool willBeLonely)
+        {
+            TransformInfo transformInfo = null;
+            if (willBeLonely)
+            {
+                if (PositionsWhenLonely.ContainsKey(weapon.WeaponType))
+                    transformInfo = PositionsWhenLonely[weapon.WeaponType];
+                else if (WeaponPositionsWhenMultiple.ContainsKey(weapon.WeaponType))
+                    transformInfo = WeaponPositionsWhenMultiple[weapon.WeaponType];
+            }
+            else
+            {
+                if (WeaponPositionsWhenMultiple.ContainsKey(weapon.WeaponType))
+                    transformInfo = WeaponPositionsWhenMultiple[weapon.WeaponType];
+                else if (PositionsWhenLonely.ContainsKey(weapon.WeaponType))
+                    transformInfo = PositionsWhenLonely[weapon.WeaponType];
+            }
+
+            if (transformInfo == null) transformInfo = new TransformInfo(Vector3.zero, Vector3.zero, Vector3.one);
+
+            string overhaulSkinId = _personalizationController.GetWeaponSkinDependingOnOwner(weapon.WeaponType);
+
+            Transform parent = _weaponToHolder[weapon.WeaponType];
+            parent.SetLocalTransform(transformInfo);
+
+            Transform renderer = null;
+            if (overhaulSkinId.IsNullOrEmpty())
+            {
+                PhysicalWeaponModelType weaponModelReplacementPrefab = WeaponManager.Instance.GetWeaponModelReplacementPrefab(weapon.WeaponType, weapon._hasReplacedWithFireVariant, weapon._hasReplacedWithMultiplayerVariant, weapon._hasReplacedWithEMPVariant);
+                Transform prefab = WeaponManager.Instance.GetDefaultWeaponModel(weaponModelReplacementPrefab);
+                OverrideWeaponModel overrideWeaponModel = weapon.GetComponent<OverrideWeaponModel>();
+                if (overrideWeaponModel) prefab = overrideWeaponModel.GetModelForVariant(weaponModelReplacementPrefab.WeaponVariant);
+                if (!prefab) return;
+
+                renderer = Instantiate(prefab, parent, false);
+                weapon.replaceWeaponGlowColor(renderer.gameObject, _firstPersonMover._characterModel.GetFavouriteColors().GetWeaponColor(weapon.WeaponType));
+            }
+            else
+            {
+                PersonalizationItemInfo itemInfo = PersonalizationManager.Instance.itemList.GetItem(overhaulSkinId);
+                if (itemInfo != null && itemInfo.RootObject != null)
+                {
+                    PersonalizationEditorObjectBehaviour rootObject = itemInfo.RootObject.Deserialize(parent, new PersonalizationControllerInfo(_personalizationController, itemInfo));
+                    renderer = rootObject.transform;
+                }
+            }
+
+            if (renderer)
+            {
+                if (_weaponToRenderer.ContainsKey(weapon.WeaponType))
+                    _weaponToRenderer[weapon.WeaponType] = renderer.gameObject;
+                else
+                    _weaponToRenderer.Add(weapon.WeaponType, renderer.gameObject);
+            }
+        }
+
+        public void DestroyRenderers()
+        {
+            Dictionary<WeaponType, GameObject> keyValues = _weaponToRenderer;
+            foreach (GameObject obj in _weaponToRenderer.Values)
+                if (obj) Destroy(obj);
+
+            keyValues.Clear();
+        }
+
+        public void RefreshVisibilityOfRenderers()
+        {
+            if (!_firstPersonMover) return;
+
+            List<WeaponType> droppedWeapons = _firstPersonMover._droppedWeapons;
 
             foreach (KeyValuePair<WeaponType, GameObject> keyValue in _weaponToRenderer)
             {
-                if (!keyValue.Value || keyValue.Key == WeaponType.None)
-                    continue;
+                if (!keyValue.Value) continue;
 
-                bool hasConstructionFinished = (!GameModeManager.IsBattleRoyale() && !GameModeManager.IsMultiplayerDuel()) || firstPersonMover.HasConstructionFinished();
-                bool isEquipped = firstPersonMover.GetEquippedWeaponType() == keyValue.Key;
+                bool hasConstructionFinished = (!GameModeManager.IsBattleRoyale() && !GameModeManager.IsMultiplayerDuel()) || _firstPersonMover.HasConstructionFinished();
+                bool isEquipped = _firstPersonMover.GetEquippedWeaponType() == keyValue.Key;
                 bool shouldDisplay = EnableWeaponBag && hasConstructionFinished && !isEquipped && !droppedWeapons.Contains(keyValue.Key);
                 _weaponToRenderer[keyValue.Key].SetActive(shouldDisplay);
             }
         }
 
-        public void AddRenderer(WeaponType weaponType, List<WeaponType> equippedWeapons, WeaponModel[] equippedWeaponModels)
+        public void OnUpgrade()
         {
-            if (!WeaponPositions.ContainsKey(weaponType) || equippedWeapons == null || equippedWeaponModels == null)
-                return;
+            if (!_hasInitialized || !_firstPersonMover) return;
 
-            WeaponModel weaponModel = null;
-            bool hasModel = false;
-            foreach (WeaponModel model in equippedWeaponModels)
-                if (model && model.WeaponType == weaponType)
-                {
-                    weaponModel = model;
-                    hasModel = true;
-                    break;
-                }
-
-            bool hasWeapon = equippedWeapons.Contains(weaponType);
-
-            if (hasModel && hasWeapon)
-            {
-                if (!_weaponToRenderer.ContainsKey(weaponType))
-                {
-                    Transform modelTransform;
-                    if (weaponModel is ModWeaponModel modWeaponModel)
-                    {
-                        modelTransform = modWeaponModel.GetModel()?.transform;
-                        if (modelTransform)
-                        {
-                            Renderer renderer = modelTransform.GetComponent<Renderer>();
-                            if (renderer)
-                                renderer.enabled = true;
-                        }
-                    }
-                    else if (weaponType == WeaponType.Bow)
-                    {
-                        modelTransform = weaponModel.getExistingWeaponModel()?.parent;
-                    }
-                    else
-                    {
-                        modelTransform = weaponType == WeaponType.Spear ? (weaponModel.PartsToDrop.IsNullOrEmpty() ? null : weaponModel.PartsToDrop[0]) : weaponModel.getExistingWeaponModel();
-                    }
-
-                    if (!modelTransform)
-                        return;
-
-                    GameObject newRenderer = InstantiateNewRenderer(modelTransform, weaponType);
-                    if (newRenderer)
-                    {
-                        _weaponToRenderer.Add(weaponType, newRenderer);
-                    }
-                }
-            }
+            ScheduleRespawningRenderers();
         }
 
-        public GameObject InstantiateNewRenderer(Transform transform, WeaponType weaponType)
+        private void onCustomize()
         {
-            if (!WeaponPositions.TryGetValue(weaponType, out TransformInfo transformInfo))
-                return null;
+            if (!_hasInitialized || !_firstPersonMover) return;
 
-            Transform renderer = Instantiate(transform, Bag, false);
-            renderer.SetLocalTransform(transformInfo);
-            renderer.RandomizeLocalTransform(0.950f, 1.050f, false, true, false);
-            return renderer.gameObject;
+            ScheduleRespawningRenderers();
+        }
+
+        private void onPlayedInfoUpdate(string playfabId)
+        {
+            if (!_hasInitialized || !_firstPersonMover || playfabId != _firstPersonMover.GetPlayFabID()) return;
+
+            ScheduleRespawningRenderers();
         }
     }
 }

@@ -27,7 +27,7 @@ namespace OverhaulMod.Patches
             if (isRandomSelectionInput)
                 return true;
 
-            if (UpgradeModesManager.Mode == UpgradeModes.Upgrade)
+            if (UpgradeModesManager.Instance.GetMode() == UpgradeModes.Upgrade)
                 return true;
 
             __result = UpgradeManager.Instance.RevertUpgrade(__instance.GetDescription());
@@ -42,7 +42,7 @@ namespace OverhaulMod.Patches
             if (!canvasGroup)
                 canvasGroup = __instance.gameObject.AddComponent<CanvasGroup>();
 
-            bool isUpgradeMode = UpgradeModesManager.Mode == UpgradeModes.Upgrade;
+            bool isUpgradeMode = UpgradeModesManager.Instance.GetMode() == UpgradeModes.Upgrade;
             canvasGroup.alpha = !isUpgradeMode && !__instance.GetDescription().CanBeReverted() ? 0.3f : 1f;
 
             RectTransform content = __instance.transform.FindChildRecursive("Content") as RectTransform;

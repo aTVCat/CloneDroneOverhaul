@@ -240,7 +240,7 @@ namespace OverhaulMod.Utils
                 return false;
 
             Dictionary<UpgradeType, int> dictionary = GameDataManager.Instance.GetPlayerUpgradeDictionary();
-            if (UpgradeModesManager.IsUnrevertableUpgrade(upgradeDescription.UpgradeType, upgradeDescription.Level) || dictionary.IsNullOrEmpty() || upgradeDescription.IsRepeatable || !dictionary.ContainsKey(upgradeDescription.UpgradeType))
+            if (!UpgradeModesManager.Instance.CanRevertUpgrade(upgradeDescription.UpgradeType, upgradeDescription.Level) || dictionary.IsNullOrEmpty() || upgradeDescription.IsRepeatable || !dictionary.ContainsKey(upgradeDescription.UpgradeType))
                 return false;
 
             int playerLevel = dictionary[upgradeDescription.UpgradeType];

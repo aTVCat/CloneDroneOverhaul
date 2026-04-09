@@ -320,6 +320,12 @@ namespace OverhaulMod
             {
                 personalizationController.RespawnWeaponSkinsIfRequired();
             }
+
+            RobotWeaponBag robotWeaponBag = owner.GetComponent<RobotWeaponBag>();
+            if (robotWeaponBag)
+            {
+                robotWeaponBag.OnUpgrade();
+            }
         }
 
         public override void OnLanguageChanged(string newLanguageID, Dictionary<string, string> localizationDictionary)

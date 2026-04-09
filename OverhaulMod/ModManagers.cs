@@ -39,7 +39,14 @@ namespace OverhaulMod
             ModDebug.Log($"Triggering OnGameLoaded event");
             for (int i = 0; i < _gameLoadListeners.Count; i++)
             {
-                _gameLoadListeners[i].OnGameLoaded();
+                try
+                {
+                    _gameLoadListeners[i].OnGameLoaded();
+                }
+                catch(System.Exception exc)
+                {
+                    Debug.LogException(exc);
+                }
             }
         }
 

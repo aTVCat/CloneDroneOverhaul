@@ -8,49 +8,63 @@ namespace OverhaulMod.Engine
 {
     public class UpgradeModesManager : Singleton<UpgradeModesManager>, IGameLoadListener
     {
-        public static readonly Tuple<UpgradeType, int>[] UnrevertableUpgrades = new Tuple<UpgradeType, int>[]
+        public readonly Tuple<UpgradeType, int>[] WhitelistedUpgrades = new Tuple<UpgradeType, int>[] // Upgrade type - start level 
         {
-            new Tuple<UpgradeType, int>(UpgradeType.SwordUnlock, 1),
-            new Tuple<UpgradeType, int>(UpgradeType.Hammer, 1),
-            new Tuple<UpgradeType, int>(UpgradeType.SpearUnlock, 1),
-            new Tuple<UpgradeType, int>(UpgradeType.BowUnlock, 1),
-            new Tuple<UpgradeType, int>(UpgradeType.Armor, 0),
-            new Tuple<UpgradeType, int>(ModUpgradesManager.SCYTHE_UNLOCK_UPGRADE, 1),
+            // sword
+            new Tuple<UpgradeType, int>(UpgradeType.FireSword, 1),
+            new Tuple<UpgradeType, int>(UpgradeType.BlockArrows, 1),
+
+            // bow
+            new Tuple<UpgradeType, int>(UpgradeType.ArrowWidth, 1),
+            new Tuple<UpgradeType, int>(UpgradeType.FireArrow, 1),
+            new Tuple<UpgradeType, int>(UpgradeType.AimTime, 1),
+
+            // hammer
+            new Tuple<UpgradeType, int>(UpgradeType.Hammer, 2),
+            new Tuple<UpgradeType, int>(UpgradeType.FireHammer, 1),
+
+            // spear
+            new Tuple<UpgradeType, int>(UpgradeType.FireSpear, 1),
+            new Tuple<UpgradeType, int>(UpgradeType.ShieldSize, 1),
+            new Tuple<UpgradeType, int>(UpgradeType.ShieldBash, 1),
+
+            // scythe
+            new Tuple<UpgradeType, int>(ModUpgradesManager.SCYTHE_FIRE_UPGRADE, 1),
+            new Tuple<UpgradeType, int>(ModUpgradesManager.SCYTHE_BLADE_UPGRADE, 1),
+
+            // kick
+            new Tuple<UpgradeType, int>(UpgradeType.KickPower, 1),
+            new Tuple<UpgradeType, int>(UpgradeType.GetUp, 1),
+
+            // energy
+            new Tuple<UpgradeType, int>(UpgradeType.EnergyCapacity, 1),
+            new Tuple<UpgradeType, int>(UpgradeType.EnergyRecharge, 1),
+
+            // double jump
+            new Tuple<UpgradeType, int>(ModUpgradesManager.DOUBLE_JUMP_UPGRADE, 1),
+
+            // fire resistance
+            new Tuple<UpgradeType, int>(UpgradeType.FireResistance, 1),
+
+            // fire resistance
+            new Tuple<UpgradeType, int>(UpgradeType.Jetpack, 1),
         };
 
-        public static bool IsUnrevertableUpgrade(UpgradeType type, int level)
-        {
-            foreach (Tuple<UpgradeType, int> tuple in UnrevertableUpgrades)
-            {
-                if (tuple.Item1 == type && (level <= tuple.Item2))
-                    return true;
-            }
-            return false;
-        }
-
-        public static UpgradeModes Mode
-        {
-            get;
-            private set;
-        }
+        private UpgradeModes _mode;
 
         private UpgradeModeButtonController _buttonController;
 
         public void OnGameLoaded()
         {
-            PlaceButton();
+            instantiateButton();
         }
 
-        public void PlaceButton()
+        private void instantiateButton()
         {
             if (!_buttonController)
             {
-                RectTransform upgradeUITransform = ModCache.gameUIRoot.UpgradeUI.transform as RectTransform;
-                RectTransform centerHolderTransform = TransformUtils.FindChildRecursive(upgradeUITransform, "CenterHolder") as RectTransform;
-                RectTransform iconContainerTransform = TransformUtils.FindChildRecursive(upgradeUITransform, "IconContainer") as RectTransform;
-
-                RectTransform spawnedButton = Instantiate(ModResources.Prefab(AssetBundleConstants.UI, "RevertUpgradesButtonPrefab"), centerHolderTransform).GetComponent<RectTransform>();
-                spawnedButton.anchoredPosition = new Vector2(250f, 133.5f);
+                RectTransform spawnedButton = Instantiate(ModResources.Prefab(AssetBundleConstants.UI, "RevertUpgradesButtonPrefab"), ModCache.gameUIRoot.UpgradeUI.ExitButton.transform).GetComponent<RectTransform>();
+                spawnedButton.anchoredPosition = new Vector2(-35f, -4.15f);
                 spawnedButton.sizeDelta = Vector2.one * 50f;
                 spawnedButton.localEulerAngles = Vector3.zero;
                 spawnedButton.localScale = Vector3.one;
@@ -64,14 +78,24 @@ namespace OverhaulMod.Engine
             SetMode(UpgradeModes.Upgrade);
         }
 
+        public bool CanRevertUpgrade(UpgradeType type, int level)
+        {
+            foreach (Tuple<UpgradeType, int> tuple in WhitelistedUpgrades)
+            {
+                if (tuple.Item1 == type && tuple.Item2 <= level)
+                    return true;
+            }
+            return false;
+        }
+
         public void ToggleMode()
         {
-            SetMode(Mode == UpgradeModes.Upgrade ? UpgradeModes.RevertUpgrade : UpgradeModes.Upgrade);
+            SetMode(_mode == UpgradeModes.Upgrade ? UpgradeModes.RevertUpgrade : UpgradeModes.Upgrade);
         }
 
         public void SetMode(UpgradeModes upgradeMode)
         {
-            Mode = upgradeMode;
+            _mode = upgradeMode;
 
             if (ModCache.gameUIRoot && ModCache.gameUIRoot.UpgradeUI && ModCache.gameUIRoot.UpgradeUI.gameObject.activeSelf)
                 ModCache.gameUIRoot.UpgradeUI.PopulateIcons();
@@ -89,5 +113,7 @@ namespace OverhaulMod.Engine
             controller.SetText(true);
             controller.SetSprite(ModResources.Sprite(AssetBundleConstants.UI, "GetUpgradesButton"));
         }
+
+        public UpgradeModes GetMode() => _mode;
     }
 }
