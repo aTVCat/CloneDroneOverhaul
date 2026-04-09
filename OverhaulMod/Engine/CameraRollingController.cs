@@ -16,7 +16,7 @@ namespace OverhaulMod.Engine
         [ModSetting(ModSettingsConstants.ENABLE_CAMERA_ROLLING, true)]
         public static bool EnableRolling;
 
-        public float AdditionalXOffset, AdditionalZOffset;
+        public float AdditionalVerticalOffset;
 
         private Camera _camera;
         private Transform _playerCameraTransform;
@@ -26,7 +26,7 @@ namespace OverhaulMod.Engine
         private Vector3 _rotation;
         private float _cursorMovementVelocityX, _cursorMovementVelocityY;
 
-        public bool enableControl
+        public bool EnableControl
         {
             get
             {
@@ -35,7 +35,7 @@ namespace OverhaulMod.Engine
             }
         }
 
-        public bool forceInitialRotation
+        public bool ForceInitialRotation
         {
             get
             {
@@ -57,15 +57,15 @@ namespace OverhaulMod.Engine
 
         private void LateUpdate()
         {
-            if (!_playerCameraTransform)
+            if (!_playerCameraTransform || !EnableControl)
                 return;
-
-            if (!enableControl)
-                return;
-
-            bool forceZero = forceInitialRotation;
 
             FirstPersonMover firstPersonMover = _owner;
+
+            bool forceZero = ForceInitialRotation;
+            bool isUsingBow = firstPersonMover.GetEquippedWeaponType() == WeaponType.Bow;
+            float viewBobbingGlobalMultiplier = isUsingBow ? 0.3f : 1f;
+
             float x = 0f;
             float z = 0f;
             if (!forceZero)
@@ -81,7 +81,7 @@ namespace OverhaulMod.Engine
 
                 bool moveForward = firstPersonMover._isMovingForward;
                 bool moveBackward = firstPersonMover._isMovingBack;
-                if (getBool(moveForward, moveBackward))
+                if (getBool(moveForward, moveBackward) && !isUsingBow) // make quick aiming with bow easier
                     x = moveForward ? HORIZONTAL_TILT : -HORIZONTAL_TILT;
                 if (firstPersonMover.IsJumping() || firstPersonMover.IsFreeFallingWithNoGroundInSight())
                     x += 1f;
@@ -92,8 +92,8 @@ namespace OverhaulMod.Engine
                 _camera.nearClipPlane = CameraManager.EnableFirstPersonMode ? 0.1f : 0.3f;
             }
 
-            UpdateViewBobbing(forceZero);
-            UpdateRotation(firstPersonMover, forceZero, x + AdditionalXOffset, 0f, z + AdditionalZOffset);
+            UpdateViewBobbing(forceZero, viewBobbingGlobalMultiplier);
+            UpdateRotation(firstPersonMover, forceZero, x, 0f, z + AdditionalVerticalOffset);
         }
 
         public void UpdateRotation(FirstPersonMover firstPersonMover, bool forceZero, float targetX, float targetY, float targetZ)
@@ -133,37 +133,33 @@ namespace OverhaulMod.Engine
             _playerCameraTransform.localEulerAngles = newTargetRotation;
         }
 
-        public void UpdateViewBobbing(bool forceZero)
+        public void UpdateViewBobbing(bool forceZero, float globalMultiplier)
         {
             if (!EnableBobbing || forceZero)
             {
-                AdditionalXOffset = 0f;
-                AdditionalZOffset = 0f;
+                AdditionalVerticalOffset = 0f;
                 return;
             }
 
             FirstPersonMover owner = _owner;
             if (!owner)
             {
-                AdditionalXOffset = 0f;
-                AdditionalZOffset = 0f;
+                AdditionalVerticalOffset = 0f;
                 return;
             }
 
             bool firstPerson = CameraManager.EnableFirstPersonMode;
             float time = Time.time;
 
-            float multiplier = owner._isMovingForward || owner._isMovingRight || owner._isMovingLeft || owner._isMovingBack ? (firstPerson ? 8f : 1.75f) : (firstPerson ? 4f : 0.5f);
+            float multiplier = owner._isMovingForward || owner._isMovingRight || owner._isMovingLeft || owner._isMovingBack ? (firstPerson ? 8f : 1.5f) : (firstPerson ? 1f : 0.5f);
             if (firstPerson)
             {
-                float sin = Mathf.Sin(time * multiplier);
-                AdditionalXOffset = sin * 0.65f;
-                AdditionalZOffset = sin * 0.3f;
+                float sin = Mathf.Sin(time * multiplier * globalMultiplier);
+                AdditionalVerticalOffset = sin * 0.3f;
             }
             else
             {
-                AdditionalXOffset = 0f;
-                AdditionalZOffset = 0f;
+                AdditionalVerticalOffset = 0f;
             }
         }
 

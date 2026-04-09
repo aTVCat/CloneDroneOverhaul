@@ -238,7 +238,7 @@ namespace OverhaulMod.Visuals
 
         public void RefreshCameraPostEffects()
         {
-            AddPostEffectsToCamera(CameraManager.Instance.mainCamera);
+            AddPostEffectsToCamera(CameraManager.Instance.MainCamera);
         }
 
         public void AddPostEffectsToCamera(Camera camera)

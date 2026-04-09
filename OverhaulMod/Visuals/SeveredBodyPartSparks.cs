@@ -39,7 +39,7 @@ namespace OverhaulMod.Visuals
             if (!EnableGarbageParticles)
                 return;
 
-            Camera camera = _cameraManager?.mainCamera;
+            Camera camera = _cameraManager?.MainCamera;
             if (!camera)
                 return;
 

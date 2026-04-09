@@ -17,9 +17,11 @@ namespace OverhaulMod.Engine
 
         private Transform _targetTransform;
 
-        private Vector3 _offset;
+        private float _eyesLevel;
 
         private float _lerp;
+
+        private float _spearLerp;
 
         public float ForwardVectorMultiplier = 0.25f;
 
@@ -106,16 +108,21 @@ namespace OverhaulMod.Engine
         private void LateUpdate()
         {
             int frameCount = Time.frameCount;
-            bool refresh = frameCount % 5 == 0;
+            bool shouldRefreshVsibility = frameCount % 5 == 0;
 
             FirstPersonMover firstPersonMover = _owner;
             if (IsMindTransferInProgress() || !firstPersonMover || !firstPersonMover.IsAlive())
                 return;
 
-            _lerp = Mathf.Clamp01(_lerp + ((CameraManager.EnableFirstPersonMode && !_cameraManager.enableThirdPerson && !MultiplayerSpectateManager.Instance.IsInMultiplayerSpectatorMode() && (!GameModeManager.UsesMultiplayerSpawnPoints() || firstPersonMover.HasConstructionFinished()) && !firstPersonMover._isGrabbedForUpgrade ? -Time.unscaledDeltaTime : Time.unscaledDeltaTime) * 3f));
+            float dt = Time.unscaledDeltaTime;
+            bool shouldMoveCameraToHead = CameraManager.EnableFirstPersonMode && !_cameraManager.EnableThirdPerson && !firstPersonMover._isGrabbedForUpgrade && !MultiplayerSpectateManager.Instance.IsInMultiplayerSpectatorMode() && (!GameModeManager.UsesMultiplayerSpawnPoints() || firstPersonMover.HasConstructionFinished());
 
-            if (refresh)
-                RefreshHeadVisibility(_lerp);
+            _lerp = Mathf.Clamp01(_lerp + (shouldMoveCameraToHead ? -dt : dt) * 3f);
+            _spearLerp = Mathf.Clamp01(_spearLerp + (shouldMoveCameraToHead && firstPersonMover.GetEquippedWeaponType() == WeaponType.Spear ? dt : -dt));
+
+            bool shouldCalculateOffset = _lerp < 1f;
+
+            if (shouldRefreshVsibility) RefreshHeadVisibility(_lerp);
 
             Animator animator = _cameraAnimator;
             if (!_targetTransform || !animator || !animator.enabled)
@@ -132,17 +139,23 @@ namespace OverhaulMod.Engine
                 playerCameraMover.LateUpdate();
             }
 
-            Vector3 forwardVector = _targetTransform.forward * (firstPersonMover._isOnFloorFromKick ? 0f : ForwardVectorMultiplier);
-            Vector3 upVector = _targetTransform.forward * (firstPersonMover._isOnFloorFromKick ? 0.35f : 0f);
+            Vector3 forwardVector = Vector3.zero;
+            Vector3 upVector = Vector3.zero;
+            if (shouldCalculateOffset)
+            {
+                forwardVector = _targetTransform.forward * (firstPersonMover._isOnFloorFromKick ? 0f : ForwardVectorMultiplier);
+                upVector = _targetTransform.up * _eyesLevel;
+            }
 
             Transform transform = base.transform;
             Vector3 difference = transform.position;
-            transform.position = Vector3.Lerp(_targetTransform.position + _offset + forwardVector + upVector, difference, NumberUtils.EaseInOutCubic(0f, 1f, _lerp)) + ShakePositionOffset;
+            transform.position = Vector3.Lerp(_targetTransform.position + forwardVector + upVector, difference, NumberUtils.EaseInOutCubic(0f, 1f, _lerp)) + ShakePositionOffset;
 
-            if (_lerp <= 0.99f)
+            if (shouldCalculateOffset)
             {
                 Vector3 localPosition = transform.localPosition;
                 localPosition.x = ShakePositionOffset.x;
+                localPosition.x += NumberUtils.EaseInOutQuad(0f, 1f, _spearLerp) * -0.35f;
                 transform.localPosition = localPosition;
             }
         }
@@ -185,7 +198,7 @@ namespace OverhaulMod.Engine
 
             if (!_targetTransform || (_owner && _owner.IsMindSpaceCharacter))
             {
-                _offset = Vector3.up * 0.575f;
+                _eyesLevel = 0.575f;
                 return;
             }
 
@@ -204,7 +217,7 @@ namespace OverhaulMod.Engine
                 index++;
             }
 
-            _offset = new Vector3(0f, bounds.center.y + (bounds.extents.y * 0.2f), 0f);
+            _eyesLevel = bounds.center.y + (bounds.extents.y * 0.2f);
         }
 
         public void RefreshHeadVisibility(float lerpValue)

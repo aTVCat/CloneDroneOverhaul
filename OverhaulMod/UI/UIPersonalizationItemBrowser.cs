@@ -626,8 +626,8 @@ namespace OverhaulMod.UI
                 refreshCameraRect();
                 if (!firstPersonMover.IsRidingOtherCharacter()) cameraManager.ResetCameraHolderPosition(firstPersonMover);
                 cameraManager.ResetCameraHolderEulerAngles(firstPersonMover);
-                cameraManager.enableForceFOVOffset = false;
-                cameraManager.enableThirdPerson = false;
+                cameraManager.EnableForceFOVOffset = false;
+                cameraManager.EnableThirdPerson = false;
                 _cameraHolderTransform = null;
                 return;
             }
@@ -635,9 +635,9 @@ namespace OverhaulMod.UI
             refreshCameraRect();
             if (!firstPersonMover.IsRidingOtherCharacter()) cameraManager.SetCameraHolderPosition(new Vector3(0f, 0f, 0.75f), firstPersonMover);
             cameraManager.SetCameraHolderEulerAngles(Vector3.up * 220f, firstPersonMover);
-            cameraManager.enableForceFOVOffset = true;
-            cameraManager.enableThirdPerson = true;
-            cameraManager.forceFOVOffset = -5f;
+            cameraManager.EnableForceFOVOffset = true;
+            cameraManager.EnableThirdPerson = true;
+            cameraManager.ForceFOVOffset = -5f;
 
             FirstPersonMover robot = CharacterTracker.Instance.GetPlayerRobot();
             if (robot)

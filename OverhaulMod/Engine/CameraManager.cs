@@ -16,31 +16,31 @@ namespace OverhaulMod.Engine
         [ModSetting(ModSettingsConstants.CAMERA_MODE_TOGGLE_KEYBIND, KeyCode.Y)]
         public static KeyCode CameraModeToggleKeyBind;
 
-        public bool isCameraControlledByCutscene
+        public bool IsCameraControlledByCutscene
         {
             get;
             private set;
         }
 
-        public bool enableThirdPerson
+        public bool EnableThirdPerson
         {
             get;
             set;
         }
 
-        public bool enableForceFOVOffset
+        public bool EnableForceFOVOffset
         {
             get;
             set;
         }
 
-        public float forceFOVOffset
+        public float ForceFOVOffset
         {
             get;
             set;
         }
 
-        public Camera mainCamera
+        public Camera MainCamera
         {
             get;
             private set;
@@ -60,13 +60,13 @@ namespace OverhaulMod.Engine
 
         private void onCinematicCameraEnabled()
         {
-            isCameraControlledByCutscene = true;
+            IsCameraControlledByCutscene = true;
             PostEffectsManager.Instance.RefreshCameraPostEffects();
         }
 
         private void onCinematicCameraDisabled()
         {
-            isCameraControlledByCutscene = false;
+            IsCameraControlledByCutscene = false;
             PostEffectsManager.Instance.RefreshCameraPostEffects();
         }
 
@@ -77,7 +77,7 @@ namespace OverhaulMod.Engine
 
         public void SetCameraRect(Rect rect)
         {
-            Camera camera = mainCamera;
+            Camera camera = MainCamera;
             if (!camera)
                 return;
 
@@ -164,7 +164,7 @@ namespace OverhaulMod.Engine
 
         public void SetCameraReducedWidth(float value, bool alignToRight)
         {
-            Camera camera = mainCamera;
+            Camera camera = MainCamera;
             if (!camera)
                 return;
 
@@ -212,11 +212,11 @@ namespace OverhaulMod.Engine
 
         private void Update()
         {
-            Camera oldCamera = mainCamera;
+            Camera oldCamera = MainCamera;
             Camera camera = Camera.main;
             if (camera != oldCamera)
             {
-                mainCamera = camera;
+                MainCamera = camera;
                 ModCore.TriggerOnCameraSwitchedEvent(oldCamera, camera);
             }
 

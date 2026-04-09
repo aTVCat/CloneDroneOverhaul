@@ -49,7 +49,7 @@ namespace OverhaulMod.UI
                 return;
             _timeLeftToSwitchTexture = 0.034f;
 
-            bool hasCamera = CameraManager.Instance.mainCamera;
+            bool hasCamera = CameraManager.Instance.MainCamera;
             bool enableVignette = isNotInLevelEditor && hasCamera && (overrideSettings ? AdvancedPhotoModeManager.Settings.EnableVignette : PostEffectsManager.EnableVignette);
             bool enableDithering = isNotInLevelEditor && hasCamera && (overrideSettings ? AdvancedPhotoModeManager.Settings.EnableDithering : PostEffectsManager.EnableDithering) && ditheringTextures != null;
 

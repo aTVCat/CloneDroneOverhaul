@@ -237,7 +237,7 @@ namespace OverhaulMod.Visuals
 
                 depthOfField.nearBlur = !fpm;
                 depthOfField.focalLength = fpm ? 1f : 9f;
-                depthOfField.enabled = !CameraManager.Instance.isCameraControlledByCutscene && enable;
+                depthOfField.enabled = !CameraManager.Instance.IsCameraControlledByCutscene && enable;
             }
         }
 
