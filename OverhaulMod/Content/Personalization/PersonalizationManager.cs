@@ -94,6 +94,8 @@ namespace OverhaulMod.Content.Personalization
 
         private UnityWebRequest _webRequest;
 
+        private bool _isSelectingItems;
+
         public override void Awake()
         {
             base.Awake();
@@ -118,6 +120,8 @@ namespace OverhaulMod.Content.Personalization
 
         public void OnGameLoaded()
         {
+            _isSelectingItems = false;
+
             PersonalizationUserInfo userInfo = this.UserInfo;
             if (userInfo != null)
             {
@@ -125,6 +129,13 @@ namespace OverhaulMod.Content.Personalization
                 SaveUserInfo();
             }
         }
+
+        public void SetIsSelectingItems(bool value)
+        {
+            _isSelectingItems = value;
+        }
+
+        public bool IsSelectingItems() => _isSelectingItems;
 
         public void DownloadCustomizationFile(Action<string> callback)
         {
@@ -377,6 +388,19 @@ namespace OverhaulMod.Content.Personalization
             }
         }
 
+        public void RefreshCustomizationOnAllRobots(bool onlyPlayers, bool onlyEnemies)
+        {
+            foreach (Character character in CharacterTracker.Instance.GetAllLivingCharacters())
+            {
+                if (!character || !character.IsAttachedAndAlive()) continue;
+
+                bool isPlayer = character.IsPlayer();
+                if ((onlyPlayers && !isPlayer) || (onlyEnemies && isPlayer)) continue;
+
+                CharacterUpdateScheduler.Instance.UpdateCharacter(character, true, true);
+            }
+        }
+
         public static bool IsWeaponCustomizationSupported(WeaponType weaponType)
         {
             return weaponType != WeaponType.None
@@ -417,16 +441,7 @@ namespace OverhaulMod.Content.Personalization
                     allPlayers.Add(firstPersonMover);
 
                 SetIsItemEquipped(item, true);
-                foreach (FirstPersonMover clone in allPlayers)
-                {
-                    if (!clone || !clone.IsAttachedAndAlive()) continue;
-
-                    PersonalizationController personalizationController = clone.GetComponent<PersonalizationController>();
-                    if (personalizationController)
-                    {
-                        personalizationController.EquipItem(item);
-                    }
-                }
+                RefreshCustomizationOnAllRobots(false, false);
             }
             else if (item.Category == PersonalizationCategory.Accessories)
             {

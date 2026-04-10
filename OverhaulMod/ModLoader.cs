@@ -142,6 +142,7 @@ namespace OverhaulMod
             modManagers.AddSingleton<AdvancedPhotoModeManager>(miscManagers);
             modManagers.AddSingleton<UseKeyTriggerManager>(miscManagers);
             modManagers.AddSingleton<RichPresenceManager>(miscManagers);
+            modManagers.AddSingleton<CharacterUpdateScheduler>(miscManagers);
         }
 
         private static void loadAssemblies()

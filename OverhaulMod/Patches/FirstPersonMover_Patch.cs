@@ -153,7 +153,7 @@ namespace OverhaulMod.Patches
         private static void SetEquippedWeaponType_Postfix(FirstPersonMover __instance)
         {
             PersonalizationController personalizationController = __instance.GetComponent<PersonalizationController>();
-            if (personalizationController) personalizationController.RefreshWeaponSkinsVisibility();
+            if (personalizationController) personalizationController.RefreshBowSkinVisibility();
         }
     }
 }

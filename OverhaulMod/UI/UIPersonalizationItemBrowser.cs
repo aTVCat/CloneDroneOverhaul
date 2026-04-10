@@ -183,6 +183,8 @@ namespace OverhaulMod.UI
 
             _hasEverShown = true;
             Populate();
+
+            PersonalizationManager.Instance.SetIsSelectingItems(true);
         }
 
         public override void Hide()
@@ -196,6 +198,7 @@ namespace OverhaulMod.UI
             ModSettingsDataManager.Instance.Save();
 
             PersonalizationMultiplayerManager.Instance.SendPlayerCustomizationDataEvent(false);
+            PersonalizationManager.Instance.SetIsSelectingItems(false);
         }
 
         public override void Update()
@@ -415,8 +418,8 @@ namespace OverhaulMod.UI
                 {
                     defaultSkinButton.interactable = false;
                     PersonalizationUserInfo.SetWeaponSkin(weaponType, null);
-                    PersonalizationManager.Instance.DestroyWeaponSkinOnMainPlayer(weaponType);
-                    GlobalEventManager.Instance.Dispatch(PersonalizationManager.ITEM_EQUIPPED_OR_UNEQUIPPED_EVENT);
+
+                    PersonalizationManager.Instance.RefreshCustomizationOnAllRobots(false, false);
                 });
                 defaultSkinButton.interactable = !PersonalizationUserInfo.GetWeaponSkin(weaponType).IsNullOrEmpty();
                 _defaultSkinButton = defaultSkinButton;
@@ -685,6 +688,8 @@ namespace OverhaulMod.UI
                 return;
 
             ModSettingsManager.SetBoolValue(ModSettingsConstants.ALLOW_ENEMIES_USE_WEAPON_SKINS, value, true);
+
+            PersonalizationManager.Instance.RefreshCustomizationOnAllRobots(false, true);
         }
     }
 }

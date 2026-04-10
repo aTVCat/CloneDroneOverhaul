@@ -845,7 +845,7 @@ namespace OverhaulMod.UI
                 _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_WEAPON_BAG), delegate (bool value)
                 {
                     ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_WEAPON_BAG, value, true);
-                }, "Show equipped weapons");
+                }, "Weapons on back");
             }
             _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_ARROW_REWORK), delegate (bool value)
             {

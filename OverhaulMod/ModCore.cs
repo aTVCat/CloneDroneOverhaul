@@ -318,7 +318,7 @@ namespace OverhaulMod
             PersonalizationController personalizationController = owner.GetComponent<PersonalizationController>();
             if (personalizationController)
             {
-                personalizationController.RespawnWeaponSkinsIfRequired();
+                personalizationController.OnUpgrade();
             }
 
             RobotWeaponBag robotWeaponBag = owner.GetComponent<RobotWeaponBag>();
@@ -384,8 +384,12 @@ namespace OverhaulMod
 
             if (ModFeatures.IsEnabled(ModFeatures.FeatureType.WeaponBag))
             {
-                if (!firstPersonMover.IsMindSpaceCharacter && ((!GameModeManager.IsMultiplayerDuel() && !GameModeManager.IsBattleRoyale()) || firstPersonMover.IsMainPlayer()))
+                bool isAllowedOnEnemies = GameModeManager.IsSinglePlayer() || GameModeManager.IsCoop();
+
+                if (!firstPersonMover.IsMindSpaceCharacter && (isAllowedOnEnemies || firstPersonMover.IsMainPlayer()))
+                {
                     _ = firstPersonMover.gameObject.AddComponent<RobotWeaponBag>();
+                }
             }
 
             if (GameModeManager.IsCoop())

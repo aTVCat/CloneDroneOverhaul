@@ -222,6 +222,9 @@
     <Compile Include="Engine\AdditionalSkyboxesManager.cs" />
     <Compile Include="Engine\AdditionalSkyboxInfo.cs" />
     <Compile Include="Engine\AutoBuildListInfo.cs" />
+    <Compile Include="Engine\CharacterUpdateInfo.cs" />
+    <Compile Include="Engine\CharacterUpdateImportance.cs" />
+    <Compile Include="Engine\CharacterUpdateScheduler.cs" />
     <Compile Include="Engine\ChunkUpdateDelay.cs" />
     <Compile Include="Engine\MeshSerializer.cs" />
     <Compile Include="Engine\ModAudioLibrary.cs" />

@@ -13,9 +13,7 @@ namespace OverhaulMod.Visuals
     {
         public const bool DEBUG_CENTERS = false;
 
-        public const float BAG_SCALE = 0.75f;
-
-        public const float WEAPON_ROTATION_RANDOMNESS = 0.500f;
+        public const float BAG_SCALE = 0.6f;
 
         [ModSetting(ModSettingsConstants.ENABLE_WEAPON_BAG, true)]
         public static bool EnableWeaponBag;
@@ -113,11 +111,12 @@ namespace OverhaulMod.Visuals
             while (_personalizationController && !_personalizationController.HasInitialized()) yield return null;
 
             _hasInitialized = _personalizationController;
-            RespawnRenderers();
-            RefreshVisibilityOfRenderers();
+            CharacterUpdateScheduler.Instance.UpdateCharacter(_firstPersonMover, false, true);
 
             yield break;
         }
+
+        public bool HasInitialized() => _hasInitialized;
 
         public void InstantiateBag()
         {
@@ -173,19 +172,13 @@ namespace OverhaulMod.Visuals
             if (_hasScheduledRespawningRenderers) return;
             _hasScheduledRespawningRenderers = true;
 
-            ModActionUtils.DoInFrames(delegate
-            {
-                _hasScheduledRespawningRenderers = false;
-                if (_firstPersonMover)
-                {
-                    RespawnRenderers();
-                    RefreshVisibilityOfRenderers();
-                }
-            }, 10);
+            CharacterUpdateScheduler.Instance.UpdateCharacter(_firstPersonMover, false, true);
         }
 
         public void RespawnRenderers()
         {
+            _hasScheduledRespawningRenderers = false;
+
             DestroyRenderers();
             InstantiateRenderers();
         }
@@ -214,6 +207,8 @@ namespace OverhaulMod.Visuals
                 if (SupportedWeapons.Contains(weaponType) && equippedWeapons.Contains(weaponType) && !droppedWeapons.Contains(weaponType))
                     filteredWeapons.Add(weaponModel);
             }
+
+            if (filteredWeapons.Count <= 1) return; // if we have only one weapon available, it'll be never shown
 
             foreach (WeaponModel weapon in filteredWeapons)
             {
