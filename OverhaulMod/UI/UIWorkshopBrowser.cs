@@ -839,7 +839,7 @@ namespace OverhaulMod.UI
 
         public void OnLegacyUIButtonClicked()
         {
-            TitleScreenUI titleScreenUI = ModCache.titleScreenUI;
+            TitleScreenUI titleScreenUI = ModCache.TitleScreenUI;
             if (titleScreenUI)
             {
                 Hide();

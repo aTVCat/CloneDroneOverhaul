@@ -23,7 +23,7 @@ namespace OverhaulMod.Patches
             {
                 bool leftSide = TitleScreenCustomizationManager.PanelPosition == TitleScreenPanelPosition.LeftSide;
 
-                RectTransform rootButtonsContainer = ModCache.titleScreenUI.RootButtonsContainer;
+                RectTransform rootButtonsContainer = ModCache.TitleScreenUI.RootButtonsContainer;
                 float num = rootButtonsContainer.anchoredPosition.x + rootButtonsContainer.rect.width / 2f;
                 float width = leftSide ? (2f * num / UIManager.Instance.UIRoot.rect.width) : 1f;
                 __instance.TitleScreenLogoCamera.rect = new Rect(0f, __instance.TitleScreenLogoCamera.rect.y, width, __instance.TitleScreenLogoCamera.rect.height);

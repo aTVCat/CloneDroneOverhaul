@@ -19,7 +19,7 @@ namespace OverhaulMod.Content
         {
             get
             {
-                if(_displayVersion == null || !ModParseUtils.CompareVersionsWithDiffFormats(ModVersion, _displayVersion))
+                if (_displayVersion == null || !ModParseUtils.CompareVersionsWithDiffFormats(ModVersion, _displayVersion))
                 {
                     _displayVersion = ModParseUtils.ConvertOldVersionFormat(ModVersion);
                 }

@@ -262,11 +262,11 @@ namespace OverhaulMod.UI
         {
             if (initial)
             {
-                ModCache.gameUIRoot.UpgradeUI.transform.SetSiblingIndex(_upgradeUISiblingIndex);
+                ModCache.UIRoot.UpgradeUI.transform.SetSiblingIndex(_upgradeUISiblingIndex);
             }
             else
             {
-                Transform transform = ModCache.gameUIRoot.UpgradeUI.transform;
+                Transform transform = ModCache.UIRoot.UpgradeUI.transform;
                 _upgradeUISiblingIndex = transform.GetSiblingIndex();
                 transform.SetSiblingIndex(ModUIManager.Instance.GetSiblingIndex(ModUIManager.UILayer.AfterTitleScreen) + 3);
             }
@@ -281,7 +281,7 @@ namespace OverhaulMod.UI
             autoBuildManager.ResetUpgrades(autoBuildInfo.GetUpgradesFromData(), autoBuildInfo.SkillPoints);
 
             UpgradePagesManager._currentPageIndex = 0;
-            UpgradeUI upgradeUI = ModCache.gameUIRoot.UpgradeUI;
+            UpgradeUI upgradeUI = ModCache.UIRoot.UpgradeUI;
             upgradeUI.Show(false, false, false);
             upgradeUI.ExitButton.SetActive(false);
 
@@ -302,7 +302,7 @@ namespace OverhaulMod.UI
 
             autoBuildManager.SaveBuildsInfo();
 
-            UpgradeUI upgradeUI = ModCache.gameUIRoot.UpgradeUI;
+            UpgradeUI upgradeUI = ModCache.UIRoot.UpgradeUI;
             upgradeUI.Hide();
 
             isShowingUpgradeUI = false;

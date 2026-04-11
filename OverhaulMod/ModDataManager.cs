@@ -6,9 +6,9 @@ namespace OverhaulMod
     public class ModDataManager : Singleton<ModDataManager>
     {
         /// <summary>
-        /// A Folder where all game data is stored
+        /// A folder where all game data is stored
         /// </summary>
-        public static string userDataFolder
+        public static string UserDataFolder
         {
             get
             {
@@ -19,7 +19,7 @@ namespace OverhaulMod
         /// <summary>
         /// "saves" Folder located under mod Folder
         /// </summary>
-        public static string savesFolder
+        public static string SavesFolder
         {
             get
             {
@@ -29,27 +29,27 @@ namespace OverhaulMod
 
         public void WriteFile(string name, string content, bool useSavesFolder)
         {
-            ModFileUtils.WriteText(content, Path.Combine(useSavesFolder ? savesFolder : userDataFolder, name));
+            ModFileUtils.WriteText(content, Path.Combine(useSavesFolder ? SavesFolder : UserDataFolder, name));
         }
 
         public void SerializeToFile(string name, object obj, bool useSavesFolder)
         {
-            ModJsonUtils.WriteStream(Path.Combine(useSavesFolder ? savesFolder : userDataFolder, name), obj);
+            ModJsonUtils.WriteStream(Path.Combine(useSavesFolder ? SavesFolder : UserDataFolder, name), obj);
         }
 
         public string ReadFile(string name, bool useSavesFolder)
         {
-            return ModFileUtils.ReadText(Path.Combine(useSavesFolder ? savesFolder : userDataFolder, name));
+            return ModFileUtils.ReadText(Path.Combine(useSavesFolder ? SavesFolder : UserDataFolder, name));
         }
 
         public T DeserializeFile<T>(string name, bool useSavesFolder)
         {
-            return ModJsonUtils.DeserializeStream<T>(Path.Combine(useSavesFolder ? savesFolder : userDataFolder, name));
+            return ModJsonUtils.DeserializeStream<T>(Path.Combine(useSavesFolder ? SavesFolder : UserDataFolder, name));
         }
 
         public bool FileExists(string name, bool useSavesFolder)
         {
-            return File.Exists(Path.Combine(useSavesFolder ? savesFolder : userDataFolder, name));
+            return File.Exists(Path.Combine(useSavesFolder ? SavesFolder : UserDataFolder, name));
         }
     }
 }

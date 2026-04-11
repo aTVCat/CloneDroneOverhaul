@@ -19,9 +19,9 @@ namespace OverhaulMod.Combat.Weapons
                 if (!owner)
                     return;
 
-                AudioManager audioManager = ModCache.audioManager;
-                AttackManager attackManager = ModCache.attackManager;
-                AudioLibrary audioLibrary = ModCache.audioLibrary;
+                AudioManager audioManager = ModCache.AudioManager;
+                AttackManager attackManager = ModCache.AttackManager;
+                AudioLibrary audioLibrary = ModCache.AudioLibrary;
 
                 Transform t = base.transform;
                 float pitch = owner.WeaponEnvironmentImpactPitch;
@@ -34,7 +34,7 @@ namespace OverhaulMod.Combat.Weapons
                     if (hitArea.Owner.HasUpgrade(FireUpgrade))
                     {
                         _ = audioManager.PlayClipAtTransform(audioLibrary.FireSwordEnvironmentImpacts, t);
-                        _ = ModCache.globalFireParticleSystem.CreateGroundImpactVFX(edgePointCenter);
+                        _ = ModCache.GlobalFireParticleSystem.CreateGroundImpactVFX(edgePointCenter);
                     }
                     else if (hitArea.Owner.CharacterType == EnemyType.EmperorNonCombat || hitArea.Owner.CharacterType == EnemyType.EmperorCombat)
                     {

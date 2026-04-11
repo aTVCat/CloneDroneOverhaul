@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using OverhaulMod.Utils;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace OverhaulMod
@@ -36,7 +37,7 @@ namespace OverhaulMod
         {
             if (s_launchOptions == null)
             {
-                return System.Environment.GetCommandLineArgs().Contains(GetLaunchOptionString(option));
+                return ModCache.CommandLineArgs.Contains(GetLaunchOptionString(option));
             }
             return s_launchOptions.Contains(option);
         }

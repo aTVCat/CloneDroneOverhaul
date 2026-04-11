@@ -249,7 +249,7 @@ namespace OverhaulMod
             IsEnabled = false;
             _hasAttemptedToLoadOnThisScene = false;
 
-            GameUIRoot gameUIRoot = ModCache.gameUIRoot;
+            GameUIRoot gameUIRoot = ModCache.UIRoot;
             if (gameUIRoot)
             {
                 ModUIManager modUIManager = ModUIManager.Instance;
@@ -377,14 +377,10 @@ namespace OverhaulMod
             _ = firstPersonMover.gameObject.AddComponent<CharacterExtension>();
             _ = firstPersonMover.gameObject.AddComponent<PersonalizationController>();
 
-            if (ModFeatures.IsEnabled(ModFeatures.FeatureType.WeaponBag))
+            bool isWeaponBagAllowedOnEnemies = GameModeManager.IsSinglePlayer() || GameModeManager.IsCoop();
+            if (!firstPersonMover.IsMindSpaceCharacter && (isWeaponBagAllowedOnEnemies || firstPersonMover.IsMainPlayer()))
             {
-                bool isAllowedOnEnemies = GameModeManager.IsSinglePlayer() || GameModeManager.IsCoop();
-
-                if (!firstPersonMover.IsMindSpaceCharacter && (isAllowedOnEnemies || firstPersonMover.IsMainPlayer()))
-                {
-                    _ = firstPersonMover.gameObject.AddComponent<RobotWeaponBag>();
-                }
+                _ = firstPersonMover.gameObject.AddComponent<RobotWeaponBag>();
             }
 
             if (GameModeManager.IsCoop())

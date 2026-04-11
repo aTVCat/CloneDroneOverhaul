@@ -10,9 +10,6 @@ namespace OverhaulMod.UI
         [ModSetting(ModSettingsConstants.SHOW_VERSION_LABEL, true)]
         public static bool ShowLabel;
 
-        [ModSetting(ModSettingsConstants.SHOW_DEVELOPER_BUILD_LABEL, false)]
-        public static bool ShowDeveloperBuildLabel;
-
         [UIElement("NewVersionLabel_TitleScreen")]
         private readonly GameObject _watermark;
 
@@ -37,9 +34,6 @@ namespace OverhaulMod.UI
         [UIElement("Watermark_Gameplay")]
         private readonly Text _gameplayVersionText;
 
-        [UIElement("DeveloperBuildLabel", false)]
-        private readonly GameObject _devBuildLabelObject;
-
         public bool ForceHide;
 
         private bool _refreshWidth;
@@ -58,7 +52,7 @@ namespace OverhaulMod.UI
         {
             get
             {
-                return ShowLabel && !GameModeManager.IsInLevelEditor() && !ModCache.photoManager.IsInPhotoMode();
+                return ShowLabel && !GameModeManager.IsInLevelEditor() && !ModCache.PhotoManager.IsInPhotoMode();
             }
         }
 
@@ -86,10 +80,7 @@ namespace OverhaulMod.UI
             _gameplayWatermarkTransform.localScale = Vector3.one * 0.8f;
             RefreshLabels();
 
-            ModSettingsManager.Instance.AddSettingValueChangedListener(onDevBuildLabelSettingChanged, ModSettingsConstants.SHOW_DEVELOPER_BUILD_LABEL);
-            onDevBuildLabelSettingChanged(ShowDeveloperBuildLabel);
-
-            ModCache.titleScreenUI.VersionLabel.gameObject.SetActive(false);
+            ModCache.TitleScreenUI.VersionLabel.gameObject.SetActive(false);
 
             if (GameModeManager.IsOnTitleScreen())
                 _watermarkCanvasGroup.alpha = UIIntro.HasEverShownIntro ? 1f : 0f;
@@ -99,8 +90,6 @@ namespace OverhaulMod.UI
         {
             base.OnDestroy();
             instance = null;
-
-            ModSettingsManager.Instance.RemoveSettingValueChangedListener(onDevBuildLabelSettingChanged, ModSettingsConstants.SHOW_DEVELOPER_BUILD_LABEL);
         }
 
         public override void Update()
@@ -132,7 +121,7 @@ namespace OverhaulMod.UI
                 return;
 
             bool show = !ForceHide && showWatermark;
-            bool rootButtonsAreActive = ModCache.titleScreenUI.RootButtonsContainerBG.activeInHierarchy;
+            bool rootButtonsAreActive = ModCache.TitleScreenUI.RootButtonsContainerBG.activeInHierarchy;
             _watermark.SetActive(show && !showGameplayWatermarkOnTitleScreen && rootButtonsAreActive && isOnTitleScreen && !UITitleScreenHypocrisisSkin.HideVersionLabel);
             _gameplayWatermark.SetActive(show && (!isOnTitleScreen || (showGameplayWatermarkOnTitleScreen && rootButtonsAreActive && !UITitleScreenHypocrisisSkin.HideVersionLabel)));
         }
@@ -149,7 +138,7 @@ namespace OverhaulMod.UI
 
         public void CenterGameplayWatermark()
         {
-            offsetX = (800f / 2f) + _gameplayWatermarkTransform.sizeDelta.x;
+            offsetX = (ModCache.UIRootCanvasScaler.referenceResolution.x / 2f) + _gameplayWatermarkTransform.sizeDelta.x;
         }
 
         public void ResetGameplayWatermark()
@@ -160,11 +149,6 @@ namespace OverhaulMod.UI
         public void ShowTitleScreenLabel()
         {
             _fadeInLabel = true;
-        }
-
-        private void onDevBuildLabelSettingChanged(object obj)
-        {
-            _devBuildLabelObject.SetActive(obj is bool b && ModBuild.IsDeveloperBuild && ModBuild.IsDebugBuild && b);
         }
     }
 }

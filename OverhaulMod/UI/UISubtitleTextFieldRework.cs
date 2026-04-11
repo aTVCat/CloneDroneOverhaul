@@ -122,9 +122,9 @@ namespace OverhaulMod.UI
             if (BeOnTop)
             {
                 float y;
-                if (ModCache.gameUIRoot.Multiplayer1v1UI.PlayerStatsPanel.gameObject.activeInHierarchy)
+                if (ModCache.UIRoot.Multiplayer1v1UI.PlayerStatsPanel.gameObject.activeInHierarchy)
                     y = -40f;
-                else if (ModCache.gameUIRoot.BattleRoyaleUI.WaitingRoomLabel.gameObject.activeInHierarchy || ModCache.gameUIRoot.CurrentlySpectatingUI.gameObject.activeInHierarchy || ModCache.gameUIRoot.CoopUpgradeTimerUI.gameObject.activeInHierarchy)
+                else if (ModCache.UIRoot.BattleRoyaleUI.WaitingRoomLabel.gameObject.activeInHierarchy || ModCache.UIRoot.CurrentlySpectatingUI.gameObject.activeInHierarchy || ModCache.UIRoot.CoopUpgradeTimerUI.gameObject.activeInHierarchy)
                     y = -60f;
                 else
                     y = -10f;

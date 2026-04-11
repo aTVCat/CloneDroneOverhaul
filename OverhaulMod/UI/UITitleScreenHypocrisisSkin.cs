@@ -110,18 +110,18 @@ namespace OverhaulMod.UI
 
         private void showTitleScreenElements()
         {
-            if (ModCache.titleScreenUI.gameObject.activeSelf)
+            if (ModCache.TitleScreenUI.gameObject.activeSelf)
             {
                 ArenaCameraManager.Instance.SetTitleScreenLogoVisible(true);
                 ArenaCameraManager.Instance.TitleScreenLogoCamera.gameObject.SetActive(true);
 
-                Transform leftFade = TransformUtils.FindChildRecursive(ModCache.titleScreenUI.transform, "LeftFadeBG");
+                Transform leftFade = TransformUtils.FindChildRecursive(ModCache.TitleScreenUI.transform, "LeftFadeBG");
                 if (leftFade)
                 {
                     leftFade.gameObject.SetActive(true);
                 }
 
-                ModCache.titleScreenUI.SocialButtonPanel.gameObject.SetActive(true);
+                ModCache.TitleScreenUI.SocialButtonPanel.gameObject.SetActive(true);
             }
         }
 
@@ -130,18 +130,18 @@ namespace OverhaulMod.UI
             ArenaCameraManager.Instance.SetTitleScreenLogoVisible(false);
             ArenaCameraManager.Instance.TitleScreenLogoCamera.gameObject.SetActive(false);
 
-            Transform leftFade = TransformUtils.FindChildRecursive(ModCache.titleScreenUI.transform, "LeftFadeBG");
+            Transform leftFade = TransformUtils.FindChildRecursive(ModCache.TitleScreenUI.transform, "LeftFadeBG");
             if (leftFade)
             {
                 leftFade.gameObject.SetActive(false);
             }
 
-            ModCache.titleScreenUI.SocialButtonPanel.gameObject.SetActive(false);
+            ModCache.TitleScreenUI.SocialButtonPanel.gameObject.SetActive(false);
         }
 
         public override void Update()
         {
-            bool state = ModCache.titleScreenRootButtonsBG.activeInHierarchy;
+            bool state = ModCache.TitleScreenRootButtonsBG.activeInHierarchy;
             if (_prevHolderState != state)
             {
                 _prevHolderState = state;

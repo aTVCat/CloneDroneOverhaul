@@ -41,7 +41,7 @@ namespace OverhaulMod.Patches
             if (modUIManager && modUIManager.IsUIVisible(AssetBundleConstants.UI, ModUIConstants.UI_PAUSE_MENU))
                 return false;
 
-            GameUIRoot gameUIRoot = ModCache.gameUIRoot;
+            GameUIRoot gameUIRoot = ModCache.UIRoot;
             return !gameUIRoot || !gameUIRoot.EscMenu || !gameUIRoot.EscMenu.gameObject.activeInHierarchy;
         }
 
@@ -54,9 +54,9 @@ namespace OverhaulMod.Patches
             for (int i = 0; i < codes.Count; i++)
             {
                 CodeInstruction ci = codes[i];
-                if (ci.opcode == OpCodes.Call && ci.Calls(ModCache.unityInputGetMouseButtonMethod))
+                if (ci.opcode == OpCodes.Call && ci.Calls(ModCache.UnityInputGetMouseButtonMethod))
                 {
-                    codes[i] = new CodeInstruction(OpCodes.Call, ModCache.unityInputGetMouseButtonDownMethod);
+                    codes[i] = new CodeInstruction(OpCodes.Call, ModCache.UnityInputGetMouseButtonDownMethod);
                 }
             }
 

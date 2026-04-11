@@ -72,11 +72,11 @@ namespace OverhaulMod.Engine
                     Canvas canvas = crossSceneCanvasObject.AddComponent<Canvas>();
                     canvas.renderMode = RenderMode.ScreenSpaceOverlay;
                     canvas.sortingOrder = 100;
-                    canvas.scaleFactor = ModCache.gameUIRoot.GetComponent<Canvas>().scaleFactor;
+                    canvas.scaleFactor = ModCache.UIRootCanvas.scaleFactor;
                     CanvasScaler scaler = crossSceneCanvasObject.AddComponent<CanvasScaler>();
-                    scaler.screenMatchMode = CanvasScaler.ScreenMatchMode.MatchWidthOrHeight;
-                    scaler.referenceResolution = new Vector2(800, 600);
-                    scaler.matchWidthOrHeight = 1f;
+                    scaler.screenMatchMode = ModCache.UIRootCanvasScaler.screenMatchMode;
+                    scaler.referenceResolution = ModCache.UIRootCanvasScaler.referenceResolution;
+                    scaler.matchWidthOrHeight = ModCache.UIRootCanvasScaler.matchWidthOrHeight;
 
                     _crossSceneCanvas = crossSceneCanvasObject.transform;
                 }
@@ -86,7 +86,7 @@ namespace OverhaulMod.Engine
             }
             else
             {
-                parent = ModCache.gameUIRoot.transform;
+                parent = ModCache.UIRoot.transform;
             }
 
             GameObject gameObject = Instantiate(ModResources.Prefab(AssetBundleConstants.UI, "UI_Transition"), parent, false);
@@ -180,8 +180,8 @@ namespace OverhaulMod.Engine
 
             if (waitForPlaytestLevelToLoad)
             {
-                GameUIRoot uiRoot = ModCache.gameUIRoot;
-                if(uiRoot && uiRoot.MultiplayerConnectingScreen && !uiRoot.MultiplayerConnectingScreen.isActiveAndEnabled)
+                GameUIRoot uiRoot = ModCache.UIRoot;
+                if (uiRoot && uiRoot.MultiplayerConnectingScreen && !uiRoot.MultiplayerConnectingScreen.isActiveAndEnabled)
                 {
                     LevelManager levelManager = LevelManager.Instance;
                     if (levelManager)

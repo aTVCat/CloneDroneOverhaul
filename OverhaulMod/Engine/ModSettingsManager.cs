@@ -76,7 +76,7 @@ namespace OverhaulMod.Engine
 
         private void loadSettings()
         {
-            foreach (System.Type type in ModCache.modAssembly.GetTypes())
+            foreach (System.Type type in ModCache.ModAssembly.GetTypes())
             {
                 foreach (FieldInfo fieldInfo in type.GetFields(BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic))
                 {

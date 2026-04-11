@@ -176,8 +176,8 @@ namespace OverhaulMod.Utils
         public static void ShowVanillaEscMenu()
         {
             UIPauseMenuRework.disableOverhauledVersion = true;
-            ModCache.gameUIRoot.EscMenu.Show();
-            ModCache.gameUIRoot.RefreshCursorEnabled();
+            ModCache.UIRoot.EscMenu.Show();
+            ModCache.UIRoot.RefreshCursorEnabled();
             UIPauseMenuRework.disableOverhauledVersion = false;
         }
 

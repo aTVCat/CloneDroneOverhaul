@@ -63,7 +63,7 @@ namespace OverhaulMod.Patches
 
                     if (VoxelFadingManager.EnableBurning)
                     {
-                        VoxelFadingManager fadingVoxelManager = ModCache.fadingVoxelManager;
+                        VoxelFadingManager fadingVoxelManager = ModCache.FadingVoxelManager;
                         foreach (PicaVoxelPoint p in fadingVoxelManager.GetSurroundingPoints(picaVoxelPoint))
                         {
                             if (__instance.IsVoxelWaitingToBeDestroyed(p))
@@ -85,7 +85,7 @@ namespace OverhaulMod.Patches
                 }
             }
 
-            AttackManager attackManager = ModCache.attackManager;
+            AttackManager attackManager = ModCache.AttackManager;
             Color c = hasFire ? attackManager.BodyOnFireColor : attackManager.HitColor;
             currentFrame.SetVoxelAtArrayPosition(picaVoxelPoint, new Voxel
             {

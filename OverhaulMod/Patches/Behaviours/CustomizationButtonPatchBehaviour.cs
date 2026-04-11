@@ -9,7 +9,7 @@ namespace OverhaulMod.Patches.Behaviours
 
         public override void Patch()
         {
-            Transform buttonRoot = ModCache.titleScreenUI.CustomizationUI.ButtonRoot.transform;
+            Transform buttonRoot = ModCache.TitleScreenUI.CustomizationUI.ButtonRoot.transform;
             _customizeButton = TransformUtils.FindChildRecursive(buttonRoot, "CustomizeButton").gameObject;
 
             GlobalEventManager.Instance.AddEventListener(GlobalEvents.LevelSpawned, onLevelSpawned);

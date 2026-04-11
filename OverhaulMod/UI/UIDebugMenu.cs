@@ -28,15 +28,6 @@ namespace OverhaulMod.UI
         [UIElement("ExportAllUpgradesButton")]
         private readonly Button _exportAllUpgradesButton;
 
-        [UIElementAction(nameof(OnWipLabelToggleChanged))]
-        [UIElement("ShowWipLabelToggle")]
-        private readonly Toggle _wipLabelToggle;
-
-        protected override void OnInitialized()
-        {
-            _wipLabelToggle.isOn = ModSettingsManager.GetBoolValue(ModSettingsConstants.SHOW_DEVELOPER_BUILD_LABEL);
-        }
-
         public override void Hide()
         {
             base.Hide();
@@ -103,11 +94,6 @@ namespace OverhaulMod.UI
 
             ModDataManager.Instance.WriteFile("AllUpgradesExport.txt", stringBuilder.ToString(), true);
             _ = ModFileUtils.OpenFileExplorer(ModCore.SavesFolder);
-        }
-
-        public void OnWipLabelToggleChanged(bool value)
-        {
-            ModSettingsManager.SetBoolValue(ModSettingsConstants.SHOW_DEVELOPER_BUILD_LABEL, value);
         }
     }
 }

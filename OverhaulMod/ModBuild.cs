@@ -1,6 +1,5 @@
 ﻿#define OVERRIDE_VER
 //#define DISABLE_EXCLUSIVE_PERKS
-//#define DEVELOPER_BUILD
 
 using OverhaulMod.Utils;
 using System;
@@ -15,7 +14,7 @@ namespace OverhaulMod
         public const string BUILD_INFO_FILE_PATH = "buildInfo.json";
 
 #if OVERRIDE_VER
-        public const string OVERRIDE_VERSION = "4.2.1091";
+        public const string OVERRIDE_VERSION = "4.2.1092";
 #endif
 
         private static bool s_loaded;
@@ -102,18 +101,6 @@ namespace OverhaulMod
             }
         }
 
-        public static bool IsDeveloperBuild
-        {
-            get
-            {
-#if DEVELOPER_BUILD
-                return true;
-#else
-                return false;
-#endif
-            }
-        }
-
         public static bool DisableExclusivePerks
         {
             get
@@ -143,7 +130,7 @@ namespace OverhaulMod
             if (!verString.IsNullOrEmpty() && !verString.IsNullOrWhiteSpace() && Version.TryParse(verString, out Version result))
                 version = result;
             else
-                version = ModCache.modAssemblyName.Version;
+                version = ModCache.ModAssemblyName.Version;
 #else
             Version version = ModCache.modAssemblyName.Version;
 #endif

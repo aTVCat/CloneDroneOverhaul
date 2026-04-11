@@ -1,23 +1,36 @@
+This patch is focused on resolving long standing issues and QoL changes to the mod, while also bringing back a few removed features
+
 # Changes
 - Reworked customization items list. All customization items now have previews
 img=images/42_patch11_2.png
-- Added arrow spawn point object customization editor
+- Added arrow spawn point object to customization editor
+- Made weapon skins respawn on clones and enemies with slight delay to reduce freeze amount when customizing the player. Still not perfect, but more work will be done on this in future
+- Redone weapon skins refreshing logic, fixing vanilla skins visible for a brief moment when equipping weapon
+- Added particles when switching weapon skins
 - Added new options to title screen customization
 img=images/42_patch11_3.png
-- Slightly updated the overhauled title screen
+- Slightly updated the overhauled title screen UI
+- Added "Team Battle" tab to overhauled workshop browser
 - Added restart adventure button to reworked pause menu
-- Added animation to hyperdome-like transitions
+- Improved hyperdome-like transitions
+- Reworked welding particles
 - Added back great swords modifier to story mode
+- Added back weapons on the back
+- Added back reverting upgrades
 - Increased scythe speed
 - Reorganized and renamed many settings, removed the home page
+- Added "Model update delay" setting to reduce the inconsistency between just separated voxel models
 - Added cooldown slider for "Scroll to switch weapon" setting
 - Added more FPS options and increased the FPS limit
 - Increased the camera FOV limit
+- Made the camera tilt less in first person mode when holding bow
+- Improved camera positioning when holding spear
 - Added tint color and rotation settings to realistic skyboxes
 - Improved light settings handling in advanced photo mode
 - Made business bots ties no longer visible in first person mode
 - Made garbage physics interpolate only for a second after appearing
-- Made patch notes menu cache downloaded images on disk
+- Made patch notes and addon details menus cache downloaded images on disk
+- Made Overhaul mod intro disappear if the game crashes on start
 - Various internal changes and optimizations
 - Reduced the size of the mod
 # Realistic skyboxes addon changes
@@ -33,4 +46,8 @@ img=images/42_patch11_1.png
 - Realistic skyboxes not working for some players
 - Being able to see through walls with high FOV
 - Physics intepolation not applying to main part of robot's body
+- Transition sound not playing if new transition started right after the previous one
 - Some lists in UIs not getting scrolled to the top automatically
+- Missing translation in few UIs
+- Fixed Epic Games platform display as "N/A"
+- Some math behind first person mode

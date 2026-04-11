@@ -14,7 +14,7 @@ namespace OverhaulMod.Patches.Behaviours
             {
                 if (!_targetTransform)
                 {
-                    Transform guiRootTransform = ModCache.gameUIRoot.transform;
+                    Transform guiRootTransform = ModCache.UIRoot.transform;
                     for (int i = 0; i < guiRootTransform.childCount; i++)
                     {
                         Transform child = guiRootTransform.GetChild(i);

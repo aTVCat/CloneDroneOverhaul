@@ -45,12 +45,6 @@ namespace OverhaulMod.Content
             new Dropdown.OptionData() { text = "Testing" },
         };
 
-        public static System.Version downloadedVersion
-        {
-            get;
-            set;
-        }
-
         public bool GetUpdatesFromTestFolder = false;
 
         private UnityWebRequest _webRequest;
@@ -59,15 +53,10 @@ namespace OverhaulMod.Content
 
         private void Start()
         {
-            if (!CheckForUpdatesOnStartup)
-            {
-                downloadedVersion = ModBuild.Version;
-                return;
-            }
+            if (!CheckForUpdatesOnStartup) return;
 
             ScheduledActionsManager scheduledActionsManager = ScheduledActionsManager.Instance;
-            if (!scheduledActionsManager.ShouldExecuteAction(ScheduledActionType.RefreshModUpdates) && !CheckForUpdatesOnStartup)
-                return;
+            if (!scheduledActionsManager.ShouldExecuteAction(ScheduledActionType.RefreshModUpdates)) return;
 
             _ = ModActionUtils.RunCoroutine(retrieveDataOnStartCoroutine());
         }
@@ -102,11 +91,6 @@ namespace OverhaulMod.Content
                 ModSettingsDataManager.Instance.Save();
             }, null);
             yield break;
-        }
-
-        public bool ShouldHighlightUpdatesButton()
-        {
-            return downloadedVersion > ModBuild.Version;
         }
 
         public void DownloadUpdatesList(Action<GetUpdatesResult> callback)

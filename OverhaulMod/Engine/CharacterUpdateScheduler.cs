@@ -1,5 +1,4 @@
-﻿using OverhaulMod.Content;
-using OverhaulMod.Content.Personalization;
+﻿using OverhaulMod.Content.Personalization;
 using OverhaulMod.Visuals;
 using System.Collections.Generic;
 using UnityEngine;

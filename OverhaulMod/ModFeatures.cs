@@ -30,12 +30,6 @@ namespace OverhaulMod
                 case FeatureType.Pets:
                     result = ModBuild.VERSION_4_3;
                     break;
-                case FeatureType.WeaponBag:
-                    result = true;
-                    break;
-                case FeatureType.RevertUpgrades:
-                    result = true;
-                    break;
                 default:
                     return false;
             }
@@ -51,15 +45,9 @@ namespace OverhaulMod
 
         public enum FeatureType
         {
-            WeaponBag,
-
             WeatherSystem,
 
-            NightmariumDifficultyTier,
-
             WorkshopBrowserContextMenu,
-
-            RevertUpgrades,
 
             DisplayNewGraphicsOptionsInSettings,
 

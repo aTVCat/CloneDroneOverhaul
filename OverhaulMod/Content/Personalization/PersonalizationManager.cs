@@ -353,7 +353,7 @@ namespace OverhaulMod.Content.Personalization
 
         private void loadUserInfoFile()
         {
-            string path = Path.Combine(ModDataManager.userDataFolder, USER_INFO_FILE);
+            string path = Path.Combine(ModDataManager.UserDataFolder, USER_INFO_FILE);
 
             PersonalizationUserInfo personalizationUserInfo;
             try

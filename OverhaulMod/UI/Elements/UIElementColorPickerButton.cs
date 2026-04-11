@@ -46,7 +46,7 @@ namespace OverhaulMod.UI
 
         protected override void OnInitialized()
         {
-            colorPickerParent = ModCache.gameUIRoot.transform;
+            colorPickerParent = ModCache.UIRoot.transform;
         }
 
         public void OnButtonClicked()

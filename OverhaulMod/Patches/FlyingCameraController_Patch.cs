@@ -42,9 +42,9 @@ namespace OverhaulMod.Patches
             for (int i = 0; i < codes.Count; i++)
             {
                 CodeInstruction ci = codes[i];
-                if (ci.opcode == OpCodes.Call && ci.Calls(ModCache.unityTimeFixedUnscaledDeltaTimePropertyGetter))
+                if (ci.opcode == OpCodes.Call && ci.Calls(ModCache.UnityTimeFixedUnscaledDeltaTimePropertyGetter))
                 {
-                    codes[i] = new CodeInstruction(OpCodes.Call, ModCache.unityTimeUnscaledDeltaTimePropertyGetter);
+                    codes[i] = new CodeInstruction(OpCodes.Call, ModCache.UnityTimeUnscaledDeltaTimePropertyGetter);
                 }
             }
 

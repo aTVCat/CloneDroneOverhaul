@@ -260,11 +260,6 @@ namespace OverhaulMod.Utils
             return ModUIManager.Instance.Show<UIOverhaulUIManagementPanel>(AssetBundleConstants.UI, UI_OVERHAUL_UI_MANAGEMENT_PANEL, parent);
         }
 
-        public static UILevelDescriptionListEditor ShowLevelDescriptionListEditor()
-        {
-            return ModUIManager.Instance.Show<UILevelDescriptionListEditor>(AssetBundleConstants.UI, UI_LEVEL_DESCRIPTION_LIST_EDITOR, ModUIManager.UILayer.AfterTitleScreen);
-        }
-
         public static UIPersonalizationEditor ShowPersonalizationEditorUI()
         {
             return ModUIManager.Instance.Show<UIPersonalizationEditor>(AssetBundleConstants.UI, UI_PERSONALIZATION_EDITOR, ModUIManager.UILayer.BeforeEscMenu);

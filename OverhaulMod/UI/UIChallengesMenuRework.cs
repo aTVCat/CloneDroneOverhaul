@@ -87,7 +87,7 @@ namespace OverhaulMod.UI
         {
             base.Show();
 
-            TitleScreenUI titleScreenUI = ModCache.titleScreenUI;
+            TitleScreenUI titleScreenUI = ModCache.TitleScreenUI;
             if (titleScreenUI.SingleplayerModeSelectScreen.gameObject.activeInHierarchy)
                 titleScreenUI.SetSinglePlayerModeSelectButtonsVisibile(false);
             else if (titleScreenUI.MultiplayerModeSelectScreen.gameObject.activeInHierarchy)
@@ -98,7 +98,7 @@ namespace OverhaulMod.UI
         {
             base.Hide();
 
-            TitleScreenUI titleScreenUI = ModCache.titleScreenUI;
+            TitleScreenUI titleScreenUI = ModCache.TitleScreenUI;
             if (titleScreenUI.SingleplayerModeSelectScreen.gameObject.activeInHierarchy)
                 titleScreenUI.SetSinglePlayerModeSelectButtonsVisibile(true);
             else if (titleScreenUI.MultiplayerModeSelectScreen.gameObject.activeInHierarchy)
@@ -231,7 +231,7 @@ namespace OverhaulMod.UI
 
         public void OnLegacyUIButtonClicked()
         {
-            TitleScreenUI titleScreenUI = ModCache.titleScreenUI;
+            TitleScreenUI titleScreenUI = ModCache.TitleScreenUI;
             if (titleScreenUI)
             {
                 Hide();
@@ -243,7 +243,7 @@ namespace OverhaulMod.UI
         {
             Hide();
 
-            TitleScreenUI titleScreenUI = ModCache.titleScreenUI;
+            TitleScreenUI titleScreenUI = ModCache.TitleScreenUI;
             if (!titleScreenUI)
                 return;
 

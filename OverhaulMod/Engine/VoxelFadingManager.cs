@@ -73,7 +73,7 @@ namespace OverhaulMod.Engine
             _voxelsToFade.Add(fadingVoxel);
         }
 
-        public byte BurnColor(byte color) => (byte)Mathf.RoundToInt(color * ModCache.attackManager.FireBurnColorMultiplier);
+        public byte BurnColor(byte color) => (byte)Mathf.RoundToInt(color * ModCache.AttackManager.FireBurnColorMultiplier);
 
         public PicaVoxelPoint GetOffsetPoint(in PicaVoxelPoint picaVoxelPoint, in int OffX, in int OffY, in int OffZ) => new PicaVoxelPoint(picaVoxelPoint.X + OffX, picaVoxelPoint.Y + OffY, picaVoxelPoint.Z + OffZ);
 

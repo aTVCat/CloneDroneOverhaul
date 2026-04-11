@@ -9,7 +9,7 @@ namespace OverhaulMod.Utils
         {
             string result;
 
-            result = JsonConvert.SerializeObject(@object, ModCache.jsonSerializerSettings);
+            result = JsonConvert.SerializeObject(@object, ModCache.JsonSerializerSettings);
 
             return result;
         }
@@ -21,7 +21,7 @@ namespace OverhaulMod.Utils
             using (StringReader sr = new StringReader(@string))
             using (JsonReader reader = new JsonTextReader(sr))
             {
-                result = JsonSerializer.Create(ModCache.jsonSerializerSettings).Deserialize<T>(reader);
+                result = JsonSerializer.Create(ModCache.JsonSerializerSettings).Deserialize<T>(reader);
             }
 
             return result;
@@ -35,7 +35,7 @@ namespace OverhaulMod.Utils
             using (StreamReader sr = new StreamReader(s))
             using (JsonTextReader reader = new JsonTextReader(sr))
             {
-                result = JsonSerializer.Create(ModCache.jsonSerializerSettings).Deserialize<T>(reader);
+                result = JsonSerializer.Create(ModCache.JsonSerializerSettings).Deserialize<T>(reader);
             }
 
             return result;
@@ -48,7 +48,7 @@ namespace OverhaulMod.Utils
             using (StreamWriter sw = new StreamWriter(s))
             using (JsonTextWriter reader = new JsonTextWriter(sw))
             {
-                JsonSerializer.Create(ModCache.jsonSerializerSettings).Serialize(reader, contents);
+                JsonSerializer.Create(ModCache.JsonSerializerSettings).Serialize(reader, contents);
             }
         }
     }

@@ -382,7 +382,7 @@ namespace OverhaulMod.UI
             if (_disallowCallbacks)
                 return;
 
-            ModCache.gameUIRoot.SetPlayerHUDVisible(value && !CutSceneManager.Instance.IsInCutscene());
+            ModCache.UIRoot.SetPlayerHUDVisible(value && !CutSceneManager.Instance.IsInCutscene());
         }
 
         public void OnCinematicBordersToggled(bool value)

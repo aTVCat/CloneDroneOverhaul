@@ -43,7 +43,7 @@ namespace OverhaulMod
                 {
                     _gameLoadListeners[i].OnGameLoaded();
                 }
-                catch(System.Exception exc)
+                catch (System.Exception exc)
                 {
                     Debug.LogException(exc);
                 }

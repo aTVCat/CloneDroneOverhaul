@@ -89,9 +89,8 @@ namespace OverhaulMod
             modManagers.AddSingleton<ModUpgradesManager>(gameplayManagers);
             modManagers.AddSingleton<ModWeaponsManager>(gameplayManagers);
             modManagers.AddSingleton<ModLevelManager>(gameplayManagers);
-            modManagers.AddSingleton<DifficultyTierManager>(gameplayManagers);
             modManagers.AddSingleton<ModGameModifiersManager>(gameplayManagers);
-            if (ModFeatures.IsEnabled(ModFeatures.FeatureType.RevertUpgrades)) modManagers.AddSingleton<UpgradeModesManager>(gameplayManagers);
+            modManagers.AddSingleton<UpgradeModesManager>(gameplayManagers);
             modManagers.AddSingleton<AutoBuildManager>(gameplayManagers);
 
             GameObject visualManagers = new GameObject("Visuals");
@@ -305,7 +304,7 @@ namespace OverhaulMod
 
         private static void loadGameUIThemeData()
         {
-            if (ModCache.gameUIThemeData) return;
+            if (ModCache.UIThemeData) return;
 
             GameUIThemeData gameUIThemeData = null;
             foreach (SelectableUI selectableUi in Resources.FindObjectsOfTypeAll<SelectableUI>())
@@ -324,7 +323,7 @@ namespace OverhaulMod
                 gameUIThemeData.ButtonBackground[1].Color = new Color(0.3f, 0.5f, 1, 1f);
                 gameUIThemeData.ButtonTextOutline[0].Color = new Color(0.1f, 0.1f, 0.1f, 0.7f);
                 gameUIThemeData.ButtonTextOutline[1].Color = new Color(0.1f, 0.1f, 0.1f, 0.6f);
-                ModCache.gameUIThemeData = gameUIThemeData;
+                ModCache.UIThemeData = gameUIThemeData;
             }
         }
     }

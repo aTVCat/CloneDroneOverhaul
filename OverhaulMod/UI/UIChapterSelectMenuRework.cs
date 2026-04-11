@@ -57,7 +57,7 @@ namespace OverhaulMod.UI
         public override void Show()
         {
             base.Show();
-            ModCache.titleScreenUI.SetSinglePlayerModeSelectButtonsVisibile(false);
+            ModCache.TitleScreenUI.SetSinglePlayerModeSelectButtonsVisibile(false);
             _difficultyDropdown.options = SettingsManager.Instance.GetDifficultyOptions();
             _difficultyDropdown.value = SettingsManager.Instance.GetStoryDifficultyIndex();
             _enableGreatSwordsToggle.isOn = ModGameModifiersManager.Instance.forceEnableGreatSwords;
@@ -67,8 +67,8 @@ namespace OverhaulMod.UI
         public override void Hide()
         {
             base.Hide();
-            if (!ModCache.titleScreenUI.ChapterSelectUI.gameObject.activeInHierarchy)
-                ModCache.titleScreenUI.SetSinglePlayerModeSelectButtonsVisibile(true);
+            if (!ModCache.TitleScreenUI.ChapterSelectUI.gameObject.activeInHierarchy)
+                ModCache.TitleScreenUI.SetSinglePlayerModeSelectButtonsVisibile(true);
         }
 
         public void RefreshProgressText()
@@ -149,7 +149,7 @@ namespace OverhaulMod.UI
 
         public void OnLegacyUIButtonClicked()
         {
-            TitleScreenUI titleScreenUI = ModCache.titleScreenUI;
+            TitleScreenUI titleScreenUI = ModCache.TitleScreenUI;
             if (titleScreenUI)
             {
                 titleScreenUI.ChapterSelectUI.Show();

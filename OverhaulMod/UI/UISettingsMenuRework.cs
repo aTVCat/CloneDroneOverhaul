@@ -120,7 +120,7 @@ namespace OverhaulMod.UI
 
         protected override void OnInitialized()
         {
-            SettingsMenu settingsMenu = ModCache.settingsMenu;
+            SettingsMenu settingsMenu = ModCache.SettingsMenu;
             if (settingsMenu)
                 settingsMenu.populateSettings();
         }
@@ -281,7 +281,7 @@ namespace OverhaulMod.UI
                 rt.sizeDelta = vector;
             }
 
-            SettingsMenu settingsMenu = ModCache.settingsMenu;
+            SettingsMenu settingsMenu = ModCache.SettingsMenu;
             if (!settingsMenu)
                 return;
 
@@ -846,13 +846,10 @@ namespace OverhaulMod.UI
             _ = pageBuilder.Header4("chunkupdatedelay_desc");
 
             _ = pageBuilder.Header1("Robots");
-            if (ModFeatures.IsEnabled(ModFeatures.FeatureType.WeaponBag))
+            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_WEAPON_BAG), delegate (bool value)
             {
-                _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_WEAPON_BAG), delegate (bool value)
-                {
-                    ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_WEAPON_BAG, value, true);
-                }, "Weapons on back");
-            }
+                ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_WEAPON_BAG, value, true);
+            }, "Weapons on back");
             _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_ARROW_REWORK), delegate (bool value)
             {
                 ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_ARROW_REWORK, value, true);
@@ -907,7 +904,7 @@ namespace OverhaulMod.UI
                 if (ModUIManager.ShowWorkshopBrowserRework)
                     _ = ModUIConstants.ShowWorkshopBrowserRework();
                 else
-                    ModCache.titleScreenUI.OnWorkshopBrowserButtonClicked();
+                    ModCache.TitleScreenUI.OnWorkshopBrowserButtonClicked();
             });
             button.interactable = GameModeManager.IsOnTitleScreen();
 
@@ -917,7 +914,7 @@ namespace OverhaulMod.UI
                 settingsMenu.OnTwitchEnemyLimitButtonClicked();
                 ModUIManager.Instance.InvokeActionInsteadOfHidingCustomUI(delegate
                 {
-                    ModCache.gameUIRoot.TwitchEnemySettingsMenu.Hide();
+                    ModCache.UIRoot.TwitchEnemySettingsMenu.Hide();
                 });
             });
             _ = pageBuilder.Toggle(settingsMenu.MuteEmotesToggle.isOn, OnMuteEmotesToggleChanged, "Mute twitch emotes");
@@ -995,10 +992,10 @@ namespace OverhaulMod.UI
 
             _ = pageBuilder.Button("Manage muted players", delegate
             {
-                ModCache.gameUIRoot.BlockListSettingsUI.Show();
+                ModCache.UIRoot.BlockListSettingsUI.Show();
                 ModUIManager.Instance.InvokeActionInsteadOfHidingCustomUI(delegate
                 {
-                    ModCache.gameUIRoot.BlockListSettingsUI.Hide();
+                    ModCache.UIRoot.BlockListSettingsUI.Hide();
                 });
             });
 
@@ -1006,7 +1003,7 @@ namespace OverhaulMod.UI
             _ = pageBuilder.Header1("Player");
             _ = pageBuilder.Button("Select emotes", delegate
             {
-                ModCache.gameUIRoot.EmoteSettingsUI.Show();
+                ModCache.UIRoot.EmoteSettingsUI.Show();
             });
         }
 
@@ -1016,10 +1013,10 @@ namespace OverhaulMod.UI
             _ = pageBuilder.Header1("Controls settings");
             _ = pageBuilder.Button("Edit controls", delegate
             {
-                ModCache.gameUIRoot.ControlMapper.Open();
+                ModCache.UIRoot.ControlMapper.Open();
                 ModUIManager.Instance.InvokeActionInsteadOfHidingCustomUI(delegate
                 {
-                    _ = ModCache.gameUIRoot.ControlMapper.Close(true);
+                    _ = ModCache.UIRoot.ControlMapper.Close(true);
                 });
             });
 
@@ -1082,7 +1079,7 @@ namespace OverhaulMod.UI
             {
                 _ = pageBuilder.Button("Sign in", delegate
                 {
-                    ModCache.gameUIRoot.SettingsMenu.Hide();
+                    ModCache.UIRoot.SettingsMenu.Hide();
                     ModBotUIRoot.Instance.ModBotSignInUI.OpenSignInForm();
                 });
             }
@@ -1496,7 +1493,7 @@ namespace OverhaulMod.UI
 
         public void OnLegacyUIButtonClicked()
         {
-            TitleScreenUI titleScreenUI = ModCache.titleScreenUI;
+            TitleScreenUI titleScreenUI = ModCache.TitleScreenUI;
             if (titleScreenUI && GameModeManager.IsOnTitleScreen())
             {
                 Hide();
@@ -1504,7 +1501,7 @@ namespace OverhaulMod.UI
                 return;
             }
 
-            SettingsMenu settingsMenu = ModCache.gameUIRoot.SettingsMenu;
+            SettingsMenu settingsMenu = ModCache.UIRoot.SettingsMenu;
             if (settingsMenu)
             {
                 Hide();
@@ -1549,7 +1546,7 @@ namespace OverhaulMod.UI
 
         public void OnQualityDropdownChanged(int value)
         {
-            SettingsMenu settingsMenu = ModCache.settingsMenu;
+            SettingsMenu settingsMenu = ModCache.SettingsMenu;
             if (settingsMenu)
             {
                 settingsMenu.QualityDropDown.value = value;
@@ -1558,7 +1555,7 @@ namespace OverhaulMod.UI
 
         public void OnAntiAliasingDropdownChanged(int value)
         {
-            SettingsMenu settingsMenu = ModCache.settingsMenu;
+            SettingsMenu settingsMenu = ModCache.SettingsMenu;
             if (settingsMenu)
             {
                 settingsMenu.AntiAliasingDropdown.value = value;
@@ -1579,7 +1576,7 @@ namespace OverhaulMod.UI
 
         public void OnScreenResolutionChanged(int value)
         {
-            SettingsMenu settingsMenu = ModCache.settingsMenu;
+            SettingsMenu settingsMenu = ModCache.SettingsMenu;
             if (settingsMenu)
             {
                 settingsMenu.ScreenResolutionDropDown.value = value;
@@ -1588,7 +1585,7 @@ namespace OverhaulMod.UI
 
         public void OnFullScreenChanged(bool value)
         {
-            SettingsMenu settingsMenu = ModCache.settingsMenu;
+            SettingsMenu settingsMenu = ModCache.SettingsMenu;
             if (settingsMenu)
             {
                 settingsMenu.FullScreenToggle.isOn = value;
@@ -1597,7 +1594,7 @@ namespace OverhaulMod.UI
 
         public void OnVSyncChanged(bool value)
         {
-            SettingsMenu settingsMenu = ModCache.settingsMenu;
+            SettingsMenu settingsMenu = ModCache.SettingsMenu;
             if (settingsMenu)
             {
                 settingsMenu.VsyncOnToggle.isOn = value;
@@ -1606,7 +1603,7 @@ namespace OverhaulMod.UI
 
         public void OnRegionChanged(int value)
         {
-            SettingsMenu settingsMenu = ModCache.settingsMenu;
+            SettingsMenu settingsMenu = ModCache.SettingsMenu;
             if (settingsMenu)
             {
                 settingsMenu.RegionDropdown.value = value;
@@ -1635,7 +1632,7 @@ namespace OverhaulMod.UI
 
         public void OnStoryDifficultyIndexChanged(int value)
         {
-            SettingsMenu settingsMenu = ModCache.settingsMenu;
+            SettingsMenu settingsMenu = ModCache.SettingsMenu;
             if (settingsMenu)
             {
                 settingsMenu.StoryModeDifficultyDropDown.value = value;
@@ -1644,7 +1641,7 @@ namespace OverhaulMod.UI
 
         public void OnWorkshopEndlessLevelPolicyIndexChanged(int value)
         {
-            SettingsMenu settingsMenu = ModCache.settingsMenu;
+            SettingsMenu settingsMenu = ModCache.SettingsMenu;
             if (settingsMenu)
             {
                 settingsMenu.WorkshopLevelPolicyDropdown.value = value;
@@ -1653,7 +1650,7 @@ namespace OverhaulMod.UI
 
         public void OnDevIsLiveToggleChanged(bool value)
         {
-            SettingsMenu settingsMenu = ModCache.settingsMenu;
+            SettingsMenu settingsMenu = ModCache.SettingsMenu;
             if (settingsMenu)
             {
                 settingsMenu.DevIsLiveEnabledToggle.isOn = value;
@@ -1662,7 +1659,7 @@ namespace OverhaulMod.UI
 
         public void OnMuteEmotesToggleChanged(bool value)
         {
-            SettingsMenu settingsMenu = ModCache.settingsMenu;
+            SettingsMenu settingsMenu = ModCache.SettingsMenu;
             if (settingsMenu)
             {
                 settingsMenu.MuteEmotesToggle.isOn = value;
@@ -1671,7 +1668,7 @@ namespace OverhaulMod.UI
 
         public void OnHideGameUIToggleChanged(bool value)
         {
-            SettingsMenu settingsMenu = ModCache.settingsMenu;
+            SettingsMenu settingsMenu = ModCache.SettingsMenu;
             if (settingsMenu)
             {
                 settingsMenu.HideGameUIToggle.isOn = !value;
@@ -1680,7 +1677,7 @@ namespace OverhaulMod.UI
 
         public void OnGarbageSettingsChanged(int value)
         {
-            SettingsMenu settingsMenu = ModCache.settingsMenu;
+            SettingsMenu settingsMenu = ModCache.SettingsMenu;
             if (settingsMenu)
             {
                 settingsMenu.GarbageSettingsDropdown.value = value;
@@ -1689,7 +1686,7 @@ namespace OverhaulMod.UI
 
         public void OnPlayerPushesGarbageToggleChanged(bool value)
         {
-            SettingsMenu settingsMenu = ModCache.settingsMenu;
+            SettingsMenu settingsMenu = ModCache.SettingsMenu;
             if (settingsMenu)
             {
                 settingsMenu.PlayerPushesGarbageToggle.isOn = value;
@@ -1698,7 +1695,7 @@ namespace OverhaulMod.UI
 
         public void OnSubtitlesToggleChanged(bool value)
         {
-            SettingsMenu settingsMenu = ModCache.settingsMenu;
+            SettingsMenu settingsMenu = ModCache.SettingsMenu;
             if (settingsMenu)
             {
                 settingsMenu.SubtitlesToggle.isOn = value;
@@ -1707,7 +1704,7 @@ namespace OverhaulMod.UI
 
         public void OnGlobalVolumeChanged(float value)
         {
-            SettingsMenu settingsMenu = ModCache.settingsMenu;
+            SettingsMenu settingsMenu = ModCache.SettingsMenu;
             if (settingsMenu)
             {
                 settingsMenu.SoundVolume.value = value;
@@ -1716,7 +1713,7 @@ namespace OverhaulMod.UI
 
         public void OnMusicVolumeChanged(float value)
         {
-            SettingsMenu settingsMenu = ModCache.settingsMenu;
+            SettingsMenu settingsMenu = ModCache.SettingsMenu;
             if (settingsMenu)
             {
                 settingsMenu.MusicVolume.value = value;
@@ -1725,7 +1722,7 @@ namespace OverhaulMod.UI
 
         public void OnCommentatorVolumeChanged(float value)
         {
-            SettingsMenu settingsMenu = ModCache.settingsMenu;
+            SettingsMenu settingsMenu = ModCache.SettingsMenu;
             if (settingsMenu)
             {
                 settingsMenu.CommentatorsVolume.value = value;
@@ -1734,7 +1731,7 @@ namespace OverhaulMod.UI
 
         public void OnMouseSensitivityChanged(float value)
         {
-            SettingsMenu settingsMenu = ModCache.settingsMenu;
+            SettingsMenu settingsMenu = ModCache.SettingsMenu;
             if (settingsMenu)
             {
                 settingsMenu.MouseSensitivitySlider.value = value;
@@ -1743,7 +1740,7 @@ namespace OverhaulMod.UI
 
         public void OnInvertMouseToggleChanged(bool value)
         {
-            SettingsMenu settingsMenu = ModCache.settingsMenu;
+            SettingsMenu settingsMenu = ModCache.SettingsMenu;
             if (settingsMenu)
             {
                 settingsMenu.InvertMouseToggle.isOn = value;
@@ -1752,7 +1749,7 @@ namespace OverhaulMod.UI
 
         public void OnControllerSensitivityChanged(float value)
         {
-            SettingsMenu settingsMenu = ModCache.settingsMenu;
+            SettingsMenu settingsMenu = ModCache.SettingsMenu;
             if (settingsMenu)
             {
                 settingsMenu.ControllerSensitivitySlider.value = value;
@@ -1761,7 +1758,7 @@ namespace OverhaulMod.UI
 
         public void OnInvertControllerToggleChanged(bool value)
         {
-            SettingsMenu settingsMenu = ModCache.settingsMenu;
+            SettingsMenu settingsMenu = ModCache.SettingsMenu;
             if (settingsMenu)
             {
                 settingsMenu.InvertControllerToggle.isOn = value;
@@ -1770,7 +1767,7 @@ namespace OverhaulMod.UI
 
         public void OnEqualLookRatioToggleChanged(bool value)
         {
-            SettingsMenu settingsMenu = ModCache.settingsMenu;
+            SettingsMenu settingsMenu = ModCache.SettingsMenu;
             if (settingsMenu)
             {
                 settingsMenu.EqualLookRatioToggle.isOn = value;
@@ -1788,7 +1785,7 @@ namespace OverhaulMod.UI
 
         public void OnRelayToggleChanged(bool value)
         {
-            SettingsMenu settingsMenu = ModCache.settingsMenu;
+            SettingsMenu settingsMenu = ModCache.SettingsMenu;
             if (settingsMenu)
             {
                 settingsMenu.RelayToggle.isOn = value;
@@ -2114,7 +2111,7 @@ namespace OverhaulMod.UI
                 button.onClick.AddListener(delegate
                 {
                     LocalizationManager.Instance.SetCurrentLanguage(langCode);
-                    ModCache.gameUIRoot.SettingsMenu.populateSettings();
+                    ModCache.UIRoot.SettingsMenu.populateSettings();
                     SettingsMenu._tabs.ReinstantiatePreconfiguredTabs();
                     SettingsMenu._tabs.SelectTab("Languages");
                 });

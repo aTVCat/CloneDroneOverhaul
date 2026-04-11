@@ -283,7 +283,7 @@ namespace OverhaulMod.Engine
             if (!GameModeManager.IsOnTitleScreen())
                 return;
 
-            CreditsCrawlAnimation creditsCrawlAnimation = ModCache.gameUIRoot.CreditsCrawl;
+            CreditsCrawlAnimation creditsCrawlAnimation = ModCache.UIRoot.CreditsCrawl;
             if (creditsCrawlAnimation && creditsCrawlAnimation._isShowing)
                 return;
 

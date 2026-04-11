@@ -68,7 +68,7 @@ namespace OverhaulMod.Patches
                 EnergySource energySource = __instance._energySource;
                 if (!energySource || !energySource.CanConsume(0.5f))
                 {
-                    ModCache.gameUIRoot.EnergyUI.onInsufficientEnergyAttempt(0.5f);
+                    ModCache.UIRoot.EnergyUI.onInsufficientEnergyAttempt(0.5f);
                     return;
                 }
                 energySource.Consume(0.5f);

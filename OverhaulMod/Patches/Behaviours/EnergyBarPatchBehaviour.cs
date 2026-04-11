@@ -18,7 +18,7 @@ namespace OverhaulMod.Patches.Behaviours
             {
                 if (!_playerEnergyBar)
                 {
-                    _playerEnergyBar = ModCache.gameUIRoot?.EnergyUI;
+                    _playerEnergyBar = ModCache.UIRoot?.EnergyUI;
                 }
                 return _playerEnergyBar;
             }
@@ -31,7 +31,7 @@ namespace OverhaulMod.Patches.Behaviours
             {
                 if (!_mountEnergyBar)
                 {
-                    Transform mountEnergyBarTransform = TransformUtils.FindChildRecursive(ModCache.gameUIRoot.transform, "EnergyUI_Mount");
+                    Transform mountEnergyBarTransform = TransformUtils.FindChildRecursive(ModCache.UIRoot.transform, "EnergyUI_Mount");
                     if (!mountEnergyBarTransform) return null;
 
                     _mountEnergyBar = mountEnergyBarTransform.GetComponent<EnergyUI>();

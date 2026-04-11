@@ -51,7 +51,7 @@ namespace OverhaulMod.UI
         public void OnCloneDroneInfoButtonClicked()
         {
             Hide();
-            ModCache.titleScreenUI.OnCreditsButtonClicked();
+            ModCache.TitleScreenUI.OnCreditsButtonClicked();
         }
 
         public void OnGalleryButtonClicked()

@@ -31,8 +31,8 @@ namespace OverhaulMod.UI
             _stateText.text = "Please wait";
             _objectProgressText.text = string.Empty;
             _progressBarFill.fillAmount = 0f;
-            _chapterLoadingScreen = ModCache.gameUIRoot.ChapterLoadingScreen;
-            _loadingScreen = ModCache.gameUIRoot.LoadingScreen;
+            _chapterLoadingScreen = ModCache.UIRoot.ChapterLoadingScreen;
+            _loadingScreen = ModCache.UIRoot.LoadingScreen;
 
             if (TransitionManager.TransitionSound)
                 ModAudioManager.Instance.PlayTransitionSound((!GameModeManager.UsesAsyncLevelLoading() || GameModeManager.IsWorkshopChallenge()) ? 0.5f : 0f);

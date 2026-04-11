@@ -88,13 +88,13 @@ namespace OverhaulMod.UI
         public override void Show()
         {
             base.Show();
-            ModCache.titleScreenUI.SetMultiplayerPlayerModeSelectButtonsVisibile(false);
+            ModCache.TitleScreenUI.SetMultiplayerPlayerModeSelectButtonsVisibile(false);
         }
 
         public override void Hide()
         {
             base.Hide();
-            ModCache.titleScreenUI.SetMultiplayerPlayerModeSelectButtonsVisibile(true);
+            ModCache.TitleScreenUI.SetMultiplayerPlayerModeSelectButtonsVisibile(true);
         }
 
         private IEnumerator waitThenRefreshGarbageBotSkinDropdownCoroutine()

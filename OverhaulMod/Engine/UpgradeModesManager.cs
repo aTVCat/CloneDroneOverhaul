@@ -63,7 +63,7 @@ namespace OverhaulMod.Engine
         {
             if (!_buttonController)
             {
-                RectTransform spawnedButton = Instantiate(ModResources.Prefab(AssetBundleConstants.UI, "RevertUpgradesButtonPrefab"), ModCache.gameUIRoot.UpgradeUI.ExitButton.transform).GetComponent<RectTransform>();
+                RectTransform spawnedButton = Instantiate(ModResources.Prefab(AssetBundleConstants.UI, "RevertUpgradesButtonPrefab"), ModCache.UIRoot.UpgradeUI.ExitButton.transform).GetComponent<RectTransform>();
                 spawnedButton.anchoredPosition = new Vector2(-35f, -4.15f);
                 spawnedButton.sizeDelta = Vector2.one * 50f;
                 spawnedButton.localEulerAngles = Vector3.zero;
@@ -97,8 +97,8 @@ namespace OverhaulMod.Engine
         {
             _mode = upgradeMode;
 
-            if (ModCache.gameUIRoot && ModCache.gameUIRoot.UpgradeUI && ModCache.gameUIRoot.UpgradeUI.gameObject.activeSelf)
-                ModCache.gameUIRoot.UpgradeUI.PopulateIcons();
+            if (ModCache.UIRoot && ModCache.UIRoot.UpgradeUI && ModCache.UIRoot.UpgradeUI.gameObject.activeSelf)
+                ModCache.UIRoot.UpgradeUI.PopulateIcons();
 
             UpgradeModeButtonController controller = _buttonController;
             if (!controller)

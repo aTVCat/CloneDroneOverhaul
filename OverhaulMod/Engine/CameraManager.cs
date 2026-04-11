@@ -230,7 +230,7 @@ namespace OverhaulMod.Engine
             bool value = !EnableFirstPersonMode;
             ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_FIRST_PERSON_MODE, value);
 
-            EnergyUI energyUI = ModCache.gameUIRoot?.EnergyUI;
+            EnergyUI energyUI = ModCache.UIRoot?.EnergyUI;
             if (energyUI)
             {
                 if (value)

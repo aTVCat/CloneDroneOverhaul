@@ -13,14 +13,14 @@ namespace OverhaulMod.Patches.Behaviours
 
         public override void Patch()
         {
-            patchGameModeCardPrefab(ModCache.titleScreenUI.MultiplayerModeSelectScreen);
-            patchGameModeCardPrefab(ModCache.titleScreenUI.SingleplayerModeSelectScreen);
+            patchGameModeCardPrefab(ModCache.TitleScreenUI.MultiplayerModeSelectScreen);
+            patchGameModeCardPrefab(ModCache.TitleScreenUI.SingleplayerModeSelectScreen);
 
-            MultiplayerModeSelectScreenV2 multiplayerModeSelectScreen = ModCache.titleScreenUI.MultiplayerModeSelectScreenV2;
+            MultiplayerModeSelectScreenV2 multiplayerModeSelectScreen = ModCache.TitleScreenUI.MultiplayerModeSelectScreenV2;
             if (multiplayerModeSelectScreen._modeButtons == null) multiplayerModeSelectScreen.Awake();
 
             MultiplayerModeCardButton[] multiplayerDatas = multiplayerModeSelectScreen._modeButtons;
-            GameModeCardData[] singleplayerDatas = ModCache.titleScreenUI.SingleplayerModeSelectScreen.GameModeData;
+            GameModeCardData[] singleplayerDatas = ModCache.TitleScreenUI.SingleplayerModeSelectScreen.GameModeData;
 
             _storyModeEvent = singleplayerDatas[0].ClickedCallback;
             _endlessModeEvent = singleplayerDatas[1].ClickedCallback;
@@ -31,7 +31,7 @@ namespace OverhaulMod.Patches.Behaviours
             {
                 if (!ModUIManager.ShowChapterSelectionMenuRework)
                 {
-                    ModCache.titleScreenUI.OnPlayStoryButtonClicked();
+                    ModCache.TitleScreenUI.OnPlayStoryButtonClicked();
                     return;
                 }
                 _ = ModUIConstants.ShowChapterSelectMenu();
@@ -43,7 +43,7 @@ namespace OverhaulMod.Patches.Behaviours
             {
                 if (!ModUIManager.ShowEndlessModeMenu)
                 {
-                    ModCache.titleScreenUI.OnPlayEndlessButtonClicked();
+                    ModCache.TitleScreenUI.OnPlayEndlessButtonClicked();
                     return;
                 }
                 _ = ModUIConstants.ShowEndlessModeMenu();
@@ -61,8 +61,8 @@ namespace OverhaulMod.Patches.Behaviours
 
         public override void Unpatch()
         {
-            GameModeCardData[] multiplayerDatas = ModCache.titleScreenUI.MultiplayerModeSelectScreen.GameModeData;
-            GameModeCardData[] singleplayerDatas = ModCache.titleScreenUI.SingleplayerModeSelectScreen.GameModeData;
+            GameModeCardData[] multiplayerDatas = ModCache.TitleScreenUI.MultiplayerModeSelectScreen.GameModeData;
+            GameModeCardData[] singleplayerDatas = ModCache.TitleScreenUI.SingleplayerModeSelectScreen.GameModeData;
 
             singleplayerDatas[0].ClickedCallback = _storyModeEvent;
             singleplayerDatas[1].ClickedCallback = _endlessModeEvent;

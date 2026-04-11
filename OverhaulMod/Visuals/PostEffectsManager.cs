@@ -256,7 +256,7 @@ namespace OverhaulMod.Visuals
                 postEffectsContainer.RefreshEffects();
             }
 
-            Camera uiCamera = ModCache.gameUIRootCamera;
+            Camera uiCamera = ModCache.GameUIRootCamera;
             OverhaulColorBlindness overhaulColorBlindnessOverUI = uiCamera.GetComponent<OverhaulColorBlindness>();
             if (!overhaulColorBlindnessOverUI && ColorBlindnessAffectUI && ColorBlindnessMode >= 1 && ColorBlindnessMode <= 3)
                 overhaulColorBlindnessOverUI = uiCamera.gameObject.AddComponent<OverhaulColorBlindness>();

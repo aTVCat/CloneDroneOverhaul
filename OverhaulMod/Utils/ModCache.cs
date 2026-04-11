@@ -5,13 +5,14 @@ using System;
 using System.Reflection;
 using System.Text;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace OverhaulMod.Utils
 {
     public static class ModCache
     {
         private static string[] s_commandLineArgs;
-        public static string[] commandLineArgs
+        public static string[] CommandLineArgs
         {
             get
             {
@@ -24,7 +25,7 @@ namespace OverhaulMod.Utils
         }
 
         private static Assembly s_modAssembly;
-        public static Assembly modAssembly
+        public static Assembly ModAssembly
         {
             get
             {
@@ -37,20 +38,20 @@ namespace OverhaulMod.Utils
         }
 
         private static AssemblyName s_modAssemblyName;
-        public static AssemblyName modAssemblyName
+        public static AssemblyName ModAssemblyName
         {
             get
             {
                 if (s_modAssemblyName == null)
                 {
-                    s_modAssemblyName = modAssembly?.GetName();
+                    s_modAssemblyName = ModAssembly?.GetName();
                 }
                 return s_modAssemblyName;
             }
         }
 
         private static DataRepository s_dataRepository;
-        public static DataRepository dataRepository
+        public static DataRepository DataRepository
         {
             get
             {
@@ -63,26 +64,26 @@ namespace OverhaulMod.Utils
         }
 
         private static JsonSerializerSettings s_jsonSerializerSettings;
-        public static JsonSerializerSettings jsonSerializerSettings
+        public static JsonSerializerSettings JsonSerializerSettings
         {
             get
             {
                 if (s_jsonSerializerSettings == null)
                 {
-                    s_jsonSerializerSettings = dataRepository.GetSettings().Clone();
+                    s_jsonSerializerSettings = DataRepository.GetSettings().Clone();
                 }
                 return s_jsonSerializerSettings;
             }
         }
 
         private static JsonSerializerSettings s_jsonSerializerSettingsFormatted;
-        public static JsonSerializerSettings jsonSerializerSettingsFormatted
+        public static JsonSerializerSettings JsonSerializerSettingsFormatted
         {
             get
             {
                 if (s_jsonSerializerSettingsFormatted == null)
                 {
-                    s_jsonSerializerSettingsFormatted = dataRepository.GetSettings().Clone();
+                    s_jsonSerializerSettingsFormatted = DataRepository.GetSettings().Clone();
                     s_jsonSerializerSettingsFormatted.Formatting = Formatting.Indented;
                 }
                 return s_jsonSerializerSettingsFormatted;
@@ -90,7 +91,7 @@ namespace OverhaulMod.Utils
         }
 
         private static Encoding s_utf8Encoding;
-        public static Encoding utf8Encoding
+        public static Encoding UTF8Encoding
         {
             get
             {
@@ -102,60 +103,101 @@ namespace OverhaulMod.Utils
             }
         }
 
-        private static GameUIRoot s_gameUIRoot;
-        public static GameUIRoot gameUIRoot
+        private static GameUIRoot s_uiRoot;
+        public static GameUIRoot UIRoot
         {
             get
             {
-                if (!s_gameUIRoot)
+                if (!s_uiRoot)
                 {
-                    s_gameUIRoot = GameUIRoot.Instance;
+                    s_uiRoot = GameUIRoot.Instance;
                 }
-                return s_gameUIRoot;
+                return s_uiRoot;
             }
         }
 
-        private static Camera s_gameUIRootCamera;
-        public static Camera gameUIRootCamera
+
+        private static Canvas s_uiRootCanvas;
+        public static Canvas UIRootCanvas
         {
             get
             {
-                if (!s_gameUIRootCamera)
+                if (!s_uiRootCanvas)
                 {
-                    s_gameUIRootCamera = gameUIRoot.GetComponent<Canvas>().worldCamera;
+                    s_uiRootCanvas = UIRoot.GetComponent<Canvas>();
                 }
-                return s_gameUIRootCamera;
+                return s_uiRootCanvas;
+            }
+        }
+
+        private static CanvasScaler s_uiRootCanvasScaler;
+        public static CanvasScaler UIRootCanvasScaler
+        {
+            get
+            {
+                if (!s_uiRootCanvasScaler)
+                {
+                    s_uiRootCanvasScaler = UIRoot.GetComponent<CanvasScaler>();
+                }
+                return s_uiRootCanvasScaler;
+            }
+        }
+
+        private static Camera s_uiRootCamera;
+        public static Camera GameUIRootCamera
+        {
+            get
+            {
+                if (!s_uiRootCamera)
+                {
+                    s_uiRootCamera = UIRootCanvas.worldCamera;
+                }
+                return s_uiRootCamera;
             }
         }
 
         private static TitleScreenUI s_titleScreenUI;
-        public static TitleScreenUI titleScreenUI
+        public static TitleScreenUI TitleScreenUI
         {
             get
             {
                 if (!s_titleScreenUI)
                 {
-                    s_titleScreenUI = gameUIRoot?.TitleScreenUI;
+                    s_titleScreenUI = UIRoot?.TitleScreenUI;
                 }
                 return s_titleScreenUI;
             }
         }
 
+
+        private static GameObject s_titleScreenRootButtonsBG;
+        public static GameObject TitleScreenRootButtonsBG
+        {
+            get
+            {
+                if (!s_titleScreenRootButtonsBG)
+                {
+                    s_titleScreenRootButtonsBG = TitleScreenUI?.RootButtonsContainerBG;
+                }
+                return s_titleScreenRootButtonsBG;
+            }
+        }
+
         private static SettingsMenu s_settingsMenu;
-        public static SettingsMenu settingsMenu
+        public static SettingsMenu SettingsMenu
         {
             get
             {
                 if (!s_settingsMenu)
                 {
-                    s_settingsMenu = gameUIRoot?.SettingsMenu;
+                    s_settingsMenu = UIRoot?.SettingsMenu;
                 }
                 return s_settingsMenu;
             }
         }
 
         private static AttackManager s_attackManager;
-        public static AttackManager attackManager
+        public static AttackManager AttackManager
         {
             get
             {
@@ -168,7 +210,7 @@ namespace OverhaulMod.Utils
         }
 
         private static AudioManager s_audioManager;
-        public static AudioManager audioManager
+        public static AudioManager AudioManager
         {
             get
             {
@@ -181,7 +223,7 @@ namespace OverhaulMod.Utils
         }
 
         private static AudioLibrary s_audioLibrary;
-        public static AudioLibrary audioLibrary
+        public static AudioLibrary AudioLibrary
         {
             get
             {
@@ -194,7 +236,7 @@ namespace OverhaulMod.Utils
         }
 
         private static GlobalFireParticleSystem s_globalFireParticleSystem;
-        public static GlobalFireParticleSystem globalFireParticleSystem
+        public static GlobalFireParticleSystem GlobalFireParticleSystem
         {
             get
             {
@@ -207,7 +249,7 @@ namespace OverhaulMod.Utils
         }
 
         private static VoxelFadingManager s_fadingVoxelManager;
-        public static VoxelFadingManager fadingVoxelManager
+        public static VoxelFadingManager FadingVoxelManager
         {
             get
             {
@@ -219,21 +261,8 @@ namespace OverhaulMod.Utils
             }
         }
 
-        private static GameObject s_titleScreenRootButtonsBG;
-        public static GameObject titleScreenRootButtonsBG
-        {
-            get
-            {
-                if (!s_titleScreenRootButtonsBG)
-                {
-                    s_titleScreenRootButtonsBG = titleScreenUI?.RootButtonsContainerBG;
-                }
-                return s_titleScreenRootButtonsBG;
-            }
-        }
-
         private static PhotoManager s_photoManager;
-        public static PhotoManager photoManager
+        public static PhotoManager PhotoManager
         {
             get
             {
@@ -246,7 +275,7 @@ namespace OverhaulMod.Utils
         }
 
         private static MethodInfo s_unityTimeFixedUnscaledDeltaTimePropertyGetter;
-        public static MethodInfo unityTimeFixedUnscaledDeltaTimePropertyGetter
+        public static MethodInfo UnityTimeFixedUnscaledDeltaTimePropertyGetter
         {
             get
             {
@@ -259,7 +288,7 @@ namespace OverhaulMod.Utils
         }
 
         private static MethodInfo s_unityTimeUnscaledDeltaTimePropertyGetter;
-        public static MethodInfo unityTimeUnscaledDeltaTimePropertyGetter
+        public static MethodInfo UnityTimeUnscaledDeltaTimePropertyGetter
         {
             get
             {
@@ -272,7 +301,7 @@ namespace OverhaulMod.Utils
         }
 
         private static MethodInfo s_unityInputGetMouseButtonMethod;
-        public static MethodInfo unityInputGetMouseButtonMethod
+        public static MethodInfo UnityInputGetMouseButtonMethod
         {
             get
             {
@@ -285,7 +314,7 @@ namespace OverhaulMod.Utils
         }
 
         private static MethodInfo s_unityInputGetMouseButtonDownMethod;
-        public static MethodInfo unityInputGetMouseButtonDownMethod
+        public static MethodInfo UnityInputGetMouseButtonDownMethod
         {
             get
             {
@@ -297,6 +326,6 @@ namespace OverhaulMod.Utils
             }
         }
 
-        public static GameUIThemeData gameUIThemeData { get; set; }
+        public static GameUIThemeData UIThemeData { get; set; }
     }
 }

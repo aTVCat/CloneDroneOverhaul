@@ -8,7 +8,7 @@ namespace OverhaulMod.Patches.Behaviours
     {
         public override void Patch()
         {
-            GameUIRoot gameUIRoot = ModCache.gameUIRoot;
+            GameUIRoot gameUIRoot = ModCache.UIRoot;
             if (gameUIRoot)
             {
                 SettingsMenu settingsMenu = gameUIRoot.SettingsMenu;

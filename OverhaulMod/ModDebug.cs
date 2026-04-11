@@ -10,7 +10,7 @@ namespace OverhaulMod
 
         private static int s_lastFrameDownloadProgressWasDisplayed;
 
-        public static bool forceDisableCursor
+        public static bool ForceDisableCursor
         {
             get;
             set;

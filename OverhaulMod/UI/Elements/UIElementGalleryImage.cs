@@ -32,7 +32,7 @@ namespace OverhaulMod.UI
             Button button = base.GetComponent<Button>();
             button.onClick.AddListener(delegate
             {
-                ModUIUtils.ImageViewer(_texture, ModCache.gameUIRoot.transform);
+                ModUIUtils.ImageViewer(_texture, ModCache.UIRoot.transform);
             });
         }
 

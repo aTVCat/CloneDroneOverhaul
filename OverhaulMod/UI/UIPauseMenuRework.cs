@@ -467,7 +467,7 @@ namespace OverhaulMod.UI
         {
             if (!ModUIManager.ShowAdvancementsMenuRework)
             {
-                ModCache.gameUIRoot.EscMenu.OnAchievementsClicked();
+                ModCache.UIRoot.EscMenu.OnAchievementsClicked();
                 return;
             }
             _ = ModUIConstants.ShowAdvancementsMenuRework();
@@ -542,19 +542,19 @@ namespace OverhaulMod.UI
 
         public void OnReturnToLevelEditorButtonClicked()
         {
-            ModCache.gameUIRoot.EscMenu.OnBackToLevelEditorButtonClicked();
+            ModCache.UIRoot.EscMenu.OnBackToLevelEditorButtonClicked();
         }
 
         public void OnStartMatchButtonClicked()
         {
-            ModCache.gameUIRoot.EscMenu.OnStartBattleRoyaleLevelClicked();
+            ModCache.UIRoot.EscMenu.OnStartBattleRoyaleLevelClicked();
             Hide();
         }
 
         public void OnSkipLevelButtonClicked()
         {
             Hide();
-            ModCache.gameUIRoot.EscMenu.OnSkipWorkshopLevelClicked();
+            ModCache.UIRoot.EscMenu.OnSkipWorkshopLevelClicked();
         }
 
         public void OnLegacyUIButtonClicked()
@@ -647,7 +647,7 @@ namespace OverhaulMod.UI
         public void OnRestartAdventureButtonClicked()
         {
             Hide();
-            ModCache.gameUIRoot.EscMenu.OnResetAdventureClicked();
+            ModCache.UIRoot.EscMenu.OnResetAdventureClicked();
         }
 
         public static string GetPlatformString(PlayFab.ClientModels.LoginIdentityProvider login, bool colored = true)

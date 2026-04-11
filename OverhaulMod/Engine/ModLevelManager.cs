@@ -4,10 +4,8 @@ using System.IO;
 
 namespace OverhaulMod.Engine
 {
-    public class ModLevelManager : Singleton<ModLevelManager>, IGameLoadListener
+    public class ModLevelManager : Singleton<ModLevelManager>
     {
-        public const string LEVEL_DESCRIPTIONS_FILE = "LevelDescriptions.json";
-        public const string LEVELS_FOLDER = "levels/";
         public const string CHAPTER_SECTIONS_FOLDER = "chapterSections/";
 
         public const string CHAPTER_1_SECTIONS_CACHE_KEY = "StoryC1_Sections";
@@ -23,90 +21,6 @@ namespace OverhaulMod.Engine
                     _chapterSectionsFolder = Path.Combine(ModCore.DataFolder, CHAPTER_SECTIONS_FOLDER);
                 }
                 return _chapterSectionsFolder;
-            }
-        }
-
-        private string _levelsFolder;
-        public string levelsFolder
-        {
-            get
-            {
-                if (_levelsFolder == null)
-                {
-                    _levelsFolder = Path.Combine(ModCore.DataFolder, LEVELS_FOLDER);
-                }
-                return _levelsFolder;
-            }
-        }
-
-        public ModLevelDescriptionList modLevelDescriptions
-        {
-            get;
-            private set;
-        }
-
-        public System.Exception modLevelDescriptionsLoadError
-        {
-            get;
-            private set;
-        }
-
-        public override void Awake()
-        {
-            base.Awake();
-            LoadLevelDescriptions();
-        }
-
-        public void OnGameLoaded()
-        {
-            AddEndlessModeLevels();
-        }
-
-        public void LoadLevelDescriptions()
-        {
-            modLevelDescriptionsLoadError = null;
-            try
-            {
-                modLevelDescriptions = ModJsonUtils.DeserializeStream<ModLevelDescriptionList>(Path.Combine(levelsFolder, LEVEL_DESCRIPTIONS_FILE));
-
-                if (modLevelDescriptions == null)
-                    modLevelDescriptions = new ModLevelDescriptionList()
-                    {
-                        LevelDescriptions = new List<LevelDescription>(),
-                    };
-
-                if (modLevelDescriptions.LevelDescriptions == null)
-                    modLevelDescriptions.LevelDescriptions = new List<LevelDescription>();
-            }
-            catch (System.Exception exc)
-            {
-                modLevelDescriptionsLoadError = exc;
-                modLevelDescriptions = new ModLevelDescriptionList()
-                {
-                    LevelDescriptions = new List<LevelDescription>(),
-                };
-            }
-        }
-
-        public void AddEndlessModeLevels()
-        {
-            ModLevelDescriptionList moddedLevelsList = modLevelDescriptions;
-            if (moddedLevelsList == null)
-                return;
-
-            List<LevelDescription> fixedLevelDescriptions = moddedLevelsList.GetFixedLevelDescriptions();
-            if (fixedLevelDescriptions.IsNullOrEmpty())
-                return;
-
-            foreach (LevelDescription levelDescription in fixedLevelDescriptions)
-            {
-                if (!File.Exists(levelDescription.LevelJSONPath) || (levelDescription.DifficultyTier == (DifficultyTier)9 && !ModFeatures.IsEnabled(ModFeatures.FeatureType.NightmariumDifficultyTier)))
-                    continue;
-
-                if (levelDescription.LevelID.Contains("Story"))
-                    LevelManager.Instance._storyModeLevels.Add(levelDescription);
-                else
-                    LevelManager.Instance._endlessLevels.Add(levelDescription);
             }
         }
 

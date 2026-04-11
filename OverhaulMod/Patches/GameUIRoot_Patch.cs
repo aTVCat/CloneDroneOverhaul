@@ -21,7 +21,7 @@ namespace OverhaulMod.Patches
             }*/
 
 #if DEBUG
-            if (ModDebug.forceDisableCursor)
+            if (ModDebug.ForceDisableCursor)
             {
                 InputManager.Instance.SetCursorEnabled(false);
                 return false;
@@ -94,7 +94,7 @@ namespace OverhaulMod.Patches
                 OverhaulUIBehaviour lastShownUi = modUIManager.GetLastShownUI();
                 if (!lastShownUi)
                 {
-                    SettingsMenu settingsMenu = ModCache.gameUIRoot?.SettingsMenu;
+                    SettingsMenu settingsMenu = ModCache.UIRoot?.SettingsMenu;
                     if (settingsMenu && settingsMenu.gameObject.activeInHierarchy)
                     {
                         settingsMenu.Hide();

@@ -47,7 +47,7 @@ namespace OverhaulMod
             {
                 if (!_gameUIRootTransform)
                 {
-                    _gameUIRootTransform = ModCache.gameUIRoot.transform;
+                    _gameUIRootTransform = ModCache.UIRoot.transform;
                 }
                 return _gameUIRootTransform;
             }
@@ -141,29 +141,29 @@ namespace OverhaulMod
                 case UILayer.Last:
                     return GameUIRootTransform.childCount;
                 case UILayer.BeforeTitleScreen:
-                    return ModCache.titleScreenUI.transform.GetSiblingIndex();
+                    return ModCache.TitleScreenUI.transform.GetSiblingIndex();
                 case UILayer.AfterTitleScreen:
-                    return ModCache.titleScreenUI.transform.GetSiblingIndex() + 1;
+                    return ModCache.TitleScreenUI.transform.GetSiblingIndex() + 1;
                 case UILayer.BeforeEnergyUI:
-                    return ModCache.gameUIRoot.EnergyUI.transform.GetSiblingIndex();
+                    return ModCache.UIRoot.EnergyUI.transform.GetSiblingIndex();
                 case UILayer.AfterEnergyUI:
-                    return ModCache.gameUIRoot.EnergyUI.transform.GetSiblingIndex() + 1;
+                    return ModCache.UIRoot.EnergyUI.transform.GetSiblingIndex() + 1;
                 case UILayer.BeforeUpgradeUI:
-                    return ModCache.gameUIRoot.UpgradeUI.transform.GetSiblingIndex();
+                    return ModCache.UIRoot.UpgradeUI.transform.GetSiblingIndex();
                 case UILayer.AfterUpgradeUI:
-                    return ModCache.gameUIRoot.UpgradeUI.transform.GetSiblingIndex() + 1;
+                    return ModCache.UIRoot.UpgradeUI.transform.GetSiblingIndex() + 1;
                 case UILayer.BeforeEscMenu:
-                    return ModCache.gameUIRoot.EscMenu.transform.GetSiblingIndex();
+                    return ModCache.UIRoot.EscMenu.transform.GetSiblingIndex();
                 case UILayer.AfterEscMenu:
-                    return ModCache.gameUIRoot.EscMenu.transform.GetSiblingIndex() + 1;
+                    return ModCache.UIRoot.EscMenu.transform.GetSiblingIndex() + 1;
                 case UILayer.BeforeCrashScreen:
-                    return ModCache.gameUIRoot.ErrorWindow.transform.GetSiblingIndex();
+                    return ModCache.UIRoot.ErrorWindow.transform.GetSiblingIndex();
                 case UILayer.AfterCrashScreen:
-                    return ModCache.gameUIRoot.ErrorWindow.transform.GetSiblingIndex() + 1;
+                    return ModCache.UIRoot.ErrorWindow.transform.GetSiblingIndex() + 1;
                 case UILayer.BeforeMultiplayerConnectScreen:
-                    return ModCache.gameUIRoot.MultiplayerConnectingScreen.transform.GetSiblingIndex();
+                    return ModCache.UIRoot.MultiplayerConnectingScreen.transform.GetSiblingIndex();
                 case UILayer.AfterMultiplayerConnectScreen:
-                    return ModCache.gameUIRoot.MultiplayerConnectingScreen.transform.GetSiblingIndex() + 1;
+                    return ModCache.UIRoot.MultiplayerConnectingScreen.transform.GetSiblingIndex() + 1;
             }
             return 0;
         }
@@ -266,11 +266,11 @@ namespace OverhaulMod
 
         public void RefreshUI(bool refreshOnlyCursor)
         {
-            ModCache.gameUIRoot.RefreshCursorEnabled();
+            ModCache.UIRoot.RefreshCursorEnabled();
             if (!refreshOnlyCursor)
             {
-                ModCache.gameUIRoot.SetUIOverLogoModeEnabled(ShouldEnableUIOverLogoMode());
-                ModCache.titleScreenUI.setLogoAndRootButtonsVisible(GameModeManager.IsOnTitleScreen() && !ShouldHideTitleScreen());
+                ModCache.UIRoot.SetUIOverLogoModeEnabled(ShouldEnableUIOverLogoMode());
+                ModCache.TitleScreenUI.setLogoAndRootButtonsVisible(GameModeManager.IsOnTitleScreen() && !ShouldHideTitleScreen());
             }
         }
 
@@ -358,7 +358,7 @@ namespace OverhaulMod
                 return;
 
             bool shouldDisplay = !SettingsManager.Instance.ShouldHideGameUI();
-            GameUIRoot gameUIRoot = ModCache.gameUIRoot;
+            GameUIRoot gameUIRoot = ModCache.UIRoot;
 
             if (GameModeManager.IsBattleRoyale())
             {

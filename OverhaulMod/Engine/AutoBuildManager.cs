@@ -61,7 +61,7 @@ namespace OverhaulMod.Engine
 
             if (Input.GetKeyDown(AutoBuildKeyBind))
             {
-                UpgradeUI upgradeUI = ModCache.gameUIRoot.UpgradeUI;
+                UpgradeUI upgradeUI = ModCache.UIRoot.UpgradeUI;
                 if (upgradeUI.gameObject.activeSelf)
                 {
                     autoBuildSelectionMenu.Show();
@@ -87,7 +87,7 @@ namespace OverhaulMod.Engine
             BattleRoyaleManager battleRoyaleManager = BattleRoyaleManager.Instance;
             if (battleRoyaleManager)
             {
-                UpgradeUI upgradeUI = ModCache.gameUIRoot.UpgradeUI;
+                UpgradeUI upgradeUI = ModCache.UIRoot.UpgradeUI;
                 if (!upgradeUI || !upgradeUI.gameObject.activeInHierarchy)
                     return;
 
@@ -103,7 +103,7 @@ namespace OverhaulMod.Engine
 
         public void LoadBuildList()
         {
-            string oldPath = Path.Combine(ModDataManager.userDataFolder, "AutoBuildInfo.json");
+            string oldPath = Path.Combine(ModDataManager.UserDataFolder, "AutoBuildInfo.json");
             AutoBuildInfo oldAutoBuildInfo;
             if (File.Exists(oldPath))
             {
@@ -173,7 +173,7 @@ namespace OverhaulMod.Engine
             if (!firstPersonMover)
                 return;
 
-            UpgradeUI upgradeUI = ModCache.gameUIRoot?.UpgradeUI;
+            UpgradeUI upgradeUI = ModCache.UIRoot?.UpgradeUI;
             if (!upgradeUI || !upgradeUI.gameObject.activeInHierarchy)
                 return;
 
@@ -192,7 +192,7 @@ namespace OverhaulMod.Engine
         private IEnumerator applyBuildCoroutine(AutoBuildInfo autoBuildInfo)
         {
             string playFabId = MultiplayerLoginManager.Instance.GetLocalPlayFabID();
-            UpgradeUI upgradeUI = ModCache.gameUIRoot.UpgradeUI;
+            UpgradeUI upgradeUI = ModCache.UIRoot.UpgradeUI;
             List<UpgradeTypeAndLevel> list = autoBuildInfo.Upgrades;
             for (int i = 0; i < list.Count; i++)
             {

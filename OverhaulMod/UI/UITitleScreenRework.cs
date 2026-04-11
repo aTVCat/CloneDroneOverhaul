@@ -250,7 +250,7 @@ namespace OverhaulMod.UI
             _newOffsetMax = new Vector2(0f, _oldOffsetMax.y);
             _newAnchorMax = new Vector2(1f, 0f);
 
-            TitleScreenUI titleScreenUI = ModCache.titleScreenUI;
+            TitleScreenUI titleScreenUI = ModCache.TitleScreenUI;
             _titleScreenUI = titleScreenUI;
             _vanillaTitleScreenButtonsContainer = titleScreenUI.RootButtonsContainer;
             _leftSideFadeGraphic = titleScreenUI.LeftFadeBG.GetComponent<Graphic>();
@@ -503,7 +503,7 @@ namespace OverhaulMod.UI
         {
             if (!ModUIManager.ShowAdvancementsMenuRework)
             {
-                ModCache.titleScreenUI.OnAchievementsButtonClicked();
+                ModCache.TitleScreenUI.OnAchievementsButtonClicked();
                 return;
             }
             _ = ModUIConstants.ShowAdvancementsMenuRework();
@@ -513,7 +513,7 @@ namespace OverhaulMod.UI
         {
             if (!ModUIManager.ShowWorkshopBrowserRework)
             {
-                ModCache.titleScreenUI.OnWorkshopBrowserButtonClicked();
+                ModCache.TitleScreenUI.OnWorkshopBrowserButtonClicked();
                 return;
             }
             _ = ModUIConstants.ShowWorkshopBrowserRework();
@@ -536,7 +536,7 @@ namespace OverhaulMod.UI
         {
             if (!ModUIManager.ShowSettingsMenuRework)
             {
-                ModCache.titleScreenUI.OnOptionsButtonClicked();
+                ModCache.TitleScreenUI.OnOptionsButtonClicked();
                 return;
             }
             _ = ModUIConstants.ShowSettingsMenuRework(false);

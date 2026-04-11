@@ -218,7 +218,7 @@ namespace OverhaulMod.UI
             Hide();
             if (GameModeManager.IsOnTitleScreen())
             {
-                TitleScreenUI titleScreenUI = ModCache.titleScreenUI;
+                TitleScreenUI titleScreenUI = ModCache.TitleScreenUI;
                 if (titleScreenUI)
                 {
                     titleScreenUI.OnAchievementsButtonClicked();
@@ -226,7 +226,7 @@ namespace OverhaulMod.UI
                 return;
             }
 
-            ModCache.gameUIRoot.AchievementProgressUI.Show();
+            ModCache.UIRoot.AchievementProgressUI.Show();
         }
 
         public void OnSyncWthSteamButtonClicked()

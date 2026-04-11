@@ -56,14 +56,14 @@ namespace OverhaulMod.UI
         public override void Show()
         {
             base.Show();
-            ModCache.titleScreenUI.SetSinglePlayerModeSelectButtonsVisibile(false);
+            ModCache.TitleScreenUI.SetSinglePlayerModeSelectButtonsVisibile(false);
             RefreshProgressDisplays();
         }
 
         public override void Hide()
         {
             base.Hide();
-            ModCache.titleScreenUI.SetSinglePlayerModeSelectButtonsVisibile(true);
+            ModCache.TitleScreenUI.SetSinglePlayerModeSelectButtonsVisibile(true);
         }
 
         public void OnExitButtonClicked()
@@ -76,7 +76,7 @@ namespace OverhaulMod.UI
             if (!TransitionManager.OverhaulSceneTransitions)
             {
                 Hide();
-                ModCache.titleScreenUI.OnPlayEndlessButtonClicked();
+                ModCache.TitleScreenUI.OnPlayEndlessButtonClicked();
                 return;
             }
             TransitionManager.Instance.DoInGameTransition(transitionCoroutine());
@@ -107,7 +107,7 @@ namespace OverhaulMod.UI
         {
             yield return new WaitForSecondsRealtime(1f);
             Hide();
-            ModCache.titleScreenUI.OnPlayEndlessButtonClicked();
+            ModCache.TitleScreenUI.OnPlayEndlessButtonClicked();
             yield return new WaitUntil(() => CharacterTracker.Instance._player);
             yield return new WaitForSecondsRealtime(0.1f);
             TransitionManager.Instance.EndTransition();

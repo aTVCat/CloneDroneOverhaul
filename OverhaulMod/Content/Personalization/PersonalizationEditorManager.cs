@@ -462,7 +462,7 @@ namespace OverhaulMod.Content.Personalization
         public void ExportItem(PersonalizationItemInfo personalizationItemInfo, out string destination, string overrideDirectoryPath = null, string overrideFn = null)
         {
             string fn = overrideFn.IsNullOrEmpty() ? $"{Path.GetFileName(personalizationItemInfo.FolderPath)}.zip" : overrideFn;
-            string folder = overrideDirectoryPath.IsNullOrEmpty() ? ModDataManager.savesFolder : overrideDirectoryPath;
+            string folder = overrideDirectoryPath.IsNullOrEmpty() ? ModDataManager.SavesFolder : overrideDirectoryPath;
             destination = Path.Combine(folder, fn);
 
             if (File.Exists(destination))

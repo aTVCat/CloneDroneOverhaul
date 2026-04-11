@@ -144,12 +144,12 @@ namespace OverhaulMod.Utils
 
         public static byte[] GetBytes(string @string)
         {
-            return ModCache.utf8Encoding.GetBytes(@string);
+            return ModCache.UTF8Encoding.GetBytes(@string);
         }
 
         public static string GetString(byte[] bytes)
         {
-            return ModCache.utf8Encoding.GetString(bytes);
+            return ModCache.UTF8Encoding.GetString(bytes);
         }
     }
 }

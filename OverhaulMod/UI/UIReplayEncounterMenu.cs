@@ -104,7 +104,7 @@ namespace OverhaulMod.UI
 
         public void OnStartFromBeginningButtonClicked()
         {
-            StoryModeChapterSelect legacyUI = ModCache.titleScreenUI.ChapterSelectUI;
+            StoryModeChapterSelect legacyUI = ModCache.TitleScreenUI.ChapterSelectUI;
             if (!legacyUI)
             {
                 ModUIUtils.MessagePopupOK("Error", "Legacy UI reference is NULL");
