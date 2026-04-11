@@ -16,6 +16,7 @@ img=images/42_patch11_3.png
 - Reworked welding particles
 - Added back great swords modifier to story mode
 - Added back weapons on the back
+img=images/42_patch11_4.png
 - Added back reverting upgrades
 - Increased scythe speed
 - Reorganized and renamed many settings, removed the home page
@@ -45,9 +46,9 @@ img=images/42_patch11_1.png
 - Realistic skyboxes applying to Last bot standing and Team battle waiting rooms
 - Realistic skyboxes not working for some players
 - Being able to see through walls with high FOV
-- Physics intepolation not applying to main part of robot's body
+- Physics interpolation not applying to main part of robot's body
 - Transition sound not playing if new transition started right after the previous one
 - Some lists in UIs not getting scrolled to the top automatically
 - Missing translation in few UIs
-- Fixed Epic Games platform display as "N/A"
+- Fixed Epic Games platform displaying as "N/A"
 - Some math behind first person mode

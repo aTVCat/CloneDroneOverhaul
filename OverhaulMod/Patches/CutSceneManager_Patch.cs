@@ -11,8 +11,6 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(CutSceneManager.StartConstructionSequence))]
         private static void StartConstructionSequence_Postfix(FirstPersonMover player, bool isBusinessConstruction = false)
         {
-            if (!ParticleManager.ReworkWeldingParticles) return;
-
             CharacterModel characterModel = player ? player.GetCharacterModel() : null;
             ConstructionProps constructionProps = characterModel ? characterModel.ConstructionProps : null;
             if (!constructionProps) return;

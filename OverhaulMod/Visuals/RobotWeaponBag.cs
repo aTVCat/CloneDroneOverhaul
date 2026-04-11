@@ -36,7 +36,7 @@ namespace OverhaulMod.Visuals
             { WeaponType.Sword, new TransformInfo(new Vector3(0.5f, 0.5f, -0.125f), new Vector3(50f, 270f, 90f), Vector3.one)},
             { WeaponType.Bow, new TransformInfo(new Vector3(0f, -0.3f, -0.075f), new Vector3(0f, 0f, 50f), Vector3.one)},
             { WeaponType.Hammer, new TransformInfo(new Vector3(-0.4f, 0.4f, -0.2f), new Vector3(0f, 0f, 310f), Vector3.one)},
-            { WeaponType.Spear, new TransformInfo(new Vector3(0.2f, 0.6f, 0f), new Vector3(0f, 0f, 250f), Vector3.one)}
+            { WeaponType.Spear, new TransformInfo(new Vector3(0.2f, 0.6f, 0f), new Vector3(20f, 90f, 270f), Vector3.one)}
         };
 
         private FirstPersonMover _firstPersonMover;

@@ -133,7 +133,7 @@ namespace OverhaulMod.Content.Personalization
 
         private void Update()
         {
-            if (!_hasInitialized || _hasOwnerDied || _isMindSpace || PersonalizationEditorManager.IsInEditor()) return;
+            if (!_hasInitialized || _hasOwnerDied || _isMindSpace) return;
 
             _timeLeftToRefreshSkins = Mathf.Max(0f, _timeLeftToRefreshSkins - Time.deltaTime);
             if (_timeLeftToRefreshSkins == 0f && _hasRobotStateChanged)

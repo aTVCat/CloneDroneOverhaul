@@ -132,6 +132,7 @@ namespace OverhaulMod.UI
         public void OnOriginalModelToggled(bool value)
         {
             PersonalizationEditorManager.Instance.originalModelsEnabled = value;
+            PersonalizationEditorManager.Instance.GetBot().GetComponent<PersonalizationController>().RefreshWeaponSkinsNextFrame();
         }
 
         public void OnPresetPreviewChanged(int value)

@@ -241,6 +241,13 @@ namespace OverhaulMod
             ModSpecialUtils.SetTitleBarStateDependingOnSettings();
 
             if (GameModeManager.IsOnTitleScreen()) _ = ModUIConstants.ShowTitleScreenReworkIfHaventBefore();
+
+            // for cases when transition doesnt end automatically for some reason
+            DelegateScheduler.Instance.Schedule(delegate
+            {
+                if (!LevelManager.Instance.IsSpawningCurrentLevel())
+                    TransitionManager.Instance.EndTransition();
+            }, 1f);
         }
 
         public override void OnModDeactivated()
