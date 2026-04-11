@@ -395,6 +395,8 @@
     <Compile Include="Patches\Behaviours\SubtitleTextFieldPatchBehaviour.cs" />
     <Compile Include="Patches\CacheManager_Patch.cs" />
     <Compile Include="Patches\CameraShaker_Patch.cs" />
+    <Compile Include="Patches\MultiplayerSpawnPoint_Patch.cs" />
+    <Compile Include="Patches\CutSceneManager_Patch.cs" />
     <Compile Include="Patches\ChapterLoadingScreen_Patch.cs" />
     <Compile Include="Patches\CharacterModel_Patch.cs" />
     <Compile Include="Patches\ControlsHintPanel_Patch.cs" />
@@ -613,6 +615,8 @@
     <Compile Include="Visuals\ArrowModelRefresher.cs" />
     <Compile Include="Visuals\BloomMode.cs" />
     <Compile Include="Visuals\DisableRigidBodyInterpolation.cs" />
+    <Compile Include="Visuals\ConstructionPropsParticleReplacer.cs" />
+    <Compile Include="Visuals\ReplacedParticles.cs" />
     <Compile Include="Visuals\Environment\FloatingDustManager.cs" />
     <Compile Include="Visuals\SeveredBodyPartSparks.cs" />
     <Compile Include="Visuals\Environment\WeatherInfo.cs" />

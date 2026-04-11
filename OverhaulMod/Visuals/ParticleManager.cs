@@ -27,14 +27,17 @@ namespace OverhaulMod.Visuals
 
         public const string LOGO_EXPLOSION_PARTICLES_ID = "VFX_LogoExplosion";
 
-        [ModSetting(ModSettingsConstants.ENABLE_PARTICLES, true)]
-        public static bool EnableParticles;
+        [ModSetting(ModSettingsConstants.ENABLE_HIT_PARTICLES, true)]
+        public static bool EnableHitParticles;
 
         [ModSetting(ModSettingsConstants.NEW_EXPLOSION_PARTICLES, true)]
         public static bool NewExplosionParticles;
 
         [ModSetting(ModSettingsConstants.REDUCE_FLASHES, false)]
         public static bool ReduceFlashes;
+
+        [ModSetting(ModSettingsConstants.NEW_WELDING_PARTICLES, true)]
+        public static bool ReworkWeldingParticles;
 
         private GameObject _logoParticles;
 
@@ -150,7 +153,6 @@ namespace OverhaulMod.Visuals
             Transform t = PooledPrefabManager.Instance.SpawnObject(BLUE_GRENADE_EXPLOSION, position);
         }
 
-        // to be extra sure that the game dont crash here
         private void toggleFlashesForParticles(Transform particlesTransform, int flashesCount)
         {
             Transform c0 = particlesTransform.GetChild(0);

@@ -51,14 +51,14 @@ namespace OverhaulMod.Patches
                 {
                     GlobalFireParticleSystem.Instance.SpawnSingleBig(vector, (5f * impactDirectionWorld) + (1f * vector2), 1f);
 
-                    if (ParticleManager.EnableParticles && UnityEngine.Random.value < 0.1f)
+                    if (ParticleManager.EnableHitParticles && UnityEngine.Random.value < 0.1f)
                         ParticleManager.Instance.SpawnFireCutParticles(vector);
                 }
                 else
                 {
                     VoxelParticleSystem.Instance.SpawnSingle(vector, voxelAtPosition.Value.Color, __instance.getVoxelParticleSize() * 0.75f, (3f * impactDirectionWorld) + (1f * vector2));
 
-                    if (ParticleManager.EnableParticles && UnityEngine.Random.value < 0.1f)
+                    if (ParticleManager.EnableHitParticles && UnityEngine.Random.value < 0.1f)
                         ParticleManager.Instance.SpawnLaserCutParticles(vector);
 
                     if (VoxelFadingManager.EnableBurning)

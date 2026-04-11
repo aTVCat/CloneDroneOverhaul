@@ -11,7 +11,7 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(GlobalFireParticleSystem.SpawnSingleBig), new System.Type[] { typeof(Vector3), typeof(Vector3), typeof(float) })]
         private static void SpawnSingleBig_Postfix(Vector3 worldPos, Vector3 startVelocity, float lifeTime)
         {
-            if (ParticleManager.EnableParticles && UnityEngine.Random.value >= 0.95f)
+            if (ParticleManager.EnableHitParticles && UnityEngine.Random.value >= 0.95f)
                 ParticleManager.Instance.SpawnFireParticles(worldPos);
         }
 

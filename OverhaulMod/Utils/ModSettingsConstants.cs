@@ -129,7 +129,7 @@ namespace OverhaulMod.Utils
         /// <summary>
         /// <see cref="Visuals.ParticleManager"/>
         /// </summary>
-        public const string ENABLE_PARTICLES = "EnableParticles";
+        public const string ENABLE_HIT_PARTICLES = "EnableHitParticles";
 
         /// <summary>
         /// <see cref="Visuals.Environment.SeveredBodyPartSparks"/>
@@ -710,5 +710,10 @@ namespace OverhaulMod.Utils
         /// <see cref="Patches.Behaviours.ChunkUpdateDelayPatchBehaviour"/>
         /// </summary>
         public const string CHUNK_UPDATE_DELAY = "ChunkUpdateDelay";
+
+        /// <summary>
+        /// <see cref="Patches.Behaviours.ConstructionParticlesPatchBehaviour"/>
+        /// </summary>
+        public const string NEW_WELDING_PARTICLES = "NewWeldingParticles";
     }
 }

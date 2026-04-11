@@ -64,9 +64,12 @@ namespace OverhaulMod.Engine
             if (_scheduledUpdates.Count == 0) return;
 
             CharacterUpdateInfo update = _scheduledUpdates[0];
-            if (!update.UpdateSkinsIfRequired() || !update.UpdateWeaponBagIfRequired())
+            if (!update.UpdateSkinsIfRequired())
             {
-                _scheduledUpdates.RemoveAt(0);
+                if (!update.UpdateWeaponBagIfRequired())
+                {
+                    _scheduledUpdates.RemoveAt(0);
+                }
             }
         }
 

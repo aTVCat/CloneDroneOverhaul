@@ -11,7 +11,7 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(AttackManager.CreateSwordBlockVFX))]
         private static bool CreateSwordBlockVFX_Prefix(Vector3 position)
         {
-            if (!ParticleManager.EnableParticles)
+            if (!ParticleManager.EnableHitParticles)
                 return true;
 
             ParticleManager.Instance.SpawnSwordBlockParticles(position);
@@ -22,7 +22,7 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(AttackManager.CreateEmperorWeaponEnvironmentImpactVFX))]
         private static bool CreateEmperorWeaponEnvironmentImpactVFX_Prefix(Vector3 position)
         {
-            if (!ParticleManager.EnableParticles)
+            if (!ParticleManager.NewExplosionParticles)
                 return true;
 
             ParticleManager.Instance.SpawnBlueGrenadeExplosionParticles(position);
@@ -33,7 +33,7 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(AttackManager.CreateHammerHitEffectVFX))]
         private static void CreateHammerHitEffectVFX_Prefix(Vector3 position)
         {
-            if (!ParticleManager.EnableParticles)
+            if (!ParticleManager.EnableHitParticles)
                 return;
 
             ParticleManager.Instance.SpawnHammerHitParticles(position);
@@ -43,7 +43,7 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(AttackManager.CreateEmperorHeadExplosionVFX))]
         private static void CreateEmperorHeadExplosionVFX_Postfix(Vector3 position)
         {
-            if (!ParticleManager.EnableParticles || !ParticleManager.NewExplosionParticles)
+            if (!ParticleManager.NewExplosionParticles)
                 return;
 
             ParticleManager.Instance.SpawnLogoExplosionParticles(position);

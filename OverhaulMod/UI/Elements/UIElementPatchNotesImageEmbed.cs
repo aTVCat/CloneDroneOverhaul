@@ -30,6 +30,8 @@ namespace OverhaulMod.UI
 
         private bool _refreshSizeNextFrame;
 
+        private bool _isDestroyed;
+
         public string URL;
 
         public Transform PatchNotesTransform;
@@ -45,6 +47,8 @@ namespace OverhaulMod.UI
         public override void OnDestroy()
         {
             base.OnDestroy();
+            _isDestroyed = true;
+
             if (_webRequest != null)
             {
                 _webRequest.Abort();
@@ -71,6 +75,8 @@ namespace OverhaulMod.UI
         private void onDownloadedTheImage(Texture2D texture)
         {
             _webRequest = null;
+
+            if (_isDestroyed) return;
 
             _texture = texture;
             _image.gameObject.SetActive(true);

@@ -366,12 +366,12 @@ namespace OverhaulMod.UI
             {
                 ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_GARBAGE_PARTICLES, value, true);
             }, "Enable sparks");
-            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_PARTICLES), delegate (bool value)
+            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_HIT_PARTICLES), delegate (bool value)
             {
-                ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_PARTICLES, value, true);
+                ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_HIT_PARTICLES, value, true);
                 PopulatePage("setup");
             }, "Enable particles");
-            if (ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_PARTICLES))
+            if (ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_HIT_PARTICLES))
             {
                 _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.REDUCE_FLASHES), delegate (bool value)
                 {
@@ -798,22 +798,28 @@ namespace OverhaulMod.UI
             PageBuilder pageBuilder = new PageBuilder(this);
 
             _ = pageBuilder.Header1("Particles");
-            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_PARTICLES), delegate (bool value)
+            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_HIT_PARTICLES), delegate (bool value)
             {
-                ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_PARTICLES, value, true);
+                ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_HIT_PARTICLES, value, true);
                 PopulatePage("Effects");
-            }, "Enable particles");
-            if (ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_PARTICLES))
+            }, "Rework hit particles");
+            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.NEW_EXPLOSION_PARTICLES), delegate (bool value)
+            {
+                ModSettingsManager.SetBoolValue(ModSettingsConstants.NEW_EXPLOSION_PARTICLES, value, true);
+                PopulatePage("Effects");
+            }, "Rework explosion particles");
+            if (ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_HIT_PARTICLES) || ModSettingsManager.GetBoolValue(ModSettingsConstants.NEW_EXPLOSION_PARTICLES))
             {
                 _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.REDUCE_FLASHES), delegate (bool value)
                 {
                     ModSettingsManager.SetBoolValue(ModSettingsConstants.REDUCE_FLASHES, value, true);
                 }, "Reduce flashes");
-                _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.NEW_EXPLOSION_PARTICLES), delegate (bool value)
-                {
-                    ModSettingsManager.SetBoolValue(ModSettingsConstants.NEW_EXPLOSION_PARTICLES, value, true);
-                }, "New explosion particles");
             }
+            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.NEW_WELDING_PARTICLES), delegate (bool value)
+            {
+                ModSettingsManager.SetBoolValue(ModSettingsConstants.NEW_WELDING_PARTICLES, value, true);
+                PopulatePage("Effects");
+            }, "Rework welding particles");
 
             _ = pageBuilder.Header1("Voxel engine");
             _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.CHANGE_HIT_COLORS), delegate (bool value)
@@ -884,10 +890,6 @@ namespace OverhaulMod.UI
             _ = pageBuilder.Header1("Garbage");
             _ = pageBuilder.Dropdown(settingsMenu.GarbageSettingsDropdown.options, settingsMenu.GarbageSettingsDropdown.value, OnGarbageSettingsChanged);
             _ = pageBuilder.Toggle(settingsMenu.PlayerPushesGarbageToggle.isOn, OnPlayerPushesGarbageToggleChanged, "Collisions");
-            _ = pageBuilder.Toggle(ModSettingsManager.GetBoolValue(ModSettingsConstants.ENABLE_GARBAGE_PARTICLES), delegate (bool value)
-            {
-                ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_GARBAGE_PARTICLES, value, true);
-            }, "Enable sparks");
         }
 
         private void populateGameplayPage(SettingsMenu settingsMenu)

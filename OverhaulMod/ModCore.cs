@@ -291,11 +291,6 @@ namespace OverhaulMod
             PersonalizationMultiplayerManager.Instance.OnEvent(moddedEvent);
         }
 
-        public override UnityEngine.Object OnResourcesLoad(string path)
-        {
-            return LevelEditorPatch.Patch.GetResourceObject(path);
-        }
-
         public override void OnFirstPersonMoverSpawned(FirstPersonMover firstPersonMover)
         {
             _ = ModActionUtils.RunCoroutine(waitUntilCharacterModelInitialization(firstPersonMover));
