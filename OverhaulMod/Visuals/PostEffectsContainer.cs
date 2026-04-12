@@ -123,7 +123,7 @@ namespace OverhaulMod.Visuals
 
             if (bloom)
             {
-                if (PersonalizationEditorManager.IsInEditor() && PersonalizationEditorManager.Instance.IsInScreenshotMode()) mode = BloomMode.Neonish;
+                if (PersonalizationEditorManager.IsInEditorMode() && PersonalizationEditorManager.Instance.IsInScreenshotMode()) mode = BloomMode.Neonish;
 
                 switch (mode)
                 {
@@ -159,7 +159,7 @@ namespace OverhaulMod.Visuals
 
         private void refreshAmplifyOcclusion(bool enable, GameObject cameraObject)
         {
-            if (PersonalizationEditorManager.IsInEditor() && PersonalizationEditorManager.Instance.IsInScreenshotMode())
+            if (PersonalizationEditorManager.IsInEditorMode() && PersonalizationEditorManager.Instance.IsInScreenshotMode())
             {
                 enable = true;
             }

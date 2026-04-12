@@ -58,7 +58,7 @@ namespace OverhaulMod.UI
 
         protected override void OnInitialized()
         {
-            bool canVerifyItems = PersonalizationEditorManager.Instance.canVerifyItems;
+            bool canVerifyItems = PersonalizationEditorManager.Instance.CanVerifyItems;
 
             _cachedInstantiatedDisplays = new Dictionary<string, GameObject>();
             _viewAllItemsToggle.gameObject.SetActive(canVerifyItems);
@@ -87,7 +87,7 @@ namespace OverhaulMod.UI
 
             if (!itemList.Items.IsNullOrEmpty())
             {
-                bool getAll = _viewAllItemsToggle.isOn && PersonalizationEditorManager.Instance.canVerifyItems;
+                bool getAll = _viewAllItemsToggle.isOn && PersonalizationEditorManager.Instance.CanVerifyItems;
                 List<PersonalizationItemInfo> nonPersistent = new List<PersonalizationItemInfo>();
                 List<PersonalizationItemInfo> persistent = new List<PersonalizationItemInfo>();
                 foreach (PersonalizationItemInfo item in itemList.Items)
@@ -103,7 +103,7 @@ namespace OverhaulMod.UI
 
                 if (!nonPersistent.IsNullOrEmpty())
                 {
-                    instantiateHeader("Verified items");
+                    instantiateHeader("Uploaded items");
                     populate(nonPersistent);
                 }
                 if (!persistent.IsNullOrEmpty())
@@ -170,6 +170,16 @@ namespace OverhaulMod.UI
             moddedObject.GetObject<Text>(0).text = text;
         }
 
+        private void importResult(PersonalizationItemImportResult result)
+        {
+            if (result.HasFailed())
+            {
+                ModUIUtils.MessagePopupOK("Import error", result.Error, true);
+                return;
+            }
+            Hide();
+        }
+
         public void OnViewAllItemsToggleChanged(bool value)
         {
             Populate();
@@ -216,14 +226,7 @@ namespace OverhaulMod.UI
         {
             ModUIUtils.FileExplorer(base.transform, true, delegate (string path)
             {
-                PersonalizationEditorManager.Instance.ImportItem(path, out string error, true);
-                if (!string.IsNullOrEmpty(error))
-                {
-                    ModUIUtils.MessagePopupOK("Import error", error, true);
-                    return;
-                }
-
-                Hide();
+                PersonalizationEditorDataManager.Instance.ImportOrUpdateItem(path, importResult, true);
             }, null, "*.zip");
         }
     }

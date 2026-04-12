@@ -58,30 +58,15 @@ namespace OverhaulMod.UI
 
         public override bool RefreshOnlyCursor => true;
 
-        public Action okButtonAction
-        {
-            get;
-            private set;
-        }
+        private Action _okButtonAction;
 
-        public Action yesButtonAction
-        {
-            get;
-            private set;
-        }
+        private Action _yesButtonAction;
 
-        public Action noButtonAction
-        {
-            get;
-            private set;
-        }
+        private Action _noButtonAction;
 
         public override void Hide()
         {
             base.Hide();
-            okButtonAction = null;
-            yesButtonAction = null;
-            noButtonAction = null;
         }
 
         public override void Update()
@@ -104,22 +89,37 @@ namespace OverhaulMod.UI
             if (_scrollRect) _scrollRect.verticalNormalizedPosition = 1f; // for some reason it sometimes auto scrolls to anywhere, but the top
         }
 
+        private void clearCallbacks()
+        {
+            _okButtonAction = null;
+            _yesButtonAction = null;
+            _noButtonAction = null;
+        }
+
+        private void clearCallbackIfNotVisible()
+        {
+            if (!IsVisible) clearCallbacks();
+        }
+
         public void OnOkButtonClicked()
         {
-            okButtonAction?.Invoke();
             Hide();
+            if(_okButtonAction != null) _okButtonAction();
+            clearCallbackIfNotVisible();
         }
 
         public void OnYesButtonClicked()
         {
-            yesButtonAction?.Invoke();
             Hide();
+            if (_yesButtonAction != null) _yesButtonAction();
+            clearCallbackIfNotVisible();
         }
 
         public void OnNoButtonClicked()
         {
-            noButtonAction?.Invoke();
             Hide();
+            if (_noButtonAction != null) _noButtonAction();
+            clearCallbackIfNotVisible();
         }
 
         public void SetTexts(string header, string description)
@@ -150,9 +150,9 @@ namespace OverhaulMod.UI
 
         public void SetButtonActions(Action ok, Action yes, Action no)
         {
-            okButtonAction = ok;
-            yesButtonAction = yes;
-            noButtonAction = no;
+            _okButtonAction = ok;
+            _yesButtonAction = yes;
+            _noButtonAction = no;
         }
 
         public void SetButtonTexts(string okText, string yesText, string noText)

@@ -40,9 +40,9 @@ namespace OverhaulMod.UI
                 Button button = moddedObject.GetComponent<Button>();
                 button.onClick.AddListener(delegate
                 {
-                    PersonalizationEditorObjectBehaviour b = PersonalizationEditorObjectManager.Instance.PlaceObject(obj.Path, PersonalizationEditorManager.Instance.currentEditingRoot.transform, true);
+                    PersonalizationEditorObjectBehaviour b = PersonalizationEditorObjectManager.Instance.PlaceObject(obj.Path, PersonalizationEditorManager.Instance.EditingRoot.transform, true);
                     b.UniqueIndex = PersonalizationEditorObjectManager.Instance.GetNextUniqueIndex();
-                    b.ControllerInfo = PersonalizationEditorManager.Instance.currentEditingRoot.ControllerInfo;
+                    b.ControllerInfo = PersonalizationEditorManager.Instance.EditingRoot.ControllerInfo;
                     b.SerializedScale = Vector3.one;
                     PersonalizationEditorObjectManager.Instance.AddInstantiatedObject(b);
                     PersonalizationEditorManager.Instance.SerializeRoot();

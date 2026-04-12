@@ -31,7 +31,7 @@ namespace OverhaulMod.UI
 
         private void refreshText()
         {
-            List<PersonalizationItemLockInfo> list = PersonalizationEditorManager.Instance?.currentEditingItemInfo?.ExclusiveFor_V2;
+            List<PersonalizationItemLockInfo> list = PersonalizationEditorManager.Instance?.EditingItemInfo?.ExclusiveFor_V2;
             if (list.IsNullOrEmpty())
             {
                 _text.text = "None";

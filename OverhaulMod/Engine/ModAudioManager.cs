@@ -112,10 +112,10 @@ namespace OverhaulMod.Engine
 
         public void PlayOrStopCustomizationEditorAmbiance()
         {
-            if (!PersonalizationEditorManager.IsInEditor())
+            if (!PersonalizationEditorManager.IsInEditorMode())
                 return;
 
-            if (PersonalizationEditorManager.EditorAmbiance)
+            if (PersonalizationEditorManager.PlayAmbiance)
             {
                 _timeCustomizationEditorAmbianceStopTime = -1f;
                 _timeCustomizationEditorAmbianceStartTime = Time.unscaledTime;

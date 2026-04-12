@@ -1,5 +1,6 @@
 ﻿using OverhaulMod.Content.Personalization;
 using OverhaulMod.Utils;
+using System;
 using UnityEngine.UI;
 
 namespace OverhaulMod.UI
@@ -43,6 +44,17 @@ namespace OverhaulMod.UI
             _doneButton.interactable = !_changeFolderNameToggle.isOn || (!_itemFolderNameField.text.IsNullOrEmpty() && !_itemFolderNameField.text.IsNullOrWhiteSpace());
         }
 
+        private void importResult(PersonalizationItemImportResult result)
+        {
+            if (result.HasFailed())
+            {
+                ModUIUtils.MessagePopupOK("Import error", result.Error, true);
+                return;
+            }
+            Hide();
+            ItemBrowser.Hide();
+        }
+
         public void OnChangeFolderNameToggle(bool value)
         {
             _itemFolderNameField.interactable = value;
@@ -56,15 +68,7 @@ namespace OverhaulMod.UI
 
         public void OnDoneButtonClicked()
         {
-            PersonalizationEditorManager.Instance.ImportItem(FilePath, out string error, true);
-            if (!string.IsNullOrEmpty(error))
-            {
-                ModUIUtils.MessagePopupOK("Import error", error, true);
-                return;
-            }
-
-            Hide();
-            ItemBrowser.Hide();
+            PersonalizationEditorDataManager.Instance.ImportOrUpdateItem(FilePath, importResult, true);
         }
     }
 }

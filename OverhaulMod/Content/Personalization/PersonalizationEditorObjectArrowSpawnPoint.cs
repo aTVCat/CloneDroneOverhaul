@@ -15,7 +15,7 @@ namespace OverhaulMod.Content.Personalization
         {
             _transform = base.transform;
 
-            if (!PersonalizationEditorManager.IsInEditor() || PersonalizationEditorManager.Instance.IsInScreenshotMode()) return;
+            if (!PersonalizationEditorManager.IsInEditorMode() || PersonalizationEditorManager.Instance.IsInScreenshotMode()) return;
 
             GameObject previewModel = Instantiate(ModResources.Prefab(AssetBundleConstants.MODELS, "ArrowSpawnPoint"), base.transform, false);
             _preview = previewModel;
@@ -33,7 +33,7 @@ namespace OverhaulMod.Content.Personalization
 
         private void OnDisable()
         {
-            if (!PersonalizationEditorManager.IsInEditor()) return;
+            if (!PersonalizationEditorManager.IsInEditorMode()) return;
 
             GameObject gm = base.gameObject;
             ModActionUtils.DoInFrame(delegate

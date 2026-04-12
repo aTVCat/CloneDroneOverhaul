@@ -310,7 +310,7 @@ namespace OverhaulMod.Content
             }
         }
 
-        public class GetUpdatesResult : DownloadResult
+        public class GetUpdatesResult : OperationResult
         {
             public UpdateInfoList Updates;
 
@@ -330,7 +330,7 @@ namespace OverhaulMod.Content
             }
         }
 
-        public class InstallUpdateResult : DownloadResult
+        public class InstallUpdateResult : OperationResult
         {
             public InstallUpdateResult()
             {

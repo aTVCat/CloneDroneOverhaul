@@ -84,7 +84,6 @@ namespace OverhaulMod.Content.Personalization
                 {
                     Name = "Root",
                     Path = "Empty",
-                    IsRoot = true,
                     Children = new List<PersonalizationEditorObjectInfo>(),
                     PropertyValues = new Dictionary<string, object>()
                 };

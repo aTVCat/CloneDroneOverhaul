@@ -45,7 +45,7 @@ namespace OverhaulMod.UI
 
         protected override void OnInitialized()
         {
-            _moderatorControls.SetActive(PersonalizationEditorManager.Instance.canVerifyItems);
+            _moderatorControls.SetActive(PersonalizationEditorManager.Instance.CanVerifyItems);
             _progressLabel.enabled = false;
         }
 

@@ -106,10 +106,9 @@ namespace OverhaulMod.UI
 
         private bool _disallowCallbacks;
 
-        public PersonalizationItemInfo itemInfo
+        public PersonalizationItemInfo EditingItemInfo
         {
-            get;
-            private set;
+            get => PersonalizationEditorManager.Instance.EditingItemInfo;
         }
 
         protected override void OnInitialized()
@@ -165,47 +164,46 @@ namespace OverhaulMod.UI
             _typeDropdown.interactable = typeList.Count > 1;
         }
 
-        public void Populate(PersonalizationItemInfo personalizationItemInfo)
+        public void Populate()
         {
-            itemInfo = personalizationItemInfo;
-            if (personalizationItemInfo == null)
-                return;
+            PersonalizationItemInfo itemInfo = EditingItemInfo;
+            if (itemInfo == null) return;
 
             RefreshGeneralInfoPanel();
 
             _disallowCallbacks = true;
-            personalizationItemInfo.FixValues();
-            _nameField.text = personalizationItemInfo.Name;
-            _descriptionField.text = personalizationItemInfo.Description;
-            _authorField.referenceList = personalizationItemInfo.Authors;
-            _exclusiveForField.referenceList = personalizationItemInfo.ExclusiveFor_V2;
-            _verifyButton.interactable = !personalizationItemInfo.IsVerified;
-            _hierarchyPanel.itemInfo = personalizationItemInfo;
-            _filesPanel.itemInfo = personalizationItemInfo;
-            _hideBowStrings.isOn = personalizationItemInfo.HideBowStrings;
-            _hideBowStrings.interactable = personalizationItemInfo.Category == PersonalizationCategory.WeaponSkins && personalizationItemInfo.Weapon == WeaponType.Bow;
-            _overrideParentDropdown.interactable = personalizationItemInfo.Category == PersonalizationCategory.WeaponSkins && personalizationItemInfo.Weapon == WeaponType.Bow;
-            _bowStringsWidth.value = personalizationItemInfo.BowStringsWidth;
-            _bowStringsWidth.interactable = personalizationItemInfo.Category == PersonalizationCategory.WeaponSkins && personalizationItemInfo.Weapon == WeaponType.Bow;
+            itemInfo.FixValues();
+            _nameField.text = itemInfo.Name;
+            _descriptionField.text = itemInfo.Description;
+            _authorField.referenceList = itemInfo.Authors;
+            _exclusiveForField.referenceList = itemInfo.ExclusiveFor_V2;
+            _verifyButton.interactable = !itemInfo.IsVerified;
+            _hierarchyPanel.itemInfo = itemInfo;
+            _filesPanel.itemInfo = itemInfo;
+            _hideBowStrings.isOn = itemInfo.HideBowStrings;
+            _hideBowStrings.interactable = itemInfo.Category == PersonalizationCategory.WeaponSkins && itemInfo.Weapon == WeaponType.Bow;
+            _overrideParentDropdown.interactable = itemInfo.Category == PersonalizationCategory.WeaponSkins && itemInfo.Weapon == WeaponType.Bow;
+            _bowStringsWidth.value = itemInfo.BowStringsWidth;
+            _bowStringsWidth.interactable = itemInfo.Category == PersonalizationCategory.WeaponSkins && itemInfo.Weapon == WeaponType.Bow;
 
-            _editorIdField.text = personalizationItemInfo.EditorID;
-            _itemIdField.text = personalizationItemInfo.ItemID;
-            _versionField.text = personalizationItemInfo.Version.ToString();
-            _sentToVerificationToggle.isOn = personalizationItemInfo.IsSentForVerification;
-            _verifiedToggle.isOn = personalizationItemInfo.IsVerified;
-            _reuploadedToggle.isOn = personalizationItemInfo.ReuploadedTheItem;
-            _exportedFileNameText.text = $"Will be exported as:\n{getExportedItemFileName()}";
+            _editorIdField.text = itemInfo.EditorID;
+            _itemIdField.text = itemInfo.ItemID;
+            _versionField.text = itemInfo.Version.ToString();
+            _sentToVerificationToggle.isOn = itemInfo.IsSentForVerification;
+            _verifiedToggle.isOn = itemInfo.IsVerified;
+            _reuploadedToggle.isOn = itemInfo.ReuploadedTheItem;
+            _exportedFileNameText.text = $"Will be exported as:\n{PersonalizationEditorDataManager.Instance.GetExportedItemFileName(itemInfo)}";
 
             _editorIdField.interactable = false;
             _revealEditorIDButton.gameObject.SetActive(true);
 
-            _specialInfoPanel.SetActive(personalizationItemInfo.Category == PersonalizationCategory.WeaponSkins);
-            _weaponDropdown.gameObject.SetActive(personalizationItemInfo.Category == PersonalizationCategory.WeaponSkins);
-            _bodyPartDropdown.gameObject.SetActive(personalizationItemInfo.Category == PersonalizationCategory.Accessories);
+            _specialInfoPanel.SetActive(itemInfo.Category == PersonalizationCategory.WeaponSkins);
+            _weaponDropdown.gameObject.SetActive(itemInfo.Category == PersonalizationCategory.WeaponSkins);
+            _bodyPartDropdown.gameObject.SetActive(itemInfo.Category == PersonalizationCategory.Accessories);
 
             for (int i = 0; i < _weaponDropdown.options.Count; i++)
             {
-                if ((_weaponDropdown.options[i] as DropdownWeaponTypeOptionData).Weapon == personalizationItemInfo.Weapon)
+                if ((_weaponDropdown.options[i] as DropdownWeaponTypeOptionData).Weapon == itemInfo.Weapon)
                 {
                     _weaponDropdown.value = i;
                     break;
@@ -214,7 +212,7 @@ namespace OverhaulMod.UI
 
             for (int i = 0; i < _overrideParentDropdown.options.Count; i++)
             {
-                if ((_overrideParentDropdown.options[i] as DropdownStringOptionData).StringValue == personalizationItemInfo.OverrideParent)
+                if ((_overrideParentDropdown.options[i] as DropdownStringOptionData).StringValue == itemInfo.OverrideParent)
                 {
                     _overrideParentDropdown.value = i;
                     break;
@@ -224,7 +222,7 @@ namespace OverhaulMod.UI
             for (int i = 0; i < _bodyPartDropdown.options.Count; i++)
             {
                 string text = _bodyPartDropdown.options[i].text;
-                if (text == personalizationItemInfo.BodyPartName)
+                if (text == itemInfo.BodyPartName)
                 {
                     _bodyPartDropdown.value = i;
                     break;
@@ -233,7 +231,7 @@ namespace OverhaulMod.UI
 
             for (int i = 0; i < _typeDropdown.options.Count; i++)
             {
-                if ((_typeDropdown.options[i] as DropdownIntOptionData).IntValue == (int)personalizationItemInfo.Category)
+                if ((_typeDropdown.options[i] as DropdownIntOptionData).IntValue == (int)itemInfo.Category)
                 {
                     _typeDropdown.value = i;
                     break;
@@ -241,41 +239,40 @@ namespace OverhaulMod.UI
             }
 
             FirstPersonMover firstPersonMover = PersonalizationEditorManager.Instance.GetBot();
-            firstPersonMover.SetEquippedWeaponType(personalizationItemInfo.Weapon, false);
+            firstPersonMover.SetEquippedWeaponType(itemInfo.Weapon, false);
 
             _disallowCallbacks = false;
         }
 
         public void ApplyValues(bool ignoreDevPanel = false)
         {
-            PersonalizationItemInfo personalizationItemInfo = itemInfo;
-            if (personalizationItemInfo == null)
-                return;
+            PersonalizationItemInfo itemInfo = EditingItemInfo;
+            if (itemInfo == null) return;
 
-            personalizationItemInfo.FixValues();
-            personalizationItemInfo.Name = _nameField.text;
-            personalizationItemInfo.Description = _descriptionField.text;
-            personalizationItemInfo.EditorID = _editorIdField.text;
-            personalizationItemInfo.Category = (PersonalizationCategory)(_typeDropdown.options[_typeDropdown.value] as DropdownIntOptionData).IntValue;
-            personalizationItemInfo.ItemID = _itemIdField.text;
-            personalizationItemInfo.BodyPartName = _bodyPartDropdown.options[_bodyPartDropdown.value].text;
+            itemInfo.FixValues();
+            itemInfo.Name = _nameField.text;
+            itemInfo.Description = _descriptionField.text;
+            itemInfo.EditorID = _editorIdField.text;
+            itemInfo.Category = (PersonalizationCategory)(_typeDropdown.options[_typeDropdown.value] as DropdownIntOptionData).IntValue;
+            itemInfo.ItemID = _itemIdField.text;
+            itemInfo.BodyPartName = _bodyPartDropdown.options[_bodyPartDropdown.value].text;
 
-            if (PersonalizationEditorManager.Instance.canVerifyItems && !ignoreDevPanel)
+            if (PersonalizationEditorManager.Instance.CanVerifyItems && !ignoreDevPanel)
             {
-                personalizationItemInfo.IsVerified = _verifiedToggle.isOn;
-                if (personalizationItemInfo.IsVerified)
+                itemInfo.IsVerified = _verifiedToggle.isOn;
+                if (itemInfo.IsVerified)
                 {
-                    personalizationItemInfo.IsSentForVerification = false;
-                    personalizationItemInfo.ReuploadedTheItem = false;
+                    itemInfo.IsSentForVerification = false;
+                    itemInfo.ReuploadedTheItem = false;
                     _sentToVerificationToggle.isOn = false;
                     _reuploadedToggle.isOn = false;
                 }
 
-                int prevVersion = personalizationItemInfo.Version;
+                int prevVersion = itemInfo.Version;
                 if (!int.TryParse(_versionField.text, out int version))
                     version = prevVersion;
 
-                personalizationItemInfo.Version = version;
+                itemInfo.Version = version;
             }
         }
 
@@ -288,15 +285,10 @@ namespace OverhaulMod.UI
         {
             RectTransform rectTransform = _generalInfoPanel;
             Vector2 size = rectTransform.sizeDelta;
-            size.y = itemInfo.Category == PersonalizationCategory.Accessories ? 320f : 290f;
+            size.y = EditingItemInfo.Category == PersonalizationCategory.Accessories ? 320f : 290f;
             rectTransform.sizeDelta = size;
 
-            _editOffsetsButton.gameObject.SetActive(itemInfo.Category == PersonalizationCategory.Accessories);
-        }
-
-        private string getExportedItemFileName()
-        {
-            return $"{ModFileUtils.GetDirectoryName(itemInfo.FolderPath)}.zip";
+            _editOffsetsButton.gameObject.SetActive(EditingItemInfo.Category == PersonalizationCategory.Accessories);
         }
 
         private string getCharLeftTextForField(InputField inputField)
@@ -314,12 +306,11 @@ namespace OverhaulMod.UI
             if (_disallowCallbacks)
                 return;
 
-            PersonalizationItemInfo personalizationItemInfo = itemInfo;
-            if (personalizationItemInfo == null)
-                return;
+            PersonalizationItemInfo itemInfo = EditingItemInfo;
+            if (itemInfo == null) return;
 
             PersonalizationCategory category = (PersonalizationCategory)(_typeDropdown.options[value] as DropdownIntOptionData).IntValue;
-            personalizationItemInfo.Category = category;
+            itemInfo.Category = category;
 
             _specialInfoPanel.SetActive(category == PersonalizationCategory.WeaponSkins);
             _weaponDropdown.gameObject.SetActive(category == PersonalizationCategory.WeaponSkins);
@@ -337,7 +328,7 @@ namespace OverhaulMod.UI
             if (_disallowCallbacks)
                 return;
 
-            PersonalizationItemInfo personalizationItemInfo = itemInfo;
+            PersonalizationItemInfo personalizationItemInfo = EditingItemInfo;
             if (personalizationItemInfo == null)
                 return;
 
@@ -358,7 +349,7 @@ namespace OverhaulMod.UI
             _bowStringsWidth.interactable = personalizationItemInfo.Category == PersonalizationCategory.WeaponSkins && personalizationItemInfo.Weapon == WeaponType.Bow;
 
             UIElementPersonalizationEditorUtilitiesPanel utils = UIPersonalizationEditor.instance.Utilities;
-            utils.SetConditionOptions(PersonalizationEditorManager.Instance.GetConditionOptionsDependingOnEditingWeapon());
+            utils.SetAvailablePresets(PersonalizationEditorManager.Instance.GetPresetsForEditingWeaponSkin());
         }
 
         public void OnEditedBodyPartDropdown(int value)
@@ -366,7 +357,7 @@ namespace OverhaulMod.UI
             if (_disallowCallbacks)
                 return;
 
-            PersonalizationItemInfo personalizationItemInfo = itemInfo;
+            PersonalizationItemInfo personalizationItemInfo = EditingItemInfo;
             if (personalizationItemInfo == null)
                 return;
 
@@ -383,7 +374,7 @@ namespace OverhaulMod.UI
             if (_disallowCallbacks)
                 return;
 
-            PersonalizationItemInfo personalizationItemInfo = itemInfo;
+            PersonalizationItemInfo personalizationItemInfo = EditingItemInfo;
             if (personalizationItemInfo == null)
                 return;
 
@@ -395,7 +386,7 @@ namespace OverhaulMod.UI
             if (_disallowCallbacks)
                 return;
 
-            PersonalizationItemInfo personalizationItemInfo = itemInfo;
+            PersonalizationItemInfo personalizationItemInfo = EditingItemInfo;
             if (personalizationItemInfo == null)
                 return;
 
@@ -412,13 +403,13 @@ namespace OverhaulMod.UI
             if (_disallowCallbacks)
                 return;
 
-            PersonalizationItemInfo personalizationItemInfo = itemInfo;
+            PersonalizationItemInfo personalizationItemInfo = EditingItemInfo;
             if (personalizationItemInfo == null)
                 return;
 
             personalizationItemInfo.BowStringsWidth = value;
 
-            PersonalizationController controller = PersonalizationEditorManager.Instance.currentPersonalizationController;
+            PersonalizationController controller = PersonalizationEditorManager.Instance.PreviewingPersonalizationController;
             if (controller)
                 controller.SetBowStringsWidth(value);
         }
@@ -430,14 +421,16 @@ namespace OverhaulMod.UI
 
         public void OnExportButtonClicked()
         {
-            if (PersonalizationEditorManager.Instance.SaveItem(out string error))
+            PersonalizationItemSaveResult result = PersonalizationEditorManager.Instance.SaveItem();
+            if (result.HasFailed())
             {
-                PersonalizationEditorManager.Instance.ExportItem(PersonalizationEditorManager.Instance.currentEditingItemInfo, out _, ModCore.SavesFolder, getExportedItemFileName());
-                ModUIUtils.MessagePopupOK("Exported the item", "for real", false);
+                ModUIUtils.MessagePopupOK("Error", result.Error, true);
             }
             else
             {
-                ModUIUtils.MessagePopupOK("Error", error, true);
+                PersonalizationItemInfo itemInfo = PersonalizationEditorManager.Instance.EditingItemInfo;
+                PersonalizationEditorDataManager.Instance.ExportItem(itemInfo, out _, ModCore.SavesFolder, PersonalizationEditorDataManager.Instance.GetExportedItemFileName(itemInfo));
+                ModUIUtils.MessagePopupOK("Exported the item", "for real", false);
             }
         }
 
@@ -448,7 +441,7 @@ namespace OverhaulMod.UI
 
         public void OnItemFolderFolderButtonClicked()
         {
-            ModFileUtils.OpenFileExplorer(PersonalizationEditorManager.Instance.currentEditingItemInfo.FolderPath);
+            ModFileUtils.OpenFileExplorer(PersonalizationEditorManager.Instance.EditingItemInfo.FolderPath);
         }
 
         public void OnRevealEditorIDButtonClicked()

@@ -2,11 +2,11 @@
 
 namespace OverhaulMod.Content
 {
-    public class DownloadResult
+    public class OperationResult
     {
         public string Error;
 
-        public bool HasFailed()
+        public virtual bool HasFailed()
         {
             return !Error.IsNullOrEmpty();
         }

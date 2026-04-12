@@ -84,8 +84,8 @@ namespace OverhaulMod.Content.Personalization
             _weaponTypeToVariant = new Dictionary<WeaponType, WeaponVariant2>();
             _spawnedItems = new Dictionary<PersonalizationItemInfo, PersonalizationEditorObjectBehaviour>();
 
-            if (PersonalizationEditorManager.IsInEditor())
-                PersonalizationEditorManager.Instance.currentPersonalizationController = this;
+            if (PersonalizationEditorManager.IsInEditorMode())
+                PersonalizationEditorManager.Instance.PreviewingPersonalizationController = this;
         }
 
         private void Start()
@@ -237,7 +237,7 @@ namespace OverhaulMod.Content.Personalization
         public bool RefreshSkinOfWeapon(WeaponType weaponType)
         {
             bool hasRefreshed = false;
-            if (!PersonalizationEditorManager.IsInEditor())
+            if (!PersonalizationEditorManager.IsInEditorMode())
             {
                 // handle skin changing
                 PersonalizationItemInfo spawnedSkinInfo = GetSpawnedWeaponSkinInfo(weaponType);
@@ -282,20 +282,20 @@ namespace OverhaulMod.Content.Personalization
 
         public void RefreshVanillaWeaponModelVisibility(WeaponType weaponType)
         {
-            bool inEditor = PersonalizationEditorManager.IsInEditor();
-            bool showOriginalModel = inEditor && PersonalizationEditorManager.Instance.originalModelsEnabled;
+            bool inEditor = PersonalizationEditorManager.IsInEditorMode();
+            bool forceShowOriginalModel = inEditor && PersonalizationEditorManager.Instance.ViewingOriginalModel;
 
             PersonalizationItemInfo personalizationItemInfo = GetSpawnedWeaponSkinInfo(weaponType);
             bool hasSpawnedSkinForWeapon = personalizationItemInfo != null;
 
             if (inEditor && weaponType == WeaponType.Sword)
             {
-                WeaponVariant2 wv = PersonalizationEditorManager.Instance.previewPresetKey;
-                SetWeaponPartsVisible(WeaponType.Sword, showOriginalModel || (!hasSpawnedSkinForWeapon && !(wv == WeaponVariant2.NormalMultiplayer || wv == WeaponVariant2.OnFireMultiplayer)), false);
+                WeaponVariant2 wv = PersonalizationEditorManager.Instance.PreviewPresetKey;
+                SetWeaponPartsVisible(WeaponType.Sword, forceShowOriginalModel || (!hasSpawnedSkinForWeapon && !(wv == WeaponVariant2.NormalMultiplayer || wv == WeaponVariant2.OnFireMultiplayer)), false);
             }
             else
             {
-                SetWeaponPartsVisible(weaponType, showOriginalModel || !hasSpawnedSkinForWeapon, (personalizationItemInfo != null && personalizationItemInfo.HideBowStrings));
+                SetWeaponPartsVisible(weaponType, forceShowOriginalModel || !hasSpawnedSkinForWeapon, (personalizationItemInfo != null && personalizationItemInfo.HideBowStrings));
             }
         }
 
@@ -436,7 +436,7 @@ namespace OverhaulMod.Content.Personalization
 
         public void SpawnEquippedAccessories()
         {
-            if (!ModFeatures.IsEnabled(ModFeatures.FeatureType.Accessories) || PersonalizationEditorManager.IsInEditor()) return;
+            if (!ModFeatures.IsEnabled(ModFeatures.FeatureType.Accessories) || PersonalizationEditorManager.IsInEditorMode()) return;
 
             DestroyItemsOfCategory(PersonalizationCategory.Accessories);
 
@@ -458,7 +458,7 @@ namespace OverhaulMod.Content.Personalization
 
         public PersonalizationEditorObjectBehaviour SpawnItem(PersonalizationItemInfo itemInfo)
         {
-            bool inEditor = PersonalizationEditorManager.IsInEditor();
+            bool inEditor = PersonalizationEditorManager.IsInEditorMode();
             if (itemInfo == null || itemInfo.RootObject == null || HasSpawnedItem(itemInfo) || !owner || (!inEditor && !itemInfo.IsUnlocked(owner)))
                 return null;
 

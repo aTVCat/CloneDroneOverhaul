@@ -59,7 +59,7 @@ namespace OverhaulMod.Content.Personalization
             if (presets == null)
                 presets = new Dictionary<WeaponVariant2, CVMModelPreset>();
 
-            if (PersonalizationEditorManager.IsInEditor())
+            if (PersonalizationEditorManager.IsInEditorMode())
             {
                 GlobalEventManager.Instance.AddEventListener(PersonalizationEditorManager.PRESET_PREVIEW_CHANGED_EVENT, RefreshModel);
                 GlobalEventManager.Instance.AddEventListener(PersonalizationEditorManager.OBJECT_EDITED_EVENT, RefreshModel);
@@ -95,9 +95,9 @@ namespace OverhaulMod.Content.Personalization
 
         public WeaponVariant2 GetCurrentShowCondition()
         {
-            if (PersonalizationEditorManager.IsInEditor())
+            if (PersonalizationEditorManager.IsInEditorMode())
             {
-                return PersonalizationEditorManager.Instance.previewPresetKey;
+                return PersonalizationEditorManager.Instance.PreviewPresetKey;
             }
             visibilityController.GetWeaponVariant(out WeaponVariant2 showConditions);
             return showConditions;
@@ -144,9 +144,9 @@ namespace OverhaulMod.Content.Personalization
                 return;
 
             PersonalizationItemInfo itemInfo;
-            if (PersonalizationEditorManager.IsInEditor())
+            if (PersonalizationEditorManager.IsInEditorMode())
             {
-                itemInfo = PersonalizationEditorManager.Instance.currentEditingItemInfo;
+                itemInfo = PersonalizationEditorManager.Instance.EditingItemInfo;
             }
             else
             {
@@ -162,7 +162,7 @@ namespace OverhaulMod.Content.Personalization
             }
 
             _ = CVMImporter.InstantiateModel(_loadedModel, preset.Weapon, preset.Variant, preset.ReplaceColors, preset.ShowFireParticles, t, out string error);
-            if (PersonalizationEditorManager.IsInEditor() && !error.IsNullOrEmpty())
+            if (PersonalizationEditorManager.IsInEditorMode() && !error.IsNullOrEmpty())
             {
                 UIPersonalizationEditor.instance.ShowErrorNotification("CVM Error", error, 15f);
             }

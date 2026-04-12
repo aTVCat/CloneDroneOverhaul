@@ -15,7 +15,7 @@ namespace OverhaulMod.Content.Personalization
 
         public bool IsRoot;
 
-        public int UniqueIndex, NextUniqueIndex;
+        public int UniqueIndex;
 
         public Dictionary<string, object> PropertyValues;
 
@@ -183,16 +183,11 @@ namespace OverhaulMod.Content.Personalization
             if (!this || !gameObject)
                 return null;
 
-            if (IsRoot)
-                NextUniqueIndex = PersonalizationEditorObjectManager.Instance.GetCurrentUniqueIndex();
-
             PersonalizationEditorObjectInfo objectInfo = new PersonalizationEditorObjectInfo()
             {
                 Name = Name,
                 Path = Path,
-                IsRoot = IsRoot,
                 UniqueIndex = UniqueIndex,
-                NextUniqueIndex = NextUniqueIndex,
                 PropertyValues = PropertyValues ?? new Dictionary<string, object>(),
                 Children = new List<PersonalizationEditorObjectInfo>()
             };

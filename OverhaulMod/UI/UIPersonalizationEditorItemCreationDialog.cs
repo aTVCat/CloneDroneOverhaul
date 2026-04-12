@@ -176,20 +176,22 @@ namespace OverhaulMod.UI
             if (_templateDropdown.options[_templateDropdown.value] is DropdownPersonalizationItemInfo dropdownPersonalizationItemInfo)
                 template = dropdownPersonalizationItemInfo.ItemInfo;
 
-            if (PersonalizationEditorManager.Instance.CreateItem(_folderName, _itemNameField.text, _generatedGuid, UsePersistentFolder, template, out PersonalizationItemInfo personalizationItem))
+            PersonalizationItemCreationResult creationResult = PersonalizationEditorDataManager.Instance.CreateItem(_folderName, _itemNameField.text, _generatedGuid, UsePersistentFolder, template);
+            if (creationResult.HasFailed())
+            {
+                ModUIUtils.MessagePopupOK("Item creation error", "A folder with the name has been already created.\nTry giving your folder an alternate name.", true);
+            }
+            else
             {
                 UIPersonalizationEditor.instance.ShowEverything();
-                PersonalizationEditorManager.Instance.EditItem(personalizationItem);
+                PersonalizationEditorManager.Instance.EditItem(creationResult.NewItem);
                 Hide();
+
                 if (ItemCreatedCallback != null)
                 {
                     ItemCreatedCallback();
                     ItemCreatedCallback = null;
                 }
-            }
-            else
-            {
-                ModUIUtils.MessagePopupOK("Item creation error", "A folder with the name has been already created.\nTry giving your folder an alternate name.", true);
             }
         }
 

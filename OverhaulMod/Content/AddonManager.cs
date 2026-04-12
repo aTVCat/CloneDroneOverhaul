@@ -429,7 +429,7 @@ namespace OverhaulMod.Content
             return DoesAddonNeedUpdate(addonInfo.UniqueID);
         }
 
-        public class GetDownloadListResult : DownloadResult
+        public class GetDownloadListResult : OperationResult
         {
             public AddonDownloadListInfo List;
 

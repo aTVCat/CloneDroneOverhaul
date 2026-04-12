@@ -87,7 +87,7 @@ namespace OverhaulMod.UI
             instance = this;
             initializeOptions();
 
-            _toolbarScreenshotButton.gameObject.SetActive(PersonalizationEditorManager.Instance.canVerifyItems);
+            _toolbarScreenshotButton.gameObject.SetActive(PersonalizationEditorManager.Instance.CanVerifyItems);
             _toolbarWindowButton.interactable = false;
             _toolbarUploadButton.interactable = false;
             _saveButton.interactable = false;
@@ -201,6 +201,7 @@ namespace OverhaulMod.UI
             _toolbarWindowButton.interactable = true;
             _toolbarUploadButton.interactable = true;
             _saveButton.interactable = true;
+            Utilities.Show();
             ShowInspector();
             ShowObjectProperties();
             ShowItemModerator();
@@ -237,7 +238,7 @@ namespace OverhaulMod.UI
 
         public void TryShowItemModerator(bool withMessage)
         {
-            if (PersonalizationEditorManager.Instance.canVerifyItems)
+            if (PersonalizationEditorManager.Instance.CanVerifyItems)
             {
                 ModUIManager.WindowManager windowManager = ModUIManager.Instance.windowManager;
                 if (DeveloperWindowID == null)
@@ -281,10 +282,11 @@ namespace OverhaulMod.UI
         public void OnSaveButtonClicked()
         {
             Dropdown.Hide();
-            if (!PersonalizationEditorManager.Instance.SaveItem(out string error))
-                ShowSaveErrorMessage(error);
+            PersonalizationItemSaveResult saveResult = PersonalizationEditorManager.Instance.SaveItem();
+            if (saveResult.HasFailed())
+                ShowSaveErrorMessage(saveResult.Error);
             else
-                ShowNotification("Success", $"Saved the item ({PersonalizationEditorManager.Instance.currentEditingItemInfo.Name})", UIElementPersonalizationEditorNotification.SuccessColor);
+                ShowNotification("Success", $"Saved the item ({PersonalizationEditorManager.Instance.EditingItemInfo.Name})", UIElementPersonalizationEditorNotification.SuccessColor);
         }
 
         public void OnExportItemsButtonClicked()

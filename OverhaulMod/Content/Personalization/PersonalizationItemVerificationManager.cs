@@ -67,7 +67,7 @@ namespace OverhaulMod.Content.Personalization
 
         public void SendItemToVerification(PersonalizationItemInfo personalizationItemInfo, Action successCallback, Action<string> errorCallback)
         {
-            PersonalizationEditorManager.Instance.ExportItem(personalizationItemInfo, out string dest, Path.GetTempPath());
+            PersonalizationEditorDataManager.Instance.ExportItem(personalizationItemInfo, out string dest, Path.GetTempPath());
             PostmanManager.Instance.SendVerificationRequest(dest, personalizationItemInfo, successCallback, errorCallback);
         }
     }

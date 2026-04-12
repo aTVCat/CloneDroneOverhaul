@@ -26,7 +26,7 @@ namespace OverhaulMod.Content.Personalization
             _objectInfos = new List<PersonalizationEditorObjectSpawnInfo>();
             addObjectInfo("Empty object", "Empty", instantiateEmpty);
             addObjectInfo("Model Renderer (.vox)", "Volume", instantiateVolume);
-            addObjectInfo("Model Renderer (.cvm) [BETA]", "CvmModel", instantiateCvmModel);
+            addObjectInfo("Model Renderer (.cvm)", "CvmModel", instantiateCvmModel);
             addObjectInfo("Fire particles (Sword)", "FireParticles_Sword", instantiateSwordFireParticles);
             addObjectInfo("Fire particles (Hammer)", "FireParticles_Hammer", instantiateHammerFireParticles);
             addObjectInfo("Fire particles (Spear)", "FireParticles_Spear", instantiateSpearFireParticles);
@@ -49,10 +49,18 @@ namespace OverhaulMod.Content.Personalization
             return _objectInfos;
         }
 
+        public int GetMaxUniqueIndex()
+        {
+            int result = 0;
+            foreach (var instantiatedObject in _instantiatedObjects)
+                result = Mathf.Max(result, instantiatedObject.UniqueIndex);
+
+            return result;
+        }
+
         public void AddInstantiatedObject(PersonalizationEditorObjectBehaviour behaviour)
         {
-            if (!_instantiatedObjects.Contains(behaviour))
-                _instantiatedObjects.Add(behaviour);
+            if (!_instantiatedObjects.Contains(behaviour)) _instantiatedObjects.Add(behaviour);
         }
 
         public void RemoveInstantiatedObject(PersonalizationEditorObjectBehaviour behaviour)
@@ -77,6 +85,11 @@ namespace OverhaulMod.Content.Personalization
             } while (i < list.Count);
 
             return null;
+        }
+
+        public void SetCurrentRootNextUniqueIndex()
+        {
+            SetCurrentRootNextUniqueIndex(GetMaxUniqueIndex());
         }
 
         public void SetCurrentRootNextUniqueIndex(int value)

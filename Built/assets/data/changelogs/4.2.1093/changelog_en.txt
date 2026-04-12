@@ -6,6 +6,7 @@ img=images/42_patch11_2.png
 - Added arrow spawn point object to customization editor
 - Made weapon skins respawn on clones and enemies with slight delay to reduce freeze amount when customizing the player. Still not perfect, but more work will be done on this in future
 - Redone weapon skins refreshing logic, fixing vanilla skins visible for a brief moment when equipping weapon
+- A lot of internal changes made to customization system
 - Added particles when switching weapon skins
 - Added new options to title screen customization
 img=images/42_patch11_3.png
@@ -52,3 +53,4 @@ img=images/42_patch11_1.png
 - Missing translation in few UIs
 - Fixed Epic Games platform displaying as "N/A"
 - Some math behind first person mode
+- Customization items templates not working

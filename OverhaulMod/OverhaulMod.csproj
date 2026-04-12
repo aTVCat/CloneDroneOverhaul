@@ -222,7 +222,7 @@
     <Compile Include="Content\AddonDownloadInfo.cs" />
     <Compile Include="Content\AddonInfo.cs" />
     <Compile Include="Content\AddonDownloadListInfo.cs" />
-    <Compile Include="Content\DownloadResult.cs" />
+    <Compile Include="Content\OperationResult.cs" />
     <Compile Include="Content\ExclusivePerkColor.cs" />
     <Compile Include="Content\GoogleDriveManager.cs" />
     <Compile Include="Content\LevelEditor\LevelEditorWeatherSettingsOverride.cs" />
@@ -241,6 +241,7 @@
     <Compile Include="Content\Personalization\PersonalizationControllerInfo.cs" />
     <Compile Include="Content\Personalization\PersonalizationEditorCopyPasteManager.cs" />
     <Compile Include="Content\Personalization\PersonalizationEditorCamera.cs" />
+    <Compile Include="Content\Personalization\PersonalizationEditorDataManager.cs" />
     <Compile Include="Content\Personalization\PersonalizationEditorGuide.cs" />
     <Compile Include="Content\Personalization\PersonalizationEditorGuideManager.cs" />
     <Compile Include="Content\Personalization\PersonalizationEditorGuideStage.cs" />
@@ -256,6 +257,9 @@
     <Compile Include="Content\Personalization\PersonalizationEditorScreenshotManager.cs" />
     <Compile Include="Content\Personalization\PersonalizationEditorScreenshotOverlay.cs" />
     <Compile Include="Content\Personalization\PersonalizationEditorTemplateManager.cs" />
+    <Compile Include="Content\Personalization\PersonalizationItemCreationResult.cs" />
+    <Compile Include="Content\Personalization\PersonalizationItemSaveResult.cs" />
+    <Compile Include="Content\Personalization\PersonalizationItemImportResult.cs" />
     <Compile Include="Content\Personalization\PersonalizationItemLockInfo.cs" />
     <Compile Include="Content\Personalization\PersonalizationItemMetaData.cs" />
     <Compile Include="Content\Personalization\PersonalizationAccessoryReferences.cs" />

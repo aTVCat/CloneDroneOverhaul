@@ -82,7 +82,7 @@ namespace OverhaulMod.Content.Personalization
 
         public void AdjustCameraPositionForCurrentItem()
         {
-            PersonalizationItemInfo item = PersonalizationEditorManager.Instance.currentEditingItemInfo;
+            PersonalizationItemInfo item = PersonalizationEditorManager.Instance.EditingItemInfo;
             if (item == null)
             {
                 ResetCameraPosition();
@@ -208,7 +208,7 @@ namespace OverhaulMod.Content.Personalization
             if (_holder.childCount != 0) TransformUtils.DestroyAllChildren(_holder);
             if (personalizationItemInfo != null)
             {
-                PersonalizationEditorManager.Instance.currentEditingItemInfo = personalizationItemInfo;
+                PersonalizationEditorManager.Instance.EditingItemInfo = personalizationItemInfo;
                 personalizationItemInfo.RootObject.Deserialize(_holder, null);
             }
         }
@@ -295,7 +295,7 @@ namespace OverhaulMod.Content.Personalization
             texture = TakeScreenshot(128, 128, 1, false);
             QualitySettings.antiAliasing = antiAliasingBefore;
 
-            string folderPath = PersonalizationEditorManager.Instance.currentEditingItemFolder;
+            string folderPath = PersonalizationEditorManager.Instance.EditingItemFolder;
             string path = Path.Combine(folderPath, "preview.png");
             ModFileUtils.WriteBytes(texture.EncodeToPNG(), path);
 

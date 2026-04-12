@@ -127,6 +127,7 @@ namespace OverhaulMod
             modManagers.AddSingleton<TitleScreenCustomizationManager>(personalizationManagers);
             modManagers.AddSingleton<PersonalizationCacheManager>(personalizationManagers);
             modManagers.AddSingleton<PersonalizationManager>(personalizationManagers);
+            modManagers.AddSingleton<PersonalizationEditorDataManager>(personalizationManagers);
             modManagers.AddSingleton<PersonalizationEditorManager>(personalizationManagers);
             modManagers.AddSingleton<PersonalizationEditorObjectManager>(personalizationManagers);
             modManagers.AddSingleton<PersonalizationEditorCopyPasteManager>(personalizationManagers);

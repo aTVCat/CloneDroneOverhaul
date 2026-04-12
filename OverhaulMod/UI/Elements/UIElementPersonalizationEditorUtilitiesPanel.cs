@@ -35,6 +35,8 @@ namespace OverhaulMod.UI
         [UIElement("FavoriteColorPreviewDropdown")]
         private readonly Dropdown _favoriteColorPreviewDropdown;
 
+        private bool _noCallbacks;
+
         protected override void OnInitialized()
         {
             _favoriteColorPreviewDropdown.options = HumanFactsManager.Instance.GetColorDropdownOptions();
@@ -52,10 +54,12 @@ namespace OverhaulMod.UI
             _favoriteColorPreviewDropdown.value = Random.Range(0, _favoriteColorPreviewDropdown.options.Count);
         }
 
-        public void SetConditionOptions(List<Dropdown.OptionData> options)
+        public void SetAvailablePresets(List<Dropdown.OptionData> options)
         {
+            _noCallbacks = true;
             _presetPreviewDropdown.options = options;
             _presetPreviewDropdown.value = 0;
+            _noCallbacks = false;
         }
 
         public void SetAnimationToggleOn()
@@ -63,7 +67,7 @@ namespace OverhaulMod.UI
             _enableAnimationToggle.isOn = true;
         }
 
-        public void SetPresetPreview(WeaponVariant2 weaponVariant)
+        public void SetPreviewingPreset(WeaponVariant2 weaponVariant)
         {
             List<Dropdown.OptionData> options = _presetPreviewDropdown.options;
 
@@ -84,13 +88,13 @@ namespace OverhaulMod.UI
 
         public void OnShowPlayerToggled(bool value)
         {
+            if (_noCallbacks) return;
+
             FirstPersonMover firstPersonMover = PersonalizationEditorManager.Instance.GetBot();
-            if (!firstPersonMover)
-                return;
+            if (!firstPersonMover) return;
 
             CharacterModel characterModel = firstPersonMover.GetCharacterModel();
-            if (!characterModel)
-                return;
+            if (!characterModel) return;
 
             if (value)
                 characterModel.ShowAllHiddenBodyPartsAndArmor();
@@ -100,9 +104,10 @@ namespace OverhaulMod.UI
 
         public void OnShowWeaponToggled(bool value)
         {
+            if (_noCallbacks) return;
+
             FirstPersonMover firstPersonMover = PersonalizationEditorManager.Instance.GetBot();
-            if (!firstPersonMover)
-                return;
+            if (!firstPersonMover) return;
 
             if (value)
                 firstPersonMover.ShowTemporarilyHiddenWeaponModels();
@@ -112,13 +117,13 @@ namespace OverhaulMod.UI
 
         public void OnAnimationToggled(bool value)
         {
+            if (_noCallbacks) return;
+
             FirstPersonMover firstPersonMover = PersonalizationEditorManager.Instance.GetBot();
-            if (!firstPersonMover)
-                return;
+            if (!firstPersonMover) return;
 
             CharacterModel characterModel = firstPersonMover.GetCharacterModel();
-            if (!characterModel)
-                return;
+            if (!characterModel) return;
 
             characterModel.SetManualUpperAnimationEnabled(!value);
             characterModel.SetManualLegsAnimationEnabled(!value);
@@ -131,19 +136,24 @@ namespace OverhaulMod.UI
 
         public void OnOriginalModelToggled(bool value)
         {
-            PersonalizationEditorManager.Instance.originalModelsEnabled = value;
-            PersonalizationEditorManager.Instance.GetBot().GetComponent<PersonalizationController>().RefreshWeaponSkinsNextFrame();
+            if (_noCallbacks) return;
+
+            PersonalizationEditorManager.Instance.ViewingOriginalModel = value;
         }
 
         public void OnPresetPreviewChanged(int value)
         {
-            PersonalizationEditorManager.Instance.previewPresetKey = (_presetPreviewDropdown.options[value] as DropdownWeaponVariantOptionData).Value;
+            if (_noCallbacks) return;
+
+            PersonalizationEditorManager.Instance.PreviewPresetKey = (_presetPreviewDropdown.options[value] as DropdownWeaponVariantOptionData).Value;
             GlobalEventManager.Instance.Dispatch(PersonalizationEditorManager.PRESET_PREVIEW_CHANGED_EVENT);
         }
 
         public void OnFavoriteColorPreviewDropdownChanged(int value)
         {
-            if (!PersonalizationEditorManager.Instance.IsInScreenshotMode()) PersonalizationEditorManager.Instance.SerializeRotAndRespawnBot();
+            if (_noCallbacks) return;
+
+            if (!PersonalizationEditorManager.Instance.IsInScreenshotMode()) PersonalizationEditorManager.Instance.SerializeRootAndRespawnBot();
         }
     }
 }

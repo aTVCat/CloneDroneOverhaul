@@ -50,11 +50,11 @@ namespace OverhaulMod.UI
             if (!personalizationEditorManager)
                 return;
 
-            PersonalizationItemInfo personalizationItemInfo = personalizationEditorManager.currentEditingItemInfo;
+            PersonalizationItemInfo personalizationItemInfo = personalizationEditorManager.EditingItemInfo;
             if (personalizationItemInfo == null)
                 return;
 
-            RefreshItemCompletion(personalizationEditorManager.currentEditingRoot);
+            RefreshItemCompletion(personalizationEditorManager.EditingRoot);
             RefreshButtonAndStatusText(personalizationItemInfo);
         }
 
@@ -169,19 +169,20 @@ namespace OverhaulMod.UI
             if (!personalizationEditorManager)
                 return;
 
-            PersonalizationItemInfo personalizationItemInfo = personalizationEditorManager.currentEditingItemInfo;
+            PersonalizationItemInfo personalizationItemInfo = personalizationEditorManager.EditingItemInfo;
             if (personalizationItemInfo == null)
                 return;
 
             if (personalizationItemInfo.IsVerified)
                 personalizationItemInfo.Version++;
 
-            if (!personalizationEditorManager.SaveItem(out string error2, true))
+            PersonalizationItemSaveResult saveResult = personalizationEditorManager.SaveItem(true);
+            if (saveResult.HasFailed())
             {
-                if (error2.Length > 512)
-                    error2 = error2.Remove(512);
+                string error = saveResult.Error;
+                if (error.Length > 512) error = error.Remove(512);
 
-                UIPersonalizationEditor.instance.ShowSaveErrorMessage(error2);
+                UIPersonalizationEditor.instance.ShowSaveErrorMessage(error);
                 return;
             }
 
@@ -194,7 +195,7 @@ namespace OverhaulMod.UI
                 if (personalizationItemInfo.IsSentForVerification) personalizationItemInfo.ReuploadedTheItem = true;
                 personalizationItemInfo.IsSentForVerification = true;
 
-                _ = personalizationEditorManager.SaveItem(out _, true);
+                _ = personalizationEditorManager.SaveItem(true);
 
                 _exitButton.interactable = true;
                 _loadingIndicator.SetActive(false);

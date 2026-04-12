@@ -336,7 +336,7 @@ namespace OverhaulMod.UI
                                 }
                                 else
                                 {
-                                    string directoryName = ModFileUtils.GetDirectoryName(PersonalizationEditorManager.Instance.currentEditingItemInfo.FolderPath);
+                                    string directoryName = ModFileUtils.GetDirectoryName(PersonalizationEditorManager.Instance.EditingItemInfo.FolderPath);
                                     string fileName = Path.GetFileName(filePath);
                                     string path = Path.Combine(directoryName, "files", fileName);
 
@@ -346,18 +346,18 @@ namespace OverhaulMod.UI
                                     voxelModelFileFieldText.text = fileName;
                                     preset.CvmFilePath = path;
 
-                                    UIPersonalizationEditor.instance.Utilities.SetPresetPreview(keyValue.Key);
+                                    UIPersonalizationEditor.instance.Utilities.SetPreviewingPreset(keyValue.Key);
                                 }
 
                                 GlobalEventManager.Instance.Dispatch(PersonalizationEditorManager.OBJECT_EDITED_EVENT);
-                            }, PersonalizationItemInfo.GetImportedFilesFolder(PersonalizationEditorManager.Instance.currentEditingItemInfo), "*.cvm");
+                            }, PersonalizationItemInfo.GetImportedFilesFolder(PersonalizationEditorManager.Instance.EditingItemInfo), "*.cvm");
                         });
 
                         // conditions dropdown
                         bool allowCallback = true;
                         WeaponVariant2 prevCondition = keyValue.Key;
                         Dropdown conditionsDropdown = display.GetObject<Dropdown>(0);
-                        conditionsDropdown.options = PersonalizationEditorManager.Instance.GetConditionOptionsDependingOnEditingWeapon();
+                        conditionsDropdown.options = PersonalizationEditorManager.Instance.GetPresetsForEditingWeaponSkin();
 
                         int conditionDropdownValueToSet = -1;
                         for (int i = 0; i < conditionsDropdown.options.Count; i++)
@@ -405,7 +405,7 @@ namespace OverhaulMod.UI
                         // active frame
                         void refreshActiveFrameAction()
                         {
-                            display.GetObject<GameObject>(2).SetActive(prevCondition == PersonalizationEditorManager.Instance.previewPresetKey);
+                            display.GetObject<GameObject>(2).SetActive(prevCondition == PersonalizationEditorManager.Instance.PreviewPresetKey);
                         }
                         refreshActiveFrameAction();
 
@@ -626,7 +626,7 @@ namespace OverhaulMod.UI
                 PersonalizationEditorObjectVisibilityController visibilityController = objectBehaviour.GetComponent<PersonalizationEditorObjectVisibilityController>();
 
                 Dropdown dropdown = enableIfPresetDropdown.GetObject<Dropdown>(0);
-                dropdown.options = PersonalizationEditorManager.Instance.GetConditionOptionsDependingOnEditingWeapon(true);
+                dropdown.options = PersonalizationEditorManager.Instance.GetPresetsForEditingWeaponSkin(true);
 
                 int conditionDropdownValueToSet = -1;
                 for (int i = 0; i < dropdown.options.Count; i++)
@@ -705,7 +705,7 @@ namespace OverhaulMod.UI
                                 }
                                 else
                                 {
-                                    string directoryName = ModFileUtils.GetDirectoryName(PersonalizationEditorManager.Instance.currentEditingItemInfo.FolderPath);
+                                    string directoryName = ModFileUtils.GetDirectoryName(PersonalizationEditorManager.Instance.EditingItemInfo.FolderPath);
                                     string fileName = Path.GetFileName(filePath);
                                     string path = Path.Combine(directoryName, "files", fileName);
 
@@ -724,11 +724,11 @@ namespace OverhaulMod.UI
                                     voxelModelFileFieldText.text = fileName;
                                     settingsPreset.VoxFilePath = path;
 
-                                    UIPersonalizationEditor.instance.Utilities.SetPresetPreview(preset.Key);
+                                    UIPersonalizationEditor.instance.Utilities.SetPreviewingPreset(preset.Key);
                                 }
 
                                 GlobalEventManager.Instance.Dispatch(PersonalizationEditorManager.OBJECT_EDITED_EVENT);
-                            }, PersonalizationItemInfo.GetImportedFilesFolder(PersonalizationEditorManager.Instance.currentEditingItemInfo), "*.vox");
+                            }, PersonalizationItemInfo.GetImportedFilesFolder(PersonalizationEditorManager.Instance.EditingItemInfo), "*.vox");
                         });
 
                         // center pivot
@@ -744,7 +744,7 @@ namespace OverhaulMod.UI
                         bool allowCallback = true;
                         WeaponVariant2 prevCondition = preset.Key;
                         Dropdown conditionsDropdown = display.GetObject<Dropdown>(0);
-                        conditionsDropdown.options = PersonalizationEditorManager.Instance.GetConditionOptionsDependingOnEditingWeapon();
+                        conditionsDropdown.options = PersonalizationEditorManager.Instance.GetPresetsForEditingWeaponSkin();
 
                         int conditionDropdownValueToSet = -1;
                         for (int i = 0; i < conditionsDropdown.options.Count; i++)
@@ -792,7 +792,7 @@ namespace OverhaulMod.UI
                         // active frame
                         void refreshActiveFrameAction()
                         {
-                            display.GetObject<GameObject>(4).SetActive(prevCondition == PersonalizationEditorManager.Instance.previewPresetKey);
+                            display.GetObject<GameObject>(4).SetActive(prevCondition == PersonalizationEditorManager.Instance.PreviewPresetKey);
                         }
                         refreshActiveFrameAction();
 

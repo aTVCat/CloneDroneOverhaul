@@ -30,7 +30,7 @@ namespace OverhaulMod.UI
 
         private void refreshText()
         {
-            _text.text = PersonalizationEditorManager.Instance?.currentEditingItemInfo?.GetAuthorsString();
+            _text.text = PersonalizationEditorManager.Instance?.EditingItemInfo?.GetAuthorsString();
         }
 
         public void OnEditButtonClicked()

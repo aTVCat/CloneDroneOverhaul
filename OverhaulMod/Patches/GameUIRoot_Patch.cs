@@ -68,7 +68,7 @@ namespace OverhaulMod.Patches
 
             if (!uiCancelDown || !flag)
             {
-                if (PersonalizationEditorManager.IsInEditor())
+                if (PersonalizationEditorManager.IsInEditorMode())
                 {
                     PersonalizationEditorManager personalizationEditorManager = PersonalizationEditorManager.Instance;
                     if (personalizationEditorManager.IsInPlaytestMode())

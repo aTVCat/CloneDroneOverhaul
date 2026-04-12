@@ -22,7 +22,7 @@ namespace OverhaulMod.Content.Personalization
 
         private void Start()
         {
-            if (PersonalizationEditorManager.IsInEditor())
+            if (PersonalizationEditorManager.IsInEditorMode())
             {
                 GlobalEventManager.Instance.AddEventListener(PersonalizationEditorManager.PRESET_PREVIEW_CHANGED_EVENT, RefreshVisibility);
                 GlobalEventManager.Instance.AddEventListener(PersonalizationEditorManager.OBJECT_EDITED_EVENT, RefreshVisibility);
@@ -52,8 +52,8 @@ namespace OverhaulMod.Content.Personalization
                 return true;
 
             WeaponVariant2 weaponVariant1;
-            if (PersonalizationEditorManager.IsInEditor())
-                weaponVariant1 = PersonalizationEditorManager.Instance.previewPresetKey;
+            if (PersonalizationEditorManager.IsInEditorMode())
+                weaponVariant1 = PersonalizationEditorManager.Instance.PreviewPresetKey;
             else
                 WeaponVariantManager.GetWeaponVariant(objectBehaviour.ControllerInfo.Reference.owner, objectBehaviour.ControllerInfo.ItemInfo.Weapon, out weaponVariant1);
 

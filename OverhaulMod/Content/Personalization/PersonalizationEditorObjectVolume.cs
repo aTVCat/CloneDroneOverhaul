@@ -87,7 +87,7 @@ namespace OverhaulMod.Content.Personalization
             }
 
             RefreshVolume();
-            if (PersonalizationEditorManager.IsInEditor())
+            if (PersonalizationEditorManager.IsInEditorMode())
             {
                 GlobalEventManager.Instance.AddEventListener(PersonalizationEditorManager.PRESET_PREVIEW_CHANGED_EVENT, RefreshVolume);
                 GlobalEventManager.Instance.AddEventListener(PersonalizationEditorManager.OBJECT_EDITED_EVENT, RefreshVolume);
@@ -123,9 +123,9 @@ namespace OverhaulMod.Content.Personalization
 
         public WeaponVariant2 GetCurrentShowCondition()
         {
-            if (PersonalizationEditorManager.IsInEditor())
+            if (PersonalizationEditorManager.IsInEditorMode())
             {
-                return PersonalizationEditorManager.Instance.previewPresetKey;
+                return PersonalizationEditorManager.Instance.PreviewPresetKey;
             }
             visibilityController.GetWeaponVariant(out WeaponVariant2 showConditions);
             return showConditions;
@@ -167,7 +167,7 @@ namespace OverhaulMod.Content.Personalization
 
         private IEnumerator refreshVolumeCoroutine() // this fixes weird crash
         {
-            while (!_isDestroyed && !PersonalizationEditorManager.IsInEditor() && (!objectBehaviour || objectBehaviour.ControllerInfo == null))
+            while (!_isDestroyed && !PersonalizationEditorManager.IsInEditorMode() && (!objectBehaviour || objectBehaviour.ControllerInfo == null))
                 yield return null;
 
             if (_isDestroyed)
@@ -213,12 +213,12 @@ namespace OverhaulMod.Content.Personalization
             if (voxFilePath == null)
                 voxFilePath = string.Empty;
 
-            bool inEditor = PersonalizationEditorManager.IsInEditor();
+            bool inEditor = PersonalizationEditorManager.IsInEditorMode();
 
             PersonalizationItemInfo itemInfo;
             if (inEditor)
             {
-                itemInfo = PersonalizationEditorManager.Instance.currentEditingItemInfo;
+                itemInfo = PersonalizationEditorManager.Instance.EditingItemInfo;
             }
             else
             {

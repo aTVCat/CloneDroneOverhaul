@@ -1,4 +1,5 @@
 ﻿using OverhaulMod.Combat;
+using OverhaulMod.Combat.Weapons;
 using OverhaulMod.Content.Personalization;
 using OverhaulMod.Engine;
 using OverhaulMod.Utils;
@@ -29,6 +30,11 @@ namespace OverhaulMod.Visuals
 
         public static readonly Dictionary<WeaponType, TransformInfo> PositionsWhenLonely = new Dictionary<WeaponType, TransformInfo>()
         {
+            { WeaponType.Sword, new TransformInfo(new Vector3(0f, 0.5f, -0.025f), new Vector3(80f, 270f, 90f), Vector3.one)},
+            { WeaponType.Bow, new TransformInfo(new Vector3(0f, -0.3f, -0.025f), new Vector3(0f, 0f, 20f), Vector3.one)},
+            { WeaponType.Hammer, new TransformInfo(new Vector3(-0.4f, 0.4f, -0.025f), new Vector3(0f, 0f, 310f), Vector3.one)},
+            { WeaponType.Spear, new TransformInfo(new Vector3(0.1f, 0.6f, -0.025f), new Vector3(5f, 90f, 270f), Vector3.one)},
+            { ModWeaponsManager.SCYTHE_TYPE, new TransformInfo(new Vector3(0f, 0f, -0.025f), new Vector3(290f, 270f, 90f), Vector3.one)}
         };
 
         public static readonly Dictionary<WeaponType, TransformInfo> WeaponPositionsWhenMultiple = new Dictionary<WeaponType, TransformInfo>()
@@ -36,7 +42,8 @@ namespace OverhaulMod.Visuals
             { WeaponType.Sword, new TransformInfo(new Vector3(0.5f, 0.5f, -0.125f), new Vector3(50f, 270f, 90f), Vector3.one)},
             { WeaponType.Bow, new TransformInfo(new Vector3(0f, -0.3f, -0.075f), new Vector3(0f, 0f, 50f), Vector3.one)},
             { WeaponType.Hammer, new TransformInfo(new Vector3(-0.4f, 0.4f, -0.2f), new Vector3(0f, 0f, 310f), Vector3.one)},
-            { WeaponType.Spear, new TransformInfo(new Vector3(0.2f, 0.6f, 0f), new Vector3(20f, 90f, 270f), Vector3.one)}
+            { WeaponType.Spear, new TransformInfo(new Vector3(0.2f, 0.6f, 0f), new Vector3(20f, 90f, 270f), Vector3.one)},
+            { ModWeaponsManager.SCYTHE_TYPE, new TransformInfo(new Vector3(0f, 0.2f, -0.025f), new Vector3(305f, 270f, 90f), Vector3.one)}
         };
 
         private FirstPersonMover _firstPersonMover;
@@ -185,7 +192,7 @@ namespace OverhaulMod.Visuals
 
         public void InstantiateRenderers()
         {
-            if (PersonalizationEditorManager.IsInEditor()) return;
+            if (PersonalizationEditorManager.IsInEditorMode()) return;
 
             FirstPersonMover firstPersonMover = _firstPersonMover;
             if (!firstPersonMover) return;
@@ -244,14 +251,30 @@ namespace OverhaulMod.Visuals
             Transform renderer = null;
             if (overhaulSkinId.IsNullOrEmpty())
             {
-                PhysicalWeaponModelType weaponModelReplacementPrefab = WeaponManager.Instance.GetWeaponModelReplacementPrefab(weapon.WeaponType, weapon._hasReplacedWithFireVariant, weapon._hasReplacedWithMultiplayerVariant, weapon._hasReplacedWithEMPVariant);
-                Transform prefab = WeaponManager.Instance.GetDefaultWeaponModel(weaponModelReplacementPrefab);
-                OverrideWeaponModel overrideWeaponModel = weapon.GetComponent<OverrideWeaponModel>();
-                if (overrideWeaponModel) prefab = overrideWeaponModel.GetModelForVariant(weaponModelReplacementPrefab.WeaponVariant);
-                if (!prefab) return;
+                if (weapon is ModWeaponModel modWeapon)
+                {
+                    GameObject model = modWeapon.GetModel();
+                    if (!model) return;
 
-                renderer = Instantiate(prefab, parent, false);
-                weapon.replaceWeaponGlowColor(renderer.gameObject, _firstPersonMover._characterModel.GetFavouriteColors().GetWeaponColor(weapon.WeaponType));
+                    renderer = Instantiate(model.transform, parent, false);
+                    if (renderer)
+                    {
+                        Renderer rendererComponent = renderer.GetComponent<Renderer>();
+                        if (rendererComponent)
+                            rendererComponent.enabled = true;
+                    }
+                }
+                else
+                {
+                    PhysicalWeaponModelType weaponModelReplacementPrefab = WeaponManager.Instance.GetWeaponModelReplacementPrefab(weapon.WeaponType, weapon._hasReplacedWithFireVariant, weapon._hasReplacedWithMultiplayerVariant, weapon._hasReplacedWithEMPVariant);
+                    Transform prefab = WeaponManager.Instance.GetDefaultWeaponModel(weaponModelReplacementPrefab);
+                    OverrideWeaponModel overrideWeaponModel = weapon.GetComponent<OverrideWeaponModel>();
+                    if (overrideWeaponModel) prefab = overrideWeaponModel.GetModelForVariant(weaponModelReplacementPrefab.WeaponVariant);
+                    if (!prefab) return;
+
+                    renderer = Instantiate(prefab, parent, false);
+                    weapon.replaceWeaponGlowColor(renderer.gameObject, _firstPersonMover._characterModel.GetFavouriteColors().GetWeaponColor(weapon.WeaponType));
+                }
             }
             else
             {

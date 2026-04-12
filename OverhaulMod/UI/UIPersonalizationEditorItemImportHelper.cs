@@ -126,21 +126,21 @@ namespace OverhaulMod.UI
 
         private void importAndEditCurrentItem()
         {
-            int importVersion = PersonalizationEditorManager.IMPORT_VERSION;
+            PersonalizationEditorDataManager.Instance.ImportOrUpdateItem(_files[_currentItemIndex], importResult, true);
+        }
 
-            string path = _files[_currentItemIndex];
-            string folderName = Path.GetFileNameWithoutExtension(path);
-            if (folderName.StartsWith("PersonalizationItem_"))
+        private void importResult(PersonalizationItemImportResult result)
+        {
+            ModDebug.Log($"Import result: {result.Result} {result.Error}");
+
+            if (result.HasFailed())
             {
-                importVersion = 0;
-                folderName = folderName.Replace("PersonalizationItem_", string.Empty).Remove(8);
+                PersonalizationEditorManager.Instance.EditItem(null);
+                ModUIUtils.MessagePopupOK("Import error", result.Error, true);
             }
-
-            PersonalizationEditorManager.Instance.ImportItem(path, folderName, out string error, importVersion, true);
-            if (!string.IsNullOrEmpty(error))
+            else if (result.Result == PersonalizationItemImportResult.ImportResult.Cancelled)
             {
-                ModUIUtils.MessagePopupOK("Import error", error, true);
-                return;
+                continueOrEndVerifyingItems();
             }
         }
 
@@ -196,6 +196,17 @@ namespace OverhaulMod.UI
             _startVerifyingButton.interactable = true;
         }
 
+        private bool trySaveItem()
+        {
+            PersonalizationItemSaveResult saveResult = PersonalizationEditorManager.Instance.SaveItem(true);
+            if (saveResult.HasFailed())
+            {
+                UIPersonalizationEditor.instance.ShowSaveErrorMessage(saveResult.Error);
+                return false;
+            }
+            return true;
+        }
+
         public void OnAddItemClicked()
         {
             ModUIUtils.FileExplorer(base.transform, true, onSelectedFiles, null, "*.zip");
@@ -212,35 +223,29 @@ namespace OverhaulMod.UI
 
         public void OnDeclineButtonClicked()
         {
-            PersonalizationItemInfo info = PersonalizationEditorManager.Instance.currentEditingItemInfo;
-            info.IsVerified = false;
-            info.IsSentForVerification = false;
-            info.ReuploadedTheItem = false;
-
-            PersonalizationEditorManager.Instance.SaveItem(out string error, true);
-            if (!string.IsNullOrEmpty(error))
+            PersonalizationItemInfo info = PersonalizationEditorManager.Instance.EditingItemInfo;
+            if (info != null)
             {
-                UIPersonalizationEditor.instance.ShowSaveErrorMessage(error);
-                return;
-            }
+                info.IsVerified = false;
+                info.IsSentForVerification = false;
+                info.ReuploadedTheItem = false;
 
+                if (!trySaveItem()) return;
+            }
             continueOrEndVerifyingItems();
         }
 
         public void OnVerifyButtonClicked()
         {
-            PersonalizationItemInfo info = PersonalizationEditorManager.Instance.currentEditingItemInfo;
-            info.IsVerified = true;
-            info.IsSentForVerification = false;
-            info.ReuploadedTheItem = false;
-
-            PersonalizationEditorManager.Instance.SaveItem(out string error, true);
-            if (!string.IsNullOrEmpty(error))
+            PersonalizationItemInfo info = PersonalizationEditorManager.Instance.EditingItemInfo;
+            if(info != null)
             {
-                UIPersonalizationEditor.instance.ShowSaveErrorMessage(error);
-                return;
-            }
+                info.IsVerified = true;
+                info.IsSentForVerification = false;
+                info.ReuploadedTheItem = false;
 
+                if (!trySaveItem()) return;
+            }
             continueOrEndVerifyingItems();
         }
     }

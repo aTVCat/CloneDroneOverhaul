@@ -10,13 +10,11 @@ namespace OverhaulMod.Content.Personalization
 
         public string Name, Path;
 
-        public bool IsRoot;
-
         public List<PersonalizationEditorObjectInfo> Children;
 
         public Dictionary<string, object> PropertyValues;
 
-        public int UniqueIndex, NextUniqueIndex;
+        public int UniqueIndex;
 
         public Vector3 GetPosition()
         {
@@ -84,14 +82,12 @@ namespace OverhaulMod.Content.Personalization
             }
 
             PersonalizationEditorObjectBehaviour behaviour = personalizationEditorObjectManager.PlaceObject(Path, parent, false);
-            behaviour.IsRoot = IsRoot;
             behaviour.UniqueIndex = UniqueIndex;
             behaviour.ControllerInfo = personalizationControllerInfo;
             behaviour.Name = Name;
             behaviour.PropertyValues = PropertyValues;
             behaviour.SerializedScale = GetScale();
-            if (PersonalizationEditorManager.IsInEditor())
-                PersonalizationEditorObjectManager.Instance.AddInstantiatedObject(behaviour);
+            if (PersonalizationEditorManager.IsInEditorMode()) PersonalizationEditorObjectManager.Instance.AddInstantiatedObject(behaviour);
             Transform transform = behaviour.transform;
             transform.localPosition = GetPosition();
             transform.localEulerAngles = GetEulerAngles();

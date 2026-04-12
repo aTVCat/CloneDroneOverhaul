@@ -59,7 +59,7 @@ namespace OverhaulMod.UI
             }
             entiriesList.Clear();
 
-            bool canVerifyItems = PersonalizationEditorManager.Instance.canVerifyItems;
+            bool canVerifyItems = PersonalizationEditorManager.Instance.CanVerifyItems;
             foreach (OptionData od in list)
             {
                 if (od.DisplayedForVerifiers && !canVerifyItems)
