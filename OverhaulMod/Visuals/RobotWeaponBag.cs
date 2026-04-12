@@ -118,7 +118,10 @@ namespace OverhaulMod.Visuals
             while (_personalizationController && !_personalizationController.HasInitialized()) yield return null;
 
             _hasInitialized = _personalizationController;
-            CharacterUpdateScheduler.Instance.UpdateCharacter(_firstPersonMover, false, true);
+            CharacterUpdateScheduler.Instance.UpdateCharacter(_firstPersonMover, new CharacterUpdateRequest()
+            {
+                UpdateWeaponBag = true
+            });
 
             yield break;
         }
@@ -179,7 +182,10 @@ namespace OverhaulMod.Visuals
             if (_hasScheduledRespawningRenderers) return;
             _hasScheduledRespawningRenderers = true;
 
-            CharacterUpdateScheduler.Instance.UpdateCharacter(_firstPersonMover, false, true);
+            CharacterUpdateScheduler.Instance.UpdateCharacter(_firstPersonMover, new CharacterUpdateRequest()
+            {
+                UpdateWeaponBag = true
+            });
         }
 
         public void RespawnRenderers()

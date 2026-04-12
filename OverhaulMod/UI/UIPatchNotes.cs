@@ -378,8 +378,6 @@ namespace OverhaulMod.UI
                     return $"{patch} 9";
                 case "4.2.1052":
                     return $"{patch} 10";
-                case "4.2.1093":
-                    return $"{patch} 11";
 
                 default:
                     return string.Empty;

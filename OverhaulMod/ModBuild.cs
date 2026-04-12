@@ -1,4 +1,4 @@
-﻿#define OVERRIDE_VER
+﻿//#define OVERRIDE_VER
 //#define DISABLE_EXCLUSIVE_PERKS
 
 using OverhaulMod.Utils;
@@ -9,12 +9,12 @@ namespace OverhaulMod
 {
     public static class ModBuild
     {
-        public const bool VERSION_4_3 = false;
+        public const bool VERSION_4_3 = true;
 
         public const string BUILD_INFO_FILE_PATH = "buildInfo.json";
 
 #if OVERRIDE_VER
-        public const string OVERRIDE_VERSION = "4.2.1095";
+        public const string OVERRIDE_VERSION = "4.2.1096";
 #endif
 
         private static bool s_loaded;
@@ -132,7 +132,7 @@ namespace OverhaulMod
             else
                 version = ModCache.ModAssemblyName.Version;
 #else
-            Version version = ModCache.modAssemblyName.Version;
+            Version version = ModCache.ModAssemblyName.Version;
 #endif
             int major = version.Major;
             int minor = version.Minor;

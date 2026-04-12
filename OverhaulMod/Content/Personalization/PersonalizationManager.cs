@@ -397,14 +397,19 @@ namespace OverhaulMod.Content.Personalization
                 bool isPlayer = character.IsPlayer();
                 if ((onlyPlayers && !isPlayer) || (onlyEnemies && isPlayer)) continue;
 
-                CharacterUpdateScheduler.Instance.UpdateCharacter(character, true, true);
+                CharacterUpdateScheduler.Instance.UpdateCharacter(character, new CharacterUpdateRequest()
+                {
+                    UpdateWeaponSkins = true,
+                    UpdateAccessories = true,
+                    UpdatePets = true,
+                    UpdateWeaponBag = true,
+                });
             }
         }
 
         public static bool IsWeaponCustomizationSupported(WeaponType weaponType)
         {
-            return weaponType != WeaponType.None
-&& (weaponType == WeaponType.Sword
+            return weaponType != WeaponType.None && (weaponType == WeaponType.Sword
                 || weaponType == WeaponType.Bow
                 || weaponType == WeaponType.Hammer
                 || weaponType == WeaponType.Spear
@@ -441,12 +446,13 @@ namespace OverhaulMod.Content.Personalization
                     allPlayers.Add(firstPersonMover);
 
                 SetIsItemEquipped(item, true);
-                RefreshCustomizationOnAllRobots(false, false);
             }
             else if (item.Category == PersonalizationCategory.Accessories)
             {
                 SetIsItemEquipped(item, !GetIsItemEquipped(item));
             }
+
+            RefreshCustomizationOnAllRobots(false, false);
         }
 
         public static void SetIsItemEquipped(PersonalizationItemInfo item, bool value)

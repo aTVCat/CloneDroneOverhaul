@@ -32,13 +32,13 @@ namespace OverhaulMod.Engine
             }
         }
 
-        public void UpdateCharacter(Character character, bool updateSkins, bool updateWeaponBag)
+        public void UpdateCharacter(Character character, CharacterUpdateRequest request)
         {
             if (!character) throw new System.ArgumentNullException(nameof(character), "The character is null or may have been destroyed.");
 
             if (_scheduledUpdates.Count == 0)
             {
-                CharacterUpdateInfo updateInfo = createNewUpdateInfo(character, getImportanceOfUpdate(character), updateSkins, updateWeaponBag);
+                CharacterUpdateInfo updateInfo = createNewUpdateInfo(character, getImportanceOfUpdate(character), request);
                 _scheduledUpdates.Add(updateInfo);
                 return;
             }
@@ -47,14 +47,13 @@ namespace OverhaulMod.Engine
             if (characterUpdate == null)
             {
                 CharacterUpdateImportance importance = getImportanceOfUpdate(character);
-                characterUpdate = createNewUpdateInfo(character, importance, updateSkins, updateWeaponBag);
+                characterUpdate = createNewUpdateInfo(character, importance, request);
                 int index = getLastIndexOfScheduledUpdateWithImportance(importance);
                 _scheduledUpdates.Insert(index, characterUpdate);
             }
             else
             {
-                characterUpdate.UpdateWeaponSkins |= updateSkins;
-                characterUpdate.UpdateWeaponBag |= updateWeaponBag;
+                characterUpdate.Request.Append(request);
             }
         }
 
@@ -63,11 +62,17 @@ namespace OverhaulMod.Engine
             if (_scheduledUpdates.Count == 0) return;
 
             CharacterUpdateInfo update = _scheduledUpdates[0];
-            if (!update.UpdateSkinsIfRequired())
+            if (!update.UpdateWeaponSkins())
             {
-                if (!update.UpdateWeaponBagIfRequired())
+                if (!update.UpdateWeaponBag())
                 {
-                    _scheduledUpdates.RemoveAt(0);
+                    if (!update.UpdateAccessories())
+                    {
+                        if (!update.UpdatePets())
+                        {
+                            _scheduledUpdates.RemoveAt(0);
+                        }
+                    }
                 }
             }
         }
@@ -111,7 +116,7 @@ namespace OverhaulMod.Engine
             return _scheduledUpdates.Count;
         }
 
-        private CharacterUpdateInfo createNewUpdateInfo(Character character, CharacterUpdateImportance updateImportance, bool updateSkins, bool updateWeaponBag)
+        private CharacterUpdateInfo createNewUpdateInfo(Character character, CharacterUpdateImportance updateImportance, CharacterUpdateRequest request)
         {
             return new CharacterUpdateInfo()
             {
@@ -119,8 +124,7 @@ namespace OverhaulMod.Engine
                 PersonalizationController = character.GetComponent<PersonalizationController>(),
                 WeaponBag = character.GetComponent<RobotWeaponBag>(),
                 Importance = updateImportance,
-                UpdateWeaponSkins = updateSkins,
-                UpdateWeaponBag = updateWeaponBag,
+                Request = request
             };
         }
 

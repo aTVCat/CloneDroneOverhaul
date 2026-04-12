@@ -13,24 +13,40 @@ namespace OverhaulMod.Engine
 
         public CharacterUpdateImportance Importance;
 
-        public bool UpdateWeaponSkins, UpdateWeaponBag;
+        public CharacterUpdateRequest Request;
 
-        public bool UpdateSkinsIfRequired()
+        public bool UpdateWeaponSkins()
         {
-            if (UpdateWeaponSkins && PersonalizationController && PersonalizationController.HasInitialized())
+            if (Request.UpdateWeaponSkins && PersonalizationController && PersonalizationController.HasInitialized())
             {
-                UpdateWeaponSkins = false;
+                Request.UpdateWeaponSkins = false;
                 PersonalizationController.RefreshWeaponSkins();
                 return true;
             }
             return false;
         }
 
-        public bool UpdateWeaponBagIfRequired()
+        public bool UpdateAccessories()
         {
-            if (UpdateWeaponBag && WeaponBag && WeaponBag.HasInitialized())
+            if (Request.UpdateAccessories && PersonalizationController && PersonalizationController.HasInitialized())
             {
-                UpdateWeaponBag = false;
+                Request.UpdateAccessories = false;
+                PersonalizationController.RefreshAccessories();
+                return true;
+            }
+            return false;
+        }
+
+        public bool UpdatePets()
+        {
+            return false;
+        }
+
+        public bool UpdateWeaponBag()
+        {
+            if (Request.UpdateWeaponBag && WeaponBag && WeaponBag.HasInitialized())
+            {
+                Request.UpdateWeaponBag = false;
                 WeaponBag.RespawnRenderers();
                 WeaponBag.RefreshVisibilityOfRenderers();
                 return true;

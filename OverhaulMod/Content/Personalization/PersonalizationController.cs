@@ -177,9 +177,12 @@ namespace OverhaulMod.Content.Personalization
             _hasInitialized = true;
 
             RefreshWeaponModelReferences();
-            SpawnEquippedAccessories();
 
-            CharacterUpdateScheduler.Instance.UpdateCharacter(firstPersonMover, true, false);
+            CharacterUpdateScheduler.Instance.UpdateCharacter(firstPersonMover, new CharacterUpdateRequest()
+            {
+                UpdateWeaponSkins = true,
+                UpdateAccessories = true
+            });
             yield break;
         }
 
@@ -434,7 +437,7 @@ namespace OverhaulMod.Content.Personalization
             }
         }
 
-        public void SpawnEquippedAccessories()
+        public void RefreshAccessories()
         {
             if (!ModFeatures.IsEnabled(ModFeatures.FeatureType.Accessories) || PersonalizationEditorManager.IsInEditorMode()) return;
 
@@ -442,11 +445,13 @@ namespace OverhaulMod.Content.Personalization
 
             if (_isMainPlayer && !PersonalizationUserInfo.AllowEnemiesUseSkins) return;
 
-            List<string> accessories = PersonalizationUserInfo.GetEquippedAccessories();
+            List<string> accessories = GetAccessoriesDependingOnOwner();
             foreach (string item in accessories)
             {
                 _ = SpawnItem(item);
             }
+
+            ModDebug.Log("Refreshed accessories");
         }
 
         public PersonalizationEditorObjectBehaviour SpawnItem(string itemId)
@@ -740,6 +745,13 @@ namespace OverhaulMod.Content.Personalization
                 }
             }
             return PersonalizationUserInfo.GetWeaponSkin(weaponType);
+        }
+
+        public List<string> GetAccessoriesDependingOnOwner()
+        {
+            if (!_hasInitialized || _isMultiplayer) return null;
+
+            return PersonalizationUserInfo.GetEquippedAccessories();
         }
 
         public void OnUpgrade()
