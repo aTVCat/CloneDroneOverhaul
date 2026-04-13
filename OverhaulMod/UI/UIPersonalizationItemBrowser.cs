@@ -394,17 +394,17 @@ namespace OverhaulMod.UI
                         break;
                     }
                     populatePage = true;
-                    items = PersonalizationManager.Instance.itemList.GetWeaponSkins(weaponType, PersonalizationItemsSortType.Alphabet);
+                    items = PersonalizationManager.Instance.ItemList.GetWeaponSkins(weaponType, PersonalizationItemsSortType.Alphabet);
                     break;
                 case PersonalizationCategory.Accessories:
                     populatePage = ModFeatures.IsEnabled(ModFeatures.FeatureType.Accessories);
                     _notImplementedTextObject.SetActive(!populatePage);
-                    if (populatePage) items = PersonalizationManager.Instance.itemList.GetItems(PersonalizationCategory.Accessories, PersonalizationItemsSortType.Alphabet);
+                    if (populatePage) items = PersonalizationManager.Instance.ItemList.GetItems(PersonalizationCategory.Accessories, PersonalizationItemsSortType.Alphabet);
                     break;
                 case PersonalizationCategory.Pets:
                     populatePage = ModFeatures.IsEnabled(ModFeatures.FeatureType.Pets);
                     _notImplementedTextObject.SetActive(!populatePage);
-                    if (populatePage) items = PersonalizationManager.Instance.itemList.GetItems(PersonalizationCategory.Pets, PersonalizationItemsSortType.Alphabet);
+                    if (populatePage) items = PersonalizationManager.Instance.ItemList.GetItems(PersonalizationCategory.Pets, PersonalizationItemsSortType.Alphabet);
                     break;
             }
 

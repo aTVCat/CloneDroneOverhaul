@@ -87,7 +87,7 @@ namespace OverhaulMod.Content.Personalization
 
         public void DiscoverAllItems()
         {
-            foreach (PersonalizationItemInfo item in PersonalizationManager.Instance.itemList.Items)
+            foreach (PersonalizationItemInfo item in PersonalizationManager.Instance.ItemList.Items)
                 SetIsItemDiscovered(item);
         }
 
@@ -143,7 +143,7 @@ namespace OverhaulMod.Content.Personalization
 
         public void RefreshAllItemsVerification()
         {
-            foreach (PersonalizationItemInfo item in PersonalizationManager.Instance.itemList.Items)
+            foreach (PersonalizationItemInfo item in PersonalizationManager.Instance.ItemList.Items)
                 if (!item.IsVerified)
                     SetIsItemUnverified(item, true);
         }
@@ -175,7 +175,7 @@ namespace OverhaulMod.Content.Personalization
 
         public void RefreshAllItemVersions()
         {
-            foreach (PersonalizationItemInfo item in PersonalizationManager.Instance.itemList.Items)
+            foreach (PersonalizationItemInfo item in PersonalizationManager.Instance.ItemList.Items)
                 SetItemVersion(item, item.Version);
         }
 

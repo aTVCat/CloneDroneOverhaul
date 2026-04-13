@@ -227,7 +227,7 @@ namespace OverhaulMod.Content.Personalization
         {
             if (_isScreenshotting) return;
 
-            List<PersonalizationItemInfo> items = PersonalizationManager.Instance.itemList.GetItems(PersonalizationCategory.WeaponSkins);
+            List<PersonalizationItemInfo> items = PersonalizationManager.Instance.ItemList.GetItems(PersonalizationCategory.WeaponSkins);
             takeScreenshotsOfItemsCoroutine(items, onlyNew, callback).Run();
         }
 

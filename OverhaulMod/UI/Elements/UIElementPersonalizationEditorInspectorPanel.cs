@@ -400,7 +400,7 @@ namespace OverhaulMod.UI
                                 GlobalEventManager.Instance.Dispatch(PersonalizationEditorManager.OBJECT_EDITED_EVENT);
                             }
                         });
-                        conditionsDropdown.interactable = model.GetUnusedShowCondition() != WeaponVariant2.None;
+                        conditionsDropdown.interactable = model.GetUnusedWeaponVariant() != WeaponVariant2.None;
 
                         // active frame
                         void refreshActiveFrameAction()
@@ -516,13 +516,13 @@ namespace OverhaulMod.UI
                     }
                 }
 
-                if (model.GetUnusedShowCondition() != WeaponVariant2.None)
+                if (model.GetUnusedWeaponVariant() != WeaponVariant2.None)
                 {
                     Button newPresetButton = Instantiate(propertiesPanel._addVolumeSettingsPresetButton, container);
                     newPresetButton.gameObject.SetActive(true);
                     newPresetButton.onClick.AddListener(delegate
                     {
-                        model.presets.Add(model.GetUnusedShowCondition(), new CVMModelPreset(true));
+                        model.presets.Add(model.GetUnusedWeaponVariant(), new CVMModelPreset(true));
                         populateFieldsAction();
                     });
                 }
@@ -787,7 +787,7 @@ namespace OverhaulMod.UI
                                 GlobalEventManager.Instance.Dispatch(PersonalizationEditorManager.OBJECT_EDITED_EVENT);
                             }
                         });
-                        conditionsDropdown.interactable = volume.GetUnusedShowCondition() != WeaponVariant2.None;
+                        conditionsDropdown.interactable = volume.GetUnusedWeaponVariant() != WeaponVariant2.None;
 
                         // active frame
                         void refreshActiveFrameAction()
@@ -848,13 +848,13 @@ namespace OverhaulMod.UI
                     }
                 }
 
-                if ((isWeaponSkin || volumePresets.Count == 0) && volume.GetUnusedShowCondition() != WeaponVariant2.None)
+                if ((isWeaponSkin || volumePresets.Count == 0) && volume.GetUnusedWeaponVariant() != WeaponVariant2.None)
                 {
                     Button newPresetButton = Instantiate(propertiesPanel._addVolumeSettingsPresetButton, container);
                     newPresetButton.gameObject.SetActive(true);
                     newPresetButton.onClick.AddListener(delegate
                     {
-                        volume.volumeSettingPresets.Add(volume.GetUnusedShowCondition(), new VolumeSettingsPreset()
+                        volume.volumeSettingPresets.Add(volume.GetUnusedWeaponVariant(), new VolumeSettingsPreset()
                         {
                             CenterPivot = true,
                             VoxelSize = 0.1f,

@@ -83,7 +83,7 @@ namespace OverhaulMod.Content.Personalization
             {
                 _viewingOriginalModel = value;
                 RefreshGreatswordPreview();
-                if(PreviewingPersonalizationController) PreviewingPersonalizationController.RefreshWeaponSkinsNextFrame();
+                if (PreviewingPersonalizationController) PreviewingPersonalizationController.RefreshWeaponSkinsNextFrame();
             }
         }
 
@@ -256,12 +256,15 @@ namespace OverhaulMod.Content.Personalization
 
         private IEnumerator spawnBotCoroutine(bool spawnEditingItem)
         {
-            if(_bot) BoltNetwork.Destroy(_bot.gameObject);
+            if (_bot) BoltNetwork.Destroy(_bot.gameObject);
 
             GameObject spawnPoint = new GameObject("Temporary Player Spawn Point");
             spawnPoint.transform.position = Vector3.zero;
 
-            CloneSpawningData cloneSpawningData = new CloneSpawningData(spawnPoint.transform, true, false, UIPersonalizationEditor.instance.Utilities.GetFavoriteColor(), null);
+            UIElementPersonalizationEditorUtilitiesPanel utilities = UIPersonalizationEditor.instance.Utilities;
+            Color favColor = utilities.GetFavoriteColor();
+            CharacterModel model = MultiplayerCharacterCustomizationManager.Instance.GetCharacterModel(utilities.GetCharacterModelIndex());
+            CloneSpawningData cloneSpawningData = new CloneSpawningData(spawnPoint.transform, true, false, favColor, model);
             CloneSpawner cloneSpawner = GameFlowManager.Instance._cloneSpawner;
             cloneSpawner.UseSkinInSingleplayer = false;
 

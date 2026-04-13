@@ -106,7 +106,7 @@ namespace OverhaulMod.Content.Personalization
             }
         }
 
-        public WeaponVariant2 GetUnusedShowCondition()
+        public WeaponVariant2 GetUnusedWeaponVariant()
         {
             WeaponType weaponType = objectBehaviour.ControllerInfo.ItemInfo.Weapon;
             if (!volumeSettingPresets.ContainsKey(WeaponVariant2.Normal))
@@ -121,7 +121,7 @@ namespace OverhaulMod.Content.Personalization
             return WeaponVariant2.None;
         }
 
-        public WeaponVariant2 GetCurrentShowCondition()
+        public WeaponVariant2 GetActiveWeaponVariant()
         {
             if (PersonalizationEditorManager.IsInEditorMode())
             {
@@ -133,7 +133,7 @@ namespace OverhaulMod.Content.Personalization
 
         public VolumeSettingsPreset GetCurrentPreset()
         {
-            WeaponVariant2 condition = GetCurrentShowCondition();
+            WeaponVariant2 condition = GetActiveWeaponVariant();
             Dictionary<WeaponVariant2, VolumeSettingsPreset> d = volumeSettingPresets;
             if (d == null || d.Count == 0)
                 return null;

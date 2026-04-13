@@ -191,6 +191,7 @@ namespace OverhaulMod.Content.Personalization
                 PropertyValues = PropertyValues ?? new Dictionary<string, object>(),
                 Children = new List<PersonalizationEditorObjectInfo>()
             };
+            objectInfo.InitializeTransformArrays();
             objectInfo.SetPosition(base.transform.localPosition);
             objectInfo.SetEulerAngles(base.transform.localEulerAngles);
             objectInfo.SetScale(base.transform.localScale);

@@ -35,6 +35,9 @@ namespace OverhaulMod.UI
         [UIElement("FavoriteColorPreviewDropdown")]
         private readonly Dropdown _favoriteColorPreviewDropdown;
 
+        [UIElement("CharacterModelPreviewDropdown")]
+        private readonly Dropdown _characterModelPreviewDropdown;
+
         private bool _noCallbacks;
 
         protected override void OnInitialized()
@@ -42,11 +45,20 @@ namespace OverhaulMod.UI
             _favoriteColorPreviewDropdown.options = HumanFactsManager.Instance.GetColorDropdownOptions();
             _favoriteColorPreviewDropdown.value = SettingsManager.Instance.GetCurrentOrCreateMultiplayerHumanSlot(out _).RootModel.ColorIndex;
             _favoriteColorPreviewDropdown.onValueChanged.AddListener(OnFavoriteColorPreviewDropdownChanged);
+
+            _characterModelPreviewDropdown.options = MultiplayerCharacterCustomizationManager.Instance.GetCharacterModelDropdownOptions(CustomizationCategoryType.FullModel);
+            _characterModelPreviewDropdown.value = 0;
+            _characterModelPreviewDropdown.onValueChanged.AddListener(OnCharacterModelPreviewDropdownChanged);
         }
 
         public Color GetFavoriteColor()
         {
             return HumanFactsManager.Instance.FavouriteColors[Mathf.Max(0, _favoriteColorPreviewDropdown.value - 1)].ColorValue;
+        }
+
+        public int GetCharacterModelIndex()
+        {
+            return _characterModelPreviewDropdown.value;
         }
 
         public void SetRandomFavoriteColor()
@@ -150,6 +162,13 @@ namespace OverhaulMod.UI
         }
 
         public void OnFavoriteColorPreviewDropdownChanged(int value)
+        {
+            if (_noCallbacks) return;
+
+            if (!PersonalizationEditorManager.Instance.IsInScreenshotMode()) PersonalizationEditorManager.Instance.SerializeRootAndRespawnBot();
+        }
+
+        public void OnCharacterModelPreviewDropdownChanged(int value)
         {
             if (_noCallbacks) return;
 

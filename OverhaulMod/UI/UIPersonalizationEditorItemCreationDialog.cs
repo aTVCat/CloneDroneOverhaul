@@ -14,6 +14,18 @@ namespace OverhaulMod.UI
         [UIElement("CloseButton")]
         private readonly Button _exitButton;
 
+        [UIElementAction(nameof(OnWeaponSkinButtonClicked))]
+        [UIElement("WeaponSkinButton")]
+        private readonly Button _weaponSkinButton;
+
+        [UIElementAction(nameof(OnAccessoryButtonClicked))]
+        [UIElement("AccessoryButton")]
+        private readonly Button _accessoryButton;
+
+        [UIElementAction(nameof(OnPetButtonClicked))]
+        [UIElement("PetButton")]
+        private readonly Button _petButton;
+
         [UIElementAction(nameof(OnDoneButtonClicked))]
         [UIElement("DoneButton")]
         private readonly Button _doneButton;
@@ -28,17 +40,17 @@ namespace OverhaulMod.UI
         [UIElement("StatusText")]
         private readonly Text _statusText;
 
-        public string TargetDirectory;
-
         public bool UsePersistentFolder;
 
         public Action ItemCreatedCallback;
 
         private float _timeLeftToRefreshStatus;
 
-        private string _generatedGuid;
+        private string _generatedId;
 
         private string _folderName;
+
+        private PersonalizationCategory _category;
 
         protected override void OnInitialized()
         {
@@ -62,10 +74,13 @@ namespace OverhaulMod.UI
         {
             base.Show();
 
-            _generatedGuid = Guid.NewGuid().ToString().Remove(8);
+            _generatedId = Guid.NewGuid().ToString().Remove(8);
 
             _templateDropdown.value = 0;
             _itemNameField.text = string.Empty;
+
+            _category = PersonalizationCategory.None;
+            refreshCategoryElements();
 
             ScheduleRefreshingStatus();
         }
@@ -83,6 +98,15 @@ namespace OverhaulMod.UI
             }
         }
 
+        private void refreshCategoryElements()
+        {
+            _weaponSkinButton.interactable = _category != PersonalizationCategory.WeaponSkins;
+            _accessoryButton.interactable = _category != PersonalizationCategory.Accessories;
+            _petButton.interactable = _category != PersonalizationCategory.Pets;
+
+            _templateDropdown.gameObject.SetActive(_category == PersonalizationCategory.WeaponSkins);
+        }
+
         public void ScheduleRefreshingStatus()
         {
             SetStatusText("Checking...", Color.gray);
@@ -93,6 +117,13 @@ namespace OverhaulMod.UI
 
         public void RefreshStatus()
         {
+            if(_category == PersonalizationCategory.None)
+            {
+                SetStatusText("You have not chosen the category.", Color.red);
+                _doneButton.interactable = false;
+                return;
+            }
+
             if (_itemNameField.text.IsNullOrEmpty())
             {
                 SetStatusText("The name is empty.", Color.red);
@@ -150,7 +181,7 @@ namespace OverhaulMod.UI
                     return;
                 }
 
-            string path = Path.Combine(TargetDirectory, _folderName);
+            string path = Path.Combine(UsePersistentFolder ? ModCore.CustomizationPersistentFolder : ModCore.CustomizationFolder, _folderName);
             if (Directory.Exists(path))
             {
                 SetStatusText("A folder with the same name already exists.", Color.red);
@@ -168,6 +199,27 @@ namespace OverhaulMod.UI
             _statusText.color = color;
         }
 
+        public void OnWeaponSkinButtonClicked()
+        {
+            _category = PersonalizationCategory.WeaponSkins;
+            refreshCategoryElements();
+            ScheduleRefreshingStatus();
+        }
+
+        public void OnAccessoryButtonClicked()
+        {
+            _category = PersonalizationCategory.Accessories;
+            refreshCategoryElements();
+            ScheduleRefreshingStatus();
+        }
+
+        public void OnPetButtonClicked()
+        {
+            _category = PersonalizationCategory.Pets;
+            refreshCategoryElements();
+            ScheduleRefreshingStatus();
+        }
+
         public void OnDoneButtonClicked()
         {
             Hide();
@@ -176,7 +228,16 @@ namespace OverhaulMod.UI
             if (_templateDropdown.options[_templateDropdown.value] is DropdownPersonalizationItemInfo dropdownPersonalizationItemInfo)
                 template = dropdownPersonalizationItemInfo.ItemInfo;
 
-            PersonalizationItemCreationResult creationResult = PersonalizationEditorDataManager.Instance.CreateItem(_folderName, _itemNameField.text, _generatedGuid, UsePersistentFolder, template);
+            PersonalizationItemCreationArgs creationArgs = new PersonalizationItemCreationArgs()
+            {
+                UsePersistentFolder = UsePersistentFolder,
+                DirectoryName = _folderName,
+                ItemName = _itemNameField.text,
+                UniqueID = _generatedId,
+                ItemCategory = _category,
+                Template = template,
+            };
+            PersonalizationItemCreationResult creationResult = PersonalizationEditorDataManager.Instance.CreateItem(creationArgs);
             if (creationResult.HasFailed())
             {
                 ModUIUtils.MessagePopupOK("Item creation error", "A folder with the name has been already created.\nTry giving your folder an alternate name.", true);
@@ -217,7 +278,7 @@ namespace OverhaulMod.UI
                     }
                 }
             }
-            _folderName = $"{_generatedGuid}_{itemName}";
+            _folderName = $"{_generatedId}_{itemName}";
         }
     }
 }

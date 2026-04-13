@@ -9,6 +9,8 @@ namespace OverhaulMod.UI
 {
     public class UIElementPersonalizationEditorItemConfigPanel : OverhaulUIBehaviour
     {
+        private const float GENERIC_INFO_GROUP_HEIGHT_FOR_ACCESSORY = 280f;
+
         [UIElement("NameField")]
         private readonly InputField _nameField;
 
@@ -54,10 +56,6 @@ namespace OverhaulMod.UI
         [UIElementAction(nameof(OnRevealEditorIDButtonClicked))]
         [UIElement("RevealEditorIDButton")]
         private readonly Button _revealEditorIDButton;
-
-        [UIElementAction(nameof(OnEditedTypeDropdown))]
-        [UIElement("TypeDropdown")]
-        private readonly Dropdown _typeDropdown;
 
         [UIElementAction(nameof(OnEditedWeaponTypeDropdown))]
         [UIElement("WeaponDropdown")]
@@ -152,16 +150,6 @@ namespace OverhaulMod.UI
                 bodyPartList.Add(new Dropdown.OptionData(bp));
             }
             _bodyPartDropdown.RefreshShownValue();
-
-            List<Dropdown.OptionData> typeList = _typeDropdown.options;
-            typeList.Clear();
-            typeList.Add(new DropdownIntOptionData() { text = "Weapon skin", IntValue = (int)PersonalizationCategory.WeaponSkins });
-            if (ModFeatures.IsEnabled(ModFeatures.FeatureType.Accessories))
-                typeList.Add(new DropdownIntOptionData() { text = "Accessory", IntValue = (int)PersonalizationCategory.Accessories });
-            if (ModFeatures.IsEnabled(ModFeatures.FeatureType.Pets))
-                typeList.Add(new DropdownIntOptionData() { text = "Pet", IntValue = (int)PersonalizationCategory.Pets });
-            _typeDropdown.RefreshShownValue();
-            _typeDropdown.interactable = typeList.Count > 1;
         }
 
         public void Populate()
@@ -229,15 +217,6 @@ namespace OverhaulMod.UI
                 }
             }
 
-            for (int i = 0; i < _typeDropdown.options.Count; i++)
-            {
-                if ((_typeDropdown.options[i] as DropdownIntOptionData).IntValue == (int)itemInfo.Category)
-                {
-                    _typeDropdown.value = i;
-                    break;
-                }
-            }
-
             FirstPersonMover firstPersonMover = PersonalizationEditorManager.Instance.GetBot();
             firstPersonMover.SetEquippedWeaponType(itemInfo.Weapon, false);
 
@@ -253,7 +232,6 @@ namespace OverhaulMod.UI
             itemInfo.Name = _nameField.text;
             itemInfo.Description = _descriptionField.text;
             itemInfo.EditorID = _editorIdField.text;
-            itemInfo.Category = (PersonalizationCategory)(_typeDropdown.options[_typeDropdown.value] as DropdownIntOptionData).IntValue;
             itemInfo.ItemID = _itemIdField.text;
             itemInfo.BodyPartName = _bodyPartDropdown.options[_bodyPartDropdown.value].text;
 
@@ -283,9 +261,20 @@ namespace OverhaulMod.UI
 
         public void RefreshGeneralInfoPanel()
         {
+            float height;
+            switch (EditingItemInfo.Category)
+            {
+                case PersonalizationCategory.Accessories:
+                    height = GENERIC_INFO_GROUP_HEIGHT_FOR_ACCESSORY;
+                    break;
+                default:
+                    height = GENERIC_INFO_GROUP_HEIGHT_FOR_ACCESSORY - 30f;
+                    break;
+            }
+
             RectTransform rectTransform = _generalInfoPanel;
             Vector2 size = rectTransform.sizeDelta;
-            size.y = EditingItemInfo.Category == PersonalizationCategory.Accessories ? 320f : 290f;
+            size.y = height;
             rectTransform.sizeDelta = size;
 
             _editOffsetsButton.gameObject.SetActive(EditingItemInfo.Category == PersonalizationCategory.Accessories);
@@ -299,28 +288,6 @@ namespace OverhaulMod.UI
         public void OnDescriptionFieldChanged(string text)
         {
             _descriptionFieldCharsLeftText.text = getCharLeftTextForField(_descriptionField);
-        }
-
-        public void OnEditedTypeDropdown(int value)
-        {
-            if (_disallowCallbacks)
-                return;
-
-            PersonalizationItemInfo itemInfo = EditingItemInfo;
-            if (itemInfo == null) return;
-
-            PersonalizationCategory category = (PersonalizationCategory)(_typeDropdown.options[value] as DropdownIntOptionData).IntValue;
-            itemInfo.Category = category;
-
-            _specialInfoPanel.SetActive(category == PersonalizationCategory.WeaponSkins);
-            _weaponDropdown.gameObject.SetActive(category == PersonalizationCategory.WeaponSkins);
-            _bodyPartDropdown.gameObject.SetActive(category == PersonalizationCategory.Accessories);
-
-            RefreshGeneralInfoPanel();
-
-            PersonalizationEditorManager manager = PersonalizationEditorManager.Instance;
-            manager.SerializeRoot();
-            manager.SpawnRootObject();
         }
 
         public void OnEditedWeaponTypeDropdown(int value)

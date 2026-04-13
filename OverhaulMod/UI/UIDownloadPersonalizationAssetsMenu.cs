@@ -98,7 +98,7 @@ namespace OverhaulMod.UI
                     break;
             }
 
-            PersonalizationAssetsInfo personalizationAssetsInfo = personalizationManager.localAssetsInfo;
+            PersonalizationAssetsInfo personalizationAssetsInfo = personalizationManager.LocalAssetsInfo;
             if (personalizationAssetsInfo == null || personalizationAssetsInfo.AssetVersionNumber == -1)
             {
                 _versionText.text = "None";

@@ -83,6 +83,7 @@ namespace OverhaulMod.Content.Personalization
 
             string infoFilePath = Path.Combine(directory, PersonalizationEditorDataManager.ITEM_INFO_FILE);
             string metaDataFilePath = Path.Combine(directory, PersonalizationEditorDataManager.ITEM_META_DATA_FILE);
+            string accessoryOffsetsFilePath = Path.Combine(directory, PersonalizationEditorDataManager.ITEM_ACCESSORY_OFFSETS_FILE);
 
             bool updateInfoFile = false;
             bool updateMetaDataFile = false;
@@ -138,7 +139,6 @@ namespace OverhaulMod.Content.Personalization
                 personalizationItemInfo = ModJsonUtils.Deserialize<PersonalizationItemInfo>(rawData);
                 personalizationItemInfo.FolderPath = directory;
                 personalizationItemInfo.RootFolderPath = rootDirectory;
-                personalizationItemInfo.RootFolderName = rootDirectoryName;
                 personalizationItemInfo.IsPersistentAsset = rootDirectoryName == ModCore.CUSTOMIZATION_PERSISTENT_FOLDER_NAME;
                 personalizationItemInfo.MetaData = personalizationItemMetaData;
                 personalizationItemInfo.FixValues();
@@ -153,6 +153,21 @@ namespace OverhaulMod.Content.Personalization
 
             if (updateMetaDataFile)
                 ModJsonUtils.WriteStream(metaDataFilePath, personalizationItemMetaData);
+
+            if(personalizationItemInfo.Category == PersonalizationCategory.Accessories)
+            {
+                AccessoryOffsetsList accessoryOffsetsList;
+                try
+                {
+                    accessoryOffsetsList = ModJsonUtils.DeserializeStream<AccessoryOffsetsList>(accessoryOffsetsFilePath);
+                }
+                catch
+                {
+                    accessoryOffsetsList = new AccessoryOffsetsList();
+                }
+                accessoryOffsetsList.InitializeList();
+                personalizationItemInfo.AccessoryOffsets = accessoryOffsetsList;
+            }
 
             return personalizationItemInfo;
         }

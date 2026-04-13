@@ -3,6 +3,7 @@ using Steamworks;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using UnityEngine;
 
 namespace OverhaulMod.Content.Personalization
@@ -35,13 +36,8 @@ namespace OverhaulMod.Content.Personalization
 
         public PersonalizationEditorObjectInfo RootObject;
 
-        public PersonalizationItemOffsetList Offsets;
-
         [NonSerialized]
         public bool Corrupted;
-
-        [NonSerialized]
-        public string RootFolderName;
 
         [NonSerialized]
         public string RootFolderPath;
@@ -59,6 +55,9 @@ namespace OverhaulMod.Content.Personalization
         public PersonalizationItemMetaData MetaData;
 
         [NonSerialized]
+        public AccessoryOffsetsList AccessoryOffsets;
+
+        [NonSerialized]
         public bool HideInBrowser;
 
         public void GetImportedFiles()
@@ -72,11 +71,9 @@ namespace OverhaulMod.Content.Personalization
 
         public void FixValues()
         {
-            if (Authors == null)
-                Authors = new List<string>();
+            if (Authors == null) Authors = new List<string>();
 
-            if (ExclusiveFor_V2 == null)
-                ExclusiveFor_V2 = new List<PersonalizationItemLockInfo>();
+            if (ExclusiveFor_V2 == null) ExclusiveFor_V2 = new List<PersonalizationItemLockInfo>();
 
             if (RootObject == null)
             {
@@ -87,22 +84,21 @@ namespace OverhaulMod.Content.Personalization
                     Children = new List<PersonalizationEditorObjectInfo>(),
                     PropertyValues = new Dictionary<string, object>()
                 };
+                RootObject.InitializeTransformArrays();
             }
 
-            if (BodyPartName.IsNullOrEmpty())
+            if (Category == PersonalizationCategory.WeaponSkins)
             {
-                BodyPartName = "Head";
+                RootObject.SetPosition(Vector3.zero);
+                RootObject.SetEulerAngles(Vector3.zero);
+                RootObject.SetScale(Vector3.one);
+
+                if (!PersonalizationManager.IsWeaponCustomizationSupported(Weapon)) Weapon = WeaponType.Sword;
             }
-
-            if (Offsets == null)
-                Offsets = new PersonalizationItemOffsetList();
-
-            RootObject.SetPosition(Vector3.zero);
-            RootObject.SetEulerAngles(Vector3.zero);
-            RootObject.SetScale(Vector3.one);
-
-            if (!PersonalizationManager.IsWeaponCustomizationSupported(Weapon))
-                Weapon = WeaponType.Sword;
+            else if (Category == PersonalizationCategory.Accessories)
+            {
+                if (BodyPartName.IsNullOrEmpty() || !PersonalizationManager.SupportedBodyParts.Contains(BodyPartName)) BodyPartName = "Head";
+            }
 
             GetImportedFiles();
         }
@@ -115,8 +111,7 @@ namespace OverhaulMod.Content.Personalization
 
         public string GetAuthorsString(bool translate = false)
         {
-            if (Authors.IsNullOrEmpty())
-                return "N/A (no author)";
+            if (Authors.IsNullOrEmpty()) return "Unknown author";
 
             string result = Authors[0];
             if (Authors.Count != 1)
@@ -134,7 +129,7 @@ namespace OverhaulMod.Content.Personalization
 
         public bool CanBeEdited()
         {
-            return EditorID.IsNullOrEmpty() || EditorID.Contains(SteamUser.GetSteamID().ToString());
+            return EditorID == ModUserInfo.localPlayerSteamID.ToString();
         }
 
         public bool IsUnlocked(Character character)

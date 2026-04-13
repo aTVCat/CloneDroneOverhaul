@@ -458,7 +458,7 @@ namespace OverhaulMod.Content.Personalization
         {
             if (itemId.IsNullOrEmpty()) return null;
 
-            return SpawnItem(PersonalizationManager.Instance.itemList.GetItem(itemId));
+            return SpawnItem(PersonalizationManager.Instance.ItemList.GetItem(itemId));
         }
 
         public PersonalizationEditorObjectBehaviour SpawnItem(PersonalizationItemInfo itemInfo)

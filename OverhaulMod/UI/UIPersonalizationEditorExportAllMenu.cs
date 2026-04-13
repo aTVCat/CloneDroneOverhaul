@@ -36,7 +36,7 @@ namespace OverhaulMod.UI
 
         protected override void OnInitialized()
         {
-            _exportVersionField.text = PersonalizationManager.Instance.localAssetsInfo.AssetVersionNumber.ToString();
+            _exportVersionField.text = PersonalizationManager.Instance.LocalAssetsInfo.AssetVersionNumber.ToString();
             _exportFolderField.text = ExportFolderPath;
         }
 
@@ -48,7 +48,7 @@ namespace OverhaulMod.UI
 
         public void OnBumpUpVersionButtonClicked()
         {
-            _exportVersionField.text = (PersonalizationManager.Instance.localAssetsInfo.AssetVersionNumber + 1).ToString();
+            _exportVersionField.text = (PersonalizationManager.Instance.LocalAssetsInfo.AssetVersionNumber + 1).ToString();
         }
 
         public void OnEditExportFolderButtonClicked()

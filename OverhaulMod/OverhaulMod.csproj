@@ -222,6 +222,9 @@
     <Compile Include="Content\AddonDownloadInfo.cs" />
     <Compile Include="Content\AddonInfo.cs" />
     <Compile Include="Content\AddonDownloadListInfo.cs" />
+    <Compile Include="Content\Personalization\AccessoryOffset.cs" />
+    <Compile Include="Content\Personalization\AccessoryOffsetsList.cs" />
+    <Compile Include="Content\Personalization\PersonalizationItemCreationArgs.cs" />
     <Compile Include="Engine\CharacterUpdateRequest.cs" />
     <Compile Include="Content\OperationResult.cs" />
     <Compile Include="Content\ExclusivePerkColor.cs" />
@@ -264,7 +267,6 @@
     <Compile Include="Content\Personalization\PersonalizationItemLockInfo.cs" />
     <Compile Include="Content\Personalization\PersonalizationItemMetaData.cs" />
     <Compile Include="Content\Personalization\PersonalizationAccessoryReferences.cs" />
-    <Compile Include="Content\Personalization\PersonalizationItemOffsetList.cs" />
     <Compile Include="Content\Personalization\PersonalizationMultiplayerManager.cs" />
     <Compile Include="Content\Personalization\PersonalizationMultiplayerPlayerInfo.cs" />
     <Compile Include="Content\PostmanManager.cs" />

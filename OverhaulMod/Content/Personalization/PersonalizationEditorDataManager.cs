@@ -17,10 +17,12 @@ namespace OverhaulMod.Content.Personalization
 
         public const string ITEM_META_DATA_FILE = "metaData.json";
 
-        public PersonalizationItemCreationResult CreateItem(string directoryName, string name, string uniqueId, bool usePersistentFolder, PersonalizationItemInfo template)
+        public const string ITEM_ACCESSORY_OFFSETS_FILE = "accessoryOffsets.json";
+
+        public PersonalizationItemCreationResult CreateItem(PersonalizationItemCreationArgs args)
         {
-            string rootDirectory = usePersistentFolder ? ModCore.CustomizationPersistentFolder : ModCore.CustomizationFolder;
-            string directoryPath = Path.Combine(rootDirectory, directoryName);
+            string rootDirectory = args.UsePersistentFolder ? ModCore.CustomizationPersistentFolder : ModCore.CustomizationFolder;
+            string directoryPath = Path.Combine(rootDirectory, args.DirectoryName);
             string filesDirectoryPath = Path.Combine(directoryPath, "files");
 
             PersonalizationItemInfo createdItemInfo = null;
@@ -31,21 +33,20 @@ namespace OverhaulMod.Content.Personalization
             _ = Directory.CreateDirectory(filesDirectoryPath);
 
             bool useGeneratedItemInfo = true;
-            if (template != null)
+            if (args.Template != null)
             {
                 try
                 {
-                    createdItemInfo = ModJsonUtils.Deserialize<PersonalizationItemInfo>(ModJsonUtils.Serialize(template)); // create a copy of the template
+                    createdItemInfo = ModJsonUtils.Deserialize<PersonalizationItemInfo>(ModJsonUtils.Serialize(args.Template)); // create a copy of the template
 
                     createdItemInfo.Name = name;
+                    createdItemInfo.ItemID = args.UniqueID;
+                    createdItemInfo.Category = args.ItemCategory;
                     createdItemInfo.Description = "No description provided.";
-                    createdItemInfo.IsVerified = false;
                     createdItemInfo.EditorID = PersonalizationEditorManager.Instance.EditorID;
-                    createdItemInfo.ItemID = uniqueId;
                     createdItemInfo.FolderPath = directoryPath;
                     createdItemInfo.RootFolderPath = rootDirectory;
-                    createdItemInfo.RootFolderName = usePersistentFolder ? ModCore.CUSTOMIZATION_PERSISTENT_FOLDER_NAME : ModCore.CUSTOMIZATION_FOLDER_NAME;
-                    createdItemInfo.IsPersistentAsset = usePersistentFolder;
+                    createdItemInfo.IsPersistentAsset = args.UsePersistentFolder;
                     createdItemInfo.MetaData = new PersonalizationItemMetaData()
                     {
                         CustomizationSystemVersion = PersonalizationItemMetaData.CurrentCustomizationSystemVersion,
@@ -64,15 +65,13 @@ namespace OverhaulMod.Content.Personalization
                 createdItemInfo = new PersonalizationItemInfo()
                 {
                     Name = name,
+                    ItemID = args.UniqueID,
+                    Category = args.ItemCategory,
                     Description = "No description provided.",
-                    IsVerified = false,
-                    Category = PersonalizationCategory.WeaponSkins,
                     EditorID = PersonalizationEditorManager.Instance.EditorID,
-                    ItemID = uniqueId,
                     FolderPath = directoryPath,
                     RootFolderPath = rootDirectory,
-                    RootFolderName = usePersistentFolder ? ModCore.CUSTOMIZATION_PERSISTENT_FOLDER_NAME : ModCore.CUSTOMIZATION_FOLDER_NAME,
-                    IsPersistentAsset = usePersistentFolder,
+                    IsPersistentAsset = args.UsePersistentFolder,
                     MetaData = new PersonalizationItemMetaData()
                     {
                         CustomizationSystemVersion = PersonalizationItemMetaData.CurrentCustomizationSystemVersion,
@@ -83,13 +82,21 @@ namespace OverhaulMod.Content.Personalization
             createdItemInfo.FixValues();
             createdItemInfo.SetAuthor(SteamFriends.GetPersonaName());
 
-            PersonalizationManager.Instance.itemList.Items.Add(createdItemInfo);
+            bool isAccessory = args.ItemCategory == PersonalizationCategory.Accessories;
+            if (isAccessory)
+            {
+                createdItemInfo.AccessoryOffsets = new AccessoryOffsetsList();
+                createdItemInfo.AccessoryOffsets.InitializeList();
+            }
+
+            PersonalizationManager.Instance.ItemList.Items.Add(createdItemInfo);
 
             PersonalizationManager.Instance.UserInfo.SetIsItemUnverified(createdItemInfo, true);
             PersonalizationManager.Instance.SaveUserInfo();
 
             ModJsonUtils.WriteStream(Path.Combine(directoryPath, ITEM_INFO_FILE), createdItemInfo);
             ModJsonUtils.WriteStream(Path.Combine(directoryPath, ITEM_META_DATA_FILE), createdItemInfo.MetaData);
+            if (isAccessory) ModJsonUtils.WriteStream(Path.Combine(directoryPath, ITEM_ACCESSORY_OFFSETS_FILE), createdItemInfo.AccessoryOffsets);
 
             return new PersonalizationItemCreationResult(createdItemInfo);
         }
@@ -98,8 +105,10 @@ namespace OverhaulMod.Content.Personalization
         {
             string folder = personalizationItemInfo.FolderPath;
             if (folder.IsNullOrEmpty()) return new PersonalizationItemSaveResult("Item has no folder assigned!");
+            if (!Directory.Exists(folder)) return new PersonalizationItemSaveResult("Item folder was deleted or moved.");
 
-            if (!Directory.Exists(folder)) _ = Directory.CreateDirectory(folder);
+            bool isAccessory = personalizationItemInfo.Category == PersonalizationCategory.Accessories;
+            if (isAccessory && personalizationItemInfo.AccessoryOffsets == null) return new PersonalizationItemSaveResult("No accessory offsets found!");
 
             PersonalizationItemMetaData personalizationItemMetaData = personalizationItemInfo.MetaData;
             if (personalizationItemMetaData == null)
@@ -115,6 +124,7 @@ namespace OverhaulMod.Content.Personalization
             {
                 ModJsonUtils.WriteStream(Path.Combine(folder, ITEM_INFO_FILE), personalizationItemInfo);
                 ModJsonUtils.WriteStream(Path.Combine(folder, ITEM_META_DATA_FILE), personalizationItemMetaData);
+                if (isAccessory) ModJsonUtils.WriteStream(Path.Combine(folder, ITEM_ACCESSORY_OFFSETS_FILE), personalizationItemInfo.AccessoryOffsets);
             }
             catch (Exception exc)
             {
@@ -130,7 +140,7 @@ namespace OverhaulMod.Content.Personalization
 
         public void DeleteItem(PersonalizationItemInfo personalizationItem)
         {
-            PersonalizationItemList itemList = PersonalizationManager.Instance.itemList;
+            PersonalizationItemList itemList = PersonalizationManager.Instance.ItemList;
             itemList.Items.Remove(personalizationItem);
             DeleteItemFolder(personalizationItem.FolderPath);
         }
@@ -160,7 +170,7 @@ namespace OverhaulMod.Content.Personalization
             FastZip fastZip = new FastZip();
             fastZip.ExtractZip(path, folderPath, null);
 
-            PersonalizationItemList itemList = PersonalizationManager.Instance.itemList;
+            PersonalizationItemList itemList = PersonalizationManager.Instance.ItemList;
             PersonalizationItemInfo info;
             try
             {
@@ -234,7 +244,7 @@ namespace OverhaulMod.Content.Personalization
             }
 
             string rawItemIdLower = rawItemId.ToLower();
-            List<PersonalizationItemInfo> itemList = PersonalizationManager.Instance.itemList.Items;
+            List<PersonalizationItemInfo> itemList = PersonalizationManager.Instance.ItemList.Items;
             foreach (PersonalizationItemInfo item in itemList)
             {
                 if (item != null && !(item.ItemID.IsNullOrEmpty() || item.ItemID.IsNullOrWhiteSpace()) && item.ItemID.ToLower().StartsWith(rawItemIdLower))

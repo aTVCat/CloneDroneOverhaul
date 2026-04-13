@@ -284,7 +284,7 @@ namespace OverhaulMod.Visuals
             }
             else
             {
-                PersonalizationItemInfo itemInfo = PersonalizationManager.Instance.itemList.GetItem(overhaulSkinId);
+                PersonalizationItemInfo itemInfo = PersonalizationManager.Instance.ItemList.GetItem(overhaulSkinId);
                 if (itemInfo != null && itemInfo.RootObject != null)
                 {
                     PersonalizationEditorObjectBehaviour rootObject = itemInfo.RootObject.Deserialize(parent, new PersonalizationControllerInfo(_personalizationController, itemInfo));

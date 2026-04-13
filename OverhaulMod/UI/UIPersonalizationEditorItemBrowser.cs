@@ -81,7 +81,7 @@ namespace OverhaulMod.UI
             if (_container.childCount != 0)
                 TransformUtils.DestroyAllChildren(_container);
 
-            PersonalizationItemList itemList = PersonalizationManager.Instance.itemList;
+            PersonalizationItemList itemList = PersonalizationManager.Instance.ItemList;
             if (itemList == null)
                 return;
 
@@ -187,7 +187,7 @@ namespace OverhaulMod.UI
 
         public void OnReloadButtonClicked()
         {
-            PersonalizationManager.Instance.itemList.Load();
+            PersonalizationManager.Instance.ItemList.Load();
             Populate();
         }
 
@@ -199,7 +199,6 @@ namespace OverhaulMod.UI
         public void OnCreateNewButtonClicked()
         {
             UIPersonalizationEditorItemCreationDialog panel = ModUIConstants.ShowPersonalizationEditorItemCreationDialog(base.transform);
-            panel.TargetDirectory = _usePersistentDirectoryToggle.isOn ? ModCore.CustomizationPersistentFolder : ModCore.CustomizationFolder;
             panel.UsePersistentFolder = _usePersistentDirectoryToggle.isOn;
             panel.ItemCreatedCallback = Hide;
         }
