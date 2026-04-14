@@ -3,6 +3,7 @@ using OverhaulMod.Content;
 using OverhaulMod.Engine;
 using OverhaulMod.Utils;
 using Steamworks;
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -348,7 +349,7 @@ namespace OverhaulMod.UI
                 {
                     playerInfoState = infoState.state;
                 }
-                catch
+                catch (Exception)
                 {
                     continue;
                 }
@@ -385,7 +386,7 @@ namespace OverhaulMod.UI
             {
                 item = WorkshopLevelManager.Instance.GetCurrentLevelWorkshopItem();
             }
-            catch
+            catch (Exception)
             {
                 item = null;
             }

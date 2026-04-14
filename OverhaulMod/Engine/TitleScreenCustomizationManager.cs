@@ -2,6 +2,7 @@
 using OverhaulMod.UI;
 using OverhaulMod.Utils;
 using Steamworks;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -152,10 +153,10 @@ namespace OverhaulMod.Engine
             TitleScreenCustomizationInfo titleScreenCustomizationInfo;
             try
             {
-                titleScreenCustomizationInfo = ModDataManager.Instance.DeserializeFile<TitleScreenCustomizationInfo>(CUSTOMIZATION_INFO_FILE, false);
+                titleScreenCustomizationInfo = ModDataManager.DeserializeFile<TitleScreenCustomizationInfo>(CUSTOMIZATION_INFO_FILE, false);
                 titleScreenCustomizationInfo.FixValues();
             }
-            catch
+            catch (Exception)
             {
                 titleScreenCustomizationInfo = new TitleScreenCustomizationInfo();
                 titleScreenCustomizationInfo.FixValues();
@@ -170,7 +171,7 @@ namespace OverhaulMod.Engine
             if (titleScreenCustomizationInfo == null)
                 return;
 
-            ModDataManager.Instance.SerializeToFile(CUSTOMIZATION_INFO_FILE, titleScreenCustomizationInfo, false);
+            ModDataManager.SerializeToFile(CUSTOMIZATION_INFO_FILE, titleScreenCustomizationInfo, false);
         }
 
         public TitleScreenBackgroundInfo GetStaticBackgroundInfo()
@@ -313,7 +314,7 @@ namespace OverhaulMod.Engine
             {
                 levelEditorLevelData = ModJsonUtils.DeserializeStream<LevelEditorLevelData>(levelJSONPath);
             }
-            catch
+            catch (Exception)
             {
                 levelEditorLevelData = new LevelEditorLevelData()
                 {

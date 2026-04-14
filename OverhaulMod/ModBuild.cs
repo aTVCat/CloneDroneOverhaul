@@ -14,7 +14,7 @@ namespace OverhaulMod
         public const string BUILD_INFO_FILE_PATH = "buildInfo.json";
 
 #if OVERRIDE_VER
-        public const string OVERRIDE_VERSION = "4.2.1097";
+        public const string OVERRIDE_VERSION = "4.2.1098";
 #endif
 
         private static bool s_loaded;
@@ -149,7 +149,7 @@ namespace OverhaulMod
             {
                 s_buildInfo = ModJsonUtils.DeserializeStream<Info>(Path.Combine(ModCore.DataFolder, BUILD_INFO_FILE_PATH));
             }
-            catch
+            catch (Exception)
             {
                 s_buildInfo = null;
             }

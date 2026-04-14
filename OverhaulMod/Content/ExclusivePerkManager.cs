@@ -45,7 +45,7 @@ namespace OverhaulMod.Content
             {
                 infoList = ModJsonUtils.DeserializeStream<ExclusivePerkInfoList>(Path.Combine(ModCore.ModUserDataFolder, FILE_NAME));
             }
-            catch
+            catch (Exception)
             {
                 infoList = new ExclusivePerkInfoList();
             }

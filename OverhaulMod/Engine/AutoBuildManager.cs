@@ -1,5 +1,6 @@
 ﻿using OverhaulMod.UI;
 using OverhaulMod.Utils;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -109,12 +110,12 @@ namespace OverhaulMod.Engine
             {
                 try
                 {
-                    oldAutoBuildInfo = ModDataManager.Instance.DeserializeFile<AutoBuildInfo>("AutoBuildInfo.json", false);
+                    oldAutoBuildInfo = ModDataManager.DeserializeFile<AutoBuildInfo>("AutoBuildInfo.json", false);
                     oldAutoBuildInfo.FixValues();
 
                     File.Delete(oldPath);
                 }
-                catch
+                catch (Exception)
                 {
                     oldAutoBuildInfo = null;
                 }
@@ -127,10 +128,10 @@ namespace OverhaulMod.Engine
             AutoBuildListInfo autoBuildListInfo;
             try
             {
-                autoBuildListInfo = ModDataManager.Instance.DeserializeFile<AutoBuildListInfo>("AutoBuilds.json", false);
+                autoBuildListInfo = ModDataManager.DeserializeFile<AutoBuildListInfo>("AutoBuilds.json", false);
                 autoBuildListInfo.FixValues();
             }
-            catch
+            catch (Exception)
             {
                 autoBuildListInfo = new AutoBuildListInfo();
                 autoBuildListInfo.FixValues();
@@ -146,7 +147,7 @@ namespace OverhaulMod.Engine
 
         public void SaveBuildsInfo()
         {
-            ModDataManager.Instance.SerializeToFile("AutoBuilds.json", buildList, false);
+            ModDataManager.SerializeToFile("AutoBuilds.json", buildList, false);
         }
 
         public void ResetUpgrades(Dictionary<UpgradeType, int> dictionary = null, int skillPoints = 4)

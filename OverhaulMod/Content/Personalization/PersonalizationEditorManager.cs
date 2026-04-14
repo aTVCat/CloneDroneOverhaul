@@ -2,6 +2,7 @@
 using OverhaulMod.Engine;
 using OverhaulMod.UI;
 using OverhaulMod.Utils;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -173,7 +174,7 @@ namespace OverhaulMod.Content.Personalization
                 {
                     levelEditorLevelData = ModJsonUtils.DeserializeStream<LevelEditorLevelData>(levelFilePath);
                 }
-                catch
+                catch (Exception)
                 {
                     levelEditorLevelData = null;
                 }

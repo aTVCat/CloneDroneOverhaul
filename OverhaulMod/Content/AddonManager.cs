@@ -405,7 +405,7 @@ namespace OverhaulMod.Content
                     contentInfo.FolderPath = folder;
                     list.Add(contentInfo);
                 }
-                catch
+                catch (Exception)
                 {
                     continue;
                 }

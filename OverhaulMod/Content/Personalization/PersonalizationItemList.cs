@@ -161,7 +161,7 @@ namespace OverhaulMod.Content.Personalization
                 {
                     accessoryOffsetsList = ModJsonUtils.DeserializeStream<AccessoryOffsetsList>(accessoryOffsetsFilePath);
                 }
-                catch
+                catch (Exception)
                 {
                     accessoryOffsetsList = new AccessoryOffsetsList();
                 }

@@ -1,5 +1,6 @@
 ﻿using Discord;
 using OverhaulMod.Utils;
+using System;
 
 namespace OverhaulMod.Engine
 {
@@ -41,9 +42,7 @@ namespace OverhaulMod.Engine
                 if (_client != null)
                     _client.RunCallbacks();
             }
-            catch
-            {
-            }
+            catch { }
         }
 
         public override void RefreshInformation()
@@ -141,7 +140,7 @@ namespace OverhaulMod.Engine
                     };
                     _activity = activity;
                 }
-                catch
+                catch (Exception)
                 {
                     base.enabled = false;
                 }
@@ -161,10 +160,7 @@ namespace OverhaulMod.Engine
                     _client = null;
                 }
             }
-            catch
-            {
-
-            }
+            catch { }
         }
 
         private void handleActivityUpdate(Result res)

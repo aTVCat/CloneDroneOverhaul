@@ -41,7 +41,7 @@ namespace OverhaulMod.Engine
                 {
                     content = ModFileUtils.ReadText(fn);
                 }
-                catch
+                catch (Exception)
                 {
                     return;
                 }

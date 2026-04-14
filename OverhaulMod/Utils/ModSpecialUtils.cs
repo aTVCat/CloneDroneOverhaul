@@ -1,6 +1,7 @@
 ﻿using InternalModBot;
 using System;
 using System.Runtime.InteropServices;
+using UnityEngine;
 
 namespace OverhaulMod.Utils
 {
@@ -97,7 +98,7 @@ namespace OverhaulMod.Utils
             {
                 result = InnerModSpecialUtils.IsWinNTCurrentBuildOrGreater(17763);
             }
-            catch
+            catch (Exception)
             {
                 result = false;
             }
@@ -130,9 +131,9 @@ namespace OverhaulMod.Utils
             {
                 InnerModSpecialUtils.SetTitleBarDarkModeEnabled(enabled);
             }
-            catch
+            catch (Exception exc)
             {
-
+                ModDebug.LogWarning(exc.ToString(), true);
             }
         }
 
@@ -142,9 +143,9 @@ namespace OverhaulMod.Utils
             {
                 InnerModSpecialUtils.SetTitleBarText(text);
             }
-            catch
+            catch(Exception exc)
             {
-
+                ModDebug.LogWarning(exc.ToString(), true);
             }
         }
 

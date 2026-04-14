@@ -52,7 +52,7 @@ namespace OverhaulMod.Content.Personalization
                         CustomizationSystemVersion = PersonalizationItemMetaData.CurrentCustomizationSystemVersion,
                     };
                 }
-                catch
+                catch (Exception)
                 {
                     useGeneratedItemInfo = false;
                 }

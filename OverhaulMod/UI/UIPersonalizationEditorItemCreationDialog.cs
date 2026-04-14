@@ -68,6 +68,9 @@ namespace OverhaulMod.UI
 
             _templateDropdown.options = options;
             _templateDropdown.value = 0;
+
+            _accessoryButton.gameObject.SetActive(ModFeatures.IsEnabled(ModFeatures.FeatureType.Accessories));
+            _petButton.gameObject.SetActive(ModFeatures.IsEnabled(ModFeatures.FeatureType.Pets));
         }
 
         public override void Show()

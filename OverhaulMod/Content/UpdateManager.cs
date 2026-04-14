@@ -69,7 +69,7 @@ namespace OverhaulMod.Content
                 {
                     _buildDownloadProgress = _webRequest.downloadProgress;
                 }
-                catch
+                catch (Exception)
                 {
                     _webRequest = null;
                 }

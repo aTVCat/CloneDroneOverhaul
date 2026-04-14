@@ -45,25 +45,19 @@ namespace OverhaulMod.Content.Personalization
 
         public void FixValues()
         {
-            if (DiscoveredItems == null)
-                DiscoveredItems = new List<string>();
+            if (DiscoveredItems == null) DiscoveredItems = new List<string>();
 
-            if (DiscoveredItems.Count == 0)
-                DiscoverAllItems();
+            if (FavoriteItems == null) FavoriteItems = new List<string>();
 
-            if (FavoriteItems == null)
-                FavoriteItems = new List<string>();
+            if (UnverifiedItems == null) UnverifiedItems = new List<string>();
 
-            if (UnverifiedItems == null)
-                UnverifiedItems = new List<string>();
+            if (ItemVersions == null) ItemVersions = new Dictionary<string, int>();
+
+            if (DiscoveredItems.Count == 0) DiscoverAllItems();
 
             RefreshAllItemsVerification();
 
-            if (ItemVersions == null)
-                ItemVersions = new Dictionary<string, int>();
-
-            if (ItemVersions.Count == 0)
-                RefreshAllItemVersions();
+            if (ItemVersions.Count == 0) RefreshAllItemVersions();
         }
 
         public void SetIsDirty(bool value = true)

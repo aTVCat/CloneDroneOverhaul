@@ -80,17 +80,9 @@ namespace OverhaulMod.Content.Personalization
 
         public PersonalizationAssetsInfo RemoteAssetsInfo { get; set; }
 
-        public PersonalizationItemList ItemList
-        {
-            get;
-            private set;
-        }
+        public PersonalizationItemList ItemList;
 
-        public PersonalizationUserInfo UserInfo
-        {
-            get;
-            private set;
-        }
+        public PersonalizationUserInfo UserInfo;
 
         private UnityWebRequest _webRequest;
 
@@ -222,7 +214,7 @@ namespace OverhaulMod.Content.Personalization
             {
                 return unityWebRequest.downloadProgress;
             }
-            catch
+            catch (Exception)
             {
                 return 0;
             }
@@ -240,7 +232,7 @@ namespace OverhaulMod.Content.Personalization
                 {
                     personalizationAssetsInfo = ModJsonUtils.DeserializeStream<PersonalizationAssetsInfo>(path);
                 }
-                catch
+                catch (Exception)
                 {
                     personalizationAssetsInfo = new PersonalizationAssetsInfo();
                 }
@@ -260,7 +252,7 @@ namespace OverhaulMod.Content.Personalization
                 {
                     personalizationAssetsInfo = ModJsonUtils.DeserializeStream<PersonalizationAssetsInfo>(path);
                 }
-                catch
+                catch (Exception)
                 {
                     personalizationAssetsInfo = new PersonalizationAssetsInfo();
                 }
@@ -281,7 +273,7 @@ namespace OverhaulMod.Content.Personalization
                 {
                     personalizationAssetsInfo = ModJsonUtils.Deserialize<PersonalizationAssetsInfo>(result);
                 }
-                catch
+                catch (Exception)
                 {
                     personalizationAssetsInfo = new PersonalizationAssetsInfo();
                 }
@@ -356,25 +348,23 @@ namespace OverhaulMod.Content.Personalization
             string path = Path.Combine(ModDataManager.UserDataFolder, USER_INFO_FILE);
 
             PersonalizationUserInfo personalizationUserInfo;
-            try
+            if (File.Exists(path))
             {
-                if (!File.Exists(path))
+                try
+                {
+                    personalizationUserInfo = ModJsonUtils.DeserializeStream<PersonalizationUserInfo>(path);
+                }
+                catch (Exception)
                 {
                     personalizationUserInfo = new PersonalizationUserInfo();
                 }
-                else
-                {
-                    personalizationUserInfo = ModDataManager.Instance.DeserializeFile<PersonalizationUserInfo>(USER_INFO_FILE, false);
-                }
             }
-            catch
+            else
             {
                 personalizationUserInfo = new PersonalizationUserInfo();
             }
-            personalizationUserInfo.FixValues();
 
-            /*if (personalizationUserInfo.DiscoveredItems.Count == 0)
-                personalizationUserInfo.DiscoverAllItems();*/
+            personalizationUserInfo.FixValues();
 
             UserInfo = personalizationUserInfo;
         }
@@ -384,7 +374,7 @@ namespace OverhaulMod.Content.Personalization
             PersonalizationUserInfo personalizationUserInfo = UserInfo;
             if (personalizationUserInfo != null)
             {
-                ModDataManager.Instance.SerializeToFile(USER_INFO_FILE, personalizationUserInfo, false);
+                ModDataManager.SerializeToFile(USER_INFO_FILE, personalizationUserInfo, false);
             }
         }
 

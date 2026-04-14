@@ -27,27 +27,27 @@ namespace OverhaulMod
             }
         }
 
-        public void WriteFile(string name, string content, bool useSavesFolder)
+        public static void WriteFile(string name, string content, bool useSavesFolder)
         {
             ModFileUtils.WriteText(content, Path.Combine(useSavesFolder ? SavesFolder : UserDataFolder, name));
         }
 
-        public void SerializeToFile(string name, object obj, bool useSavesFolder)
+        public static void SerializeToFile(string name, object obj, bool useSavesFolder)
         {
             ModJsonUtils.WriteStream(Path.Combine(useSavesFolder ? SavesFolder : UserDataFolder, name), obj);
         }
 
-        public string ReadFile(string name, bool useSavesFolder)
+        public static string ReadFile(string name, bool useSavesFolder)
         {
             return ModFileUtils.ReadText(Path.Combine(useSavesFolder ? SavesFolder : UserDataFolder, name));
         }
 
-        public T DeserializeFile<T>(string name, bool useSavesFolder)
+        public static T DeserializeFile<T>(string name, bool useSavesFolder)
         {
             return ModJsonUtils.DeserializeStream<T>(Path.Combine(useSavesFolder ? SavesFolder : UserDataFolder, name));
         }
 
-        public bool FileExists(string name, bool useSavesFolder)
+        public static bool FileExists(string name, bool useSavesFolder)
         {
             return File.Exists(Path.Combine(useSavesFolder ? SavesFolder : UserDataFolder, name));
         }

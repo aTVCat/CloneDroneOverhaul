@@ -1,4 +1,5 @@
 ﻿using OverhaulMod.Utils;
+using System;
 using System.IO;
 
 namespace OverhaulMod.Content.Personalization
@@ -52,7 +53,7 @@ namespace OverhaulMod.Content.Personalization
                 {
                     itemInfo = ModJsonUtils.DeserializeStream<PersonalizationItemInfo>(file);
                 }
-                catch
+                catch (Exception)
                 {
                     itemInfo = new PersonalizationItemInfo()
                     {

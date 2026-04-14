@@ -3,6 +3,7 @@
 
 using OverhaulMod.Utils;
 using Steamworks;
+using System;
 using System.IO;
 
 namespace OverhaulMod
@@ -23,10 +24,11 @@ namespace OverhaulMod
             {
                 info = ModJsonUtils.DeserializeStream<Info>(Path.Combine(ModCore.ModUserDataFolder, FILE_NAME));
             }
-            catch
+            catch (Exception)
             {
                 info = null;
             }
+            s_info = info;
         }
 
         public static void Save()

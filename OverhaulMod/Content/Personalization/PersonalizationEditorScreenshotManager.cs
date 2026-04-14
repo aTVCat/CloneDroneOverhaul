@@ -102,7 +102,7 @@ namespace OverhaulMod.Content.Personalization
             {
                 info = ModJsonUtils.DeserializeStream<PersonalizationEditorScreenshotCameraAnglesInfo>(path);
             }
-            catch
+            catch (Exception)
             {
                 info = new PersonalizationEditorScreenshotCameraAnglesInfo();
             }

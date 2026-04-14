@@ -374,7 +374,7 @@ namespace OverhaulMod
                 {
                     s_destinations = Destinations.Deserialize(tempPath);
                 }
-                catch
+                catch (Exception)
                 {
                     if (result != null)
                         result(null);

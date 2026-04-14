@@ -2,6 +2,7 @@
 using OverhaulMod.Content.Personalization;
 using OverhaulMod.Engine;
 using OverhaulMod.Utils;
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
@@ -406,10 +407,8 @@ namespace OverhaulMod.UI
                 string str = ModIntegrationUtils.ModBot.GetModBotUsername();
                 return true;
             }
-            catch
-            {
-                return false;
-            }
+            catch { }
+            return false;
         }
 
         public void SetMultiplayerButtonActive(bool value)

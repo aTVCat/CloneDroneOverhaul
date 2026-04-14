@@ -1526,12 +1526,11 @@ namespace OverhaulMod.UI
                     modSettingsDataContainer = ModJsonUtils.DeserializeStream<ModSettingsDataContainer>(path);
                     modSettingsDataContainer.FixValues();
                 }
-                catch
+                catch (Exception)
                 {
                     ModUIUtils.MessagePopupOK("Import error", "The file is corrupted.", true);
                     return;
                 }
-                ;
 
                 ModSettingsDataManager.Instance.dataContainer.SetValues(modSettingsDataContainer, true);
                 ModUIUtils.MessagePopupOK("Import successful", $"Imported the file \"{Path.GetFileNameWithoutExtension(path)}\".", true);

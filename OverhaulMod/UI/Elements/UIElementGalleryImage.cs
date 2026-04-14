@@ -1,4 +1,5 @@
 ﻿using OverhaulMod.Utils;
+using System;
 using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
@@ -135,7 +136,7 @@ namespace OverhaulMod.UI
             {
                 bytes = ModFileUtils.ReadBytes(filePath);
             }
-            catch
+            catch (Exception)
             {
                 base.gameObject.SetActive(false);
                 return;

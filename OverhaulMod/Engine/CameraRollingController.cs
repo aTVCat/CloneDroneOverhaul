@@ -14,7 +14,7 @@ namespace OverhaulMod.Engine
         [ModSetting(ModSettingsConstants.ENABLE_CAMERA_ROLLING, true)]
         public static bool EnableRolling;
 
-        public static bool Invert = true;
+        public static bool Invert = false;
 
         public float TiltApproachMultiplier = 3f;
 

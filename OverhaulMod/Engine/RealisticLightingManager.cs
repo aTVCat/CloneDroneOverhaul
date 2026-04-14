@@ -1,5 +1,6 @@
 ﻿using OverhaulMod.Content;
 using OverhaulMod.Utils;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -91,7 +92,7 @@ namespace OverhaulMod.Engine
                 realisticLightingInfoList = ModJsonUtils.DeserializeStream<RealisticLightingInfoList>(path);
                 realisticLightingInfoList.FixValues();
             }
-            catch
+            catch (Exception)
             {
                 realisticLightingInfoList = new RealisticLightingInfoList();
                 realisticLightingInfoList.FixValues();
@@ -182,7 +183,7 @@ namespace OverhaulMod.Engine
                 {
                     levelDescription = GameFlowManager.Instance.HasWonRound() ? LevelManager.Instance.GetLastSpawnedLevelDescription() : LevelManager.Instance.GetCurrentLevelDescription();
                 }
-                catch
+                catch (Exception)
                 {
                     return null;
                 }

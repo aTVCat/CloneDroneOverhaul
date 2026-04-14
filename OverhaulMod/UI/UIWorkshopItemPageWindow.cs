@@ -412,7 +412,7 @@ namespace OverhaulMod.UI
                         _authorAvatarImage.texture = texture;
                         _authorAvatarImage.gameObject.SetActive(true);
                     }
-                    catch
+                    catch (Exception)
                     {
                         _authorAvatarImage.gameObject.SetActive(false);
                     }

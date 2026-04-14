@@ -43,10 +43,7 @@ namespace OverhaulMod.UI
                 {
                     unityWebRequest.Abort();
                 }
-                catch
-                {
-
-                }
+                catch { }
             }
 
             Texture2D texture = _texture;

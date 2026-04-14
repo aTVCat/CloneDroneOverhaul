@@ -1,5 +1,6 @@
 ﻿using OverhaulMod.Combat;
 using OverhaulMod.Utils;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine.UI;
@@ -33,7 +34,7 @@ namespace OverhaulMod.Engine
             {
                 info = ModJsonUtils.DeserializeStream<ModLocalizationInfo>(Path.Combine(ModCore.DataFolder, FILE_NAME));
             }
-            catch
+            catch (Exception)
             {
                 info = new ModLocalizationInfo();
             }
@@ -45,7 +46,7 @@ namespace OverhaulMod.Engine
             {
                 currentLangId = SettingsManager.Instance.GetCurrentLanguageID();
             }
-            catch
+            catch (Exception)
             {
                 currentLangId = ModConstants.LANG_CODE_EN;
             }

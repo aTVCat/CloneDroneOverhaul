@@ -1,4 +1,5 @@
 ﻿using OverhaulMod.Utils;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
@@ -80,7 +81,7 @@ namespace OverhaulMod.Engine
             {
                 arenaAudienceLinePointInfoList = ModJsonUtils.DeserializeStream<ArenaAudienceLinePointInfoList>(path);
             }
-            catch
+            catch (Exception)
             {
                 arenaAudienceLinePointInfoList = new ArenaAudienceLinePointInfoList();
             }

@@ -1,4 +1,5 @@
 ﻿using OverhaulMod.Utils;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -70,7 +71,7 @@ namespace OverhaulMod.Content.Personalization
                                 byte[] array = ModFileUtils.ReadBytes(path);
                                 d.Add(path.Replace("/", "\\"), array);
                             }
-                            catch
+                            catch (Exception)
                             {
 
                             }

@@ -1,4 +1,5 @@
 ﻿using OverhaulMod.Utils;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -141,7 +142,7 @@ namespace OverhaulMod.UI
                     {
                         highScores = ModJsonUtils.DeserializeStream<List<HighScoreData>>(DataRepository.Instance.GetFullPath(fileName));
                     }
-                    catch
+                    catch (Exception)
                     {
                         highScores = new List<HighScoreData>();
                     }

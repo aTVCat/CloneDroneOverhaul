@@ -158,7 +158,7 @@ namespace OverhaulMod.UI
             {
                 if (!Version.TryParse(_buildVersionField.text, out version)) version = new Version(0, 0, 0, 0);
             }
-            catch
+            catch (Exception)
             {
                 version = new Version(0, 0, 0, 0);
             }
@@ -270,7 +270,7 @@ namespace OverhaulMod.UI
             {
                 if (!Version.TryParse(_buildVersionField.text, out version)) version = new Version(0, 0, 0, 0);
             }
-            catch
+            catch (Exception)
             {
                 version = new Version(0, 0, 0, 0);
             }

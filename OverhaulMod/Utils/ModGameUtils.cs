@@ -113,7 +113,7 @@ namespace OverhaulMod.Utils
                 ChapterIndex = chapterIndex,
             });
 
-            ModDataManager.Instance.WriteFile(fileName + ".json", content, true);
+            ModDataManager.WriteFile(fileName + ".json", content, true);
             _ = ModFileUtils.OpenFileExplorer(ModDataManager.SavesFolder);
         }
 
@@ -144,7 +144,7 @@ namespace OverhaulMod.Utils
                 {
                     chapterSectionInfo = ModJsonUtils.DeserializeStream<ModLevelSectionInfo>(file);
                 }
-                catch
+                catch (Exception)
                 {
                     chapterSectionInfo = new ModLevelSectionInfo() { DeserializationError = true };
                 }

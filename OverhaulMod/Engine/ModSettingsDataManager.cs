@@ -1,4 +1,5 @@
 ﻿using OverhaulMod.Utils;
+using System;
 using System.IO;
 
 namespace OverhaulMod.Engine
@@ -65,7 +66,7 @@ namespace OverhaulMod.Engine
                     modSettingsDataContainer = ModJsonUtils.Deserialize<ModSettingsDataContainer>(ModFileUtils.GetString(array));
                     modSettingsDataContainer.FixValues();
                 }
-                catch
+                catch (Exception)
                 {
                     modSettingsDataContainer = new ModSettingsDataContainer();
                     modSettingsDataContainer.FixValues();

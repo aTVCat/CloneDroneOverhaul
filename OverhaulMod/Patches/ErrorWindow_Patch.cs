@@ -1,5 +1,6 @@
 ﻿using HarmonyLib;
 using OverhaulMod.Utils;
+using System;
 using UnityEngine;
 
 namespace OverhaulMod.Patches
@@ -18,7 +19,7 @@ namespace OverhaulMod.Patches
                 {
                     _ = ModUIConstants.ShowCrashScreen(errorMessage);
                 }
-                catch
+                catch (Exception)
                 {
                     return true;
                 }
