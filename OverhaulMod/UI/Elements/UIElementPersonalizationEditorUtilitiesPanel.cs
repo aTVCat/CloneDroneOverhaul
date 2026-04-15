@@ -51,6 +51,11 @@ namespace OverhaulMod.UI
             _characterModelPreviewDropdown.onValueChanged.AddListener(OnCharacterModelPreviewDropdownChanged);
         }
 
+        public void EnableAnimation()
+        {
+            _enableAnimationToggle.isOn = true;
+        }
+
         public Color GetFavoriteColor()
         {
             return HumanFactsManager.Instance.FavouriteColors[Mathf.Max(0, _favoriteColorPreviewDropdown.value - 1)].ColorValue;

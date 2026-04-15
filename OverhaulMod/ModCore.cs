@@ -332,8 +332,7 @@ namespace OverhaulMod
 
         public override void OnLanguageChanged(string newLanguageID, Dictionary<string, string> localizationDictionary)
         {
-            if (newLanguageID.IsNullOrEmpty() || localizationDictionary.IsNullOrEmpty())
-                return;
+            if (newLanguageID.IsNullOrEmpty() || localizationDictionary.IsNullOrEmpty()) return;
 
             ModLocalizationManager manager = ModLocalizationManager.Instance;
             if (manager)

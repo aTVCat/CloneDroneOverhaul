@@ -16,8 +16,6 @@ namespace OverhaulMod.Combat.Weapons
 
         public virtual AttackDirection defaultAttackDirection => AttackDirection.Forward;
 
-        public virtual RuntimeAnimatorController animatorControllerOverride => null;
-
         public virtual void Awake()
         {
             IsModelActive = true;

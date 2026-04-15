@@ -223,6 +223,7 @@ namespace OverhaulMod.Content.Personalization
                 editorUi.Inspector.Populate();
                 UIElementPersonalizationEditorUtilitiesPanel utils = editorUi.Utilities;
                 utils.SetAvailablePresets(GetPresetsForEditingWeaponSkin());
+                utils.EnableAnimation();
 
                 UIPersonalizationEditor.instance.ShowNotification("Success", $"Loaded {personalizationItemInfo.Name}!", UIElementPersonalizationEditorNotification.SuccessColor);
             }

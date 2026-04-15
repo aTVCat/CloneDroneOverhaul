@@ -317,6 +317,7 @@ namespace OverhaulMod.UI
 
             UIElementPersonalizationEditorUtilitiesPanel utils = UIPersonalizationEditor.instance.Utilities;
             utils.SetAvailablePresets(PersonalizationEditorManager.Instance.GetPresetsForEditingWeaponSkin());
+            utils.EnableAnimation();
         }
 
         public void OnEditedBodyPartDropdown(int value)
@@ -334,6 +335,7 @@ namespace OverhaulMod.UI
             manager.SerializeRoot();
             manager.SpawnRootObject();
             UIPersonalizationEditor.instance.PropertiesPanel.EditObjectAgain();
+            UIPersonalizationEditor.instance.Utilities.EnableAnimation();
         }
 
         public void OnHideBowStringsToggled(bool value)

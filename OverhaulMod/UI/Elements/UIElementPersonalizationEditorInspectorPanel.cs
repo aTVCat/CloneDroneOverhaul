@@ -110,7 +110,7 @@ namespace OverhaulMod.UI
             _cvmModelPropertiesController = new CvmModelPropertiesController();
 
             _mousePositionChecker = base.gameObject.AddComponent<UIElementMouseEventsComponent>();
-            _volumeColorsSettings.onColorChanged = OnVolumeColorReplacementsChanged;
+            _volumeColorsSettings.OnColorChanged = OnVolumeColorReplacementsChanged;
         }
 
         private void LateUpdate()
@@ -812,7 +812,7 @@ namespace OverhaulMod.UI
                             UIElementPersonalizationEditorVolumeColorsSettings volumeColorsSettings = propertiesPanel._volumeColorsSettings;
                             volumeColorsSettings.Show();
                             volumeColorsSettings.Populate(settingsPreset);
-                            volumeColorsSettings.onColorChanged = onColorChangedAction;
+                            volumeColorsSettings.OnColorChanged = onColorChangedAction;
                         });
 
                         // delete

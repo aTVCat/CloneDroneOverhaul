@@ -473,6 +473,7 @@
     <Compile Include="UI\Components\EventController.cs" />
     <Compile Include="UI\Components\FileCreationDialogController.cs" />
     <Compile Include="UI\Components\SliderFillText.cs" />
+    <Compile Include="UI\Components\UnscaledRotator.cs" />
     <Compile Include="UI\DropdownPersonalizationItemInfo.cs" />
     <Compile Include="UI\DropdownWeaponVariantOptionData.cs" />
     <Compile Include="UI\DropdownWeaponTypeOptionData.cs" />

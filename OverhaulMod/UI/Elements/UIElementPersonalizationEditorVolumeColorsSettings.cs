@@ -34,11 +34,7 @@ namespace OverhaulMod.UI
 
         private Dictionary<string, FavoriteColorSettings> _favoriteColorSettings;
 
-        public Action<string> onColorChanged
-        {
-            get;
-            set;
-        }
+        public Action<string> OnColorChanged;
 
         protected override void OnInitialized()
         {
@@ -73,8 +69,8 @@ namespace OverhaulMod.UI
                     editorColorPairDisplay.colorPair = cp;
                     editorColorPairDisplay.favoriteColorSettings = replaceWithFavoriteColors;
                     editorColorPairDisplay.colorPickerTransform = UIPersonalizationEditor.instance.transform;
-                    editorColorPairDisplay.onValueChanged.AddListener(onColorChangedCallback);
-                    editorColorPairDisplay.onFavoriteColorSettingsChanged.AddListener(delegate
+                    editorColorPairDisplay.OnValueChanged.AddListener(onColorChangedCallback);
+                    editorColorPairDisplay.OnFavoriteColorSettingsChanged.AddListener(delegate
                     {
                         GlobalEventManager.Instance.Dispatch(PersonalizationEditorManager.OBJECT_EDITED_EVENT);
                     });
@@ -86,7 +82,7 @@ namespace OverhaulMod.UI
 
         private void onColorChangedCallback(ColorPairFloat colorPairFloat)
         {
-            onColorChanged?.Invoke(PersonalizationEditorManager.Instance.GetStringFromColorPairs(_colorPairs));
+            OnColorChanged?.Invoke(PersonalizationEditorManager.Instance.GetStringFromColorPairs(_colorPairs));
         }
 
         public void OnCopyColorsButtonClicked()

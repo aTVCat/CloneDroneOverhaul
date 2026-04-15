@@ -152,14 +152,6 @@ namespace OverhaulMod.Content.Personalization
                             Directory.Delete(folder, true);
                         }
                     }
-                    /*
-                    else
-                    {
-                        foreach (var directory in Directory.GetDirectories(ModCore.CustomizationFolder))
-                        {
-                            Directory.Delete(directory, true);
-                        }
-                    }*/
 
                     string tempFile = Path.GetTempFileName();
                     ModFileUtils.WriteBytes(bytes, tempFile);
@@ -345,9 +337,8 @@ namespace OverhaulMod.Content.Personalization
 
         private void loadUserInfoFile()
         {
-            string path = Path.Combine(ModDataManager.UserDataFolder, USER_INFO_FILE);
-
             PersonalizationUserInfo personalizationUserInfo;
+            string path = Path.Combine(ModDataManager.UserDataFolder, USER_INFO_FILE);
             if (File.Exists(path))
             {
                 try

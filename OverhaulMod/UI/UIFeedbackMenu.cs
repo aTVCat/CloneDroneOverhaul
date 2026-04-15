@@ -174,7 +174,7 @@ namespace OverhaulMod.UI
             _likeButton.interactable = false;
             API.Like("rAnDomPaTcHeS1", "true", delegate (JsonObject jsonObject)
             {
-                ModUIUtils.MessagePopupOK("Successfully liked the mod!", "Thanks!", false);
+                ModUIUtils.MessagePopupOK(LocalizationManager.Instance.GetTranslatedString("feedback_like_mod_header"), LocalizationManager.Instance.GetTranslatedString("feedback_like_mod_description"), false);
             });
         }
 

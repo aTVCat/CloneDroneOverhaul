@@ -14,8 +14,6 @@ namespace OverhaulMod.Engine
         {
             switch (langId)
             {
-                case ModConstants.LANG_CODE_EN:
-                    return Translations_en;
                 case ModConstants.LANG_CODE_RU:
                     return Translations_ru;
                 case ModConstants.LANG_CODE_ZH_CN:
@@ -23,7 +21,7 @@ namespace OverhaulMod.Engine
                 case ModConstants.LANG_CODE_ZH_TW:
                     return Translations_zhtw;
             }
-            return null;
+            return Translations_en;
         }
 
         public void AddTranslation(string key)

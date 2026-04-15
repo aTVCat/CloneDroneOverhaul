@@ -69,7 +69,7 @@ namespace OverhaulMod.UI
                 _colorPair = value;
 
                 if (!_disableCallbacks)
-                    onValueChanged.Invoke(returnNewPair ? new ColorPairFloat(value.ColorA, value.ColorB) : value);
+                    OnValueChanged.Invoke(returnNewPair ? new ColorPairFloat(value.ColorA, value.ColorB) : value);
             }
         }
 
@@ -128,7 +128,7 @@ namespace OverhaulMod.UI
                     _colorPair.ColorA = value;
 
                 if (!_disableCallbacks)
-                    onValueChanged.Invoke(returnNewPair ? new ColorPairFloat(value, colorB) : _colorPair);
+                    OnValueChanged.Invoke(returnNewPair ? new ColorPairFloat(value, colorB) : _colorPair);
             }
         }
 
@@ -151,7 +151,7 @@ namespace OverhaulMod.UI
                     _colorPair.ColorB = value;
 
                 if (!_disableCallbacks)
-                    onValueChanged.Invoke(returnNewPair ? new ColorPairFloat(colorA, value) : _colorPair);
+                    OnValueChanged.Invoke(returnNewPair ? new ColorPairFloat(colorA, value) : _colorPair);
             }
         }
 
@@ -167,9 +167,9 @@ namespace OverhaulMod.UI
             set;
         }
 
-        public ColorPairChangedEvent onValueChanged { get; set; } = new ColorPairChangedEvent();
+        public ColorPairChangedEvent OnValueChanged { get; set; } = new ColorPairChangedEvent();
 
-        public UnityEvent onFavoriteColorSettingsChanged { get; set; } = new UnityEvent();
+        public UnityEvent OnFavoriteColorSettingsChanged { get; set; } = new UnityEvent();
 
         public void OnColorBButtonClicked()
         {
@@ -196,7 +196,7 @@ namespace OverhaulMod.UI
             {
                 _ = _favoriteColorSettings.Remove(hex);
             }
-            onFavoriteColorSettingsChanged.Invoke();
+            OnFavoriteColorSettingsChanged.Invoke();
 
             _favoriteColorSaturationSlider.interactable = value;
             _favoriteColorBrightnessSlider.interactable = value;
@@ -214,7 +214,7 @@ namespace OverhaulMod.UI
 
             ModUIUtils.Tooltip($"{value}%");
 
-            onFavoriteColorSettingsChanged.Invoke();
+            OnFavoriteColorSettingsChanged.Invoke();
         }
 
         public void OnFavoriteColorBrightnessSliderChanged(float value)
@@ -228,7 +228,7 @@ namespace OverhaulMod.UI
 
             ModUIUtils.Tooltip($"{value}%");
 
-            onFavoriteColorSettingsChanged.Invoke();
+            OnFavoriteColorSettingsChanged.Invoke();
         }
 
         public void OnFavoriteColorGlowPercentSliderChanged(float value)
@@ -242,7 +242,7 @@ namespace OverhaulMod.UI
 
             ModUIUtils.Tooltip($"{value}%");
 
-            onFavoriteColorSettingsChanged.Invoke();
+            OnFavoriteColorSettingsChanged.Invoke();
         }
 
         private void onColorBChanged(Color color)

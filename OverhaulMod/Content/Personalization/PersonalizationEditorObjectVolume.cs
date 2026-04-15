@@ -27,7 +27,7 @@ namespace OverhaulMod.Content.Personalization
         }
 
         private Volume _volume;
-        public Volume volume
+        public Volume Volume
         {
             get
             {
@@ -66,6 +66,8 @@ namespace OverhaulMod.Content.Personalization
                 ob.SetPropertyValue(nameof(hideIfNoPreset), value);
             }
         }
+
+        private List<ColorPairFloat> _currentColorReplacement;
 
         private bool _hasAddedEventListeners;
 
@@ -185,7 +187,7 @@ namespace OverhaulMod.Content.Personalization
 
             VolumeSettingsPreset preset = GetCurrentPreset();
 
-            Volume volumeComponent = volume;
+            Volume volumeComponent = Volume;
             if (!volumeComponent) return;
 
             volumeComponent.MeshingMode = VolumeMeshingMode;
@@ -283,35 +285,76 @@ namespace OverhaulMod.Content.Personalization
             }
             else
             {
-                Color favoriteColor = objectBehaviour.ControllerInfo == null ? UIPersonalizationEditor.instance.Utilities.GetFavoriteColor() : objectBehaviour.ControllerInfo.GetFavoriteColor();
-
                 List<ColorPairFloat> list = PersonalizationEditorManager.Instance.GetColorPairsFromString(cr);
                 if (!list.IsNullOrEmpty())
                 {
-                    foreach (ColorPairFloat cp in list)
-                    {
-                        Color colorB;
-                        if (preset.ReplaceWithFavoriteColors != null && preset.ReplaceWithFavoriteColors.TryGetValue(ColorUtility.ToHtmlStringRGBA(cp.ColorA), out FavoriteColorSettings favoriteColorSettings))
-                        {
-                            HSBColor hsbcolor = new HSBColor(favoriteColor)
-                            {
-                                s = favoriteColorSettings.SaturationMultiplier,
-                                b = favoriteColorSettings.BrightnessMultiplier
-                            };
-                            colorB = hsbcolor.ToColor();
-                            colorB.a = Mathf.Clamp01(1f - favoriteColorSettings.GlowPercent);
-                        }
-                        else
-                        {
-                            colorB = cp.ColorB;
-                        }
-
-                        ReplaceVoxelColor.ReplaceColors(volumeComponent, cp.ColorA, colorB, false);
-                    }
+                    ReplaceColors(list, preset);
                 }
             }
 
             base.transform.localScale = objectBehaviour.SerializedScale;
+        }
+
+        public void ReplaceColors(List<ColorPairFloat> colors, VolumeSettingsPreset preset)
+        {
+            _currentColorReplacement = colors;
+            Color favoriteColor = objectBehaviour.ControllerInfo == null ? UIPersonalizationEditor.instance.Utilities.GetFavoriteColor() : objectBehaviour.ControllerInfo.GetFavoriteColor();
+
+            foreach (ColorPairFloat cp in colors)
+            {
+                Color colorB;
+                if (preset.ReplaceWithFavoriteColors != null && preset.ReplaceWithFavoriteColors.TryGetValue(ColorUtility.ToHtmlStringRGBA(cp.ColorA), out FavoriteColorSettings favoriteColorSettings))
+                {
+                    HSBColor hsbcolor = new HSBColor(favoriteColor)
+                    {
+                        s = favoriteColorSettings.SaturationMultiplier,
+                        b = favoriteColorSettings.BrightnessMultiplier
+                    };
+                    colorB = hsbcolor.ToColor();
+                    colorB.a = Mathf.Clamp01(1f - favoriteColorSettings.GlowPercent);
+                }
+                else
+                {
+                    colorB = cp.ColorB;
+                }
+
+                ReplaceVoxelColor.ReplaceColors(Volume, cp.ColorA, colorB, false);
+            }
+        }
+
+        public void UpdateColors(List<ColorPairFloat> colors, VolumeSettingsPreset preset)
+        {
+            if (_currentColorReplacement == null || _currentColorReplacement.Count != colors.Count)
+            {
+                ReplaceColors(colors, preset);
+                return;
+            }
+
+            Color favoriteColor = objectBehaviour.ControllerInfo == null ? UIPersonalizationEditor.instance.Utilities.GetFavoriteColor() : objectBehaviour.ControllerInfo.GetFavoriteColor();
+
+            for (int i = 0; i < colors.Count; i++)
+            {
+                ColorPairFloat cp = colors[i];
+                Color colorB;
+                if (preset.ReplaceWithFavoriteColors != null && preset.ReplaceWithFavoriteColors.TryGetValue(ColorUtility.ToHtmlStringRGBA(cp.ColorA), out FavoriteColorSettings favoriteColorSettings))
+                {
+                    HSBColor hsbcolor = new HSBColor(favoriteColor)
+                    {
+                        s = favoriteColorSettings.SaturationMultiplier,
+                        b = favoriteColorSettings.BrightnessMultiplier
+                    };
+                    colorB = hsbcolor.ToColor();
+                    colorB.a = Mathf.Clamp01(1f - favoriteColorSettings.GlowPercent);
+                }
+                else
+                {
+                    colorB = cp.ColorB;
+                }
+
+                ReplaceVoxelColor.ReplaceColors(Volume, _currentColorReplacement[i].ColorA, colorB, false);
+            }
+
+            Volume.UpdateAllChunksNextFrame();
         }
     }
 }

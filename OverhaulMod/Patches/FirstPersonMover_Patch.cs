@@ -114,14 +114,6 @@ namespace OverhaulMod.Patches
             WeaponModel wm = __instance._currentWeaponModel;
             if (wm && wm.WeaponType == ModWeaponsManager.SCYTHE_TYPE && wm is ModWeaponModel modWeaponModel)
             {
-                if (modWeaponModel.animatorControllerOverride)
-                {
-                    CharacterModel characterModel = __instance._characterModel;
-                    if (characterModel)
-                    {
-                        characterModel.SetUpperAnimator(modWeaponModel.animatorControllerOverride);
-                    }
-                }
                 modWeaponModel.OnRefreshWeaponAnimatorProperties(__instance);
             }
         }

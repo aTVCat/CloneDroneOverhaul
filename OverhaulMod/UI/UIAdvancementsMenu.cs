@@ -47,6 +47,9 @@ namespace OverhaulMod.UI
         [UIElement("AllAchievementsUnlockedLabel", false)]
         private readonly ModdedObject _allAchievementsUnlockedLabelPrefab;
 
+        [UIElement("LI_Sawblade")]
+        private readonly GameObject _loadingIndicatorSawblade;
+
         [UIElement("MyAchTabButton")]
         private readonly ModdedObject _localAdvancementsTab;
         [UIElement("GlbAchTabButton")]
@@ -66,6 +69,10 @@ namespace OverhaulMod.UI
             _tabs.AddTab(_localAdvancementsTab.gameObject, "local advancements");
             _tabs.AddTab(_globalAdvancementsTab.gameObject, "global advancements");
             _tabs.SelectTab("local advancements");
+
+            Rotator rotator = _loadingIndicatorSawblade.GetComponent<Rotator>();
+            _loadingIndicatorSawblade.AddComponent<UnscaledRotator>().CopySettings(rotator);
+            Destroy(rotator);
         }
 
         public void OnTabSelected(UIElementTab elementTab)

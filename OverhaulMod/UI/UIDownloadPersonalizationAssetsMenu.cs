@@ -35,22 +35,14 @@ namespace OverhaulMod.UI
         [UIElement("Header")]
         private readonly Text _header;
 
-        private PersonalizationManager _personalizationManager;
-
-        private static float s_dontActuallyRefreshRemoteVersionUntilTime;
-
-        protected override void OnInitialized()
-        {
-            _personalizationManager = PersonalizationManager.Instance;
-            s_dontActuallyRefreshRemoteVersionUntilTime = 0f;
-        }
+        private float _dontActuallyRefreshRemoteVersionUntilTime;
 
         public override void Show()
         {
             base.Show();
             refreshContents();
 
-            PersonalizationManager personalizationManager = _personalizationManager;
+            PersonalizationManager personalizationManager = PersonalizationManager.Instance;
             if (personalizationManager.GetPersonalizationAssetsState() == PersonalizationAssetsState.NotInstalled)
             {
                 _header.text = LocalizationManager.Instance.GetTranslatedString("customization_need_install_header");
@@ -74,7 +66,7 @@ namespace OverhaulMod.UI
 
         private void refreshContents()
         {
-            PersonalizationManager personalizationManager = _personalizationManager;
+            PersonalizationManager personalizationManager = PersonalizationManager.Instance;
 
             _updateButton.interactable = true;
             _progressBar.SetActive(personalizationManager.IsDownloadingCustomizationFile());
@@ -111,7 +103,7 @@ namespace OverhaulMod.UI
 
         private void refreshProgressBarFill()
         {
-            PersonalizationManager personalizationManager = _personalizationManager;
+            PersonalizationManager personalizationManager = PersonalizationManager.Instance;
             if (personalizationManager.IsDownloadingCustomizationFile())
             {
                 _progressBarFill.fillAmount = Mathf.Lerp(_progressBarFill.fillAmount, personalizationManager.GetCustomizationFileDownloadProgress(), Time.unscaledDeltaTime * 12.5f);
@@ -122,7 +114,7 @@ namespace OverhaulMod.UI
         {
             _progressBarFill.fillAmount = 0f;
             _exitButton.gameObject.SetActive(false);
-            _personalizationManager.DownloadCustomizationFile(delegate (string error)
+            PersonalizationManager.Instance.DownloadCustomizationFile(delegate (string error)
             {
                 _exitButton.gameObject.SetActive(true);
                 refreshContents();
@@ -139,7 +131,7 @@ namespace OverhaulMod.UI
         {
             _progressBarFill.fillAmount = 0f;
             _exitButton.gameObject.SetActive(false);
-            _personalizationManager.DownloadCustomizationFile(delegate (string error)
+            PersonalizationManager.Instance.DownloadCustomizationFile(delegate (string error)
             {
                 _exitButton.gameObject.SetActive(true);
                 refreshContents();
@@ -155,7 +147,7 @@ namespace OverhaulMod.UI
         public void OnRefreshButtonClicked()
         {
             _refreshButton.interactable = false;
-            if (Time.realtimeSinceStartup < s_dontActuallyRefreshRemoteVersionUntilTime)
+            if (Time.realtimeSinceStartup < _dontActuallyRefreshRemoteVersionUntilTime)
             {
                 DelegateScheduler.Instance.Schedule(delegate
                 {
@@ -164,9 +156,9 @@ namespace OverhaulMod.UI
                 return;
             }
 
-            _personalizationManager.RefreshRemoteCustomizationAssetsVersion(delegate (bool result)
+            PersonalizationManager.Instance.RefreshRemoteCustomizationAssetsVersion(delegate (bool result)
             {
-                s_dontActuallyRefreshRemoteVersionUntilTime = Time.realtimeSinceStartup + 15f;
+                _dontActuallyRefreshRemoteVersionUntilTime = Time.realtimeSinceStartup + 15f;
                 _refreshButton.interactable = true;
                 if (result)
                     refreshContents();

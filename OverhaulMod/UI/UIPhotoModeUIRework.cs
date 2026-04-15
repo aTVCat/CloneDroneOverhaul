@@ -383,6 +383,7 @@ namespace OverhaulMod.UI
                 return;
 
             ModCache.UIRoot.SetPlayerHUDVisible(value && !CutSceneManager.Instance.IsInCutscene());
+            if (!value) ModCache.UIRoot.DifficultyShiftUI.Hide();
         }
 
         public void OnCinematicBordersToggled(bool value)

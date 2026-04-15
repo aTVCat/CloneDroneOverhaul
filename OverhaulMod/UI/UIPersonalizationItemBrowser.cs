@@ -232,7 +232,7 @@ namespace OverhaulMod.UI
             Transform holder = _cameraHolderTransform;
             if (holder)
             {
-                bool mouseButtonDown = Input.GetMouseButton(1);
+                bool mouseButtonDown = Input.GetMouseButton(0) || Input.GetMouseButton(1);
                 if (mouseButtonDown && !HasEverRotatedTheCamera)
                 {
                     ModSettingsManager.SetBoolValue(ModSettingsConstants.HAS_EVER_ROTATED_THE_CAMERA, true);
@@ -622,8 +622,16 @@ namespace OverhaulMod.UI
 
         private void setCameraZoomedIn(bool value)
         {
-            FirstPersonMover firstPersonMover = CharacterTracker.Instance.GetPlayerRobot();
             CameraManager cameraManager = CameraManager.Instance;
+            FirstPersonMover firstPersonMover = CharacterTracker.Instance.GetPlayerRobot();
+            if (!firstPersonMover)
+            {
+                cameraManager.EnableForceFOVOffset = false;
+                cameraManager.EnableThirdPerson = false;
+                _cameraHolderTransform = null;
+                return;
+            }
+
             if (!value)
             {
                 refreshCameraRect();
@@ -641,10 +649,7 @@ namespace OverhaulMod.UI
             cameraManager.EnableForceFOVOffset = true;
             cameraManager.EnableThirdPerson = true;
             cameraManager.ForceFOVOffset = -5f;
-
-            FirstPersonMover robot = CharacterTracker.Instance.GetPlayerRobot();
-            if (robot)
-                _cameraHolderTransform = robot._cameraHolderTransform;
+            _cameraHolderTransform = firstPersonMover._cameraHolderTransform;
 
             ModGameUtils.WaitForPlayerInputUpdate(delegate (IFPMoveCommandInput commandInput)
             {

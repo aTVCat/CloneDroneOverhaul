@@ -16,8 +16,6 @@ namespace OverhaulMod.Combat.Weapons
 
         public override AttackDirection attackDirections => AttackDirection.Left | AttackDirection.Forward | AttackDirection.Right;
 
-        public override RuntimeAnimatorController animatorControllerOverride => WeaponManager.Instance.Multiplayer_DefaultUpperBodyAnimator;
-
         public override void OnInstantiated(FirstPersonMover owner)
         {
             MeleeWeaponAITuning meleeWeaponTuning = WeaponAITuningManager.Instance.SwordAITuning.Clone();
