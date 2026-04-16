@@ -19,22 +19,24 @@ namespace OverhaulMod.UI
 
         private void onClicked()
         {
+            if (!ModAudioManager.UISounds) return;
+
             switch (Sound)
             {
                 case SoundType.Choose:
-                    AudioManager.Instance.PlayClipGlobal(ModAudioLibrary.Instance.HyperdomeUIChoose);
+                    ModAudioManager.Instance.PlayOneShotGlobal(ModAudioLibrary.Instance.HyperdomeUIChoose);
                     break;
                 case SoundType.Choose_NoEcho:
-                    AudioManager.Instance.PlayClipGlobal(ModAudioLibrary.Instance.HyperdomeUIChoose_NoEcho);
+                    ModAudioManager.Instance.PlayOneShotGlobal(ModAudioLibrary.Instance.HyperdomeUIChoose_NoEcho);
                     break;
                 case SoundType.Back:
-                    AudioManager.Instance.PlayClipGlobal(ModAudioLibrary.Instance.HyperdomeUIBack);
+                    ModAudioManager.Instance.PlayOneShotGlobal(ModAudioLibrary.Instance.HyperdomeUIBack);
                     break;
                 case SoundType.Back_NoEcho:
-                    AudioManager.Instance.PlayClipGlobal(ModAudioLibrary.Instance.HyperdomeUIChoose_NoEcho);
+                    ModAudioManager.Instance.PlayOneShotGlobal(ModAudioLibrary.Instance.HyperdomeUIChoose_NoEcho);
                     break;
                 case SoundType.Click:
-                    AudioManager.Instance.PlayClipGlobal(ModAudioLibrary.Instance.HyperdomeUIClick);
+                    ModAudioManager.Instance.PlayOneShotGlobal(ModAudioLibrary.Instance.HyperdomeUIClick);
                     break;
             }
         }

@@ -543,6 +543,7 @@
     <Compile Include="UI\UIPersonalizationEditorExportAllMenu.cs" />
     <Compile Include="UI\UIPersonalizationEditorItemImportHelper.cs" />
     <Compile Include="UI\UIPersonalizationEditorScreenshotControls.cs" />
+    <Compile Include="UI\UISettingsMenuReworkV2.cs" />
     <Compile Include="UI\UITitleScreenHypocrisisSkin.cs" />
     <Compile Include="UI\UIUpdateDetailsWindow.cs" />
     <Compile Include="UI\UIUpdatesEditor.cs" />

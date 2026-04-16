@@ -127,9 +127,9 @@ namespace OverhaulMod.UI
         private readonly Button _patchNotesButton;
 
         [ButtonWithSound(ButtonWithSound.SoundType.Click)]
-        [UIElementAction(nameof(OnPatchNotesButtonClicked))]
-        [UIElement("DebugButton")]
-        private readonly Button _debugButton;
+        [UIElementAction(nameof(OnLocalizationEditorButtonClicked))]
+        [UIElement("LocalizationEditorButton")]
+        private readonly Button _localizationEditorButton;
 
         [UIElement("MiscElements")]
         private readonly GameObject _miscElementsObject;
@@ -236,7 +236,7 @@ namespace OverhaulMod.UI
         protected override void OnInitialized()
         {
             bool debug = ModBuild.IsDebugBuild;
-            _debugButton.gameObject.SetActive(debug);
+            _localizationEditorButton.gameObject.SetActive(debug);
             _modBotLogonText.text = "Not logged in";
 
             float fraction = GameplayAchievementManager.Instance.GetFractionOfAchievementsCompleted();
@@ -604,6 +604,11 @@ namespace OverhaulMod.UI
                 ShrinkPanel = false,
                 HideVersionList = false,
             });
+        }
+
+        public void OnLocalizationEditorButtonClicked()
+        {
+            ModUIConstants.ShowLocalizationEditor();
         }
 
         public enum TitleScreenSkinType

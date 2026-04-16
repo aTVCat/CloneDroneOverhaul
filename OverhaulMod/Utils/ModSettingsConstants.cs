@@ -669,7 +669,7 @@ namespace OverhaulMod.Utils
         /// <summary>
         /// <see cref="Visuals.PostEffectsManager"/>
         /// </summary>
-        public const string BLOO_MODE = "BloomMode";
+        public const string BLOOM_MODE = "BloomMode";
 
         /// <summary>
         /// <see cref="Engine.TitleScreenCustomizationManager"/>
@@ -712,8 +712,13 @@ namespace OverhaulMod.Utils
         public const string CHUNK_UPDATE_DELAY = "ChunkUpdateDelay";
 
         /// <summary>
-        /// <see cref="Patches.Behaviours.ConstructionParticlesPatchBehaviour"/>
+        /// <see cref="Visuals.ParticleManager"/>
         /// </summary>
         public const string NEW_WELDING_PARTICLES = "NewWeldingParticles";
+
+        /// <summary>
+        /// <see cref="Engine.ModAudioManager"/>
+        /// </summary>
+        public const string UI_SOUNDS = "UISounds";
     }
 }

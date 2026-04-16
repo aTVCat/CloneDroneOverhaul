@@ -31,9 +31,14 @@ namespace OverhaulMod.Engine
         [ModSetting(ModSettingsConstants.MUTE_SPEED_MULTIPLIER, 0.6f)]
         public static float MuteSpeedMultiplier;
 
+        [ModSetting(ModSettingsConstants.UI_SOUNDS, true)]
+        public static bool UISounds;
+
         private AudioSource _musicAudioSource;
 
         private AudioSource[] _commentatorAudioSources;
+
+        private AudioSource _oneShotGlobalAudioSource;
 
         private GameObject _loadingSoundSourcePrefab, _customizationEditorAmbianceSourcePrefab;
 
@@ -53,6 +58,12 @@ namespace OverhaulMod.Engine
         {
             _timeCustomizationEditorAmbianceStartTime = -1f;
             _timeCustomizationEditorAmbianceStopTime = -1f;
+
+            GameObject oneShotAudioSourceObject = new GameObject("OneShot Global Audio Source");
+            oneShotAudioSourceObject.transform.SetParent(base.transform, false);
+            AudioSource oneShotAudioSource = oneShotAudioSourceObject.AddComponent<AudioSource>();
+            oneShotAudioSource.spatialBlend = 0f;
+            _oneShotGlobalAudioSource = oneShotAudioSource;
 
             _loadingSoundSourcePrefab = ModResources.Prefab(AssetBundleConstants.SFX, "LoadingSoundSource");
             _customizationEditorAmbianceSourcePrefab = ModResources.Prefab(AssetBundleConstants.SFX, "CustEditorAmbianceSource");
@@ -168,6 +179,19 @@ namespace OverhaulMod.Engine
                 return;
 
             TransitionSoundBehaviour.Instance.FadeOutSoundThenDestroySelf();
+        }
+
+        public void PlayOneShotGlobal(AudioClipDefinition audioClipDefinition)
+        {
+            if (!_oneShotGlobalAudioSource)
+            {
+                ModDebug.LogWarning("OneShot Global Audio Source has been destroyed!", true);
+                return;
+            }
+
+            if (audioClipDefinition == null) return;
+
+            _oneShotGlobalAudioSource.PlayOneShot(audioClipDefinition.Clip);
         }
 
         public void OnGameLoaded()

@@ -30,6 +30,12 @@ namespace OverhaulMod
                 case FeatureType.Pets:
                     result = ModBuild.VERSION_4_3;
                     break;
+                case FeatureType.UISounds:
+                    result = true;
+                    break;
+                case FeatureType.SettingsMenuReworkV2:
+                    result = true;
+                    break;
                 default:
                     return false;
             }
@@ -64,6 +70,8 @@ namespace OverhaulMod
             Accessories,
 
             Pets,
+
+            SettingsMenuReworkV2
         }
     }
 }

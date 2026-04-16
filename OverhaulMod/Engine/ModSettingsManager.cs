@@ -11,6 +11,8 @@ namespace OverhaulMod.Engine
     {
         public const string SETTING_CHANGED_EVENT = "OverhaulSettingChanged";
 
+        public const string SETTING_NAME_TRANSLATION_PREFIX = "setting_name_";
+
         public static int ExtraResolutionLength;
 
         private List<ModSetting> _settings;
