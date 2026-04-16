@@ -31,10 +31,10 @@ namespace OverhaulMod
                     result = ModBuild.VERSION_4_3;
                     break;
                 case FeatureType.UISounds:
-                    result = true;
+                    result = ModBuild.VERSION_4_3;
                     break;
                 case FeatureType.SettingsMenuReworkV2:
-                    result = true;
+                    result = ModBuild.VERSION_4_3;
                     break;
                 default:
                     return false;

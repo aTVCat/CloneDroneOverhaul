@@ -102,6 +102,7 @@ namespace OverhaulMod.Utils
         public const string UI_PERSONALIZATION_EDITOR_EXPORT_ALL_MENU = "UI_PersonalizationEditorExportAllMenu";
         public const string UI_PERSONALIZATION_EDITOR_ITEM_IMPORT_HELPER = "UI_PersonalizationEditorItemImportHelper";
         public const string UI_PERSONALIZATION_EDITOR_SCREENSHOT_CONTROLS = "UI_PersonalizationEditorScreenshotControls";
+        public const string UI_SETTINGS_MENU_V2 = "UI_SettingsMenuReworkV2";
 
         public static UIVersionLabel ShowVersionLabel()
         {
@@ -127,6 +128,12 @@ namespace OverhaulMod.Utils
                 settingsMenuRework.ShowSetupElements();
             else
                 settingsMenuRework.ShowRegularElements();
+            return settingsMenuRework;
+        }
+
+        public static UISettingsMenuReworkV2 ShowSettingsMenuReworkV2()
+        {
+            UISettingsMenuReworkV2 settingsMenuRework = ModUIManager.Instance.Show<UISettingsMenuReworkV2>(AssetBundleConstants.UI, UI_SETTINGS_MENU_V2, ModUIManager.UILayer.AfterTitleScreen);
             return settingsMenuRework;
         }
 

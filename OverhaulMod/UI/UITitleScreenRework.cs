@@ -538,6 +538,12 @@ namespace OverhaulMod.UI
                 ModCache.TitleScreenUI.OnOptionsButtonClicked();
                 return;
             }
+
+            if (ModFeatures.IsEnabled(ModFeatures.FeatureType.SettingsMenuReworkV2))
+            {
+                _ = ModUIConstants.ShowSettingsMenuReworkV2();
+                return;
+            }
             _ = ModUIConstants.ShowSettingsMenuRework(false);
         }
 
