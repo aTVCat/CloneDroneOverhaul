@@ -562,7 +562,17 @@ namespace OverhaulMod.UI
         {
             if (UIFeedbackMenu.HasEverSentFeedback)
             {
-                Application.Quit();
+                if (!ModAudioManager.UISounds)
+                {
+                    Application.Quit();
+                    return;
+                }
+
+                _quitButton.interactable = false;
+                DelegateScheduler.Instance.Schedule(delegate
+                {
+                    Application.Quit();
+                }, 1f);
                 return;
             }
             _ = ModUIConstants.ShowFeedbackUIRework(true);

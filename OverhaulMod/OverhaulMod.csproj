@@ -282,6 +282,7 @@
     <Compile Include="Engine\ModDownloadCacheManager.cs" />
     <Compile Include="Engine\ModSettingsPreset.cs" />
     <Compile Include="Engine\ModSettingSubDescription.cs" />
+    <Compile Include="Engine\RestoreSpatalizeBlendOnDisable.cs" />
     <Compile Include="Engine\Settings\ModSettingElementDescription.cs" />
     <Compile Include="Engine\Settings\ModSettingElementsContainer.cs" />
     <Compile Include="Engine\Settings\ModSettingElementType.cs" />

@@ -1,5 +1,6 @@
 ﻿//#define OVERRIDE_VER
 //#define DISABLE_EXCLUSIVE_PERKS
+#define REPOSITORY_TEST
 
 using OverhaulMod.Utils;
 using System;
@@ -14,7 +15,7 @@ namespace OverhaulMod
         public const string BUILD_INFO_FILE_PATH = "buildInfo.json";
 
 #if OVERRIDE_VER
-        public const string OVERRIDE_VERSION = "4.2.1102";
+        public const string OVERRIDE_VERSION = "4.2.1103";
 #endif
 
         private static bool s_loaded;
@@ -106,6 +107,18 @@ namespace OverhaulMod
             get
             {
 #if DISABLE_EXCLUSIVE_PERKS
+                return true;
+#else
+                return false;
+#endif
+            }
+        }
+
+        public static bool RepositoryTest
+        {
+            get
+            {
+#if REPOSITORY_TEST
                 return true;
 #else
                 return false;

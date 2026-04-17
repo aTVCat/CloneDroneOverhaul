@@ -74,12 +74,20 @@ namespace OverhaulMod.Combat
                   "ScytheBlade-128x128",
                   scythe);
 
-            _ = CreateUpgrade<UpgradeDescription>("double_jump",
+            UpgradeDescription doubleJump = CreateUpgrade<UpgradeDescription>("double_jump",
                 "double_jump_desc",
                 DOUBLE_JUMP_UPGRADE,
                 1,
                 AssetBundleConstants.UPGRADES,
                 "DoubleJump-128x128");
+
+            _ = CreateUpgrade<UpgradeDescription>("triple_jump",
+                "triple_jump_desc",
+                DOUBLE_JUMP_UPGRADE,
+                2,
+                AssetBundleConstants.UPGRADES,
+                "DoubleJump-128x128",
+                doubleJump);
         }
 
         public void DeleteLocalizationKeysOfUpgrades(Dictionary<string, string> keys)

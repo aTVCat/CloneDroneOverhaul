@@ -232,7 +232,7 @@ namespace OverhaulMod.UI
             Transform holder = _cameraHolderTransform;
             if (holder)
             {
-                bool mouseButtonDown = Input.GetMouseButton(0) || Input.GetMouseButton(1);
+                bool mouseButtonDown = !UIManager.Instance.IsMouseOverUIElement() && (Input.GetMouseButton(0) || Input.GetMouseButton(1));
                 if (mouseButtonDown && !HasEverRotatedTheCamera)
                 {
                     ModSettingsManager.SetBoolValue(ModSettingsConstants.HAS_EVER_ROTATED_THE_CAMERA, true);

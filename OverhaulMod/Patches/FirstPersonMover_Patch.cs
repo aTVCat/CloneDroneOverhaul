@@ -62,8 +62,8 @@ namespace OverhaulMod.Patches
             if (GameModeManager.IsMultiplayer() || !__instance.IsMainPlayer() || !__instance._isJumping || !moveCommand.Input.Jump)
                 return;
 
-            CharacterExtension characterInventory = ModComponentCache.GetRobotInventory(__instance.transform);
-            if (characterInventory && characterInventory.LastServerFrameDoubleJumped < __instance._lastServerFrameTouchedGround && characterInventory.HasDoubleJumpAbility)
+            CharacterExtension characterExtension = ModComponentCache.GetRobotInventory(__instance.transform);
+            if (characterExtension && characterExtension.CanPerformDoubleJump())
             {
                 EnergySource energySource = __instance._energySource;
                 if (!energySource || !energySource.CanConsume(0.5f))
@@ -73,9 +73,25 @@ namespace OverhaulMod.Patches
                 }
                 energySource.Consume(0.5f);
 
-                __instance.AddVelocity(__instance.JumpVelocity);
-                AttackManager.Instance.CreateBattleCruiserGatlingImpactVFX(__instance.transform.position + Vector3.up);
-                characterInventory.LastServerFrameDoubleJumped = moveCommand.ServerFrame;
+                Vector3 position = __instance.transform.position + Vector3.up;
+                Vector3 velocityToAdd = (__instance.JumpVelocity * 1.4f) + (__instance.transform.forward * 4f);
+                Vector3 velocity = __instance.GetVelocity();
+                velocity.x += velocityToAdd.x;
+                if (velocity.y < 0f) velocity.y = 0f;
+                else velocity.y *= 0.5f;
+                velocity.y += velocityToAdd.y;
+                velocity.z += velocityToAdd.z;
+                __instance.SetVelocity(velocity);
+
+                if (__instance.IsMainPlayer()) PlayerCameraManager.Instance.ShakeCamera(0.06f, 0.3f);
+
+                AttackManager.Instance.CreateBattleCruiserGatlingImpactVFX(position);
+
+                WorldAudioSource worldAudioSource = AudioManager.Instance.PlayClipAtPosition(ModAudioLibrary.Instance.DoubleJump, position);
+                worldAudioSource._audioSource.spatialBlend = 0.6f;
+                worldAudioSource.gameObject.AddComponent<RestoreSpatalizeBlendOnDisable>().Initialize(worldAudioSource._audioSource);
+
+                characterExtension.OnPerformedDoubleJump();
             }
         }
 

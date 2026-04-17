@@ -112,6 +112,14 @@ namespace OverhaulMod.Engine
             if (_transitionBehaviour) _transitionBehaviour.FadeOut = true;
         }
 
+        private void fadeOutMusic(float duration)
+        {
+            AudioManager audioManager = AudioManager.Instance;
+            audioManager._musicFadeOutStartTime = Time.unscaledTime;
+            audioManager._musicFadeOutDuration = duration;
+            audioManager._musicFadeInStartTime = -1f;
+        }
+
         public bool IsDoingTransition() => _transitionBehaviour;
 
         private Color getBackgroundColor() => ModParseUtils.TryParseColor("#050D1A", Color.black);
@@ -131,6 +139,12 @@ namespace OverhaulMod.Engine
             bool hasToReloadTheScene = true;
             if (BoltNetwork.IsConnected || BoltNetwork.IsRunning)
             {
+                fadeOutMusic(1.5f);
+                DelegateScheduler.Instance.Schedule(delegate
+                {
+                    if (AudioManager.Instance) AudioManager.Instance.StopMusic();
+                }, 2f);
+
                 SceneTransitionManager.LastDisconnectHadBoltRunning = true;
 
                 bool wasDisconnecting = true;

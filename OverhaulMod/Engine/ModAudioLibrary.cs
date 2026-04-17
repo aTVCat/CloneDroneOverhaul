@@ -14,6 +14,8 @@ namespace OverhaulMod.Engine
 
         public AudioClipDefinition HyperdomeUIBack, HyperdomeUIBack_NoEcho;
 
+        public AudioClipDefinition DoubleJump;
+
         private void Start()
         {
             HyperdomeUIPause = new AudioClipDefinition() { Clip = ModResources.AudioClip(AssetBundleConstants.SFX, "Hyperdome_Pause") };
@@ -23,6 +25,7 @@ namespace OverhaulMod.Engine
             HyperdomeUIChoose_NoEcho = new AudioClipDefinition() { Clip = ModResources.AudioClip(AssetBundleConstants.SFX, "Hyperdome_Choose_NoEcho") };
             HyperdomeUIBack = new AudioClipDefinition() { Clip = ModResources.AudioClip(AssetBundleConstants.SFX, "Hyperdome_Back") };
             HyperdomeUIBack_NoEcho = new AudioClipDefinition() { Clip = ModResources.AudioClip(AssetBundleConstants.SFX, "Hyperdome_Back_NoEcho") };
+            DoubleJump = new AudioClipDefinition() { Clip = ModResources.AudioClip(AssetBundleConstants.SFX, "DoubleJump"), PitchVariation = 0.1f };
         }
     }
 }

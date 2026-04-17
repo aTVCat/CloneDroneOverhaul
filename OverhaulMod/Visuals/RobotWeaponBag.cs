@@ -1,8 +1,10 @@
-﻿using OverhaulMod.Combat;
+﻿using ModLibrary;
+using OverhaulMod.Combat;
 using OverhaulMod.Combat.Weapons;
 using OverhaulMod.Content.Personalization;
 using OverhaulMod.Engine;
 using OverhaulMod.Utils;
+using PicaVoxel;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -74,6 +76,8 @@ namespace OverhaulMod.Visuals
             _weaponToHolder = new Dictionary<WeaponType, Transform>();
             _weaponToRenderer = new Dictionary<WeaponType, GameObject>();
             InstantiateBag();
+
+            _firstPersonMover.AddDeathListener(DropVisibleWeapons);
 
             GlobalEventManager.Instance.AddEventListener(PersonalizationManager.ITEM_EQUIPPED_OR_UNEQUIPPED_EVENT, onCustomize);
             GlobalEventManager.Instance.AddEventListener<string>(PersonalizationMultiplayerManager.PLAYER_INFO_UPDATED_EVENT, onPlayedInfoUpdate);
@@ -324,6 +328,48 @@ namespace OverhaulMod.Visuals
                 bool isEquipped = _firstPersonMover.GetEquippedWeaponType() == keyValue.Key;
                 bool shouldDisplay = EnableWeaponBag && hasConstructionFinished && !isEquipped && !droppedWeapons.Contains(keyValue.Key);
                 _weaponToRenderer[keyValue.Key].SetActive(shouldDisplay);
+            }
+        }
+
+        public void DropVisibleWeapons()
+        {
+            foreach (KeyValuePair<WeaponType, GameObject> keyValue in _weaponToRenderer)
+            {
+                if (!keyValue.Value) continue;
+                if (keyValue.Value.activeInHierarchy) dropWeapon(keyValue.Value, keyValue.Key);
+            }
+        }
+
+        private void dropWeapon(GameObject weaponObject, WeaponType weaponType)
+        {
+            Transform weaponTransform = weaponObject.transform;
+            weaponTransform.SetParent(GarbageWorldRoot.Instance.transform, true);
+
+            if (weaponType == ModWeaponsManager.SCYTHE_TYPE)
+            {
+                weaponObject.AddComponent<MeshCollider>().convex = true;
+                weaponObject.layer = Layers.BodyPart;
+            }
+
+            Rigidbody rigidbody = weaponObject.AddComponent<Rigidbody>();
+            weaponObject.AddComponent<PlaySoundOnHitGround>().SetClip(AudioLibrary.Instance.SwordHitGround);
+
+            GarbageTarget garbageTarget = weaponObject.AddComponent<GarbageTarget>();
+            garbageTarget.MarkReadyToCollect();
+            garbageTarget.SortingWeaponType = weaponType;
+            garbageTarget.IsInterestingGarbage = true;
+
+            Volume[] volumes = weaponObject.GetComponentsInChildren<Volume>();
+            for (int i = 0; i < volumes.Length; i++)
+            {
+                volumes[i].CollisionTrigger = false;
+                volumes[i].ChangeCollisionMode(CollisionMode.MeshColliderConvex);
+            }
+
+            Collider[] colliders = weaponObject.GetComponentsInChildren<Collider>();
+            for (int i = 0; i < colliders.Length; i++)
+            {
+                colliders[i].isTrigger = false;
             }
         }
 

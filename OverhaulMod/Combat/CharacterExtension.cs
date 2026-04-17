@@ -1,5 +1,6 @@
 ﻿using OverhaulMod.Engine;
 using OverhaulMod.Utils;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -13,13 +14,27 @@ namespace OverhaulMod.Combat
         [ModSetting(ModSettingsConstants.WEAPON_SWITCH_COOLDOWN, 0.1f)]
         public static float WeaponSwitchCooldown;
 
+        private bool _hasInitialized;
+
         private float _weaponSwitchCooldown;
 
         private bool _hasNotSwitchedWeaponWithScrolling;
 
+        private float _timeToAllowDoubleJump;
+
+        private float _doubleJumpTime;
+
+        private GameObject _doubleJumpTrail1, _doubleJumpTrail2;
+
+        private List<ParticleSystem> _doubleJumpParticles;
+
+        private bool _hasDoubleJumpVisuals;
+
+        public int MaxJumps;
+
         public int LastServerFrameDoubleJumped;
 
-        public bool HasDoubleJumpAbility;
+        public int DoubleJumpCount;
 
         private PlayerInputController _inputController;
 
@@ -44,12 +59,26 @@ namespace OverhaulMod.Combat
 
         private void Update()
         {
+            FirstPersonMover firstPersonMover = owner;
+            if (!firstPersonMover) return;
+
+            if (HasDoubleJumpAbility())
+            {
+                if (DoubleJumpCount != 0 && firstPersonMover.IsOnGroundServer()) DoubleJumpCount = 0;
+
+                if (_hasDoubleJumpVisuals)
+                {
+                    bool shouldShowTrails = DoubleJumpCount != 0 && TimeManager.GetBoltServerTime() < _doubleJumpTime + 3f;
+                    foreach (ParticleSystem trail in _doubleJumpParticles)
+                        setParticleEmissionEnabled(trail, shouldShowTrails);
+                }
+            }
+
             _weaponSwitchCooldown = Mathf.Max(0f, _weaponSwitchCooldown - Time.deltaTime);
             if (!EnableScrollToSwitchWeapon || !allowSwitchingWeapons() || _weaponSwitchCooldown > 0f || _hasNotSwitchedWeaponWithScrolling)
                 return;
 
-            FirstPersonMover firstPersonMover = owner;
-            if (firstPersonMover && firstPersonMover.IsMainPlayer() && !firstPersonMover.IsAimingBow())
+            if (firstPersonMover.IsMainPlayer() && !firstPersonMover.IsAimingBow())
             {
                 float scroll = Input.mouseScrollDelta.y;
                 if (scroll > 0.1f)
@@ -63,14 +92,80 @@ namespace OverhaulMod.Combat
             }
         }
 
-        private bool allowSwitchingWeapons()
+        private void OnEnable()
         {
-            return _inputController && _inputController.enabled && !InputManager.Instance.IsCursorEnabled();
+            if (!_hasInitialized) _ = base.StartCoroutine(initializeCoroutine(owner));
         }
+
+        private IEnumerator initializeCoroutine(FirstPersonMover firstPersonMover)
+        {
+            while (firstPersonMover && firstPersonMover.IsAttachedAndAlive() && !firstPersonMover.HasCharacterModel())
+                yield return null;
+
+            yield return null;
+
+            if (!firstPersonMover || !firstPersonMover.IsAttachedAndAlive() || !firstPersonMover.HasCharacterModel())
+            {
+                Destroy(this);
+                yield break;
+            }
+            _hasInitialized = true;
+
+            Transform footRTransform = firstPersonMover.GetBodyPartParent("FootR");
+            Transform footLTransform = firstPersonMover.GetBodyPartParent("FootL");
+            if (footLTransform && footRTransform)
+            {
+                bool hasDoubleJumpUpgrade = owner.HasUpgrade(ModUpgradesManager.DOUBLE_JUMP_UPGRADE);
+
+                _doubleJumpParticles = new List<ParticleSystem>();
+
+                _doubleJumpTrail1 =Instantiate(ModResources.Prefab(AssetBundleConstants.VFX, "VFX_DoubleJumpTrail"), footLTransform, false);
+                _doubleJumpTrail1.SetActive(hasDoubleJumpUpgrade);
+                _doubleJumpParticles.AddRange(_doubleJumpTrail1.GetComponentsInChildren<ParticleSystem>(true));
+                _doubleJumpTrail2 = Instantiate(ModResources.Prefab(AssetBundleConstants.VFX, "VFX_DoubleJumpTrail"), footRTransform, false);
+                _doubleJumpTrail2.SetActive(hasDoubleJumpUpgrade);
+                _doubleJumpParticles.AddRange(_doubleJumpTrail2.GetComponentsInChildren<ParticleSystem>(true));
+
+                _hasDoubleJumpVisuals = true;
+            }
+
+            yield break;
+        }
+
+        public bool HasInitialized() => _hasInitialized;
 
         public void OnUpgradesRefreshed(UpgradeCollection upgrades)
         {
-            HasDoubleJumpAbility = upgrades.HasUpgrade(ModUpgradesManager.DOUBLE_JUMP_UPGRADE);
+            bool hasDoubleJumpUpgrade = upgrades.HasUpgrade(ModUpgradesManager.DOUBLE_JUMP_UPGRADE);
+            MaxJumps = hasDoubleJumpUpgrade ? (1 + upgrades.GetUpgradeLevel(ModUpgradesManager.DOUBLE_JUMP_UPGRADE)) : 1;
+
+            if (_hasDoubleJumpVisuals)
+            {
+                _doubleJumpTrail1.gameObject.SetActive(hasDoubleJumpUpgrade);
+                _doubleJumpTrail2.gameObject.SetActive(hasDoubleJumpUpgrade);
+            }
+        }
+
+        public bool HasDoubleJumpAbility() => MaxJumps > 1;
+
+        public bool CanPerformDoubleJump() => HasDoubleJumpAbility() && DoubleJumpCount < MaxJumps - 1 && TimeManager.GetBoltServerTime() >= _timeToAllowDoubleJump;
+
+        public void OnPerformedDoubleJump()
+        {
+            DoubleJumpCount++;
+            _doubleJumpTime = TimeManager.GetBoltServerTime();
+            _timeToAllowDoubleJump = _doubleJumpTime + 1f;
+        }
+
+        private void setParticleEmissionEnabled(ParticleSystem particleSystem, bool value)
+        {
+            ParticleSystem.EmissionModule emission = particleSystem.emission;
+            emission.enabled = value;
+        }
+
+        private bool allowSwitchingWeapons()
+        {
+            return _inputController && _inputController.enabled && !InputManager.Instance.IsCursorEnabled();
         }
 
         private void selectNextWeapon(FirstPersonMover firstPersonMover)

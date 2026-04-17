@@ -42,17 +42,9 @@ namespace OverhaulMod.Engine
                     metagameProgressManager._data.DifficultyLastMeasuredForLevelID = null;
                     break;
                 case 3:
-                    metagameProgressManager.ResetToChapter3();
-                    if (chapterSectionInfo.Order == 0)
-                    {
-                        metagameProgressManager.ResetToChapter3();
-                    }
-                    else
-                    {
-
-                        metagameProgressManager._data.CurrentProgress = MetagameProgress.P6_EnteredFleetBeacon;
-                        metagameProgressManager._data.DifficultyLastMeasuredForLevelID = null;
-                    }
+                    metagameProgressManager._data.CurrentProgress = MetagameProgress.P6_EnteredFleetBeacon;
+                    metagameProgressManager._data.DifficultyLastMeasuredForLevelID = null;
+                    metagameProgressManager.saveData();
                     break;
                 case 4:
                     if (chapterSectionInfo.Order == 0)

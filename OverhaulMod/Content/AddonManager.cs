@@ -27,8 +27,6 @@ namespace OverhaulMod.Content
 
         public const string ADDON_UPDATES_REFRESHED = "AddonUpdatesRefreshed";
 
-        public const bool USE_TEST_FILE = false;
-
         [ModSetting(ModSettingsConstants.ADDONS_TO_UPDATE, "", ModSetting.Tags.IgnoreExport)]
         public static string AddonsToUpdate;
 
@@ -102,7 +100,7 @@ namespace OverhaulMod.Content
                 return;
             }
 
-            RepositoryManager.Instance.GetTextFile(USE_TEST_FILE ? ADDONS_LIST_TEST_REPOSITORY_FILE : ADDONS_LIST_REPOSITORY_FILE, delegate (string content)
+            RepositoryManager.Instance.GetTextFile(ModBuild.RepositoryTest ? ADDONS_LIST_TEST_REPOSITORY_FILE : ADDONS_LIST_REPOSITORY_FILE, delegate (string content)
             {
                 AddonDownloadListInfo addonDownloadListInfo;
                 try
