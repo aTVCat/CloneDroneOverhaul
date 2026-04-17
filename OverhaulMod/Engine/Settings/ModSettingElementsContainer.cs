@@ -2,9 +2,19 @@
 
 namespace OverhaulMod.Engine.Settings
 {
-    public class ModSettingInfosContainer
+    public class ModSettingElementsContainer
     {
         public List<ModSettingsPage> Pages;
+
+        public void FixValues()
+        {
+            if (Pages == null) Pages = new List<ModSettingsPage>();
+            else
+            {
+                foreach (ModSettingsPage page in Pages)
+                    page.FixValues();
+            }
+        }
 
         public ModSettingsPage GetPage(string id)
         {

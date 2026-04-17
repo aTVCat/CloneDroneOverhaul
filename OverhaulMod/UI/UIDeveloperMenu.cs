@@ -51,7 +51,7 @@ namespace OverhaulMod.UI
 
         public override void Update()
         {
-            if (!ModBuild.IsDebugBuild && !ModUserInfo.isDeveloper)
+            if (!ModBuild.IsDebugBuild && !ModUserInfo.IsDeveloper)
                 return;
 
             if (Input.GetKeyDown(KeyCode.Alpha7) && InputManager.Instance.GetKeyMode() != KeyMode.EditingInputField)

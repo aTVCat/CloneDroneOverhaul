@@ -23,7 +23,7 @@ namespace OverhaulMod.Content
             ModFeatures.CacheValues();
 
             ScheduledActionsManager scheduledActionsManager = ScheduledActionsManager.Instance;
-            if (!ModUserInfo.isDeveloper && (_perksData.List.Count == 0 || scheduledActionsManager.ShouldExecuteAction(ScheduledActionType.RefreshExclusivePerks)))
+            if (!ModUserInfo.IsDeveloper && (_perksData.List.Count == 0 || scheduledActionsManager.ShouldExecuteAction(ScheduledActionType.RefreshExclusivePerks)))
             {
                 LoadDataFromRepository(delegate (string error)
                 {

@@ -70,7 +70,7 @@ namespace OverhaulMod.Engine
             foreach (KeyValuePair<string, int> kv in IntValues)
             {
                 ModSetting modSetting = modSettingsManager.GetSetting(kv.Key);
-                if (modSetting.valueType == ModSetting.ValueType.Bool)
+                if (modSetting.ValueType == ModSetting.ValueTypes.Bool)
                 {
                     modSetting.SetBoolValue(kv.Value == 0 ? false : true);
                 }

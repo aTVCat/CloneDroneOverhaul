@@ -47,29 +47,29 @@ namespace OverhaulMod.UI
 
         private void instantiateToggles()
         {
-            foreach (ModSetting setting in ModSettingsManager.Instance.GetSettings(ModSetting.Tag.UISetting))
+            foreach (ModSetting setting in ModSettingsManager.Instance.GetSettings(ModSetting.Tags.UISetting))
             {
-                InstantiateToggle(setting.name);
+                InstantiateToggle(setting.Name);
             }
         }
 
         public void InstantiateToggle(string settingId)
         {
             ModSetting setting = ModSettingsManager.Instance.GetSetting(settingId);
-            if (setting == null || setting.valueType != ModSetting.ValueType.Bool)
+            if (setting == null || setting.ValueType != ModSetting.ValueTypes.Bool)
                 return;
 
             ModdedObject moddedObject = Instantiate(_uiDisplayPrefab, _uiDisplayContainer);
             moddedObject.gameObject.SetActive(true);
-            moddedObject.GetObject<Text>(0).text = LocalizationManager.Instance.GetTranslatedString(setting.name);
+            moddedObject.GetObject<Text>(0).text = LocalizationManager.Instance.GetTranslatedString(setting.Name);
             moddedObject.GetObject<Button>(2).onClick.AddListener(delegate
             {
-                GUIUtility.systemCopyBuffer = setting.name;
+                GUIUtility.systemCopyBuffer = setting.Name;
                 ModUIUtils.MessagePopupOK("Copied localization ID", "", false);
             });
 
             UIElementOverhaulUIInfo info = moddedObject.gameObject.AddComponent<UIElementOverhaulUIInfo>();
-            info.PreviewFile = Path.Combine(ModCore.TexturesFolder, "uiPreviews", $"{setting.name.Replace("ModUI_UI", string.Empty).Replace("Rework", string.Empty)}.png");
+            info.PreviewFile = Path.Combine(ModCore.TexturesFolder, "uiPreviews", $"{setting.Name.Replace("ModUI_UI", string.Empty).Replace("Rework", string.Empty)}.png");
             info.InitializeElement();
 
             bool isOn = (bool)setting.GetFieldValue();

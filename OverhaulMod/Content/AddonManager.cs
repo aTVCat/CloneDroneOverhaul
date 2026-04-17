@@ -29,7 +29,7 @@ namespace OverhaulMod.Content
 
         public const bool USE_TEST_FILE = false;
 
-        [ModSetting(ModSettingsConstants.ADDONS_TO_UPDATE, "", ModSetting.Tag.IgnoreExport)]
+        [ModSetting(ModSettingsConstants.ADDONS_TO_UPDATE, "", ModSetting.Tags.IgnoreExport)]
         public static string AddonsToUpdate;
 
         private Dictionary<string, float> _downloadingAddons;

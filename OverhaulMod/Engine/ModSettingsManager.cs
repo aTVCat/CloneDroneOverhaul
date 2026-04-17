@@ -1,4 +1,5 @@
-﻿using OverhaulMod.Utils;
+﻿using OverhaulMod.Engine.Settings;
+using OverhaulMod.Utils;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -13,11 +14,15 @@ namespace OverhaulMod.Engine
 
         public const string SETTING_NAME_TRANSLATION_PREFIX = "setting_name_";
 
+        public const string SETTINGS_INFO_CONTAINER_FILE = "settingInfos.json";
+
         public static int ExtraResolutionLength;
 
         private List<ModSetting> _settings;
         private Dictionary<string, ModSetting> _nameToSetting;
         private Dictionary<string, ModSettingSubDescription> _idToDescription;
+
+        private ModSettingElementsContainer _settingsInfos;
 
         public override void Awake()
         {
@@ -28,7 +33,31 @@ namespace OverhaulMod.Engine
             _idToDescription = new Dictionary<string, ModSettingSubDescription>();
 
             loadSettings();
+            loadInfos();
             loadDescriptions();
+        }
+
+        private void loadInfos()
+        {
+            ModSettingElementsContainer infosContainer;
+            string path = Path.Combine(ModCore.DataFolder, SETTINGS_INFO_CONTAINER_FILE);
+            if (File.Exists(path))
+            {
+                try
+                {
+                    infosContainer = ModJsonUtils.DeserializeStream<ModSettingElementsContainer>(path);
+                }
+                catch (Exception)
+                {
+                    infosContainer = new ModSettingElementsContainer();
+                }
+            }
+            else
+            {
+                infosContainer = new ModSettingElementsContainer();
+            }
+
+            _settingsInfos = infosContainer;
         }
 
         private void loadDescriptions()
@@ -87,9 +116,14 @@ namespace OverhaulMod.Engine
                         continue;
 
                     _settings.Add(modSetting);
-                    _nameToSetting.Add(modSetting.name, modSetting);
+                    _nameToSetting.Add(modSetting.Name, modSetting);
                 }
             }
+        }
+
+        public void SaveElementDescriptions()
+        {
+            ModJsonUtils.WriteStream(Path.Combine(ModCore.DataFolder, SETTINGS_INFO_CONTAINER_FILE), _settingsInfos);
         }
 
         public string GetSubDescription(string settingId)
@@ -145,12 +179,12 @@ namespace OverhaulMod.Engine
             return _settings;
         }
 
-        public List<ModSetting> GetSettings(ModSetting.Tag tag)
+        public List<ModSetting> GetSettings(ModSetting.Tags tag)
         {
             List<ModSetting> result = new List<ModSetting>();
             foreach (ModSetting modSetting in _settings)
             {
-                if (modSetting.tag == tag)
+                if (modSetting.Tag == tag)
                     result.Add(modSetting);
             }
             return result;
@@ -159,7 +193,7 @@ namespace OverhaulMod.Engine
         public void ResetSettings()
         {
             foreach (ModSetting setting in _settings)
-                setting.SetValue(setting.defaultValue);
+                setting.SetValue(setting.DefaultValue);
 
             ModSettingsDataManager.Instance.Save();
         }
@@ -168,13 +202,13 @@ namespace OverhaulMod.Engine
         {
             ModSetting setting = GetSetting(settingId);
             action.Invoke(setting.GetFieldValue());
-            setting.valueChangedEvent += action;
+            setting.ValueChangedEvent += action;
         }
 
         public void RemoveSettingValueChangedListener(Action<object> action, string settingId)
         {
             ModSetting setting = GetSetting(settingId);
-            setting.valueChangedEvent -= action;
+            setting.ValueChangedEvent -= action;
         }
 
         public ModSetting CreateSettingFromField(FieldInfo field, bool setFieldValue = true)
@@ -186,26 +220,26 @@ namespace OverhaulMod.Engine
             if (modSettingAttribute == null || modSettingAttribute.Name.IsNullOrEmpty() || HasSettingWithName(modSettingAttribute.Name))
                 return null;
 
-            ModSetting.ValueType valueType;
+            ModSetting.ValueTypes valueType;
             if (field.FieldType == typeof(bool))
-                valueType = ModSetting.ValueType.Bool;
+                valueType = ModSetting.ValueTypes.Bool;
             else if (field.FieldType == typeof(int) || field.FieldType.IsEnum)
-                valueType = ModSetting.ValueType.Int;
+                valueType = ModSetting.ValueTypes.Int;
             else if (field.FieldType == typeof(float))
-                valueType = ModSetting.ValueType.Float;
+                valueType = ModSetting.ValueTypes.Float;
             else if (field.FieldType == typeof(string))
-                valueType = ModSetting.ValueType.String;
+                valueType = ModSetting.ValueTypes.String;
             else
                 return null;
 
             ModSetting setting = new ModSetting
             {
-                name = modSettingAttribute.Name,
-                defaultValue = modSettingAttribute.DefaultValue,
-                tag = modSettingAttribute.Tag,
-                valueType = valueType,
-                fieldInfo = field,
-                requireRestarting = field.GetCustomAttribute<ModSettingRequireRestartAttribute>() != null
+                Name = modSettingAttribute.Name,
+                DefaultValue = modSettingAttribute.DefaultValue,
+                Tag = modSettingAttribute.Tag,
+                ValueType = valueType,
+                Field = field,
+                RequiresRestarting = field.GetCustomAttribute<ModSettingRequireRestartAttribute>() != null
             };
 
             if (setFieldValue)
@@ -248,10 +282,10 @@ namespace OverhaulMod.Engine
             ModSetting setting = Instance.GetSetting(name);
             if (fromUi)
             {
-                setting.SetValueFromUI(setting.defaultValue);
+                setting.SetValueFromUI(setting.DefaultValue);
                 return;
             }
-            setting.SetValue(setting.defaultValue);
+            setting.SetValue(setting.DefaultValue);
         }
 
         public static void SetBoolValue(string name, bool value, bool fromUi = false)

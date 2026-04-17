@@ -378,7 +378,7 @@ namespace OverhaulMod.UI
 
             List<PersonalizationItemInfo> items = null;
             bool populatePage = false;
-            bool isDeveloper = ModUserInfo.isDeveloper;
+            bool isDeveloper = ModUserInfo.IsDeveloper;
 
             WeaponType weaponType = getWeaponOfSubcategory();
 

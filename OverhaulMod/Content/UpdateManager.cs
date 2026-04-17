@@ -21,13 +21,13 @@ namespace OverhaulMod.Content
         [ModSetting(ModSettingsConstants.NOTIFY_ABOUT_NEW_TEST_BUILDS, false)]
         public static bool NotifyAboutNewTestBuilds;
 
-        [ModSetting(ModSettingsConstants.SAVED_NEW_VERSION, null, ModSetting.Tag.IgnoreExport)]
+        [ModSetting(ModSettingsConstants.SAVED_NEW_VERSION, null, ModSetting.Tags.IgnoreExport)]
         public static string SavedNewVersion;
 
-        [ModSetting(ModSettingsConstants.UPDATES_LAST_CHECKED_DATE, null, ModSetting.Tag.IgnoreExport)]
+        [ModSetting(ModSettingsConstants.UPDATES_LAST_CHECKED_DATE, null, ModSetting.Tags.IgnoreExport)]
         public static string UpdatesLastCheckedDate;
 
-        [ModSetting(ModSettingsConstants.CHECK_UPDATES_ON_NEXT_START, false, ModSetting.Tag.IgnoreExport)]
+        [ModSetting(ModSettingsConstants.CHECK_UPDATES_ON_NEXT_START, false, ModSetting.Tags.IgnoreExport)]
         public static bool CheckUpdatesOnNextStart;
 
         public static bool HasNotifiedAboutNewBuild;

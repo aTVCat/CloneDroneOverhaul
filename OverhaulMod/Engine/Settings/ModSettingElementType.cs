@@ -2,6 +2,8 @@
 {
     public enum ModSettingElementType
     {
+        Text,
+
         Checkbox,
 
         Slider,

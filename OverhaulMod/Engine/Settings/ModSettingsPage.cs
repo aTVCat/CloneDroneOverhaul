@@ -8,14 +8,21 @@ namespace OverhaulMod.Engine.Settings
 
         public string NameLocalizationID;
 
-        public List<ModSettingInfo> Settings;
+        public bool IsPrimaryPage;
 
-        public ModSettingInfo GetSetting(string id)
+        public List<ModSettingElementDescription> Settings;
+
+        public void FixValues()
+        {
+            if (Settings == null) Settings = new List<ModSettingElementDescription>();
+        }
+
+        public ModSettingElementDescription GetSetting(string id)
         {
             for (int i = 0; i < Settings.Count; i++)
             {
-                ModSettingInfo setting = Settings[i];
-                if (setting.ID == id)
+                ModSettingElementDescription setting = Settings[i];
+                if (setting.SettingID == id)
                     return setting;
             }
             return null;

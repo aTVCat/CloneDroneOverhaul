@@ -5,12 +5,12 @@ namespace OverhaulMod.Engine.Settings
     /// <summary>
     /// Summary of setting to be used by UIs (mainly by <see cref="UI.UISettingsMenuReworkV2"/>)
     /// </summary>
-    public class ModSettingInfo
+    public class ModSettingElementDescription
     {
         /// <summary>
         /// The ID of setting
         /// </summary>
-        public string ID;
+        public string SettingID;
 
         /// <summary>
         /// Name translation ID

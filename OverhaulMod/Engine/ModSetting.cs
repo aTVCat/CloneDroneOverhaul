@@ -7,66 +7,38 @@ namespace OverhaulMod.Engine
 {
     public class ModSetting
     {
-        public string name
-        {
-            get;
-            set;
-        }
+        public string Name;
 
-        public object defaultValue
-        {
-            get;
-            set;
-        }
+        public object DefaultValue;
 
-        public Tag tag
-        {
-            get;
-            set;
-        }
+        public Tags Tag;
 
-        public ValueType valueType
-        {
-            get;
-            set;
-        }
+        public ValueTypes ValueType;
 
-        public FieldInfo fieldInfo
-        {
-            get;
-            set;
-        }
+        public FieldInfo Field;
 
-        public bool requireRestarting
-        {
-            get;
-            set;
-        }
+        public bool RequiresRestarting;
 
         private List<Action<object>> _valueChangedListeners;
-        public event Action<object> valueChangedEvent
+        public event Action<object> ValueChangedEvent
         {
             add
             {
-                if (_valueChangedListeners == null)
-                    _valueChangedListeners = new List<Action<object>>();
-
+                if (_valueChangedListeners == null) _valueChangedListeners = new List<Action<object>>();
                 _valueChangedListeners.Add(value);
             }
             remove
             {
-                if (_valueChangedListeners == null)
-                    _valueChangedListeners = new List<Action<object>>();
-
+                if (_valueChangedListeners == null) _valueChangedListeners = new List<Action<object>>();
                 _ = _valueChangedListeners.Remove(value);
             }
         }
 
-        public bool ShouldNotNotifyPlayerAboutRestart;
+        public bool _hasNotifiedAboutRestarting;
 
         public string GetPlayerPrefKey()
         {
-            return "OverhaulMod." + name;
+            return "OverhaulMod." + Name;
         }
 
         public object GetValue()
@@ -75,19 +47,19 @@ namespace OverhaulMod.Engine
 
             string key = GetPlayerPrefKey();
             object result;
-            switch (valueType)
+            switch (ValueType)
             {
-                case ValueType.Bool:
-                    result = modSettingsDataManager.GetInt(key, (bool)defaultValue ? 1 : 0) == 1;
+                case ValueTypes.Bool:
+                    result = modSettingsDataManager.GetInt(key, (bool)DefaultValue ? 1 : 0) == 1;
                     break;
-                case ValueType.Int:
-                    result = modSettingsDataManager.GetInt(key, (int)defaultValue);
+                case ValueTypes.Int:
+                    result = modSettingsDataManager.GetInt(key, (int)DefaultValue);
                     break;
-                case ValueType.Float:
-                    result = modSettingsDataManager.GetFloat(key, (float)defaultValue);
+                case ValueTypes.Float:
+                    result = modSettingsDataManager.GetFloat(key, (float)DefaultValue);
                     break;
-                case ValueType.String:
-                    result = modSettingsDataManager.GetString(key, (string)defaultValue);
+                case ValueTypes.String:
+                    result = modSettingsDataManager.GetString(key, (string)DefaultValue);
                     break;
                 default:
                     result = default;
@@ -98,7 +70,7 @@ namespace OverhaulMod.Engine
 
         public object GetFieldValue()
         {
-            FieldInfo fieldInfo = this.fieldInfo;
+            FieldInfo fieldInfo = this.Field;
             return fieldInfo == null ? null : fieldInfo.GetValue(null);
         }
 
@@ -106,25 +78,25 @@ namespace OverhaulMod.Engine
         {
             ModSettingsDataManager modSettingsDataManager = ModSettingsDataManager.Instance;
 
-            FieldInfo fieldInfo = this.fieldInfo;
+            FieldInfo fieldInfo = this.Field;
             if (fieldInfo != null)
             {
                 fieldInfo.SetValue(null, value);
             }
 
             string key = GetPlayerPrefKey();
-            switch (valueType)
+            switch (ValueType)
             {
-                case ValueType.Bool:
+                case ValueTypes.Bool:
                     modSettingsDataManager.SetInt(key, (bool)value ? 1 : 0);
                     break;
-                case ValueType.Int:
+                case ValueTypes.Int:
                     modSettingsDataManager.SetInt(key, (int)value);
                     break;
-                case ValueType.Float:
+                case ValueTypes.Float:
                     modSettingsDataManager.SetFloat(key, (float)value);
                     break;
-                case ValueType.String:
+                case ValueTypes.String:
                     modSettingsDataManager.SetString(key, (string)value);
                     break;
             }
@@ -147,45 +119,45 @@ namespace OverhaulMod.Engine
         public void SetValueFromUI(object value)
         {
             SetValue(value);
-            if (requireRestarting && !ShouldNotNotifyPlayerAboutRestart)
+            if (RequiresRestarting && !_hasNotifiedAboutRestarting)
             {
                 _ = ModUIConstants.ShowRestartRequiredScreen(true);
-                ShouldNotNotifyPlayerAboutRestart = true;
+                _hasNotifiedAboutRestarting = true;
             }
         }
 
         public void SetBoolValue(bool value)
         {
-            if (valueType == ValueType.Bool)
+            if (ValueType == ValueTypes.Bool)
                 SetValue(value);
         }
 
         public void SetIntValue(int value)
         {
-            if (valueType == ValueType.Int)
+            if (ValueType == ValueTypes.Int)
                 SetValue(value);
         }
 
         public void SetFloatValue(float value)
         {
-            if (valueType == ValueType.Float)
+            if (ValueType == ValueTypes.Float)
                 SetValue(value);
         }
 
         public void SetStringValue(string value)
         {
-            if (valueType == ValueType.String)
+            if (ValueType == ValueTypes.String)
                 SetValue(value);
         }
 
-        public enum Tag
+        public enum Tags
         {
             None,
             UISetting,
             IgnoreExport,
         }
 
-        public enum ValueType
+        public enum ValueTypes
         {
             None,
             Bool,

@@ -187,7 +187,7 @@ namespace OverhaulMod.UI
             _directionalLightColor.colorPickerParent = base.transform;
             _fogColor.colorPickerParent = base.transform;
 
-            _saveRLightInfoButton.gameObject.SetActive(ModUserInfo.isDeveloper);
+            _saveRLightInfoButton.gameObject.SetActive(ModUserInfo.IsDeveloper);
         }
 
         public override void Show()

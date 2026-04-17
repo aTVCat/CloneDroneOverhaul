@@ -89,21 +89,21 @@ namespace OverhaulMod.Engine
 
             foreach (ModSetting setting in ModSettingsManager.Instance.GetSettings())
             {
-                if (setting.tag.HasFlag(ModSetting.Tag.IgnoreExport))
+                if (setting.Tag.HasFlag(ModSetting.Tags.IgnoreExport))
                     continue;
 
-                switch (setting.valueType)
+                switch (setting.ValueType)
                 {
-                    case ModSetting.ValueType.Bool:
+                    case ModSetting.ValueTypes.Bool:
                         modSettingsDataContainer.IntValues.Add(setting.GetPlayerPrefKey(), ((bool)setting.GetValue()) ? 1 : 0);
                         break;
-                    case ModSetting.ValueType.Int:
+                    case ModSetting.ValueTypes.Int:
                         modSettingsDataContainer.IntValues.Add(setting.GetPlayerPrefKey(), (int)setting.GetValue());
                         break;
-                    case ModSetting.ValueType.Float:
+                    case ModSetting.ValueTypes.Float:
                         modSettingsDataContainer.FloatValues.Add(setting.GetPlayerPrefKey(), (float)setting.GetValue());
                         break;
-                    case ModSetting.ValueType.String:
+                    case ModSetting.ValueTypes.String:
                         modSettingsDataContainer.StringValues.Add(setting.GetPlayerPrefKey(), (string)setting.GetValue());
                         break;
                 }

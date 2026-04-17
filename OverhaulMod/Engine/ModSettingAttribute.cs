@@ -7,9 +7,9 @@ namespace OverhaulMod.Engine
     {
         public string Name;
         public object DefaultValue;
-        public ModSetting.Tag Tag;
+        public ModSetting.Tags Tag;
 
-        public ModSettingAttribute(string name, object defaultValue, ModSetting.Tag tag = ModSetting.Tag.None)
+        public ModSettingAttribute(string name, object defaultValue, ModSetting.Tags tag = ModSetting.Tags.None)
         {
             Name = name;
             DefaultValue = defaultValue;

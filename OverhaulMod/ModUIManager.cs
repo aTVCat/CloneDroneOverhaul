@@ -12,28 +12,28 @@ namespace OverhaulMod
 {
     public class ModUIManager : Singleton<ModUIManager>, IGameLoadListener
     {
-        [ModSetting(ModSettingsConstants.SHOW_CHAPTER_SELECTION_MENU_REWORK, true, ModSetting.Tag.UISetting)]
+        [ModSetting(ModSettingsConstants.SHOW_CHAPTER_SELECTION_MENU_REWORK, true, ModSetting.Tags.UISetting)]
         public static bool ShowChapterSelectionMenuRework;
 
-        [ModSetting(ModSettingsConstants.SHOW_ENDLESS_MODE_MENU, true, ModSetting.Tag.UISetting)]
+        [ModSetting(ModSettingsConstants.SHOW_ENDLESS_MODE_MENU, true, ModSetting.Tags.UISetting)]
         public static bool ShowEndlessModeMenu;
 
-        [ModSetting(ModSettingsConstants.SHOW_CHALLENGES_MENU_REWORK, true, ModSetting.Tag.UISetting)]
+        [ModSetting(ModSettingsConstants.SHOW_CHALLENGES_MENU_REWORK, true, ModSetting.Tags.UISetting)]
         public static bool ShowChallengesMenuRework;
 
-        [ModSetting(ModSettingsConstants.SHOW_WORKSHOP_BROWSER_REWORK, true, ModSetting.Tag.UISetting)]
+        [ModSetting(ModSettingsConstants.SHOW_WORKSHOP_BROWSER_REWORK, true, ModSetting.Tags.UISetting)]
         public static bool ShowWorkshopBrowserRework;
 
-        [ModSetting(ModSettingsConstants.SHOW_ADVANCEMENTS_MENU_REWORK, true, ModSetting.Tag.UISetting)]
+        [ModSetting(ModSettingsConstants.SHOW_ADVANCEMENTS_MENU_REWORK, true, ModSetting.Tags.UISetting)]
         public static bool ShowAdvancementsMenuRework;
 
-        [ModSetting(ModSettingsConstants.SHOW_SETTINGS_MENU_REWORK, true, ModSetting.Tag.UISetting)]
+        [ModSetting(ModSettingsConstants.SHOW_SETTINGS_MENU_REWORK, true, ModSetting.Tags.UISetting)]
         public static bool ShowSettingsMenuRework;
 
-        [ModSetting(ModSettingsConstants.SHOW_TITLE_SCREEN_REWORK, true, ModSetting.Tag.UISetting)]
+        [ModSetting(ModSettingsConstants.SHOW_TITLE_SCREEN_REWORK, true, ModSetting.Tags.UISetting)]
         public static bool ShowTitleScreenRework;
 
-        [ModSetting(ModSettingsConstants.SHOW_DUEL_INVITE_MENU_REWORK, true, ModSetting.Tag.UISetting)]
+        [ModSetting(ModSettingsConstants.SHOW_DUEL_INVITE_MENU_REWORK, true, ModSetting.Tags.UISetting)]
         public static bool ShowDuelInviteMenuRework;
 
         private Dictionary<string, GameObject> _instantiatedUIs;

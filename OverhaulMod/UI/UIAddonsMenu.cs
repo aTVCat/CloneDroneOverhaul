@@ -55,8 +55,8 @@ namespace OverhaulMod.UI
         {
             base.Show();
 
-            _addonsEditorButton.gameObject.SetActive(ModUserInfo.isDeveloper);
-            _addonsDownloadEditorButton.gameObject.SetActive(ModUserInfo.isDeveloper);
+            _addonsEditorButton.gameObject.SetActive(ModUserInfo.IsDeveloper);
+            _addonsDownloadEditorButton.gameObject.SetActive(ModUserInfo.IsDeveloper);
         }
 
         public override void Hide()

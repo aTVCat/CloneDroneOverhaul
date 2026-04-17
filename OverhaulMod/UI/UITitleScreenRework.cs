@@ -59,6 +59,11 @@ namespace OverhaulMod.UI
         private readonly Button _optionsButton;
 
         [ButtonWithSound(ButtonWithSound.SoundType.Click)]
+        [UIElementAction(nameof(OnSettingReworkMenuV2Clicked))]
+        [UIElement("SettingsReworkV2Button", false)]
+        private readonly Button _settingsReworkV2Button;
+
+        [ButtonWithSound(ButtonWithSound.SoundType.Click)]
         [UIElementAction(nameof(OnAdvancementsButtonClicked))]
         [UIElement("AchievementsButton")]
         private readonly Button _advancementsButton;
@@ -238,6 +243,8 @@ namespace OverhaulMod.UI
             bool debug = ModBuild.IsDebugBuild;
             _localizationEditorButton.gameObject.SetActive(debug);
             _modBotLogonText.text = "Not logged in";
+
+            _settingsReworkV2Button.gameObject.SetActive(ModFeatures.IsEnabled(ModFeatures.FeatureType.SettingsMenuReworkV2));
 
             float fraction = GameplayAchievementManager.Instance.GetFractionOfAchievementsCompleted();
             _advancementsProgressImage.fillAmount = fraction;
@@ -538,13 +545,12 @@ namespace OverhaulMod.UI
                 ModCache.TitleScreenUI.OnOptionsButtonClicked();
                 return;
             }
-
-            if (ModFeatures.IsEnabled(ModFeatures.FeatureType.SettingsMenuReworkV2))
-            {
-                _ = ModUIConstants.ShowSettingsMenuReworkV2();
-                return;
-            }
             _ = ModUIConstants.ShowSettingsMenuRework(false);
+        }
+
+        public void OnSettingReworkMenuV2Clicked()
+        {
+            _ = ModUIConstants.ShowSettingsMenuReworkV2();
         }
 
         public void OnCreditsButtonClicked()

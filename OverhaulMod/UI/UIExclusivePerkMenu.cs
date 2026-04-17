@@ -44,7 +44,7 @@ namespace OverhaulMod.UI
                 }, null);
             }
 
-            _editorButton.gameObject.SetActive(ModUserInfo.isDeveloper);
+            _editorButton.gameObject.SetActive(ModUserInfo.IsDeveloper);
         }
 
         public void Populate()

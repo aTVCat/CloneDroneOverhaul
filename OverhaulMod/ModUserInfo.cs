@@ -93,7 +93,7 @@ namespace OverhaulMod
             }
         }
 
-        public static bool isDeveloper
+        public static bool IsDeveloper
         {
             get
             {
