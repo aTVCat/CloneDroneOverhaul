@@ -79,7 +79,8 @@ namespace OverhaulMod.Combat
                 DOUBLE_JUMP_UPGRADE,
                 1,
                 AssetBundleConstants.UPGRADES,
-                "DoubleJump-128x128");
+                "DoubleJump-128x128",
+                UpgradeManager.Instance.GetUpgrade(UpgradeType.EnergyCapacity, 1));
 
             _ = CreateUpgrade<UpgradeDescription>("triple_jump",
                 "triple_jump_desc",
@@ -87,7 +88,8 @@ namespace OverhaulMod.Combat
                 2,
                 AssetBundleConstants.UPGRADES,
                 "DoubleJump-128x128",
-                doubleJump);
+                doubleJump,
+                UpgradeManager.Instance.GetUpgrade(UpgradeType.EnergyCapacity, 2));
         }
 
         public void DeleteLocalizationKeysOfUpgrades(Dictionary<string, string> keys)

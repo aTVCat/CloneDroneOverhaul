@@ -8,5 +8,6 @@ public class CreateAssetBundles
     static void BuildAllAssetBundles()
     {
         BuildPipeline.BuildAssetBundles("Assets/StreamingAssets", BuildAssetBundleOptions.None, EditorUserBuildSettings.activeBuildTarget);
+        Object.FindObjectOfType<MoveAssetBundlesToFolder>().MoveUpdatedAssetBundles();
     }
 }

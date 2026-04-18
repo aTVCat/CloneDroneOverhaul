@@ -69,6 +69,7 @@
     <Compile Include="Assets\Scripts\InterfaceInputMode.cs" />
     <Compile Include="Assets\Scripts\LocalizedTextField.cs" />
     <Compile Include="Assets\Scripts\ModdedObject.cs" />
+    <Compile Include="Assets\Scripts\MoveAssetBundlesToFolder.cs" />
     <Compile Include="Assets\Scripts\Rotator.cs" />
     <Compile Include="Assets\Scripts\SelectOnShow.cs" />
     <Compile Include="Assets\Scripts\SelectableUI.cs" />

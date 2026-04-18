@@ -68,7 +68,7 @@ namespace OverhaulMod.Combat
 
                 if (_hasDoubleJumpVisuals)
                 {
-                    bool shouldShowTrails = DoubleJumpCount != 0 && TimeManager.GetBoltServerTime() < _doubleJumpTime + 3f;
+                    bool shouldShowTrails = DoubleJumpCount != 0 && TimeManager.GetBoltServerTime() < _doubleJumpTime + 1f;
                     foreach (ParticleSystem trail in _doubleJumpParticles)
                         setParticleEmissionEnabled(trail, shouldShowTrails);
                 }

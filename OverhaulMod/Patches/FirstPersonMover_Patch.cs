@@ -65,13 +65,16 @@ namespace OverhaulMod.Patches
             CharacterExtension characterExtension = ModComponentCache.GetRobotInventory(__instance.transform);
             if (characterExtension && characterExtension.CanPerformDoubleJump())
             {
+                float energyToConsume = 1f;
+                bool isMainPlayer = __instance.IsMainPlayer();
+
                 EnergySource energySource = __instance._energySource;
-                if (!energySource || !energySource.CanConsume(0.5f))
+                if (!energySource || !energySource.CanConsume(energyToConsume))
                 {
-                    ModCache.UIRoot.EnergyUI.onInsufficientEnergyAttempt(0.5f);
+                    if (isMainPlayer) ModCache.UIRoot.EnergyUI.onInsufficientEnergyAttempt(energyToConsume);
                     return;
                 }
-                energySource.Consume(0.5f);
+                energySource.Consume(energyToConsume);
 
                 Vector3 position = __instance.transform.position + Vector3.up;
                 Vector3 velocityToAdd = (__instance.JumpVelocity * 1.4f) + (__instance.transform.forward * 4f);
@@ -83,7 +86,7 @@ namespace OverhaulMod.Patches
                 velocity.z += velocityToAdd.z;
                 __instance.SetVelocity(velocity);
 
-                if (__instance.IsMainPlayer()) PlayerCameraManager.Instance.ShakeCamera(0.06f, 0.3f);
+                if (isMainPlayer) PlayerCameraManager.Instance.ShakeCamera(0.06f, 0.3f);
 
                 AttackManager.Instance.CreateBattleCruiserGatlingImpactVFX(position);
 
