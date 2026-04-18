@@ -21,5 +21,7 @@ namespace OverhaulMod.Content.Personalization
                 Offsets.Add(offset);
             }
         }
+
+        public AccessoryOffset GetOffsetForModel(int modelIndex) => Offsets[modelIndex];
     }
 }

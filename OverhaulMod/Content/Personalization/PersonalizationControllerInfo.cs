@@ -25,7 +25,7 @@ namespace OverhaulMod.Content.Personalization
         {
             if (PersonalizationEditorManager.IsInEditorMode())
             {
-                return UIPersonalizationEditor.instance.Utilities.GetFavoriteColor();
+                return UIPersonalizationEditor.Instance.Utilities.GetFavoriteColor();
             }
 
             PersonalizationItemInfo itemInfo = ItemInfo;

@@ -13,8 +13,6 @@ namespace OverhaulMod.Content.Personalization
 
         public string Name, Path;
 
-        public bool IsRoot;
-
         public int UniqueIndex;
 
         public Dictionary<string, object> PropertyValues;
@@ -24,7 +22,7 @@ namespace OverhaulMod.Content.Personalization
         public Vector3 SerializedScale;
 
         private List<PersonalizationEditorObjectBehaviour> _children;
-        public List<PersonalizationEditorObjectBehaviour> children
+        public List<PersonalizationEditorObjectBehaviour> Children
         {
             get
             {
@@ -58,7 +56,7 @@ namespace OverhaulMod.Content.Personalization
             }
         }
 
-        public int childrenCount
+        public int ChildrenCount
         {
             get
             {
@@ -73,7 +71,7 @@ namespace OverhaulMod.Content.Personalization
                         PersonalizationEditorObjectBehaviour personalizationEditorObjectBehaviour = child.GetComponent<PersonalizationEditorObjectBehaviour>();
                         if (personalizationEditorObjectBehaviour)
                         {
-                            result += personalizationEditorObjectBehaviour.childrenCount;
+                            result += personalizationEditorObjectBehaviour.ChildrenCount;
                         }
                     }
                 }
@@ -192,11 +190,19 @@ namespace OverhaulMod.Content.Personalization
                 Children = new List<PersonalizationEditorObjectInfo>()
             };
             objectInfo.InitializeTransformArrays();
-            objectInfo.SetPosition(base.transform.localPosition);
-            objectInfo.SetEulerAngles(base.transform.localEulerAngles);
-            objectInfo.SetScale(base.transform.localScale);
 
-            List<PersonalizationEditorObjectBehaviour> list = children;
+            if (UniqueIndex == 0) // only root has unique index of zero
+            {
+                objectInfo.ResetRootTransform();
+            }
+            else
+            {
+                objectInfo.SetPosition(base.transform.localPosition);
+                objectInfo.SetEulerAngles(base.transform.localEulerAngles);
+                objectInfo.SetScale(base.transform.localScale);
+            }
+
+            List<PersonalizationEditorObjectBehaviour> list = Children;
             if (list == null)
                 return objectInfo;
 

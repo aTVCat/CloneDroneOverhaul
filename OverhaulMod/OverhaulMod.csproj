@@ -224,6 +224,7 @@
     <Compile Include="Content\AddonDownloadListInfo.cs" />
     <Compile Include="Content\Personalization\AccessoryOffset.cs" />
     <Compile Include="Content\Personalization\AccessoryOffsetsList.cs" />
+    <Compile Include="Content\Personalization\PersonalizationEditorClipboard.cs" />
     <Compile Include="Content\Personalization\PersonalizationItemCreationArgs.cs" />
     <Compile Include="Engine\CharacterUpdateRequest.cs" />
     <Compile Include="Content\OperationResult.cs" />
@@ -243,7 +244,6 @@
     <Compile Include="Content\Personalization\PersonalizationCategory.cs" />
     <Compile Include="Content\Personalization\PersonalizationController.cs" />
     <Compile Include="Content\Personalization\PersonalizationControllerInfo.cs" />
-    <Compile Include="Content\Personalization\PersonalizationEditorCopyPasteManager.cs" />
     <Compile Include="Content\Personalization\PersonalizationEditorCamera.cs" />
     <Compile Include="Content\Personalization\PersonalizationEditorDataManager.cs" />
     <Compile Include="Content\Personalization\PersonalizationEditorGuide.cs" />
@@ -496,6 +496,7 @@
     <Compile Include="UI\Elements\UIElementNetworkAddonDisplay.cs" />
     <Compile Include="UI\Elements\UIElementOverhaulUIInfo.cs" />
     <Compile Include="UI\Elements\UIElementPatchNotesImageEmbed.cs" />
+    <Compile Include="UI\Elements\UIElementPersonalizationEditorItemOffsetsPanel.cs" />
     <Compile Include="UI\Elements\UIElementPersonalizationExclusiveForField.cs" />
     <Compile Include="UI\Elements\UIElementPersonalizationAuthorsField.cs" />
     <Compile Include="UI\Elements\UIElementPersonalizationEditorColorPairDisplay.cs" />

@@ -182,7 +182,7 @@ namespace OverhaulMod.UI
                 string error = saveResult.Error;
                 if (error.Length > 512) error = error.Remove(512);
 
-                UIPersonalizationEditor.instance.ShowSaveErrorMessage(error);
+                UIPersonalizationEditor.Instance.ShowSaveErrorMessage(error);
                 return;
             }
 

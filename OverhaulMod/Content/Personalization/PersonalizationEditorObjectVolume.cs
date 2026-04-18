@@ -247,7 +247,7 @@ namespace OverhaulMod.Content.Personalization
                         int allDimensions = frame.XSize + frame.YSize + frame.ZSize;
                         if (allDimensions > 150)
                         {
-                            UIPersonalizationEditor.instance.ShowNotification("Performance warning", "This model is very big and can cause lags for other players.\nReduce the size of the model.", ModParseUtils.TryParseColor("#4C3D00", Color.yellow), 30f);
+                            UIPersonalizationEditor.Instance.ShowNotification("Performance warning", "This model is very big and can cause lags for other players.\nReduce the size of the model.", ModParseUtils.TryParseColor("#4C3D00", Color.yellow), 30f);
                         }
                     }
                 }
@@ -298,7 +298,7 @@ namespace OverhaulMod.Content.Personalization
         public void ReplaceColors(List<ColorPairFloat> colors, VolumeSettingsPreset preset)
         {
             _currentColorReplacement = colors;
-            Color favoriteColor = objectBehaviour.ControllerInfo == null ? UIPersonalizationEditor.instance.Utilities.GetFavoriteColor() : objectBehaviour.ControllerInfo.GetFavoriteColor();
+            Color favoriteColor = objectBehaviour.ControllerInfo == null ? UIPersonalizationEditor.Instance.Utilities.GetFavoriteColor() : objectBehaviour.ControllerInfo.GetFavoriteColor();
 
             foreach (ColorPairFloat cp in colors)
             {
@@ -330,7 +330,7 @@ namespace OverhaulMod.Content.Personalization
                 return;
             }
 
-            Color favoriteColor = objectBehaviour.ControllerInfo == null ? UIPersonalizationEditor.instance.Utilities.GetFavoriteColor() : objectBehaviour.ControllerInfo.GetFavoriteColor();
+            Color favoriteColor = objectBehaviour.ControllerInfo == null ? UIPersonalizationEditor.Instance.Utilities.GetFavoriteColor() : objectBehaviour.ControllerInfo.GetFavoriteColor();
 
             for (int i = 0; i < colors.Count; i++)
             {

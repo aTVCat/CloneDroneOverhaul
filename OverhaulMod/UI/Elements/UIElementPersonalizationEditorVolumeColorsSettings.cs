@@ -68,7 +68,7 @@ namespace OverhaulMod.UI
                     editorColorPairDisplay.returnNewPair = false;
                     editorColorPairDisplay.colorPair = cp;
                     editorColorPairDisplay.favoriteColorSettings = replaceWithFavoriteColors;
-                    editorColorPairDisplay.colorPickerTransform = UIPersonalizationEditor.instance.transform;
+                    editorColorPairDisplay.colorPickerTransform = UIPersonalizationEditor.Instance.transform;
                     editorColorPairDisplay.OnValueChanged.AddListener(onColorChangedCallback);
                     editorColorPairDisplay.OnFavoriteColorSettingsChanged.AddListener(delegate
                     {
@@ -91,7 +91,7 @@ namespace OverhaulMod.UI
                 return;
 
             _pasteColorsButton.interactable = true;
-            PersonalizationEditorCopyPasteManager.Instance.CopyColorSettings(_colorPairs, _favoriteColorSettings);
+            PersonalizationEditorClipboard.Instance.CopyColorSettings(_colorPairs, _favoriteColorSettings);
         }
 
         public void OnPasteColorsButtonClicked()
@@ -104,7 +104,7 @@ namespace OverhaulMod.UI
 
             _pasteColorsButton.interactable = false;
 
-            PersonalizationEditorCopyPasteManager.Instance.PasteColorSettings(out List<ColorPairFloat> colorPairs, out Dictionary<string, FavoriteColorSettings> favoriteColors);
+            PersonalizationEditorClipboard.Instance.PasteColorSettings(out List<ColorPairFloat> colorPairs, out Dictionary<string, FavoriteColorSettings> favoriteColors);
 
             foreach (ColorPairFloat colorPairFloatA in originalColors)
             {

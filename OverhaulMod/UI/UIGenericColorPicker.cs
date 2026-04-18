@@ -64,7 +64,7 @@ namespace OverhaulMod.UI
         private bool _disallowHexCodeFieldCallbacks, _disallowSliderFieldCallbacks;
 
         private Color _outputColor;
-        public Color outputColor
+        public Color OutputColor
         {
             get
             {
@@ -76,13 +76,13 @@ namespace OverhaulMod.UI
                 _rgbColorRChannelSlider.value = value.r;
                 _rgbColorGChannelSlider.value = value.g;
                 _rgbColorBChannelSlider.value = value.b;
-                _rgbColorAChannelSlider.value = showAlphaChannel ? value.a : 1f;
+                _rgbColorAChannelSlider.value = ShowAlphaChannel ? value.a : 1f;
 
                 Color.RGBToHSV(value, out float h, out float s, out float v);
                 _hsvColorHChannelSlider.value = h;
                 _hsvColorSChannelSlider.value = s;
                 _hsvColorVChannelSlider.value = v;
-                _hsvColorAChannelSlider.value = showAlphaChannel ? value.a : 1f;
+                _hsvColorAChannelSlider.value = ShowAlphaChannel ? value.a : 1f;
                 _disallowSliderFieldCallbacks = false;
 
                 _outputColor = value;
@@ -90,7 +90,7 @@ namespace OverhaulMod.UI
         }
 
         private float _outputAlpha;
-        public float outputAlpha
+        public float OutputAlpha
         {
             get
             {
@@ -99,15 +99,15 @@ namespace OverhaulMod.UI
             set
             {
                 _disallowSliderFieldCallbacks = true;
-                _rgbColorAChannelSlider.value = showAlphaChannel ? value : 1f;
-                _hsvColorAChannelSlider.value = showAlphaChannel ? value : 1f;
+                _rgbColorAChannelSlider.value = ShowAlphaChannel ? value : 1f;
+                _hsvColorAChannelSlider.value = ShowAlphaChannel ? value : 1f;
                 _disallowSliderFieldCallbacks = false;
                 _outputAlpha = value;
             }
         }
 
         private bool _showAlphaChannel;
-        public bool showAlphaChannel
+        public bool ShowAlphaChannel
         {
             get
             {
@@ -177,21 +177,21 @@ namespace OverhaulMod.UI
         public void Populate(Color currentColor, bool useAlphaChannel, Action<Color> onColorChanged)
         {
             callback = onColorChanged;
-            showAlphaChannel = useAlphaChannel;
-            outputColor = currentColor;
-            outputAlpha = useAlphaChannel ? currentColor.a : 1f;
+            ShowAlphaChannel = useAlphaChannel;
+            OutputColor = currentColor;
+            OutputAlpha = useAlphaChannel ? currentColor.a : 1f;
             RefreshHexCodeField();
         }
 
         public void InvokeCallback()
         {
-            callback?.Invoke(outputColor);
+            callback?.Invoke(OutputColor);
         }
 
         public void RefreshHexCodeField()
         {
             _disallowHexCodeFieldCallbacks = true;
-            _hexCodeField.text = "#" + (showAlphaChannel ? ColorUtility.ToHtmlStringRGBA(outputColor) : ColorUtility.ToHtmlStringRGB(outputColor));
+            _hexCodeField.text = "#" + (ShowAlphaChannel ? ColorUtility.ToHtmlStringRGBA(OutputColor) : ColorUtility.ToHtmlStringRGB(OutputColor));
             _disallowHexCodeFieldCallbacks = false;
         }
 
@@ -205,7 +205,7 @@ namespace OverhaulMod.UI
             if (_disallowHexCodeFieldCallbacks)
                 return;
 
-            outputColor = ModParseUtils.TryParseColor(value, Color.white);
+            OutputColor = ModParseUtils.TryParseColor(value, Color.white);
             InvokeCallback();
         }
 
@@ -214,9 +214,9 @@ namespace OverhaulMod.UI
             if (_disallowSliderFieldCallbacks)
                 return;
 
-            Color color = outputColor;
+            Color color = OutputColor;
             color.r = value;
-            outputColor = color;
+            OutputColor = color;
             InvokeCallback();
             RefreshHexCodeField();
         }
@@ -226,9 +226,9 @@ namespace OverhaulMod.UI
             if (_disallowSliderFieldCallbacks)
                 return;
 
-            Color color = outputColor;
+            Color color = OutputColor;
             color.g = value;
-            outputColor = color;
+            OutputColor = color;
             InvokeCallback();
             RefreshHexCodeField();
         }
@@ -238,9 +238,9 @@ namespace OverhaulMod.UI
             if (_disallowSliderFieldCallbacks)
                 return;
 
-            Color color = outputColor;
+            Color color = OutputColor;
             color.b = value;
-            outputColor = color;
+            OutputColor = color;
             InvokeCallback();
             RefreshHexCodeField();
         }
@@ -250,10 +250,10 @@ namespace OverhaulMod.UI
             if (_disallowSliderFieldCallbacks)
                 return;
 
-            Color color = outputColor;
+            Color color = OutputColor;
             color.a = value;
-            outputColor = color;
-            outputAlpha = value;
+            OutputColor = color;
+            OutputAlpha = value;
             InvokeCallback();
             RefreshHexCodeField();
         }
@@ -262,14 +262,14 @@ namespace OverhaulMod.UI
         {
             if (_disallowSliderFieldCallbacks)
                 return;
-            Color.RGBToHSV(outputColor, out _, out float s, out float v);
+            Color.RGBToHSV(OutputColor, out _, out float s, out float v);
             float h = value;
-            if (v == 0f)
-                v = 0.01f;
+            if (v == 0f) v = 0.01f;
+            if (s == 0f) s = 0.01f;
 
             Color color = Color.HSVToRGB(h, s, v);
-            color.a = outputAlpha;
-            outputColor = color;
+            color.a = OutputAlpha;
+            OutputColor = color;
             InvokeCallback();
             RefreshHexCodeField();
         }
@@ -278,14 +278,13 @@ namespace OverhaulMod.UI
         {
             if (_disallowSliderFieldCallbacks)
                 return;
-            Color.RGBToHSV(outputColor, out float h, out _, out float v);
+            Color.RGBToHSV(OutputColor, out float h, out _, out float v);
             float s = value;
-            if (v == 0f)
-                v = 0.01f;
+            if (v == 0f) v = 0.01f;
 
             Color color = Color.HSVToRGB(h, s, v);
-            color.a = outputAlpha;
-            outputColor = color;
+            color.a = OutputAlpha;
+            OutputColor = color;
             InvokeCallback();
             RefreshHexCodeField();
         }
@@ -294,11 +293,11 @@ namespace OverhaulMod.UI
         {
             if (_disallowSliderFieldCallbacks)
                 return;
-            Color.RGBToHSV(outputColor, out float h, out float s, out _);
+            Color.RGBToHSV(OutputColor, out float h, out float s, out _);
             float v = value;
             Color color = Color.HSVToRGB(h, s, v);
-            color.a = outputAlpha;
-            outputColor = color;
+            color.a = OutputAlpha;
+            OutputColor = color;
             InvokeCallback();
             RefreshHexCodeField();
         }
@@ -308,10 +307,10 @@ namespace OverhaulMod.UI
             if (_disallowSliderFieldCallbacks)
                 return;
 
-            Color color = outputColor;
+            Color color = OutputColor;
             color.a = value;
-            outputColor = color;
-            outputAlpha = value;
+            OutputColor = color;
+            OutputAlpha = value;
             InvokeCallback();
             RefreshHexCodeField();
         }

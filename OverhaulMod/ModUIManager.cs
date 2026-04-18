@@ -65,7 +65,7 @@ namespace OverhaulMod
             private set;
         }
 
-        public WindowManager windowManager
+        public WindowManager Windows
         {
             get;
             private set;
@@ -74,7 +74,7 @@ namespace OverhaulMod
         public override void Awake()
         {
             base.Awake();
-            windowManager = base.gameObject.AddComponent<WindowManager>();
+            Windows = base.gameObject.AddComponent<WindowManager>();
             _instantiatedUIs = new Dictionary<string, GameObject>();
             _shownUIs = new List<OverhaulUIBehaviour>();
 
@@ -552,7 +552,7 @@ namespace OverhaulMod
             public override void OnDestroy()
             {
                 base.OnDestroy();
-                Instance.windowManager.RemoveWindow(windowId);
+                Instance.Windows.RemoveWindow(windowId);
             }
 
             private void setMinimized(bool value)

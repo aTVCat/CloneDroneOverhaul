@@ -130,10 +130,10 @@ namespace OverhaulMod
             modManagers.AddSingleton<PersonalizationEditorDataManager>(personalizationManagers);
             modManagers.AddSingleton<PersonalizationEditorManager>(personalizationManagers);
             modManagers.AddSingleton<PersonalizationEditorObjectManager>(personalizationManagers);
-            modManagers.AddSingleton<PersonalizationEditorCopyPasteManager>(personalizationManagers);
             modManagers.AddSingleton<PersonalizationEditorGuideManager>(personalizationManagers);
             modManagers.AddSingleton<PersonalizationEditorTemplateManager>(personalizationManagers);
             modManagers.AddSingleton<PersonalizationEditorScreenshotManager>(personalizationManagers);
+            modManagers.AddSingleton<PersonalizationEditorClipboard>(personalizationManagers);
             modManagers.AddSingleton<PersonalizationItemVerificationManager>(personalizationManagers);
             modManagers.AddSingleton<PersonalizationMultiplayerManager>(personalizationManagers);
 

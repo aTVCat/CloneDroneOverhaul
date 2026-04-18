@@ -527,6 +527,35 @@ namespace OverhaulMod.Content.Personalization
             }
             else if (itemInfo.Category == PersonalizationCategory.Accessories)
             {
+                if(GetCharacterModelPartIndices(out int headModel, out int torsoModel, out int legsModel))
+                {
+                    AccessoryOffset offset = null;
+                    string bodyPart = itemInfo.BodyPartName;
+                    if (!bodyPart.IsNullOrEmpty())
+                    {
+                        if (PersonalizationManager.HeadBodyParts.Contains(bodyPart))
+                        {
+                            offset = itemInfo.AccessoryOffsets.GetOffsetForModel(headModel);
+                        }
+                        else if (PersonalizationManager.TorsoBodyParts.Contains(bodyPart))
+                        {
+                            offset = itemInfo.AccessoryOffsets.GetOffsetForModel(torsoModel);
+                        }
+                        else if (PersonalizationManager.LegsBodyParts.Contains(bodyPart))
+                        {
+                            offset = itemInfo.AccessoryOffsets.GetOffsetForModel(legsModel);
+                        }
+                    }
+
+                    if (offset != null)
+                    {
+                        Transform itemTransform = behaviour.transform;
+                        itemTransform.localPosition = offset.GetPosition();
+                        itemTransform.localEulerAngles = offset.GetEulerAngles();
+                        itemTransform.localScale = offset.GetScale();
+                    }
+                }
+
                 PersonalizationAccessoryBehaviour personalizationAccessoryBehaviour = behaviour.gameObject.AddComponent<PersonalizationAccessoryBehaviour>();
                 personalizationAccessoryBehaviour.SetItemObject(behaviour);
                 personalizationAccessoryBehaviour.SetBodyPart(bodyPartForAccessory);
@@ -753,6 +782,62 @@ namespace OverhaulMod.Content.Personalization
 
             return PersonalizationUserInfo.GetEquippedAccessories();
         }
+
+        public bool GetCharacterModelPartIndices(out int headModelIndex, out int torsoModelIndex, out int legsModelIndex)
+        {
+            FirstPersonMover robot = owner;
+            if (!robot)
+            {
+                headModelIndex = -1;
+                torsoModelIndex = -1;
+                legsModelIndex = -1;
+                return false;
+            }
+
+            if (_isMultiplayer)
+            {
+                if (_isPlayer)
+                {
+                    MultiplayerPlayerInfoState infoState = MultiplayerPlayerInfoManager.Instance.GetPlayerInfoState(robot.GetPlayFabID());
+                    if (infoState)
+                    {
+                        headModelIndex = infoState.state.CharacterModelHeadIndex;
+                        torsoModelIndex = infoState.state.CharacterModelTorsoIndex;
+                        legsModelIndex = infoState.state.CharacterModelIndex;
+                        return true;
+                    }
+                }
+            }
+            else
+            {
+                if (_isPlayer)
+                {
+                    if (PersonalizationEditorManager.IsInEditorMode())
+                    {
+                        int index = UIPersonalizationEditor.Instance.Utilities.GetCharacterModelIndex();
+                        headModelIndex = index;
+                        torsoModelIndex = index;
+                        legsModelIndex = index;
+                        return true;
+                    }
+
+                    SettingsManager settingsManager = SettingsManager.Instance;
+                    string slotId = settingsManager.GetSelectedMultiplayerHumanSlot();
+                    MultiplayerHumanSlot? slot = settingsManager.GetMultiplayerHumanSlot(slotId);
+                    headModelIndex = slot.Value.HeadModel.GetModelIndexAsInt();
+                    torsoModelIndex = slot.Value.TorsoModel.GetModelIndexAsInt();
+                    legsModelIndex = slot.Value.RootModel.GetModelIndexAsInt();
+                    return true;
+                }
+            }
+
+            headModelIndex = -1;
+            torsoModelIndex = -1;
+            legsModelIndex = -1;
+            return false;
+        }
+
+
 
         public void OnUpgrade()
         {

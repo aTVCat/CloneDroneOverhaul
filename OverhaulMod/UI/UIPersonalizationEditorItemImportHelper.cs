@@ -147,7 +147,7 @@ namespace OverhaulMod.UI
         private void exportAllItems()
         {
             Hide();
-            ModUIConstants.ShowPersonalizationEditorExportAllMenu(UIPersonalizationEditor.instance.transform);
+            ModUIConstants.ShowPersonalizationEditorExportAllMenu(UIPersonalizationEditor.Instance.transform);
         }
 
         private void onSelectedFiles(List<string> files)
@@ -201,7 +201,7 @@ namespace OverhaulMod.UI
             PersonalizationItemSaveResult saveResult = PersonalizationEditorManager.Instance.SaveItem(true);
             if (saveResult.HasFailed())
             {
-                UIPersonalizationEditor.instance.ShowSaveErrorMessage(saveResult.Error);
+                UIPersonalizationEditor.Instance.ShowSaveErrorMessage(saveResult.Error);
                 return false;
             }
             return true;

@@ -32,14 +32,17 @@ namespace OverhaulMod.UI
         [UIElement("ToolBar")]
         public RectTransform ToolBarTransform;
 
-        [UIElement("InspectorWindow", typeof(UIElementPersonalizationEditorItemConfigPanel), false)]
-        public readonly UIElementPersonalizationEditorItemConfigPanel Inspector;
+        [UIElement("ItemConfigWindow", typeof(UIElementPersonalizationEditorItemConfigPanel), false)]
+        public readonly UIElementPersonalizationEditorItemConfigPanel ItemConfig;
 
         [UIElement("RightSide", typeof(UIElementPersonalizationEditorUtilitiesPanel), false)]
         public readonly UIElementPersonalizationEditorUtilitiesPanel Utilities;
 
-        [UIElement("ObjectPropertiesWindow", typeof(UIElementPersonalizationEditorInspectorPanel), false)]
-        public readonly UIElementPersonalizationEditorInspectorPanel PropertiesPanel;
+        [UIElement("InspectorWindow", typeof(UIElementPersonalizationEditorInspectorPanel), false)]
+        public readonly UIElementPersonalizationEditorInspectorPanel Inspector;
+
+        [UIElement("ItemOffsetsWindow", typeof(UIElementPersonalizationEditorItemOffsetsPanel), false)]
+        public readonly UIElementPersonalizationEditorItemOffsetsPanel ItemOffsets;
 
         [UIElement("Dropdown", typeof(UIElementPersonalizationEditorDropdown), false)]
         public readonly UIElementPersonalizationEditorDropdown Dropdown;
@@ -70,13 +73,13 @@ namespace OverhaulMod.UI
         [UIElement("ScreenshotButton")]
         private readonly Button _toolbarScreenshotButton;
 
-        public string InspectorWindowID, DeveloperWindowID, ObjectPropertiesWindowID;
+        public string ItemConfigWindowID, DeveloperWindowID, InspectorWindowID, ItemOffsetsWindowID;
 
         public override bool EnableCursor => true;
 
         public override bool CloseOnEscapeButtonPress => false;
 
-        public static UIPersonalizationEditor instance
+        public static UIPersonalizationEditor Instance
         {
             get;
             private set;
@@ -84,7 +87,7 @@ namespace OverhaulMod.UI
 
         protected override void OnInitialized()
         {
-            instance = this;
+            Instance = this;
             initializeOptions();
 
             _toolbarScreenshotButton.gameObject.SetActive(PersonalizationEditorManager.Instance.CanVerifyItems);
@@ -114,7 +117,7 @@ namespace OverhaulMod.UI
         public override void OnDestroy()
         {
             base.OnDestroy();
-            instance = null;
+            Instance = null;
         }
 
         public override void Show()
@@ -131,17 +134,17 @@ namespace OverhaulMod.UI
         {
             s_fileOptions = new List<UIElementPersonalizationEditorDropdown.OptionData>()
             {
-                new UIElementPersonalizationEditorDropdown.OptionData("Open", "Redirect-16x16", instance.OnSelectItemButtonClicked),
-                new UIElementPersonalizationEditorDropdown.OptionData("Import items", "Import-16x16", instance.OnImportItemsButtonClicked)
+                new UIElementPersonalizationEditorDropdown.OptionData("Open", "Redirect-16x16", Instance.OnSelectItemButtonClicked),
+                new UIElementPersonalizationEditorDropdown.OptionData("Import items", "Import-16x16", Instance.OnImportItemsButtonClicked)
                 {
                     DisplayedForVerifiers = true
                 },
-                new UIElementPersonalizationEditorDropdown.OptionData("Export items", "Export-16x16", instance.OnExportItemsButtonClicked)
+                new UIElementPersonalizationEditorDropdown.OptionData("Export items", "Export-16x16", Instance.OnExportItemsButtonClicked)
                 {
                     DisplayedForVerifiers = true
                 },
                 new UIElementPersonalizationEditorDropdown.OptionData(true),
-                new UIElementPersonalizationEditorDropdown.OptionData("Exit", "Exit-V2-16x16", instance.OnExitButtonClicked),
+                new UIElementPersonalizationEditorDropdown.OptionData("Exit", "Exit-V2-16x16", Instance.OnExitButtonClicked),
             };
 
             s_viewOptions = new List<UIElementPersonalizationEditorDropdown.OptionData>()
@@ -151,22 +154,22 @@ namespace OverhaulMod.UI
 
             s_windowOptions = new List<UIElementPersonalizationEditorDropdown.OptionData>()
             {
-                new UIElementPersonalizationEditorDropdown.OptionData("Show item info editor", "Redirect-16x16", instance.ShowInspector),
-                new UIElementPersonalizationEditorDropdown.OptionData("Show object editor", "Redirect-16x16", instance.ShowObjectProperties),
+                new UIElementPersonalizationEditorDropdown.OptionData("Show item info editor", "Redirect-16x16", Instance.ShowItemConfig),
+                new UIElementPersonalizationEditorDropdown.OptionData("Show object editor", "Redirect-16x16", Instance.ShowInspector),
                 new UIElementPersonalizationEditorDropdown.OptionData(true),
-                new UIElementPersonalizationEditorDropdown.OptionData("Show item moderator", "Redirect-16x16", instance.ShowItemModerator),
+                new UIElementPersonalizationEditorDropdown.OptionData("Show item moderator", "Redirect-16x16", Instance.ShowItemModerator),
             };
 
             s_helpOptions = new List<UIElementPersonalizationEditorDropdown.OptionData>
             {
                 new UIElementPersonalizationEditorDropdown.OptionData("Welcome message", "Redirect-16x16", PersonalizationEditorManager.Instance.WelcomeMessage),
-                new UIElementPersonalizationEditorDropdown.OptionData("Guide: Introduction", "Redirect-16x16", instance.DropdownGuide),
-                new UIElementPersonalizationEditorDropdown.OptionData("Tutorial video", "Redirect-16x16", instance.TutorialVideo),
+                new UIElementPersonalizationEditorDropdown.OptionData("Guide: Introduction", "Redirect-16x16", Instance.DropdownGuide),
+                new UIElementPersonalizationEditorDropdown.OptionData("Tutorial video", "Redirect-16x16", Instance.TutorialVideo),
             };
 
             s_screenshotOptions = new List<UIElementPersonalizationEditorDropdown.OptionData>
             {
-                new UIElementPersonalizationEditorDropdown.OptionData("Enter screenshot mode", "Exit-V2-16x16", instance.EnterScreenshotMode),
+                new UIElementPersonalizationEditorDropdown.OptionData("Enter screenshot mode", "Exit-V2-16x16", Instance.EnterScreenshotMode),
             };
         }
 
@@ -202,32 +205,32 @@ namespace OverhaulMod.UI
             _toolbarUploadButton.interactable = true;
             _saveButton.interactable = true;
             Utilities.Show();
+            ShowItemConfig();
             ShowInspector();
-            ShowObjectProperties();
             ShowItemModerator();
+        }
+
+        public void ShowItemConfig()
+        {
+            ModUIManager.WindowManager windowManager = ModUIManager.Instance.Windows;
+            if (ItemConfigWindowID == null)
+                ItemConfigWindowID = windowManager.Window(base.transform, ItemConfig.transform, "Edit item info", Vector2.one * -1f, (Vector2.right * -250f) + (Vector2.up * 220f));
+            else
+                windowManager.ShowWindow(ItemConfigWindowID);
+
+            ModUIManager.WindowBehaviour windowBehaviour = windowManager.GetWindow(ItemConfigWindowID);
+            windowBehaviour.transform.localScale = Vector3.one * 0.85f;
         }
 
         public void ShowInspector()
         {
-            ModUIManager.WindowManager windowManager = ModUIManager.Instance.windowManager;
+            ModUIManager.WindowManager windowManager = ModUIManager.Instance.Windows;
             if (InspectorWindowID == null)
-                InspectorWindowID = windowManager.Window(base.transform, Inspector.transform, "Edit item info", Vector2.one * -1f, (Vector2.right * -250f) + (Vector2.up * 220f));
+                InspectorWindowID = windowManager.Window(base.transform, Inspector.transform, "Edit object", Vector2.one * -1f, (Vector2.right * 250f) + (Vector2.up * 220f));
             else
                 windowManager.ShowWindow(InspectorWindowID);
 
             ModUIManager.WindowBehaviour windowBehaviour = windowManager.GetWindow(InspectorWindowID);
-            windowBehaviour.transform.localScale = Vector3.one * 0.85f;
-        }
-
-        public void ShowObjectProperties()
-        {
-            ModUIManager.WindowManager windowManager = ModUIManager.Instance.windowManager;
-            if (ObjectPropertiesWindowID == null)
-                ObjectPropertiesWindowID = windowManager.Window(base.transform, PropertiesPanel.transform, "Edit object", Vector2.one * -1f, (Vector2.right * 250f) + (Vector2.up * 220f));
-            else
-                windowManager.ShowWindow(ObjectPropertiesWindowID);
-
-            ModUIManager.WindowBehaviour windowBehaviour = windowManager.GetWindow(ObjectPropertiesWindowID);
             windowBehaviour.transform.localScale = Vector3.one * 0.85f;
         }
 
@@ -240,7 +243,7 @@ namespace OverhaulMod.UI
         {
             if (PersonalizationEditorManager.Instance.CanVerifyItems)
             {
-                ModUIManager.WindowManager windowManager = ModUIManager.Instance.windowManager;
+                ModUIManager.WindowManager windowManager = ModUIManager.Instance.Windows;
                 if (DeveloperWindowID == null)
                     DeveloperWindowID = windowManager.Window(base.transform, _developerPanel, "Item moderator", Vector2.one * -1f, Vector2.up * -120f);
                 else
@@ -255,16 +258,16 @@ namespace OverhaulMod.UI
             }
         }
 
-        public void ShowWindows()
+        public void ShowItemOffsets()
         {
-            foreach (ModUIManager.WindowBehaviour window in ModUIManager.Instance.windowManager.GetWindows())
-                window.Show();
-        }
+            ModUIManager.WindowManager windowManager = ModUIManager.Instance.Windows;
+            if (ItemOffsetsWindowID == null)
+                ItemOffsetsWindowID = windowManager.Window(base.transform, ItemOffsets.transform, "Configure offsets", Vector2.one * -1f, Vector2.zero);
+            else
+                windowManager.ShowWindow(ItemOffsetsWindowID);
 
-        public void HideWindows()
-        {
-            foreach (ModUIManager.WindowBehaviour window in ModUIManager.Instance.windowManager.GetWindows())
-                window.Hide();
+            ModUIManager.WindowBehaviour windowBehaviour = windowManager.GetWindow(ItemOffsetsWindowID);
+            windowBehaviour.transform.localScale = Vector3.one * 0.85f;
         }
 
         public void OnExitButtonClicked()

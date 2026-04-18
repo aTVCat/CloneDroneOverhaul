@@ -243,7 +243,7 @@ namespace OverhaulMod.Content.Personalization
 
                 if (onlyNew && File.Exists(Path.Combine(item.FolderPath, "preview.png"))) continue;
 
-                UIPersonalizationEditor.instance.Utilities.SetRandomFavoriteColor();
+                UIPersonalizationEditor.Instance.Utilities.SetRandomFavoriteColor();
 
                 SpawnItemInHolder(item);
                 AdjustCameraPositionForCurrentItem();

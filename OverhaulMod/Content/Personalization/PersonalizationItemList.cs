@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using UnityEngine;
 
 namespace OverhaulMod.Content.Personalization
 {
@@ -154,19 +155,24 @@ namespace OverhaulMod.Content.Personalization
             if (updateMetaDataFile)
                 ModJsonUtils.WriteStream(metaDataFilePath, personalizationItemMetaData);
 
-            if(personalizationItemInfo.Category == PersonalizationCategory.Accessories)
+            if(personalizationItemInfo != null)
             {
-                AccessoryOffsetsList accessoryOffsetsList;
-                try
+                personalizationItemInfo.RootObject.ResetRootTransform();
+
+                if (personalizationItemInfo.Category == PersonalizationCategory.Accessories)
                 {
-                    accessoryOffsetsList = ModJsonUtils.DeserializeStream<AccessoryOffsetsList>(accessoryOffsetsFilePath);
+                    AccessoryOffsetsList accessoryOffsetsList;
+                    try
+                    {
+                        accessoryOffsetsList = ModJsonUtils.DeserializeStream<AccessoryOffsetsList>(accessoryOffsetsFilePath);
+                    }
+                    catch (Exception)
+                    {
+                        accessoryOffsetsList = new AccessoryOffsetsList();
+                    }
+                    accessoryOffsetsList.InitializeList();
+                    personalizationItemInfo.AccessoryOffsets = accessoryOffsetsList;
                 }
-                catch (Exception)
-                {
-                    accessoryOffsetsList = new AccessoryOffsetsList();
-                }
-                accessoryOffsetsList.InitializeList();
-                personalizationItemInfo.AccessoryOffsets = accessoryOffsetsList;
             }
 
             return personalizationItemInfo;

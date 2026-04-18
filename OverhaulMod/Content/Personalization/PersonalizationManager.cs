@@ -50,6 +50,33 @@ namespace OverhaulMod.Content.Personalization
             "FootL",
         };
 
+        public static readonly string[] HeadBodyParts = new string[]
+        {
+            "Head",
+        };
+
+        public static readonly string[] TorsoBodyParts = new string[]
+        {
+            "Torso",
+            "ArmUpperR",
+            "ArmLowerR",
+            "HandR",
+            "ArmUpperL",
+            "ArmLowerL",
+            "HandL",
+        };
+
+        public static readonly string[] LegsBodyParts = new string[]
+        {
+            "Spine",
+            "LegUpperR",
+            "LegLowerR",
+            "FootR",
+            "LegUpperL",
+            "LegLowerL",
+            "FootL",
+        };
+
         private string _assetsVersionFile;
         public string AssetsVersionFile
         {

@@ -1,5 +1,6 @@
 ﻿using OverhaulMod.Content.Personalization;
 using OverhaulMod.Utils;
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
@@ -19,7 +20,7 @@ namespace OverhaulMod.UI
         private readonly Transform _objectDisplayContainer;
 
         private PersonalizationItemInfo _itemInfo;
-        public PersonalizationItemInfo itemInfo
+        public PersonalizationItemInfo ItemInfo
         {
             get
             {
@@ -37,7 +38,7 @@ namespace OverhaulMod.UI
             if (_objectDisplayContainer.childCount != 0)
                 TransformUtils.DestroyAllChildren(_objectDisplayContainer);
 
-            foreach (PersonalizationEditorObjectInfo obj in itemInfo.RootObject.Children)
+            foreach (PersonalizationEditorObjectInfo obj in ItemInfo.RootObject.Children)
             {
                 ModdedObject moddedObject = Instantiate(_objectDisplayPrefab, _objectDisplayContainer);
                 moddedObject.gameObject.SetActive(true);
@@ -50,7 +51,7 @@ namespace OverhaulMod.UI
                         if (behaviour)
                         {
                             Destroy(moddedObject.gameObject);
-                            _ = base.StartCoroutine(deleteObjectCoroutine(behaviour.gameObject));
+                            PersonalizationEditorObjectManager.Instance.DeleteObject(behaviour);
                         }
                     });
                 });
@@ -58,39 +59,24 @@ namespace OverhaulMod.UI
                 Button button = moddedObject.GetComponent<Button>();
                 button.onClick.AddListener(delegate
                 {
-                    UIPersonalizationEditor.instance.PropertiesPanel.EditObject(PersonalizationEditorObjectManager.Instance.GetInstantiatedObject(obj.UniqueIndex));
+                    UIPersonalizationEditor.Instance.Inspector.EditObject(PersonalizationEditorObjectManager.Instance.GetInstantiatedObject(obj.UniqueIndex));
                 });
 
-                void action()
+                Action refreshAction = delegate
                 {
-                    if (button)
-                        button.interactable = UIPersonalizationEditor.instance.PropertiesPanel.GetEditingObjectUniqueIndex() != obj.UniqueIndex;
-                }
-                action();
+                    if (button) button.interactable = UIPersonalizationEditor.Instance.Inspector.GetEditingObjectUniqueIndex() != obj.UniqueIndex;
+                };
+                refreshAction();
 
                 EventController eventController = moddedObject.gameObject.AddComponent<EventController>();
-                eventController.AddEventListener(PersonalizationEditorObjectManager.OBJECT_SELECTION_CHANGED_EVENT, action);
+                eventController.AddEventListener(PersonalizationEditorObjectManager.OBJECT_SELECTION_CHANGED_EVENT, refreshAction);
             }
-        }
-
-        private IEnumerator deleteObjectCoroutine(GameObject gameObject)
-        {
-            Destroy(gameObject);
-            yield return null;
-            yield return null;
-            yield return null;
-            yield return null;
-            PersonalizationEditorManager.Instance.SerializeRoot();
-            yield break;
         }
 
         public void OnCreateButtonClicked()
         {
-            UIPersonalizationEditorObjectBrowser ob = ModUIConstants.ShowPersonalizationEditorObjectBrowser(UIPersonalizationEditor.instance.transform);
-            ob.callback = delegate
-            {
-                Populate();
-            };
+            UIPersonalizationEditorObjectBrowser ob = ModUIConstants.ShowPersonalizationEditorObjectBrowser(UIPersonalizationEditor.Instance.transform);
+            ob.callback = Populate;
         }
     }
 }

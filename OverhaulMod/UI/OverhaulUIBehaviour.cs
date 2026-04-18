@@ -245,7 +245,7 @@ namespace OverhaulMod.UI
                             if (methodInfo != null)
                             {
                                 UIElementVector3Field keyBindSetter = element as UIElementVector3Field;
-                                keyBindSetter.onValueChanged.AddListener(delegate (Vector3 value)
+                                keyBindSetter.OnValueChanged.AddListener(delegate (Vector3 value)
                                 {
                                     _ = methodInfo.Invoke(this, new object[] { value });
                                 });

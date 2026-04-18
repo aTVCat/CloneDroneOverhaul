@@ -81,6 +81,10 @@ namespace OverhaulMod.UI
         [UIElement("BowStringsWidthSlider")]
         private readonly Slider _bowStringsWidth;
 
+        [UIElementAction(nameof(OnEditOffsetsButtonClicked))]
+        [UIElement("EditOffsetsButton")]
+        private readonly Button _editOffsetsButton;
+
         [UIElement("ExclusiveForField", typeof(UIElementPersonalizationExclusiveForField))]
         private readonly UIElementPersonalizationExclusiveForField _exclusiveForField;
 
@@ -98,9 +102,6 @@ namespace OverhaulMod.UI
 
         [UIElement("GenericInfoGroup")]
         private readonly RectTransform _generalInfoPanel;
-
-        [UIElement("EditOffsetsButton")]
-        private readonly Button _editOffsetsButton;
 
         private bool _disallowCallbacks;
 
@@ -166,7 +167,7 @@ namespace OverhaulMod.UI
             _authorField.referenceList = itemInfo.Authors;
             _exclusiveForField.referenceList = itemInfo.ExclusiveFor_V2;
             _verifyButton.interactable = !itemInfo.IsVerified;
-            _hierarchyPanel.itemInfo = itemInfo;
+            _hierarchyPanel.ItemInfo = itemInfo;
             _filesPanel.itemInfo = itemInfo;
             _hideBowStrings.isOn = itemInfo.HideBowStrings;
             _hideBowStrings.interactable = itemInfo.Category == PersonalizationCategory.WeaponSkins && itemInfo.Weapon == WeaponType.Bow;
@@ -309,15 +310,14 @@ namespace OverhaulMod.UI
             PersonalizationEditorManager manager = PersonalizationEditorManager.Instance;
             manager.SerializeRoot();
             manager.SpawnRootObject();
-            UIPersonalizationEditor.instance.PropertiesPanel.EditObjectAgain();
+            UIPersonalizationEditor.Instance.Inspector.EditObjectAgain();
 
             _hideBowStrings.interactable = personalizationItemInfo.Category == PersonalizationCategory.WeaponSkins && weaponType == WeaponType.Bow;
             _overrideParentDropdown.interactable = personalizationItemInfo.Category == PersonalizationCategory.WeaponSkins && personalizationItemInfo.Weapon == WeaponType.Bow;
             _bowStringsWidth.interactable = personalizationItemInfo.Category == PersonalizationCategory.WeaponSkins && personalizationItemInfo.Weapon == WeaponType.Bow;
 
-            UIElementPersonalizationEditorUtilitiesPanel utils = UIPersonalizationEditor.instance.Utilities;
-            utils.SetAvailablePresets(PersonalizationEditorManager.Instance.GetPresetsForEditingWeaponSkin());
-            utils.EnableAnimation();
+            UIElementPersonalizationEditorUtilitiesPanel utils = UIPersonalizationEditor.Instance.Utilities;
+            utils.OnItemSelected();
         }
 
         public void OnEditedBodyPartDropdown(int value)
@@ -334,8 +334,8 @@ namespace OverhaulMod.UI
             PersonalizationEditorManager manager = PersonalizationEditorManager.Instance;
             manager.SerializeRoot();
             manager.SpawnRootObject();
-            UIPersonalizationEditor.instance.PropertiesPanel.EditObjectAgain();
-            UIPersonalizationEditor.instance.Utilities.EnableAnimation();
+            UIPersonalizationEditor.Instance.Inspector.EditObjectAgain();
+            UIPersonalizationEditor.Instance.Utilities.EnableAnimation();
         }
 
         public void OnHideBowStringsToggled(bool value)
@@ -364,7 +364,7 @@ namespace OverhaulMod.UI
             PersonalizationEditorManager manager = PersonalizationEditorManager.Instance;
             manager.SerializeRoot();
             manager.SpawnRootObject();
-            UIPersonalizationEditor.instance.PropertiesPanel.EditObjectAgain();
+            UIPersonalizationEditor.Instance.Inspector.EditObjectAgain();
         }
 
         public void OnEditedBowStringsWidth(float value)
@@ -417,6 +417,11 @@ namespace OverhaulMod.UI
         {
             _editorIdField.interactable = true;
             _revealEditorIDButton.gameObject.SetActive(false);
+        }
+
+        public void OnEditOffsetsButtonClicked()
+        {
+            UIPersonalizationEditor.Instance.ShowItemOffsets();
         }
     }
 }

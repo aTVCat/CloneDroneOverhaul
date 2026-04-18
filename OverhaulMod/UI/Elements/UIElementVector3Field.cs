@@ -24,7 +24,7 @@ namespace OverhaulMod.UI
         private bool _disableCallbacks;
 
         private Vector3 _vector;
-        public Vector3 vector
+        public Vector3 Vector
         {
             get
             {
@@ -39,11 +39,11 @@ namespace OverhaulMod.UI
                 _zField.text = value.z.ToString(CultureInfo.InvariantCulture);
                 _disableCallbacks = false;
 
-                onValueChanged.Invoke(value);
+                OnValueChanged.Invoke(value);
             }
         }
 
-        public Vector3ChangedEvent onValueChanged { get; set; } = new Vector3ChangedEvent();
+        public Vector3ChangedEvent OnValueChanged { get; set; } = new Vector3ChangedEvent();
 
         public void OnXFieldChanged(string val)
         {
@@ -71,26 +71,26 @@ namespace OverhaulMod.UI
 
         private void onXChanged(float val)
         {
-            Vector3 vector1 = vector;
+            Vector3 vector1 = Vector;
             vector1.x = val;
             _vector = vector1;
-            onValueChanged.Invoke(vector1);
+            OnValueChanged.Invoke(vector1);
         }
 
         private void onYChanged(float val)
         {
-            Vector3 vector1 = vector;
+            Vector3 vector1 = Vector;
             vector1.y = val;
             _vector = vector1;
-            onValueChanged.Invoke(vector1);
+            OnValueChanged.Invoke(vector1);
         }
 
         private void onZChanged(float val)
         {
-            Vector3 vector1 = vector;
+            Vector3 vector1 = Vector;
             vector1.z = val;
             _vector = vector1;
-            onValueChanged.Invoke(vector1);
+            OnValueChanged.Invoke(vector1);
         }
 
         [Serializable]

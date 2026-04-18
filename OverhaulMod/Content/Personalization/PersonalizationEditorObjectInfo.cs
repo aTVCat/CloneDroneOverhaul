@@ -23,6 +23,13 @@ namespace OverhaulMod.Content.Personalization
             if (ScaleArray == null) ScaleArray = new float[3];
         }
 
+        public void ResetRootTransform()
+        {
+            if (GetPosition() != Vector3.zero) SetPosition(Vector3.zero);
+            if (GetEulerAngles() != Vector3.zero) SetEulerAngles(Vector3.zero);
+            if (GetScale() != Vector3.one) SetScale(Vector3.one);
+        }
+
         public void SetPosition(Vector3 vector)
         {
             PositionArray[0] = roundValue(vector.x);

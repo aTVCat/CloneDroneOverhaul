@@ -145,7 +145,7 @@ namespace OverhaulMod.UI
                     Button button = moddedObject.GetComponent<Button>();
                     button.onClick.AddListener(delegate
                     {
-                        UIPersonalizationEditor.instance.ShowEverything();
+                        UIPersonalizationEditor.Instance.ShowEverything();
                         PersonalizationEditorManager.Instance.EditItem(item);
                         Hide();
                     });

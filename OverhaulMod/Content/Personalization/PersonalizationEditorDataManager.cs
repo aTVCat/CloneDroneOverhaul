@@ -224,7 +224,7 @@ namespace OverhaulMod.Content.Personalization
 
             if (editItem)
             {
-                UIPersonalizationEditor.instance.ShowEverything();
+                UIPersonalizationEditor.Instance.ShowEverything();
                 PersonalizationEditorManager.Instance.EditItem(info);
             }
 

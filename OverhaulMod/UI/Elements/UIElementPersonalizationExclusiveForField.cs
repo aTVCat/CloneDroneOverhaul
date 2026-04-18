@@ -78,7 +78,7 @@ namespace OverhaulMod.UI
 
         public void OnEditButtonClicked()
         {
-            UIPersonalizationEditorExclusivityEditMenu menu = ModUIConstants.ShowPersonalizationEditorExclusivityEditMenu(UIPersonalizationEditor.instance.transform);
+            UIPersonalizationEditorExclusivityEditMenu menu = ModUIConstants.ShowPersonalizationEditorExclusivityEditMenu(UIPersonalizationEditor.Instance.transform);
             menu.Populate(referenceList, refreshText);
         }
     }

@@ -247,7 +247,7 @@ namespace OverhaulMod.UI
             }
             else
             {
-                UIPersonalizationEditor.instance.ShowEverything();
+                UIPersonalizationEditor.Instance.ShowEverything();
                 PersonalizationEditorManager.Instance.EditItem(creationResult.NewItem);
                 Hide();
 

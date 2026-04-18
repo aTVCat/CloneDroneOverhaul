@@ -78,7 +78,7 @@ namespace OverhaulMod.UI
         private void importFileDialog(string initialFolder, string pattern)
         {
             PersonalizationItemInfo item = itemInfo;
-            ModUIUtils.FileExplorer(UIPersonalizationEditor.instance.transform, true, delegate (string path)
+            ModUIUtils.FileExplorer(UIPersonalizationEditor.Instance.transform, true, delegate (string path)
             {
                 if (!File.Exists(path))
                     return;
@@ -125,14 +125,14 @@ namespace OverhaulMod.UI
 
         public void OnHelpButtonClicked()
         {
-            _ = ModUIConstants.ShowPersonalizationEditorHelpMenu(UIPersonalizationEditor.instance.transform);
+            _ = ModUIConstants.ShowPersonalizationEditorHelpMenu(UIPersonalizationEditor.Instance.transform);
         }
 
         public void OnImportVoxButtonClicked()
         {
             if (!HasShownMagicaVoxelTip)
             {
-                UIPersonalizationEditorMagicaVoxelTip tip = ModUIConstants.ShowPersonalizationEditorMagicaVoxelTip(UIPersonalizationEditor.instance.transform);
+                UIPersonalizationEditorMagicaVoxelTip tip = ModUIConstants.ShowPersonalizationEditorMagicaVoxelTip(UIPersonalizationEditor.Instance.transform);
                 tip.Callback = voxFileImportDialog;
                 return;
             }
@@ -146,7 +146,7 @@ namespace OverhaulMod.UI
 
         public void OnMagicaVoxelTipButtonClicked()
         {
-            UIPersonalizationEditorMagicaVoxelTip tip = ModUIConstants.ShowPersonalizationEditorMagicaVoxelTip(UIPersonalizationEditor.instance.transform);
+            UIPersonalizationEditorMagicaVoxelTip tip = ModUIConstants.ShowPersonalizationEditorMagicaVoxelTip(UIPersonalizationEditor.Instance.transform);
             tip.Callback = null;
         }
     }

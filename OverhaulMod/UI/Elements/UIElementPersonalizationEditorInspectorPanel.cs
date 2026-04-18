@@ -83,12 +83,6 @@ namespace OverhaulMod.UI
         [UIElement("ObjectNameField")]
         private readonly InputField _objectNameField;
 
-        private UIElementMouseEventsComponent _mousePositionChecker;
-
-        private int _objectId;
-
-        private PersonalizationEditorObjectBehaviour _object;
-
         private VolumePropertiesController _volumePropertiesController;
 
         private VisibilityPropertiesController _visibilityPropertiesController;
@@ -97,25 +91,26 @@ namespace OverhaulMod.UI
 
         private CvmModelPropertiesController _cvmModelPropertiesController;
 
+        private PersonalizationEditorObjectBehaviour _inspectingObject;
+
+        private int _inspectingObjectId;
+
         private bool _disableCallbacks;
 
         private bool _prevObjectState;
 
         protected override void OnInitialized()
         {
-            _objectId = -1;
+            _inspectingObjectId = -1;
             _volumePropertiesController = new VolumePropertiesController();
             _visibilityPropertiesController = new VisibilityPropertiesController();
             _fireParticlesPropertiesController = new FireParticlesPropertiesController();
             _cvmModelPropertiesController = new CvmModelPropertiesController();
-
-            _mousePositionChecker = base.gameObject.AddComponent<UIElementMouseEventsComponent>();
-            _volumeColorsSettings.OnColorChanged = OnVolumeColorReplacementsChanged;
         }
 
         private void LateUpdate()
         {
-            bool newObjectState = _object;
+            bool newObjectState = _inspectingObject;
             if (newObjectState != _prevObjectState)
             {
                 if (!newObjectState)
@@ -133,23 +128,19 @@ namespace OverhaulMod.UI
 
         public void Refresh()
         {
-            EditObject(_object);
+            EditObject(_inspectingObject);
         }
 
         public int GetEditingObjectUniqueIndex()
         {
-            if (_object)
-                return _object.UniqueIndex;
-
-            return -1;
+            return _inspectingObjectId;
         }
 
         public void EditObjectAgain()
         {
-            if (_objectId == -1)
-                return;
+            if (_inspectingObjectId == -1) return;
 
-            EditObject(PersonalizationEditorObjectManager.Instance.GetInstantiatedObject(_objectId));
+            EditObject(PersonalizationEditorObjectManager.Instance.GetInstantiatedObject(_inspectingObjectId));
         }
 
         public void EditObject(PersonalizationEditorObjectBehaviour objectBehaviour)
@@ -161,23 +152,23 @@ namespace OverhaulMod.UI
             _nothingToEditOverlay.SetActive(!isNotNull);
             if (!isNotNull)
             {
-                _objectId = -1;
-                _object = null;
+                _inspectingObjectId = -1;
+                _inspectingObject = null;
                 _objectNameField.text = string.Empty;
                 GlobalEventManager.Instance.Dispatch(PersonalizationEditorObjectManager.OBJECT_SELECTION_CHANGED_EVENT);
                 return;
             }
-            _objectId = objectBehaviour.UniqueIndex;
-            _object = objectBehaviour;
+            _inspectingObjectId = objectBehaviour.UniqueIndex;
+            _inspectingObject = objectBehaviour;
             GlobalEventManager.Instance.Dispatch(PersonalizationEditorObjectManager.OBJECT_SELECTION_CHANGED_EVENT);
 
             Clear();
 
             _disableCallbacks = true;
             _objectNameField.text = objectBehaviour.Name;
-            _positionField.vector = objectBehaviour.transform.localPosition;
-            _rotationField.vector = objectBehaviour.transform.localEulerAngles;
-            _scaleField.vector = objectBehaviour.transform.localScale;
+            _positionField.Vector = objectBehaviour.transform.localPosition;
+            _rotationField.Vector = objectBehaviour.transform.localEulerAngles;
+            _scaleField.Vector = objectBehaviour.transform.localScale;
 
             bool isWeaponSkin = objectBehaviour.ControllerInfo.ItemInfo.Category == PersonalizationCategory.WeaponSkins;
 
@@ -201,38 +192,7 @@ namespace OverhaulMod.UI
                 _fireParticlesPropertiesController.PopulateFields(this, _container, objectBehaviour);
             }
 
-            /*
-            foreach (PersonalizationEditorObjectPropertyAttribute attribute in objectBehaviour.GetProperties())
-            {
-                FieldDisplay fieldDisplay = null;
-                if (attribute.propertyInfo.PropertyType == typeof(string))
-                {
-                    if (attribute.IsFileLocation)
-                    {
-                        fieldDisplay = Instantiate(_fileLocationFieldDisplay, _container).gameObject.AddComponent<FileLocationField>();
-                    }
-                }
-
-                if (fieldDisplay)
-                {
-                    fieldDisplay.gameObject.SetActive(true);
-                    fieldDisplay.InitializeElement();
-                    list.Add(fieldDisplay);
-
-                    PersonalizationEditorObjectComponentBase cb = (PersonalizationEditorObjectComponentBase)objectBehaviour.GetComponent(attribute.propertyInfo.DeclaringType);
-                    fieldDisplay.Set(attribute, cb, attribute.propertyInfo.GetValue(cb));
-                }
-            }*/
-
             _disableCallbacks = false;
-        }
-
-        public void OnVolumeColorReplacementsChanged(string str)
-        {
-            /*
-            PersonalizationEditorObjectVolume volume = _volume;
-            if (volume)
-                volume.colorReplacements = str;*/
         }
 
         public void OnPositionChanged(Vector3 value)
@@ -240,7 +200,7 @@ namespace OverhaulMod.UI
             if (_disableCallbacks)
                 return;
 
-            PersonalizationEditorObjectBehaviour objectBehaviour = _object;
+            PersonalizationEditorObjectBehaviour objectBehaviour = _inspectingObject;
             if (!objectBehaviour)
                 return;
 
@@ -252,7 +212,7 @@ namespace OverhaulMod.UI
             if (_disableCallbacks)
                 return;
 
-            PersonalizationEditorObjectBehaviour objectBehaviour = _object;
+            PersonalizationEditorObjectBehaviour objectBehaviour = _inspectingObject;
             if (!objectBehaviour)
                 return;
 
@@ -264,7 +224,7 @@ namespace OverhaulMod.UI
             if (_disableCallbacks)
                 return;
 
-            PersonalizationEditorObjectBehaviour objectBehaviour = _object;
+            PersonalizationEditorObjectBehaviour objectBehaviour = _inspectingObject;
             if (!objectBehaviour)
                 return;
 
@@ -274,11 +234,11 @@ namespace OverhaulMod.UI
 
         public void OnObjectNameChanged(string str)
         {
-            if (!_disableCallbacks && _object)
+            if (!_disableCallbacks && _inspectingObject)
             {
-                _object.Name = str;
+                _inspectingObject.Name = str;
                 PersonalizationEditorManager.Instance.SerializeRoot();
-                UIPersonalizationEditor.instance.Inspector.RefreshHierarchyPanel();
+                UIPersonalizationEditor.Instance.ItemConfig.RefreshHierarchyPanel();
             }
         }
 
@@ -327,7 +287,7 @@ namespace OverhaulMod.UI
                         voxelModelFileFieldText.text = Path.GetFileName(preset.CvmFilePath);
                         voxelModelFileField.GetObject<Button>(1).onClick.AddListener(delegate
                         {
-                            ModUIUtils.FileExplorer(UIPersonalizationEditor.instance.transform, true, delegate (string filePath)
+                            ModUIUtils.FileExplorer(UIPersonalizationEditor.Instance.transform, true, delegate (string filePath)
                             {
                                 if (filePath.IsNullOrEmpty())
                                 {
@@ -346,7 +306,7 @@ namespace OverhaulMod.UI
                                     voxelModelFileFieldText.text = fileName;
                                     preset.CvmFilePath = path;
 
-                                    UIPersonalizationEditor.instance.Utilities.SetPreviewingPreset(keyValue.Key);
+                                    UIPersonalizationEditor.Instance.Utilities.SetPreviewingPreset(keyValue.Key);
                                 }
 
                                 GlobalEventManager.Instance.Dispatch(PersonalizationEditorManager.OBJECT_EDITED_EVENT);
@@ -540,7 +500,7 @@ namespace OverhaulMod.UI
                 colorPickButton.GetObject<Text>(2).text = "Fire color";
                 UIElementColorPickerButton colorPickerButtonComponent = colorPickButton.gameObject.AddComponent<UIElementColorPickerButton>();
                 colorPickerButtonComponent.InitializeElement();
-                colorPickerButtonComponent.colorPickerParent = UIPersonalizationEditor.instance.transform;
+                colorPickerButtonComponent.colorPickerParent = UIPersonalizationEditor.Instance.transform;
                 colorPickerButtonComponent.useAlpha = true;
                 colorPickerButtonComponent.color = fireParticles.color;
                 colorPickerButtonComponent.onValueChanged.AddListener(delegate (Color color)
@@ -696,7 +656,7 @@ namespace OverhaulMod.UI
                         voxelModelFileFieldText.text = Path.GetFileName(settingsPreset.VoxFilePath);
                         voxelModelFileField.GetObject<Button>(1).onClick.AddListener(delegate
                         {
-                            ModUIUtils.FileExplorer(UIPersonalizationEditor.instance.transform, true, delegate (string filePath)
+                            ModUIUtils.FileExplorer(UIPersonalizationEditor.Instance.transform, true, delegate (string filePath)
                             {
                                 if (filePath.IsNullOrEmpty())
                                 {
@@ -724,7 +684,7 @@ namespace OverhaulMod.UI
                                     voxelModelFileFieldText.text = fileName;
                                     settingsPreset.VoxFilePath = path;
 
-                                    UIPersonalizationEditor.instance.Utilities.SetPreviewingPreset(preset.Key);
+                                    UIPersonalizationEditor.Instance.Utilities.SetPreviewingPreset(preset.Key);
                                 }
 
                                 GlobalEventManager.Instance.Dispatch(PersonalizationEditorManager.OBJECT_EDITED_EVENT);

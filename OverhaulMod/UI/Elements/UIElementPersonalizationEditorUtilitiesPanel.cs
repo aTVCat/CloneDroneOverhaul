@@ -2,6 +2,7 @@
 using OverhaulMod.Engine;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Diagnostics;
 using UnityEngine.UI;
 
 namespace OverhaulMod.UI
@@ -51,6 +52,15 @@ namespace OverhaulMod.UI
             _characterModelPreviewDropdown.onValueChanged.AddListener(OnCharacterModelPreviewDropdownChanged);
         }
 
+        public void OnItemSelected()
+        {
+            PersonalizationItemInfo itemInfo = PersonalizationEditorManager.Instance.EditingItemInfo;
+            _presetPreviewDropdown.gameObject.SetActive(itemInfo != null && itemInfo.Category == PersonalizationCategory.WeaponSkins);
+
+            SetAvailablePresets(PersonalizationEditorManager.Instance.GetPresetsForEditingWeaponSkin());
+            EnableAnimation();
+        }
+
         public void EnableAnimation()
         {
             _enableAnimationToggle.isOn = true;
@@ -64,6 +74,11 @@ namespace OverhaulMod.UI
         public int GetCharacterModelIndex()
         {
             return _characterModelPreviewDropdown.value;
+        }
+
+        public void SetCharacterModel(int value)
+        {
+            _characterModelPreviewDropdown.value = value;
         }
 
         public void SetRandomFavoriteColor()

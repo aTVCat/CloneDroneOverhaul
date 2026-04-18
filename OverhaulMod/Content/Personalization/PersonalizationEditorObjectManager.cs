@@ -1,6 +1,7 @@
 ﻿using OverhaulMod.Utils;
 using PicaVoxel;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -244,6 +245,20 @@ namespace OverhaulMod.Content.Personalization
             }
 
             return personalizationEditorObject;
+        }
+
+        public void DeleteObject(PersonalizationEditorObjectBehaviour objectBehaviour)
+        {
+            StartCoroutine(deleteObjectCoroutine(objectBehaviour.gameObject));
+        }
+
+        private IEnumerator deleteObjectCoroutine(GameObject gameObject)
+        {
+            Destroy(gameObject);
+            yield return new WaitForEndOfFrame();
+            yield return null;
+            PersonalizationEditorManager.Instance.SerializeRoot();
+            yield break;
         }
     }
 }
