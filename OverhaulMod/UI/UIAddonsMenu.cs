@@ -150,6 +150,8 @@ namespace OverhaulMod.UI
                 return;
             }
 
+            AddonManager.Instance.RefreshOutdatedAddons(result.List.Addons);
+
             foreach (AddonDownloadInfo addonDownloadInfo in result.List.Addons)
             {
                 ModdedObject moddedObject = Instantiate(_networkContentDisplay, _container);

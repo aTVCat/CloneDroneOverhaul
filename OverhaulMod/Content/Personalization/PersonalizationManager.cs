@@ -191,17 +191,6 @@ namespace OverhaulMod.Content.Personalization
                         ModJsonUtils.WriteStream(AssetsVersionFile, RemoteAssetsInfo);
                         LocalAssetsInfo = RemoteAssetsInfo;
                     }
-                    else
-                    {
-                        RefreshRemoteCustomizationAssetsVersion(delegate (bool result)
-                        {
-                            if (result)
-                            {
-                                ModJsonUtils.WriteStream(AssetsVersionFile, RemoteAssetsInfo);
-                                LocalAssetsInfo = RemoteAssetsInfo;
-                            }
-                        });
-                    }
 
                     ItemList.Load();
                     GlobalEventManager.Instance.Dispatch(CUSTOMIZATION_ASSETS_FILE_DOWNLOADED_EVENT);

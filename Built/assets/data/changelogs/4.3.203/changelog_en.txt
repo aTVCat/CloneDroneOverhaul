@@ -1,45 +1,59 @@
-This patch is focused on resolving long standing issues and QoL changes to the mod, while also bringing back a few removed features
-
-# Changes
-- Reworked customization items list. All customization items now have previews
+# Player customization system changes
+- Added new type of items: Accessories
+- Reworked customization items list. All items now have previews
 img=images/42_patch11_2.png
 - Added arrow spawn point object to customization editor
-- Made weapon skins respawn on clones and enemies with slight delay to reduce freeze amount when customizing the player. Still not perfect, but more work will be done on this in future
+- Added particles when switching weapon skins
+- Made weapon skins respawn on clones and enemies with slight delay to reduce freeze duration when customizing the player. More work will be done on this in future
 - Redone weapon skins refreshing logic, fixing vanilla skins visible for a brief moment when equipping weapon
 - A lot of internal changes made to customization system
-- Added particles when switching weapon skins
+
+# Visual and gameplay changes
+- Added back weapons on the back
+img=images/42_patch11_4.png
+- Reworked welding particles
+- Improved double jump effects
+- Made the camera tilt rely on player rotation instead of cursor movement
+- Made the camera tilt less in first person mode when holding bow
+- Improved camera positioning in first person mode when holding spear
+- Made business bots ties no longer visible in first person mode
+- Added back reverting upgrades
+- Added back great swords modifier to story mode
+- Added triple jump upgrade
+- Increased scythe speed and damaging area
+
+# UI changes
 - Added new options to title screen customization
 img=images/42_patch11_3.png
 - Slightly updated the overhauled title screen UI
 - Added "Team Battle" tab to overhauled workshop browser
 - Added restart adventure button to reworked pause menu
 - Improved hyperdome-like transitions
-- Reworked welding particles
-- Added back great swords modifier to story mode
-- Added back weapons on the back
-img=images/42_patch11_4.png
-- Added back reverting upgrades
-- Increased scythe speed
+
+# Settings changes
 - Reorganized and renamed many settings, removed the home page
 - Added "Model update delay" setting to reduce the inconsistency between just separated voxel models
 - Added cooldown slider for "Scroll to switch weapon" setting
 - Added more FPS options and increased the FPS limit
 - Increased the camera FOV limit
-- Made the camera tilt less in first person mode when holding bow
-- Improved camera positioning when holding spear
+
+# Misc. changes
+- Music will now fade out when exiting to main menu or going to next match
 - Added tint color and rotation settings to realistic skyboxes
 - Improved light settings handling in advanced photo mode
-- Made business bots ties no longer visible in first person mode
-- Made garbage physics interpolate only for a second after appearing
-- Made patch notes and addon details menus cache downloaded images on disk
-- Made Overhaul mod intro disappear if the game crashes on start
+- The physics of garbage now interpolate only for a second after appearing
+- Added caching of downloaded images
+- Made Overhaul mod logo disappear if the game crashes on start
+- Improved handling of code exceptions
 - Various internal changes and optimizations
 - Reduced the size of the mod
+
 # Realistic skyboxes addon changes
-Note: You'll have to update the addon to get following changes.
+Note: You'll have to update the addon to version 5 or higher to get following changes:
 - Added new lighting to team battle levels
 img=images/42_patch11_1.png
 - Reworked lighting for few endless mode levels
+
 # Fixes
 - Crashes caused by new game update
 - First person mode not working after mind trasnfer in story mode
@@ -54,3 +68,8 @@ img=images/42_patch11_1.png
 - Fixed Epic Games platform displaying as "N/A"
 - Some math behind first person mode
 - Customization items templates not working
+- Loading indicators animation not playing when the game is paused
+- Player animation gets reset on upgrade when holding scythe
+- Player becomes T-posed when starting editing customization items or changing weapon type when animations are disabled in customization editor
+- Hiding HUD doesn't hide difficulty tier announcement in photo mode
+- Customization assets download window offering to install assets again after first install

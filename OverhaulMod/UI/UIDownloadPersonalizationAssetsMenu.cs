@@ -1,4 +1,5 @@
-﻿using OverhaulMod.Content.Personalization;
+﻿using BestHTTP.SocketIO;
+using OverhaulMod.Content.Personalization;
 using OverhaulMod.Utils;
 using UnityEngine;
 using UnityEngine.UI;
@@ -37,6 +38,8 @@ namespace OverhaulMod.UI
 
         private float _dontActuallyRefreshRemoteVersionUntilTime;
 
+        private bool _isGettingRemoteVersion;
+
         public override void Show()
         {
             base.Show();
@@ -68,25 +71,27 @@ namespace OverhaulMod.UI
         {
             PersonalizationManager personalizationManager = PersonalizationManager.Instance;
 
+            bool isDownloading = _isGettingRemoteVersion || personalizationManager.IsDownloadingCustomizationFile();
+
             _updateButton.interactable = true;
-            _progressBar.SetActive(personalizationManager.IsDownloadingCustomizationFile());
+            _progressBar.SetActive(isDownloading);
             switch (personalizationManager.GetPersonalizationAssetsState())
             {
                 case PersonalizationAssetsState.NotInstalled:
-                    _downloadButton.gameObject.SetActive(!personalizationManager.IsDownloadingCustomizationFile());
+                    _downloadButton.gameObject.SetActive(!isDownloading);
                     _refreshButton.gameObject.SetActive(false);
                     _updateButton.gameObject.SetActive(false);
                     break;
                 case PersonalizationAssetsState.Installed:
                     _downloadButton.gameObject.SetActive(false);
-                    _refreshButton.gameObject.SetActive(!personalizationManager.IsDownloadingCustomizationFile());
-                    _updateButton.gameObject.SetActive(!personalizationManager.IsDownloadingCustomizationFile());
+                    _refreshButton.gameObject.SetActive(!isDownloading);
+                    _updateButton.gameObject.SetActive(!isDownloading);
                     _updateButton.interactable = false;
                     break;
                 case PersonalizationAssetsState.NeedUpdate:
                     _downloadButton.gameObject.SetActive(false);
                     _refreshButton.gameObject.SetActive(false);
-                    _updateButton.gameObject.SetActive(!personalizationManager.IsDownloadingCustomizationFile());
+                    _updateButton.gameObject.SetActive(!isDownloading);
                     break;
             }
 
@@ -103,6 +108,12 @@ namespace OverhaulMod.UI
 
         private void refreshProgressBarFill()
         {
+            if (_isGettingRemoteVersion)
+            {
+                _progressBarFill.fillAmount = 0f;
+                return;
+            }
+
             PersonalizationManager personalizationManager = PersonalizationManager.Instance;
             if (personalizationManager.IsDownloadingCustomizationFile())
             {
@@ -114,15 +125,29 @@ namespace OverhaulMod.UI
         {
             _progressBarFill.fillAmount = 0f;
             _exitButton.gameObject.SetActive(false);
-            PersonalizationManager.Instance.DownloadCustomizationFile(delegate (string error)
-            {
-                _exitButton.gameObject.SetActive(true);
-                refreshContents();
 
-                if (!error.IsNullOrEmpty())
+            _isGettingRemoteVersion = true;
+            PersonalizationManager.Instance.RefreshRemoteCustomizationAssetsVersion(delegate (bool result)
+            {
+                _isGettingRemoteVersion = false;
+                if (!result)
                 {
-                    ModUIUtils.MessagePopupOK("Error", $"Something went wrong while processing customization assets:\n{error}", true);
+                    refreshContents();
+                    ModUIUtils.MessagePopupOK("Error", $"Could not retrieve info of latest assets version", true);
+                    return;
                 }
+
+                PersonalizationManager.Instance.DownloadCustomizationFile(delegate (string error)
+                {
+                    _exitButton.gameObject.SetActive(true);
+                    refreshContents();
+
+                    if (!error.IsNullOrEmpty())
+                    {
+                        ModUIUtils.MessagePopupOK("Error", $"Something went wrong while processing customization assets:\n{error}", true);
+                    }
+                });
+                refreshContents();
             });
             refreshContents();
         }

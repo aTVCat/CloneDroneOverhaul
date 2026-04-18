@@ -51,7 +51,7 @@ namespace OverhaulMod.UI
 
         private AddonDownloadInfo _addonDownloadInfo;
 
-        private bool _downloadedAddonViaThisMenu;
+        private bool _addonWasInstalledWithMenu;
 
         protected override void OnInitialized()
         {
@@ -66,8 +66,7 @@ namespace OverhaulMod.UI
 
         public override void Update()
         {
-            if (_addonDownloadInfo == null)
-                return;
+            if (_addonDownloadInfo == null) return;
 
             bool isDownloading = AddonManager.Instance.IsDownloadingAddon(_addonDownloadInfo.UniqueID);
             if (isDownloading)
@@ -115,7 +114,7 @@ namespace OverhaulMod.UI
             if (_addonDownloadInfo == null || _addonDownloadInfo.Addon == null)
                 return;
 
-            bool isSupported = !_addonDownloadInfo.Addon.IsSupported();
+            bool isSupported = _addonDownloadInfo.Addon.IsSupported();
             bool isInstalled = AddonManager.Instance.HasInstalledAddon(_addonDownloadInfo.UniqueID, 0);
             bool isDownloading = AddonManager.Instance.IsDownloadingAddon(_addonDownloadInfo.UniqueID);
             bool isNewVersion = AddonManager.Instance.GetAddonVersion(_addonDownloadInfo.UniqueID) < _addonDownloadInfo.Addon.Version;
@@ -128,10 +127,9 @@ namespace OverhaulMod.UI
 
         private void onDownloadedAddon(string error)
         {
-            if (!_downloadedAddonViaThisMenu)
-                return;
+            if (!_addonWasInstalledWithMenu) return;
+            _addonWasInstalledWithMenu = false;
 
-            _downloadedAddonViaThisMenu = false;
             refreshElements();
 
             if (!string.IsNullOrEmpty(error))
@@ -143,7 +141,7 @@ namespace OverhaulMod.UI
 
         public void OnDownloadButtonClicked()
         {
-            _downloadedAddonViaThisMenu = true;
+            _addonWasInstalledWithMenu = true;
             AddonManager.Instance.DownloadAddon(_addonDownloadInfo, null);
             refreshElements();
         }

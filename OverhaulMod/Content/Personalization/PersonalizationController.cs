@@ -443,12 +443,13 @@ namespace OverhaulMod.Content.Personalization
 
             DestroyItemsOfCategory(PersonalizationCategory.Accessories);
 
-            if (_isMainPlayer && !PersonalizationUserInfo.AllowEnemiesUseSkins) return;
-
             List<string> accessories = GetAccessoriesDependingOnOwner();
-            foreach (string item in accessories)
+            if(accessories != null)
             {
-                _ = SpawnItem(item);
+                foreach (string item in accessories)
+                {
+                    _ = SpawnItem(item);
+                }
             }
 
             ModDebug.Log("Refreshed accessories");
@@ -779,6 +780,8 @@ namespace OverhaulMod.Content.Personalization
         public List<string> GetAccessoriesDependingOnOwner()
         {
             if (!_hasInitialized || _isMultiplayer) return null;
+
+            if (_isEnemy && !PersonalizationUserInfo.AllowEnemiesUseSkins) return null;
 
             return PersonalizationUserInfo.GetEquippedAccessories();
         }

@@ -60,20 +60,25 @@ namespace OverhaulMod.Content
             {
                 if (!getDownloadsResult.HasFailed())
                 {
-                    StringBuilder stringBuilder = new StringBuilder();
-                    foreach (AddonDownloadInfo addonInfo in getDownloadsResult.List.Addons)
-                    {
-                        if (HasInstalledAddon(addonInfo.UniqueID) && !HasInstalledAddon(addonInfo.UniqueID, addonInfo.Addon.Version))
-                        {
-                            stringBuilder.Append(addonInfo.UniqueID);
-                            stringBuilder.Append(',');
-                        }
-                    }
-                    ModSettingsManager.SetStringValue(ModSettingsConstants.ADDONS_TO_UPDATE, stringBuilder.ToString(), false);
+                    RefreshOutdatedAddons(getDownloadsResult.List.Addons);
                     ScheduledActionsManager.Instance.SetActionExecuted(ScheduledActionType.RefreshAddonUpdates);
                     GlobalEventManager.Instance.Dispatch(ADDON_UPDATES_REFRESHED);
                 }
             });
+        }
+
+        public void RefreshOutdatedAddons(List<AddonDownloadInfo> addons)
+        {
+            StringBuilder stringBuilder = new StringBuilder();
+            foreach (AddonDownloadInfo addonInfo in addons)
+            {
+                if (HasInstalledAddon(addonInfo.UniqueID) && !HasInstalledAddon(addonInfo.UniqueID, addonInfo.Addon.Version))
+                {
+                    stringBuilder.Append(addonInfo.UniqueID);
+                    stringBuilder.Append(',');
+                }
+            }
+            ModSettingsManager.SetStringValue(ModSettingsConstants.ADDONS_TO_UPDATE, stringBuilder.ToString(), false);
         }
 
         public bool HasDownloadsListOnDisk()
@@ -309,8 +314,8 @@ namespace OverhaulMod.Content
             if (_loadedAddons.IsNullOrEmpty())
                 return false;
 
-            foreach (AddonInfo c in _loadedAddons)
-                if (c.UniqueID == addonId && c.Version >= minVersion)
+            foreach (AddonInfo addonInfo in _loadedAddons)
+                if (addonInfo.UniqueID == addonId && addonInfo.Version >= minVersion)
                     return true;
 
             return false;
