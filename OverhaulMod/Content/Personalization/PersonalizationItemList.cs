@@ -157,8 +157,6 @@ namespace OverhaulMod.Content.Personalization
 
             if(personalizationItemInfo != null)
             {
-                personalizationItemInfo.RootObject.ResetRootTransform();
-
                 if (personalizationItemInfo.Category == PersonalizationCategory.Accessories)
                 {
                     AccessoryOffsetsList accessoryOffsetsList;

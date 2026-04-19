@@ -35,6 +35,8 @@ namespace OverhaulMod.Content.Personalization
             string spearSkin = normalizeId(PersonalizationUserInfo.SpearSkin);
             string shieldSkin = normalizeId(PersonalizationUserInfo.ShieldSkin);
             string scytheSkin = normalizeId(PersonalizationUserInfo.ScytheSkin);
+            string accessories = normalizeId(PersonalizationUserInfo.Accessories);
+            string pets = normalizeId(PersonalizationUserInfo.Pets);
 
             StringBuilder stringBuilder = _stringBuilder;
             _ = stringBuilder.Clear();
@@ -46,8 +48,10 @@ namespace OverhaulMod.Content.Personalization
             appendValue(stringBuilder, bowSkin, false);
             appendValue(stringBuilder, hammerSkin, false);
             appendValue(stringBuilder, spearSkin, false);
-            appendValue(stringBuilder, shieldSkin, true);
-            appendValue(stringBuilder, scytheSkin, true);
+            appendValue(stringBuilder, shieldSkin, false);
+            appendValue(stringBuilder, scytheSkin, false);
+            appendValue(stringBuilder, accessories, false);
+            appendValue(stringBuilder, pets, true);
 
             _ = GenericStringForModdingEvent.Post(sendForRecentlyConnectedPlayer ? Bolt.GlobalTargets.Others : Bolt.GlobalTargets.AllClients, Bolt.ReliabilityModes.ReliableOrdered, stringBuilder.ToString());
         }
@@ -100,8 +104,7 @@ namespace OverhaulMod.Content.Personalization
         private void appendValue(StringBuilder stringBuilder, string value, bool isLast)
         {
             _ = stringBuilder.Append(value);
-            if (!isLast)
-                _ = stringBuilder.Append(Separator);
+            if (!isLast) _ = stringBuilder.Append(Separator);
         }
 
         private string getPrefix(bool value, bool useCache = true)
@@ -115,15 +118,10 @@ namespace OverhaulMod.Content.Personalization
 
         private string normalizeId(string id)
         {
-            if (id.IsNullOrEmpty())
-                id = "_";
-
+            if (id.IsNullOrEmpty()) id = "_";
             return id;
         }
 
-        public static bool CompareDataVersion(string dataVersion)
-        {
-            return dataVersion == s_dataVersion;
-        }
+        public static bool CompareDataVersion(string dataVersion) => dataVersion == s_dataVersion;
     }
 }

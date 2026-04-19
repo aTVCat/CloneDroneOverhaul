@@ -21,7 +21,7 @@ namespace OverhaulMod.Content.Personalization
         public const float SKINS_REFRESH_INTERVAL_FOR_ENEMIES = 1f;
 
         private FirstPersonMover _owner;
-        public FirstPersonMover owner
+        public FirstPersonMover Owner
         {
             get
             {
@@ -31,27 +31,27 @@ namespace OverhaulMod.Content.Personalization
         }
 
         private CharacterModel _ownerModel;
-        public CharacterModel ownerModel
+        public CharacterModel OwnerModel
         {
             get
             {
-                if (!_ownerModel) _ownerModel = owner?.GetCharacterModel();
+                if (!_ownerModel) _ownerModel = Owner?.GetCharacterModel();
                 return _ownerModel;
             }
         }
 
         private PersonalizationMultiplayerPlayerInfo _playerInfo;
-        public PersonalizationMultiplayerPlayerInfo playerInfo
+        public PersonalizationMultiplayerPlayerInfo PlayerInfo
         {
             get
             {
                 if (!_hasInitialized || !_isMultiplayer || !_isPlayer) return null;
 
-                FirstPersonMover firstPersonMover = owner;
+                FirstPersonMover firstPersonMover = Owner;
                 if (!firstPersonMover || !firstPersonMover.IsAlive())
                     return null;
 
-                if (_playerInfo == null) _playerInfo = PersonalizationMultiplayerManager.Instance.GetPlayInfo(owner.GetPlayFabID());
+                if (_playerInfo == null) _playerInfo = PersonalizationMultiplayerManager.Instance.GetPlayInfo(Owner.GetPlayFabID());
                 return _playerInfo;
             }
         }
@@ -90,7 +90,7 @@ namespace OverhaulMod.Content.Personalization
 
         private void Start()
         {
-            FirstPersonMover firstPersonMover = owner;
+            FirstPersonMover firstPersonMover = Owner;
             if (!firstPersonMover || !firstPersonMover.IsAlive())
             {
                 _hasOwnerDied = true;
@@ -109,7 +109,7 @@ namespace OverhaulMod.Content.Personalization
 
         private void OnEnable()
         {
-            FirstPersonMover firstPersonMover = owner;
+            FirstPersonMover firstPersonMover = Owner;
             if (!firstPersonMover || !firstPersonMover.IsAlive())
             {
                 base.enabled = false;
@@ -218,14 +218,14 @@ namespace OverhaulMod.Content.Personalization
 
         public void RefreshWeaponSkins()
         {
-            CharacterModel characterModel = ownerModel;
+            CharacterModel characterModel = OwnerModel;
             if (!characterModel || characterModel.WeaponModels == null) return;
 
             foreach (WeaponModel weaponModel in characterModel.WeaponModels)
             {
-                if (!PersonalizationManager.SupportedWeapons.Contains(weaponModel.WeaponType)) continue;
+                if (!PersonalizationManager.IsWeaponCustomizationSupported(weaponModel.WeaponType)) continue;
 
-                if (REFRESH_SKINS_ONLY_OF_AVAILABLE_WEAPONS && !owner._equippedWeapons.Contains(weaponModel.WeaponType)) continue;
+                if (REFRESH_SKINS_ONLY_OF_AVAILABLE_WEAPONS && !Owner._equippedWeapons.Contains(weaponModel.WeaponType)) continue;
 
                 if (RefreshSkinOfWeapon(weaponModel.WeaponType) && REFRESH_ONE_SKIN_AT_TIME)
                 {
@@ -264,14 +264,14 @@ namespace OverhaulMod.Content.Personalization
                 {
                     if (!skinMatchesUpgrade)
                     {
-                        RefreshWeaponModelReferences(ownerModel.GetWeaponModel(weaponType));
+                        RefreshWeaponModelReferences(OwnerModel.GetWeaponModel(weaponType));
                     }
 
                     SpawnItem(targetSkinId);
 
                     if (shouldDestroySkin && _isMainPlayer && PersonalizationManager.Instance.IsSelectingItems()) // play vfx only if the player has switched the skin
                     {
-                        WeaponModel weaponModel = ownerModel.GetWeaponModel(weaponType);
+                        WeaponModel weaponModel = OwnerModel.GetWeaponModel(weaponType);
                         if (weaponModel && weaponModel.isActiveAndEnabled) AttackManager.Instance.CreateBattleCruiserGatlingImpactVFX(weaponModel.transform.position);
                     }
                 }
@@ -304,7 +304,7 @@ namespace OverhaulMod.Content.Personalization
 
         public void RefreshBowSkinVisibility()
         {
-            FirstPersonMover firstPersonMover = owner;
+            FirstPersonMover firstPersonMover = Owner;
             if (!firstPersonMover) return;
 
             PersonalizationEditorObjectBehaviour weaponSkinObject = GetSpawnedWeaponSkin(WeaponType.Bow);
@@ -338,14 +338,14 @@ namespace OverhaulMod.Content.Personalization
 
         public void RefreshArrowHolderReference()
         {
-            CharacterModel characterModel = ownerModel;
+            CharacterModel characterModel = OwnerModel;
             if (characterModel) characterModel.ArrowHolder = _arrowSpawnPoint ?? _defaultArrowSpawnPoint;
         }
 
         public void RefreshWeaponModelReferences()
         {
             _weaponTypeToParts.Clear();
-            CharacterModel characterModel = ownerModel;
+            CharacterModel characterModel = OwnerModel;
             if (!characterModel || characterModel.WeaponModels.IsNullOrEmpty()) return;
 
             foreach (WeaponModel weaponModel in characterModel.WeaponModels)
@@ -366,14 +366,14 @@ namespace OverhaulMod.Content.Personalization
 
         public bool IsSkinMatchingWeaponUpgrade(WeaponType weaponType)
         {
-            WeaponVariantManager.GetWeaponVariant(owner, weaponType, out WeaponVariant2 actualVariant);
+            WeaponVariantManager.GetWeaponVariant(Owner, weaponType, out WeaponVariant2 actualVariant);
             return GetWeaponVariantOfSpawnedSkin(weaponType) == actualVariant;
         }
 
         public void RefreshVariantOfWeapon(WeaponType weaponType)
         {
             Dictionary<WeaponType, WeaponVariant2> d = _weaponTypeToVariant;
-            WeaponVariantManager.GetWeaponVariant(owner, weaponType, out WeaponVariant2 weaponVariant);
+            WeaponVariantManager.GetWeaponVariant(Owner, weaponType, out WeaponVariant2 weaponVariant);
 
             if (d.ContainsKey(weaponType))
                 d[weaponType] = weaponVariant;
@@ -394,7 +394,7 @@ namespace OverhaulMod.Content.Personalization
         {
             if (weaponType == ModWeaponsManager.SCYTHE_TYPE)
             {
-                WeaponModel weaponModel = ownerModel.GetWeaponModel(ModWeaponsManager.SCYTHE_TYPE);
+                WeaponModel weaponModel = OwnerModel.GetWeaponModel(ModWeaponsManager.SCYTHE_TYPE);
                 if (weaponModel && weaponModel is ModWeaponModel modWeaponModel)
                 {
                     modWeaponModel.SetIsModelActive(value);
@@ -465,11 +465,14 @@ namespace OverhaulMod.Content.Personalization
         public PersonalizationEditorObjectBehaviour SpawnItem(PersonalizationItemInfo itemInfo)
         {
             bool inEditor = PersonalizationEditorManager.IsInEditorMode();
-            if (itemInfo == null || itemInfo.RootObject == null || HasSpawnedItem(itemInfo) || !owner || (!inEditor && !itemInfo.IsUnlocked(owner)))
+            if (itemInfo == null || itemInfo.RootObject == null || HasSpawnedItem(itemInfo) || !Owner)
                 return null;
 
-            EnemyType enemyType = owner.CharacterType;
-            if (owner.IsMindSpaceCharacter || enemyType == EnemyType.ZombieArcher1 || enemyType == EnemyType.FleetAnalysisBot1 || enemyType == EnemyType.FleetAnalysisBot2 || enemyType == EnemyType.FleetAnalysisBot3 || enemyType == EnemyType.FleetAnalysisBot4 || (itemInfo.Category == PersonalizationCategory.WeaponSkins && itemInfo.Weapon == WeaponType.Bow && ModSpecialUtils.IsModEnabled("ee32ba1b-8c92-4f50-bdf4-400a14da829e")))
+            if (!inEditor && !itemInfo.IsUnlocked(Owner))
+                return null;
+
+            EnemyType enemyType = Owner.CharacterType;
+            if (Owner.IsMindSpaceCharacter || enemyType == EnemyType.ZombieArcher1 || enemyType == EnemyType.FleetAnalysisBot1 || enemyType == EnemyType.FleetAnalysisBot2 || enemyType == EnemyType.FleetAnalysisBot3 || enemyType == EnemyType.FleetAnalysisBot4 || (itemInfo.Category == PersonalizationCategory.WeaponSkins && itemInfo.Weapon == WeaponType.Bow && ModSpecialUtils.IsModEnabled("ee32ba1b-8c92-4f50-bdf4-400a14da829e")))
                 return null;
 
             Transform transform = GetParentForItem(itemInfo);
@@ -478,7 +481,7 @@ namespace OverhaulMod.Content.Personalization
             MechBodyPart bodyPartForAccessory = null;
             if (itemInfo.Category == PersonalizationCategory.Accessories)
             {
-                List<MechBodyPart> bodyParts = owner.GetAllBodyParts();
+                List<MechBodyPart> bodyParts = Owner.GetAllBodyParts();
                 if (bodyParts != null && bodyParts.Count != 0)
                 {
                     foreach (MechBodyPart bodyPart in bodyParts)
@@ -511,7 +514,7 @@ namespace OverhaulMod.Content.Personalization
 
             if (itemInfo.Category == PersonalizationCategory.WeaponSkins)
             {
-                WeaponModel weaponModel = ownerModel.GetWeaponModel(itemInfo.Weapon);
+                WeaponModel weaponModel = OwnerModel.GetWeaponModel(itemInfo.Weapon);
                 if (weaponModel && !weaponModel.PartsToDrop.Contains(behaviour.transform))
                 {
                     List<Transform> list = weaponModel.PartsToDrop.ToList();
@@ -579,7 +582,7 @@ namespace OverhaulMod.Content.Personalization
 
             if (personalizationItemInfo.Category == PersonalizationCategory.WeaponSkins)
             {
-                WeaponModel weaponModel = ownerModel.GetWeaponModel(behaviour.ControllerInfo.ItemInfo.Weapon);
+                WeaponModel weaponModel = OwnerModel.GetWeaponModel(behaviour.ControllerInfo.ItemInfo.Weapon);
                 if (weaponModel && weaponModel.PartsToDrop.Contains(behaviour.transform))
                 {
                     List<Transform> list = weaponModel.PartsToDrop.ToList();
@@ -717,23 +720,23 @@ namespace OverhaulMod.Content.Personalization
                 Transform bodyPart = TransformUtils.FindChildRecursive(base.transform, personalizationItemInfo.BodyPartName);
                 if (!bodyPart)
                 {
-                    if (owner.HasCharacterModel())
+                    if (Owner.HasCharacterModel())
                     {
-                        bodyPart = ownerModel.transform;
+                        bodyPart = OwnerModel.transform;
                     }
                     else
                     {
-                        bodyPart = owner.transform;
+                        bodyPart = Owner.transform;
                     }
                 }
                 return bodyPart;
             }
             else if (personalizationItemInfo.Category == PersonalizationCategory.WeaponSkins)
             {
-                Transform weaponModelTransform = ownerModel.GetWeaponModel(personalizationItemInfo.Weapon)?.transform;
+                Transform weaponModelTransform = OwnerModel.GetWeaponModel(personalizationItemInfo.Weapon)?.transform;
                 if (!personalizationItemInfo.OverrideParent.IsNullOrEmpty())
                 {
-                    Transform overridenParent = TransformUtils.FindChildRecursive(owner.transform, personalizationItemInfo.OverrideParent);
+                    Transform overridenParent = TransformUtils.FindChildRecursive(Owner.transform, personalizationItemInfo.OverrideParent);
                     if (overridenParent)
                         weaponModelTransform = overridenParent;
                 }
@@ -754,7 +757,7 @@ namespace OverhaulMod.Content.Personalization
 
             if (_isMultiplayer)
             {
-                PersonalizationMultiplayerPlayerInfo multiplayerPlayerInfo = playerInfo;
+                PersonalizationMultiplayerPlayerInfo multiplayerPlayerInfo = PlayerInfo;
                 if (multiplayerPlayerInfo == null)
                     return string.Empty;
 
@@ -779,16 +782,25 @@ namespace OverhaulMod.Content.Personalization
 
         public List<string> GetAccessoriesDependingOnOwner()
         {
-            if (!_hasInitialized || _isMultiplayer) return null;
+            if (!_hasInitialized) return null;
 
             if (_isEnemy && !PersonalizationUserInfo.AllowEnemiesUseSkins) return null;
 
-            return PersonalizationUserInfo.GetEquippedAccessories();
+            if (_isMultiplayer)
+            {
+                PersonalizationMultiplayerPlayerInfo multiplayerPlayerInfo = PlayerInfo;
+                if (multiplayerPlayerInfo == null)
+                    return null;
+
+                return PersonalizationUserInfo.GetItemList(multiplayerPlayerInfo.Accessories);
+            }
+
+            return PersonalizationUserInfo.GetEquippedAccessoriesList();
         }
 
         public bool GetCharacterModelPartIndices(out int headModelIndex, out int torsoModelIndex, out int legsModelIndex)
         {
-            FirstPersonMover robot = owner;
+            FirstPersonMover robot = Owner;
             if (!robot)
             {
                 headModelIndex = -1;
@@ -849,7 +861,7 @@ namespace OverhaulMod.Content.Personalization
 
         private void onPlayerInfoUpdate(string playFabId)
         {
-            if (playFabId == owner.GetPlayFabID()) RefreshWeaponSkinsNextFrame();
+            if (playFabId == Owner.GetPlayFabID()) RefreshWeaponSkinsNextFrame();
         }
     }
 }

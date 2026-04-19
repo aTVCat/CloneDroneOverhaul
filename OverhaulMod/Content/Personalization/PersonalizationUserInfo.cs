@@ -29,6 +29,9 @@ namespace OverhaulMod.Content.Personalization
         [ModSetting(ModSettingsConstants.ACCESSORIES, "")]
         public static string Accessories;
 
+        [ModSetting(ModSettingsConstants.PETS, "")]
+        public static string Pets;
+
         [ModSetting(ModSettingsConstants.ALLOW_ENEMIES_USE_WEAPON_SKINS, true)]
         public static bool AllowEnemiesUseSkins;
 
@@ -253,34 +256,118 @@ namespace OverhaulMod.Content.Personalization
             return null;
         }
 
+        public static bool IsWeaponSkinEquipped(WeaponType weaponType, string itemId)
+        {
+            return GetWeaponSkin(weaponType) == itemId;
+        }
+
         public static void SetAccessoryEquipped(string itemId, bool value)
         {
-            string stringValue = PersonalizationUserInfo.Accessories;
-            if (stringValue == null)
-                stringValue = string.Empty;
+            SetItemEquipped(PersonalizationCategory.Accessories, itemId, value);
+        }
 
+        public static void SetPetEquipped(string itemId, bool value)
+        {
+            SetItemEquipped(PersonalizationCategory.Pets, itemId, value);
+        }
+
+        public static void SetItemEquipped(PersonalizationCategory category, string itemId, bool value)
+        {
+            if (category != PersonalizationCategory.Accessories && category != PersonalizationCategory.Pets)
+                throw new ArgumentException($"Must be either {nameof(PersonalizationCategory.Accessories)} or {nameof(PersonalizationCategory.Pets)}", nameof(category));
+
+            // get current value
+            string equippedItemsRawList;
+            if (category == PersonalizationCategory.Accessories)
+            {
+                equippedItemsRawList = Accessories;
+            }
+            else if (category == PersonalizationCategory.Pets)
+            {
+                equippedItemsRawList = Pets;
+            }
+            else
+            {
+                equippedItemsRawList = null;
+            }
+            if (equippedItemsRawList == null) equippedItemsRawList = string.Empty;
+
+            // update value
             string formattedValue = $"{itemId},";
-
-            if (value && !stringValue.Contains(itemId))
+            if (value && !equippedItemsRawList.Contains(itemId))
             {
-                stringValue += formattedValue;
+                equippedItemsRawList += formattedValue;
             }
-            else if (!value && stringValue.Contains(formattedValue))
+            else if (!value && equippedItemsRawList.Contains(formattedValue))
             {
-                stringValue = stringValue.Replace(formattedValue, string.Empty);
+                equippedItemsRawList = equippedItemsRawList.Replace(formattedValue, string.Empty);
             }
 
-            ModSettingsManager.SetStringValue(ModSettingsConstants.ACCESSORIES, stringValue);
+            // set value
+            string settingId;
+            if (category == PersonalizationCategory.Accessories)
+            {
+                settingId = ModSettingsConstants.ACCESSORIES;
+            }
+            else if (category == PersonalizationCategory.Pets)
+            {
+                settingId = ModSettingsConstants.PETS;
+            }
+            else
+            {
+                settingId = null;
+            }
+            ModSettingsManager.SetStringValue(settingId, equippedItemsRawList);
         }
 
         public static bool IsAccessoryEquipped(string itemId)
         {
-            return !Accessories.IsNullOrEmpty() && Accessories.Contains(itemId);
+            return IsItemEquipped(PersonalizationCategory.Accessories, itemId);
         }
 
-        public static List<string> GetEquippedAccessories()
+        public static bool IsPetEquipped(string itemId)
         {
-            return new List<string>(StringUtils.GetNonEmptySplitOfCommaSeparatedString(Accessories));
+            return IsItemEquipped(PersonalizationCategory.Pets, itemId);
+        }
+
+        public static bool IsItemEquipped(PersonalizationCategory category, string itemId)
+        {
+            if (category != PersonalizationCategory.Accessories && category != PersonalizationCategory.Pets)
+                throw new ArgumentException($"Must be either {nameof(PersonalizationCategory.Accessories)} or {nameof(PersonalizationCategory.Pets)}", nameof(category));
+
+            string equippedItemsRawList;
+            if (category == PersonalizationCategory.Accessories)
+            {
+                equippedItemsRawList = Accessories;
+            }
+            else if (category == PersonalizationCategory.Pets)
+            {
+                equippedItemsRawList = Pets;
+            }
+            else
+            {
+                equippedItemsRawList = null;
+            }
+
+            return !equippedItemsRawList.IsNullOrEmpty() && equippedItemsRawList.Contains(itemId);
+        }
+
+        public static List<string> GetEquippedAccessoriesList()
+        {
+            return GetItemList(Accessories);
+        }
+
+        public static List<string> GetEquippedPetsList()
+        {
+            return GetItemList(Pets);
+        }
+
+        public static List<string> GetItemList(string rawData)
+        {
+            if (rawData.IsNullOrEmpty() || rawData == "_")
+                return null;
+
+            return new List<string>(StringUtils.GetNonEmptySplitOfCommaSeparatedString(rawData));
         }
     }
 }

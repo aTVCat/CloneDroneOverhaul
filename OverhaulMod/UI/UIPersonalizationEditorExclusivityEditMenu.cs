@@ -132,8 +132,7 @@ namespace OverhaulMod.UI
             list.Add(new PersonalizationItemLockInfo()
             {
                 PlayerNickname = SteamFriends.GetPersonaName(),
-                PlayerPlayFabID = ModUserInfo.localPlayerPlayFabID,
-                PlayerSteamID = ModUserInfo.localPlayerSteamID.m_SteamID,
+                PlayerPlayFabID = ModUserInfo.localPlayerPlayFabID
             });
             populateContainer();
         }

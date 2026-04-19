@@ -33,7 +33,7 @@ namespace OverhaulMod.Content.Personalization
             {
                 if (itemInfo.Weapon != ModWeaponsManager.SCYTHE_TYPE)
                 {
-                    CharacterModel.PatternColorSet colors = Reference.owner.GetCharacterModel().GetFavouriteColors();
+                    CharacterModel.PatternColorSet colors = Reference.Owner.GetCharacterModel().GetFavouriteColors();
                     switch (itemInfo.Weapon)
                     {
                         case WeaponType.Sword:
@@ -47,7 +47,7 @@ namespace OverhaulMod.Content.Personalization
                     }
                 }
             }
-            return Reference.owner.GetCharacterModel().GetFavouriteColor();
+            return Reference.Owner.GetCharacterModel().GetFavouriteColor();
         }
     }
 }

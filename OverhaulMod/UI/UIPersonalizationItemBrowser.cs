@@ -520,7 +520,7 @@ namespace OverhaulMod.UI
             if (target)
             {
                 weaponType = target.GetEquippedWeaponType();
-                if (!PersonalizationManager.SupportedWeapons.Contains(weaponType)) weaponType = WeaponType.Sword;
+                if (!PersonalizationManager.IsWeaponCustomizationSupported(weaponType)) weaponType = WeaponType.Sword;
             }
             else
             {

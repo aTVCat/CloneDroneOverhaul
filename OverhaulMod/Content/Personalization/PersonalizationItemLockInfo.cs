@@ -5,7 +5,5 @@
         public string PlayerNickname;
 
         public string PlayerPlayFabID;
-        public ulong PlayerSteamID;
-        public long PlayerDiscordUserID;
     }
 }

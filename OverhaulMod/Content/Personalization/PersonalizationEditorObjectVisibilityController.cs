@@ -55,19 +55,19 @@ namespace OverhaulMod.Content.Personalization
             if (PersonalizationEditorManager.IsInEditorMode())
                 weaponVariant1 = PersonalizationEditorManager.Instance.PreviewPresetKey;
             else
-                WeaponVariantManager.GetWeaponVariant(objectBehaviour.ControllerInfo.Reference.owner, objectBehaviour.ControllerInfo.ItemInfo.Weapon, out weaponVariant1);
+                WeaponVariantManager.GetWeaponVariant(objectBehaviour.ControllerInfo.Reference.Owner, objectBehaviour.ControllerInfo.ItemInfo.Weapon, out weaponVariant1);
 
             return enableIfWeaponVariant == weaponVariant1;
         }
 
         public void GetWeaponVariant(out WeaponVariant2 showConditions)
         {
-            WeaponVariantManager.GetWeaponVariant(objectBehaviour.ControllerInfo.Reference.owner, objectBehaviour.ControllerInfo.ItemInfo.Weapon, out showConditions);
+            WeaponVariantManager.GetWeaponVariant(objectBehaviour.ControllerInfo.Reference.Owner, objectBehaviour.ControllerInfo.ItemInfo.Weapon, out showConditions);
         }
 
         public void GetWeaponVariant(out bool isOnFire, out bool isGreatSword)
         {
-            WeaponVariantManager.GetWeaponVariant(objectBehaviour.ControllerInfo.Reference.owner, objectBehaviour.ControllerInfo.ItemInfo.Weapon, out isOnFire, out isGreatSword);
+            WeaponVariantManager.GetWeaponVariant(objectBehaviour.ControllerInfo.Reference.Owner, objectBehaviour.ControllerInfo.ItemInfo.Weapon, out isOnFire, out isGreatSword);
         }
     }
 }

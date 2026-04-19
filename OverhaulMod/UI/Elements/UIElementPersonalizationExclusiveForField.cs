@@ -49,14 +49,6 @@ namespace OverhaulMod.UI
                     {
                         toAppend = item.PlayerPlayFabID;
                     }
-                    else if (item.PlayerSteamID != 0UL)
-                    {
-                        toAppend = item.PlayerSteamID;
-                    }
-                    else if (item.PlayerDiscordUserID != 0L)
-                    {
-                        toAppend = item.PlayerDiscordUserID;
-                    }
                     else
                     {
                         toAppend = "N/A";

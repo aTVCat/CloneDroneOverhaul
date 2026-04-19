@@ -87,17 +87,15 @@ namespace OverhaulMod.Content.Personalization
                 RootObject.InitializeTransformArrays();
             }
 
+            RootObject.ResetRootTransform();
+
             if (Category == PersonalizationCategory.WeaponSkins)
             {
-                RootObject.SetPosition(Vector3.zero);
-                RootObject.SetEulerAngles(Vector3.zero);
-                RootObject.SetScale(Vector3.one);
-
                 if (!PersonalizationManager.IsWeaponCustomizationSupported(Weapon)) Weapon = WeaponType.Sword;
             }
             else if (Category == PersonalizationCategory.Accessories)
             {
-                if (BodyPartName.IsNullOrEmpty() || !PersonalizationManager.SupportedBodyParts.Contains(BodyPartName)) BodyPartName = "Head";
+                if (BodyPartName.IsNullOrEmpty() || !PersonalizationManager.IsBodyPartSupported(BodyPartName)) BodyPartName = "Head";
             }
 
             GetImportedFiles();
@@ -134,11 +132,11 @@ namespace OverhaulMod.Content.Personalization
 
         public bool IsUnlocked(Character character)
         {
-            if (!IsExclusive())
+            if (!IsExclusive() || !character || !character.IsAttachedAndAlive())
                 return true;
 
             bool isSinglePlayer = GameModeManager.IsSinglePlayer();
-            string playFabId = isSinglePlayer || !character || !character.IsAttachedAndAlive() ? ModUserInfo.localPlayerPlayFabID : character.GetPlayFabID();
+            string playFabId = isSinglePlayer ? ModUserInfo.localPlayerPlayFabID : character.GetPlayFabID();
 
             if (ExclusivePerkManager.Instance.HasUnlockedPerkForUser(ExclusivePerkType.CustomizationItemsVerifierRole, playFabId, CSteamID.Nil))
                 return true;
@@ -169,7 +167,7 @@ namespace OverhaulMod.Content.Personalization
 
         public bool IsEquipped()
         {
-            return PersonalizationManager.GetIsItemEquipped(this);
+            return PersonalizationManager.IsItemEquipped(this);
         }
 
         public string GetSpecialInfoString()

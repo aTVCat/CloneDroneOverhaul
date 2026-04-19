@@ -6,6 +6,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using UnityEngine.Networking;
 
 namespace OverhaulMod.Content.Personalization
@@ -21,15 +22,6 @@ namespace OverhaulMod.Content.Personalization
         public const string ITEM_EQUIPPED_OR_UNEQUIPPED_EVENT = "PersonalizationItemEquippedOrUnequipped";
 
         public const string USER_INFO_FILE = "PersonalizationUserInfo.json";
-
-        public static readonly WeaponType[] SupportedWeapons = new WeaponType[]
-        {
-            WeaponType.Sword,
-            WeaponType.Bow,
-            WeaponType.Hammer,
-            WeaponType.Spear,
-            ModWeaponsManager.SCYTHE_TYPE,
-        };
 
         public static readonly string[] SupportedBodyParts = new string[]
         {
@@ -406,12 +398,18 @@ namespace OverhaulMod.Content.Personalization
 
         public static bool IsWeaponCustomizationSupported(WeaponType weaponType)
         {
-            return weaponType != WeaponType.None && (weaponType == WeaponType.Sword
+            return weaponType != WeaponType.None &&
+                  (weaponType == WeaponType.Sword
                 || weaponType == WeaponType.Bow
                 || weaponType == WeaponType.Hammer
                 || weaponType == WeaponType.Spear
                 || weaponType == WeaponType.Shield
                 || weaponType == ModWeaponsManager.SCYTHE_TYPE);
+        }
+
+        public static bool IsBodyPartSupported(string bodyPart)
+        {
+            return SupportedBodyParts.Contains(bodyPart);
         }
 
         public void DestroyWeaponSkinOnMainPlayer(WeaponType weaponType)
@@ -442,18 +440,23 @@ namespace OverhaulMod.Content.Personalization
                 if (firstPersonMover && firstPersonMover.IsAttachedAndAlive())
                     allPlayers.Add(firstPersonMover);
 
-                SetIsItemEquipped(item, true);
+                SetItemEquipped(item, true);
             }
-            else if (item.Category == PersonalizationCategory.Accessories)
+            else if (item.Category == PersonalizationCategory.Accessories || item.Category == PersonalizationCategory.Pets)
             {
-                SetIsItemEquipped(item, !GetIsItemEquipped(item));
+                SetItemEquipped(item, !IsItemEquipped(item));
             }
+
+            GlobalEventManager.Instance.Dispatch(ITEM_EQUIPPED_OR_UNEQUIPPED_EVENT);
 
             RefreshCustomizationOnAllRobots(false, false);
         }
 
-        public static void SetIsItemEquipped(PersonalizationItemInfo item, bool value)
+        public static void SetItemEquipped(PersonalizationItemInfo item, bool value)
         {
+            if (item == null)
+                return;
+
             string id = item.ItemID;
             switch (item.Category)
             {
@@ -463,35 +466,26 @@ namespace OverhaulMod.Content.Personalization
                 case PersonalizationCategory.Accessories:
                     PersonalizationUserInfo.SetAccessoryEquipped(item.ItemID, value);
                     break;
+                case PersonalizationCategory.Pets:
+                    PersonalizationUserInfo.SetPetEquipped(item.ItemID, value);
+                    break;
             }
-
-            GlobalEventManager.Instance.Dispatch(ITEM_EQUIPPED_OR_UNEQUIPPED_EVENT);
         }
 
-        public static bool GetIsItemEquipped(PersonalizationItemInfo item)
+        public static bool IsItemEquipped(PersonalizationItemInfo item)
         {
+            if (item == null)
+                return false;
+
             string itemId = item.ItemID;
             switch (item.Category)
             {
                 case PersonalizationCategory.WeaponSkins:
-                    switch (item.Weapon)
-                    {
-                        case WeaponType.Sword:
-                            return PersonalizationUserInfo.SwordSkin == itemId;
-                        case WeaponType.Bow:
-                            return PersonalizationUserInfo.BowSkin == itemId;
-                        case WeaponType.Hammer:
-                            return PersonalizationUserInfo.HammerSkin == itemId;
-                        case WeaponType.Spear:
-                            return PersonalizationUserInfo.SpearSkin == itemId;
-                        case WeaponType.Shield:
-                            return PersonalizationUserInfo.ShieldSkin == itemId;
-                        case ModWeaponsManager.SCYTHE_TYPE:
-                            return PersonalizationUserInfo.ScytheSkin == itemId;
-                    }
-                    return false;
+                    return PersonalizationUserInfo.IsWeaponSkinEquipped(item.Weapon, itemId);
                 case PersonalizationCategory.Accessories:
-                    return !itemId.IsNullOrEmpty() && PersonalizationUserInfo.Accessories.Contains(itemId);
+                    return PersonalizationUserInfo.IsAccessoryEquipped(itemId);
+                case PersonalizationCategory.Pets:
+                    return PersonalizationUserInfo.IsPetEquipped(itemId);
             }
             return false;
         }

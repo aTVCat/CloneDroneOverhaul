@@ -59,7 +59,7 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(FirstPersonMover.tryEnableJump))]
         private static void tryEnableJump_Prefix(FirstPersonMover __instance, FPMoveCommand moveCommand, Vector3 platformVelocity, float boltFrameDeltaTime, bool isImmobile, bool isFirstExecution)
         {
-            if (GameModeManager.IsMultiplayer() || !__instance.IsMainPlayer() || !__instance._isJumping || !moveCommand.Input.Jump)
+            if (GameModeManager.IsMultiplayer() || !__instance.IsMainPlayer() || __instance.isImmobilized() || !__instance._isJumping || !moveCommand.Input.Jump)
                 return;
 
             CharacterExtension characterExtension = ModComponentCache.GetRobotInventory(__instance.transform);
@@ -80,8 +80,7 @@ namespace OverhaulMod.Patches
                 Vector3 velocityToAdd = (__instance.JumpVelocity * 1.4f) + (__instance.transform.forward * 4f);
                 Vector3 velocity = __instance.GetVelocity();
                 velocity.x += velocityToAdd.x;
-                if (velocity.y < 0f) velocity.y = 0f;
-                else velocity.y *= 0.5f;
+                velocity.y = Mathf.Max(0f, velocity.y * 0.5f);
                 velocity.y += velocityToAdd.y;
                 velocity.z += velocityToAdd.z;
                 __instance.SetVelocity(velocity);
