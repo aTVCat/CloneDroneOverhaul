@@ -28,13 +28,13 @@ namespace OverhaulMod
                     result = ModBuild.VERSION_4_3;
                     break;
                 case FeatureType.Pets:
-                    result = ModBuild.VERSION_4_3;
+                    result = false;// ModBuild.VERSION_4_3;
                     break;
                 case FeatureType.UISounds:
                     result = ModBuild.VERSION_4_3;
                     break;
                 case FeatureType.SettingsMenuReworkV2:
-                    result = ModBuild.VERSION_4_3;
+                    result = false;
                     break;
                 default:
                     return false;

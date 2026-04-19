@@ -194,24 +194,36 @@ namespace OverhaulMod
 
         public void SendVerificationRequest(string zipPath, PersonalizationItemInfo personalizationItem, Action successCallback, Action<string> errorCallback)
         {
-            string weaponString;
-            switch (personalizationItem.Weapon)
+            string fullCategoryDetailString = "- N/A";
+            if (personalizationItem.Category == PersonalizationCategory.WeaponSkins)
             {
-                case Combat.ModWeaponsManager.SCYTHE_TYPE:
-                    weaponString = "Scythe";
-                    break;
-                default:
-                    weaponString = personalizationItem.Weapon.ToString();
-                    break;
-            }
+                string weaponString;
+                switch (personalizationItem.Weapon)
+                {
+                    case Combat.ModWeaponsManager.SCYTHE_TYPE:
+                        weaponString = "Scythe";
+                        break;
+                    default:
+                        weaponString = personalizationItem.Weapon.ToString();
+                        break;
+                }
 
-            int color = int.Parse("32a852", System.Globalization.NumberStyles.HexNumber);
+                fullCategoryDetailString = $"- **Weapon:** {weaponString}";
+            }
+            else if (personalizationItem.Category == PersonalizationCategory.Accessories)
+            {
+                fullCategoryDetailString = $"- **Body part:** {personalizationItem.BodyPartName}";
+            }
+                
+            bool update = personalizationItem.IsVerified;
+
+            int color = int.Parse(update ? "ffc526" : "32a852", System.Globalization.NumberStyles.HexNumber);
             string userInfo = $"- **User:** {SteamFriends.GetPersonaName()} [[Profile]](<https://steamcommunity.com/profiles/{ModUserInfo.localPlayerSteamID}>)\n- **PlayFab ID:** {ModUserInfo.localPlayerPlayFabID}";
-            string itemInfo = $"- **Name:** {personalizationItem.Name}\n- **Author:** {personalizationItem.GetAuthorsString()}\n- **Category:** {personalizationItem.Category}\n- **Weapon:** {weaponString}\n- **Version:** {personalizationItem.Version}";
+            string itemInfo = $"- **Name:** {personalizationItem.Name}\n- **Author:** {personalizationItem.GetAuthorsString()}\n- **Category:** {personalizationItem.Category}\n{fullCategoryDetailString}\n- **Version:** {personalizationItem.Version}";
 
             WebhookObject obj1 = new WebhookObject()
             {
-                content = $"## __{(personalizationItem.IsVerified ? "An item to update" : "New item to verify")}. v{ModBuild.Version}__{(personalizationItem.IsSentForVerification ? "\n# REUPLOAD" : string.Empty)}\nid: {personalizationItem.ItemID}",
+                content = $"## __{(update ? "An item to update" : "New item to verify")}. v{ModBuild.Version}__{(personalizationItem.IsSentForVerification ? "\n# REUPLOAD" : string.Empty)}\nid: {personalizationItem.ItemID}",
                 embeds = new Embed[]
                 {
                     new Embed()
