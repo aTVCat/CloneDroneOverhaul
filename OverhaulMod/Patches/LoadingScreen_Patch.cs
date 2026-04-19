@@ -10,6 +10,8 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(LoadingScreen.Show))]
         private static void Show_Postfix()
         {
+            if (!ModUIManager.Instance) return;
+
             _ = ModUIConstants.ShowLoadingScreen();
         }
 
@@ -17,6 +19,8 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(LoadingScreen.Hide))]
         private static void Hide_Postfix()
         {
+            if (!ModUIManager.Instance) return;
+
             ModUIConstants.HideLoadingScreen();
         }
     }

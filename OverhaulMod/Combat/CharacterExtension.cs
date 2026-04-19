@@ -70,7 +70,7 @@ namespace OverhaulMod.Combat
                 {
                     bool shouldShowTrails = DoubleJumpCount != 0 && TimeManager.GetBoltServerTime() < _doubleJumpTime + 1f;
                     foreach (ParticleSystem trail in _doubleJumpParticles)
-                        setParticleEmissionEnabled(trail, shouldShowTrails);
+                        trail.SetEmissionEnabled(shouldShowTrails);
                 }
             }
 
@@ -155,12 +155,6 @@ namespace OverhaulMod.Combat
             DoubleJumpCount++;
             _doubleJumpTime = TimeManager.GetBoltServerTime();
             _timeToAllowDoubleJump = _doubleJumpTime + 1f;
-        }
-
-        private void setParticleEmissionEnabled(ParticleSystem particleSystem, bool value)
-        {
-            ParticleSystem.EmissionModule emission = particleSystem.emission;
-            emission.enabled = value;
         }
 
         private bool allowSwitchingWeapons()

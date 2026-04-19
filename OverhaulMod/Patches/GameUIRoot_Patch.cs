@@ -85,7 +85,7 @@ namespace OverhaulMod.Patches
                 }
 
                 ModUIManager modUIManager = ModUIManager.Instance;
-                if (!modUIManager || modUIManager.skipHidingCustomUIs)
+                if (!modUIManager || modUIManager.SkipHidingCustomUIs)
                     return true;
 
                 if (modUIManager.TryInvokeAction())

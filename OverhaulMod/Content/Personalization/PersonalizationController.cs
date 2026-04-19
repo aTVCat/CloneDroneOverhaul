@@ -444,7 +444,7 @@ namespace OverhaulMod.Content.Personalization
             DestroyItemsOfCategory(PersonalizationCategory.Accessories);
 
             List<string> accessories = GetAccessoriesDependingOnOwner();
-            if(accessories != null)
+            if (accessories != null)
             {
                 foreach (string item in accessories)
                 {
@@ -531,7 +531,7 @@ namespace OverhaulMod.Content.Personalization
             }
             else if (itemInfo.Category == PersonalizationCategory.Accessories)
             {
-                if(GetCharacterModelPartIndices(out int headModel, out int torsoModel, out int legsModel))
+                if (GetCharacterModelPartIndices(out int headModel, out int torsoModel, out int legsModel))
                 {
                     AccessoryOffset offset = null;
                     string bodyPart = itemInfo.BodyPartName;
@@ -784,7 +784,11 @@ namespace OverhaulMod.Content.Personalization
         {
             if (!_hasInitialized) return null;
 
-            if (_isEnemy && !PersonalizationUserInfo.AllowEnemiesUseSkins) return null;
+            if (_isEnemy) return PersonalizationUserInfo.AllowEnemiesUseSkins ? PersonalizationUserInfo.GetEquippedAccessoriesList() : null;
+
+            if (_isMainPlayer && UIPersonalizationItemBrowser.IsPreviewing) return PersonalizationUserInfo.GetEquippedAccessoriesList();
+
+            if (!_isPlayer) return null;
 
             if (_isMultiplayer)
             {
@@ -861,7 +865,15 @@ namespace OverhaulMod.Content.Personalization
 
         private void onPlayerInfoUpdate(string playFabId)
         {
-            if (playFabId == Owner.GetPlayFabID()) RefreshWeaponSkinsNextFrame();
+            if (playFabId == Owner.GetPlayFabID())
+            {
+                CharacterUpdateScheduler.Instance.UpdateCharacter(Owner, new CharacterUpdateRequest()
+                {
+                    UpdateWeaponSkins = true,
+                    UpdateAccessories = true,
+                    UpdatePets = true,
+                });
+            }
         }
     }
 }

@@ -27,8 +27,7 @@ namespace OverhaulMod.Utils
 
         public static void SetEmissionEnabled(this ParticleSystem particleSystem, bool enabled)
         {
-            if (!particleSystem)
-                return;
+            if (!particleSystem) return;
 
             ParticleSystem.EmissionModule em = particleSystem.emission;
             em.enabled = enabled;

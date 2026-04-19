@@ -53,13 +53,13 @@ namespace OverhaulMod
             }
         }
 
-        public bool skipHidingCustomUIs
+        public bool SkipHidingCustomUIs
         {
             get;
             private set;
         }
 
-        public Action actionToInvoke
+        public Action ActionToInvoke
         {
             get;
             private set;
@@ -276,21 +276,21 @@ namespace OverhaulMod
 
         public void HideLegacyMenuInsteadOfCustom(GameObject objectToTrack)
         {
-            skipHidingCustomUIs = true;
+            SkipHidingCustomUIs = true;
             _ = ModActionUtils.RunCoroutine(letOriginalUIHideNextTime(objectToTrack));
         }
 
         public void InvokeActionInsteadOfHidingCustomUI(Action action)
         {
-            actionToInvoke = action;
+            ActionToInvoke = action;
         }
 
         public bool TryInvokeAction()
         {
-            if (actionToInvoke != null)
+            if (ActionToInvoke != null)
             {
-                actionToInvoke.Invoke();
-                actionToInvoke = null;
+                ActionToInvoke.Invoke();
+                ActionToInvoke = null;
                 return true;
             }
             return false;
@@ -301,7 +301,7 @@ namespace OverhaulMod
             while (objectToTrack && objectToTrack.activeInHierarchy)
                 yield return null;
 
-            skipHidingCustomUIs = false;
+            SkipHidingCustomUIs = false;
             yield break;
         }
 
