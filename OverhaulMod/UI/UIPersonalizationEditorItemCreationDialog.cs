@@ -14,14 +14,17 @@ namespace OverhaulMod.UI
         [UIElement("CloseButton")]
         private readonly Button _exitButton;
 
+        [ShowTooltipOnHighLight("Weapon skin", 2f)]
         [UIElementAction(nameof(OnWeaponSkinButtonClicked))]
         [UIElement("WeaponSkinButton")]
         private readonly Button _weaponSkinButton;
 
+        [ShowTooltipOnHighLight("Accessory", 2f)]
         [UIElementAction(nameof(OnAccessoryButtonClicked))]
         [UIElement("AccessoryButton")]
         private readonly Button _accessoryButton;
 
+        [ShowTooltipOnHighLight("Pet", 2f)]
         [UIElementAction(nameof(OnPetButtonClicked))]
         [UIElement("PetButton")]
         private readonly Button _petButton;
@@ -36,6 +39,9 @@ namespace OverhaulMod.UI
 
         [UIElement("TemplateDropdown")]
         private readonly Dropdown _templateDropdown;
+
+        [UIElement("TemplateSection", false)]
+        private readonly GameObject _templateSection;
 
         [UIElement("StatusText")]
         private readonly Text _statusText;
@@ -107,7 +113,7 @@ namespace OverhaulMod.UI
             _accessoryButton.interactable = _category != PersonalizationCategory.Accessories;
             _petButton.interactable = _category != PersonalizationCategory.Pets;
 
-            _templateDropdown.gameObject.SetActive(_category == PersonalizationCategory.WeaponSkins);
+            _templateSection.SetActive(_category == PersonalizationCategory.WeaponSkins);
         }
 
         public void ScheduleRefreshingStatus()

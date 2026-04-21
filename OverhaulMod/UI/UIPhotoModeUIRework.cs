@@ -180,9 +180,9 @@ namespace OverhaulMod.UI
             lightingPanel.sizeDelta = new Vector2(225f, 400f);
 
             UIElementExpandButton expandButton = _expandButton;
-            expandButton.rectTransform = lightingPanel;
-            expandButton.collapsedSize = lightingPanel.sizeDelta;
-            expandButton.expandedSize = new Vector2(375f, 400f);
+            expandButton.RectTransformReference = lightingPanel;
+            expandButton.CollapsedSize = lightingPanel.sizeDelta;
+            expandButton.ExpandedSize = new Vector2(375f, 400f);
 
             _directionalLightColor.colorPickerParent = base.transform;
             _fogColor.colorPickerParent = base.transform;

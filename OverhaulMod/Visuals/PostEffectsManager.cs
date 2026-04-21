@@ -236,6 +236,13 @@ namespace OverhaulMod.Visuals
             AddPostEffectsToCamera(b);
         }
 
+        public void RefreshCameraPostEffects(bool refreshMainCamera)
+        {
+            CameraManager manager = CameraManager.Instance;
+            manager.RefreshMainCamera();
+            AddPostEffectsToCamera(manager.MainCamera);
+        }
+
         public void RefreshCameraPostEffects()
         {
             AddPostEffectsToCamera(CameraManager.Instance.MainCamera);

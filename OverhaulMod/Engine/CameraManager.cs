@@ -70,6 +70,17 @@ namespace OverhaulMod.Engine
             PostEffectsManager.Instance.RefreshCameraPostEffects();
         }
 
+        public void RefreshMainCamera()
+        {
+            Camera oldCamera = MainCamera;
+            Camera camera = Camera.main;
+            if (camera != oldCamera)
+            {
+                MainCamera = camera;
+                ModCore.TriggerOnCameraSwitchedEvent(oldCamera, camera);
+            }
+        }
+
         public void ResetCameraRect()
         {
             SetCameraRect(new Rect(0f, 0f, Screen.width, Screen.height));
@@ -212,13 +223,7 @@ namespace OverhaulMod.Engine
 
         private void Update()
         {
-            Camera oldCamera = MainCamera;
-            Camera camera = Camera.main;
-            if (camera != oldCamera)
-            {
-                MainCamera = camera;
-                ModCore.TriggerOnCameraSwitchedEvent(oldCamera, camera);
-            }
+            RefreshMainCamera();
 
             bool isKeyDown = Input.GetKeyDown(CameraModeToggleKeyBind);
             if (!isKeyDown)

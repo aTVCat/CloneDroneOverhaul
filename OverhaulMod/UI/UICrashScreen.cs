@@ -16,6 +16,12 @@ namespace OverhaulMod.UI
         [UIElement("StackTrace")]
         private readonly Text _stackTraceText;
 
+        [UIElement("DetailsLabel")]
+        private readonly Text _detailsText;
+
+        [UIElement("Overlay", false)]
+        private readonly GameObject _overlay;
+
         [UIElementAction(nameof(OnIgnoreCrashButtonClicked))]
         [UIElement("IgnoreCrashButton")]
         private readonly Button _ignoreCrashButton;
@@ -45,17 +51,46 @@ namespace OverhaulMod.UI
         protected override void OnInitialized()
         {
             UIElementExpandButton expandButton = _expandButton;
-            expandButton.rectTransform = _stackTracePanel;
-            expandButton.collapsedSize = new Vector2(-50f, 175f);
-            expandButton.expandedSize = new Vector2(-50f, 350f);
+            expandButton.RectTransformReference = _stackTracePanel;
+            expandButton.CollapsedSize = new Vector2(-50f, 175f);
+            expandButton.ExpandedSize = new Vector2(-50f, 350f);
+            expandButton.Callback = onStackTraceCollapsedOrExpanded;
 
             _ignoreCrashesToggle.isOn = CrashManager.IgnoreCrashes;
             _sendReportButton.interactable = !HasSentReport;
         }
 
+        public void RefreshDetailsText()
+        {
+            // runtime info
+            string overhaulVersion = $"Overhaul {ModBuild.Version}";
+            string modBotVersion = $"Mod-Bot {ModLibrary.Properties.Resources.ModBotVersion}";
+            string gameVersion = $"Clone Drone {VersionNumberManager.Instance.GetVersionString()}";
+            string unityVersion = $"Unity {Application.unityVersion}";
+            string platform = $"{(GameVersionManager.IsSteamBuild() ? "Steam" : "Non-Steam")}";
+
+            // game environment info
+            GameFlowManager gameFlowManager = GameFlowManager.Instance;
+            string gameMode = gameFlowManager ? gameFlowManager.GetCurrentGameMode().ToString() : "N/A";
+
+            LevelManager levelManager = LevelManager.Instance;
+            string levelId = levelManager ? levelManager.GetCurrentLevelID() : "N/A";
+
+            ArenaLiftManager arenaLiftManager = ArenaLiftManager.Instance;
+            string liftTarget = arenaLiftManager && arenaLiftManager.Lift ? arenaLiftManager.GetLiftTarget().ToString() : "N/A";
+
+            string detailsString = $"{overhaulVersion} · {modBotVersion} · {gameVersion} · {unityVersion} · {platform} | {gameMode} · {levelId} · {liftTarget}";
+            _detailsText.text = detailsString;
+        }
+
         public void SetStackTraceText(string message)
         {
             _stackTraceText.text = message;
+        }
+
+        private void onStackTraceCollapsedOrExpanded(bool isExpanded)
+        {
+            _overlay.SetActive(isExpanded);
         }
 
         public void OnIgnoreCrashButtonClicked()

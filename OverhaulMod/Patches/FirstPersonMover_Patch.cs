@@ -65,9 +65,14 @@ namespace OverhaulMod.Patches
             CharacterExtension characterExtension = ModComponentCache.GetRobotInventory(__instance.transform);
             if (characterExtension && characterExtension.CanPerformDoubleJump())
             {
-                float energyToConsume = 1f;
                 bool isMainPlayer = __instance.IsMainPlayer();
+                if (__instance.IsDamaged(MechBodyPartType.LeftLeg) || __instance.IsDamaged(MechBodyPartType.RightLeg))
+                {
+                    if (isMainPlayer) ModCache.UIRoot.EnergyUI.SetErrorLabelVisible(LocalizationManager.Instance.GetTranslatedString("cant_double_jump_without_leg"));
+                    return;
+                }
 
+                float energyToConsume = 1f;
                 EnergySource energySource = __instance._energySource;
                 if (!energySource || !energySource.CanConsume(energyToConsume))
                 {

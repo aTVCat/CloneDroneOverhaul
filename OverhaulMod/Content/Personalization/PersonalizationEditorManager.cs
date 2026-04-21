@@ -2,6 +2,7 @@
 using OverhaulMod.Engine;
 using OverhaulMod.UI;
 using OverhaulMod.Utils;
+using OverhaulMod.Visuals;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -337,6 +338,7 @@ namespace OverhaulMod.Content.Personalization
                 if (personalizationController) personalizationController.RefreshArrowSpawnPoint();
 
                 _camera.gameObject.SetActive(false);
+                PostEffectsManager.Instance.RefreshCameraPostEffects(true);
 
                 UIPersonalizationEditor.Instance.Hide();
                 _ = ModUIConstants.ShowPersonalizationEditorPlaytestHUD();
@@ -352,8 +354,8 @@ namespace OverhaulMod.Content.Personalization
             if (firstPersonMover)
             {
                 firstPersonMover.SetCameraAnimatorEnabled(false);
-                firstPersonMover.SetPlayerCameraEnabled(true);
-                firstPersonMover.SetCameraHolderEnabled(true);
+                firstPersonMover.SetPlayerCameraEnabled(false);
+                firstPersonMover.SetCameraHolderEnabled(false);
                 firstPersonMover.ResetInputKeys();
                 firstPersonMover.InstantlySetTorsoTiltX(0f);
                 firstPersonMover.SetIsJumpingBools(false);
@@ -363,6 +365,7 @@ namespace OverhaulMod.Content.Personalization
                 camera.transform.position = new Vector3(-2.5f, 3f, 3f);
                 camera.transform.eulerAngles = new Vector3(5f, 120f, 0f);
                 camera.gameObject.SetActive(true);
+                PostEffectsManager.Instance.RefreshCameraPostEffects(true);
 
                 UIPersonalizationEditor.Instance.Show();
                 ModUIConstants.HidePersonalizationEditorPlaytestHUD();
@@ -426,6 +429,7 @@ namespace OverhaulMod.Content.Personalization
 
             PersonalizationEditorCamera cameraController = stage.GetCameraController();
             cameraController.gameObject.SetActive(true);
+            PostEffectsManager.Instance.RefreshCameraPostEffects(true);
 
             _ = ModUIConstants.ShowPersonalizationEditorPlaytestHUD();
             ModUIConstants.ShowPersonalizationEditorScreenshotControls();
@@ -452,6 +456,7 @@ namespace OverhaulMod.Content.Personalization
 
             PersonalizationEditorCamera cameraController = stage.GetCameraController();
             cameraController.gameObject.SetActive(false);
+            PostEffectsManager.Instance.RefreshCameraPostEffects(true);
 
             ModUIConstants.HidePersonalizationEditorPlaytestHUD();
             ModUIConstants.HidePersonalizationEditorScreenshotControls();

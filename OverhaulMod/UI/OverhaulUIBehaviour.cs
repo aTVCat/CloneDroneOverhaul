@@ -81,9 +81,9 @@ namespace OverhaulMod.UI
                     {
                         UIElementShowTooltipOnHightLight showTooltipOnHightLight = elementObject.AddComponent<UIElementShowTooltipOnHightLight>();
                         showTooltipOnHightLight.InitializeElement();
-                        showTooltipOnHightLight.tooltipText = showTooltipHighLightAttribute.Text;
-                        showTooltipOnHightLight.tooltipShowDuration = showTooltipHighLightAttribute.Duration;
-                        showTooltipOnHightLight.textIsLocalizationId = showTooltipHighLightAttribute.TextIsLocalizationID;
+                        showTooltipOnHightLight.TooltipText = showTooltipHighLightAttribute.Text;
+                        showTooltipOnHightLight.TooltipShowDuration = showTooltipHighLightAttribute.Duration;
+                        showTooltipOnHightLight.TextIsLocalizationId = showTooltipHighLightAttribute.TextIsLocalizationID;
                     }
 
                     if (buttonWithSoundAttribute != null && ModFeatures.IsEnabled(ModFeatures.FeatureType.UISounds))

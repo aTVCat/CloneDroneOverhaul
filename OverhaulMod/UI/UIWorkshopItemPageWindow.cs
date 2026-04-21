@@ -210,7 +210,7 @@ namespace OverhaulMod.UI
         protected override void OnInitialized()
         {
             UIElementShowTooltipOnHightLight tooltipOnHightLight = _itemTitleText.gameObject.AddComponent<UIElementShowTooltipOnHightLight>();
-            tooltipOnHightLight.tooltipShowDuration = 2f;
+            tooltipOnHightLight.TooltipShowDuration = 2f;
             tooltipOnHightLight.InitializeElement();
             _tooltipOnHightLight = tooltipOnHightLight;
 
@@ -351,7 +351,7 @@ namespace OverhaulMod.UI
             _authorProfileLink = $"https://steamcommunity.com/profiles/{workshopItem.AuthorID}";
             _authorId = workshopItem.AuthorID;
 
-            _tooltipOnHightLight.tooltipText = workshopItem.Name;
+            _tooltipOnHightLight.TooltipText = workshopItem.Name;
 
             getMainPreview(workshopItem);
             getAuthorAvatar(workshopItem);

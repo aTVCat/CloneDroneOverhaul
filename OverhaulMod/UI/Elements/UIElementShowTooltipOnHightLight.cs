@@ -7,19 +7,19 @@ namespace OverhaulMod.UI
     {
         private bool _isMouseIn;
 
-        public string tooltipText
+        public string TooltipText
         {
             get;
             set;
         }
 
-        public float tooltipShowDuration
+        public float TooltipShowDuration
         {
             get;
             set;
         } = 2f;
 
-        public bool textIsLocalizationId
+        public bool TextIsLocalizationId
         {
             get;
             set;
@@ -28,7 +28,7 @@ namespace OverhaulMod.UI
         public override void Update()
         {
             if (_isMouseIn)
-                ModUIUtils.Tooltip(textIsLocalizationId ? LocalizationManager.Instance.GetTranslatedString(tooltipText) : tooltipText, tooltipShowDuration);
+                ModUIUtils.Tooltip(TextIsLocalizationId ? LocalizationManager.Instance.GetTranslatedString(TooltipText) : TooltipText, TooltipShowDuration);
         }
 
         public void OnDeselect(BaseEventData eventData)

@@ -110,8 +110,11 @@ namespace OverhaulMod.Visuals
             refreshColorBlindness(!PostEffectsManager.ColorBlindnessAffectUI && PostEffectsManager.ColorBlindnessMode >= 1 && PostEffectsManager.ColorBlindnessMode <= 3, cameraObject);
         }
 
-        private void refreshBloom(BloomMode mode, GameObject cameraObject)
+        private void refreshBloom(BloomMode bloomMode, GameObject cameraObject)
         {
+            bool forceNeonish = PersonalizationEditorManager.IsInEditorMode() && PersonalizationEditorManager.Instance.IsInScreenshotMode();
+            BloomMode mode = forceNeonish ? BloomMode.Neonish : bloomMode;
+
             Bloom bloom = Bloom;
             if (!bloom)
             {
@@ -123,8 +126,6 @@ namespace OverhaulMod.Visuals
 
             if (bloom)
             {
-                if (PersonalizationEditorManager.IsInEditorMode() && PersonalizationEditorManager.Instance.IsInScreenshotMode()) mode = BloomMode.Neonish;
-
                 switch (mode)
                 {
                     case BloomMode.Fancy:

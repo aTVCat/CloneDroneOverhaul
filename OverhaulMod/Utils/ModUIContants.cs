@@ -326,11 +326,6 @@ namespace OverhaulMod.Utils
             return ModUIManager.Instance.Show<UILevelDescriptionBrowser>(AssetBundleConstants.UI, UI_LEVEL_DESCRIPTION_BROWSER, ModUIManager.UILayer.Last);
         }
 
-        public static UITooltips ShowTooltips()
-        {
-            return ModUIManager.Instance.Show<UITooltips>(AssetBundleConstants.UI, UI_TOOLTIPS, ModUIManager.UILayer.First);
-        }
-
         public static UIImageEffects ShowImageEffects()
         {
             return ModUIManager.Instance.Show<UIImageEffects>(AssetBundleConstants.UI, UI_IMAGE_EFFECTS, ModUIManager.UILayer.First);
@@ -379,6 +374,7 @@ namespace OverhaulMod.Utils
         public static UICrashScreen ShowCrashScreen(string errorMessage)
         {
             UICrashScreen crashScreen = ModUIManager.Instance.Show<UICrashScreen>(AssetBundleConstants.UI, UI_CRASH_SCREEN, ModUIManager.UILayer.AfterCrashScreen);
+            crashScreen.RefreshDetailsText();
             crashScreen.SetStackTraceText(errorMessage);
             return crashScreen;
         }

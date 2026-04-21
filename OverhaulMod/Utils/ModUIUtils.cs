@@ -96,7 +96,7 @@ namespace OverhaulMod.Utils
 
         public static void Tooltip(string text, float duration = 2f)
         {
-            UIScreenTooltips screenTooltips = UIScreenTooltips.instance ?? ModUIConstants.ShowScreenTooltips();
+            UIScreenTooltips screenTooltips = UIScreenTooltips.Instance ?? ModUIConstants.ShowScreenTooltips();
             screenTooltips.ShowText(text, duration);
         }
 

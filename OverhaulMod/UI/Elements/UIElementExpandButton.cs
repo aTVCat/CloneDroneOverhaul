@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 namespace OverhaulMod.UI
@@ -13,26 +14,14 @@ namespace OverhaulMod.UI
 
         private Button _button;
 
-        public RectTransform rectTransform
-        {
-            get;
-            set;
-        }
+        public RectTransform RectTransformReference;
 
-        public Vector2 collapsedSize
-        {
-            get;
-            set;
-        }
+        public Vector2 CollapsedSize;
 
-        public Vector2 expandedSize
-        {
-            get;
-            set;
-        }
+        public Vector2 ExpandedSize;
 
         private bool _expanded;
-        public bool expanded
+        public bool IsExpanded
         {
             get
             {
@@ -40,12 +29,18 @@ namespace OverhaulMod.UI
             }
             set
             {
-                rectTransform.sizeDelta = value ? expandedSize : collapsedSize;
+                bool invokeCallback = _expanded != value;
+
+                RectTransformReference.sizeDelta = value ? ExpandedSize : CollapsedSize;
                 _collapseImageObject.SetActive(value);
                 _expandImageObject.SetActive(!value);
                 _expanded = value;
+
+                if (invokeCallback && Callback != null) Callback(value);
             }
         }
+
+        public UnityAction<bool> Callback;
 
         protected override void OnInitialized()
         {
@@ -56,7 +51,7 @@ namespace OverhaulMod.UI
 
         public void ToggleExpand()
         {
-            expanded = !expanded;
+            IsExpanded = !IsExpanded;
             _button.OnDeselect(null);
         }
     }

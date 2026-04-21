@@ -50,8 +50,8 @@ namespace OverhaulMod.UI
         {
             UIElementShowTooltipOnHightLight showTooltipOnHightLight = base.gameObject.AddComponent<UIElementShowTooltipOnHightLight>();
             showTooltipOnHightLight.InitializeElement();
-            showTooltipOnHightLight.tooltipText = displayName;
-            showTooltipOnHightLight.tooltipShowDuration = 2f;
+            showTooltipOnHightLight.TooltipText = displayName;
+            showTooltipOnHightLight.TooltipShowDuration = 2f;
         }
 
         public bool IsDoubleClicked() => Time.unscaledTime < _timeForDoubleClick;

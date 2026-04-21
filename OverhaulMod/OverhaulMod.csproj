@@ -584,7 +584,6 @@
     <Compile Include="UI\UIAddonsMenu.cs" />
     <Compile Include="UI\UIChallengesMenuRework.cs" />
     <Compile Include="UI\UILevelDescriptionBrowser.cs" />
-    <Compile Include="UI\UITooltips.cs" />
     <Compile Include="UI\UITitleScreenCustomizationPanel.cs" />
     <Compile Include="UI\UIPersonalizationEditor.cs" />
     <Compile Include="UI\UIOverhaulUIManagementPanel.cs" />

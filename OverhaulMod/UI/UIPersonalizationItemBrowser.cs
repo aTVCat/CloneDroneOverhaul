@@ -84,7 +84,7 @@ namespace OverhaulMod.UI
         [UIElement("SearchBox")]
         private readonly InputField _searchBox;
 
-        [UIElement("LoadingIndicator")]
+        [UIElement("LoadingIndicator", true)]
         private readonly CanvasGroup _loadingIndicator;
 
         [UIElement("CameraRotationTutorial")]
@@ -124,16 +124,12 @@ namespace OverhaulMod.UI
 
         protected override void OnInitialized()
         {
-            _loadingIndicator.gameObject.SetActive(true);
-
             _cachedDisplays = new Dictionary<string, UIElementPersonalizationItemDisplay>();
             _rectTransform = base.GetComponent<RectTransform>();
 
             _categoryTabs.AddTab(_weaponSkinsTab.gameObject, "weapon skins");
             _categoryTabs.AddTab(_accessoriesTab.gameObject, "accessories");
             _categoryTabs.AddTab(_petsTab.gameObject, "pets");
-            _categoryTabs.SelectTab("weapon skins");
-            _prevTab = "weapon skins";
 
             _descriptionBox.SetBrowserUI(this);
             _allowEnemiesUseWeaponSkinsToggle.isOn = PersonalizationUserInfo.AllowEnemiesUseSkins;
@@ -160,7 +156,13 @@ namespace OverhaulMod.UI
             _transitionProgress = 0f;
             _categoryTabs.IsInteractable = true;
 
-            if (_categoryTabs.SelectedTab && _prevTab != _categoryTabs.SelectedTab.tabId)
+            if (!_categoryTabs.SelectedTab)
+            {
+                _categoryTabs.SelectTab("weapon skins");
+                _prevTransitionProgress = 1f;
+                _transitionProgress = 0f;
+            }
+            else if (_prevTab != _categoryTabs.SelectedTab.tabId)
             {
                 if (_container.childCount != 0)
                     TransformUtils.DestroyAllChildren(_container);
@@ -418,10 +420,11 @@ namespace OverhaulMod.UI
                 {
                     defaultSkinButton.interactable = false;
                     PersonalizationUserInfo.SetWeaponSkin(weaponType, null);
+                    GlobalEventManager.Instance.Dispatch(PersonalizationManager.ITEM_EQUIPPED_OR_UNEQUIPPED_EVENT);
 
                     PersonalizationManager.Instance.RefreshCustomizationOnAllRobots(false, false);
                 });
-                defaultSkinButton.interactable = !PersonalizationUserInfo.GetWeaponSkin(weaponType).IsNullOrEmpty();
+                defaultSkinButton.interactable = _selectedCategory == PersonalizationCategory.WeaponSkins && !PersonalizationUserInfo.GetWeaponSkin(weaponType).IsNullOrEmpty();
                 _defaultSkinButton = defaultSkinButton;
 
                 utilsPanel.GetObject<Button>(1).onClick.AddListener(OnUpdateButtonClicked);
