@@ -20,12 +20,15 @@ img=images/42_patch11_4.png
 - Added back reverting upgrades
 - Added back great swords modifier to story mode
 - Added triple jump upgrade
+- Double jumping is now impossible without a leg
 - Increased scythe speed and damaging area
 
 # UI changes
 - Added new options to title screen customization
 img=images/42_patch11_3.png
 - Slightly updated the overhauled title screen UI
+- Added sounds when clicking buttons, like in hyperdome. All menus will eventually have sounds
+- Made crash screen more informative
 - Added "Team Battle" tab to overhauled workshop browser
 - Added restart adventure button to reworked pause menu
 - Improved hyperdome-like transitions
@@ -70,6 +73,7 @@ img=images/42_patch11_1.png
 - Customization items templates not working
 - Loading indicators animation not playing when the game is paused
 - Player animation gets reset on upgrade when holding scythe
-- Player becomes T-posed when starting editing customization items or changing weapon type when animations are disabled in customization editor
+- Player becomes T-posed when starting editing a customization item or changing weapon type when animations are disabled in customization editor
 - Hiding HUD doesn't hide difficulty tier announcement in photo mode
-- Customization assets download window offering to install assets again after first install
+- Customization assets window offering to install assets again after first install
+- Post effects not working after playtesting a weapon skin in customization editor

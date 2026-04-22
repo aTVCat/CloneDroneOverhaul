@@ -3,7 +3,7 @@
 	"UniqueID": "rAnDomPaTcHeS1",
 	"MainDLLFileName": "OverhaulMod.dll",
 	"Author": "A TVCat",
-	"Version": 25,
+	"Version": 30,
 	"ImageFileName": "ModPreview.png",
 	"Description": "- Adds better graphics\n- Adds first person mode\n- Adds QoL things\n- Adds customization editor\n- Adds 300+ new weapon skins\n- Redesigns many UIs\n...and more!",
 	"ModDependencies": [],
