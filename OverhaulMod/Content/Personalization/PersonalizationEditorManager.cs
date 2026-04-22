@@ -313,6 +313,7 @@ namespace OverhaulMod.Content.Personalization
             PersonalizationItemInfo info = EditingItemInfo;
             if (info == null) return;
 
+            info.LoadRootObjectIfRequired();
             PersonalizationEditorObjectInfo rootInfo = info.RootObject;
             if (rootInfo == null) return;
 

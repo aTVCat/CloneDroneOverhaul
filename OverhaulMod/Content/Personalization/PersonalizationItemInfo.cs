@@ -34,7 +34,14 @@ namespace OverhaulMod.Content.Personalization
 
         public int Version;
 
+        [NonSerialized]
+        public PersonalizationItemMetaData MetaData;
+
+        [NonSerialized]
         public PersonalizationEditorObjectInfo RootObject;
+
+        [NonSerialized]
+        public AccessoryOffsetsList AccessoryOffsets;
 
         [NonSerialized]
         public bool Corrupted;
@@ -52,42 +59,13 @@ namespace OverhaulMod.Content.Personalization
         public bool IsPersistentAsset;
 
         [NonSerialized]
-        public PersonalizationItemMetaData MetaData;
-
-        [NonSerialized]
-        public AccessoryOffsetsList AccessoryOffsets;
-
-        [NonSerialized]
         public bool HideInBrowser;
-
-        public void GetImportedFiles()
-        {
-            List<string> list = new List<string>();
-            foreach (string f in Directory.GetFiles(GetImportedFilesFolder(this)))
-                list.Add(Path.GetFileName(f));
-
-            ImportedFiles = list;
-        }
 
         public void FixValues()
         {
             if (Authors == null) Authors = new List<string>();
 
             if (ExclusiveFor_V2 == null) ExclusiveFor_V2 = new List<PersonalizationItemLockInfo>();
-
-            if (RootObject == null)
-            {
-                RootObject = new PersonalizationEditorObjectInfo()
-                {
-                    Name = "Root",
-                    Path = "Empty",
-                    Children = new List<PersonalizationEditorObjectInfo>(),
-                    PropertyValues = new Dictionary<string, object>()
-                };
-                RootObject.InitializeTransformArrays();
-            }
-
-            RootObject.ResetRootTransform();
 
             if (Category == PersonalizationCategory.WeaponSkins)
             {
@@ -99,6 +77,50 @@ namespace OverhaulMod.Content.Personalization
             }
 
             GetImportedFiles();
+        }
+
+        public void GetImportedFiles()
+        {
+            List<string> list = new List<string>();
+            foreach (string f in Directory.GetFiles(GetImportedFilesFolder(this)))
+                list.Add(Path.GetFileName(f));
+
+            ImportedFiles = list;
+        }
+
+        public void LoadRootObjectIfRequired()
+        {
+            if (RootObject != null) return; 
+
+            string path = Path.Combine(FolderPath, PersonalizationEditorDataManager.ITEM_OBJECTS_FILE);
+            PersonalizationEditorObjectInfo objectInfo;
+            if (File.Exists(path))
+            {
+                try
+                {
+                    objectInfo = ModJsonUtils.DeserializeStream<PersonalizationEditorObjectInfo>(path);
+                }
+                catch (Exception exc)
+                {
+                    objectInfo = null;
+                    Corrupted = true;
+                    ModDebug.LogException(exc, true);
+                }
+            }
+            else
+            {
+                objectInfo = new PersonalizationEditorObjectInfo()
+                {
+                    Name = "Root",
+                    Path = "Empty",
+                    Children = new List<PersonalizationEditorObjectInfo>(),
+                    PropertyValues = new Dictionary<string, object>()
+                };
+                objectInfo.InitializeTransformArrays();
+            }
+
+            objectInfo.ResetRootTransform();
+            RootObject = objectInfo;
         }
 
         public void SetAuthor(string name)

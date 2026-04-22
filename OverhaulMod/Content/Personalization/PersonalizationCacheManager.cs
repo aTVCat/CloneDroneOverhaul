@@ -50,6 +50,8 @@ namespace OverhaulMod.Content.Personalization
             Dictionary<string, byte[]> d = _cachedFiles;
             d.Clear();
 
+            if (personalizationItemInfos == null || personalizationItemInfos.Count == 0) yield break;
+
             int i = 0;
             do
             {

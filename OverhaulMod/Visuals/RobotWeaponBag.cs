@@ -289,8 +289,9 @@ namespace OverhaulMod.Visuals
             else
             {
                 PersonalizationItemInfo itemInfo = PersonalizationManager.Instance.ItemList.GetItem(overhaulSkinId);
-                if (itemInfo != null && itemInfo.RootObject != null)
+                if (itemInfo != null)
                 {
+                    itemInfo.LoadRootObjectIfRequired();
                     PersonalizationEditorObjectBehaviour rootObject = itemInfo.RootObject.Deserialize(parent, new PersonalizationControllerInfo(_personalizationController, itemInfo));
                     renderer = rootObject.transform;
                 }

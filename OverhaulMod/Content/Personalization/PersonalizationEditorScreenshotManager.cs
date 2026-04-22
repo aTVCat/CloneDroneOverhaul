@@ -209,6 +209,7 @@ namespace OverhaulMod.Content.Personalization
             if (personalizationItemInfo != null)
             {
                 PersonalizationEditorManager.Instance.EditingItemInfo = personalizationItemInfo;
+                personalizationItemInfo.LoadRootObjectIfRequired();
                 personalizationItemInfo.RootObject.Deserialize(_holder, null);
             }
         }

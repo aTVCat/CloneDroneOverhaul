@@ -17,6 +17,8 @@ namespace OverhaulMod.Content.Personalization
 
         public const string ITEM_META_DATA_FILE = "metaData.json";
 
+        public const string ITEM_OBJECTS_FILE = "objects.json";
+
         public const string ITEM_ACCESSORY_OFFSETS_FILE = "accessoryOffsets.json";
 
         public PersonalizationItemCreationResult CreateItem(PersonalizationItemCreationArgs args)
@@ -94,43 +96,48 @@ namespace OverhaulMod.Content.Personalization
             PersonalizationManager.Instance.UserInfo.SetIsItemUnverified(createdItemInfo, true);
             PersonalizationManager.Instance.SaveUserInfo();
 
-            ModJsonUtils.WriteStream(Path.Combine(directoryPath, ITEM_INFO_FILE), createdItemInfo);
-            ModJsonUtils.WriteStream(Path.Combine(directoryPath, ITEM_META_DATA_FILE), createdItemInfo.MetaData);
-            if (isAccessory) ModJsonUtils.WriteStream(Path.Combine(directoryPath, ITEM_ACCESSORY_OFFSETS_FILE), createdItemInfo.AccessoryOffsets);
+            WriteItemToFiles(createdItemInfo);
 
             return new PersonalizationItemCreationResult(createdItemInfo);
         }
 
-        public PersonalizationItemSaveResult SaveItem(PersonalizationItemInfo personalizationItemInfo)
+        public PersonalizationItemSaveResult SaveItem(PersonalizationItemInfo itemInfo)
         {
-            string folder = personalizationItemInfo.FolderPath;
+            string folder = itemInfo.FolderPath;
             if (folder.IsNullOrEmpty()) return new PersonalizationItemSaveResult("Item has no folder assigned!");
             if (!Directory.Exists(folder)) return new PersonalizationItemSaveResult("Item folder was deleted or moved.");
 
-            bool isAccessory = personalizationItemInfo.Category == PersonalizationCategory.Accessories;
-            if (isAccessory && personalizationItemInfo.AccessoryOffsets == null) return new PersonalizationItemSaveResult("No accessory offsets found!");
+            bool isAccessory = itemInfo.Category == PersonalizationCategory.Accessories;
+            if (isAccessory && itemInfo.AccessoryOffsets == null) return new PersonalizationItemSaveResult("No accessory offsets found!");
 
-            PersonalizationItemMetaData personalizationItemMetaData = personalizationItemInfo.MetaData;
+            PersonalizationItemMetaData personalizationItemMetaData = itemInfo.MetaData;
             if (personalizationItemMetaData == null)
             {
                 personalizationItemMetaData = new PersonalizationItemMetaData
                 {
                     CustomizationSystemVersion = PersonalizationItemMetaData.CurrentCustomizationSystemVersion
                 };
-                personalizationItemInfo.MetaData = personalizationItemMetaData;
+                itemInfo.MetaData = personalizationItemMetaData;
             }
 
             try
             {
-                ModJsonUtils.WriteStream(Path.Combine(folder, ITEM_INFO_FILE), personalizationItemInfo);
-                ModJsonUtils.WriteStream(Path.Combine(folder, ITEM_META_DATA_FILE), personalizationItemMetaData);
-                if (isAccessory) ModJsonUtils.WriteStream(Path.Combine(folder, ITEM_ACCESSORY_OFFSETS_FILE), personalizationItemInfo.AccessoryOffsets);
+                WriteItemToFiles(itemInfo);
             }
             catch (Exception exc)
             {
                 return new PersonalizationItemSaveResult(exc.ToString());
             }
             return new PersonalizationItemSaveResult();
+        }
+
+        public void WriteItemToFiles(PersonalizationItemInfo itemInfo)
+        {
+            string directory = itemInfo.FolderPath;
+            ModJsonUtils.WriteStream(Path.Combine(directory, ITEM_INFO_FILE), itemInfo);
+            ModJsonUtils.WriteStream(Path.Combine(directory, ITEM_META_DATA_FILE), itemInfo.MetaData);
+            if (itemInfo.RootObject != null) ModJsonUtils.WriteStream(Path.Combine(directory, ITEM_OBJECTS_FILE), itemInfo.RootObject);
+            if (itemInfo.Category == PersonalizationCategory.WeaponSkins) ModJsonUtils.WriteStream(Path.Combine(directory, ITEM_ACCESSORY_OFFSETS_FILE), itemInfo.AccessoryOffsets);
         }
 
         public void DeleteItemFolder(string directory)

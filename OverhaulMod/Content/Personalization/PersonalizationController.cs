@@ -465,7 +465,7 @@ namespace OverhaulMod.Content.Personalization
         public PersonalizationEditorObjectBehaviour SpawnItem(PersonalizationItemInfo itemInfo)
         {
             bool inEditor = PersonalizationEditorManager.IsInEditorMode();
-            if (itemInfo == null || itemInfo.RootObject == null || HasSpawnedItem(itemInfo) || !Owner)
+            if (itemInfo == null || HasSpawnedItem(itemInfo) || !Owner)
                 return null;
 
             if (!inEditor && !itemInfo.IsUnlocked(Owner))
@@ -504,6 +504,7 @@ namespace OverhaulMod.Content.Personalization
 
             if (itemInfo.Category == PersonalizationCategory.WeaponSkins) RefreshVariantOfWeapon(itemInfo.Weapon);
 
+            itemInfo.LoadRootObjectIfRequired();
             PersonalizationEditorObjectBehaviour behaviour = itemInfo.RootObject.Deserialize(transform, new PersonalizationControllerInfo(this, itemInfo));
             if (!behaviour)
             {

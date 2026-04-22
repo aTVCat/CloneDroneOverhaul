@@ -1,9 +1,10 @@
-﻿using OverhaulMod.Utils;
+﻿using Newtonsoft.Json.Linq;
+using OverhaulMod.Engine;
+using OverhaulMod.Utils;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using UnityEngine;
 
 namespace OverhaulMod.Content.Personalization
 {
@@ -84,9 +85,11 @@ namespace OverhaulMod.Content.Personalization
 
             string infoFilePath = Path.Combine(directory, PersonalizationEditorDataManager.ITEM_INFO_FILE);
             string metaDataFilePath = Path.Combine(directory, PersonalizationEditorDataManager.ITEM_META_DATA_FILE);
+            string objectsFilePath = Path.Combine(directory, PersonalizationEditorDataManager.ITEM_OBJECTS_FILE);
             string accessoryOffsetsFilePath = Path.Combine(directory, PersonalizationEditorDataManager.ITEM_ACCESSORY_OFFSETS_FILE);
 
             bool updateInfoFile = false;
+            bool serializeInfoFile = false;
             bool updateMetaDataFile = false;
 
             PersonalizationItemMetaData personalizationItemMetaData;
@@ -135,6 +138,17 @@ namespace OverhaulMod.Content.Personalization
 
                     rawData = rawData.Replace("OverhaulMod.Engine.WeaponVariant", "OverhaulMod.Engine.WeaponVariant2");
                 }
+                if (personalizationItemMetaData.CustomizationSystemVersion < 4) // moved root object info to separate file
+                {
+                    updateMetaDataFile = true;
+                    updateInfoFile = false;
+                    serializeInfoFile = true;
+
+                    JObject data = ModJsonUtils.Deserialize<JObject>(rawData);
+                    PersonalizationEditorObjectInfo rootObject = data["RootObject"].ToObject<PersonalizationEditorObjectInfo>();
+                    fixCastsRecursive(rootObject);
+                    ModJsonUtils.WriteStream(objectsFilePath, rootObject);
+                }
                 personalizationItemMetaData.CustomizationSystemVersion = PersonalizationItemMetaData.CurrentCustomizationSystemVersion;
 
                 personalizationItemInfo = ModJsonUtils.Deserialize<PersonalizationItemInfo>(rawData);
@@ -143,6 +157,7 @@ namespace OverhaulMod.Content.Personalization
                 personalizationItemInfo.IsPersistentAsset = rootDirectoryName == ModCore.CUSTOMIZATION_PERSISTENT_FOLDER_NAME;
                 personalizationItemInfo.MetaData = personalizationItemMetaData;
                 personalizationItemInfo.FixValues();
+                if (serializeInfoFile) ModJsonUtils.WriteStream(infoFilePath, personalizationItemInfo);
 
                 if (updateInfoFile)
                     ModFileUtils.WriteText(rawData, infoFilePath);
@@ -155,7 +170,7 @@ namespace OverhaulMod.Content.Personalization
             if (updateMetaDataFile)
                 ModJsonUtils.WriteStream(metaDataFilePath, personalizationItemMetaData);
 
-            if(personalizationItemInfo != null)
+            if (personalizationItemInfo != null)
             {
                 if (personalizationItemInfo.Category == PersonalizationCategory.Accessories)
                 {
@@ -174,6 +189,40 @@ namespace OverhaulMod.Content.Personalization
             }
 
             return personalizationItemInfo;
+        }
+
+        private void fixCastsRecursive(PersonalizationEditorObjectInfo objectInfo)
+        {
+            if (objectInfo.PropertyValues != null && objectInfo.PropertyValues.Count != 0)
+            {
+                Dictionary<string, object> modifiedValues = new Dictionary<string, object>();
+                foreach (KeyValuePair<string, object> keyValue in objectInfo.PropertyValues)
+                {
+                    if (keyValue.Key == "volumeSettingPresets")
+                    {
+                        Dictionary<WeaponVariant2, VolumeSettingsPreset> fixedValue = (keyValue.Value as JObject).ToObject<Dictionary<WeaponVariant2, VolumeSettingsPreset>>();
+                        modifiedValues.Add(keyValue.Key, fixedValue);
+                    }
+                    else if (keyValue.Key == "presets")
+                    {
+                        Dictionary<WeaponVariant2, CVMModelPreset> fixedValue = (keyValue.Value as JObject).ToObject<Dictionary<WeaponVariant2, CVMModelPreset>>();
+                        modifiedValues.Add(keyValue.Key, fixedValue);
+                    }
+                }
+
+                foreach (KeyValuePair<string, object> keyValue in modifiedValues)
+                {
+                    objectInfo.PropertyValues[keyValue.Key] = keyValue.Value;
+                }
+            }
+
+            if (objectInfo.Children != null && objectInfo.Children.Count != 0)
+            {
+                foreach (PersonalizationEditorObjectInfo child in objectInfo.Children)
+                {
+                    fixCastsRecursive(child);
+                }
+            }
         }
 
         private PersonalizationItemInfo getItem(string id, List<PersonalizationItemInfo> list)
