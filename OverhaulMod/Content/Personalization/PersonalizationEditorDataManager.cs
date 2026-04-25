@@ -23,7 +23,7 @@ namespace OverhaulMod.Content.Personalization
 
         public PersonalizationItemCreationResult CreateItem(PersonalizationItemCreationArgs args)
         {
-            string rootDirectory = args.UsePersistentFolder ? ModCore.CustomizationPersistentFolder : ModCore.CustomizationFolder;
+            string rootDirectory = args.UsePersistentFolder ? ModDirectories.CustomizationPersistentFolder : ModDirectories.CustomizationFolder;
             string directoryPath = Path.Combine(rootDirectory, args.DirectoryName);
             string filesDirectoryPath = Path.Combine(directoryPath, "files");
 
@@ -168,7 +168,7 @@ namespace OverhaulMod.Content.Personalization
 
         public PersonalizationItemImportResult ImportItem(string path, string itemFolderName, int importVersion, bool editItem)
         {
-            string folderPath = Path.Combine(ModCore.CustomizationFolder, itemFolderName);
+            string folderPath = Path.Combine(ModDirectories.CustomizationFolder, itemFolderName);
 
             if (Directory.Exists(folderPath)) return new PersonalizationItemImportResult("Item with the same folder name is already imported");
 
@@ -310,7 +310,7 @@ namespace OverhaulMod.Content.Personalization
         public void ExportItem(PersonalizationItemInfo personalizationItemInfo, out string destination, string overrideDirectoryPath = null, string overrideFn = null)
         {
             string fn = overrideFn.IsNullOrEmpty() ? GetExportedItemFileName(personalizationItemInfo) : overrideFn;
-            string folder = overrideDirectoryPath.IsNullOrEmpty() ? ModDataManager.SavesFolder : overrideDirectoryPath;
+            string folder = overrideDirectoryPath.IsNullOrEmpty() ? ModDirectories.SavesFolder : overrideDirectoryPath;
             destination = Path.Combine(folder, fn);
 
             if (File.Exists(destination))

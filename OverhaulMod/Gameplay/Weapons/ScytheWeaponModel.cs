@@ -2,7 +2,7 @@
 using System;
 using UnityEngine;
 
-namespace OverhaulMod.Combat.Weapons
+namespace OverhaulMod.Gameplay.Weapons
 {
     public class ScytheWeaponModel : ModWeaponModel
     {

@@ -69,7 +69,7 @@ namespace OverhaulMod.UI
             });
 
             UIElementOverhaulUIInfo info = moddedObject.gameObject.AddComponent<UIElementOverhaulUIInfo>();
-            info.PreviewFile = Path.Combine(ModCore.TexturesFolder, "uiPreviews", $"{setting.Name.Replace("ModUI_UI", string.Empty).Replace("Rework", string.Empty)}.png");
+            info.PreviewFile = Path.Combine(ModDirectories.TexturesFolder, "uiPreviews", $"{setting.Name.Replace("ModUI_UI", string.Empty).Replace("Rework", string.Empty)}.png");
             info.InitializeElement();
 
             bool isOn = (bool)setting.GetFieldValue();

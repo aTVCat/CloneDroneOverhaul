@@ -126,7 +126,7 @@ namespace OverhaulMod.UI
 
         public void RefreshStatus()
         {
-            if(_category == PersonalizationCategory.None)
+            if (_category == PersonalizationCategory.None)
             {
                 SetStatusText("You have not chosen the category.", Color.red);
                 _doneButton.interactable = false;
@@ -190,7 +190,7 @@ namespace OverhaulMod.UI
                     return;
                 }
 
-            string path = Path.Combine(UsePersistentFolder ? ModCore.CustomizationPersistentFolder : ModCore.CustomizationFolder, _folderName);
+            string path = Path.Combine(UsePersistentFolder ? ModDirectories.CustomizationPersistentFolder : ModDirectories.CustomizationFolder, _folderName);
             if (Directory.Exists(path))
             {
                 SetStatusText("A folder with the same name already exists.", Color.red);

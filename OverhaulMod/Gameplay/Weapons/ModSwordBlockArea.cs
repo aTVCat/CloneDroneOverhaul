@@ -1,7 +1,7 @@
 ﻿using OverhaulMod.Utils;
 using UnityEngine;
 
-namespace OverhaulMod.Combat.Weapons
+namespace OverhaulMod.Gameplay.Weapons
 {
     public class ModSwordBlockArea : SwordBlockArea
     {

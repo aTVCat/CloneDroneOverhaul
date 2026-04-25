@@ -4,7 +4,7 @@ using OverhaulMod.Utils;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace OverhaulMod.Combat
+namespace OverhaulMod.Gameplay
 {
     public class ModUpgradesManager : Singleton<ModUpgradesManager>, IGameLoadListener
     {

@@ -1,9 +1,9 @@
 ﻿using AmplifyOcclusion;
 using InternalModBot;
 using ModBotWebsiteAPI;
-using OverhaulMod.Combat;
 using OverhaulMod.Content;
 using OverhaulMod.Engine;
+using OverhaulMod.Gameplay;
 using OverhaulMod.Patches.Behaviours;
 using OverhaulMod.Utils;
 using OverhaulMod.Visuals;
@@ -1260,7 +1260,7 @@ namespace OverhaulMod.UI
                 ModSettingsDataManager.Instance.dataContainer.SetValues(modSettingsDataContainer, true);
                 ModUIUtils.MessagePopupOK("Import successful", $"Imported the file \"{Path.GetFileNameWithoutExtension(path)}\".", true);
                 PopulatePage(_selectedTabId);
-            }, ModCore.SavesFolder, "*.json");
+            }, ModDirectories.SavesFolder, "*.json");
         }
 
         public void OnExportSettingsButtonClicked()

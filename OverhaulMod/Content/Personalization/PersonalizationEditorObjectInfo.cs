@@ -62,10 +62,10 @@ namespace OverhaulMod.Content.Personalization
             return Mathf.Round(value * 1000f) / 1000f;
         }
 
-        public PersonalizationEditorObjectBehaviour Deserialize(Transform parent, PersonalizationControllerInfo personalizationControllerInfo)
+        public PersonalizationEditorObjectBehaviour Deserialize(Transform parent, ItemSpawnInfo spawnInfo)
         {
-            PersonalizationEditorObjectManager personalizationEditorObjectManager = PersonalizationEditorObjectManager.Instance;
-            if (personalizationEditorObjectManager.GetObjectInfo(Path) == null)
+            PersonalizationEditorObjectManager objectManager = PersonalizationEditorObjectManager.Instance;
+            if (objectManager.GetObjectInfo(Path) == null)
                 return null;
 
             if (!parent)
@@ -74,9 +74,9 @@ namespace OverhaulMod.Content.Personalization
                 parent = gameObject.transform;
             }
 
-            PersonalizationEditorObjectBehaviour behaviour = personalizationEditorObjectManager.PlaceObject(Path, parent, false);
+            PersonalizationEditorObjectBehaviour behaviour = objectManager.PlaceObject(Path, parent, false);
             behaviour.UniqueIndex = UniqueIndex;
-            behaviour.ControllerInfo = personalizationControllerInfo;
+            behaviour.ControllerInfo = spawnInfo;
             behaviour.Name = Name;
             behaviour.PropertyValues = PropertyValues;
             behaviour.SerializedScale = GetScale();
@@ -88,7 +88,7 @@ namespace OverhaulMod.Content.Personalization
             if (!Children.IsNullOrEmpty())
             {
                 foreach (PersonalizationEditorObjectInfo info in Children)
-                    _ = info.Deserialize(behaviour.transform, personalizationControllerInfo);
+                    _ = info.Deserialize(behaviour.transform, spawnInfo);
             }
             return behaviour;
         }

@@ -54,6 +54,9 @@ namespace OverhaulMod.Visuals
         [ModSetting(ModSettingsConstants.ENABLE_REFLECTION_PROBE, false)]
         public static bool EnableReflectionProbe;
 
+        [ModSetting(ModSettingsConstants.DISABLE_SCREEN_SHAKING, false)]
+        public static bool DisableScreenShaking;
+
         private List<ModSettingsPreset> _graphicsPresets;
 
         public static List<Dropdown.OptionData> ColorBlindnessOptions = new List<Dropdown.OptionData>()
@@ -89,12 +92,10 @@ namespace OverhaulMod.Visuals
         {
             base.Awake();
             createGraphicsPresets();
-            ModCore.OnCameraSwitched += onCameraSwitched;
         }
 
         private void OnDestroy()
         {
-            ModCore.OnCameraSwitched -= onCameraSwitched;
             RemovePostEffectsFromCamera(Camera.main);
         }
 
@@ -230,10 +231,10 @@ namespace OverhaulMod.Visuals
             list.Add(extreme);
         }
 
-        private void onCameraSwitched(Camera a, Camera b)
+        public void OnCameraSwitched(Camera oldCamera, Camera newCamera)
         {
-            RemovePostEffectsFromCamera(a);
-            AddPostEffectsToCamera(b);
+            RemovePostEffectsFromCamera(oldCamera);
+            AddPostEffectsToCamera(newCamera);
         }
 
         public void RefreshCameraPostEffects(bool refreshMainCamera)

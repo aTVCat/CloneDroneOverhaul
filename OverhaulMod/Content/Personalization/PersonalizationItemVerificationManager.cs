@@ -1,5 +1,5 @@
-﻿using OverhaulMod.Combat;
-using OverhaulMod.Engine;
+﻿using OverhaulMod.Engine;
+using OverhaulMod.Gameplay;
 using OverhaulMod.Utils;
 using System;
 using System.IO;

@@ -1,4 +1,4 @@
-﻿namespace OverhaulMod.Combat
+﻿namespace OverhaulMod.Gameplay
 {
     public class ModGameModifiersManager : Singleton<ModGameModifiersManager>
     {

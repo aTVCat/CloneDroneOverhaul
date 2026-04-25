@@ -200,7 +200,7 @@ namespace OverhaulMod
                 string weaponString;
                 switch (personalizationItem.Weapon)
                 {
-                    case Combat.ModWeaponsManager.SCYTHE_TYPE:
+                    case Gameplay.ModWeaponsManager.SCYTHE_TYPE:
                         weaponString = "Scythe";
                         break;
                     default:
@@ -214,7 +214,7 @@ namespace OverhaulMod
             {
                 fullCategoryDetailString = $"- **Body part:** {personalizationItem.BodyPartName}";
             }
-                
+
             bool update = personalizationItem.IsVerified;
 
             int color = int.Parse(update ? "ffc526" : "32a852", System.Globalization.NumberStyles.HexNumber);
@@ -262,7 +262,7 @@ namespace OverhaulMod
             string weaponString;
             switch (personalizationItem.Weapon)
             {
-                case Combat.ModWeaponsManager.SCYTHE_TYPE:
+                case Gameplay.ModWeaponsManager.SCYTHE_TYPE:
                     weaponString = "Scythe";
                     break;
                 default:
@@ -318,7 +318,7 @@ namespace OverhaulMod
                     _ = await task;
                     if (task.Exception != null)
                     {
-                        ModDebug.LogWarning(task.Exception);
+                        ModDebug.Warn(task.Exception);
                         errorCallback?.Invoke(task.Exception.ToString());
                     }
                     else
@@ -329,7 +329,7 @@ namespace OverhaulMod
             }
             catch (Exception exc)
             {
-                ModDebug.LogWarning(exc);
+                ModDebug.Warn(exc);
                 errorCallback?.Invoke(exc.ToString());
             }
         }
@@ -344,7 +344,7 @@ namespace OverhaulMod
                     _ = await task;
                     if (task.Exception != null)
                     {
-                        ModDebug.LogWarning(task.Exception);
+                        ModDebug.Warn(task.Exception);
                         errorCallback?.Invoke(task.Exception.ToString());
                     }
                     else
@@ -355,7 +355,7 @@ namespace OverhaulMod
             }
             catch (Exception exc)
             {
-                ModDebug.LogWarning(exc);
+                ModDebug.Warn(exc);
                 errorCallback?.Invoke(exc.ToString());
             }
         }
@@ -410,7 +410,7 @@ namespace OverhaulMod
             public static void Serialize(Destinations destinations, string path = null)
             {
                 if (path.IsNullOrEmpty())
-                    path = Path.Combine(ModCore.SavesFolder, "Destinations.json");
+                    path = Path.Combine(ModDirectories.SavesFolder, "Destinations.json");
 
                 ModJsonUtils.WriteStream(path, destinations);
             }

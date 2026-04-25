@@ -191,8 +191,8 @@ namespace OverhaulMod.UI
         private void writeData()
         {
             ExclusivePerkInfoList infoList = ExclusivePerkManager.Instance.GetPerkInfoList();
-            ModJsonUtils.WriteStream(Path.Combine(ModCore.ModUserDataFolder, ExclusivePerkManager.FILE_NAME), infoList);
-            ModJsonUtils.WriteStream(Path.Combine(ModCore.SavesFolder, ExclusivePerkManager.FILE_NAME), infoList);
+            ModJsonUtils.WriteStream(Path.Combine(ModDirectories.ModUserDataFolder, ExclusivePerkManager.FILE_NAME), infoList);
+            ModJsonUtils.WriteStream(Path.Combine(ModDirectories.SavesFolder, ExclusivePerkManager.FILE_NAME), infoList);
         }
 
         private void refreshSettings()
@@ -433,7 +433,7 @@ namespace OverhaulMod.UI
 
         public void OnSavesFolderButtonClicked()
         {
-            ModFileUtils.OpenFileExplorer(ModCore.SavesFolder);
+            ModFileUtils.OpenFileExplorer(ModDirectories.SavesFolder);
         }
 
         public void OnSetSelfButtonClicked()

@@ -28,7 +28,7 @@ namespace OverhaulMod.UI
         {
             FileCreationDialogController controller = new FileCreationDialogController
             {
-                TargetDirectory = ModCore.AddonsFolder,
+                TargetDirectory = ModDirectories.AddonsFolder,
                 CreateFolder = true,
                 RestrictWhiteSpaces = true,
                 TimeToProcessInput = 0.5f,

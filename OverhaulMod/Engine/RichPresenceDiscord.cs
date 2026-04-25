@@ -92,7 +92,7 @@ namespace OverhaulMod.Engine
                         {
                             case LogLevel.Error:
                             case LogLevel.Warn:
-                                ModDebug.LogWarning($"Discord RPC: {message}");
+                                ModDebug.Warn($"Discord RPC: {message}");
                                 break;
                             default:
                                 ModDebug.Log($"Discord RPC: {message}");

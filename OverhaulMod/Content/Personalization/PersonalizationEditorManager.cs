@@ -1,5 +1,5 @@
-﻿using OverhaulMod.Combat;
-using OverhaulMod.Engine;
+﻿using OverhaulMod.Engine;
+using OverhaulMod.Gameplay;
 using OverhaulMod.UI;
 using OverhaulMod.Utils;
 using OverhaulMod.Visuals;
@@ -168,7 +168,7 @@ namespace OverhaulMod.Content.Personalization
             yield return null;
 
             LevelEditorLevelData levelEditorLevelData;
-            string levelFilePath = Path.Combine(ModCore.DataFolder, "levels/personalizationEditorLevel.json");
+            string levelFilePath = Path.Combine(ModDirectories.DataFolder, "levels/personalizationEditorLevel.json");
             if (File.Exists(levelFilePath))
             {
                 try
@@ -292,7 +292,7 @@ namespace OverhaulMod.Content.Personalization
 
             if (spawnEditingItem)
             {
-                while (!bot.GetComponent<PersonalizationController>() || !bot.GetComponent<PersonalizationController>().HasInitialized())
+                while (!bot.GetComponent<PersonalizationController>())
                     yield return null;
 
                 bot.SetEquippedWeaponType(EditingItemInfo.Weapon, false);
@@ -335,7 +335,7 @@ namespace OverhaulMod.Content.Personalization
                 firstPersonMover.SetPlayerCameraEnabled(true);
                 firstPersonMover.SetCameraAnimatorEnabled(true);
 
-                PersonalizationController personalizationController = firstPersonMover.GetComponent<PersonalizationController>();
+                PersonalizationController personalizationController = ComponentCacheManager.Instance.GetPersonalizationController(firstPersonMover.transform);
                 if (personalizationController) personalizationController.RefreshArrowSpawnPoint();
 
                 _camera.gameObject.SetActive(false);

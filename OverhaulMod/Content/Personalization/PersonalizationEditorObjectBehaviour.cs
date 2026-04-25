@@ -17,7 +17,7 @@ namespace OverhaulMod.Content.Personalization
 
         public Dictionary<string, object> PropertyValues;
 
-        public PersonalizationControllerInfo ControllerInfo;
+        public ItemSpawnInfo ControllerInfo;
 
         public Vector3 SerializedScale;
 

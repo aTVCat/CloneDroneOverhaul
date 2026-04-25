@@ -1,11 +1,10 @@
-﻿using OverhaulMod.Combat;
-using OverhaulMod.Content.Personalization;
+﻿using OverhaulMod.Content.Personalization;
 using OverhaulMod.Engine;
+using OverhaulMod.Gameplay;
 using OverhaulMod.Utils;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -422,7 +421,7 @@ namespace OverhaulMod.UI
                     PersonalizationUserInfo.SetWeaponSkin(weaponType, null);
                     GlobalEventManager.Instance.Dispatch(PersonalizationManager.ITEM_EQUIPPED_OR_UNEQUIPPED_EVENT);
 
-                    PersonalizationManager.Instance.RefreshCustomizationOnAllRobots(false, false);
+                    PersonalizationManager.Instance.RefreshCustomizationOnAllRobots(false, false, PersonalizationCategory.WeaponSkins);
                 });
                 defaultSkinButton.interactable = _selectedCategory == PersonalizationCategory.WeaponSkins && !PersonalizationUserInfo.GetWeaponSkin(weaponType).IsNullOrEmpty();
                 _defaultSkinButton = defaultSkinButton;
@@ -462,7 +461,7 @@ namespace OverhaulMod.UI
                 {
                     ModUIUtils.MessagePopup(true, LocalizationManager.Instance.GetTranslatedString("enter_ceditor_dialog_header"), LocalizationManager.Instance.GetTranslatedString("enter_ceditor_dialog_text"), 150f, MessageMenu.ButtonLayout.EnableDisableButtons, "ok", "Yes", "No", null, delegate
                     {
-                        ModCore.ShouldStartCustomizationEditor = true;
+                        ModLoader.ShouldStartCustomizationEditor = true;
                         SceneTransitionManager.Instance.DisconnectAndExitToMainMenu();
                     });
                 });

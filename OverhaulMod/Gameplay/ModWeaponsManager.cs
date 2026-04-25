@@ -1,11 +1,11 @@
-﻿using OverhaulMod.Combat.Weapons;
+﻿using OverhaulMod.Gameplay.Weapons;
 using OverhaulMod.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace OverhaulMod.Combat
+namespace OverhaulMod.Gameplay
 {
     public class ModWeaponsManager : Singleton<ModWeaponsManager>
     {

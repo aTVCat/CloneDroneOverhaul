@@ -199,7 +199,7 @@ namespace OverhaulMod.UI
 
         private void onAddonCreation(string folderName)
         {
-            string folderPath = Path.Combine(ModCore.AddonsFolder, folderName);
+            string folderPath = Path.Combine(ModDirectories.AddonsFolder, folderName);
             Directory.CreateDirectory(folderPath);
 
             AddonInfo addonInfo = new AddonInfo

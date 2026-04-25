@@ -1,8 +1,8 @@
 ﻿using HarmonyLib;
-using OverhaulMod.Combat;
-using OverhaulMod.Combat.Weapons;
 using OverhaulMod.Content.Personalization;
 using OverhaulMod.Engine;
+using OverhaulMod.Gameplay;
+using OverhaulMod.Gameplay.Weapons;
 using OverhaulMod.Utils;
 using OverhaulMod.Visuals;
 using UnityEngine;
@@ -62,7 +62,7 @@ namespace OverhaulMod.Patches
             if (GameModeManager.IsMultiplayer() || !__instance.IsMainPlayer() || __instance.isImmobilized() || !__instance._isJumping || !moveCommand.Input.Jump)
                 return;
 
-            CharacterExtension characterExtension = ModComponentCache.GetRobotInventory(__instance.transform);
+            CharacterExtension characterExtension = ComponentCacheManager.Instance.GetCharacterExtension(__instance.transform);
             if (characterExtension && characterExtension.CanPerformDoubleJump())
             {
                 bool isMainPlayer = __instance.IsMainPlayer();
@@ -167,7 +167,7 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(FirstPersonMover.SetEquippedWeaponType))]
         private static void SetEquippedWeaponType_Postfix(FirstPersonMover __instance)
         {
-            PersonalizationController personalizationController = __instance.GetComponent<PersonalizationController>();
+            PersonalizationController personalizationController = ComponentCacheManager.Instance.GetPersonalizationController(__instance.transform);
             if (personalizationController) personalizationController.RefreshBowSkinVisibility();
         }
     }

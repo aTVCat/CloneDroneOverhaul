@@ -1,5 +1,6 @@
-﻿using OverhaulMod.Combat;
+﻿using OverhaulMod.Gameplay;
 using OverhaulMod.Utils;
+using OverhaulMod.Visuals;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -32,7 +33,7 @@ namespace OverhaulMod.Engine
 
             try
             {
-                info = ModJsonUtils.DeserializeStream<ModLocalizationInfo>(Path.Combine(ModCore.DataFolder, FILE_NAME));
+                info = ModJsonUtils.DeserializeStream<ModLocalizationInfo>(Path.Combine(ModDirectories.DataFolder, FILE_NAME));
             }
             catch (Exception)
             {
@@ -59,7 +60,7 @@ namespace OverhaulMod.Engine
             ModLocalizationInfo info = _localizationInfo;
             if (info != null)
             {
-                ModJsonUtils.WriteStream(Path.Combine(ModCore.DataFolder, FILE_NAME), info);
+                ModJsonUtils.WriteStream(Path.Combine(ModDirectories.DataFolder, FILE_NAME), info);
             }
         }
 
@@ -161,6 +162,8 @@ namespace OverhaulMod.Engine
 
         public void PopulateTranslationDictionary(ref Dictionary<string, string> keyValuePairs, string langId)
         {
+            if (langId.IsNullOrEmpty() || keyValuePairs.IsNullOrEmpty()) return;
+
             ModUpgradesManager.Instance.DeleteLocalizationKeysOfUpgrades(keyValuePairs); // fixes a bug which corrupts the name of upgrades after switching the language 
             ModLocalizationInfo modLocalizationInfo = _localizationInfo;
             if (modLocalizationInfo == null) return;
@@ -173,6 +176,11 @@ namespace OverhaulMod.Engine
                 if (!keyValuePairs.ContainsKey(translationKeyValue.Key))
                     keyValuePairs.Add(translationKeyValue.Key, !translationKeyValue.Value.IsNullOrEmpty() ? translationKeyValue.Value : translationKeyValue.Key);
             }
+        }
+
+        public void RefreshMiscTranslations()
+        {
+            FPSManager.Instance.RefreshDropdownOptionTranslation();
         }
     }
 }

@@ -150,7 +150,7 @@ namespace PicaVoxel
                             }
                             catch (Exception exc)
                             {
-                                ModDebug.LogWarning($"{v.x} {v.y} {v.z} ({exc.GetType()})");
+                                ModDebug.Warn($"{v.x} {v.y} {v.z} ({exc.GetType()})");
                             }
 
                         }

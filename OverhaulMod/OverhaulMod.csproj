@@ -217,8 +217,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Combat\CharacterExtension.cs" />
-    <Compile Include="Combat\Weapons\ModSwordBlockArea.cs" />
+    <Compile Include="Gameplay\CharacterExtension.cs" />
+    <Compile Include="Gameplay\ModCharacterManager.cs" />
+    <Compile Include="Gameplay\Weapons\ModSwordBlockArea.cs" />
     <Compile Include="Content\AddonDownloadInfo.cs" />
     <Compile Include="Content\AddonInfo.cs" />
     <Compile Include="Content\AddonDownloadListInfo.cs" />
@@ -243,7 +244,7 @@
     <Compile Include="Content\Personalization\PersonalizationCacheManager.cs" />
     <Compile Include="Content\Personalization\PersonalizationCategory.cs" />
     <Compile Include="Content\Personalization\PersonalizationController.cs" />
-    <Compile Include="Content\Personalization\PersonalizationControllerInfo.cs" />
+    <Compile Include="Content\Personalization\ItemSpawnInfo.cs" />
     <Compile Include="Content\Personalization\PersonalizationEditorCamera.cs" />
     <Compile Include="Content\Personalization\PersonalizationEditorDataManager.cs" />
     <Compile Include="Content\Personalization\PersonalizationEditorGuide.cs" />
@@ -292,7 +293,6 @@
     <Compile Include="Engine\AdditionalSkyboxSettings.cs" />
     <Compile Include="Engine\ScheduledActionsManager.cs" />
     <Compile Include="Engine\ScheduledActionType.cs" />
-    <Compile Include="Engine\WeaponInvisibilityFixer.cs" />
     <Compile Include="Engine\WeaponVariant2.cs" />
     <Compile Include="Content\Personalization\PersonalizationEditorObjectVisibilityController.cs" />
     <Compile Include="Content\Personalization\PersonalizationEditorObjectSpawnInfo.cs" />
@@ -337,7 +337,7 @@
     <Compile Include="Engine\ModAudioManager.cs" />
     <Compile Include="Engine\ModLevelDescriptionList.cs" />
     <Compile Include="Engine\ModLevelSectionInfo.cs" />
-    <Compile Include="Combat\ModGameModifiersManager.cs" />
+    <Compile Include="Gameplay\ModGameModifiersManager.cs" />
     <Compile Include="Content\ExclusivePerkInfo.cs" />
     <Compile Include="Content\ExclusivePerkInfoList.cs" />
     <Compile Include="Content\ExclusivePerkType.cs" />
@@ -382,6 +382,7 @@
     <Compile Include="Content\ExclusivePerkManager.cs" />
     <Compile Include="Engine\ModLevelManager.cs" />
     <Compile Include="Content\NewsManager.cs" />
+    <Compile Include="ModDirectories.cs" />
     <Compile Include="ModLaunchOptions.cs" />
     <Compile Include="ModLoader.cs" />
     <Compile Include="ModTime.cs" />
@@ -613,7 +614,7 @@
     <Compile Include="UI\UITitleScreenRework.cs" />
     <Compile Include="UI\UIMessagePopup.cs" />
     <Compile Include="UI\UIWorkshopBrowser.cs" />
-    <Compile Include="Utils\ModComponentCache.cs" />
+    <Compile Include="Engine\ComponentCacheManager.cs" />
     <Compile Include="Utils\ModConstants.cs" />
     <Compile Include="Utils\ModGameUtils.cs" />
     <Compile Include="Utils\ModIntegrationUtils.cs" />
@@ -645,8 +646,8 @@
     <Compile Include="UI\UIDeveloperMenu.cs" />
     <Compile Include="Utils\AssetBundleConstants.cs" />
     <Compile Include="ModUIManager.cs" />
-    <Compile Include="Combat\ModUpgradesManager.cs" />
-    <Compile Include="Combat\ModWeaponsManager.cs" />
+    <Compile Include="Gameplay\ModUpgradesManager.cs" />
+    <Compile Include="Gameplay\ModWeaponsManager.cs" />
     <Compile Include="ModBuild.cs" />
     <Compile Include="Utils\ModCache.cs" />
     <Compile Include="ModCore.cs" />
@@ -669,8 +670,8 @@
     <Compile Include="Utils\ModJsonUtils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utils\ModUnityUtils.cs" />
-    <Compile Include="Combat\Weapons\ScytheWeaponModel.cs" />
-    <Compile Include="Combat\Weapons\ModWeaponModel.cs" />
+    <Compile Include="Gameplay\Weapons\ScytheWeaponModel.cs" />
+    <Compile Include="Gameplay\Weapons\ModWeaponModel.cs" />
     <Compile Include="Visuals\QualityManager.cs" />
   </ItemGroup>
   <ItemGroup>

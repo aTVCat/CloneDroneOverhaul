@@ -193,7 +193,7 @@ namespace OverhaulMod.UI
 
         public void OnFolderButtonClicked()
         {
-            _ = ModFileUtils.OpenFileExplorer(_usePersistentDirectoryToggle.isOn ? ModCore.CustomizationPersistentFolder : ModCore.CustomizationFolder);
+            _ = ModFileUtils.OpenFileExplorer(_usePersistentDirectoryToggle.isOn ? ModDirectories.CustomizationPersistentFolder : ModDirectories.CustomizationFolder);
         }
 
         public void OnCreateNewButtonClicked()

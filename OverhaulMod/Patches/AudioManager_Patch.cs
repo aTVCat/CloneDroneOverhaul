@@ -20,7 +20,7 @@ namespace OverhaulMod.Patches
         private static bool Update_Prefix(AudioManager __instance)
         {
             SceneTransitionManager sceneTransitionManager = SceneTransitionManager.Instance;
-            if(sceneTransitionManager && sceneTransitionManager.IsDisconnecting())
+            if (sceneTransitionManager && sceneTransitionManager.IsDisconnecting())
             {
                 if (__instance._musicFadeOutStartTime > 0f)
                 {

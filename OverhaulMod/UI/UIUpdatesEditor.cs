@@ -176,14 +176,14 @@ namespace OverhaulMod.UI
             setUpdateInfoFromInputs();
             _updatesList.SetReleasesValuesForOldVersions();
 
-            ModJsonUtils.WriteStream(Path.Combine(ModCore.DeveloperFolder, UpdateManager.REPOSITORY_FILE), _updatesList);
+            ModJsonUtils.WriteStream(Path.Combine(ModDirectories.DeveloperFolder, UpdateManager.REPOSITORY_FILE), _updatesList);
 
             _needsSaveIcon.SetActive(false);
         }
 
         public void OnSavesFolderButtonClicked()
         {
-            ModFileUtils.OpenFileExplorer(ModCore.DeveloperFolder);
+            ModFileUtils.OpenFileExplorer(ModDirectories.DeveloperFolder);
         }
 
         public void OnGetUpdatesFileButtonClicked()

@@ -80,7 +80,7 @@ namespace OverhaulMod.UI
             _shading = base.GetComponent<Image>();
             _textLine.gameObject.AddComponent<BetterOutline>().effectColor = Color.black;
 
-            string path = Path.Combine(ModCore.DataFolder, "changelogs");
+            string path = Path.Combine(ModDirectories.DataFolder, "changelogs");
             if (!Directory.Exists(path)) return;
 
             List<Version> versions = new List<Version>();
@@ -237,7 +237,7 @@ namespace OverhaulMod.UI
 
         public void PopulateChangelog(string updateString, string header, string folderName)
         {
-            string path = Path.Combine(ModCore.DataFolder, "changelogs", folderName);
+            string path = Path.Combine(ModDirectories.DataFolder, "changelogs", folderName);
             string langCode = LocalizationManager.Instance.GetCurrentLanguageCode();
             if (langCode != "ru" && langCode != "en")
                 langCode = "en";

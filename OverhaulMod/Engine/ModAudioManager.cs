@@ -185,7 +185,7 @@ namespace OverhaulMod.Engine
         {
             if (!_oneShotGlobalAudioSource)
             {
-                ModDebug.LogWarning("OneShot Global Audio Source has been destroyed!", true);
+                ModDebug.Warn("OneShot Global Audio Source has been destroyed!");
                 return;
             }
 

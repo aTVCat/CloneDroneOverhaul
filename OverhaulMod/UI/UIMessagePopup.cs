@@ -104,7 +104,7 @@ namespace OverhaulMod.UI
         public void OnOkButtonClicked()
         {
             Hide();
-            if(_okButtonAction != null) _okButtonAction();
+            if (_okButtonAction != null) _okButtonAction();
             clearCallbackIfNotVisible();
         }
 

@@ -1,4 +1,5 @@
 ﻿using OverhaulMod.Utils;
+using System.Collections;
 using System.Linq;
 using UnityEngine;
 
@@ -66,9 +67,26 @@ namespace OverhaulMod.Engine
             RefreshArenaLook();
         }
 
+        private void Update()
+        {
+            if (_overhaulGarbageDoorTransform && _garbageDoorTransform)
+            {
+                Vector3 position = _garbageDoorTransform.position;
+                position.x = -1.225f;
+                position.y += 1.21f;
+                position.z = 0f;
+                _overhaulGarbageDoorTransform.localPosition = position;
+            }
+        }
+
         public void OnGameLoaded()
         {
             RefreshArenaLook();
+        }
+
+        public void FixLiftInCoop()
+        {
+            if (GameModeManager.IsCoop()) StartCoroutine(waitThenFixArenaLiftInCoop());
         }
 
         public void RefreshArenaLook()
@@ -211,8 +229,7 @@ namespace OverhaulMod.Engine
 
         public void SetUpperInteriorActive(bool value)
         {
-            if (_arenaUpperInteriorTransform)
-                _arenaUpperInteriorTransform.gameObject.SetActive(value);
+            if (_arenaUpperInteriorTransform) _arenaUpperInteriorTransform.gameObject.SetActive(value);
         }
 
         private void setUpBattleCruiser()
@@ -256,27 +273,39 @@ namespace OverhaulMod.Engine
             _battleCruiserTransform.GetComponent<MeshRenderer>().enabled = false;
         }
 
+        private IEnumerator waitThenFixArenaLiftInCoop()
+        {
+            yield return new WaitForSeconds(3f);
+            if (!ArenaLiftManager.Instance) yield break;
+
+            ArenaLift lift = ArenaLiftManager.Instance.Lift;
+            if (lift && (lift._state == null || lift._stateHolder == null))
+            {
+                foreach (MovingPlatformStateHolder sh in Resources.FindObjectsOfTypeAll<MovingPlatformStateHolder>())
+                {
+                    BoltEntity boltEntity = sh.GetComponent<BoltEntity>();
+                    if (!boltEntity || !boltEntity.IsAttached)
+                        continue;
+
+                    if (sh.state.UniqueIndex == lift.GetUniqueIndex())
+                    {
+                        lift._state = sh.state;
+                        lift._stateHolder = sh;
+                        break;
+                    }
+                }
+            }
+            yield break;
+        }
+
+
         private void onArenaSettingsUpdate()
         {
             LevelEditorArenaSettings activeSettings = ArenaCustomizationManager.Instance.GetActiveSettings();
             if (activeSettings)
             {
-                if (_arenaOverhaulMaterial)
-                    _arenaOverhaulMaterial.SetColor("_EmissionColor", activeSettings.HighlightColor * activeSettings.HighlightEmission);
-                if (_arenaLightsMaterial)
-                    _arenaLightsMaterial.SetColor("_EmissionColor", activeSettings.LightsColor * activeSettings.LightsEmission);
-            }
-        }
-
-        private void Update()
-        {
-            if (_overhaulGarbageDoorTransform && _garbageDoorTransform)
-            {
-                Vector3 position = _garbageDoorTransform.position;
-                position.x = -1.225f;
-                position.y += 1.21f;
-                position.z = 0f;
-                _overhaulGarbageDoorTransform.localPosition = position;
+                if (_arenaOverhaulMaterial) _arenaOverhaulMaterial.SetColor("_EmissionColor", activeSettings.HighlightColor * activeSettings.HighlightEmission);
+                if (_arenaLightsMaterial) _arenaLightsMaterial.SetColor("_EmissionColor", activeSettings.LightsColor * activeSettings.LightsEmission);
             }
         }
     }

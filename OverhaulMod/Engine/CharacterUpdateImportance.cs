@@ -2,9 +2,9 @@
 {
     public enum CharacterUpdateImportance
     {
-        Player,
+        MainPlayer,
 
-        PlayerClone,
+        Player,
 
         Enemy,
     }

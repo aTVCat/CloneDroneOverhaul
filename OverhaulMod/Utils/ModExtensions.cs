@@ -1,5 +1,5 @@
-﻿using OverhaulMod.Combat.Weapons;
-using OverhaulMod.Engine;
+﻿using OverhaulMod.Engine;
+using OverhaulMod.Gameplay.Weapons;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;

@@ -1,7 +1,7 @@
-﻿using OverhaulMod.Combat;
-using OverhaulMod.Content;
+﻿using OverhaulMod.Content;
 using OverhaulMod.Content.Personalization;
 using OverhaulMod.Engine;
+using OverhaulMod.Gameplay;
 using OverhaulMod.Patches.Behaviours;
 using OverhaulMod.UI;
 using OverhaulMod.Utils;
@@ -14,41 +14,71 @@ namespace OverhaulMod
 {
     public static class ModLoader
     {
-        private static bool s_hasAddedObjects;
+        private static GameObject _lock;
 
-        public static void Load()
+        public static bool ShouldStartCustomizationEditor;
+
+        public static void Load(bool gameFlowStartedThisFrame)
         {
-            ModDebug.Log("Attempted to load the mod");
+            ModDebug.Log($"Trying to load the mod. GameFlowManager started this frame? {gameFlowStartedThisFrame}, Lock: {_lock}");
+            if (_lock) return;
+
+            if (gameFlowStartedThisFrame)
+            {
+                GlobalEventManager.Instance.AddEventListenerOnce(GlobalEvents.GameInitializtionCompleted, onGameInitialized);
+            }
+
             if (ModManagers.Instance)
             {
-                ModManagers.Instance.TriggerModLoadedEvent();
+                GamePatchBehaviour.Load();
+
+                // for cases when transition doesnt end automatically for some reason
+                DelegateScheduler.Instance.Schedule(delegate
+                {
+                    if (!LevelManager.Instance.IsSpawningCurrentLevel())
+                        TransitionManager.Instance.EndTransition();
+                }, 1f);
+
+                if (gameFlowStartedThisFrame) ModManagers.Instance.TriggerModLoadedEvent();
                 return;
             }
 
-            createDirectories();
-            loadGameUIThemeData();
+            GameObject sceneObject = new GameObject("Overhaul Lock Object");
+            _lock = sceneObject;
 
             ModBuild.Load();
             ModFeatures.CacheValues();
             ModLaunchOptions.Initialize();
             ModUserInfo.Load();
             ModIntegrationUtils.Load();
+            ModDirectories.CreateMissingDirectories();
 
+            loadGameUIThemeData();
             addManagers();
 
             loadMiscellaneousAssets();
-            addListeners();
+            addSettingsListeners();
 
             QualitySettings.softParticles = true;
             FPSManager.RefreshFPSCap();
+            ModSpecialUtils.SetTitleBarStateDependingOnSettings();
+            GamePatchBehaviour.Load();
 
-            ModCore.RefreshCursor();
+            if (GameModeManager.IsOnTitleScreen()) _ = ModUIConstants.ShowTitleScreenReworkIfHaventBefore();
 
             ModManagers.Instance.TriggerModLoadedEvent();
         }
 
         public static void Unload()
         {
+            Object.Destroy(_lock);
+
+            tryShowVanillaPauseMenu();
+
+            ModSpecialUtils.SetTitleBarStateDependingOnSettings();
+
+            GamePatchBehaviour.Unload();
+
             ModManagers modManagers = ModManagers.Instance;
             if (modManagers && modManagers.gameObject)
             {
@@ -66,6 +96,7 @@ namespace OverhaulMod
             coreManagers.transform.SetParent(managersObject.transform, false);
             modManagers.AddSingleton<ModResources>(coreManagers);
             modManagers.AddSingleton<ModDataManager>(coreManagers);
+            modManagers.AddSingleton<ComponentCacheManager>(coreManagers);
             modManagers.AddSingleton<ModSettingsDataManager>(coreManagers);
             modManagers.AddSingleton<ModSettingsManager>(coreManagers);
             modManagers.AddSingleton<ModAudioManager>(coreManagers);
@@ -84,6 +115,7 @@ namespace OverhaulMod
             modManagers.AddSingleton<ModUpgradesManager>(gameplayManagers);
             modManagers.AddSingleton<ModWeaponsManager>(gameplayManagers);
             modManagers.AddSingleton<ModLevelManager>(gameplayManagers);
+            modManagers.AddSingleton<ModCharacterManager>(gameplayManagers);
             modManagers.AddSingleton<ModGameModifiersManager>(gameplayManagers);
             modManagers.AddSingleton<UpgradeModesManager>(gameplayManagers);
             modManagers.AddSingleton<AutoBuildManager>(gameplayManagers);
@@ -146,18 +178,7 @@ namespace OverhaulMod
             ModConstants.CursorSkinOptions[2].image = ModUnityUtils.ToSprite(ModResources.Texture2D(AssetBundleConstants.UI, "Cursor2"));
         }
 
-        private static void createDirectories()
-        {
-            _ = ModFileUtils.CreateDirectoryIfNotExists(ModCore.ModUserDataFolder);
-            _ = ModFileUtils.CreateDirectoryIfNotExists(ModCore.ContentFolder);
-            _ = ModFileUtils.CreateDirectoryIfNotExists(ModCore.SavesFolder);
-            _ = ModFileUtils.CreateDirectoryIfNotExists(ModCore.AddonsFolder);
-            _ = ModFileUtils.CreateDirectoryIfNotExists(ModCore.CustomizationFolder);
-            _ = ModFileUtils.CreateDirectoryIfNotExists(ModCore.CustomizationPersistentFolder);
-            _ = ModFileUtils.CreateDirectoryIfNotExists(ModCore.DeveloperFolder);
-        }
-
-        private static void addListeners()
+        private static void addSettingsListeners()
         {
             ModSettingsManager modSettingsManager = ModSettingsManager.Instance;
             modSettingsManager.AddSettingValueChangedListener(refreshEditorAmbiance, ModSettingsConstants.CUSTOMIZATION_EDITOR_AMBIANCE);
@@ -182,7 +203,10 @@ namespace OverhaulMod
                 GlobalEventManager.Instance.Dispatch(CameraManager.FIRST_PERSON_MODE_SWITCHED_EVENT);
             }, ModSettingsConstants.ENABLE_FIRST_PERSON_MODE);
             modSettingsManager.AddSettingValueChangedListener(refreshFPSCap, ModSettingsConstants.FPS_CAP);
-            modSettingsManager.AddSettingValueChangedListener(ModCore.RefreshCursor, ModSettingsConstants.CURSOR_SKIN);
+            modSettingsManager.AddSettingValueChangedListener(delegate
+            {
+                ModUIManager.RefreshCursor();
+            }, ModSettingsConstants.CURSOR_SKIN);
             modSettingsManager.AddSettingValueChangedListener(delegate (object obj)
             {
                 UseKeyTriggerManager manager = UseKeyTriggerManager.Instance;
@@ -263,21 +287,6 @@ namespace OverhaulMod
             }, ModSettingsConstants.CHUNK_UPDATE_DELAY);
         }
 
-        private static void refreshCameraPostEffects(object obj)
-        {
-            PostEffectsManager.Instance.RefreshCameraPostEffects();
-        }
-
-        private static void refreshFPSCap(object obj)
-        {
-            FPSManager.RefreshFPSCap();
-        }
-
-        private static void refreshEditorAmbiance(object obj)
-        {
-            ModAudioManager.Instance.PlayOrStopCustomizationEditorAmbiance();
-        }
-
         private static void loadGameUIThemeData()
         {
             if (ModCache.UIThemeData) return;
@@ -301,6 +310,44 @@ namespace OverhaulMod
                 gameUIThemeData.ButtonTextOutline[1].Color = new Color(0.1f, 0.1f, 0.1f, 0.6f);
                 ModCache.UIThemeData = gameUIThemeData;
             }
+        }
+
+        private static void onGameInitialized()
+        {
+            ModManagers.Instance.TriggerGameLoadedEvent();
+            if (ShouldStartCustomizationEditor)
+            {
+                ShouldStartCustomizationEditor = false;
+                if (PersonalizationEditorManager.Instance)
+                    PersonalizationEditorManager.Instance.StartEditorGameMode(true);
+            }
+        }
+
+        private static void tryShowVanillaPauseMenu()
+        {
+            GameUIRoot uiRoot = ModCache.UIRoot;
+            if (!uiRoot) return;
+
+            ModUIManager modUIManager = ModUIManager.Instance;
+            if (!modUIManager || !modUIManager.IsUIVisible(AssetBundleConstants.UI, ModUIConstants.UI_PAUSE_MENU)) return;
+
+            _ = modUIManager.Hide(AssetBundleConstants.UI, ModUIConstants.UI_PAUSE_MENU);
+            if (uiRoot.EscMenu) uiRoot.EscMenu.Show();
+        }
+
+        private static void refreshCameraPostEffects(object obj)
+        {
+            PostEffectsManager.Instance.RefreshCameraPostEffects();
+        }
+
+        private static void refreshFPSCap(object obj)
+        {
+            FPSManager.RefreshFPSCap();
+        }
+
+        private static void refreshEditorAmbiance(object obj)
+        {
+            ModAudioManager.Instance.PlayOrStopCustomizationEditorAmbiance();
         }
     }
 }

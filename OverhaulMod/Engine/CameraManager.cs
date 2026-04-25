@@ -77,7 +77,7 @@ namespace OverhaulMod.Engine
             if (camera != oldCamera)
             {
                 MainCamera = camera;
-                ModCore.TriggerOnCameraSwitchedEvent(oldCamera, camera);
+                PostEffectsManager.Instance.OnCameraSwitched(oldCamera, camera);
             }
         }
 

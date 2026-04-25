@@ -104,7 +104,7 @@ namespace OverhaulMod.Engine
 
         public void LoadBuildList()
         {
-            string oldPath = Path.Combine(ModDataManager.UserDataFolder, "AutoBuildInfo.json");
+            string oldPath = Path.Combine(ModDirectories.ModUserDataFolder, "AutoBuildInfo.json");
             AutoBuildInfo oldAutoBuildInfo;
             if (File.Exists(oldPath))
             {

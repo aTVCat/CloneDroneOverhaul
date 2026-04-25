@@ -1,6 +1,6 @@
 ﻿using HarmonyLib;
 using OverhaulMod.Content.Personalization;
-using OverhaulMod.Utils;
+using OverhaulMod.Engine;
 using UnityEngine;
 
 namespace OverhaulMod.Patches
@@ -12,7 +12,7 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(BaseBodyPart.dispatchBodyPartDamaged))]
         private static void dispatchBodyPartDamaged_Postfix(BaseBodyPart __instance, int attackID, Vector3 impactDirection, Character damageOrigin, DamageSourceType damageSourceType)
         {
-            PersonalizationAccessoryReferences personalizationAccessoryReferences = ModComponentCache.GetPersonalizationAccessoryReferences(__instance.transform);
+            PersonalizationAccessoryReferences personalizationAccessoryReferences = ComponentCacheManager.Instance.GetPersonalizationAccessoryReferences(__instance.transform);
             if (personalizationAccessoryReferences)
             {
                 personalizationAccessoryReferences.RefreshVisibility();

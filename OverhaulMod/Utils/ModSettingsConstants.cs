@@ -592,7 +592,7 @@ namespace OverhaulMod.Utils
         public const string DISABLE_SCHEDULES = "DisableSchedules";
 
         /// <summary>
-        /// <see cref="ModCore"/>
+        /// <see cref="Visuals.PostEffectsManager"/>
         /// </summary>
         public const string DISABLE_SCREEN_SHAKING = "DisableScreenShaking";
 
@@ -612,7 +612,7 @@ namespace OverhaulMod.Utils
         public const string CUSTOMIZATION_EDITOR_AMBIANCE = "CustomizationEditorAmbiance";
 
         /// <summary>
-        /// <see cref="Combat.CharacterExtension"/>
+        /// <see cref="Gameplay.CharacterExtension"/>
         /// </summary>
         public const string ENABLE_SCROLL_TO_SWITCH_WEAPON = "EnableScrollToSwitchWeapon";
 
@@ -682,7 +682,7 @@ namespace OverhaulMod.Utils
         public const string CLONE_DRONE_LOGO_FIRE = "CloneDroneLogoFire";
 
         /// <summary>
-        /// <see cref="Combat.CharacterExtension"/>
+        /// <see cref="Gameplay.CharacterExtension"/>
         /// </summary>
         public const string WEAPON_SWITCH_COOLDOWN = "WeaponSwitchCooldown";
 

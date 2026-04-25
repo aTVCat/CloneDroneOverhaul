@@ -238,7 +238,7 @@ namespace OverhaulMod.UI
         public void OnVerifyButtonClicked()
         {
             PersonalizationItemInfo info = PersonalizationEditorManager.Instance.EditingItemInfo;
-            if(info != null)
+            if (info != null)
             {
                 info.IsVerified = true;
                 info.IsSentForVerification = false;

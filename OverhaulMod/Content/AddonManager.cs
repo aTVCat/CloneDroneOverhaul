@@ -83,7 +83,7 @@ namespace OverhaulMod.Content
 
         public bool HasDownloadsListOnDisk()
         {
-            return File.Exists(Path.Combine(ModCore.DeveloperFolder, ADDONS_LIST_REPOSITORY_FILE));
+            return File.Exists(Path.Combine(ModDirectories.DeveloperFolder, ADDONS_LIST_REPOSITORY_FILE));
         }
 
         public void SaveDownloadListToDisk()
@@ -91,7 +91,7 @@ namespace OverhaulMod.Content
             if (_addonDownloadList == null)
                 return;
 
-            string path = Path.Combine(ModCore.DeveloperFolder, ADDONS_LIST_REPOSITORY_FILE);
+            string path = Path.Combine(ModDirectories.DeveloperFolder, ADDONS_LIST_REPOSITORY_FILE);
             ModJsonUtils.WriteStream(path, _addonDownloadList);
         }
 
@@ -207,7 +207,7 @@ namespace OverhaulMod.Content
 
                 try
                 {
-                    string dest = Path.Combine(ModCore.AddonsFolder, folderName);
+                    string dest = Path.Combine(ModDirectories.AddonsFolder, folderName);
                     if (!Directory.Exists(dest))
                         _ = Directory.CreateDirectory(dest);
 
@@ -390,7 +390,7 @@ namespace OverhaulMod.Content
                 list.Clear();
             }
 
-            string[] folders = Directory.GetDirectories(ModCore.AddonsFolder);
+            string[] folders = Directory.GetDirectories(ModDirectories.AddonsFolder);
             if (folders.IsNullOrEmpty())
                 return list;
 

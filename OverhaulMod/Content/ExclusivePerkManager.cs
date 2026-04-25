@@ -43,7 +43,7 @@ namespace OverhaulMod.Content
             ExclusivePerkInfoList infoList;
             try
             {
-                infoList = ModJsonUtils.DeserializeStream<ExclusivePerkInfoList>(Path.Combine(ModCore.ModUserDataFolder, FILE_NAME));
+                infoList = ModJsonUtils.DeserializeStream<ExclusivePerkInfoList>(Path.Combine(ModDirectories.ModUserDataFolder, FILE_NAME));
             }
             catch (Exception)
             {
@@ -59,7 +59,7 @@ namespace OverhaulMod.Content
             RepositoryManager repositoryManager = RepositoryManager.Instance;
             repositoryManager.GetTextFile(FILE_NAME, delegate (string contents)
             {
-                ModFileUtils.WriteText(contents, Path.Combine(ModCore.ModUserDataFolder, FILE_NAME));
+                ModFileUtils.WriteText(contents, Path.Combine(ModDirectories.ModUserDataFolder, FILE_NAME));
 
                 ExclusivePerkInfoList contentInfoList = null;
                 try

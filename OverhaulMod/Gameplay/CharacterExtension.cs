@@ -1,10 +1,9 @@
 ﻿using OverhaulMod.Engine;
 using OverhaulMod.Utils;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace OverhaulMod.Combat
+namespace OverhaulMod.Gameplay
 {
     public class CharacterExtension : MonoBehaviour
     {
@@ -13,8 +12,6 @@ namespace OverhaulMod.Combat
 
         [ModSetting(ModSettingsConstants.WEAPON_SWITCH_COOLDOWN, 0.1f)]
         public static float WeaponSwitchCooldown;
-
-        private bool _hasInitialized;
 
         private float _weaponSwitchCooldown;
 
@@ -39,27 +36,15 @@ namespace OverhaulMod.Combat
         private PlayerInputController _inputController;
 
         private FirstPersonMover _owner;
-        public FirstPersonMover owner
-        {
-            get
-            {
-                if (!_owner)
-                {
-                    _owner = base.GetComponent<FirstPersonMover>();
-                }
-                return _owner;
-            }
-        }
 
         private void Start()
         {
-            OnUpgradesRefreshed(owner._upgradeCollection);
-            _inputController = owner._playerInputController;
+            OnUpgradesRefreshed(_owner._upgradeCollection);
         }
 
         private void Update()
         {
-            FirstPersonMover firstPersonMover = owner;
+            FirstPersonMover firstPersonMover = _owner;
             if (!firstPersonMover) return;
 
             if (HasDoubleJumpAbility())
@@ -92,36 +77,20 @@ namespace OverhaulMod.Combat
             }
         }
 
-        private void OnEnable()
+        public void Initialize(FirstPersonMover firstPersonMover)
         {
-            if (!BoltNetwork.IsRunning) return;
-
-            if (!_hasInitialized) _ = base.StartCoroutine(initializeCoroutine(owner));
-        }
-
-        private IEnumerator initializeCoroutine(FirstPersonMover firstPersonMover)
-        {
-            while (firstPersonMover && firstPersonMover.IsAttachedAndAlive() && !firstPersonMover.HasCharacterModel())
-                yield return null;
-
-            yield return null;
-
-            if (!firstPersonMover || !firstPersonMover.IsAttachedAndAlive() || !firstPersonMover.HasCharacterModel())
-            {
-                Destroy(this);
-                yield break;
-            }
-            _hasInitialized = true;
+            _owner = firstPersonMover;
+            _inputController = firstPersonMover._playerInputController;
 
             Transform footRTransform = firstPersonMover.GetBodyPartParent("FootR");
             Transform footLTransform = firstPersonMover.GetBodyPartParent("FootL");
             if (footLTransform && footRTransform)
             {
-                bool hasDoubleJumpUpgrade = owner.HasUpgrade(ModUpgradesManager.DOUBLE_JUMP_UPGRADE);
+                bool hasDoubleJumpUpgrade = firstPersonMover.HasUpgrade(ModUpgradesManager.DOUBLE_JUMP_UPGRADE);
 
                 _doubleJumpParticles = new List<ParticleSystem>();
 
-                _doubleJumpTrail1 =Instantiate(ModResources.Prefab(AssetBundleConstants.VFX, "VFX_DoubleJumpTrail"), footLTransform, false);
+                _doubleJumpTrail1 = Instantiate(ModResources.Prefab(AssetBundleConstants.VFX, "VFX_DoubleJumpTrail"), footLTransform, false);
                 _doubleJumpTrail1.SetActive(hasDoubleJumpUpgrade);
                 _doubleJumpParticles.AddRange(_doubleJumpTrail1.GetComponentsInChildren<ParticleSystem>(true));
                 _doubleJumpTrail2 = Instantiate(ModResources.Prefab(AssetBundleConstants.VFX, "VFX_DoubleJumpTrail"), footRTransform, false);
@@ -130,11 +99,7 @@ namespace OverhaulMod.Combat
 
                 _hasDoubleJumpVisuals = true;
             }
-
-            yield break;
         }
-
-        public bool HasInitialized() => _hasInitialized;
 
         public void OnUpgradesRefreshed(UpgradeCollection upgrades)
         {

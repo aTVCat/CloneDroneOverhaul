@@ -1,6 +1,6 @@
 ﻿using HarmonyLib;
 using OverhaulMod.Engine;
-using OverhaulMod.Utils;
+using OverhaulMod.Visuals;
 using UnityEngine;
 
 namespace OverhaulMod.Patches
@@ -12,7 +12,7 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(CameraShaker.ShakeCamera))]
         private static bool ShakeCamera_Prefix(CameraShaker __instance)
         {
-            return !ModCore.DisableScreenShaking || GameModeManager.IsInLevelEditor();
+            return !PostEffectsManager.DisableScreenShaking || GameModeManager.IsInLevelEditor();
         }
 
         [HarmonyPostfix]
@@ -29,7 +29,7 @@ namespace OverhaulMod.Patches
                 position = __instance.transform.localPosition;
             }
 
-            CameraModeController cameraModeController = ModComponentCache.GetCameraModeController(__instance.transform);
+            CameraModeController cameraModeController = ComponentCacheManager.Instance.GetCameraModeController(__instance.transform);
             if (cameraModeController)
             {
                 cameraModeController.ShakePositionOffset = position;

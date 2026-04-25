@@ -78,7 +78,7 @@ namespace OverhaulMod.Patches.Behaviours
                 return;
             }
 
-            RepositoryManager.Instance.GetLocalTexture(Path.Combine(ModCore.TexturesFolder, "gamemodes", $"{imageName}.jpg"), delegate (Texture2D texture2D)
+            RepositoryManager.Instance.GetLocalTexture(Path.Combine(ModDirectories.TexturesFolder, "gamemodes", $"{imageName}.jpg"), delegate (Texture2D texture2D)
             {
                 Sprite sprite = texture2D.ToSprite();
                 array[index].ThumbnailSprite = sprite;
@@ -95,7 +95,7 @@ namespace OverhaulMod.Patches.Behaviours
                 return;
             }
 
-            RepositoryManager.Instance.GetLocalTexture(Path.Combine(ModCore.TexturesFolder, "gamemodes", $"{imageName}.jpg"), delegate (Texture2D texture2D)
+            RepositoryManager.Instance.GetLocalTexture(Path.Combine(ModDirectories.TexturesFolder, "gamemodes", $"{imageName}.jpg"), delegate (Texture2D texture2D)
             {
                 Sprite sprite = texture2D.ToSprite();
                 array[index].GameModeSelectData.ThumbnailSprite = sprite;

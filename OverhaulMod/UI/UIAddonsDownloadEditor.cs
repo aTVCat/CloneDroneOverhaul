@@ -113,7 +113,7 @@ namespace OverhaulMod.UI
 
         public void OnSavesFolderButtonClicked()
         {
-            ModFileUtils.OpenFileExplorer(ModCore.DeveloperFolder);
+            ModFileUtils.OpenFileExplorer(ModDirectories.DeveloperFolder);
         }
     }
 }

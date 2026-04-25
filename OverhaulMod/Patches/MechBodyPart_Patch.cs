@@ -16,7 +16,7 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(MechBodyPart.DispatchDisconnectedEvent))]
         private static void DispatchDisconnectedEvent_Postfix(MechBodyPart __instance)
         {
-            PersonalizationAccessoryReferences personalizationAccessoryReferences = ModComponentCache.GetPersonalizationAccessoryReferences(__instance.transform);
+            PersonalizationAccessoryReferences personalizationAccessoryReferences = ComponentCacheManager.Instance.GetPersonalizationAccessoryReferences(__instance.transform);
             if (personalizationAccessoryReferences)
             {
                 personalizationAccessoryReferences.RefreshVisibility();

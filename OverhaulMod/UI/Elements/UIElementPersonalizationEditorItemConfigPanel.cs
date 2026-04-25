@@ -1,5 +1,5 @@
-﻿using OverhaulMod.Combat;
-using OverhaulMod.Content.Personalization;
+﻿using OverhaulMod.Content.Personalization;
+using OverhaulMod.Gameplay;
 using OverhaulMod.Utils;
 using System.Collections.Generic;
 using UnityEngine;
@@ -398,14 +398,14 @@ namespace OverhaulMod.UI
             else
             {
                 PersonalizationItemInfo itemInfo = PersonalizationEditorManager.Instance.EditingItemInfo;
-                PersonalizationEditorDataManager.Instance.ExportItem(itemInfo, out _, ModCore.SavesFolder, PersonalizationEditorDataManager.Instance.GetExportedItemFileName(itemInfo));
+                PersonalizationEditorDataManager.Instance.ExportItem(itemInfo, out _, ModDirectories.SavesFolder, PersonalizationEditorDataManager.Instance.GetExportedItemFileName(itemInfo));
                 ModUIUtils.MessagePopupOK("Exported the item", "for real", false);
             }
         }
 
         public void OnSavesFolderButtonClicked()
         {
-            ModFileUtils.OpenFileExplorer(ModCore.SavesFolder);
+            ModFileUtils.OpenFileExplorer(ModDirectories.SavesFolder);
         }
 
         public void OnItemFolderFolderButtonClicked()

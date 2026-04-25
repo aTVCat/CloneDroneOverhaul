@@ -97,14 +97,14 @@ namespace OverhaulMod.UI
                 position++;
             }
 
-            string file = ModCore.SavesFolder + "LeaderboardExport.txt";
+            string file = ModDirectories.SavesFolder + "LeaderboardExport.txt";
             ModFileUtils.WriteText(stringBuilder.ToString(), file);
             _ = ModFileUtils.OpenFile(file);
         }
 
         public void OnSavesFolderButtonClicked()
         {
-            _ = ModFileUtils.OpenFileExplorer(ModCore.SavesFolder);
+            _ = ModFileUtils.OpenFileExplorer(ModDirectories.SavesFolder);
         }
 
         public void OnClearButtonClicked()

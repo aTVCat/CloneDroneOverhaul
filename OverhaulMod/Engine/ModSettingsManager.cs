@@ -40,7 +40,7 @@ namespace OverhaulMod.Engine
         private void loadInfos()
         {
             ModSettingElementsContainer infosContainer;
-            string path = Path.Combine(ModCore.DataFolder, SETTINGS_INFO_CONTAINER_FILE);
+            string path = Path.Combine(ModDirectories.DataFolder, SETTINGS_INFO_CONTAINER_FILE);
             if (File.Exists(path))
             {
                 try
@@ -64,7 +64,7 @@ namespace OverhaulMod.Engine
         {
             _idToDescription.Clear();
 
-            string fn = Path.Combine(ModCore.DataFolder, "settingDescriptions.txt");
+            string fn = Path.Combine(ModDirectories.DataFolder, "settingDescriptions.txt");
             if (File.Exists(fn))
             {
                 string content;
@@ -123,7 +123,7 @@ namespace OverhaulMod.Engine
 
         public void SaveElementDescriptions()
         {
-            ModJsonUtils.WriteStream(Path.Combine(ModCore.DataFolder, SETTINGS_INFO_CONTAINER_FILE), _settingsInfos);
+            ModJsonUtils.WriteStream(Path.Combine(ModDirectories.DataFolder, SETTINGS_INFO_CONTAINER_FILE), _settingsInfos);
         }
 
         public string GetSubDescription(string settingId)

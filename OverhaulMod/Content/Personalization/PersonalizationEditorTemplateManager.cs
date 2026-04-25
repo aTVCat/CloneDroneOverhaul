@@ -13,7 +13,7 @@ namespace OverhaulMod.Content.Personalization
             {
                 if (s_templatesFolder == null)
                 {
-                    s_templatesFolder = Path.Combine(ModCore.DataFolder, "customizationTemplates");
+                    s_templatesFolder = Path.Combine(ModDirectories.DataFolder, "customizationTemplates");
                 }
                 return s_templatesFolder;
             }

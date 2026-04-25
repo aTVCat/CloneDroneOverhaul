@@ -1,5 +1,5 @@
 ﻿using HarmonyLib;
-using OverhaulMod.Utils;
+using OverhaulMod.Engine;
 
 namespace OverhaulMod.Patches
 {
@@ -10,7 +10,8 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(CacheManager.CreateOrClearInstance))]
         private static void CreateOrClearInstance_Postfix()
         {
-            ModComponentCache.ClearCache();
+            ComponentCacheManager manager = ComponentCacheManager.Instance;
+            if (manager) manager.ClearCache();
         }
     }
 }

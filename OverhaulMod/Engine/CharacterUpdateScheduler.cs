@@ -1,16 +1,15 @@
-﻿using OverhaulMod.Content.Personalization;
-using OverhaulMod.Visuals;
+﻿using OverhaulMod.Visuals;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace OverhaulMod.Engine
 {
     /// <summary>
-    /// For performing heavy operations like skins refreshing on multiple robots not in a single frame
+    /// For performing heavy operations like refreshing skins on multiple robots not in a single frame
     /// </summary>
     public class CharacterUpdateScheduler : Singleton<CharacterUpdateScheduler>
     {
-        public const float MINIMAL_DELAY = 0.1f;
+        public const float WAIT_BETWEEN_UPDATES = 0.1f;
 
         private float _timeLeftForNextUpdate;
 
@@ -27,7 +26,7 @@ namespace OverhaulMod.Engine
             _timeLeftForNextUpdate = Mathf.Max(0, _timeLeftForNextUpdate - Time.deltaTime);
             if (_timeLeftForNextUpdate == 0f)
             {
-                _timeLeftForNextUpdate = MINIMAL_DELAY;
+                _timeLeftForNextUpdate = WAIT_BETWEEN_UPDATES;
                 performUpdate();
             }
         }
@@ -48,7 +47,8 @@ namespace OverhaulMod.Engine
             {
                 CharacterUpdateImportance importance = getImportanceOfUpdate(character);
                 characterUpdate = createNewUpdateInfo(character, importance, request);
-                int index = getLastIndexOfScheduledUpdateWithImportance(importance);
+                int index = 0;
+                if (importance != CharacterUpdateImportance.MainPlayer) index = getLastIndexOfScheduledUpdateWithImportance(importance);
                 _scheduledUpdates.Insert(index, characterUpdate);
             }
             else
@@ -62,30 +62,23 @@ namespace OverhaulMod.Engine
             if (_scheduledUpdates.Count == 0) return;
 
             CharacterUpdateInfo update = _scheduledUpdates[0];
-            if (!update.UpdateWeaponSkins())
-            {
-                if (!update.UpdateWeaponBag())
-                {
-                    if (!update.UpdateAccessories())
-                    {
-                        if (!update.UpdatePets())
-                        {
-                            _scheduledUpdates.RemoveAt(0);
-                        }
-                    }
-                }
-            }
+            if (update.UpdateWeaponSkins()) return;
+            if (update.UpdateWeaponBag()) return;
+            if (update.UpdateAccessories()) return;
+            if (update.UpdatePets()) return;
+
+            _scheduledUpdates.RemoveAt(0);
         }
 
         private CharacterUpdateImportance getImportanceOfUpdate(Character character)
         {
             if (character.IsMainPlayer())
             {
-                return CharacterUpdateImportance.Player;
+                return CharacterUpdateImportance.MainPlayer;
             }
             else if (character.IsPlayer() || character.IsClone())
             {
-                return CharacterUpdateImportance.PlayerClone;
+                return CharacterUpdateImportance.Player;
             }
             else
             {
@@ -95,7 +88,7 @@ namespace OverhaulMod.Engine
 
         private int getLastIndexOfScheduledUpdateWithImportance(CharacterUpdateImportance characterUpdateImportance)
         {
-            if (_scheduledUpdates.Count == 0 || characterUpdateImportance == CharacterUpdateImportance.Player) return 0;
+            if (_scheduledUpdates.Count == 0 || characterUpdateImportance == CharacterUpdateImportance.MainPlayer) return 0;
 
             bool foundEntry = false;
             for (int i = 0; i < _scheduledUpdates.Count; i++)
@@ -121,7 +114,7 @@ namespace OverhaulMod.Engine
             return new CharacterUpdateInfo()
             {
                 ReferenceCharacter = character,
-                PersonalizationController = character.GetComponent<PersonalizationController>(),
+                PersonalizationController = ComponentCacheManager.Instance.GetPersonalizationController(character.transform),
                 WeaponBag = character.GetComponent<RobotWeaponBag>(),
                 Importance = updateImportance,
                 Request = request

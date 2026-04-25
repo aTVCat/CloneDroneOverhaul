@@ -36,6 +36,9 @@ namespace OverhaulMod
         [ModSetting(ModSettingsConstants.SHOW_DUEL_INVITE_MENU_REWORK, true, ModSetting.Tags.UISetting)]
         public static bool ShowDuelInviteMenuRework;
 
+        [ModSetting(ModSettingsConstants.CURSOR_SKIN, 1)]
+        public static int CursorSkin;
+
         private Dictionary<string, GameObject> _instantiatedUIs;
 
         private List<OverhaulUIBehaviour> _shownUIs;
@@ -84,6 +87,8 @@ namespace OverhaulMod
 
         private void Start()
         {
+            RefreshCursor();
+
             if (AddonManager.Instance.HasInstalledAddon(AddonManager.EXTRAS_ADDON_ID, out string path))
             {
                 ModResources.LoadBundleAsync(AssetBundleConstants.UI_EXTRA, null, path);
@@ -373,6 +378,22 @@ namespace OverhaulMod
 
             Character character = CharacterTracker.Instance.GetPlayer();
             gameUIRoot.SetPlayerHUDVisible(shouldDisplay && character && character.IsAttachedAndAlive() && !CutSceneManager.Instance.IsInCutscene());
+        }
+
+        public static void RefreshCursor()
+        {
+            switch (CursorSkin)
+            {
+                case 1:
+                    Cursor.SetCursor(ModResources.Texture2D(AssetBundleConstants.UI, "Cursor"), Vector2.zero, CursorMode.Auto);
+                    break;
+                case 2:
+                    Cursor.SetCursor(ModResources.Texture2D(AssetBundleConstants.UI, "Cursor2"), Vector2.zero, CursorMode.Auto);
+                    break;
+                default:
+                    Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
+                    break;
+            }
         }
 
         public enum UILayer

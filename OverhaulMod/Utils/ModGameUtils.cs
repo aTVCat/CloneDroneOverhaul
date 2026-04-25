@@ -114,7 +114,7 @@ namespace OverhaulMod.Utils
             });
 
             ModDataManager.WriteFile(fileName + ".json", content, true);
-            _ = ModFileUtils.OpenFileExplorer(ModDataManager.SavesFolder);
+            _ = ModFileUtils.OpenFileExplorer(ModDirectories.SavesFolder);
         }
 
         public static ModLevelSectionInfo[] GetChapterSections(string directory, int chapterIndex)

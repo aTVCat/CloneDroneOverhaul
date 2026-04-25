@@ -61,7 +61,7 @@ namespace OverhaulMod.UI
                     if (!elementObject)
                     {
                         if (logErrorIfElementIsMissing)
-                            ModDebug.LogError($"{localType}: Could not find element \"{elementAttribute.Name}\"");
+                            ModDebug.Error($"{localType}: Could not find element \"{elementAttribute.Name}\"");
 
                         continue;
                     }
@@ -131,7 +131,7 @@ namespace OverhaulMod.UI
                         if (!element)
                         {
                             if (logErrorIfElementIsMissing)
-                                ModDebug.LogError($"{localType}: Could not find {fieldInfo.FieldType} of element \"{elementAttribute.Name}\"");
+                                ModDebug.Error($"{localType}: Could not find {fieldInfo.FieldType} of element \"{elementAttribute.Name}\"");
 
                             continue;
                         }

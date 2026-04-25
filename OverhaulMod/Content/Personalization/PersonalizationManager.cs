@@ -1,6 +1,6 @@
 ﻿using ICSharpCode.SharpZipLib.Zip;
-using OverhaulMod.Combat;
 using OverhaulMod.Engine;
+using OverhaulMod.Gameplay;
 using OverhaulMod.Utils;
 using System;
 using System.Collections;
@@ -76,7 +76,7 @@ namespace OverhaulMod.Content.Personalization
             {
                 if (_assetsVersionFile == null)
                 {
-                    _assetsVersionFile = Path.Combine(ModCore.ContentFolder, ASSETS_VERSION_FILE);
+                    _assetsVersionFile = Path.Combine(ModDirectories.ContentFolder, ASSETS_VERSION_FILE);
                 }
                 return _assetsVersionFile;
             }
@@ -89,7 +89,7 @@ namespace OverhaulMod.Content.Personalization
             {
                 if (_remoteAssetsVersionFile == null)
                 {
-                    _remoteAssetsVersionFile = Path.Combine(ModCore.ContentFolder, REMOTE_ASSETS_VERSION_FILE);
+                    _remoteAssetsVersionFile = Path.Combine(ModDirectories.ContentFolder, REMOTE_ASSETS_VERSION_FILE);
                 }
                 return _remoteAssetsVersionFile;
             }
@@ -160,13 +160,13 @@ namespace OverhaulMod.Content.Personalization
                 _webRequest = null;
                 try
                 {
-                    if (!Directory.Exists(ModCore.CustomizationFolder))
+                    if (!Directory.Exists(ModDirectories.CustomizationFolder))
                     {
-                        _ = Directory.CreateDirectory(ModCore.CustomizationFolder);
+                        _ = Directory.CreateDirectory(ModDirectories.CustomizationFolder);
                     }
                     else
                     {
-                        foreach (string folder in Directory.GetDirectories(ModCore.CustomizationFolder))
+                        foreach (string folder in Directory.GetDirectories(ModDirectories.CustomizationFolder))
                         {
                             Directory.Delete(folder, true);
                         }
@@ -176,7 +176,7 @@ namespace OverhaulMod.Content.Personalization
                     ModFileUtils.WriteBytes(bytes, tempFile);
 
                     FastZip fastZip = new FastZip();
-                    fastZip.ExtractZip(tempFile, ModCore.CustomizationFolder, null);
+                    fastZip.ExtractZip(tempFile, ModDirectories.CustomizationFolder, null);
 
                     if (RemoteAssetsInfo != null)
                     {
@@ -346,7 +346,7 @@ namespace OverhaulMod.Content.Personalization
         private void loadUserInfoFile()
         {
             PersonalizationUserInfo personalizationUserInfo;
-            string path = Path.Combine(ModDataManager.UserDataFolder, USER_INFO_FILE);
+            string path = Path.Combine(ModDirectories.ModUserDataFolder, USER_INFO_FILE);
             if (File.Exists(path))
             {
                 try
@@ -377,7 +377,7 @@ namespace OverhaulMod.Content.Personalization
             }
         }
 
-        public void RefreshCustomizationOnAllRobots(bool onlyPlayers, bool onlyEnemies)
+        public void RefreshCustomizationOnAllRobots(bool onlyPlayers, bool onlyEnemies, PersonalizationCategory category = PersonalizationCategory.None)
         {
             foreach (Character character in CharacterTracker.Instance.GetAllLivingCharacters())
             {
@@ -388,10 +388,10 @@ namespace OverhaulMod.Content.Personalization
 
                 CharacterUpdateScheduler.Instance.UpdateCharacter(character, new CharacterUpdateRequest()
                 {
-                    UpdateWeaponSkins = true,
-                    UpdateAccessories = true,
-                    UpdatePets = true,
-                    UpdateWeaponBag = true,
+                    UpdateWeaponSkins = category == PersonalizationCategory.None || category == PersonalizationCategory.WeaponSkins,
+                    UpdateAccessories = category == PersonalizationCategory.None || category == PersonalizationCategory.Accessories,
+                    UpdatePets = category == PersonalizationCategory.None || category == PersonalizationCategory.Pets,
+                    UpdateWeaponBag = category == PersonalizationCategory.None || category == PersonalizationCategory.WeaponSkins,
                 });
             }
         }
@@ -417,7 +417,7 @@ namespace OverhaulMod.Content.Personalization
             FirstPersonMover player = CharacterTracker.Instance.GetPlayerRobot();
             if (!player || !player.IsAttachedAndAlive()) return;
 
-            PersonalizationController personalizationController = player.GetComponent<PersonalizationController>();
+            PersonalizationController personalizationController = ComponentCacheManager.Instance.GetPersonalizationController(player.transform);
             if (!personalizationController) return;
 
             personalizationController.DestroyItem(personalizationController.GetSpawnedWeaponSkinInfo(weaponType));
@@ -449,7 +449,7 @@ namespace OverhaulMod.Content.Personalization
 
             GlobalEventManager.Instance.Dispatch(ITEM_EQUIPPED_OR_UNEQUIPPED_EVENT);
 
-            RefreshCustomizationOnAllRobots(false, false);
+            RefreshCustomizationOnAllRobots(false, false, item.Category);
         }
 
         public static void SetItemEquipped(PersonalizationItemInfo item, bool value)

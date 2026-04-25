@@ -10,34 +10,26 @@ namespace OverhaulMod
 
         private static int s_lastFrameDownloadProgressWasDisplayed;
 
-        public static bool ForceDisableCursor
+        public static bool ForceDisableCursor;
+
+        public static void Log(object obj)
         {
-            get;
-            set;
+            Debug.Log($"{PREFIX} {obj}");
         }
 
-        public static void Log(object obj, bool logInReleaseBuilds = false)
+        public static void Warn(object obj)
         {
-            if (ModBuild.IsDebugBuild || logInReleaseBuilds)
-                Debug.Log($"{PREFIX} {obj}");
+            Debug.LogWarning($"{PREFIX} {obj}");
         }
 
-        public static void LogWarning(object obj, bool logInReleaseBuilds = false)
+        public static void Error(object obj)
         {
-            if (ModBuild.IsDebugBuild || logInReleaseBuilds)
-                Debug.LogWarning($"{PREFIX} {obj}");
+            Debug.LogError($"{PREFIX} {obj}");
         }
 
-        public static void LogError(object obj, bool logInReleaseBuilds = false)
+        public static void Exception(Exception obj)
         {
-            if (ModBuild.IsDebugBuild || logInReleaseBuilds)
-                Debug.LogError($"{PREFIX} {obj}");
-        }
-
-        public static void LogException(Exception obj, bool logInReleaseBuilds = false)
-        {
-            if (ModBuild.IsDebugBuild || logInReleaseBuilds)
-                Debug.LogException(obj);
+            Debug.LogException(obj);
         }
 
         public static void AddAntialiasingEffect(Camera camera)

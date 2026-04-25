@@ -3,8 +3,6 @@ using Steamworks;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using UnityEngine;
 
 namespace OverhaulMod.Content.Personalization
 {
@@ -90,7 +88,7 @@ namespace OverhaulMod.Content.Personalization
 
         public void LoadRootObjectIfRequired()
         {
-            if (RootObject != null) return; 
+            if (RootObject != null) return;
 
             string path = Path.Combine(FolderPath, PersonalizationEditorDataManager.ITEM_OBJECTS_FILE);
             PersonalizationEditorObjectInfo objectInfo;
@@ -104,7 +102,7 @@ namespace OverhaulMod.Content.Personalization
                 {
                     objectInfo = null;
                     Corrupted = true;
-                    ModDebug.LogException(exc, true);
+                    ModDebug.Exception(exc);
                 }
             }
             else
@@ -199,7 +197,7 @@ namespace OverhaulMod.Content.Personalization
                 case PersonalizationCategory.WeaponSkins:
                     switch (Weapon)
                     {
-                        case Combat.ModWeaponsManager.SCYTHE_TYPE:
+                        case Gameplay.ModWeaponsManager.SCYTHE_TYPE:
                             return "Scythe";
                     }
                     return Weapon.ToString();

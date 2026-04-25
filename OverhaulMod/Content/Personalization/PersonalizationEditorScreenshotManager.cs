@@ -1,4 +1,4 @@
-﻿using OverhaulMod.Combat;
+﻿using OverhaulMod.Gameplay;
 using OverhaulMod.UI;
 using OverhaulMod.Utils;
 using System;
@@ -102,7 +102,7 @@ namespace OverhaulMod.Content.Personalization
 
         private void readCameraAnglesFromDisk()
         {
-            string path = Path.Combine(ModCore.DataFolder, CAMERA_ANGLES_FILE);
+            string path = Path.Combine(ModDirectories.DataFolder, CAMERA_ANGLES_FILE);
 
             PersonalizationEditorScreenshotCameraAnglesInfo info;
             try
@@ -119,7 +119,7 @@ namespace OverhaulMod.Content.Personalization
 
         private void saveCameraAnglesToDisk()
         {
-            string path = Path.Combine(ModCore.DataFolder, CAMERA_ANGLES_FILE);
+            string path = Path.Combine(ModDirectories.DataFolder, CAMERA_ANGLES_FILE);
             ModJsonUtils.WriteStream(path, _anglesInfo);
         }
 

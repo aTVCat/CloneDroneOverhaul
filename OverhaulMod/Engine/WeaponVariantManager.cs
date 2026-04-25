@@ -1,4 +1,4 @@
-﻿using OverhaulMod.Combat;
+﻿using OverhaulMod.Gameplay;
 
 namespace OverhaulMod.Engine
 {

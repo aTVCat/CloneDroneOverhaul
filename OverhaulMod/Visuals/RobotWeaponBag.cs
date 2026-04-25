@@ -1,8 +1,8 @@
 ﻿using ModLibrary;
-using OverhaulMod.Combat;
-using OverhaulMod.Combat.Weapons;
 using OverhaulMod.Content.Personalization;
 using OverhaulMod.Engine;
+using OverhaulMod.Gameplay;
+using OverhaulMod.Gameplay.Weapons;
 using OverhaulMod.Utils;
 using PicaVoxel;
 using System.Collections;
@@ -64,8 +64,6 @@ namespace OverhaulMod.Visuals
 
         private float _calculatedBagOffset;
 
-        private bool _hasStarted, _hasInitialized;
-
         private bool _isSupportedByRobot;
 
         private bool _hasAddedEventListeners;
@@ -73,32 +71,6 @@ namespace OverhaulMod.Visuals
         private bool _hasScheduledRespawningRenderers;
 
         private WeaponType _lastEquippedWeapon;
-
-        private void Start()
-        {
-            _firstPersonMover = base.GetComponent<FirstPersonMover>();
-            _personalizationController = base.GetComponent<PersonalizationController>();
-
-            _weaponToHolder = new Dictionary<WeaponType, Transform>();
-            _weaponToRenderer = new Dictionary<WeaponType, GameObject>();
-            InstantiateBag();
-
-            _firstPersonMover.AddDeathListener(DropVisibleWeapons);
-
-            GlobalEventManager.Instance.AddEventListener(PersonalizationManager.ITEM_EQUIPPED_OR_UNEQUIPPED_EVENT, onCustomize);
-            GlobalEventManager.Instance.AddEventListener<string>(PersonalizationMultiplayerManager.PLAYER_INFO_UPDATED_EVENT, onPlayedInfoUpdate);
-            _hasAddedEventListeners = true;
-            _hasStarted = true;
-
-            StartCoroutine(initializationCoroutine());
-        }
-
-        private void OnEnable()
-        {
-            if (!_hasStarted) return;
-
-            StartCoroutine(initializationCoroutine());
-        }
 
         private void Update()
         {
@@ -117,26 +89,27 @@ namespace OverhaulMod.Visuals
             DestroyBag();
             if (_hasAddedEventListeners)
             {
-                GlobalEventManager.Instance.RemoveEventListener(PersonalizationManager.ITEM_EQUIPPED_OR_UNEQUIPPED_EVENT, onCustomize);
                 GlobalEventManager.Instance.RemoveEventListener<string>(PersonalizationMultiplayerManager.PLAYER_INFO_UPDATED_EVENT, onPlayedInfoUpdate);
                 _hasAddedEventListeners = false;
             }
         }
 
-        private IEnumerator initializationCoroutine()
+        public void Initialize(FirstPersonMover firstPersonMover, PersonalizationController personalizationController)
         {
-            while (_personalizationController && !_personalizationController.HasInitialized()) yield return null;
+            _firstPersonMover = firstPersonMover;
+            _personalizationController = personalizationController;
 
-            _hasInitialized = _personalizationController;
-            CharacterUpdateScheduler.Instance.UpdateCharacter(_firstPersonMover, new CharacterUpdateRequest()
-            {
-                UpdateWeaponBag = true
-            });
+            _weaponToHolder = new Dictionary<WeaponType, Transform>();
+            _weaponToRenderer = new Dictionary<WeaponType, GameObject>();
+            InstantiateBag();
 
-            yield break;
+            _firstPersonMover.AddDeathListener(DropVisibleWeapons);
+
+            GlobalEventManager.Instance.AddEventListener<string>(PersonalizationMultiplayerManager.PLAYER_INFO_UPDATED_EVENT, onPlayedInfoUpdate);
+            _hasAddedEventListeners = true;
+
+            ScheduleRespawningRenderers();
         }
-
-        public bool HasInitialized() => _hasInitialized;
 
         public void CalculateOffset()
         {
@@ -329,7 +302,7 @@ namespace OverhaulMod.Visuals
                 if (itemInfo != null)
                 {
                     itemInfo.LoadRootObjectIfRequired();
-                    PersonalizationEditorObjectBehaviour rootObject = itemInfo.RootObject.Deserialize(parent, new PersonalizationControllerInfo(_personalizationController, itemInfo));
+                    PersonalizationEditorObjectBehaviour rootObject = itemInfo.RootObject.Deserialize(parent, new ItemSpawnInfo(_personalizationController, itemInfo));
                     renderer = rootObject.transform;
                 }
             }
@@ -413,21 +386,14 @@ namespace OverhaulMod.Visuals
 
         public void OnUpgrade()
         {
-            if (!_hasInitialized || !_firstPersonMover) return;
-
-            ScheduleRespawningRenderers();
-        }
-
-        private void onCustomize()
-        {
-            if (!_hasInitialized || !_firstPersonMover) return;
+            if (!_firstPersonMover) return;
 
             ScheduleRespawningRenderers();
         }
 
         private void onPlayedInfoUpdate(string playfabId)
         {
-            if (!_hasInitialized || !_firstPersonMover || playfabId != _firstPersonMover.GetPlayFabID()) return;
+            if (!_firstPersonMover || playfabId != _firstPersonMover.GetPlayFabID()) return;
 
             ScheduleRespawningRenderers();
         }

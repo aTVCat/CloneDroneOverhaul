@@ -245,7 +245,7 @@ namespace OverhaulMod
             {
                 if (Location == AssetBundleLocation.ModAssets)
                 {
-                    return Path.Combine(ModCore.AssetsFolder, FileName);
+                    return Path.Combine(ModDirectories.AssetsFolder, FileName);
                 }
                 else if (Location == AssetBundleLocation.External)
                 {

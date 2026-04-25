@@ -1,6 +1,5 @@
 ﻿using OverhaulMod.Content.Personalization;
 using OverhaulMod.Utils;
-using System;
 using UnityEngine.UI;
 
 namespace OverhaulMod.UI

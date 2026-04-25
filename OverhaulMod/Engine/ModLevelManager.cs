@@ -18,7 +18,7 @@ namespace OverhaulMod.Engine
             {
                 if (_chapterSectionsFolder == null)
                 {
-                    _chapterSectionsFolder = Path.Combine(ModCore.DataFolder, CHAPTER_SECTIONS_FOLDER);
+                    _chapterSectionsFolder = Path.Combine(ModDirectories.DataFolder, CHAPTER_SECTIONS_FOLDER);
                 }
                 return _chapterSectionsFolder;
             }

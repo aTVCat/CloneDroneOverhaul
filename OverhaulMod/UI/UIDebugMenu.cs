@@ -93,7 +93,7 @@ namespace OverhaulMod.UI
             }
 
             ModDataManager.WriteFile("AllUpgradesExport.txt", stringBuilder.ToString(), true);
-            _ = ModFileUtils.OpenFileExplorer(ModCore.SavesFolder);
+            _ = ModFileUtils.OpenFileExplorer(ModDirectories.SavesFolder);
         }
     }
 }

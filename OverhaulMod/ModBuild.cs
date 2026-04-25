@@ -5,6 +5,7 @@
 using OverhaulMod.Utils;
 using System;
 using System.IO;
+using UnityEngine.XR;
 
 namespace OverhaulMod
 {
@@ -15,7 +16,7 @@ namespace OverhaulMod
         public const string BUILD_INFO_FILE_PATH = "buildInfo.json";
 
 #if OVERRIDE_VER
-        public const string OVERRIDE_VERSION = "4.2.1112";
+        public const string OVERRIDE_VERSION = "4.2.1113";
 #endif
 
         private static bool s_loaded;
@@ -160,7 +161,7 @@ namespace OverhaulMod
         {
             try
             {
-                s_buildInfo = ModJsonUtils.DeserializeStream<Info>(Path.Combine(ModCore.DataFolder, BUILD_INFO_FILE_PATH));
+                s_buildInfo = ModJsonUtils.DeserializeStream<Info>(Path.Combine(ModDirectories.DataFolder, BUILD_INFO_FILE_PATH));
             }
             catch (Exception)
             {
@@ -174,13 +175,15 @@ namespace OverhaulMod
             {
                 CompilationTime = DateTime.UtcNow
             };
-            ModJsonUtils.WriteStream(Path.Combine(ModCore.DataFolder, BUILD_INFO_FILE_PATH), s_buildInfo);
+            ModJsonUtils.WriteStream(Path.Combine(ModDirectories.DataFolder, BUILD_INFO_FILE_PATH), s_buildInfo);
         }
 
         public static bool ShouldShowHypocrisis3Special()
         {
             return ModFeatures.IsEnabled(ModFeatures.FeatureType.Hypocrisis3Special) && ModSpecialUtils.IsModEnabled("hypocrisis-mod");
         }
+
+        public static bool IsInVRMode() => XRSettings.enabled;
 
         public class Info
         {

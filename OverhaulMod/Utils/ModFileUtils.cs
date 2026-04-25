@@ -50,7 +50,7 @@ namespace OverhaulMod.Utils
             return name.Substring(name.LastIndexOf('\\') + 1);
         }
 
-        public static bool CreateDirectoryIfNotExists(string path)
+        public static bool CreateDirectoryIfRequired(string path)
         {
             if (!Directory.Exists(path))
             {

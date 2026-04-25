@@ -34,9 +34,9 @@ namespace OverhaulMod.Content.Personalization
             try
             {
                 directories = new List<string>();
-                directories.AddRange(Directory.GetDirectories(ModCore.CustomizationFolder));
+                directories.AddRange(Directory.GetDirectories(ModDirectories.CustomizationFolder));
                 userItemsStartIndex = directories.Count;
-                directories.AddRange(Directory.GetDirectories(ModCore.CustomizationPersistentFolder));
+                directories.AddRange(Directory.GetDirectories(ModDirectories.CustomizationPersistentFolder));
             }
             catch (Exception exc)
             {
@@ -154,7 +154,7 @@ namespace OverhaulMod.Content.Personalization
                 personalizationItemInfo = ModJsonUtils.Deserialize<PersonalizationItemInfo>(rawData);
                 personalizationItemInfo.FolderPath = directory;
                 personalizationItemInfo.RootFolderPath = rootDirectory;
-                personalizationItemInfo.IsPersistentAsset = rootDirectoryName == ModCore.CUSTOMIZATION_PERSISTENT_FOLDER_NAME;
+                personalizationItemInfo.IsPersistentAsset = rootDirectoryName == ModDirectories.CUSTOMIZATION_PERSISTENT_FOLDER_NAME;
                 personalizationItemInfo.MetaData = personalizationItemMetaData;
                 personalizationItemInfo.FixValues();
                 if (serializeInfoFile) ModJsonUtils.WriteStream(infoFilePath, personalizationItemInfo);

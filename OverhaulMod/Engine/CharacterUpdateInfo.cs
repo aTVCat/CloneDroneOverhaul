@@ -17,7 +17,7 @@ namespace OverhaulMod.Engine
 
         public bool UpdateWeaponSkins()
         {
-            if (Request.UpdateWeaponSkins && PersonalizationController && PersonalizationController.HasInitialized())
+            if (Request.UpdateWeaponSkins && PersonalizationController)
             {
                 Request.UpdateWeaponSkins = false;
                 PersonalizationController.RefreshWeaponSkins();
@@ -28,7 +28,7 @@ namespace OverhaulMod.Engine
 
         public bool UpdateAccessories()
         {
-            if (Request.UpdateAccessories && PersonalizationController && PersonalizationController.HasInitialized())
+            if (Request.UpdateAccessories && PersonalizationController)
             {
                 Request.UpdateAccessories = false;
                 PersonalizationController.RefreshAccessories();
@@ -44,7 +44,7 @@ namespace OverhaulMod.Engine
 
         public bool UpdateWeaponBag()
         {
-            if (Request.UpdateWeaponBag && WeaponBag && WeaponBag.HasInitialized())
+            if (Request.UpdateWeaponBag && WeaponBag)
             {
                 Request.UpdateWeaponBag = false;
                 WeaponBag.RespawnRenderers();
