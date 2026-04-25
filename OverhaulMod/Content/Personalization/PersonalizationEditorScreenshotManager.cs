@@ -89,6 +89,13 @@ namespace OverhaulMod.Content.Personalization
                 return;
             }
 
+            if(item.Category == PersonalizationCategory.Accessories)
+            {
+                PersonalizationEditorScreenshotCameraAngle angle1 = _anglesInfo.GetAngle("Sword");
+                angle1.ApplyToTransform(_camerasObject.transform);
+                return;
+            }
+
             PersonalizationEditorScreenshotCameraAngle angle = _anglesInfo.GetAngle(item.Weapon == ModWeaponsManager.SCYTHE_TYPE ? "Scythe" : item.Weapon.ToString());
             angle.ApplyToTransform(_camerasObject.transform);
         }
