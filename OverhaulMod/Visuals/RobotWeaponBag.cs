@@ -16,7 +16,11 @@ namespace OverhaulMod.Visuals
     {
         public const bool DEBUG_CENTERS = false;
 
-        public const float BAG_SCALE = 0.6f;
+        public const float BAG_SCALE = 0.7f;
+
+        public const float DEFAULT_OFFSET = -0.375f;
+
+        public const float ADDITIONAL_OFFSET = -0.1f;
 
         [ModSetting(ModSettingsConstants.ENABLE_WEAPON_BAG, true)]
         public static bool EnableWeaponBag;
@@ -57,6 +61,8 @@ namespace OverhaulMod.Visuals
         private PersonalizationController _personalizationController;
 
         private Transform _bag;
+
+        private float _calculatedBagOffset;
 
         private bool _hasStarted, _hasInitialized;
 
@@ -132,6 +138,35 @@ namespace OverhaulMod.Visuals
 
         public bool HasInitialized() => _hasInitialized;
 
+        public void CalculateOffset()
+        {
+            Bounds bounds = default;
+            MechBodyPart torsoBodyPart = _firstPersonMover.GetBodyPart(MechBodyPartType.Torso);
+            if (torsoBodyPart)
+            {
+                MeshFilter[] meshes = torsoBodyPart.GetComponentsInChildren<MeshFilter>(true);
+                foreach (MeshFilter mesh in meshes)
+                {
+                    if (!mesh.mesh) continue;
+
+                    if (bounds == default)
+                    {
+                        bounds = mesh.mesh.bounds;
+                    }
+                    else
+                    {
+                        bounds.Encapsulate(mesh.mesh.bounds);
+                    }
+                }
+
+                _calculatedBagOffset = -bounds.extents.z + ADDITIONAL_OFFSET;
+            }
+            else
+            {
+                _calculatedBagOffset = DEFAULT_OFFSET;
+            }
+        }
+
         public void InstantiateBag()
         {
             if (!_bag)
@@ -143,9 +178,11 @@ namespace OverhaulMod.Visuals
                     return;
                 }
 
+                CalculateOffset();
+
                 GameObject bagObject = new GameObject("WeaponBag");
                 bagObject.transform.SetParent(torso, false);
-                bagObject.transform.SetLocalTransform(new Vector3(0f, 0.4f, -0.325f), Vector3.zero, Vector3.one * BAG_SCALE);
+                bagObject.transform.SetLocalTransform(new Vector3(0f, 0.4f, _calculatedBagOffset), Vector3.zero, Vector3.one * BAG_SCALE);
                 if (DEBUG_CENTERS)
                 {
                     Transform debugCubeTransform = GameObject.CreatePrimitive(PrimitiveType.Cube).transform;

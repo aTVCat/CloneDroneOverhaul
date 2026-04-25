@@ -21,7 +21,7 @@ SpriteAtlas:
       crunchedCompression: 0
       sRGB: 1
     platformSettings:
-    - serializedVersion: 3
+    - serializedVersion: 4
       m_BuildTarget: DefaultTexturePlatform
       m_MaxTextureSize: 2048
       m_ResizeAlgorithm: 0
@@ -31,6 +31,7 @@ SpriteAtlas:
       m_CrunchedCompression: 0
       m_AllowsAlphaSplitting: 0
       m_Overridden: 0
+      m_IgnorePlatformSupport: 0
       m_AndroidETC2FallbackOverride: 0
       m_ForceMaximumCompressionQuality_BC6H_BC7: 1
     packingSettings:
@@ -40,6 +41,8 @@ SpriteAtlas:
       allowAlphaSplitting: 0
       enableRotation: 1
       enableTightPacking: 1
+      enableAlphaDilation: 0
+    secondaryTextureSettings: {}
     variantMultiplier: 1
     packables:
     - {fileID: 2800000, guid: 605e98e1fb1deb4429729613ab3ae9b8, type: 3}
@@ -57,6 +60,23 @@ SpriteAtlas:
     - {fileID: 2800000, guid: 180234e402a93ae47b6cc8a7af286793, type: 3}
     - {fileID: 2800000, guid: 5e383b328a87a694da345b512adb8b65, type: 3}
     bindAsDefault: 1
+    isAtlasV2: 0
+    cachedData: {fileID: 0}
+    packedSpriteRenderDataKeys:
+    - ee8200d1d3065f4449679ab8e5a586d2: 21300000
+    - 605e98e1fb1deb4429729613ab3ae9b8: 21300000
+    - 5e383b328a87a694da345b512adb8b65: 21300000
+    - 180234e402a93ae47b6cc8a7af286793: 21300000
+    - 13466a15a372a8340af2bb7cf38a2ed6: 21300000
+    - dd84b7c6643117243a4bc454a81f2186: 21300000
+    - 695f631745a581847bc15a4b140b4432: 21300000
+    - affe1247a53241244a702c4e5c6f0eac: 21300000
+    - 8f33563bc5afe57429a8dc510f689f09: 21300000
+    - 0384806b06279da4ba9524884b46bb82: 21300000
+    - 272f3deb22713084bae1f00170a9d156: 21300000
+    - 870793ad5ccc9564cb6bafc306866aed: 21300000
+    - c3684a9ec2474b944aded516239c6c22: 21300000
+    - b3bb78ee252d9d440a071a0541b7f20d: 21300000
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
   - {fileID: 21300000, guid: ee8200d1d3065f4449679ab8e5a586d2, type: 3}
@@ -88,5 +108,6 @@ SpriteAtlas:
   - Halberd-128x128
   - Boomerang-128x128
   - Claws-128x128
+  m_RenderDataMap: {}
   m_Tag: UpgradeIconsSpriteAtlas
   m_IsVariant: 0

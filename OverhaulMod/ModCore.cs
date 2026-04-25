@@ -305,7 +305,7 @@ namespace OverhaulMod
 
         public override void OnUpgradesRefreshed(FirstPersonMover owner, UpgradeCollection upgrades)
         {
-            owner.addWeaponToEquipppedIfHasUpgradeAndModelPresent(ModUpgradesManager.SCYTHE_UNLOCK_UPGRADE, ModWeaponsManager.SCYTHE_TYPE);
+            owner.AddWeaponToEquipppedIfHasUpgradeAndModelPresent(ModUpgradesManager.SCYTHE_UNLOCK_UPGRADE, ModWeaponsManager.SCYTHE_TYPE);
             owner.RefreshModWeaponModels();
 
             CharacterExtension robotInventory = ModComponentCache.GetRobotInventory(owner.transform);

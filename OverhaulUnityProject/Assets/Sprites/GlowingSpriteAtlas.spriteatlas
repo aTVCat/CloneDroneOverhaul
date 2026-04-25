@@ -26,8 +26,10 @@ SpriteAtlas:
       padding: 2
       blockOffset: 1
       allowAlphaSplitting: 0
-      enableRotation: 1
+      enableRotation: 0
       enableTightPacking: 1
+      enableAlphaDilation: 0
+    secondaryTextureSettings: {}
     variantMultiplier: 1
     packables:
     - {fileID: 2800000, guid: de924e3068ce8ff4bbcd210601705b8e, type: 3}
@@ -36,6 +38,14 @@ SpriteAtlas:
     - {fileID: 2800000, guid: 9a5be8356227fa34c95d981a3628d21f, type: 3}
     - {fileID: 2800000, guid: dab4b98a45df876418c4ad716823c8f1, type: 3}
     bindAsDefault: 1
+    isAtlasV2: 0
+    cachedData: {fileID: 0}
+    packedSpriteRenderDataKeys:
+    - 99ee23203fb2b9148b0dcc73bafd2b4c: 21300000
+    - de924e3068ce8ff4bbcd210601705b8e: 21300000
+    - 9a5be8356227fa34c95d981a3628d21f: 21300000
+    - 62ee29b84810a904c9e6ee9ae6b861be: 21300000
+    - dab4b98a45df876418c4ad716823c8f1: 21300000
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
   - {fileID: 21300000, guid: 99ee23203fb2b9148b0dcc73bafd2b4c, type: 3}
@@ -49,5 +59,6 @@ SpriteAtlas:
   - General_Glow
   - Glow-2-256x256
   - General_Glow_Thin
+  m_RenderDataMap: {}
   m_Tag: GlowingSpriteAtlas
   m_IsVariant: 0

@@ -12,7 +12,7 @@ namespace OverhaulMod.Patches
         {
             if (GameModeManager.Is(GameMode.Story) && LevelManager.Instance.GetCurrentLevelID() != "StoryC5_5")
             {
-                __result = ModGameModifiersManager.Instance.forceEnableGreatSwords;
+                __result = ModGameModifiersManager.Instance.ForceEnableGreatSwords;
             }
         }
     }

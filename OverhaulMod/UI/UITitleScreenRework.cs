@@ -177,8 +177,6 @@ namespace OverhaulMod.UI
         private Graphic _leftFadeGraphic;
         private RectTransform _vanillaTitleScreenButtonsContainer;
 
-        private Camera _logoCamera;
-
         private Graphic _leftSideFadeGraphic;
 
         private RectTransform _socialButtonContainer;
@@ -269,8 +267,6 @@ namespace OverhaulMod.UI
             _newVanillaAnchoredPosition = new Vector2(0f, _oldVanillaAnchoredPosition.y);
             _newVanillaAnchorMax = new Vector2(1f, _oldVanillaAnchorMax.y);
             _newVanillaOffsetMax = new Vector2(0f, _oldVanillaOffsetMax.y);
-
-            _logoCamera = ArenaCameraManager.Instance.TitleScreenLogoCamera;
 
             // add canvas group
             CanvasGroup group = titleScreenUI.RootButtonsContainerBG.GetComponent<CanvasGroup>() ?? titleScreenUI.RootButtonsContainerBG.AddComponent<CanvasGroup>();
@@ -374,8 +370,6 @@ namespace OverhaulMod.UI
             _vanillaTitleScreenButtonsContainer.offsetMax = isLeftSide ? _oldVanillaOffsetMax : _newVanillaOffsetMax;
 
             _centerFade.SetActive(!isLeftSide);
-
-            ArenaCameraManager.Instance.updateLogoCameraRect();
 
             ModActionUtils.DoInFrames(delegate
             {

@@ -94,6 +94,8 @@ namespace OverhaulMod.Combat
 
         private void OnEnable()
         {
+            if (!BoltNetwork.IsRunning) return;
+
             if (!_hasInitialized) _ = base.StartCoroutine(initializeCoroutine(owner));
         }
 

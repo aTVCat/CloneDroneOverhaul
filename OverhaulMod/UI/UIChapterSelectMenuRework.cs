@@ -60,7 +60,7 @@ namespace OverhaulMod.UI
             ModCache.TitleScreenUI.SetSinglePlayerModeSelectButtonsVisibile(false);
             _difficultyDropdown.options = SettingsManager.Instance.GetDifficultyOptions();
             _difficultyDropdown.value = SettingsManager.Instance.GetStoryDifficultyIndex();
-            _enableGreatSwordsToggle.isOn = ModGameModifiersManager.Instance.forceEnableGreatSwords;
+            _enableGreatSwordsToggle.isOn = ModGameModifiersManager.Instance.ForceEnableGreatSwords;
             RefreshProgressText();
         }
 
@@ -144,7 +144,7 @@ namespace OverhaulMod.UI
 
         public void OnEnableGreatSwordsToggleEdit(bool value)
         {
-            ModGameModifiersManager.Instance.forceEnableGreatSwords = value;
+            ModGameModifiersManager.Instance.ForceEnableGreatSwords = value;
         }
 
         public void OnLegacyUIButtonClicked()

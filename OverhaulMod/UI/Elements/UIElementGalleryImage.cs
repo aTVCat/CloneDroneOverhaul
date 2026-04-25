@@ -143,7 +143,7 @@ namespace OverhaulMod.UI
             }
 
             Texture2D texture = new Texture2D(1, 1);
-            _ = texture.LoadImage(bytes);
+            //_ = texture.LoadImage(bytes);
             texture.Apply();
             _texture = texture;
             _image.texture = texture;

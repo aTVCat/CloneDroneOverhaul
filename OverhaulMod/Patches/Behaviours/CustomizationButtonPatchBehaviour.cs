@@ -26,7 +26,7 @@ namespace OverhaulMod.Patches.Behaviours
         {
             if (!GameModeManager.IsOnTitleScreen()) return;
 
-            _customizeButton.gameObject.SetActive(FindObjectOfType<CustomizationPlayerPreview>());
+            _customizeButton.gameObject.SetActive(FindFirstObjectByType<CustomizationPlayerPreview>());
         }
     }
 }

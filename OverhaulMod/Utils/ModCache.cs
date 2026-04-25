@@ -326,6 +326,19 @@ namespace OverhaulMod.Utils
             }
         }
 
+        private static MethodInfo s_setTimeScaleForSeconds;
+        public static MethodInfo SetTimeScaleForSeconds
+        {
+            get
+            {
+                if (s_setTimeScaleForSeconds == null)
+                {
+                    s_setTimeScaleForSeconds = AccessTools.DeclaredMethod(typeof(TimeManager), nameof(TimeManager.SetTimeScaleForSeconds));
+                }
+                return s_setTimeScaleForSeconds;
+            }
+        }
+
         public static GameUIThemeData UIThemeData { get; set; }
     }
 }

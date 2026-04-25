@@ -42,10 +42,11 @@ namespace OverhaulMod.Utils
                 callback?.Invoke(true);
             });
 
-            if (!SteamUserStats.RequestCurrentStats())
+            // todo: fix this
+            /*if (SteamUserStats.RequestUserStats(SteamUser.GetSteamID()))
             {
                 callback?.Invoke(false);
-            }
+            }*/
         }
 
         /// <summary>

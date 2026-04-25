@@ -2,6 +2,6 @@
 {
     public class ModGameModifiersManager : Singleton<ModGameModifiersManager>
     {
-        public bool forceEnableGreatSwords { get; set; }
+        public bool ForceEnableGreatSwords { get; set; }
     }
 }

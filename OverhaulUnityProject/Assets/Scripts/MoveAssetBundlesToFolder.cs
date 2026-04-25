@@ -37,7 +37,7 @@ public class MoveAssetBundlesToFolder : MonoBehaviour
         int lineIndex = 0;
         foreach (string line in File.ReadLines(Path.Combine(Application.streamingAssetsPath, $"{bundleName}.manifest")))
         {
-            if (lineIndex == 5)
+            if (lineIndex == 6)
             {
                 manifestString = line.Trim().Substring(6);
             }

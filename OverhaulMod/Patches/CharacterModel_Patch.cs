@@ -1,6 +1,5 @@
 ﻿using HarmonyLib;
 using OverhaulMod.Content;
-using static CharacterModel;
 
 namespace OverhaulMod.Patches
 {
@@ -8,8 +7,8 @@ namespace OverhaulMod.Patches
     internal static class CharacterModel_Patch
     {
         [HarmonyPrefix]
-        [HarmonyPatch(nameof(CharacterModel.OverridePatternColor), new System.Type[] { typeof(PatternColorSet), typeof(bool) })]
-        private static void OverridePatternColor_Prefix(CharacterModel __instance, ref PatternColorSet newColor, bool forceMultiplayerHSBReplacement = false)
+        [HarmonyPatch(nameof(CharacterModel.OverridePatternColor), new System.Type[] { typeof(CharacterModel.PatternColorSet), typeof(bool) })]
+        private static void OverridePatternColor_Prefix(CharacterModel __instance, ref CharacterModel.PatternColorSet newColor, bool forceMultiplayerHSBReplacement = false)
         {
             FirstPersonMover firstPersonMover = __instance.GetOwner();
             if (!firstPersonMover || (firstPersonMover.IsDetached() && firstPersonMover.CharacterType != EnemyType.None) || firstPersonMover.IsAIControlled()) return;

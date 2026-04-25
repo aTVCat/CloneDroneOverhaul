@@ -15,7 +15,7 @@ namespace OverhaulMod.Patches
             __instance.TitleScreenLogoCamera.enabled = visible;
         }
 
-        [HarmonyPrefix]
+        /*[HarmonyPrefix]
         [HarmonyPatch(nameof(ArenaCameraManager.updateLogoCameraRect))]
         private static bool updateLogoCameraRect_Prefix(ArenaCameraManager __instance)
         {
@@ -29,6 +29,6 @@ namespace OverhaulMod.Patches
                 __instance.TitleScreenLogoCamera.rect = new Rect(0f, __instance.TitleScreenLogoCamera.rect.y, width, __instance.TitleScreenLogoCamera.rect.height);
             }
             return false;
-        }
+        }*/
     }
 }

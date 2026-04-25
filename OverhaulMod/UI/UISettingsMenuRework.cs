@@ -826,7 +826,7 @@ namespace OverhaulMod.UI
                 ModCache.UIRoot.ControlMapper.Open();
                 ModUIManager.Instance.InvokeActionInsteadOfHidingCustomUI(delegate
                 {
-                    _ = ModCache.UIRoot.ControlMapper.Close(true);
+                    ModCache.UIRoot.ControlMapper.Close(true);
                 });
             });
 
