@@ -1,7 +1,5 @@
-﻿using LevelEditorPatch;
-using OverhaulMod.Combat;
+﻿using OverhaulMod.Combat;
 using OverhaulMod.Content;
-using OverhaulMod.Content.LevelEditor;
 using OverhaulMod.Content.Personalization;
 using OverhaulMod.Engine;
 using OverhaulMod.Patches.Behaviours;
@@ -9,8 +7,6 @@ using OverhaulMod.UI;
 using OverhaulMod.Utils;
 using OverhaulMod.Visuals;
 using OverhaulMod.Visuals.Environment;
-using System;
-using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -18,8 +14,6 @@ namespace OverhaulMod
 {
     public static class ModLoader
     {
-        private static bool s_hasAddedObjects;
-
         public static void Load()
         {
             ModDebug.Log("Attempted to load the mod");
@@ -29,7 +23,6 @@ namespace OverhaulMod
                 return;
             }
 
-            loadAssemblies();
             createDirectories();
             loadGameUIThemeData();
 
@@ -37,11 +30,11 @@ namespace OverhaulMod
             ModFeatures.CacheValues();
             ModLaunchOptions.Initialize();
             ModUserInfo.Load();
+            ModIntegrationUtils.Load();
 
             addManagers();
 
             loadMiscellaneousAssets();
-            addLevelEditorObjects();
             addListeners();
 
             QualitySettings.softParticles = true;
@@ -145,30 +138,10 @@ namespace OverhaulMod
             modManagers.AddSingleton<CharacterUpdateScheduler>(miscManagers);
         }
 
-        private static void loadAssemblies()
-        {
-            Patch.Apply();
-            ModIntegrationUtils.Load();
-        }
-
         private static void loadMiscellaneousAssets()
         {
             ModConstants.CursorSkinOptions[1].image = ModUnityUtils.ToSprite(ModResources.Texture2D(AssetBundleConstants.UI, "Cursor"));
             ModConstants.CursorSkinOptions[2].image = ModUnityUtils.ToSprite(ModResources.Texture2D(AssetBundleConstants.UI, "Cursor2"));
-        }
-
-        private static void addLevelEditorObjects()
-        {
-            if (!s_hasAddedObjects)
-            {
-                Patch.AddObject("WeatherSettingsOverride", "OverhaulMod", "", GameObject.CreatePrimitive(PrimitiveType.Cylinder).transform, new Type[] { typeof(LevelEditorWeatherSettingsOverride) }, Path.Combine(ModCore.EditorTexturesFolder, "WeatherSettingsOverride.png"));
-
-                /*
-                if (ModBuild.IsDebugBuild)
-                    Patch.AddObject("ArenaAudienceLinePoint", "OverhaulMod", "", GameObject.CreatePrimitive(PrimitiveType.Sphere).transform, new Type[] { typeof(ArenaAudienceLinePoint) }, null);*/
-
-                s_hasAddedObjects = true;
-            }
         }
 
         private static void createDirectories()
