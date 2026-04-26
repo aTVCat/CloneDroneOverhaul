@@ -7,20 +7,26 @@ namespace OverhaulMod.Engine
     {
         public Character ReferenceCharacter;
 
-        public PersonalizationController PersonalizationController;
-
-        public RobotWeaponBag WeaponBag;
-
         public CharacterUpdateImportance Importance;
 
         public CharacterUpdateRequest Request;
 
+        private PersonalizationController _personalizationController;
+
+        private RobotWeaponBag _weaponBag;
+
+        public void RefreshReferences()
+        {
+            _personalizationController = ComponentCacheManager.Instance.GetPersonalizationController(ReferenceCharacter.transform);
+            _weaponBag = ReferenceCharacter.GetComponent<RobotWeaponBag>();
+        }
+
         public bool UpdateWeaponSkins()
         {
-            if (Request.UpdateWeaponSkins && PersonalizationController)
+            if (Request.UpdateWeaponSkins && _personalizationController)
             {
                 Request.UpdateWeaponSkins = false;
-                PersonalizationController.RefreshWeaponSkins();
+                _personalizationController.RefreshWeaponSkins();
                 return true;
             }
             return false;
@@ -28,10 +34,10 @@ namespace OverhaulMod.Engine
 
         public bool UpdateAccessories()
         {
-            if (Request.UpdateAccessories && PersonalizationController)
+            if (Request.UpdateAccessories && _personalizationController)
             {
                 Request.UpdateAccessories = false;
-                PersonalizationController.RefreshAccessories();
+                _personalizationController.RefreshAccessories();
                 return true;
             }
             return false;
@@ -44,11 +50,12 @@ namespace OverhaulMod.Engine
 
         public bool UpdateWeaponBag()
         {
-            if (Request.UpdateWeaponBag && WeaponBag)
+            if (Request.UpdateWeaponBag && _weaponBag)
             {
                 Request.UpdateWeaponBag = false;
-                WeaponBag.RespawnRenderers();
-                WeaponBag.RefreshVisibilityOfRenderers();
+                ModDebug.Log("Update weapon bag!");
+                _weaponBag.RespawnRenderers();
+                _weaponBag.RefreshVisibilityOfRenderers();
                 return true;
             }
             return false;

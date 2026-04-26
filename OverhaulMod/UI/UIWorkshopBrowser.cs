@@ -201,72 +201,36 @@ namespace OverhaulMod.UI
 
         public override bool HideTitleScreen => true;
 
+        public bool BrowseCollections;
+
+        public CSteamID ViewingUser;
+
+        public PublishedFileId_t ViewingCollection;
+
+        public int SourceType;
+
+        public string SearchLevelType;
+
+        public EUserUGCList SearchUserList;
+
+        public EUGCQuery SearchQuery;
+
+        public int Page;
+
+        public string SearchText;
+
         private bool _steamInitialized, _initializedTabs, _getWorkshopItemsNextFrame, _isLoading;
 
         private float _timeLeftToPopulate;
 
-        public bool browseCollections
-        {
-            get;
-            set;
-        }
-
-        public int sourceType
-        {
-            get;
-            set;
-        }
-
-        public string searchLevelType
-        {
-            get;
-            set;
-        }
-
-        public CSteamID searchLevelsByUser
-        {
-            get;
-            set;
-        }
-
-        public EUserUGCList searchUserList
-        {
-            get;
-            set;
-        }
-
-        public EUGCQuery searchQuery
-        {
-            get;
-            set;
-        }
-
-        public int page
-        {
-            get;
-            set;
-        }
-
-        public string searchText
-        {
-            get;
-            set;
-        }
-
-        public PublishedFileId_t browseChildrenOfCollection
-        {
-            get;
-            set;
-        }
-
         protected override void OnInitialized()
         {
-            page = 1;
+            Page = 1;
             _timeLeftToPopulate = -1f;
             _selectedItemDisplays = new List<UIElementWorkshopItemDisplay>();
 
             _controlsButton.gameObject.SetActive(ModFeatures.IsEnabled(ModFeatures.FeatureType.WorkshopBrowserContextMenu));
-            browseChildrenOfCollection = default;
+            ViewingCollection = default;
 
             _viewFavoritesToggle.isOn = false;
             _viewFavoritesToggle.onValueChanged.AddListener(delegate (bool b)
@@ -344,7 +308,7 @@ namespace OverhaulMod.UI
 
         public void OnLevelTypeTabSelected(UIElementTab elementTab)
         {
-            page = 1;
+            Page = 1;
 
             UIElementTab oldTab = _levelTypeTabs.PreviousSelectedTab;
             UIElementTab newTab = _levelTypeTabs.SelectedTab;
@@ -363,13 +327,13 @@ namespace OverhaulMod.UI
                 rt.sizeDelta = vector;
             }
 
-            searchLevelType = elementTab.tabId;
+            SearchLevelType = elementTab.tabId;
             Populate();
         }
 
         public void OnQueryTabSelected(UIElementTab elementTab)
         {
-            page = 1;
+            Page = 1;
 
             UIElementTab oldTab = _levelTypeTabs.PreviousSelectedTab;
             UIElementTab newTab = _levelTypeTabs.SelectedTab;
@@ -391,22 +355,22 @@ namespace OverhaulMod.UI
             if (!Enum.TryParse(elementTab.tabId, out EUGCQuery result))
                 result = EUGCQuery.k_EUGCQuery_RankedByTrend;
 
-            searchQuery = result;
+            SearchQuery = result;
             Populate();
         }
 
         public void OnSourceTabSelected(UIElementTab elementTab)
         {
-            browseChildrenOfCollection = default;
-            page = 1;
-            searchText = null;
+            ViewingCollection = default;
+            Page = 1;
+            SearchText = null;
 
             CSteamID steamId = CSteamID.Nil;
             string tabId = elementTab.tabId;
             if (tabId == YOUR_LEVELS_SOURCE_TYPE)
             {
-                sourceType = 2;
-                searchUserList = EUserUGCList.k_EUserUGCList_Published;
+                SourceType = 2;
+                SearchUserList = EUserUGCList.k_EUserUGCList_Published;
                 steamId = SteamUser.GetSteamID();
 
                 _tabsCanvasGroup.alpha = 0.25f;
@@ -417,8 +381,8 @@ namespace OverhaulMod.UI
             }
             else if (tabId == SUBSCRIPTIONS_SOURCE_TYPE)
             {
-                sourceType = 1;
-                searchUserList = EUserUGCList.k_EUserUGCList_Subscribed;
+                SourceType = 1;
+                SearchUserList = EUserUGCList.k_EUserUGCList_Subscribed;
                 steamId = SteamUser.GetSteamID();
 
                 _tabsCanvasGroup.alpha = 0.25f;
@@ -429,12 +393,12 @@ namespace OverhaulMod.UI
             }
             else
             {
-                sourceType = 0;
+                SourceType = 0;
 
                 _tabsCanvasGroup.alpha = 1f;
                 _tabsCanvasGroup.interactable = true;
             }
-            searchLevelsByUser = steamId;
+            ViewingUser = steamId;
             Populate();
         }
 
@@ -462,24 +426,24 @@ namespace OverhaulMod.UI
 
             _selectedItemDisplays.Clear();
 
-            if (searchLevelType != COLLECTIONS_TYPE_TAB)
+            if (SearchLevelType != COLLECTIONS_TYPE_TAB)
             {
-                bool collections = browseCollections && browseChildrenOfCollection == default;
+                bool collections = BrowseCollections && ViewingCollection == default;
                 setGridLayout(collections);
 
-                ModSteamUGCUtils.RequestParameters requestParameters = ModSteamUGCUtils.RequestParameters.Create(collections ? EUGCMatchingUGCType.k_EUGCMatchingUGCType_Collections : EUGCMatchingUGCType.k_EUGCMatchingUGCType_Items);
+                ModSteamUGC.RequestParameters requestParameters = ModSteamUGC.RequestParameters.Create(collections ? EUGCMatchingUGCType.k_EUGCMatchingUGCType_Collections : EUGCMatchingUGCType.k_EUGCMatchingUGCType_Items);
                 requestParameters.EnableCaching();
-                requestParameters.RequireTags(collections ? null : new List<string>() { searchLevelType });
+                requestParameters.RequireTags(collections ? null : new List<string>() { SearchLevelType });
                 requestParameters.ReturnPreviews();
                 requestParameters.ReturnLongDescription();
 
-                if (!searchText.IsNullOrEmpty())
-                    requestParameters.SearchText(searchText);
+                if (!SearchText.IsNullOrEmpty())
+                    requestParameters.SearchText(SearchText);
 
                 bool success;
                 if (collections)
                 {
-                    success = ModSteamUGCUtils.GetWorkshopItems(new PublishedFileId_t[]
+                    success = ModSteamUGC.GetWorkshopItems(new PublishedFileId_t[]
                     {
                         (PublishedFileId_t)3345320549, // Apocalypse competition winners
                         (PublishedFileId_t)3045196841, // Imagine Chapter 6 Competition Winners
@@ -491,13 +455,13 @@ namespace OverhaulMod.UI
                 }
                 else
                 {
-                    if (browseChildrenOfCollection != default)
+                    if (ViewingCollection != default)
                     {
-                        success = ModSteamUGCUtils.GetWorkshopItem(browseChildrenOfCollection, onGotItem, onError, null);
+                        success = ModSteamUGC.GetWorkshopItem(ViewingCollection, onGotItem, onError, null);
                     }
                     else
                     {
-                        success = sourceType == 0 ? ModSteamUGCUtils.GetAllWorkshopItems(searchQuery, page, requestParameters, onGotItems, onError, null) : ModSteamUGCUtils.GetWorkshopUserItemList(searchLevelsByUser, page, searchLevelsByUser == SteamUser.GetSteamID() ? (_viewFavoritesToggle.isOn ? EUserUGCList.k_EUserUGCList_Favorited : searchUserList) : searchUserList, EUserUGCListSortOrder.k_EUserUGCListSortOrder_SubscriptionDateDesc, requestParameters, onGotItems, onError, null);
+                        success = SourceType == 0 ? ModSteamUGC.GetAllWorkshopItems(SearchQuery, Page, requestParameters, onGotItems, onError, null) : ModSteamUGC.GetWorkshopUserItemList(ViewingUser, Page, ViewingUser == SteamUser.GetSteamID() ? (_viewFavoritesToggle.isOn ? EUserUGCList.k_EUserUGCList_Favorited : SearchUserList) : SearchUserList, EUserUGCListSortOrder.k_EUserUGCListSortOrder_SubscriptionDateDesc, requestParameters, onGotItems, onError, null);
                     }
                 }
 
@@ -519,7 +483,7 @@ namespace OverhaulMod.UI
             if (isEmpty)
                 return;
 
-            bool collections = browseCollections && browseChildrenOfCollection == default;
+            bool collections = BrowseCollections && ViewingCollection == default;
             foreach (WorkshopItem workshopItem in list)
             {
                 ModdedObject moddedObject = Instantiate(collections ? _workshopCollectionDisplay : _workshopItemDisplay, _container);
@@ -536,7 +500,7 @@ namespace OverhaulMod.UI
 
         private void onGotItem(WorkshopItem workshopItem)
         {
-            if (!ModSteamUGCUtils.GetWorkshopItems(workshopItem.Children, onGotItems, onError, null))
+            if (!ModSteamUGC.GetWorkshopItems(workshopItem.Children, onGotItems, onError, null))
             {
                 onError("Internal error.");
                 setIsLoading(false);
@@ -574,29 +538,29 @@ namespace OverhaulMod.UI
         {
             _isLoading = value;
 
-            bool searchByUser = sourceType != 0 && searchUserList == EUserUGCList.k_EUserUGCList_Published;
+            bool searchByUser = SourceType != 0 && SearchUserList == EUserUGCList.k_EUserUGCList_Published;
             _searchLevelsByUserHolderObject.SetActive(searchByUser);
-            _searchLevelsByUserText.text = searchByUser ? SteamFriends.GetFriendPersonaName(searchLevelsByUser) : "none";
+            _searchLevelsByUserText.text = searchByUser ? SteamFriends.GetFriendPersonaName(ViewingUser) : "none";
 
-            bool searchByTitle = !searchText.IsNullOrEmpty();
+            bool searchByTitle = !SearchText.IsNullOrEmpty();
             _searchLevelsByTitleHolderObject.SetActive(!searchByUser && searchByTitle);
-            _searchLevelsByTitleText.text = searchText;
+            _searchLevelsByTitleText.text = SearchText;
             _clearButton.interactable = !value && searchByTitle;
 
-            if (sourceType != 0)
+            if (SourceType != 0)
             {
                 _browseCollectionsSelectedIndicatorObject.SetActive(false);
                 _browseLevelsSelectedIndicatorObject.SetActive(false);
             }
 
-            _viewFavoritesToggle.gameObject.SetActive(sourceType == 1 && searchLevelsByUser == SteamUser.GetSteamID());
+            _viewFavoritesToggle.gameObject.SetActive(SourceType == 1 && ViewingUser == SteamUser.GetSteamID());
             _viewFavoritesToggle.interactable = !value;
 
             _backButton.interactable = !value;
             _reloadButton.interactable = !value;
             _sourceTabs.IsInteractable = !value;
-            _levelTypeTabs.IsInteractable = !value && !browseCollections;
-            _queryTabs.IsInteractable = !value && !browseCollections;
+            _levelTypeTabs.IsInteractable = !value && !BrowseCollections;
+            _queryTabs.IsInteractable = !value && !BrowseCollections;
             _loadingIndicator.SetActive(value);
             _nothingToDisplayLabel.SetActive(false);
             _pageDropdownObject.SetActive(false);
@@ -606,25 +570,25 @@ namespace OverhaulMod.UI
 
         private void refreshPagePageButton()
         {
-            bool notCollections = !browseCollections;
+            bool notCollections = !BrowseCollections;
 
-            int p = page;
+            int p = Page;
             _prevPageButton.gameObject.SetActive(notCollections && p > 1);
-            _nextPageButton.gameObject.SetActive(notCollections && p < ModSteamUGCUtils.pageCount);
+            _nextPageButton.gameObject.SetActive(notCollections && p < ModSteamUGC.pageCount);
             _currentPageButton.gameObject.SetActive(notCollections);
-            _backButton.gameObject.SetActive(browseChildrenOfCollection != default);
+            _backButton.gameObject.SetActive(ViewingCollection != default);
             _currentPageText.text = p.ToString();
         }
 
         private void refreshContainer()
         {
-            _container = browseCollections && browseChildrenOfCollection == default ? _verticalContainer : _gridContainer;
+            _container = BrowseCollections && ViewingCollection == default ? _verticalContainer : _gridContainer;
             _scrollRect.content = _container as RectTransform;
         }
 
         private void refreshTabContainers()
         {
-            bool collections = browseCollections;
+            bool collections = BrowseCollections;
             _tagsContainerObject.SetActive(!collections);
 
             if (collections)
@@ -644,7 +608,7 @@ namespace OverhaulMod.UI
         private void refreshSearchBox()
         {
             InputField inputField = _searchBox;
-            bool makeVisible = !browseCollections && sourceType == 0;
+            bool makeVisible = !BrowseCollections && SourceType == 0;
 
             if (!makeVisible && inputField.IsActive())
                 inputField.DeactivateInputField();
@@ -659,7 +623,7 @@ namespace OverhaulMod.UI
 
         private void setBrowseItemType(bool collections)
         {
-            browseCollections = collections;
+            BrowseCollections = collections;
             _browseItemsOfTypeDropdownObject.SetActive(false);
             _browseCollectionsSelectedIndicatorObject.SetActive(collections);
             _browseLevelsSelectedIndicatorObject.SetActive(!collections);
@@ -723,26 +687,26 @@ namespace OverhaulMod.UI
 
         public void OnTypedSearchText(string text)
         {
-            searchText = text;
+            SearchText = text;
             _timeLeftToPopulate = 1f;
         }
 
         public void OnSearchButtonClicked()
         {
-            searchText = _searchBox.text;
+            SearchText = _searchBox.text;
             Populate();
         }
 
         public void OnClearButtonClicked()
         {
             _searchBox.text = string.Empty;
-            searchText = null;
+            SearchText = null;
             Populate();
         }
 
         public void OnPageButtonClicked()
         {
-            bool active = !_pageDropdownObject.activeSelf && ModSteamUGCUtils.pageCount > 1;
+            bool active = !_pageDropdownObject.activeSelf && ModSteamUGC.pageCount > 1;
             _pageDropdownObject.SetActive(active);
 
             if (_pageContainer.childCount != 0)
@@ -751,17 +715,17 @@ namespace OverhaulMod.UI
             if (!active)
                 return;
 
-            for (int i = 1; i < ModSteamUGCUtils.pageCount + 1; i++)
+            for (int i = 1; i < ModSteamUGC.pageCount + 1; i++)
             {
                 int pageIndex = i;
                 ModdedObject pageObject = Instantiate(_pageButtonPrefab, _pageContainer);
                 pageObject.gameObject.SetActive(true);
                 pageObject.GetObject<Text>(0).text = i.ToString();
-                pageObject.GetObject<GameObject>(1).SetActive(i == page);
+                pageObject.GetObject<GameObject>(1).SetActive(i == Page);
                 Button button = pageObject.GetComponent<Button>();
                 button.onClick.AddListener(delegate
                 {
-                    page = pageIndex;
+                    Page = pageIndex;
                     Populate();
                 });
             }
@@ -769,13 +733,13 @@ namespace OverhaulMod.UI
 
         public void OnNextPageButtonClicked()
         {
-            page++;
+            Page++;
             Populate();
         }
 
         public void OnPrevPageButtonClicked()
         {
-            page--;
+            Page--;
             Populate();
         }
 
@@ -791,9 +755,9 @@ namespace OverhaulMod.UI
 
             setBrowseItemType(false);
 
-            browseChildrenOfCollection = default;
-            page = 1;
-            sourceType = 0;
+            ViewingCollection = default;
+            Page = 1;
+            SourceType = 0;
             _tabsCanvasGroup.alpha = 1f;
             _tabsCanvasGroup.interactable = true;
             _sourceTabs.DeselectAllTabs();
@@ -808,9 +772,9 @@ namespace OverhaulMod.UI
 
             setBrowseItemType(true);
 
-            browseChildrenOfCollection = default;
-            page = 1;
-            sourceType = 0;
+            ViewingCollection = default;
+            Page = 1;
+            SourceType = 0;
             _tabsCanvasGroup.alpha = 0.25f;
             _tabsCanvasGroup.interactable = false;
             _sourceTabs.DeselectAllTabs();
@@ -833,7 +797,7 @@ namespace OverhaulMod.UI
             if (_isLoading)
                 return;
 
-            browseChildrenOfCollection = default;
+            ViewingCollection = default;
             Populate();
         }
 

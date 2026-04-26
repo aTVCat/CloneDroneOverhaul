@@ -489,8 +489,8 @@ namespace OverhaulMod.UI
             if (workshopItem == null || workshopItem.IsDisposed())
                 return;
 
-            EItemState itemState = ModSteamUGCUtils.GetItemState(workshopItem.ItemID);
-            bool installed = ModSteamUGCUtils.IsItemInstalled(workshopItem.ItemID);
+            EItemState itemState = ModSteamUGC.GetItemState(workshopItem.ItemID);
+            bool installed = ModSteamUGC.IsItemInstalled(workshopItem.ItemID);
             bool subscribed = itemState.HasFlag(EItemState.k_EItemStateSubscribed);
             bool downloading = itemState.HasFlag(EItemState.k_EItemStateDownloading) || itemState.HasFlag(EItemState.k_EItemStateDownloadPending);
             bool needsUpdate = itemState.HasFlag(EItemState.k_EItemStateNeedsUpdate);
@@ -504,7 +504,7 @@ namespace OverhaulMod.UI
 
             _loadingIndicatorObject.SetActive(downloading || needsUpdate);
             if (_loadingIndicatorObject.activeSelf)
-                _loadingIndicatorText.text = $"{LocalizationManager.Instance.GetTranslatedString("downloading...")}  {(Mathf.RoundToInt(Mathf.Clamp01(ModSteamUGCUtils.GetItemDownloadProgress(workshopItem.ItemID)) * 100f).ToString() + "%").AddColor(Color.white)}";
+                _loadingIndicatorText.text = $"{LocalizationManager.Instance.GetTranslatedString("downloading...")}  {(Mathf.RoundToInt(Mathf.Clamp01(ModSteamUGC.GetItemDownloadProgress(workshopItem.ItemID)) * 100f).ToString() + "%").AddColor(Color.white)}";
         }
 
         private void refreshUserVote(WorkshopItem workshopItem)
@@ -518,7 +518,7 @@ namespace OverhaulMod.UI
             _voteDownButton.gameObject.SetActive(false);
             SetFavoriteButtonInteractable(true);
 
-            ModSteamUGCUtils.GetUserVote(item.ItemID, delegate (WorkshopItemVote workshopItemVote)
+            ModSteamUGC.GetUserVote(item.ItemID, delegate (WorkshopItemVote workshopItemVote)
             {
                 WorkshopItem item2 = _workshopItem;
                 if (item != item2 || item2 == null || item2.IsDisposed())
@@ -598,7 +598,7 @@ namespace OverhaulMod.UI
             bool shouldIncreaseTheCounter = _voteUpButton.interactable;
 
             _voteUpButton.interactable = false;
-            ModSteamUGCUtils.SetUserVote(item.ItemID, true, delegate (SetUserItemVoteResult_t t, bool ioError)
+            ModSteamUGC.SetUserVote(item.ItemID, true, delegate (SetUserItemVoteResult_t t, bool ioError)
             {
                 WorkshopItem item2 = _workshopItem;
                 if (item != item2 || item2 == null || item2.IsDisposed())
@@ -635,7 +635,7 @@ namespace OverhaulMod.UI
             bool shouldIncreaseTheCounter = _voteDownButton.interactable;
 
             _voteDownButton.interactable = false;
-            ModSteamUGCUtils.SetUserVote(item.ItemID, false, delegate (SetUserItemVoteResult_t t, bool ioError)
+            ModSteamUGC.SetUserVote(item.ItemID, false, delegate (SetUserItemVoteResult_t t, bool ioError)
             {
                 WorkshopItem item2 = _workshopItem;
                 if (item != item2 || item2 == null || item2.IsDisposed())
@@ -670,7 +670,7 @@ namespace OverhaulMod.UI
                 if (item == null || item.IsDisposed())
                     return;
 
-                ModSteamUGCUtils.AddItemToFavorites(item.ItemID, delegate (UserFavoriteItemsListChanged_t t, bool ioError)
+                ModSteamUGC.AddItemToFavorites(item.ItemID, delegate (UserFavoriteItemsListChanged_t t, bool ioError)
                 {
                     WorkshopItem item2 = _workshopItem;
                     if (item != item2 || item2 == null || item2.IsDisposed())
@@ -699,7 +699,7 @@ namespace OverhaulMod.UI
             if (item == null || item.IsDisposed())
                 return;
 
-            ModSteamUGCUtils.SubscribeItem(item.ItemID, delegate (RemoteStorageSubscribePublishedFileResult_t t, bool ioError)
+            ModSteamUGC.SubscribeItem(item.ItemID, delegate (RemoteStorageSubscribePublishedFileResult_t t, bool ioError)
             {
                 WorkshopItem item2 = _workshopItem;
                 if (item != item2 || item2 == null || item2.IsDisposed())
@@ -722,7 +722,7 @@ namespace OverhaulMod.UI
             if (item == null || item.IsDisposed())
                 return;
 
-            ModSteamUGCUtils.UnsubscribeItem(item.ItemID, delegate (RemoteStorageUnsubscribePublishedFileResult_t t, bool ioError)
+            ModSteamUGC.UnsubscribeItem(item.ItemID, delegate (RemoteStorageUnsubscribePublishedFileResult_t t, bool ioError)
             {
                 WorkshopItem item2 = _workshopItem;
                 if (item != item2 || item2 == null || item2.IsDisposed())
@@ -745,7 +745,7 @@ namespace OverhaulMod.UI
             if (item == null || item.IsDisposed())
                 return;
 
-            if (SteamUGC.GetItemInstallInfo(item.ItemID, out _, out string folder, ModSteamUGCUtils.cchFolderSize, out _))
+            if (SteamUGC.GetItemInstallInfo(item.ItemID, out _, out string folder, ModSteamUGC.cchFolderSize, out _))
                 item.Folder = folder;
 
             if (!WorkshopChallengeManager.Instance.StartChallengeFromWorkshop(item.ToSteamWorkshopItem()))
@@ -803,7 +803,7 @@ namespace OverhaulMod.UI
             if (item == null || item.IsDisposed())
                 return;
 
-            _ = ModSteamUGCUtils.UpdateItem(item.ItemID, delegate (DownloadItemResult_t t)
+            _ = ModSteamUGC.UpdateItem(item.ItemID, delegate (DownloadItemResult_t t)
             {
                 WorkshopItem item2 = _workshopItem;
                 if (item != item2 || item2 == null || item2.IsDisposed())
@@ -850,11 +850,11 @@ namespace OverhaulMod.UI
         public void OnAuthorLevelsButtonClicked()
         {
             UIWorkshopBrowser bui = browserUI;
-            bui.searchLevelsByUser = _authorId;
-            bui.searchUserList = EUserUGCList.k_EUserUGCList_Published;
-            bui.sourceType = 1;
-            bui.browseCollections = false;
-            bui.browseChildrenOfCollection = default;
+            bui.ViewingUser = _authorId;
+            bui.SearchUserList = EUserUGCList.k_EUserUGCList_Published;
+            bui.SourceType = 1;
+            bui.BrowseCollections = false;
+            bui.ViewingCollection = default;
             bui.Populate();
             Hide();
         }

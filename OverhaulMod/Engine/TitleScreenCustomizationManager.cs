@@ -109,7 +109,7 @@ namespace OverhaulMod.Engine
             if (_customizationInfo.StaticBackgroundInfo.Level != null && _customizationInfo.StaticBackgroundInfo.Level.WorkshopItem != null && _customizationInfo.StaticBackgroundInfo.Level.WorkshopItem.WorkshopItemID == UITitleScreenHypocrisisSkin.MAIN_MENU_LEVEL_STEA_ID)
                 return;
 
-            if (ModSteamUGCUtils.IsItemInstalled(UITitleScreenHypocrisisSkin.MAIN_MENU_LEVEL_STEA_ID) && SteamUGC.GetItemInstallInfo(UITitleScreenHypocrisisSkin.MAIN_MENU_LEVEL_STEA_ID, out _, out string folder, ModSteamUGCUtils.cchFolderSize, out _))
+            if (ModSteamUGC.IsItemInstalled(UITitleScreenHypocrisisSkin.MAIN_MENU_LEVEL_STEA_ID) && SteamUGC.GetItemInstallInfo(UITitleScreenHypocrisisSkin.MAIN_MENU_LEVEL_STEA_ID, out _, out string folder, ModSteamUGC.cchFolderSize, out _))
             {
                 SteamWorkshopItem workshopItem = null;
 

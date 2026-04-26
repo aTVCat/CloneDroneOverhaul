@@ -152,7 +152,7 @@ namespace OverhaulMod.UI
 
             if (isCollection)
             {
-                browser.browseChildrenOfCollection = item.ItemID;
+                browser.ViewingCollection = item.ItemID;
                 browser.Populate();
                 return;
             }

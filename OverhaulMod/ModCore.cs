@@ -12,15 +12,6 @@ namespace OverhaulMod
     [MainModClass]
     public class ModCore : Mod
     {
-        [ModSetting(ModSettingsConstants.ENABLE_TITLE_BAR_OVERHAUL, true)]
-        public static bool EnableTitleBarOverhaul;
-
-        [ModSetting(ModSettingsConstants.SHOW_SPEAKER_NAME, true)]
-        public static bool ShowSpeakerName;
-
-        [ModSetting(ModSettingsConstants.SWAP_SUBTITLES_COLOR, false)]
-        public static bool SwapSubtitlesColor;
-
         public static ModCore Instance { get; private set; }
 
         public static bool IsEnabled { get; private set; }

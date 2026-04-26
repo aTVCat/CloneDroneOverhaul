@@ -154,7 +154,7 @@ namespace OverhaulMod.UI
                 }
             }
 
-            _progressBarFill.fillAmount = ModSteamUGCUtils.GetItemDownloadProgress(LEVEL_STEA_ID);
+            _progressBarFill.fillAmount = ModSteamUGC.GetItemDownloadProgress(LEVEL_STEA_ID);
 
             _timeLeftToUpdate = Mathf.Max(0f, _timeLeftToUpdate - Time.unscaledDeltaTime);
             if (_timeLeftToUpdate == 0f)
@@ -269,7 +269,7 @@ namespace OverhaulMod.UI
             _getCallbacks = true;
             _startButton.interactable = false;
             _loadingIndicator.SetActive(true);
-            ModSteamUGCUtils.GetWorkshopItem(LEVEL_STEA_ID, onGotItem, onError, null);
+            ModSteamUGC.GetWorkshopItem(LEVEL_STEA_ID, onGotItem, onError, null);
         }
 
         public void OnSettingsButtonClicked()
@@ -327,8 +327,8 @@ namespace OverhaulMod.UI
             _startChallengeWhenReady = true;
             _levelWorkshopItem = workshopItem;
 
-            EItemState itemState = ModSteamUGCUtils.GetItemState(workshopItem.ItemID);
-            bool installed = ModSteamUGCUtils.IsItemInstalled(workshopItem.ItemID);
+            EItemState itemState = ModSteamUGC.GetItemState(workshopItem.ItemID);
+            bool installed = ModSteamUGC.IsItemInstalled(workshopItem.ItemID);
             bool subscribed = itemState.HasFlag(EItemState.k_EItemStateSubscribed);
             bool downloading = itemState.HasFlag(EItemState.k_EItemStateDownloading) || itemState.HasFlag(EItemState.k_EItemStateDownloadPending);
             bool needsUpdate = itemState.HasFlag(EItemState.k_EItemStateNeedsUpdate);
@@ -337,7 +337,7 @@ namespace OverhaulMod.UI
             {
                 if (needsUpdate || !installed)
                 {
-                    _ = ModSteamUGCUtils.UpdateItem(workshopItem.ItemID, delegate (DownloadItemResult_t t)
+                    _ = ModSteamUGC.UpdateItem(workshopItem.ItemID, delegate (DownloadItemResult_t t)
                     {
                         if (t.m_nPublishedFileId == workshopItem.ItemID && t.m_eResult != EResult.k_EResultOK)
                         {
@@ -355,7 +355,7 @@ namespace OverhaulMod.UI
             }
             else
             {
-                ModSteamUGCUtils.SubscribeItem(workshopItem.ItemID, delegate (RemoteStorageSubscribePublishedFileResult_t t, bool ioError)
+                ModSteamUGC.SubscribeItem(workshopItem.ItemID, delegate (RemoteStorageSubscribePublishedFileResult_t t, bool ioError)
                 {
                     if (t.m_nPublishedFileId == workshopItem.ItemID && (ioError || t.m_eResult != EResult.k_EResultOK))
                     {
@@ -381,7 +381,7 @@ namespace OverhaulMod.UI
             _loadingIndicator.SetActive(false);
             _startButton.interactable = true;
 
-            if (ModSteamUGCUtils.IsItemInstalled(LEVEL_STEA_ID)) // if we have challenge installed then just start it
+            if (ModSteamUGC.IsItemInstalled(LEVEL_STEA_ID)) // if we have challenge installed then just start it
             {
                 startChallenge();
                 return;
@@ -391,8 +391,8 @@ namespace OverhaulMod.UI
 
         private bool isReadyToStartChallenge()
         {
-            EItemState itemState = ModSteamUGCUtils.GetItemState(LEVEL_STEA_ID);
-            bool installed = ModSteamUGCUtils.IsItemInstalled(LEVEL_STEA_ID);
+            EItemState itemState = ModSteamUGC.GetItemState(LEVEL_STEA_ID);
+            bool installed = ModSteamUGC.IsItemInstalled(LEVEL_STEA_ID);
             return installed && (_ignoreMinorErrors || itemState.HasFlag(EItemState.k_EItemStateSubscribed)) && (_ignoreMinorErrors || !itemState.HasFlag(EItemState.k_EItemStateNeedsUpdate)) && !itemState.HasFlag(EItemState.k_EItemStateDownloadPending) && !itemState.HasFlag(EItemState.k_EItemStateDownloading);
         }
 
@@ -410,7 +410,7 @@ namespace OverhaulMod.UI
                 };
             }
 
-            if (SteamUGC.GetItemInstallInfo(_levelWorkshopItem.ItemID, out _, out string folder, ModSteamUGCUtils.cchFolderSize, out _))
+            if (SteamUGC.GetItemInstallInfo(_levelWorkshopItem.ItemID, out _, out string folder, ModSteamUGC.cchFolderSize, out _))
                 _levelWorkshopItem.Folder = folder;
 
             if (!WorkshopChallengeManager.Instance.StartChallengeFromWorkshop(_levelWorkshopItem.ToSteamWorkshopItem()))

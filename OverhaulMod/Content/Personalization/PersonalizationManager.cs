@@ -388,10 +388,10 @@ namespace OverhaulMod.Content.Personalization
 
                 CharacterUpdateScheduler.Instance.UpdateCharacter(character, new CharacterUpdateRequest()
                 {
-                    UpdateWeaponSkins = category == PersonalizationCategory.None || category == PersonalizationCategory.WeaponSkins,
-                    UpdateAccessories = category == PersonalizationCategory.None || category == PersonalizationCategory.Accessories,
-                    UpdatePets = category == PersonalizationCategory.None || category == PersonalizationCategory.Pets,
-                    UpdateWeaponBag = category == PersonalizationCategory.None || category == PersonalizationCategory.WeaponSkins,
+                    UpdateWeaponSkins = category == PersonalizationCategory.WeaponSkins,
+                    UpdateAccessories = category == PersonalizationCategory.Accessories,
+                    UpdatePets = category == PersonalizationCategory.Pets,
+                    UpdateWeaponBag = category == PersonalizationCategory.WeaponSkins,
                 });
             }
         }

@@ -23,6 +23,12 @@ namespace OverhaulMod.UI
         [ModSetting(ModSettingsConstants.SUBTITLE_TEXT_FIELD_FONT_SIZE, 11)]
         public static int FontSize;
 
+        [ModSetting(ModSettingsConstants.SHOW_SPEAKER_NAME, true)]
+        public static bool ShowSpeakerName;
+
+        [ModSetting(ModSettingsConstants.SWAP_SUBTITLES_COLOR, false)]
+        public static bool SwapSubtitlesColor;
+
         [UIElement("BG")]
         private readonly RectTransform _bg;
 
@@ -151,10 +157,10 @@ namespace OverhaulMod.UI
                 else
                 {
                     _ = _stringBuilder.Clear();
-                    if (ModCore.ShowSpeakerName)
+                    if (ShowSpeakerName)
                     {
                         string speakerName = ModGameUtils.GetSpeakerNameText(currentSentence.SpeakerName);
-                        if (ModCore.SwapSubtitlesColor)
+                        if (SwapSubtitlesColor)
                         {
                             speakerName = speakerName.AddColor(speechAudioManager.GetSubtitleColorForSpeaker(currentSentence.SpeakerName));
                         }
@@ -167,7 +173,7 @@ namespace OverhaulMod.UI
                         _ = _stringBuilder.Append(' ');
                     }
                     _ = _stringBuilder.Append(currentSentence.SpeechText);
-                    ShowText(_stringBuilder.ToString(), ModCore.SwapSubtitlesColor ? Color.white : speechAudioManager.GetSubtitleColorForSpeaker(currentSentence.SpeakerName));
+                    ShowText(_stringBuilder.ToString(), SwapSubtitlesColor ? Color.white : speechAudioManager.GetSubtitleColorForSpeaker(currentSentence.SpeakerName));
                 }
             }
         }

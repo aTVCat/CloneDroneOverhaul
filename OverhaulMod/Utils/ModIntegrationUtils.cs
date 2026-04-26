@@ -1,4 +1,5 @@
 ﻿using InternalModBot;
+using OverhaulMod.Engine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -9,6 +10,9 @@ namespace OverhaulMod.Utils
 {
     public static class ModIntegrationUtils
     {
+        [ModSetting(ModSettingsConstants.ENABLE_TITLE_BAR_OVERHAUL, true)]
+        public static bool EnableTitleBarOverhaul;
+
         private static bool s_hasLoaded;
 
         public static void Load()

@@ -620,8 +620,8 @@
     <Compile Include="Utils\ModIntegrationUtils.cs" />
     <Compile Include="Utils\ModParseUtils.cs" />
     <Compile Include="Utils\ModSettingsConstants.cs" />
-    <Compile Include="Utils\ModSteamUGCUtils.cs" />
-    <Compile Include="Utils\ModSteamUserStatsUtils.cs" />
+    <Compile Include="Utils\ModSteamUGC.cs" />
+    <Compile Include="Utils\ModSteamUserStats.cs" />
     <Compile Include="Utils\ModUIUtils.cs" />
     <Compile Include="Utils\ModSpecialUtils.cs" />
     <Compile Include="Visuals\AmplifyOcclusion\AmplifyOcclusion.cs" />

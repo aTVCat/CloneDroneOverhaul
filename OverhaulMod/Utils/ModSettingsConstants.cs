@@ -82,7 +82,7 @@ namespace OverhaulMod.Utils
         public const string REVERB_FILTER_INTENSITY = "SoundReverbFilterIntensity";
 
         /// <summary>
-        /// <see cref="ModCore"/>
+        /// <see cref="Utils.ModIntegrationUtils"/>
         /// </summary>
         public const string ENABLE_TITLE_BAR_OVERHAUL = "TitleBarOverhaul";
 
@@ -227,7 +227,7 @@ namespace OverhaulMod.Utils
         public const string FORCE_WEATHER_TYPE = "ForceWeatherType";
 
         /// <summary>
-        /// <see cref="ModCore.ShowSpeakerName"/>
+        /// <see cref="UI.UISubtitleTextFieldRework"/>
         /// </summary>
         public const string SHOW_SPEAKER_NAME = "ShowSpeakerName";
 
@@ -627,7 +627,7 @@ namespace OverhaulMod.Utils
         public const string REFRESH_ADDON_UPDATES_DATE_TIME = "RefreshAddonUpdatesDateTime";
 
         /// <summary>
-        /// <see cref="ModCore"/>
+        /// <see cref="UI.UISubtitleTextFieldRework"/>
         /// </summary>
         public const string SWAP_SUBTITLES_COLOR = "SwapSubtitlesColor";
 

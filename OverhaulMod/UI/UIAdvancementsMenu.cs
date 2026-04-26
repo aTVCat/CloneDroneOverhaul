@@ -169,7 +169,7 @@ namespace OverhaulMod.UI
 
             _tabs.IsInteractable = false;
             _loadingIndicator.SetActive(true);
-            ModSteamUserStatsUtils.RefreshAllStats(delegate (bool result)
+            ModSteamUserStats.RefreshAllStats(delegate (bool result)
             {
                 _tabs.IsInteractable = true;
                 _loadingIndicator.SetActive(false);
@@ -183,7 +183,7 @@ namespace OverhaulMod.UI
                 List<(GameplayAchievement, float)> list = new List<(GameplayAchievement, float)>();
                 foreach (GameplayAchievement achievement in manager.Achievements)
                 {
-                    if (!achievement || (achievement.IsHidden && !achievement.IsComplete()) || !ModSteamUserStatsUtils.GetAchievementAchievedPercent(achievement.SteamAchievementID, out float percent))
+                    if (!achievement || (achievement.IsHidden && !achievement.IsComplete()) || !ModSteamUserStats.GetAchievementAchievedPercent(achievement.SteamAchievementID, out float percent))
                         continue;
 
                     list.Add((achievement, percent));

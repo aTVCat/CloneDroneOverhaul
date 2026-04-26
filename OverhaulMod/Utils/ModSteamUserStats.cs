@@ -3,7 +3,7 @@ using System;
 
 namespace OverhaulMod.Utils
 {
-    public static class ModSteamUserStatsUtils
+    public static class ModSteamUserStats
     {
         /// <summary>
         /// StartFading local player stats
@@ -18,35 +18,27 @@ namespace OverhaulMod.Utils
             }
 
             bool isCompleted = false;
-            Callback<UserStatsReceived_t> cb = null;
+
+            CallResult<UserStatsReceived_t> callResult = null;
             DelegateScheduler.Instance.Schedule(delegate
             {
-                if (cb != null)
-                    cb.Dispose();
-
-                if (!isCompleted)
-                    callback?.Invoke(false);
+                if (callResult != null) callResult.Dispose();
+                if (!isCompleted && callback != null) callback(false);
             }, 10f);
 
-            cb = Callback<UserStatsReceived_t>.Create(delegate (UserStatsReceived_t userStatsReceived)
+            callResult = new CallResult<UserStatsReceived_t>();
+            callResult.Set(SteamUserStats.RequestUserStats(SteamUser.GetSteamID()), delegate (UserStatsReceived_t t, bool ioError)
             {
                 isCompleted = true;
-                if (cb != null)
-                    cb.Dispose();
+                if (callResult != null) callResult.Dispose();
 
-                if (userStatsReceived.m_eResult != EResult.k_EResultOK && userStatsReceived.m_eResult != EResult.k_EResultFail)
+                if (ioError || t.m_eResult != EResult.k_EResultOK)
                 {
-                    callback?.Invoke(false);
+                    if (callback != null) callback(false);
                     return;
                 }
-                callback?.Invoke(true);
+                if (callback != null) callback(true);
             });
-
-            // todo: fix this
-            /*if (SteamUserStats.RequestUserStats(SteamUser.GetSteamID()))
-            {
-                callback?.Invoke(false);
-            }*/
         }
 
         /// <summary>
@@ -57,7 +49,7 @@ namespace OverhaulMod.Utils
         {
             if (!SteamManager.Instance || !SteamManager.Instance.Initialized)
             {
-                callback?.Invoke(false);
+                if (callback != null) callback(false);
                 return;
             }
 
@@ -65,11 +57,9 @@ namespace OverhaulMod.Utils
             CallResult<GlobalAchievementPercentagesReady_t> cr = null;
             DelegateScheduler.Instance.Schedule(delegate
             {
-                if (cr != null)
-                    cr.Dispose();
+                if (cr != null) cr.Dispose();
 
-                if (!isCompleted)
-                    callback?.Invoke(false);
+                if (!isCompleted && callback != null) callback(false);
             }, 10f);
 
             cr = CallResult<GlobalAchievementPercentagesReady_t>.Create(null);
@@ -78,10 +68,10 @@ namespace OverhaulMod.Utils
                 isCompleted = true;
                 if (c.m_eResult != EResult.k_EResultOK || io)
                 {
-                    callback?.Invoke(false);
+                    if (callback != null) callback(false);
                     return;
                 }
-                callback?.Invoke(true);
+                if (callback != null) callback(true);
             });
         }
 
@@ -93,7 +83,7 @@ namespace OverhaulMod.Utils
         {
             if (!SteamManager.Instance || !SteamManager.Instance.Initialized)
             {
-                callback?.Invoke(false);
+                if (callback != null) callback(false);
                 return;
             }
 
@@ -101,13 +91,13 @@ namespace OverhaulMod.Utils
             {
                 if (!result)
                 {
-                    callback?.Invoke(false);
+                    if (callback != null) callback(false);
                     return;
                 }
 
                 RefreshGlobalAchievementPercentages(delegate (bool result2)
                 {
-                    callback?.Invoke(result2);
+                    if (callback != null) callback(result2);
                 });
             });
         }

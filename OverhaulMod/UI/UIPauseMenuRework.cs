@@ -422,7 +422,7 @@ namespace OverhaulMod.UI
                 _workshopLevelUpVoteButton.gameObject.SetActive(false);
                 _workshopLevelDownVoteButton.gameObject.SetActive(false);
 
-                ModSteamUGCUtils.GetUserVote(item.WorkshopItemID, delegate (WorkshopItemVote workshopItemVote)
+                ModSteamUGC.GetUserVote(item.WorkshopItemID, delegate (WorkshopItemVote workshopItemVote)
                 {
                     SteamWorkshopItem item2 = WorkshopLevelManager.Instance.GetCurrentLevelWorkshopItem();
                     if (item != item2)
@@ -569,7 +569,7 @@ namespace OverhaulMod.UI
                 return;
 
             _workshopLevelUpVoteButton.interactable = false;
-            ModSteamUGCUtils.SetUserVote(item.WorkshopItemID, true, delegate (SetUserItemVoteResult_t t, bool ioError)
+            ModSteamUGC.SetUserVote(item.WorkshopItemID, true, delegate (SetUserItemVoteResult_t t, bool ioError)
             {
                 SteamWorkshopItem item2 = WorkshopLevelManager.Instance.GetCurrentLevelWorkshopItem();
                 if (item != item2)
@@ -595,7 +595,7 @@ namespace OverhaulMod.UI
                 return;
 
             _workshopLevelDownVoteButton.interactable = false;
-            ModSteamUGCUtils.SetUserVote(item.WorkshopItemID, false, delegate (SetUserItemVoteResult_t t, bool ioError)
+            ModSteamUGC.SetUserVote(item.WorkshopItemID, false, delegate (SetUserItemVoteResult_t t, bool ioError)
             {
                 SteamWorkshopItem item2 = WorkshopLevelManager.Instance.GetCurrentLevelWorkshopItem();
                 if (item != item2)

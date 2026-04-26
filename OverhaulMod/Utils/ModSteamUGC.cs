@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace OverhaulMod.Utils
 {
-    public static class ModSteamUGCUtils
+    public static class ModSteamUGC
     {
         public const uint cchURLSize = 4096U;
         public const uint cchFolderSize = 4096U;
@@ -65,7 +65,7 @@ namespace OverhaulMod.Utils
                 {
                     try
                     {
-                        callback?.Invoke(t, ioError);
+                        callback(t, ioError);
                     }
                     catch { }
                 }
@@ -82,7 +82,7 @@ namespace OverhaulMod.Utils
                 {
                     try
                     {
-                        callback?.Invoke(t, ioError);
+                        callback(t, ioError);
                     }
                     catch { }
                 }
@@ -99,7 +99,7 @@ namespace OverhaulMod.Utils
                 {
                     try
                     {
-                        callback?.Invoke(t);
+                        callback(t);
                     }
                     catch { }
                 }
@@ -118,7 +118,7 @@ namespace OverhaulMod.Utils
                 {
                     try
                     {
-                        callback?.Invoke(workshopItemVote);
+                        callback(workshopItemVote);
                     }
                     catch { }
                 }
@@ -135,7 +135,7 @@ namespace OverhaulMod.Utils
                 {
                     try
                     {
-                        callback?.Invoke(t, ioError);
+                        callback(t, ioError);
                     }
                     catch { }
                 }
@@ -152,7 +152,7 @@ namespace OverhaulMod.Utils
                 {
                     try
                     {
-                        callback?.Invoke(t, ioError);
+                        callback(t, ioError);
                     }
                     catch { }
                 }
@@ -193,9 +193,13 @@ namespace OverhaulMod.Utils
                 onQueryCallback(false, queryResult, io, delegate (List<WorkshopItem> list)
                 {
                     if (list != null && list.Count == 1)
-                        callback?.Invoke(list[0]);
+                    {
+                        if (callback != null) callback(list[0]);
+                    }
                     else
-                        errorCallback?.Invoke($"Item not found. ({(list == null ? -1 : list.Count)})");
+                    {
+                        if (errorCallback != null) errorCallback($"Item not found. ({(list == null ? -1 : list.Count)})");
+                    }
                 }, errorCallback, debugCallback);
             }, errorCallback);
             return true;
@@ -344,14 +348,14 @@ namespace OverhaulMod.Utils
         {
             if (ioError)
             {
-                errorCallback?.Invoke("I/O Error.");
+                if (errorCallback != null) errorCallback("I/O Error.");
                 return false;
             }
 
             EResult result = queryResult.m_eResult;
             if (result != EResult.k_EResultOK)
             {
-                errorCallback?.Invoke("Error: " + result + ".");
+                if(errorCallback != null) errorCallback("Error: " + result + ".");
                 return false;
             }
             return true;
@@ -382,11 +386,8 @@ namespace OverhaulMod.Utils
 
             DelegateScheduler.Instance.Schedule(delegate
             {
-                if (callResult != null)
-                    callResult.Dispose();
-
-                if (!done)
-                    errorCallback?.Invoke("Request timeout.");
+                if (callResult != null) callResult.Dispose();
+                if (!done && errorCallback != null) errorCallback("Request timeout.");
             }, 20f);
         }
 

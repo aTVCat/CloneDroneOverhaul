@@ -55,6 +55,7 @@ namespace OverhaulMod.Engine
             {
                 characterUpdate.Request.Append(request);
             }
+            characterUpdate.RefreshReferences();
         }
 
         private void performUpdate()
@@ -114,8 +115,6 @@ namespace OverhaulMod.Engine
             return new CharacterUpdateInfo()
             {
                 ReferenceCharacter = character,
-                PersonalizationController = ComponentCacheManager.Instance.GetPersonalizationController(character.transform),
-                WeaponBag = character.GetComponent<RobotWeaponBag>(),
                 Importance = updateImportance,
                 Request = request
             };
