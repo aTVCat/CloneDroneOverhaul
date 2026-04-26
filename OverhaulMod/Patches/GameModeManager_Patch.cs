@@ -10,6 +10,8 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(GameModeManager.UsesMultiplayerSpeedMultiplier))]
         private static void UsesMultiplayerSpeedMultiplier_Postfix(ref bool __result)
         {
+            if (!ModCore.IsActive()) return;
+
             if (GameModeManager.Is(GameMode.Story) && LevelManager.Instance.GetCurrentLevelID() != "StoryC5_5")
             {
                 __result = ModGameModifiersManager.Instance.ForceEnableGreatSwords;

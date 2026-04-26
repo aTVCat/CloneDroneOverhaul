@@ -153,6 +153,7 @@ namespace OverhaulMod.UI
         [UIElement("AdvancementsProgressText")]
         private readonly Text _advancementsProgressText;
 
+        [BetterOutline]
         [UIElement("AdvancementsProgressPercentageText")]
         private readonly Text _advancementsProgressPercentageText;
 
@@ -169,6 +170,9 @@ namespace OverhaulMod.UI
 
         private Vector2 _oldVanillaAnchoredPosition, _oldVanillaAnchorMax, _oldVanillaOffsetMax;
         private Vector2 _newVanillaAnchoredPosition, _newVanillaAnchorMax, _newVanillaOffsetMax;
+
+        private Vector2 _oldLogoAnchorMin, _oldLogoAnchorMax, _oldLogoAnchoredPosition;
+        private Vector2 _newLogoAnchorMin, _newLogoAnchorMax, _newLogoAnchoredPosition;
 
         private TitleScreenUI _titleScreenUI;
         private CanvasGroup _canvasGroup;
@@ -241,12 +245,21 @@ namespace OverhaulMod.UI
             _localizationEditorButton.gameObject.SetActive(debug);
             _modBotLogonText.text = "Not logged in";
 
+            _centerFade.transform.SetParent(ModCache.TitleScreenUI.transform, true);
+            _centerFade.transform.SetAsFirstSibling();
+
             _settingsReworkV2Button.gameObject.SetActive(ModFeatures.IsEnabled(ModFeatures.FeatureType.SettingsMenuReworkV2));
 
-            float fraction = GameplayAchievementManager.Instance.GetFractionOfAchievementsCompleted();
-            _advancementsProgressImage.fillAmount = fraction;
-            _advancementsProgressText.text = $"{ModGameUtils.GetNumOfAchievementsCompleted()}/{ModGameUtils.GetNumOfAchievements()}";
-            _advancementsProgressPercentageText.text = $"({Mathf.FloorToInt(fraction * 100f)}%)";
+            ModActionUtils.DoInFrame(delegate
+            {
+                if (!this) return;
+
+                float fraction = GameplayAchievementManager.Instance.GetFractionOfAchievementsCompleted();
+                _advancementsProgressImage.fillAmount = fraction;
+                _advancementsProgressText.text = $"{ModGameUtils.GetNumOfAchievementsCompleted()}/{ModGameUtils.GetNumOfAchievements()}";
+                _advancementsProgressPercentageText.text = $"{Mathf.FloorToInt(fraction * 100f)}%";
+                _advancementsProgressPercentageText.gameObject.SetActive(fraction < 1f);
+            });
 
             _oldOffsetMin = _containerTransform.offsetMin;
             _oldOffsetMax = _containerTransform.offsetMax;

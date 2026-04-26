@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace OverhaulMod.Utils
 {
@@ -179,6 +180,17 @@ namespace OverhaulMod.Utils
             ModCache.UIRoot.EscMenu.Show();
             ModCache.UIRoot.RefreshCursorEnabled();
             UIPauseMenuRework.disableOverhauledVersion = false;
+        }
+
+        public static void ReplaceBackgroundSprite(Image image, bool addShadow)
+        {
+            image.sprite = ModResources.Sprite(AssetBundleConstants.UI, "FrameBGDark-16x16");
+            if (addShadow)
+            {
+                Shadow shadow = image.GetComponent<Shadow>() ?? image.gameObject.AddComponent<Shadow>();
+                shadow.effectDistance = new Vector2(-2f, -2f);
+                shadow.effectColor = new Color(0f, 0f, 0f, 0.5f);
+            }
         }
 
         public static bool IsEscKeyDown()

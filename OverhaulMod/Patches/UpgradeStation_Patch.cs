@@ -10,6 +10,8 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(UpgradeStation.Start))]
         private static void Start_Prefix(UpgradeStation __instance)
         {
+            if (!ModCore.IsActive()) return;
+
             UseKeyTriggerManager.PatchKeyboardHint(__instance.UpgradePressEPrefab.transform);
         }
     }

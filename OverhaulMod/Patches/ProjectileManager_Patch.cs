@@ -11,6 +11,8 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(ProjectileManager.CreateArrowGroundImpactVFX))]
         private static bool CreateArrowGroundImpactVFX_Prefix(Vector3 position)
         {
+            if (!ModCore.IsActive()) return true;
+
             if (!ParticleManager.EnableHitParticles)
                 return true;
 
@@ -22,6 +24,8 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(ProjectileManager.CreateMortarExplodeVFX))]
         private static bool CreateMortarExplodeVFX_Prefix(Vector3 position)
         {
+            if (!ModCore.IsActive()) return true;
+
             if (!ParticleManager.NewExplosionParticles)
                 return true;
 

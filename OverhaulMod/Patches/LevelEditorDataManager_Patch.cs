@@ -10,6 +10,8 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(LevelEditorDataManager.LevelHasAtLeastOneEnemyForDifficulty))]
         private static bool LevelHasAtLeastOneEnemyForDifficulty_Prefix(ref bool __result, Transform currentLevelTransform, int currentWorkshopLevelDifficultyIndex)
         {
+            if (!ModCore.IsActive()) return true;
+
             if (GameModeManager.IsOnTitleScreen())
             {
                 __result = true;

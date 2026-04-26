@@ -11,6 +11,8 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(EnergyUI.Show))]
         private static void Show_Postfix()
         {
+            if (!ModCore.IsActive()) return;
+
             ModActionUtils.DoInFrame(delegate
             {
                 EnergyBarPatchBehaviour energyUIPatch = GamePatchBehaviour.GetBehaviour<EnergyBarPatchBehaviour>();

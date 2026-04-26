@@ -113,7 +113,7 @@ namespace OverhaulMod.UI
         public override void OnDisable()
         {
             AutoBuildManager autoBuildManager = AutoBuildManager.Instance;
-            autoBuildManager.isInAutoBuildConfigurationMode = false;
+            autoBuildManager.IsInAutoBuildConfigurationMode = false;
             autoBuildManager.ResetUpgrades();
             autoBuildManager.SaveBuildsInfo();
 
@@ -137,7 +137,7 @@ namespace OverhaulMod.UI
             int i = -1;
             UpgradeManager upgradeManager = UpgradeManager.Instance;
             AutoBuildManager autoBuildManager = AutoBuildManager.Instance;
-            List<AutoBuildInfo> builds = autoBuildManager.buildList.Builds;
+            List<AutoBuildInfo> builds = autoBuildManager.BuildList.Builds;
             foreach (AutoBuildInfo build in builds)
             {
                 i++;
@@ -206,7 +206,7 @@ namespace OverhaulMod.UI
                             autoBuildInfo = null;
                         }
 
-                        _ = autoBuildManager.buildList.Builds.Remove(build);
+                        _ = autoBuildManager.BuildList.Builds.Remove(build);
                         if (autoBuildInfo != null)
                         {
                             ModSettingsManager.SetIntValue(ModSettingsConstants.AUTO_BUILD_INDEX_TO_USE_ON_MATCH_START, builds.IndexOf(autoBuildInfo));
@@ -241,7 +241,7 @@ namespace OverhaulMod.UI
                 newBuildButton.onClick.AddListener(OnNewButtonClicked);
                 _instantiatedNewButton = newBuildButton.gameObject;
             }
-            _instantiatedNewButton.gameObject.SetActive(_searchBox.text.IsNullOrEmpty() && AutoBuildManager.Instance.buildList.Builds.Count < 10);
+            _instantiatedNewButton.gameObject.SetActive(_searchBox.text.IsNullOrEmpty() && AutoBuildManager.Instance.BuildList.Builds.Count < 10);
         }
 
         public void RefreshBuildToUseOnStartButton()
@@ -249,7 +249,7 @@ namespace OverhaulMod.UI
             int index = AutoBuildManager.AutoBuildIndexToUseOnMatchStart;
 
             AutoBuildManager autoBuildManager = AutoBuildManager.Instance;
-            List<AutoBuildInfo> builds = autoBuildManager.buildList.Builds;
+            List<AutoBuildInfo> builds = autoBuildManager.BuildList.Builds;
             if (builds.IsNullOrEmpty() || index < 0 || index >= builds.Count)
             {
                 _buildToUseOnMatchStartText.text = "-";
@@ -277,7 +277,7 @@ namespace OverhaulMod.UI
             _editingBuild = autoBuildInfo;
 
             AutoBuildManager autoBuildManager = AutoBuildManager.Instance;
-            autoBuildManager.isInAutoBuildConfigurationMode = true;
+            autoBuildManager.IsInAutoBuildConfigurationMode = true;
             autoBuildManager.ResetUpgrades(autoBuildInfo.GetUpgradesFromData(), autoBuildInfo.SkillPoints);
 
             UpgradePagesManager._currentPageIndex = 0;
@@ -295,7 +295,7 @@ namespace OverhaulMod.UI
         public void OnCloseUpgradeUIButtonClicked()
         {
             AutoBuildManager autoBuildManager = AutoBuildManager.Instance;
-            autoBuildManager.isInAutoBuildConfigurationMode = false;
+            autoBuildManager.IsInAutoBuildConfigurationMode = false;
 
             _editingBuild.SetUpgradesFromData(GameDataManager.Instance.GetAvailableSkillPoints());
             _editingBuild = null;
@@ -332,7 +332,7 @@ namespace OverhaulMod.UI
                 autoBuildInfo.FixValues();
 
                 AutoBuildManager autoBuildManager = AutoBuildManager.Instance;
-                autoBuildManager.buildList.Builds.Add(autoBuildInfo);
+                autoBuildManager.BuildList.Builds.Add(autoBuildInfo);
                 ConfigureBuild(autoBuildInfo);
             });
         }

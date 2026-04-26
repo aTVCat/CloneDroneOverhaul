@@ -11,6 +11,8 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(SelectableUI.Start))]
         private static void Start_Prefix(SelectableUI __instance)
         {
+            if (!ModCore.IsActive()) return;
+
             if (__instance.GameThemeData) return;
 
             GameUIThemeData gameUIThemeData = ModCache.UIThemeData;
@@ -21,6 +23,8 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(SelectableUI.onStateEnter))]
         private static bool onStateEnter_Prefix(SelectableUI __instance, UISelectionState stateEntering)
         {
+            if (!ModCore.IsActive()) return true;
+
             __instance.updateColorsToState(stateEntering);
             switch (stateEntering)
             {
@@ -42,6 +46,8 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(SelectableUI.onStateExit))]
         private static bool onStateExit_Prefix(SelectableUI __instance, UISelectionState stateExiting)
         {
+            if (!ModCore.IsActive()) return true;
+
             switch (stateExiting)
             {
                 case UISelectionState.Selected:

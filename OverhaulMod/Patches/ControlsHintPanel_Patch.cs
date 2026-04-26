@@ -9,6 +9,8 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(ControlsHintPanel.Update))]
         private static bool Hide_Prefix(ControlsHintPanel __instance)
         {
+            if (!ModCore.IsActive()) return true;
+
             if (PhotoManager.Instance.IsInPhotoMode())
             {
                 __instance.DefaultMountControlInstructions.SetActive(false);

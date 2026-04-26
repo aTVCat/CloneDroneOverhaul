@@ -10,7 +10,9 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(UpgradeUI.closeUpgradeUIIfLocalPlayerHasNoSkillPoints))]
         private static bool closeUpgradeUIIfLocalPlayerHasNoSkillPoints_Prefix(UpgradeUI __instance)
         {
-            if (AutoBuildManager.Instance && AutoBuildManager.Instance.isInAutoBuildConfigurationMode)
+            if (!ModCore.IsActive()) return true;
+
+            if (AutoBuildManager.Instance && AutoBuildManager.Instance.IsInAutoBuildConfigurationMode)
                 return false;
 
             return true;

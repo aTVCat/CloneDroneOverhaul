@@ -14,6 +14,8 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(PhotoManager.Update))]
         private static bool Update_Prefix(PhotoManager __instance)
         {
+            if (!ModCore.IsActive()) return true;
+
             if (__instance._isInPhotoMode)
             {
                 if (UIManager.Instance.IsMouseOverUIElement() && TimeManager.Instance.IsGamePaused())
@@ -34,6 +36,8 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(PhotoManager.TriggerPhotoModeOnOff))]
         private static bool TriggerPhotoModeOnOff_Prefix(PhotoManager __instance)
         {
+            if (!ModCore.IsActive()) return true;
+
             if (__instance._isInPhotoMode)
                 return true;
 

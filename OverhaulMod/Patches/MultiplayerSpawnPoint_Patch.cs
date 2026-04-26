@@ -10,6 +10,8 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(MultiplayerSpawnPoint.OnEnable))]
         private static void OnEnable_Postfix(MultiplayerSpawnPoint __instance)
         {
+            if (!ModCore.IsActive()) return;
+
             ConstructionPropsParticleReplacer constructionPropsParticleReplacer = __instance.GetComponent<ConstructionPropsParticleReplacer>();
             if (constructionPropsParticleReplacer)
             {
@@ -27,6 +29,8 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(MultiplayerSpawnPoint.PlayConstructionSequenceForPlayer))]
         private static void PlayConstructionSequenceForPlayer_Postfix(MultiplayerSpawnPoint __instance)
         {
+            if (!ModCore.IsActive()) return;
+
             ConstructionPropsParticleReplacer constructionPropsParticleReplacer = __instance.GetComponent<ConstructionPropsParticleReplacer>();
             if (constructionPropsParticleReplacer)
             {

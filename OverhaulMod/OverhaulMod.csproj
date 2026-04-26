@@ -112,14 +112,6 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
-    <Reference Include="TVCat.CloneDrone, Version=1.0.0.2, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\AdditionalDLLs\TVCat.CloneDrone.dll</HintPath>
-    </Reference>
-    <Reference Include="TVCat.Launcher, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\AdditionalDLLs\TVCat.Launcher.dll</HintPath>
-    </Reference>
     <Reference Include="UnityEngine, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\GameDLLs\UnityEngine.dll</HintPath>
@@ -399,7 +391,6 @@
     <Compile Include="Patches\Behaviours\CustomizationButtonPatchBehaviour.cs" />
     <Compile Include="Patches\Behaviours\CloneDroneLogoParticlesBehaviour.cs" />
     <Compile Include="Patches\Behaviours\EnergyBarPatchBehaviour.cs" />
-    <Compile Include="Patches\Behaviours\LocalizationManagerPatchBehaviour.cs" />
     <Compile Include="Patches\Behaviours\VoxelColorsPatchBehaviour.cs" />
     <Compile Include="Patches\Behaviours\MenuButtonsPatchBehaviour.cs" />
     <Compile Include="Patches\Behaviours\RandomPatchesBehaviour.cs" />
@@ -466,6 +457,7 @@
     <Compile Include="SEGI\SEGICascaded.cs" />
     <Compile Include="SEGI\SEGICascadedPreset.cs" />
     <Compile Include="SEGI\SEGIPreset.cs" />
+    <Compile Include="UI\Attributes\BetterOutlineAttribute.cs" />
     <Compile Include="UI\Attributes\ButtonWithSoundAttribute.cs" />
     <Compile Include="UI\Attributes\KeyBindSetterAttribute.cs" />
     <Compile Include="UI\Attributes\ColorPickerAttribute.cs" />
@@ -686,6 +678,9 @@
   <PropertyGroup>
     <ApplicationIcon>
     </ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup>
+    <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
   </PropertyGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

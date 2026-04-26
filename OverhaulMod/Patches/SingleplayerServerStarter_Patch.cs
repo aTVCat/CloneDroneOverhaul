@@ -10,6 +10,8 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(SingleplayerServerStarter.StartServerThenCall))]
         private static void StartServerThenCall_Postfix()
         {
+            if (!ModCore.IsActive()) return;
+
             TitleScreenCustomizationManager.Instance.StopTitleScreenMusic();
         }
     }

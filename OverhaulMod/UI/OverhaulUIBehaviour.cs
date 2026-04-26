@@ -71,6 +71,7 @@ namespace OverhaulMod.UI
                     ShowTooltipOnHighLightAttribute showTooltipHighLightAttribute = fieldInfo.GetCustomAttribute<ShowTooltipOnHighLightAttribute>();
                     UIElementCallbackAttribute elementCallbackAttribute = fieldInfo.GetCustomAttribute<UIElementCallbackAttribute>();
                     ButtonWithSoundAttribute buttonWithSoundAttribute = fieldInfo.GetCustomAttribute<ButtonWithSoundAttribute>();
+                    BetterOutlineAttribute betterOutlineAttribute = fieldInfo.GetCustomAttribute<BetterOutlineAttribute>();
 
                     if (elementAttribute.DefaultActiveState != null)
                     {
@@ -90,6 +91,31 @@ namespace OverhaulMod.UI
                     {
                         ButtonWithSound buttonWithSound = elementObject.AddComponent<ButtonWithSound>();
                         buttonWithSound.Sound = buttonWithSoundAttribute.SoundType;
+                    }
+
+                    if (betterOutlineAttribute != null)
+                    {
+                        if (betterOutlineAttribute.ReplaceOriginalOutline)
+                        {
+                            Outline ogOutline = elementObject.GetComponent<Outline>();
+                            if (!ogOutline)
+                            {
+                                ModDebug.Error($"Could not find Outline of {elementObject.name} to replace");
+                                continue;
+                            }
+
+                            BetterOutline betterOutline = elementObject.AddComponent<BetterOutline>();
+                            betterOutline.effectDistance = ogOutline.effectDistance;
+                            betterOutline.effectColor = ogOutline.effectColor;
+
+                            Destroy(ogOutline);
+                        }
+                        else
+                        {
+                            BetterOutline betterOutline = elementObject.AddComponent<BetterOutline>();
+                            betterOutline.effectDistance = betterOutlineAttribute.Distance;
+                            betterOutline.effectColor = betterOutlineAttribute.Color;
+                        }
                     }
 
                     bool shouldGetComponent = false;

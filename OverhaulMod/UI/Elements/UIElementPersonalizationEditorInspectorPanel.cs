@@ -500,7 +500,7 @@ namespace OverhaulMod.UI
                 colorPickButton.GetObject<Text>(2).text = "Fire color";
                 UIElementColorPickerButton colorPickerButtonComponent = colorPickButton.gameObject.AddComponent<UIElementColorPickerButton>();
                 colorPickerButtonComponent.InitializeElement();
-                colorPickerButtonComponent.colorPickerParent = UIPersonalizationEditor.Instance.transform;
+                colorPickerButtonComponent.ColorPickerParent = UIPersonalizationEditor.Instance.transform;
                 colorPickerButtonComponent.useAlpha = true;
                 colorPickerButtonComponent.color = fireParticles.color;
                 colorPickerButtonComponent.onValueChanged.AddListener(delegate (Color color)

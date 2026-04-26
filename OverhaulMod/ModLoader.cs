@@ -7,6 +7,8 @@ using OverhaulMod.UI;
 using OverhaulMod.Utils;
 using OverhaulMod.Visuals;
 using OverhaulMod.Visuals.Environment;
+using System.IO;
+using System.Reflection;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -46,6 +48,8 @@ namespace OverhaulMod
             GameObject sceneObject = new GameObject("Overhaul Lock Object");
             _lock = sceneObject;
 
+            Assembly.Load(AssemblyName.GetAssemblyName(Path.Combine(ModDirectories.ModFolder, "DiscordWebhook.dll")));
+
             ModBuild.Load();
             ModFeatures.CacheValues();
             ModLaunchOptions.Initialize();
@@ -82,7 +86,7 @@ namespace OverhaulMod
             ModManagers modManagers = ModManagers.Instance;
             if (modManagers && modManagers.gameObject)
             {
-                UnityEngine.Object.Destroy(modManagers.gameObject);
+                Object.Destroy(modManagers.gameObject);
             }
         }
 
@@ -90,7 +94,7 @@ namespace OverhaulMod
         {
             GameObject managersObject = new GameObject("Overhaul Mod Managers");
             ModManagers modManagers = managersObject.AddComponent<ModManagers>();
-            UnityEngine.Object.DontDestroyOnLoad(modManagers);
+            Object.DontDestroyOnLoad(modManagers);
 
             GameObject coreManagers = new GameObject("Core");
             coreManagers.transform.SetParent(managersObject.transform, false);

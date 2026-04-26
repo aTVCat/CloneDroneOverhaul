@@ -9,6 +9,8 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(LocalizedTextField.tryLocalizeUnityTextField))]
         private static void tryLocalizeUnityTextField_Postfix(LocalizedTextField __instance)
         {
+            if (!ModCore.IsActive()) return;
+
             if (!__instance.DisableWrappingForLogographicLanguages || !__instance._textLabel)
                 return;
 

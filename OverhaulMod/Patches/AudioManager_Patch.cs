@@ -11,6 +11,8 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(AudioManager.refreshVolume))]
         private static void refreshVolume_Postfix()
         {
+            if (!ModCore.IsActive()) return;
+
             ModAudioManager.Instance.StopChangingVolume(false);
             ModAudioManager.Instance.RefreshVolume();
         }
@@ -19,6 +21,8 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(AudioManager.Update))]
         private static bool Update_Prefix(AudioManager __instance)
         {
+            if (!ModCore.IsActive()) return true;
+
             SceneTransitionManager sceneTransitionManager = SceneTransitionManager.Instance;
             if (sceneTransitionManager && sceneTransitionManager.IsDisconnecting())
             {

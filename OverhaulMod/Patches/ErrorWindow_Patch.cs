@@ -12,6 +12,8 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(ErrorWindow.Show))]
         private static bool Show_Prefix(ErrorWindow __instance, string errorMessage)
         {
+            if (!ModCore.IsActive()) return true;
+
             PostmanManager.ErrorReportText = errorMessage;
             if (ModUIManager.Instance)
             {
@@ -32,6 +34,8 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(ErrorWindow.Hide))]
         private static bool Hide_Prefix(ErrorWindow __instance)
         {
+            if (!ModCore.IsActive()) return true;
+
             if (Time.timeSinceLevelLoad < 5f)
                 return false;
 

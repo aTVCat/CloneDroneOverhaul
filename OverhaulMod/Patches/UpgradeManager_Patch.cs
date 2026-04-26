@@ -10,7 +10,9 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(UpgradeManager.hideUI))]
         private static bool hideUI_Prefix(UpgradeManager __instance)
         {
-            if (AutoBuildManager.Instance && AutoBuildManager.Instance.isInAutoBuildConfigurationMode)
+            if (!ModCore.IsActive()) return true;
+
+            if (AutoBuildManager.Instance && AutoBuildManager.Instance.IsInAutoBuildConfigurationMode)
             {
                 __instance.SetUpgradeButtonsDisabled(false);
                 return false;

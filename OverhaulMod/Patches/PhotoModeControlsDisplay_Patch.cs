@@ -11,6 +11,8 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(PhotoModeControlsDisplay.SetVisibility))]
         private static void SetVisibility_Postfix(PhotoModeControlsDisplay __instance, bool value)
         {
+            if (!ModCore.IsActive()) return;
+
             if (!AdvancedPhotoModeManager.EnableAdvancedPhotoMode)
             {
                 __instance.gameObject.SetActive(value);

@@ -10,6 +10,8 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(GameplayAchievementManager.SetAchievementProgress))]
         private static void SetAchievementProgress_Postfix(GameplayAchievement achievement, int progress, bool silentCompletion = false)
         {
+            if (!ModCore.IsActive()) return;
+
             if (!GameModeManager.SupportsAchievementTracking())
                 return;
 

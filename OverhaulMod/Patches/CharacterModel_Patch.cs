@@ -10,6 +10,8 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(CharacterModel.OverridePatternColor), new System.Type[] { typeof(CharacterModel.PatternColorSet), typeof(bool) })]
         private static void OverridePatternColor_Prefix(CharacterModel __instance, ref CharacterModel.PatternColorSet newColor, bool forceMultiplayerHSBReplacement = false)
         {
+            if (!ModCore.IsActive()) return;
+
             FirstPersonMover firstPersonMover = __instance.GetOwner();
             if (!firstPersonMover || (firstPersonMover.IsDetached() && firstPersonMover.CharacterType != EnemyType.None) || firstPersonMover.IsAIControlled()) return;
 

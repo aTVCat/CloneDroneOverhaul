@@ -13,9 +13,6 @@ namespace OverhaulMod.Engine
         [ModSetting(ModSettingsConstants.AUTO_BUILD_KEY_BIND, KeyCode.U)]
         public static KeyCode AutoBuildKeyBind;
 
-        /*[ModSetting(ModSettingsConstants.AUTO_BUILD_ACTIVATION_ON_MATCH_START, false)]
-        public static bool AutoBuildActivationOnMatchStart;*/
-
         [ModSetting(ModSettingsConstants.AUTO_BUILD_INDEX_TO_USE_ON_MATCH_START, -1)]
         public static int AutoBuildIndexToUseOnMatchStart;
 
@@ -24,7 +21,7 @@ namespace OverhaulMod.Engine
         private float _timeLeftBeforeAutoActivationReset;
 
         private UIAutoBuildSelectionMenu _autoBuildSelectionMenu;
-        public UIAutoBuildSelectionMenu autoBuildSelectionMenu
+        public UIAutoBuildSelectionMenu AutoBuildSelectionMenu
         {
             get
             {
@@ -36,17 +33,9 @@ namespace OverhaulMod.Engine
             }
         }
 
-        public bool isInAutoBuildConfigurationMode
-        {
-            get;
-            set;
-        }
+        public bool IsInAutoBuildConfigurationMode;
 
-        public AutoBuildListInfo buildList
-        {
-            get;
-            set;
-        }
+        public AutoBuildListInfo BuildList;
 
         private bool _isApplyingBuild;
 
@@ -65,12 +54,12 @@ namespace OverhaulMod.Engine
                 UpgradeUI upgradeUI = ModCache.UIRoot.UpgradeUI;
                 if (upgradeUI.gameObject.activeSelf)
                 {
-                    autoBuildSelectionMenu.Show();
+                    AutoBuildSelectionMenu.Show();
                 }
             }
             else if (Input.GetKeyUp(AutoBuildKeyBind))
             {
-                autoBuildSelectionMenu.Hide();
+                AutoBuildSelectionMenu.Hide();
             }
 
             if (_hasSelectedUpgradesForMatch)
@@ -142,12 +131,12 @@ namespace OverhaulMod.Engine
                 autoBuildListInfo.Builds.Add(oldAutoBuildInfo);
                 SaveBuildsInfo();
             }
-            buildList = autoBuildListInfo;
+            BuildList = autoBuildListInfo;
         }
 
         public void SaveBuildsInfo()
         {
-            ModDataManager.SerializeToFile("AutoBuilds.json", buildList, false);
+            ModDataManager.SerializeToFile("AutoBuilds.json", BuildList, false);
         }
 
         public void ResetUpgrades(Dictionary<UpgradeType, int> dictionary = null, int skillPoints = 4)
@@ -178,7 +167,7 @@ namespace OverhaulMod.Engine
             if (!upgradeUI || !upgradeUI.gameObject.activeInHierarchy)
                 return;
 
-            List<AutoBuildInfo> builds = buildList.Builds;
+            List<AutoBuildInfo> builds = BuildList.Builds;
             if (builds.IsNullOrEmpty() || index < 0 || index >= builds.Count)
                 return;
 

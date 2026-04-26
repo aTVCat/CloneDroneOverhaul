@@ -12,6 +12,8 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(AudienceManager.InitializeAudienceDataForLevel))]
         private static void InitializeAudienceDataForLevel_Postfix()
         {
+            if (!ModCore.IsActive()) return;
+
             ArenaAudienceManager arenaAudienceManager = ArenaAudienceManager.Instance;
             if (arenaAudienceManager && ArenaRemodelManager.EnableRemodel)
             {
@@ -23,6 +25,8 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(AudienceManager.addAudiencePositions))]
         private static bool addAudiencePositions_Prefix(AudienceManager __instance, List<Vector3> potentialAudiencePositions, AudiencePlacementLine audiencePlacementLine)
         {
+            if (!ModCore.IsActive()) return true;
+
             return audiencePlacementLine && audiencePlacementLine.StartPos && audiencePlacementLine.EndPos;
         }
 
@@ -30,6 +34,8 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(AudienceManager.PlayAudienceReaction))]
         private static bool PlayAudienceReaction_Prefix()
         {
+            if (!ModCore.IsActive()) return true;
+
             LevelManager levelManager = LevelManager.Instance;
             if (!levelManager || levelManager.IsCurrentLevelHidingTheArena())
                 return false;

@@ -11,6 +11,8 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(EscMenu.Show))]
         private static bool Show_Prefix()
         {
+            if (!ModCore.IsActive()) return true;
+
             if (UIPauseMenuRework.disableOverhauledVersion)
                 return true;
 

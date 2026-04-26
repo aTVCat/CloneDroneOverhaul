@@ -118,7 +118,7 @@ namespace OverhaulMod.Utils
 
         public static void SetTitleBarStateDependingOnSettings()
         {
-            if (ModIntegrationUtils.EnableTitleBarOverhaul && ModCore.IsEnabled)
+            if (ModIntegrationUtils.EnableTitleBarOverhaul && ModCore.IsActive())
                 SetOverhauledTitleBarState();
             else
                 RestoreInitialTitleBarState();

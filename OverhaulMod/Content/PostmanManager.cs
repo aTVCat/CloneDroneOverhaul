@@ -24,43 +24,10 @@ namespace OverhaulMod
         {
             int color = int.Parse("d63a51", System.Globalization.NumberStyles.HexNumber);
             string deviceInfo = $"- **OS:** {SystemInfo.operatingSystem}\n- **CPU:** {SystemInfo.processorType}\n * {SystemInfo.processorCount}/{SystemInfo.processorFrequency}\n- **GPU:** {SystemInfo.graphicsDeviceName}\n * {SystemInfo.graphicsMemorySize} MBs\n- **Memory:** {SystemInfo.systemMemorySize} MBs";
-            string gameMode = "N/A";
-            try
-            {
-                gameMode = GameFlowManager.Instance._gameMode.ToString();
-            }
-            catch { }
 
-            string levelId = "N/A";
-            try
-            {
-                levelId = LevelManager.Instance.GetCurrentLevelID();
-            }
-            catch { }
+            ModDebug.RefreshEnvironmentInfoString();
 
-            string gameVer = "N/A";
-            try
-            {
-                gameVer = VersionNumberManager.Instance.GetVersionString();
-            }
-            catch { }
-
-            string lang = "N/A";
-            try
-            {
-                lang = LocalizationManager.Instance.GetCurrentLanguageCode();
-            }
-            catch { }
-
-            string time = "N/A";
-            try
-            {
-                time = Time.unscaledTime.ToString();
-            }
-            catch { }
-
-            if (text.Length > 1490)
-                text = text.Remove(1490);
+            if (text.Length > 1490) text = text.Remove(1490);
 
             text = $"```{text}```";
 
@@ -79,7 +46,7 @@ namespace OverhaulMod
                     new Embed()
                     {
                         title = "**Details**",
-                        description = $"{gameMode}, {levelId}, {gameVer}, {lang}, {time}\n{deviceInfo}",
+                        description = $"{ModDebug.GetEnvironemntInfoString()}\n{deviceInfo}",
                         color = color,
                     },
                 },

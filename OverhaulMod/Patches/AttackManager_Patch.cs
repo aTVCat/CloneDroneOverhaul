@@ -11,6 +11,8 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(AttackManager.CreateSwordBlockVFX))]
         private static bool CreateSwordBlockVFX_Prefix(Vector3 position)
         {
+            if (!ModCore.IsActive()) return true;
+
             if (!ParticleManager.EnableHitParticles)
                 return true;
 
@@ -22,6 +24,8 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(AttackManager.CreateEmperorWeaponEnvironmentImpactVFX))]
         private static bool CreateEmperorWeaponEnvironmentImpactVFX_Prefix(Vector3 position)
         {
+            if (!ModCore.IsActive()) return true;
+
             if (!ParticleManager.NewExplosionParticles)
                 return true;
 
@@ -33,6 +37,8 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(AttackManager.CreateHammerHitEffectVFX))]
         private static void CreateHammerHitEffectVFX_Prefix(Vector3 position)
         {
+            if (!ModCore.IsActive()) return;
+
             if (!ParticleManager.EnableHitParticles)
                 return;
 
@@ -43,6 +49,8 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(AttackManager.CreateEmperorHeadExplosionVFX))]
         private static void CreateEmperorHeadExplosionVFX_Postfix(Vector3 position)
         {
+            if (!ModCore.IsActive()) return;
+
             if (!ParticleManager.NewExplosionParticles)
                 return;
 

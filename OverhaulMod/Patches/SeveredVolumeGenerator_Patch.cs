@@ -11,6 +11,8 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(SeveredVolumeGenerator.CreateVolumeCopy))]
         private static void CreateVolumeCopy_Postfix(SeveredBodyPart __result)
         {
+            if (!ModCore.IsActive()) return;
+
             if (SeveredBodyPartSparks.EnableGarbageParticles && Random.value <= 0.7f)
                 _ = __result.gameObject.AddComponent<SeveredBodyPartSparks>();
 

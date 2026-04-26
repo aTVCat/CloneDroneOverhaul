@@ -16,6 +16,8 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(FirstPersonMover.OnMindTransferFinished))]
         private static void OnMindTransferFinished_Postfix(FirstPersonMover __instance)
         {
+            if (!ModCore.IsActive()) return;
+
             if (__instance.HasCharacterModel() && __instance._playerCamera)
                 CameraManager.Instance.AddControllers(__instance._playerCamera, __instance); // fix camera controllers not adding to enemies in story mode
         }
@@ -24,6 +26,12 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(FirstPersonMover.onDeath))]
         private static void onDeath_Prefix(FirstPersonMover __instance, out CharacterModel __state)
         {
+            if (!ModCore.IsActive())
+            {
+                __state = null;
+                return;
+            }
+
             __state = __instance.GetCharacterModel();
         }
 
@@ -31,6 +39,8 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(FirstPersonMover.onDeath))]
         private static void onDeath_Postfix(FirstPersonMover __instance, CharacterModel __state)
         {
+            if (!ModCore.IsActive()) return;
+
             if (__state)
             {
                 Rigidbody rigidbody = __state.GetComponent<Rigidbody>();
@@ -47,6 +57,8 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(FirstPersonMover.tryRenderAttack))]
         private static void tryRenderAttack_Prefix(FirstPersonMover __instance, int attackServerFrame, ref AttackDirection attackDirection)
         {
+            if (!ModCore.IsActive()) return;
+
             WeaponModel wm = __instance._currentWeaponModel;
             if (wm && wm.WeaponType == ModWeaponsManager.SCYTHE_TYPE && wm is ModWeaponModel modWeaponModel) // temporary made it work for scythe only
             {
@@ -59,6 +71,8 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(FirstPersonMover.tryEnableJump))]
         private static void tryEnableJump_Prefix(FirstPersonMover __instance, FPMoveCommand moveCommand, Vector3 platformVelocity, float boltFrameDeltaTime, bool isImmobile, bool isFirstExecution)
         {
+            if (!ModCore.IsActive()) return;
+
             if (GameModeManager.IsMultiplayer() || !__instance.IsMainPlayer() || __instance.isImmobilized() || !__instance._isJumping || !moveCommand.Input.Jump)
                 return;
 
@@ -106,6 +120,8 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(FirstPersonMover.SimulateController))]
         private static void SimulateController_Postfix(FirstPersonMover __instance)
         {
+            if (!ModCore.IsActive()) return;
+
             if (!__instance.IsMainPlayer()) return;
 
             ModGameUtils.InvokePlayerInputUpdateAction(__instance._moveCommandInput);
@@ -115,6 +131,8 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(FirstPersonMover.HasMeleeWeaponEquipped))]
         private static void HasMeleeWeaponEquipped_Postfix(FirstPersonMover __instance, ref bool __result)
         {
+            if (!ModCore.IsActive()) return;
+
             if (!__result)
                 __result = ModWeaponsManager.Instance.IsMeleeWeapon(__instance._currentWeapon);
         }
@@ -123,6 +141,8 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(FirstPersonMover.getWeaponDisabledTimeAfterCut))]
         private static void getWeaponDisabledTimeAfterCut_Postfix(FirstPersonMover __instance, ref float __result)
         {
+            if (!ModCore.IsActive()) return;
+
             WeaponModel wm = __instance._currentWeaponModel;
             if (wm && wm.WeaponType == ModWeaponsManager.SCYTHE_TYPE && wm is ModWeaponModel modWeaponModel)
             {
@@ -134,6 +154,8 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(FirstPersonMover.RefreshWeaponAnimatorProperties))]
         private static void RefreshWeaponAnimatorProperties_Postfix(FirstPersonMover __instance)
         {
+            if (!ModCore.IsActive()) return;
+
             WeaponModel wm = __instance._currentWeaponModel;
             if (wm && wm.WeaponType == ModWeaponsManager.SCYTHE_TYPE && wm is ModWeaponModel modWeaponModel)
             {
@@ -145,6 +167,8 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(FirstPersonMover.GetAttackSpeed))]
         private static bool GetAttackSpeed_Prefix(FirstPersonMover __instance, ref float __result)
         {
+            if (!ModCore.IsActive()) return true;
+
             WeaponModel wm = __instance._currentWeaponModel;
             if (wm && wm.WeaponType == ModWeaponsManager.SCYTHE_TYPE && wm is ModWeaponModel modWeaponModel)
             {
@@ -160,6 +184,8 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(FirstPersonMover.CreateCharacterModel))]
         private static void CreateCharacterModel_Postfix(FirstPersonMover __instance)
         {
+            if (!ModCore.IsActive()) return;
+
             ModWeaponsManager.Instance.AddWeaponsToRobot(__instance);
         }
 
@@ -167,6 +193,8 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(FirstPersonMover.SetEquippedWeaponType))]
         private static void SetEquippedWeaponType_Postfix(FirstPersonMover __instance)
         {
+            if (!ModCore.IsActive()) return;
+
             PersonalizationController personalizationController = ComponentCacheManager.Instance.GetPersonalizationController(__instance.transform);
             if (personalizationController) personalizationController.RefreshBowSkinVisibility();
         }

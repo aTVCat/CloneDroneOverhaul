@@ -10,6 +10,8 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(LevelEditorUseButtonTrigger.Start))]
         private static void Start_Postfix(LevelEditorUseButtonTrigger __instance)
         {
+            if (!ModCore.IsActive()) return;
+
             UseKeyTriggerManager.Instance.SetTriggerRegistered(__instance, true);
         }
 
@@ -17,6 +19,8 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(LevelEditorUseButtonTrigger.OnDestroy))]
         private static void OnDestroy_Postfix(LevelEditorUseButtonTrigger __instance)
         {
+            if (!ModCore.IsActive()) return;
+
             UseKeyTriggerManager.Instance.SetTriggerRegistered(__instance, false);
         }
     }

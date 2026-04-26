@@ -11,6 +11,8 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(ExplodeWhenCut.onBodyPartDamaged))]
         private static void CreateEmperorHeadExplosionVFX_Prefix(ExplodeWhenCut __instance)
         {
+            if (!ModCore.IsActive()) return;
+
             if (!ParticleManager.NewExplosionParticles || __instance._hasExploded)
                 return;
 

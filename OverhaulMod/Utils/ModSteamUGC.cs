@@ -355,7 +355,7 @@ namespace OverhaulMod.Utils
             EResult result = queryResult.m_eResult;
             if (result != EResult.k_EResultOK)
             {
-                if(errorCallback != null) errorCallback("Error: " + result + ".");
+                if (errorCallback != null) errorCallback("Error: " + result + ".");
                 return false;
             }
             return true;

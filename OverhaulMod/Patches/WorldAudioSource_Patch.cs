@@ -11,6 +11,8 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(WorldAudioSource.Initialize))]
         private static void Initialize_Postfix(WorldAudioSource __instance)
         {
+            if (!ModCore.IsActive()) return;
+
             if (__instance.gameObject.name.Contains("Global"))
                 return;
 

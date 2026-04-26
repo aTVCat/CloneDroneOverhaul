@@ -11,6 +11,8 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(LevelEditorLightManager.AddLightSettingInScene))]
         private static bool AddLightSettingInScene_Prefix(LevelEditorLightManager __instance, LevelLightSettings lightSettings)
         {
+            if (!ModCore.IsActive()) return true;
+
             LightingTransitionManager manager = LightingTransitionManager.Instance;
             if (manager && manager.IsDoingTransition())
             {
@@ -24,6 +26,8 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(LevelEditorLightManager.RemoveLightSettingInScene))]
         private static bool RemoveLightSettingInScene_Prefix(LevelEditorLightManager __instance, LevelLightSettings lightSettings)
         {
+            if (!ModCore.IsActive()) return true;
+
             LightingTransitionManager manager = LightingTransitionManager.Instance;
             if (manager && manager.IsDoingTransition())
             {
@@ -42,6 +46,8 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(LevelEditorLightManager.RefreshLightInScene))]
         private static bool RefreshLightInScene_Prefix(LevelEditorLightManager __instance, bool onlyRefreshForNewLightSettings = false)
         {
+            if (!ModCore.IsActive()) return true;
+
             LevelLightSettings oldLevelLightSettings = __instance._selectedLightSettings;
             LevelLightSettings levelLightSettings = __instance.refreshActiveLightSettings();
             if (!levelLightSettings)
@@ -82,6 +88,8 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(LevelEditorLightManager.RefreshLightInScene))]
         private static void RefreshLightInScene_Postfix(LevelEditorLightManager __instance, bool onlyRefreshForNewLightSettings = false)
         {
+            if (!ModCore.IsActive()) return;
+
             PostEffectsManager.Instance.RefreshCameraPostEffects();
         }
     }

@@ -1,11 +1,10 @@
-﻿using OverhaulMod.Visuals;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 namespace OverhaulMod.Engine
 {
     /// <summary>
-    /// For performing heavy operations like refreshing skins on multiple robots not in a single frame
+    /// Performs heavy operations like refreshing skins on multiple robots not in a single frame
     /// </summary>
     public class CharacterUpdateScheduler : Singleton<CharacterUpdateScheduler>
     {

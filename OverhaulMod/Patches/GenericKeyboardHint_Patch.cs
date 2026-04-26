@@ -12,6 +12,8 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(GenericKeyboardHint.Show))]
         private static bool Show_Prefix(GenericKeyboardHint __instance)
         {
+            if (!ModCore.IsActive()) return true;
+
             bool hideText = UseKeyTriggerManager.EnablePressButtonTriggerDescriptionRework;
             if (hideText)
             {

@@ -16,6 +16,8 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(MechBodyPart.DispatchDisconnectedEvent))]
         private static void DispatchDisconnectedEvent_Postfix(MechBodyPart __instance)
         {
+            if (!ModCore.IsActive()) return;
+
             PersonalizationAccessoryReferences personalizationAccessoryReferences = ComponentCacheManager.Instance.GetPersonalizationAccessoryReferences(__instance.transform);
             if (personalizationAccessoryReferences)
             {
@@ -27,6 +29,8 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(MechBodyPart.createNewVoxelBeingDestroyed), new Type[] { typeof(PicaVoxelPoint), typeof(FireSpreadDefinition), typeof(float) })]
         private static void createNewVoxelBeingDestroyed_Postfix(MechBodyPart __instance, ref VoxelBeingDestroyed __result, PicaVoxelPoint picaVoxelPoint, FireSpreadDefinition fireSpreadDefinition, float probabilityOfFireSpread)
         {
+            if (!ModCore.IsActive()) return;
+
             if (VoxelFadingManager.EnableFading && fireSpreadDefinition != null && !__instance.IgnoreColorBurnForGlowingVoxels)
             {
                 VoxelFadingManager manager = VoxelFadingManager.Instance;
@@ -42,6 +46,8 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(MechBodyPart.destroyVoxelAtPositionFromCut))]
         private static bool destroyVoxelAtPositionFromCut_Prefix(MechBodyPart __instance, PicaVoxelPoint picaVoxelPoint, Voxel? voxelAtPosition, Vector3 localPosition, Vector3 volumeWorldCenter, Vector3 impactDirectionWorld, FireSpreadDefinition fireSpreadDefinition, Frame currentFrame)
         {
+            if (!ModCore.IsActive()) return true;
+
             bool hasFire = fireSpreadDefinition != null;
             if (voxelAtPosition != null)
             {

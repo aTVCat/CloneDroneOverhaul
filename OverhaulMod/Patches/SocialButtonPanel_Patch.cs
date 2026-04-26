@@ -11,6 +11,8 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(SocialButtonPanel.ShowAndSelectFirstButton))]
         private static bool ShowAndSelectFirstButton_Prefix(SocialButtonPanel __instance)
         {
+            if (!ModCore.IsActive()) return true;
+
             if (__instance.gameObject == null || !__instance.gameObject) return false;
 
             __instance.InnerContainer.SetActive(true);

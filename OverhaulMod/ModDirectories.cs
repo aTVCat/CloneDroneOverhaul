@@ -21,8 +21,8 @@ namespace OverhaulMod
             _ = ModFileUtils.CreateDirectoryIfRequired(DeveloperFolder);
         }
 
-        private static string s_folder;
-        public static string Folder
+        private static string s_modFolder;
+        public static string ModFolder
         {
             get
             {
@@ -32,11 +32,11 @@ namespace OverhaulMod
                     return null;
                 }
 
-                if (s_folder == null)
+                if (s_modFolder == null)
                 {
-                    s_folder = modCore.ModInfo.FolderPath;
+                    s_modFolder = modCore.ModInfo.FolderPath;
                 }
-                return s_folder;
+                return s_modFolder;
             }
         }
 
@@ -60,7 +60,7 @@ namespace OverhaulMod
             {
                 if (s_assetsFolder == null)
                 {
-                    s_assetsFolder = $"{Path.Combine(Folder, "assets")}/";
+                    s_assetsFolder = $"{Path.Combine(ModFolder, "assets")}/";
                 }
                 return s_assetsFolder;
             }
@@ -167,19 +167,6 @@ namespace OverhaulMod
                     s_textureFolder = $"{Path.Combine(AssetsFolder, "textures")}/";
                 }
                 return s_textureFolder;
-            }
-        }
-
-        private static string s_editorTexturesFolder;
-        public static string EditorTexturesFolder
-        {
-            get
-            {
-                if (s_editorTexturesFolder == null)
-                {
-                    s_editorTexturesFolder = $"{Path.Combine(TexturesFolder, "editor")}/";
-                }
-                return s_editorTexturesFolder;
             }
         }
     }

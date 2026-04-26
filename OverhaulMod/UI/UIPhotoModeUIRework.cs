@@ -159,7 +159,6 @@ namespace OverhaulMod.UI
         [UIElement("RealisticSkyboxRotationSlider")]
         private readonly Slider _realisticSkyboxRotationColor;
 
-
         [UIElementAction(nameof(OnAutoResetLightingSettingsToggleChanged))]
         [UIElement("AutoResetLightingToggle")]
         private readonly Toggle _autoResetLightingSettingsToggle;
@@ -184,8 +183,8 @@ namespace OverhaulMod.UI
             expandButton.CollapsedSize = lightingPanel.sizeDelta;
             expandButton.ExpandedSize = new Vector2(375f, 400f);
 
-            _directionalLightColor.colorPickerParent = base.transform;
-            _fogColor.colorPickerParent = base.transform;
+            _directionalLightColor.ColorPickerParent = base.transform;
+            _fogColor.ColorPickerParent = base.transform;
 
             _saveRLightInfoButton.gameObject.SetActive(ModUserInfo.IsDeveloper);
         }

@@ -30,6 +30,10 @@ namespace OverhaulMod.Patches.Behaviours
                     }
                 }*/
 
+                // fix missing flag image
+                LocalizationManager localizationManager = LocalizationManager.Instance;
+                if (localizationManager) localizationManager.SupportedLanguages[11].FlagImage = localizationManager.SupportedLanguages[6].FlagImage;
+
                 // remove background from emote selection screen
                 GameObject emoteSelectionUIObject = gameUIRoot.EmoteSelectionUI?.gameObject;
                 if (emoteSelectionUIObject)

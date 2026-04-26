@@ -62,25 +62,8 @@ namespace OverhaulMod.UI
 
         public void RefreshDetailsText()
         {
-            // runtime info
-            string overhaulVersion = $"Overhaul {ModBuild.Version}";
-            string modBotVersion = $"Mod-Bot {ModLibrary.Properties.Resources.ModBotVersion}";
-            string gameVersion = $"Clone Drone {VersionNumberManager.Instance.GetVersionString()}";
-            string unityVersion = $"Unity {Application.unityVersion}";
-            string platform = $"{(GameVersionManager.IsSteamBuild() ? "Steam" : "Non-Steam")}";
-
-            // game environment info
-            GameFlowManager gameFlowManager = GameFlowManager.Instance;
-            string gameMode = gameFlowManager ? gameFlowManager.GetCurrentGameMode().ToString() : "N/A";
-
-            LevelManager levelManager = LevelManager.Instance;
-            string levelId = levelManager ? levelManager.GetCurrentLevelID() : "N/A";
-
-            ArenaLiftManager arenaLiftManager = ArenaLiftManager.Instance;
-            string liftTarget = arenaLiftManager && arenaLiftManager.Lift ? arenaLiftManager.GetLiftTarget().ToString() : "N/A";
-
-            string detailsString = $"{overhaulVersion} · {modBotVersion} · {gameVersion} · {unityVersion} · {platform} | {gameMode} · {levelId} · {liftTarget}";
-            _detailsText.text = detailsString;
+            ModDebug.RefreshEnvironmentInfoString();
+            _detailsText.text = ModDebug.GetEnvironemntInfoString();
         }
 
         public void SetStackTraceText(string message)

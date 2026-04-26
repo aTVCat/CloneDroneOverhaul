@@ -9,6 +9,8 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(LevelEditorManager.Initialize))]
         private static void Initialize_Prefix(LevelEditorManager __instance)
         {
+            if (!ModCore.IsActive()) return;
+
             LevelManager.Instance._currentLevelHidesTheArena = false; // fix arena settings not applying for some reason
         }
     }

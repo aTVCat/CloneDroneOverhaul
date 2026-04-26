@@ -10,6 +10,8 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(ChapterLoadingScreen.Show))]
         private static void Show_Postfix(ChapterLoadingScreen __instance)
         {
+            if (!ModCore.IsActive()) return;
+
             _ = ModUIConstants.ShowLoadingScreen();
         }
 
@@ -17,6 +19,8 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(ChapterLoadingScreen.Hide))]
         private static void Hide_Prefix(ChapterLoadingScreen __instance)
         {
+            if (!ModCore.IsActive()) return;
+
             ModUIConstants.HideLoadingScreen();
         }
     }

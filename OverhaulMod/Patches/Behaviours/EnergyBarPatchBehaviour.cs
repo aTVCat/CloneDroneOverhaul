@@ -12,7 +12,7 @@ namespace OverhaulMod.Patches.Behaviours
         public static bool EnablePatch;
 
         private EnergyUI _playerEnergyBar;
-        public EnergyUI playerEnergyBar
+        public EnergyUI PlayerEnergyBar
         {
             get
             {
@@ -25,7 +25,7 @@ namespace OverhaulMod.Patches.Behaviours
         }
 
         private EnergyUI _mountEnergyBar;
-        private EnergyUI mountEnergyBar
+        private EnergyUI MountEnergyBar
         {
             get
             {
@@ -48,7 +48,7 @@ namespace OverhaulMod.Patches.Behaviours
 
         private void patchPlayerEnergyBar()
         {
-            EnergyUI energyBarComponent = playerEnergyBar;
+            EnergyUI energyBarComponent = PlayerEnergyBar;
             if (!energyBarComponent) return;
 
             Transform barTransform = energyBarComponent.transform;
@@ -79,7 +79,7 @@ namespace OverhaulMod.Patches.Behaviours
 
         private void patchMountEnergyBar()
         {
-            EnergyUI energyBarComponent = mountEnergyBar;
+            EnergyUI energyBarComponent = MountEnergyBar;
             if (!energyBarComponent) return;
 
             Transform barTransform = energyBarComponent.transform;

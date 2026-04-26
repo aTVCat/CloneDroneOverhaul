@@ -6,11 +6,39 @@ namespace OverhaulMod
 {
     public static class ModDebug
     {
-        public const string PREFIX = "[Overhaul]";
+        private const string PREFIX = "[Overhaul]";
 
         private static int s_lastFrameDownloadProgressWasDisplayed;
 
+        private static string s_environmentInfoString;
+
         public static bool ForceDisableCursor;
+
+        public static void RefreshEnvironmentInfoString()
+        {
+            // runtime info
+            string overhaulVersion = $"Overhaul {ModBuild.Version}";
+            string modBotVersion = $"Mod-Bot {ModLibrary.Properties.Resources.ModBotVersion}";
+            string gameVersion = $"Clone Drone {VersionNumberManager.Instance.GetVersionString()}";
+            string unityVersion = $"Unity {Application.unityVersion}";
+            string platform = $"{(GameVersionManager.IsSteamBuild() ? "Steam" : "Non-Steam")}";
+            string language = $"{LocalizationManager.Instance.GetCurrentLanguageCode()}";
+
+            // game environment info
+            GameFlowManager gameFlowManager = GameFlowManager.Instance;
+            string gameMode = gameFlowManager ? gameFlowManager.GetCurrentGameMode().ToString() : "N/A";
+
+            LevelManager levelManager = LevelManager.Instance;
+            string levelId = levelManager ? levelManager.GetCurrentLevelID() : "N/A";
+
+            ArenaLiftManager arenaLiftManager = ArenaLiftManager.Instance;
+            string liftTarget = arenaLiftManager && arenaLiftManager.Lift ? arenaLiftManager.GetLiftTarget().ToString() : "N/A";
+
+            string detailsString = $"{overhaulVersion} · {modBotVersion} · {gameVersion} · {unityVersion} · {platform} · {language} | {gameMode} · {levelId} · {liftTarget}";
+            s_environmentInfoString = detailsString;
+        }
+
+        public static string GetEnvironemntInfoString() => s_environmentInfoString;
 
         public static void Log(object obj)
         {

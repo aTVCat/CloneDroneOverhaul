@@ -10,6 +10,8 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(GameFlowManager.ShowTitleScreen))]
         private static void ShowTitleScreen_Postfix(GameFlowManager __instance)
         {
+            if (!ModCore.IsActive()) return;
+
             if (ModManagers.ShowModSetupScreenOnStart)
             {
                 ModActionUtils.DoInFrames(delegate

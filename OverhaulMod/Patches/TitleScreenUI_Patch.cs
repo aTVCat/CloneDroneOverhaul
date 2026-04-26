@@ -13,6 +13,8 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(TitleScreenUI.OnCloneDroneLogoClicked))]
         private static bool OnCloneDroneLogoClicked_Prefix(TitleScreenUI __instance)
         {
+            if (!ModCore.IsActive()) return true;
+
             TitleScreenCustomizationManager titleScreenCustomizationManager = TitleScreenCustomizationManager.Instance;
             if (titleScreenCustomizationManager && titleScreenCustomizationManager.overrideLevelDescription != null)
             {
@@ -37,6 +39,8 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(TitleScreenUI.PlayExplosionAudio))]
         private static void PlayExplosionAudio_Postfix(TitleScreenUI __instance)
         {
+            if (!ModCore.IsActive()) return;
+
             UIIntro intro = ModUIManager.Instance.Get<UIIntro>(AssetBundleConstants.UI, ModUIConstants.UI_INTRO);
             if (intro)
             {
@@ -48,6 +52,8 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(TitleScreenUI.Show))]
         private static void Show_Postfix(TitleScreenUI __instance)
         {
+            if (!ModCore.IsActive()) return;
+
             ModUIConstants.ShowTitleScreenRework();
         }
 
@@ -55,6 +61,8 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(TitleScreenUI.Hide))]
         private static void Hide_Postfix(TitleScreenUI __instance)
         {
+            if (!ModCore.IsActive()) return;
+
             ModUIConstants.HideTitleScreenRework();
         }
 
@@ -62,6 +70,8 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(TitleScreenUI.setLogoAndRootButtonsVisible))]
         private static void setLogoAndRootButtonsVisible_Postfix(TitleScreenUI __instance, bool visible)
         {
+            if (!ModCore.IsActive()) return;
+
             __instance.LeftFadeBG.SetActive(visible && TitleScreenCustomizationManager.PanelPosition == TitleScreenPanelPosition.LeftSide);
         }
 
@@ -69,6 +79,8 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(TitleScreenUI.showSocialButtonPanel))]
         private static bool showSocialButtonPanel_Prefix(TitleScreenUI __instance)
         {
+            if (!ModCore.IsActive()) return true;
+
             return TitleScreenCustomizationManager.ShowSocialMediaButtons;
         }
     }

@@ -12,6 +12,8 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(BaseBodyPart.dispatchBodyPartDamaged))]
         private static void dispatchBodyPartDamaged_Postfix(BaseBodyPart __instance, int attackID, Vector3 impactDirection, Character damageOrigin, DamageSourceType damageSourceType)
         {
+            if (!ModCore.IsActive()) return;
+
             PersonalizationAccessoryReferences personalizationAccessoryReferences = ComponentCacheManager.Instance.GetPersonalizationAccessoryReferences(__instance.transform);
             if (personalizationAccessoryReferences)
             {

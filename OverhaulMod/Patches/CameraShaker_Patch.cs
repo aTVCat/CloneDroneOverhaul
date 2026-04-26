@@ -12,6 +12,8 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(CameraShaker.ShakeCamera))]
         private static bool ShakeCamera_Prefix(CameraShaker __instance)
         {
+            if (!ModCore.IsActive()) return true;
+
             return !PostEffectsManager.DisableScreenShaking || GameModeManager.IsInLevelEditor();
         }
 
@@ -19,6 +21,8 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(CameraShaker.Update))]
         private static void Update_Postfix(CameraShaker __instance)
         {
+            if (!ModCore.IsActive()) return;
+
             Vector3 position;
             if (__instance._temporaryShakeStartTime < 0f)
             {

@@ -12,6 +12,8 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(ErrorManager.sendExceptionDetailsToLoggly))]
         private static bool sendExceptionDetailsToLoggly_Prefix(ErrorManager __instance)
         {
+            if (!ModCore.IsActive()) return true;
+
             bool value = CrashManager.HasCrashedThisSession;
             if (!value)
                 CrashManager.HasCrashedThisSession = true;
@@ -23,6 +25,8 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(ErrorManager.HandleLog))]
         private static bool HandleLog_Prefix(ErrorManager __instance, string logString, string stackTrace, ref LogType type)
         {
+            if (!ModCore.IsActive()) return true;
+
             /*ModCore.TempStringBuilder.Append(logString);
             ModCore.TempStringBuilder.Append(' ');
             ModCore.TempStringBuilder.Append(stackTrace);

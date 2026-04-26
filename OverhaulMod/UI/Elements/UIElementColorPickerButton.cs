@@ -38,7 +38,7 @@ namespace OverhaulMod.UI
 
         public ColorChangedEvent onValueChanged { get; set; } = new ColorChangedEvent();
 
-        public Transform colorPickerParent
+        public Transform ColorPickerParent
         {
             get;
             set;
@@ -46,7 +46,7 @@ namespace OverhaulMod.UI
 
         protected override void OnInitialized()
         {
-            colorPickerParent = ModCache.UIRoot.transform;
+            ColorPickerParent = ModCache.UIRoot.transform;
         }
 
         public void OnButtonClicked()
@@ -54,7 +54,7 @@ namespace OverhaulMod.UI
             ModUIUtils.ColorPicker(color, useAlpha, delegate (Color outColor)
             {
                 color = outColor;
-            }, colorPickerParent);
+            }, ColorPickerParent);
         }
 
         [Serializable]

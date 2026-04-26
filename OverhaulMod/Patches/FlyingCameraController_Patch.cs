@@ -15,6 +15,8 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(FlyingCameraController.Update))]
         private static bool Update_Prefix(FlyingCameraController __instance)
         {
+            if (!ModCore.IsActive()) return true;
+
             if (!PhotoManager.Instance.IsInPhotoMode() || __instance._isMovementDisabled)
                 return true;
 

@@ -126,7 +126,7 @@ namespace OverhaulMod.UI
 
             UpgradeManager upgradeManager = UpgradeManager.Instance;
             AutoBuildManager autoBuildManager = AutoBuildManager.Instance;
-            foreach (AutoBuildInfo build in autoBuildManager.buildList.Builds)
+            foreach (AutoBuildInfo build in autoBuildManager.BuildList.Builds)
             {
                 ModdedObject moddedObject = Instantiate(_buildDisplayPrefab, _buildDisplayContainer);
                 moddedObject.gameObject.SetActive(true);

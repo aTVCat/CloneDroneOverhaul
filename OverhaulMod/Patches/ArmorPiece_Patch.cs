@@ -11,6 +11,8 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(ArmorPiece.DestroyArmorPiece))]
         private static void DestroyArmorPiece_Postfix(ArmorPiece __instance, Vector3 impactDirection)
         {
+            if (!ModCore.IsActive()) return;
+
             if (__instance.PiecesToDetach == null || __instance.PiecesToDetach.Length == 0) return;
 
             for (int i = 0; i < __instance.PiecesToDetach.Length; i++)

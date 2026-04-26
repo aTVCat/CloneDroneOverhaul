@@ -10,6 +10,8 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(CacheManager.CreateOrClearInstance))]
         private static void CreateOrClearInstance_Postfix()
         {
+            if (!ModCore.IsActive()) return;
+
             ComponentCacheManager manager = ComponentCacheManager.Instance;
             if (manager) manager.ClearCache();
         }

@@ -13,6 +13,8 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(SettingsMenu.refreshResolutionOptions))]
         private static void refreshResolutionOptions_Postfix(SettingsMenu __instance)
         {
+            if (!ModCore.IsActive()) return;
+
             ModSettingsManager.ExtraResolutionLength = 0;
             Resolution resolution = new Resolution
             {
@@ -36,6 +38,8 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(SettingsMenu.OnScreenResolutionChanged))]
         private static bool OnScreenResolutionChanged_Prefix(SettingsMenu __instance)
         {
+            if (!ModCore.IsActive()) return true;
+
             if (Time.realtimeSinceStartup - __instance._timeOpened < 0.1f || __instance.ScreenResolutionDropDown.value >= (Screen.resolutions.Length + ModSettingsManager.ExtraResolutionLength))
                 return false;
 

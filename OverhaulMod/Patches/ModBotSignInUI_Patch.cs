@@ -12,6 +12,8 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(ModBotSignInUI.onSignedIn))]
         private static void onSignedIn_Postfix(WorldAudioSource __instance)
         {
+            if (!ModCore.IsActive()) return;
+
             UISettingsMenuRework settingsMenuRework = ModUIManager.Instance.Get<UISettingsMenuRework>(AssetBundleConstants.UI, ModUIConstants.UI_SETTINGS_MENU);
             if (settingsMenuRework && settingsMenuRework.IsVisible && settingsMenuRework.GetSelectedTabID() == "Advanced")
                 settingsMenuRework.PopulatePage("Advanced");

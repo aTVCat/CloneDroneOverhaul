@@ -10,6 +10,8 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(CreditsCrawlAnimation.Hide))]
         private static bool Hide_Prefix(CreditsCrawlAnimation __instance)
         {
+            if (!ModCore.IsActive()) return true;
+
             __instance.gameObject.SetActive(false);
             if (__instance._isShowing)
             {

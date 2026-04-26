@@ -8,7 +8,7 @@ namespace OverhaulMod.Patches.Behaviours
         private int _initialSiblingIndex;
 
         private Transform _targetTransform;
-        private Transform targetTransform
+        private Transform TargetTransform
         {
             get
             {
@@ -31,7 +31,7 @@ namespace OverhaulMod.Patches.Behaviours
 
         public override void Patch()
         {
-            Transform transform = targetTransform;
+            Transform transform = TargetTransform;
             if (transform && !transform.GetComponent<CanvasGroup>())
             {
                 CanvasGroup canvasGroup = transform.gameObject.AddComponent<CanvasGroup>();
@@ -43,7 +43,7 @@ namespace OverhaulMod.Patches.Behaviours
 
         public override void Unpatch()
         {
-            Transform transform = targetTransform;
+            Transform transform = TargetTransform;
             if (transform)
             {
                 CanvasGroup canvasGroup = transform.GetComponent<CanvasGroup>();
@@ -56,7 +56,7 @@ namespace OverhaulMod.Patches.Behaviours
 
         public void SetSiblingIndex(Transform transform)
         {
-            Transform transform1 = targetTransform;
+            Transform transform1 = TargetTransform;
             if (transform && transform1)
             {
                 _initialSiblingIndex = transform1.GetSiblingIndex();
@@ -66,7 +66,7 @@ namespace OverhaulMod.Patches.Behaviours
 
         public void ResetSiblingIndex()
         {
-            Transform transform1 = targetTransform;
+            Transform transform1 = TargetTransform;
             if (transform1)
             {
                 transform1.SetSiblingIndex(_initialSiblingIndex);

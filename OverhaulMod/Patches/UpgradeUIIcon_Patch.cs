@@ -13,8 +13,10 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(UpgradeUIIcon.GetIsUpgradeLocked))]
         private static void GetIsUpgradeLocked_Postfix(UpgradeUIIcon __instance, ref bool __result)
         {
+            if (!ModCore.IsActive()) return;
+
             AutoBuildManager autoBuildManager = AutoBuildManager.Instance;
-            if (autoBuildManager && autoBuildManager.isInAutoBuildConfigurationMode)
+            if (autoBuildManager && autoBuildManager.IsInAutoBuildConfigurationMode)
             {
                 __result = false;
             }
@@ -24,6 +26,8 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(UpgradeUIIcon.OnClickToUpgradeAbility))]
         private static bool OnClickToUpgradeAbility_Prefix(UpgradeUIIcon __instance, ref bool __result, bool isRandomSelectionInput)
         {
+            if (!ModCore.IsActive()) return true;
+
             if (isRandomSelectionInput)
                 return true;
 
@@ -38,6 +42,8 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(UpgradeUIIcon.refreshDisplay))]
         private static void refreshDisplay_Postfix(UpgradeUIIcon __instance)
         {
+            if (!ModCore.IsActive()) return;
+
             CanvasGroup canvasGroup = __instance.GetComponent<CanvasGroup>();
             if (!canvasGroup)
                 canvasGroup = __instance.gameObject.AddComponent<CanvasGroup>();
@@ -64,6 +70,8 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(UpgradeUIIcon.Awake))]
         private static void Awake_Postfix(UpgradeUIIcon __instance)
         {
+            if (!ModCore.IsActive()) return;
+
             Transform selectableFrame = __instance.transform.FindChildRecursive("SelectableFrame");
             if (selectableFrame)
             {

@@ -12,6 +12,9 @@ namespace OverhaulMod.UI
         [UIElement("Panel", typeof(DraggablePanel))]
         private readonly GameObject _panelObject;
 
+        [UIElement("Panel")]
+        private readonly RectTransform _panelTransform;
+
         [UIElementAction(nameof(OnCloseButtonClicked))]
         [UIElement("CloseButton")]
         private readonly Button _closeButton;
@@ -62,6 +65,8 @@ namespace OverhaulMod.UI
         private readonly TabManager _tabs;
 
         private bool _disallowHexCodeFieldCallbacks, _disallowSliderFieldCallbacks;
+
+        private Vector2 _initialPosition;
 
         private Color _outputColor;
         public Color OutputColor
@@ -134,12 +139,16 @@ namespace OverhaulMod.UI
             _tabs.AddTab(_rgbSettingsTab.gameObject, "rgb");
             _tabs.AddTab(_hsvSettingsTab.gameObject, "hsv");
             _tabs.SelectTab("rgb");
+
+            _initialPosition = _panelTransform.anchoredPosition;
         }
 
         public override void Show()
         {
             base.Show();
             s_open = true;
+
+            _panelTransform.anchoredPosition = _initialPosition;
         }
 
         public override void Hide()

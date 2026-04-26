@@ -12,7 +12,9 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(CustomUpgradeManager.Update))]
         private static void Update_Postfix(CustomUpgradeManager __instance)
         {
-            bool hide = AutoBuildManager.Instance.isInAutoBuildConfigurationMode;
+            if (!ModCore.IsActive()) return;
+
+            bool hide = AutoBuildManager.Instance.IsInAutoBuildConfigurationMode;
             if (hide)
             {
                 GameObject backButton = __instance._backButton;

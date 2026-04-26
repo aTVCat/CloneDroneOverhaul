@@ -12,6 +12,8 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(SubtitleTextField.onSpeechSentenceStarted))]
         private static bool onSpeechSentenceStarted_Prefix(SubtitleTextField __instance)
         {
+            if (!ModCore.IsActive()) return true;
+
             if (UISubtitleTextFieldRework.EnableRework)
                 return false;
 

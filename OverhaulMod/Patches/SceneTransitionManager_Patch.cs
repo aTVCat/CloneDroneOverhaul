@@ -10,6 +10,8 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(SceneTransitionManager.DisconnectAndExitToMainMenu))]
         private static bool DisconnectAndExitToMainMenu_Prefix(SceneTransitionManager __instance)
         {
+            if (!ModCore.IsActive()) return true;
+
             if (!TransitionManager.OverhaulSceneTransitions)
                 return true;
 

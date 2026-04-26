@@ -10,6 +10,8 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(PlanetCollider.OnEnable))]
         private static void OnEnable_Postfix(PlanetCollider __instance)
         {
+            if (!ModCore.IsActive()) return;
+
             if (!__instance.name.Contains("Earth"))
                 return;
 

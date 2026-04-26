@@ -14,6 +14,8 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(GameUIRoot.RefreshCursorEnabled))]
         private static bool RefreshCursorEnabled_Prefix()
         {
+            if (!ModCore.IsActive()) return true;
+
             /*if (PersonalizationEditorCamera.IsControllingTheCamera)
             {
                 InputManager.Instance.SetCursorEnabled(false);
@@ -48,6 +50,8 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(GameUIRoot.CloseCurrentMenu))]
         private static bool CloseCurrentMenu_Prefix(GameUIRoot __instance, bool uiCancelDown, bool pauseDown, bool force = false)
         {
+            if (!ModCore.IsActive()) return true;
+
             bool flag = false;
             GameObject nativeControllerSelectTarget = InputManager.Instance.GetNativeControllerSelectTarget();
             if (nativeControllerSelectTarget)

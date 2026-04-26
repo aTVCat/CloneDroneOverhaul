@@ -11,8 +11,10 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(UpgradeDescription.IsUpgradeCurrentlyVisible))]
         private static void IsUpgradeCurrentlyVisible_Postfix(UpgradeDescription __instance, ref bool __result)
         {
+            if (!ModCore.IsActive()) return;
+
             AutoBuildManager autoBuildManager = AutoBuildManager.Instance;
-            if (autoBuildManager && autoBuildManager.isInAutoBuildConfigurationMode)
+            if (autoBuildManager && autoBuildManager.IsInAutoBuildConfigurationMode)
             {
                 __result = __instance.IsAvailableInBattleRoyale && !__instance.IsModdedUpgradeType();
             }
@@ -22,8 +24,10 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(UpgradeDescription.GetSkillPointCost))]
         private static void GetSkillPointCost_Postfix(UpgradeDescription __instance, ref int __result)
         {
+            if (!ModCore.IsActive()) return;
+
             AutoBuildManager autoBuildManager = AutoBuildManager.Instance;
-            if (autoBuildManager && autoBuildManager.isInAutoBuildConfigurationMode)
+            if (autoBuildManager && autoBuildManager.IsInAutoBuildConfigurationMode)
             {
                 if (__instance.SkillPointCostBattleRoyale > 0)
                     __result = __instance.SkillPointCostBattleRoyale;

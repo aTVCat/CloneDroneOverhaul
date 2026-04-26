@@ -5,7 +5,6 @@ using OverhaulMod.Gameplay;
 using OverhaulMod.Gameplay.Weapons;
 using OverhaulMod.Utils;
 using PicaVoxel;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
