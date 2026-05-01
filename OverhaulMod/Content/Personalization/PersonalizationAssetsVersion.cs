@@ -1,8 +1,8 @@
 ﻿namespace OverhaulMod.Content.Personalization
 {
-    public class PersonalizationAssetsInfo
+    public class PersonalizationAssetsVersion
     {
-        public int AssetVersionNumber = -1;
+        public int UpdateNumber = -1;
 
         public CategoryCounter WeaponSkins, Accessories, Pets;
 

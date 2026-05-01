@@ -235,7 +235,7 @@
     <Compile Include="Content\Personalization\FavoriteColorSettings.cs" />
     <Compile Include="Content\Personalization\GreatSwordPreviewController.cs" />
     <Compile Include="Content\Personalization\PersonalizationAccessoryBehaviour.cs" />
-    <Compile Include="Content\Personalization\PersonalizationAssetsInfo.cs" />
+    <Compile Include="Content\Personalization\PersonalizationAssetsVersion.cs" />
     <Compile Include="Content\Personalization\PersonalizationAssetsState.cs" />
     <Compile Include="Content\Personalization\PersonalizationCacheManager.cs" />
     <Compile Include="Content\Personalization\PersonalizationCategory.cs" />

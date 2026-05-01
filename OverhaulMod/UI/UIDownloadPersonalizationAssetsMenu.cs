@@ -162,24 +162,24 @@ namespace OverhaulMod.UI
                     break;
             }
 
-            PersonalizationAssetsInfo localInfo = personalizationManager.LocalAssetsInfo;
-            if (localInfo == null || localInfo.AssetVersionNumber == -1)
+            PersonalizationAssetsVersion localVersion = personalizationManager.LocalAssetsVersion;
+            if (localVersion == null || localVersion.UpdateNumber == -1)
             {
                 _localVersionText.text = "None";
             }
             else
             {
-                _localVersionText.text = localInfo.AssetVersionNumber.ToString();
+                _localVersionText.text = localVersion.UpdateNumber.ToString();
             }
 
-            PersonalizationAssetsInfo remoteInfo = personalizationManager.RemoteAssetsInfo;
-            if (remoteInfo == null || remoteInfo.AssetVersionNumber == -1)
+            PersonalizationAssetsVersion remoteVersion = personalizationManager.RemoteAssetsVersion;
+            if (remoteVersion == null || remoteVersion.UpdateNumber == -1)
             {
                 _remoteVersionText.text = "None";
             }
             else
             {
-                _remoteVersionText.text = remoteInfo.AssetVersionNumber.ToString();
+                _remoteVersionText.text = remoteVersion.UpdateNumber.ToString();
             }
         }
 
@@ -203,19 +203,19 @@ namespace OverhaulMod.UI
             bool hasAnyVisibleChanges = true;
             PersonalizationManager personalizationManager = PersonalizationManager.Instance;
 
-            PersonalizationAssetsInfo localInfo = personalizationManager.LocalAssetsInfo;
-            if (localInfo == null || localInfo.AssetVersionNumber == -1) hasAnyVisibleChanges = false;
+            PersonalizationAssetsVersion localVersion = personalizationManager.LocalAssetsVersion;
+            if (localVersion == null || localVersion.UpdateNumber == -1) hasAnyVisibleChanges = false;
 
-            PersonalizationAssetsInfo remoteInfo = personalizationManager.RemoteAssetsInfo;
-            if (remoteInfo == null || remoteInfo.AssetVersionNumber == -1) hasAnyVisibleChanges = false;
+            PersonalizationAssetsVersion remoteVersion = personalizationManager.RemoteAssetsVersion;
+            if (remoteVersion == null || remoteVersion.UpdateNumber == -1) hasAnyVisibleChanges = false;
 
             if (hasAnyVisibleChanges)
             {
-                if(!remoteInfo.IsSuitableForComparison() || !localInfo.IsSuitableForComparison())
+                if(!remoteVersion.IsSuitableForComparison() || !localVersion.IsSuitableForComparison())
                 {
                     hasAnyVisibleChanges = false;
                 }
-                else if (remoteInfo.GetTotalVerifiedItems() - localInfo.GetTotalVerifiedItems() <= 0)
+                else if (remoteVersion.GetTotalVerifiedItems() - localVersion.GetTotalVerifiedItems() <= 0)
                 {
                     hasAnyVisibleChanges = false;
                 }
@@ -228,9 +228,9 @@ namespace OverhaulMod.UI
             {
                 panelSizeDelta.y = PANEL_HEIGHT_UPDATE;
 
-                int newWeaponSkins = remoteInfo.WeaponSkins.VerifiedCount - localInfo.WeaponSkins.VerifiedCount;
-                int newAccessories = remoteInfo.Accessories.VerifiedCount - localInfo.Accessories.VerifiedCount;
-                int newPets = remoteInfo.Pets.VerifiedCount - localInfo.Pets.VerifiedCount;
+                int newWeaponSkins = remoteVersion.WeaponSkins.VerifiedCount - localVersion.WeaponSkins.VerifiedCount;
+                int newAccessories = remoteVersion.Accessories.VerifiedCount - localVersion.Accessories.VerifiedCount;
+                int newPets = remoteVersion.Pets.VerifiedCount - localVersion.Pets.VerifiedCount;
 
                 _weaponSkinsChangesHolder.SetActive(newWeaponSkins > 0);
                 _accessoriesChangesHolder.SetActive(newAccessories > 0 && ModFeatures.IsEnabled(ModFeatures.FeatureType.Accessories));

@@ -36,7 +36,7 @@ namespace OverhaulMod.UI
 
         protected override void OnInitialized()
         {
-            _exportVersionField.text = PersonalizationManager.Instance.LocalAssetsInfo.AssetVersionNumber.ToString();
+            _exportVersionField.text = PersonalizationManager.Instance.LocalAssetsVersion.UpdateNumber.ToString();
             _exportFolderField.text = ExportFolderPath;
         }
 
@@ -48,7 +48,7 @@ namespace OverhaulMod.UI
 
         public void OnBumpUpVersionButtonClicked()
         {
-            _exportVersionField.text = (PersonalizationManager.Instance.LocalAssetsInfo.AssetVersionNumber + 1).ToString();
+            _exportVersionField.text = (PersonalizationManager.Instance.LocalAssetsVersion.UpdateNumber + 1).ToString();
         }
 
         public void OnEditExportFolderButtonClicked()
@@ -90,7 +90,7 @@ namespace OverhaulMod.UI
             fastZip.CreateZip(Path.Combine(folder, PersonalizationEditorDataManager.ITEMS_ARCHIVE_FILE), ModDirectories.CustomizationFolder, true, string.Empty);
 
             PersonalizationManager.Instance.SetLocalAssetsVersion(versionNumber);
-            ModJsonUtils.WriteStream(Path.Combine(folder, PersonalizationManager.ASSETS_INFO_FILE), PersonalizationManager.Instance.LocalAssetsInfo);
+            ModJsonUtils.WriteStream(Path.Combine(folder, PersonalizationManager.ASSETS_VERSION_FILE), PersonalizationManager.Instance.LocalAssetsVersion);
 
             _ = ModFileUtils.OpenFileExplorer(folder);
         }

@@ -37,6 +37,7 @@ namespace OverhaulMod.Engine
             if (_scheduledUpdates.Count == 0)
             {
                 CharacterUpdateInfo updateInfo = createNewUpdateInfo(character, getImportanceOfUpdate(character), request);
+                updateInfo.RefreshReferences();
                 _scheduledUpdates.Add(updateInfo);
                 return;
             }
