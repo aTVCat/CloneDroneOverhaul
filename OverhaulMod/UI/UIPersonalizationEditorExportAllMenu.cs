@@ -87,15 +87,10 @@ namespace OverhaulMod.UI
             }
 
             FastZip fastZip = new FastZip();
-            fastZip.CreateZip(Path.Combine(folder, "customization.zip"), ModDirectories.CustomizationFolder, true, string.Empty);
+            fastZip.CreateZip(Path.Combine(folder, PersonalizationEditorDataManager.ITEMS_ARCHIVE_FILE), ModDirectories.CustomizationFolder, true, string.Empty);
 
-            PersonalizationAssetsInfo personalizationAssetsInfo = new PersonalizationAssetsInfo
-            {
-                AssetVersionNumber = versionNumber
-            };
-            personalizationAssetsInfo.SetAssetVersionForOldBuilds();
-            _ = PersonalizationManager.Instance.SetLocalAssetsVersion(versionNumber);
-            ModJsonUtils.WriteStream(Path.Combine(folder, PersonalizationManager.ASSETS_VERSION_FILE), personalizationAssetsInfo);
+            PersonalizationManager.Instance.SetLocalAssetsVersion(versionNumber);
+            ModJsonUtils.WriteStream(Path.Combine(folder, PersonalizationManager.ASSETS_INFO_FILE), PersonalizationManager.Instance.LocalAssetsInfo);
 
             _ = ModFileUtils.OpenFileExplorer(folder);
         }

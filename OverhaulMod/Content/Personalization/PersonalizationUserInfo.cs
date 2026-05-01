@@ -8,6 +8,8 @@ namespace OverhaulMod.Content.Personalization
 {
     public class PersonalizationUserInfo
     {
+        public const string USER_INFO_FILE = "PersonalizationUserInfo.json";
+
         [ModSetting(ModSettingIDs.SWORD_SKIN, null)]
         public static string SwordSkin;
 
@@ -209,6 +211,44 @@ namespace OverhaulMod.Content.Personalization
                 return ItemVersions[itemId];
 
             return 0;
+        }
+
+        public static void SetItemEquipped(PersonalizationItemInfo item, bool value)
+        {
+            if (item == null)
+                return;
+
+            string id = item.ItemID;
+            switch (item.Category)
+            {
+                case PersonalizationCategory.WeaponSkins:
+                    SetWeaponSkin(item.Weapon, id);
+                    break;
+                case PersonalizationCategory.Accessories:
+                    SetAccessoryEquipped(item.ItemID, value);
+                    break;
+                case PersonalizationCategory.Pets:
+                    SetPetEquipped(item.ItemID, value);
+                    break;
+            }
+        }
+
+        public static bool IsItemEquipped(PersonalizationItemInfo item)
+        {
+            if (item == null)
+                return false;
+
+            string itemId = item.ItemID;
+            switch (item.Category)
+            {
+                case PersonalizationCategory.WeaponSkins:
+                    return IsWeaponSkinEquipped(item.Weapon, itemId);
+                case PersonalizationCategory.Accessories:
+                    return IsAccessoryEquipped(itemId);
+                case PersonalizationCategory.Pets:
+                    return IsPetEquipped(itemId);
+            }
+            return false;
         }
 
         public static void SetWeaponSkin(WeaponType weaponType, string itemId)

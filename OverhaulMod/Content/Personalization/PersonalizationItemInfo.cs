@@ -187,7 +187,7 @@ namespace OverhaulMod.Content.Personalization
 
         public bool IsEquipped()
         {
-            return PersonalizationManager.IsItemEquipped(this);
+            return PersonalizationUserInfo.IsItemEquipped(this);
         }
 
         public string GetSpecialInfoString()

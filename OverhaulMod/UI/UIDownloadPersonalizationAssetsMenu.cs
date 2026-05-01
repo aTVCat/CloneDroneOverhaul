@@ -7,13 +7,17 @@ namespace OverhaulMod.UI
 {
     public class UIDownloadPersonalizationAssetsMenu : OverhaulUIBehaviour
     {
+        public const float PANEL_HEIGHT_IDLE = 300f;
+
+        public const float PANEL_HEIGHT_UPDATE = 455f;
+
         [UIElementAction(nameof(Hide))]
         [UIElement("CloseButton")]
         private readonly Button _exitButton;
 
-        [UIElementAction(nameof(OnDownloadButtonClicked))]
-        [UIElement("DownloadButton")]
-        private readonly Button _downloadButton;
+        [UIElementAction(nameof(OnInstallButtonClicked))]
+        [UIElement("InstallButton")]
+        private readonly Button _installButton;
 
         [UIElementAction(nameof(OnUpdateButtonClicked))]
         [UIElement("UpdateButton")]
@@ -29,79 +33,153 @@ namespace OverhaulMod.UI
         [UIElement("Fill")]
         private readonly Image _progressBarFill;
 
-        [UIElement("VersionText")]
-        private readonly Text _versionText;
-
         [UIElement("Header")]
         private readonly Text _header;
+
+        [UIElement("MissingVersionHolder", false)]
+        private readonly GameObject _missingVersionHolder;
+
+        [BetterOutline]
+        [UIElement("MissingVersionText")]
+        private readonly Text _missingVersionText;
+
+        [UIElement("LocalVersionHolder", false)]
+        private readonly GameObject _localVersionHolder;
+
+        [BetterOutline]
+        [UIElement("LocalVersionText")]
+        private readonly Text _localVersionText;
+
+        [UIElement("RemoteVersionHolder", false)]
+        private readonly GameObject _remoteVersionHolder;
+
+        [BetterOutline]
+        [UIElement("RemoteVersionText")]
+        private readonly Text _remoteVersionText;
+
+        [UIElement("ArrowGraphic", false)]
+        private readonly GameObject _arrowGraphic;
+
+        [UIElement("ChangesPane", false)]
+        private readonly GameObject _changesPane;
+
+        [UIElement("WeaponSkinsChangesHolder", false)]
+        private readonly GameObject _weaponSkinsChangesHolder;
+
+        [BetterOutline]
+        [UIElement("WeaponSkinsChanges")]
+        private readonly Text _weaponSkinsChangesText;
+
+        [UIElement("AccessoriesChangesHolder", false)]
+        private readonly GameObject _accessoriesChangesHolder;
+
+        [BetterOutline]
+        [UIElement("AccessoriesChanges")]
+        private readonly Text _accessoriesChangesText;
+
+        [UIElement("PetsChangesHolder", false)]
+        private readonly GameObject _petsChangesHolder;
+
+        [BetterOutline]
+        [UIElement("PetsChanges")]
+        private readonly Text _petsChangesText;
+
+        [UIElement("Panel")]
+        private readonly RectTransform _panel;
 
         private float _dontActuallyRefreshRemoteVersionUntilTime;
 
         private bool _isGettingRemoteVersion;
 
+        private float _lockExitTimer;
+
+        private bool _lockExit;
+
+        public override bool CloseOnEscapeButtonPress => CanExit();
+
+        protected override void OnInitialized()
+        {
+            _progressBarFill.fillAmount = 0f;
+
+            PersonalizationAssetsState state = PersonalizationManager.Instance.GetPersonalizationAssetsState();
+            if (state != PersonalizationAssetsState.Installed) _lockExitTimer = 3f;
+        }
+
         public override void Show()
         {
             base.Show();
             refreshContents();
+            refreshChangesPane();
 
-            PersonalizationManager personalizationManager = PersonalizationManager.Instance;
-            if (personalizationManager.GetPersonalizationAssetsState() == PersonalizationAssetsState.NotInstalled)
-            {
-                _header.text = LocalizationManager.Instance.GetTranslatedString("customization_need_install_header");
-            }
-            else
-            {
-                _header.text = LocalizationManager.Instance.GetTranslatedString("customization_need_update_header");
-            }
+            PersonalizationAssetsState state = PersonalizationManager.Instance.GetPersonalizationAssetsState();
+            string translationKey = state == PersonalizationAssetsState.NotInstalled ? "customization_need_install_header" : "customization_need_update_header";
+            _header.text = LocalizationManager.Instance.GetTranslatedString(translationKey);
         }
 
         public override void Update()
         {
             base.Update();
+
+            _lockExitTimer = Mathf.Max(0f, _lockExitTimer - Time.unscaledDeltaTime);
             refreshProgressBarFill();
+
+            _exitButton.interactable = CanExit();
         }
 
-        public bool CanExit()
-        {
-            return _exitButton.gameObject.activeSelf;
-        }
+        public bool CanExit() => !_lockExit && _lockExitTimer == 0f;
 
         private void refreshContents()
         {
             PersonalizationManager personalizationManager = PersonalizationManager.Instance;
 
+            PersonalizationAssetsState state = personalizationManager.GetPersonalizationAssetsState();
             bool isDownloading = _isGettingRemoteVersion || personalizationManager.IsDownloadingCustomizationFile();
+
+            _missingVersionHolder.SetActive(state == PersonalizationAssetsState.NotInstalled);
+            _localVersionHolder.SetActive(state != PersonalizationAssetsState.NotInstalled);
+            _arrowGraphic.SetActive(state == PersonalizationAssetsState.NeedUpdate);
+            _remoteVersionHolder.SetActive(state == PersonalizationAssetsState.NeedUpdate);
 
             _updateButton.interactable = true;
             _progressBar.SetActive(isDownloading);
-            switch (personalizationManager.GetPersonalizationAssetsState())
+            switch (state)
             {
                 case PersonalizationAssetsState.NotInstalled:
-                    _downloadButton.gameObject.SetActive(!isDownloading);
+                    _installButton.gameObject.SetActive(!isDownloading);
                     _refreshButton.gameObject.SetActive(false);
                     _updateButton.gameObject.SetActive(false);
                     break;
                 case PersonalizationAssetsState.Installed:
-                    _downloadButton.gameObject.SetActive(false);
+                    _installButton.gameObject.SetActive(false);
                     _refreshButton.gameObject.SetActive(!isDownloading);
                     _updateButton.gameObject.SetActive(!isDownloading);
                     _updateButton.interactable = false;
                     break;
                 case PersonalizationAssetsState.NeedUpdate:
-                    _downloadButton.gameObject.SetActive(false);
+                    _installButton.gameObject.SetActive(false);
                     _refreshButton.gameObject.SetActive(false);
                     _updateButton.gameObject.SetActive(!isDownloading);
                     break;
             }
 
-            PersonalizationAssetsInfo personalizationAssetsInfo = personalizationManager.LocalAssetsInfo;
-            if (personalizationAssetsInfo == null || personalizationAssetsInfo.AssetVersionNumber == -1)
+            PersonalizationAssetsInfo localInfo = personalizationManager.LocalAssetsInfo;
+            if (localInfo == null || localInfo.AssetVersionNumber == -1)
             {
-                _versionText.text = "None";
+                _localVersionText.text = "None";
             }
             else
             {
-                _versionText.text = personalizationAssetsInfo.AssetVersionNumber.ToString();
+                _localVersionText.text = localInfo.AssetVersionNumber.ToString();
+            }
+
+            PersonalizationAssetsInfo remoteInfo = personalizationManager.RemoteAssetsInfo;
+            if (remoteInfo == null || remoteInfo.AssetVersionNumber == -1)
+            {
+                _remoteVersionText.text = "None";
+            }
+            else
+            {
+                _remoteVersionText.text = remoteInfo.AssetVersionNumber.ToString();
             }
         }
 
@@ -120,10 +198,59 @@ namespace OverhaulMod.UI
             }
         }
 
-        public void OnDownloadButtonClicked()
+        private void refreshChangesPane()
+        {
+            bool hasAnyVisibleChanges = true;
+            PersonalizationManager personalizationManager = PersonalizationManager.Instance;
+
+            PersonalizationAssetsInfo localInfo = personalizationManager.LocalAssetsInfo;
+            if (localInfo == null || localInfo.AssetVersionNumber == -1) hasAnyVisibleChanges = false;
+
+            PersonalizationAssetsInfo remoteInfo = personalizationManager.RemoteAssetsInfo;
+            if (remoteInfo == null || remoteInfo.AssetVersionNumber == -1) hasAnyVisibleChanges = false;
+
+            if (hasAnyVisibleChanges)
+            {
+                if(!remoteInfo.IsSuitableForComparison() || !localInfo.IsSuitableForComparison())
+                {
+                    hasAnyVisibleChanges = false;
+                }
+                else if (remoteInfo.GetTotalVerifiedItems() - localInfo.GetTotalVerifiedItems() <= 0)
+                {
+                    hasAnyVisibleChanges = false;
+                }
+            }
+
+            _changesPane.SetActive(hasAnyVisibleChanges);
+
+            Vector2 panelSizeDelta = _panel.sizeDelta;
+            if (hasAnyVisibleChanges)
+            {
+                panelSizeDelta.y = PANEL_HEIGHT_UPDATE;
+
+                int newWeaponSkins = remoteInfo.WeaponSkins.VerifiedCount - localInfo.WeaponSkins.VerifiedCount;
+                int newAccessories = remoteInfo.Accessories.VerifiedCount - localInfo.Accessories.VerifiedCount;
+                int newPets = remoteInfo.Pets.VerifiedCount - localInfo.Pets.VerifiedCount;
+
+                _weaponSkinsChangesHolder.SetActive(newWeaponSkins > 0);
+                _accessoriesChangesHolder.SetActive(newAccessories > 0 && ModFeatures.IsEnabled(ModFeatures.FeatureType.Accessories));
+                _petsChangesHolder.SetActive(newPets > 0 && ModFeatures.IsEnabled(ModFeatures.FeatureType.Pets));
+
+                _weaponSkinsChangesText.text = $"{newWeaponSkins} new weapon skins!";
+                _accessoriesChangesText.text = $"{newAccessories} new accessories!";
+                _petsChangesText.text = $"{newPets} new pets!";
+            }
+            else
+            {
+                panelSizeDelta.y = PANEL_HEIGHT_IDLE;
+            }
+            _panel.sizeDelta = panelSizeDelta;
+        }
+
+        public void OnInstallButtonClicked()
         {
             _progressBarFill.fillAmount = 0f;
-            _exitButton.gameObject.SetActive(false);
+            _lockExit = true;
 
             _isGettingRemoteVersion = true;
             PersonalizationManager.Instance.RefreshRemoteCustomizationAssetsVersion(delegate (bool result)
@@ -131,33 +258,23 @@ namespace OverhaulMod.UI
                 _isGettingRemoteVersion = false;
                 if (!result)
                 {
+                    _lockExit = false;
                     refreshContents();
-                    ModUIUtils.MessagePopupOK("Error", $"Could not retrieve info of latest assets version", true);
+                    ModUIUtils.MessagePopupOK("Error", $"Could not get info about the latest version", true);
                     return;
                 }
 
-                PersonalizationManager.Instance.DownloadCustomizationFile(delegate (string error)
-                {
-                    _exitButton.gameObject.SetActive(true);
-                    refreshContents();
-
-                    if (!error.IsNullOrEmpty())
-                    {
-                        ModUIUtils.MessagePopupOK("Error", $"Something went wrong while processing customization assets:\n{error}", true);
-                    }
-                });
-                refreshContents();
+                OnUpdateButtonClicked();
             });
             refreshContents();
         }
 
         public void OnUpdateButtonClicked()
         {
-            _progressBarFill.fillAmount = 0f;
-            _exitButton.gameObject.SetActive(false);
+            _lockExit = true;
             PersonalizationManager.Instance.DownloadCustomizationFile(delegate (string error)
             {
-                _exitButton.gameObject.SetActive(true);
+                _lockExit = false;
                 refreshContents();
 
                 if (!error.IsNullOrEmpty())
@@ -185,7 +302,10 @@ namespace OverhaulMod.UI
                 _dontActuallyRefreshRemoteVersionUntilTime = Time.realtimeSinceStartup + 15f;
                 _refreshButton.interactable = true;
                 if (result)
+                {
                     refreshContents();
+                    refreshChangesPane();
+                }
             });
         }
     }

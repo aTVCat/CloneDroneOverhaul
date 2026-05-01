@@ -6,24 +6,25 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using UnityEngine.Networking;
 
 namespace OverhaulMod.Content.Personalization
 {
     public class PersonalizationManager : Singleton<PersonalizationManager>, IGameLoadListener
     {
-        public const string ASSETS_VERSION_FILE = "customizationAssetsInfo.json";
+        public const string ASSETS_INFO_FILE = "CustomizationAssetsVersion.json";
 
-        public const string REMOTE_ASSETS_VERSION_FILE = "customizationAssetsInfo_remote.json";
+        public const string ASSETS_INFO_FILE_OLD = "customizationAssetsInfo.json";
+
+        public const string REMOTE_ASSETS_INFO_FILE = "CustomizationAssetsVersion_Remote.json";
+
+        public const string REMOTE_ASSETS_INFO_FILE_OLD = "customizationAssetsInfo_remote.json";
 
         public const string CUSTOMIZATION_ASSETS_FILE_DOWNLOADED_EVENT = "CustomizationAssetsFileDownloaded";
 
         public const string ITEM_EQUIPPED_OR_UNEQUIPPED_EVENT = "PersonalizationItemEquippedOrUnequipped";
 
-        public const string USER_INFO_FILE = "PersonalizationUserInfo.json";
-
-        public static readonly string[] SupportedBodyParts = new string[]
+        public static readonly HashSet<string> SupportedBodyParts = new HashSet<string>
         {
             "Head",
             "Torso",
@@ -42,12 +43,12 @@ namespace OverhaulMod.Content.Personalization
             "FootL",
         };
 
-        public static readonly string[] HeadBodyParts = new string[]
+        public static readonly HashSet<string> HeadBodyParts = new HashSet<string>
         {
             "Head",
         };
 
-        public static readonly string[] TorsoBodyParts = new string[]
+        public static readonly HashSet<string> TorsoBodyParts = new HashSet<string>
         {
             "Torso",
             "ArmUpperR",
@@ -58,7 +59,7 @@ namespace OverhaulMod.Content.Personalization
             "HandL",
         };
 
-        public static readonly string[] LegsBodyParts = new string[]
+        public static readonly HashSet<string> LegsBodyParts = new HashSet<string>
         {
             "Spine",
             "LegUpperR",
@@ -76,7 +77,7 @@ namespace OverhaulMod.Content.Personalization
             {
                 if (_assetsVersionFile == null)
                 {
-                    _assetsVersionFile = Path.Combine(ModDirectories.ContentFolder, ASSETS_VERSION_FILE);
+                    _assetsVersionFile = Path.Combine(ModDirectories.ContentFolder, ASSETS_INFO_FILE);
                 }
                 return _assetsVersionFile;
             }
@@ -89,7 +90,7 @@ namespace OverhaulMod.Content.Personalization
             {
                 if (_remoteAssetsVersionFile == null)
                 {
-                    _remoteAssetsVersionFile = Path.Combine(ModDirectories.ContentFolder, REMOTE_ASSETS_VERSION_FILE);
+                    _remoteAssetsVersionFile = Path.Combine(ModDirectories.ContentFolder, REMOTE_ASSETS_INFO_FILE);
                 }
                 return _remoteAssetsVersionFile;
             }
@@ -121,12 +122,12 @@ namespace OverhaulMod.Content.Personalization
         private void Start()
         {
             LoadLocalCustomizationAssetsVersion();
+            LoadRemoteCustomizationAssetsVersion();
 
-            ScheduledActionsManager scheduledActionsManager = ScheduledActionsManager.Instance;
-            if (!scheduledActionsManager.ShouldExecuteAction(ScheduledActionType.RefreshCustomizationAssetsRemoteVersion))
-                LoadRemoteCustomizationAssetsVersion();
-            else
+            if (!File.Exists(RemoteAssetsVersionFile) || ScheduledActionsManager.Instance.ShouldExecuteAction(ScheduledActionType.RefreshCustomizationAssetsRemoteVersion))
+            {
                 RefreshRemoteCustomizationAssetsVersion(null);
+            }
         }
 
         public void OnGameLoaded()
@@ -141,21 +142,73 @@ namespace OverhaulMod.Content.Personalization
             }
         }
 
-        public void SetIsSelectingItems(bool value)
+        public void EquipAndApplyItem(PersonalizationItemInfo item)
         {
-            _isSelectingItems = value;
+            if (!item.IsCompatibleWithMod())
+            {
+                ModUIUtils.MessagePopupOK("Incompatible item!", $"This item is made for the new version of Overhaul mod.\nMake sure you're using the latest version of the mod.", 175f, true);
+                return;
+            }
+
+            if (item.Category == PersonalizationCategory.WeaponSkins)
+            {
+                FirstPersonMover firstPersonMover = CharacterTracker.Instance.GetPlayerRobot();
+                List<FirstPersonMover> clones = CloneManager.Instance._clones;
+
+                List<FirstPersonMover> allPlayers = new List<FirstPersonMover>(clones);
+                if (firstPersonMover && firstPersonMover.IsAttachedAndAlive())
+                    allPlayers.Add(firstPersonMover);
+
+                PersonalizationUserInfo.SetItemEquipped(item, true);
+            }
+            else if (item.Category == PersonalizationCategory.Accessories || item.Category == PersonalizationCategory.Pets)
+            {
+                PersonalizationUserInfo.SetItemEquipped(item, !PersonalizationUserInfo.IsItemEquipped(item));
+            }
+
+            GlobalEventManager.Instance.Dispatch(ITEM_EQUIPPED_OR_UNEQUIPPED_EVENT);
+
+            RefreshCustomizationOnAllRobots(false, false, item.Category);
         }
+
+        public static bool IsWeaponCustomizationSupported(WeaponType weaponType)
+        {
+            return weaponType != WeaponType.None &&
+                  (weaponType == WeaponType.Sword
+                || weaponType == WeaponType.Bow
+                || weaponType == WeaponType.Hammer
+                || weaponType == WeaponType.Spear
+                || weaponType == WeaponType.Shield
+                || weaponType == ModWeaponsManager.SCYTHE_TYPE);
+        }
+
+        public static bool IsBodyPartSupported(string bodyPart) => SupportedBodyParts.Contains(bodyPart);
+
+        public void SetIsSelectingItems(bool value) => _isSelectingItems = value;
 
         public bool IsSelectingItems() => _isSelectingItems;
 
+        public PersonalizationAssetsState GetPersonalizationAssetsState()
+        {
+            PersonalizationAssetsInfo localInfo = LocalAssetsInfo;
+            PersonalizationAssetsInfo remoteInfo = RemoteAssetsInfo;
+            if (localInfo == null)
+                return PersonalizationAssetsState.NotInstalled;
+
+            if (remoteInfo == null || localInfo.AssetVersionNumber >= remoteInfo.AssetVersionNumber)
+                return PersonalizationAssetsState.Installed;
+
+            return PersonalizationAssetsState.NeedUpdate;
+        }
+
         public void DownloadCustomizationFile(Action<string> callback)
         {
-            _ = downloadCustomizationFileCoroutine(callback).Run();
+            StartCoroutine(downloadCustomizationFileCoroutine(callback));
         }
 
         private IEnumerator downloadCustomizationFileCoroutine(Action<string> callback)
         {
-            RepositoryManager.Instance.GetCustomFile($"https://github.com/aTVCat/Overhaul-Mod-Content/raw/main/content/customization.zip", delegate (byte[] bytes)
+            RepositoryManager.Instance.GetCustomFile($"https://github.com/aTVCat/Overhaul-Mod-Content/raw/main/content/{PersonalizationEditorDataManager.ITEMS_ARCHIVE_FILE}", delegate (byte[] bytes)
             {
                 _webRequest = null;
                 try
@@ -204,6 +257,8 @@ namespace OverhaulMod.Content.Personalization
             yield break;
         }
 
+        public bool IsDownloadingCustomizationFile() => _webRequest != null;
+
         public float GetCustomizationFileDownloadProgress()
         {
             UnityWebRequest unityWebRequest = _webRequest;
@@ -220,53 +275,12 @@ namespace OverhaulMod.Content.Personalization
             }
         }
 
-        public void LoadLocalCustomizationAssetsVersion()
-        {
-            string path = AssetsVersionFile;
-            if (!File.Exists(path))
-                LocalAssetsInfo = null;
-            else
-            {
-                PersonalizationAssetsInfo personalizationAssetsInfo;
-                try
-                {
-                    personalizationAssetsInfo = ModJsonUtils.DeserializeStream<PersonalizationAssetsInfo>(path);
-                }
-                catch (Exception)
-                {
-                    personalizationAssetsInfo = new PersonalizationAssetsInfo();
-                }
-                LocalAssetsInfo = personalizationAssetsInfo;
-            }
-        }
-
-        public void LoadRemoteCustomizationAssetsVersion()
-        {
-            string path = RemoteAssetsVersionFile;
-            if (!File.Exists(path))
-                RemoteAssetsInfo = null;
-            else
-            {
-                PersonalizationAssetsInfo personalizationAssetsInfo;
-                try
-                {
-                    personalizationAssetsInfo = ModJsonUtils.DeserializeStream<PersonalizationAssetsInfo>(path);
-                }
-                catch (Exception)
-                {
-                    personalizationAssetsInfo = new PersonalizationAssetsInfo();
-                }
-
-                RemoteAssetsInfo = personalizationAssetsInfo;
-            }
-        }
-
         public void RefreshRemoteCustomizationAssetsVersion(Action<bool> callback)
         {
             RemoteAssetsInfo = null;
 
             ScheduledActionsManager scheduledActionsManager = ScheduledActionsManager.Instance;
-            RepositoryManager.Instance.GetTextFile($"content/{ASSETS_VERSION_FILE}", delegate (string result)
+            RepositoryManager.Instance.GetTextFile($"content/{ASSETS_INFO_FILE}", delegate (string result)
             {
                 PersonalizationAssetsInfo personalizationAssetsInfo;
                 try
@@ -277,8 +291,8 @@ namespace OverhaulMod.Content.Personalization
                 {
                     personalizationAssetsInfo = new PersonalizationAssetsInfo();
                 }
-
                 RemoteAssetsInfo = personalizationAssetsInfo;
+
                 ModJsonUtils.WriteStream(RemoteAssetsVersionFile, personalizationAssetsInfo);
                 scheduledActionsManager.SetActionExecuted(ScheduledActionType.RefreshCustomizationAssetsRemoteVersion);
 
@@ -289,33 +303,52 @@ namespace OverhaulMod.Content.Personalization
             }, out _);
         }
 
-        public PersonalizationAssetsState GetPersonalizationAssetsState()
+        public void LoadRemoteCustomizationAssetsVersion()
         {
-            PersonalizationAssetsInfo localInfo = LocalAssetsInfo;
-            PersonalizationAssetsInfo remoteInfo = RemoteAssetsInfo;
-            if (localInfo == null)
-                return PersonalizationAssetsState.NotInstalled;
-
-            if (remoteInfo == null || remoteInfo.AssetVersionNumber <= localInfo.AssetVersionNumber)
-                return PersonalizationAssetsState.Installed;
-
-            return PersonalizationAssetsState.NeedUpdate;
+            string path = RemoteAssetsVersionFile;
+            if (!File.Exists(path))
+            {
+                RemoteAssetsInfo = null;
+            }
+            else
+            {
+                PersonalizationAssetsInfo personalizationAssetsInfo;
+                try
+                {
+                    personalizationAssetsInfo = ModJsonUtils.DeserializeStream<PersonalizationAssetsInfo>(path);
+                }
+                catch (Exception)
+                {
+                    personalizationAssetsInfo = new PersonalizationAssetsInfo();
+                }
+                RemoteAssetsInfo = personalizationAssetsInfo;
+            }
         }
 
-        public bool IsDownloadingCustomizationFile()
+        public void LoadLocalCustomizationAssetsVersion()
         {
-            return _webRequest != null;
+            string path = AssetsVersionFile;
+            if (!File.Exists(path))
+            {
+                LocalAssetsInfo = null;
+            }
+            else
+            {
+                PersonalizationAssetsInfo personalizationAssetsInfo;
+                try
+                {
+                    personalizationAssetsInfo = ModJsonUtils.DeserializeStream<PersonalizationAssetsInfo>(path);
+                }
+                catch (Exception)
+                {
+                    personalizationAssetsInfo = new PersonalizationAssetsInfo();
+                }
+                personalizationAssetsInfo.RefreshCounters(ItemList);
+                LocalAssetsInfo = personalizationAssetsInfo;
+            }
         }
 
-        public bool SetLocalAssetsVersion(string versionString)
-        {
-            if (!int.TryParse(versionString, out int versionNumber))
-                return false;
-
-            return SetLocalAssetsVersion(versionNumber);
-        }
-
-        public bool SetLocalAssetsVersion(int versionNumber)
+        public void SetLocalAssetsVersion(int versionNumber)
         {
             PersonalizationAssetsInfo personalizationAssetsInfo = LocalAssetsInfo;
             if (personalizationAssetsInfo == null)
@@ -330,23 +363,14 @@ namespace OverhaulMod.Content.Personalization
             {
                 personalizationAssetsInfo.AssetVersionNumber = versionNumber;
             }
+            personalizationAssetsInfo.RefreshCounters(ItemList);
             ModJsonUtils.WriteStream(AssetsVersionFile, personalizationAssetsInfo);
-            return true;
-        }
-
-        public int GetLocalAssetsVersion()
-        {
-            PersonalizationAssetsInfo assetsInfo = LocalAssetsInfo;
-            if (assetsInfo == null)
-                return -1;
-
-            return assetsInfo.AssetVersionNumber;
         }
 
         private void loadUserInfoFile()
         {
             PersonalizationUserInfo personalizationUserInfo;
-            string path = Path.Combine(ModDirectories.ModUserDataFolder, USER_INFO_FILE);
+            string path = Path.Combine(ModDirectories.ModUserDataFolder, PersonalizationUserInfo.USER_INFO_FILE);
             if (File.Exists(path))
             {
                 try
@@ -371,10 +395,7 @@ namespace OverhaulMod.Content.Personalization
         public void SaveUserInfo()
         {
             PersonalizationUserInfo personalizationUserInfo = UserInfo;
-            if (personalizationUserInfo != null)
-            {
-                ModDataManager.SerializeToFile(USER_INFO_FILE, personalizationUserInfo, false);
-            }
+            if (personalizationUserInfo != null) ModDataManager.SerializeToFile(PersonalizationUserInfo.USER_INFO_FILE, personalizationUserInfo, false);
         }
 
         public void RefreshCustomizationOnAllRobots(bool onlyPlayers, bool onlyEnemies, PersonalizationCategory category = PersonalizationCategory.None)
@@ -394,100 +415,6 @@ namespace OverhaulMod.Content.Personalization
                     UpdateWeaponBag = category == PersonalizationCategory.WeaponSkins,
                 });
             }
-        }
-
-        public static bool IsWeaponCustomizationSupported(WeaponType weaponType)
-        {
-            return weaponType != WeaponType.None &&
-                  (weaponType == WeaponType.Sword
-                || weaponType == WeaponType.Bow
-                || weaponType == WeaponType.Hammer
-                || weaponType == WeaponType.Spear
-                || weaponType == WeaponType.Shield
-                || weaponType == ModWeaponsManager.SCYTHE_TYPE);
-        }
-
-        public static bool IsBodyPartSupported(string bodyPart)
-        {
-            return SupportedBodyParts.Contains(bodyPart);
-        }
-
-        public void DestroyWeaponSkinOnMainPlayer(WeaponType weaponType)
-        {
-            FirstPersonMover player = CharacterTracker.Instance.GetPlayerRobot();
-            if (!player || !player.IsAttachedAndAlive()) return;
-
-            PersonalizationController personalizationController = ComponentCacheManager.Instance.GetPersonalizationController(player.transform);
-            if (!personalizationController) return;
-
-            personalizationController.DestroyItem(personalizationController.GetSpawnedWeaponSkinInfo(weaponType));
-        }
-
-        public void EquipItem(PersonalizationItemInfo item)
-        {
-            if (!item.IsCompatibleWithMod())
-            {
-                ModUIUtils.MessagePopupOK("Incompatible item!", $"This item is made for the new version of Overhaul mod.\nMake sure you're using the latest version of the mod.", 175f, true);
-                return;
-            }
-
-            if (item.Category == PersonalizationCategory.WeaponSkins)
-            {
-                FirstPersonMover firstPersonMover = CharacterTracker.Instance.GetPlayerRobot();
-                List<FirstPersonMover> clones = CloneManager.Instance._clones;
-
-                List<FirstPersonMover> allPlayers = new List<FirstPersonMover>(clones);
-                if (firstPersonMover && firstPersonMover.IsAttachedAndAlive())
-                    allPlayers.Add(firstPersonMover);
-
-                SetItemEquipped(item, true);
-            }
-            else if (item.Category == PersonalizationCategory.Accessories || item.Category == PersonalizationCategory.Pets)
-            {
-                SetItemEquipped(item, !IsItemEquipped(item));
-            }
-
-            GlobalEventManager.Instance.Dispatch(ITEM_EQUIPPED_OR_UNEQUIPPED_EVENT);
-
-            RefreshCustomizationOnAllRobots(false, false, item.Category);
-        }
-
-        public static void SetItemEquipped(PersonalizationItemInfo item, bool value)
-        {
-            if (item == null)
-                return;
-
-            string id = item.ItemID;
-            switch (item.Category)
-            {
-                case PersonalizationCategory.WeaponSkins:
-                    PersonalizationUserInfo.SetWeaponSkin(item.Weapon, id);
-                    break;
-                case PersonalizationCategory.Accessories:
-                    PersonalizationUserInfo.SetAccessoryEquipped(item.ItemID, value);
-                    break;
-                case PersonalizationCategory.Pets:
-                    PersonalizationUserInfo.SetPetEquipped(item.ItemID, value);
-                    break;
-            }
-        }
-
-        public static bool IsItemEquipped(PersonalizationItemInfo item)
-        {
-            if (item == null)
-                return false;
-
-            string itemId = item.ItemID;
-            switch (item.Category)
-            {
-                case PersonalizationCategory.WeaponSkins:
-                    return PersonalizationUserInfo.IsWeaponSkinEquipped(item.Weapon, itemId);
-                case PersonalizationCategory.Accessories:
-                    return PersonalizationUserInfo.IsAccessoryEquipped(itemId);
-                case PersonalizationCategory.Pets:
-                    return PersonalizationUserInfo.IsPetEquipped(itemId);
-            }
-            return false;
         }
     }
 }

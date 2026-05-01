@@ -13,6 +13,10 @@ namespace OverhaulMod.Content.Personalization
     {
         public const int IMPORT_VERSION = 1;
 
+        public const string ITEMS_ARCHIVE_FILE = "CustomizationAssets.zip";
+
+        public const string ITEMS_ARCHIVE_FILE_OLD = "customization.zip";
+
         public const string ITEM_INFO_FILE = "itemInfo.json";
 
         public const string ITEM_META_DATA_FILE = "metaData.json";

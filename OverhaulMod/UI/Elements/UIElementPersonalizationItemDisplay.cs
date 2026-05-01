@@ -175,7 +175,7 @@ namespace OverhaulMod.UI
 
             updateItemUserInfo();
 
-            PersonalizationManager.Instance.EquipItem(itemInfo);
+            PersonalizationManager.Instance.EquipAndApplyItem(itemInfo);
 
             if (itemInfo.Category == PersonalizationCategory.WeaponSkins)
                 _browser.MakeDefaultSkinButtonInteractable();
