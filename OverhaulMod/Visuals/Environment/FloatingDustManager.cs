@@ -6,7 +6,7 @@ namespace OverhaulMod.Visuals.Environment
 {
     public class FloatingDustManager : Singleton<FloatingDustManager>
     {
-        [ModSetting(ModSettingsConstants.ENABLE_FLOATING_DUST, true)]
+        [ModSetting(ModSettingIDs.ENABLE_FLOATING_DUST, true)]
         public static bool EnableFloatingDust;
 
         private ParticleSystem[] _normalSpaceDust;

@@ -90,8 +90,8 @@ namespace OverhaulMod.UI
 
         public void OnCheckUpdatesOnStartToggled(bool value)
         {
-            ModSettingsManager.SetBoolValue(ModSettingsConstants.CHECK_UPDATES_ON_NEXT_START, true);
-            ModSettingsManager.SetBoolValue(ModSettingsConstants.CHECK_FOR_UPDATES_ON_STARTUP, value, true);
+            ModSettingsManager.SetBoolValue(ModSettingIDs.CHECK_UPDATES_ON_NEXT_START, true);
+            ModSettingsManager.SetBoolValue(ModSettingIDs.CHECK_FOR_UPDATES_ON_STARTUP, value, true);
 
             _notifyAboutTestBuildsToggleShading.SetActive(!value);
             _notifyAboutTestBuildsToggle.interactable = value;
@@ -99,8 +99,8 @@ namespace OverhaulMod.UI
 
         public void OnNotifyAboutTestBuildsToggled(bool value)
         {
-            ModSettingsManager.SetBoolValue(ModSettingsConstants.CHECK_UPDATES_ON_NEXT_START, true);
-            ModSettingsManager.SetBoolValue(ModSettingsConstants.NOTIFY_ABOUT_NEW_TEST_BUILDS, value, true);
+            ModSettingsManager.SetBoolValue(ModSettingIDs.CHECK_UPDATES_ON_NEXT_START, true);
+            ModSettingsManager.SetBoolValue(ModSettingIDs.NOTIFY_ABOUT_NEW_TEST_BUILDS, value, true);
         }
 
         public void OnEditorButtonClicked()
@@ -158,7 +158,7 @@ namespace OverhaulMod.UI
                         instantiateBuildDisplay(build.Key, build.Value);
                     }
 
-                    ModSettingsManager.SetStringValue(ModSettingsConstants.UPDATES_LAST_CHECKED_DATE, DateTime.Now.ToString());
+                    ModSettingsManager.SetStringValue(ModSettingIDs.UPDATES_LAST_CHECKED_DATE, DateTime.Now.ToString());
                     ModSettingsDataManager.Instance.Save();
                 }
                 else

@@ -8,7 +8,7 @@ namespace OverhaulMod.UI
 {
     public class UIDeveloperMenu : ModBehaviour
     {
-        [ModSetting(ModSettingsConstants.ENABLE_DEBUG_MENU, true)]
+        [ModSetting(ModSettingIDs.ENABLE_DEBUG_MENU, true)]
         public static bool EnableDebugMenu;
 
         private static readonly Dictionary<string, string> s_debugValues = new Dictionary<string, string>();

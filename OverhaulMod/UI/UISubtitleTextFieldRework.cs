@@ -8,25 +8,25 @@ namespace OverhaulMod.UI
 {
     public class UISubtitleTextFieldRework : OverhaulUIBehaviour
     {
-        [ModSetting(ModSettingsConstants.ENABLE_SUBTITLE_TEXT_FIELD_REWORK, true)]
+        [ModSetting(ModSettingIDs.ENABLE_SUBTITLE_TEXT_FIELD_REWORK, true)]
         public static bool EnableRework;
 
-        [ModSetting(ModSettingsConstants.SUBTITLE_TEXT_FIELD_UPPER_POSITION, true)]
+        [ModSetting(ModSettingIDs.SUBTITLE_TEXT_FIELD_UPPER_POSITION, true)]
         public static bool BeOnTop;
 
-        [ModSetting(ModSettingsConstants.SUBTITLE_TEXT_FIELD_BG, false)]
+        [ModSetting(ModSettingIDs.SUBTITLE_TEXT_FIELD_BG, false)]
         public static bool EnableBG;
 
-        [ModSetting(ModSettingsConstants.SUBTITLE_TEXT_FIELD_FONT, 1)]
+        [ModSetting(ModSettingIDs.SUBTITLE_TEXT_FIELD_FONT, 1)]
         public static int FontType;
 
-        [ModSetting(ModSettingsConstants.SUBTITLE_TEXT_FIELD_FONT_SIZE, 11)]
+        [ModSetting(ModSettingIDs.SUBTITLE_TEXT_FIELD_FONT_SIZE, 11)]
         public static int FontSize;
 
-        [ModSetting(ModSettingsConstants.SHOW_SPEAKER_NAME, true)]
+        [ModSetting(ModSettingIDs.SHOW_SPEAKER_NAME, true)]
         public static bool ShowSpeakerName;
 
-        [ModSetting(ModSettingsConstants.SWAP_SUBTITLES_COLOR, false)]
+        [ModSetting(ModSettingIDs.SWAP_SUBTITLES_COLOR, false)]
         public static bool SwapSubtitlesColor;
 
         [UIElement("BG")]
@@ -71,10 +71,10 @@ namespace OverhaulMod.UI
             GlobalEventManager.Instance.AddEventListener("SpeechSentenceCancelled", onSentenceFinishedOrCancelled);
             GlobalEventManager.Instance.AddEventListener<string>(ModResources.ASSET_BUNDLE_LOADED_EVENT, onAssetBundleLoaded);
 
-            ModSettingsManager.Instance.AddSettingValueChangedListener(refreshSettings, ModSettingsConstants.SUBTITLE_TEXT_FIELD_BG);
-            ModSettingsManager.Instance.AddSettingValueChangedListener(refreshSettings, ModSettingsConstants.SUBTITLE_TEXT_FIELD_UPPER_POSITION);
-            ModSettingsManager.Instance.AddSettingValueChangedListener(refreshSettings, ModSettingsConstants.SUBTITLE_TEXT_FIELD_FONT);
-            ModSettingsManager.Instance.AddSettingValueChangedListener(refreshSettings, ModSettingsConstants.SUBTITLE_TEXT_FIELD_FONT_SIZE);
+            ModSettingsManager.Instance.AddSettingValueChangedListener(refreshSettings, ModSettingIDs.SUBTITLE_TEXT_FIELD_BG);
+            ModSettingsManager.Instance.AddSettingValueChangedListener(refreshSettings, ModSettingIDs.SUBTITLE_TEXT_FIELD_UPPER_POSITION);
+            ModSettingsManager.Instance.AddSettingValueChangedListener(refreshSettings, ModSettingIDs.SUBTITLE_TEXT_FIELD_FONT);
+            ModSettingsManager.Instance.AddSettingValueChangedListener(refreshSettings, ModSettingIDs.SUBTITLE_TEXT_FIELD_FONT_SIZE);
 
             refreshSettings(null);
         }
@@ -88,10 +88,10 @@ namespace OverhaulMod.UI
             GlobalEventManager.Instance.RemoveEventListener("SpeechSentenceCancelled", onSentenceFinishedOrCancelled);
             GlobalEventManager.Instance.RemoveEventListener<string>(ModResources.ASSET_BUNDLE_LOADED_EVENT, onAssetBundleLoaded);
 
-            ModSettingsManager.Instance.RemoveSettingValueChangedListener(refreshSettings, ModSettingsConstants.SUBTITLE_TEXT_FIELD_BG);
-            ModSettingsManager.Instance.RemoveSettingValueChangedListener(refreshSettings, ModSettingsConstants.SUBTITLE_TEXT_FIELD_UPPER_POSITION);
-            ModSettingsManager.Instance.RemoveSettingValueChangedListener(refreshSettings, ModSettingsConstants.SUBTITLE_TEXT_FIELD_FONT);
-            ModSettingsManager.Instance.RemoveSettingValueChangedListener(refreshSettings, ModSettingsConstants.SUBTITLE_TEXT_FIELD_FONT_SIZE);
+            ModSettingsManager.Instance.RemoveSettingValueChangedListener(refreshSettings, ModSettingIDs.SUBTITLE_TEXT_FIELD_BG);
+            ModSettingsManager.Instance.RemoveSettingValueChangedListener(refreshSettings, ModSettingIDs.SUBTITLE_TEXT_FIELD_UPPER_POSITION);
+            ModSettingsManager.Instance.RemoveSettingValueChangedListener(refreshSettings, ModSettingIDs.SUBTITLE_TEXT_FIELD_FONT);
+            ModSettingsManager.Instance.RemoveSettingValueChangedListener(refreshSettings, ModSettingIDs.SUBTITLE_TEXT_FIELD_FONT_SIZE);
         }
 
         public override void Update()

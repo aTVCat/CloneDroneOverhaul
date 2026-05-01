@@ -34,7 +34,7 @@ namespace OverhaulMod.UI
             if (_disallowCallbacks)
                 return;
 
-            ModSettingsManager.SetBoolValue(ModSettingsConstants.ALLOW_ENEMIES_USE_WEAPON_SKINS, value, true);
+            ModSettingsManager.SetBoolValue(ModSettingIDs.ALLOW_ENEMIES_USE_WEAPON_SKINS, value, true);
         }
     }
 }

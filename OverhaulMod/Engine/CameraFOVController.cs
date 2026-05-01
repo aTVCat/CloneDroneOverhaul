@@ -11,10 +11,10 @@ namespace OverhaulMod.Engine
 
         public const float FOV_MAX_POSITIVE_OFFSET = 55f;
 
-        [ModSetting(ModSettingsConstants.ENABLE_FOV_OVERRIDE, false)]
+        [ModSetting(ModSettingIDs.ENABLE_FOV_OVERRIDE, false)]
         public static bool EnableFOVOverride;
 
-        [ModSetting(ModSettingsConstants.CAMERA_FOV_OFFSET, 0f)]
+        [ModSetting(ModSettingIDs.CAMERA_FOV_OFFSET, 0f)]
         public static float FOVOffset;
 
         private CameraManager _cameraManager;

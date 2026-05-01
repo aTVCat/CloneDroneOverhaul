@@ -8,31 +8,31 @@ namespace OverhaulMod.Content.Personalization
 {
     public class PersonalizationUserInfo
     {
-        [ModSetting(ModSettingsConstants.SWORD_SKIN, null)]
+        [ModSetting(ModSettingIDs.SWORD_SKIN, null)]
         public static string SwordSkin;
 
-        [ModSetting(ModSettingsConstants.BOW_SKIN, null)]
+        [ModSetting(ModSettingIDs.BOW_SKIN, null)]
         public static string BowSkin;
 
-        [ModSetting(ModSettingsConstants.HAMMER_SKIN, null)]
+        [ModSetting(ModSettingIDs.HAMMER_SKIN, null)]
         public static string HammerSkin;
 
-        [ModSetting(ModSettingsConstants.SPEAR_SKIN, null)]
+        [ModSetting(ModSettingIDs.SPEAR_SKIN, null)]
         public static string SpearSkin;
 
-        [ModSetting(ModSettingsConstants.SHIELD_SKIN, null)]
+        [ModSetting(ModSettingIDs.SHIELD_SKIN, null)]
         public static string ShieldSkin;
 
-        [ModSetting(ModSettingsConstants.SCYTHE_SKIN, null)]
+        [ModSetting(ModSettingIDs.SCYTHE_SKIN, null)]
         public static string ScytheSkin;
 
-        [ModSetting(ModSettingsConstants.ACCESSORIES, "")]
+        [ModSetting(ModSettingIDs.ACCESSORIES, "")]
         public static string Accessories;
 
-        [ModSetting(ModSettingsConstants.PETS, "")]
+        [ModSetting(ModSettingIDs.PETS, "")]
         public static string Pets;
 
-        [ModSetting(ModSettingsConstants.ALLOW_ENEMIES_USE_WEAPON_SKINS, true)]
+        [ModSetting(ModSettingIDs.ALLOW_ENEMIES_USE_WEAPON_SKINS, true)]
         public static bool AllowEnemiesUseSkins;
 
         public List<string> DiscoveredItems;
@@ -216,22 +216,22 @@ namespace OverhaulMod.Content.Personalization
             switch (weaponType)
             {
                 case WeaponType.Sword:
-                    ModSettingsManager.SetStringValue(ModSettingsConstants.SWORD_SKIN, itemId);
+                    ModSettingsManager.SetStringValue(ModSettingIDs.SWORD_SKIN, itemId);
                     break;
                 case WeaponType.Bow:
-                    ModSettingsManager.SetStringValue(ModSettingsConstants.BOW_SKIN, itemId);
+                    ModSettingsManager.SetStringValue(ModSettingIDs.BOW_SKIN, itemId);
                     break;
                 case WeaponType.Hammer:
-                    ModSettingsManager.SetStringValue(ModSettingsConstants.HAMMER_SKIN, itemId);
+                    ModSettingsManager.SetStringValue(ModSettingIDs.HAMMER_SKIN, itemId);
                     break;
                 case WeaponType.Spear:
-                    ModSettingsManager.SetStringValue(ModSettingsConstants.SPEAR_SKIN, itemId);
+                    ModSettingsManager.SetStringValue(ModSettingIDs.SPEAR_SKIN, itemId);
                     break;
                 case WeaponType.Shield:
-                    ModSettingsManager.SetStringValue(ModSettingsConstants.SHIELD_SKIN, itemId);
+                    ModSettingsManager.SetStringValue(ModSettingIDs.SHIELD_SKIN, itemId);
                     break;
                 case ModWeaponsManager.SCYTHE_TYPE:
-                    ModSettingsManager.SetStringValue(ModSettingsConstants.SCYTHE_SKIN, itemId);
+                    ModSettingsManager.SetStringValue(ModSettingIDs.SCYTHE_SKIN, itemId);
                     break;
             }
         }
@@ -307,11 +307,11 @@ namespace OverhaulMod.Content.Personalization
             string settingId;
             if (category == PersonalizationCategory.Accessories)
             {
-                settingId = ModSettingsConstants.ACCESSORIES;
+                settingId = ModSettingIDs.ACCESSORIES;
             }
             else if (category == PersonalizationCategory.Pets)
             {
-                settingId = ModSettingsConstants.PETS;
+                settingId = ModSettingIDs.PETS;
             }
             else
             {

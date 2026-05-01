@@ -8,7 +8,7 @@ namespace OverhaulMod.Engine
     public class ArenaRemodelManager : Singleton<ArenaRemodelManager>, IGameLoadListener
     {
         [ModSettingRequireRestart]
-        [ModSetting(ModSettingsConstants.ENABLE_ARENA_REMODEL, true)]
+        [ModSetting(ModSettingIDs.ENABLE_ARENA_REMODEL, true)]
         public static bool EnableRemodel;
 
         public readonly string[] IgnoredParts = new string[]

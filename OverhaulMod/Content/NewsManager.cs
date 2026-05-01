@@ -36,7 +36,7 @@ namespace OverhaulMod.Content
                     if (newsInfoList.News == null)
                         newsInfoList.News = new System.Collections.Generic.List<NewsInfo>();
 
-                    ModSettingsManager.SetIntValue(ModSettingsConstants.DOWNLOADED_NEWS_COUNT, newsInfoList.News.Count);
+                    ModSettingsManager.SetIntValue(ModSettingIDs.DOWNLOADED_NEWS_COUNT, newsInfoList.News.Count);
                     ModSettingsDataManager.Instance.Save();
                 }
                 catch (Exception exc)

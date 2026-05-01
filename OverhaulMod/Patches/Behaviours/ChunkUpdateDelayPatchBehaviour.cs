@@ -10,7 +10,7 @@ namespace OverhaulMod.Patches.Behaviours
         private const float MINIMAL_MULTIPLIER = 0.4f;
         private const float OPTIMAL_MULTIPLIER = 1f;
 
-        [ModSetting(ModSettingsConstants.CHUNK_UPDATE_DELAY, ChunkUpdateDelay.Absent)]
+        [ModSetting(ModSettingIDs.CHUNK_UPDATE_DELAY, ChunkUpdateDelay.Absent)]
         public static ChunkUpdateDelay UpdateDelay;
 
         private List<MinWaitBetweenChunkUpdatesForSize> _chunkUpdatesRate;

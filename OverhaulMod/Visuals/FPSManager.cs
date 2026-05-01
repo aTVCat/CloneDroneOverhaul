@@ -8,7 +8,7 @@ namespace OverhaulMod.Visuals
 {
     public class FPSManager : Singleton<FPSManager>
     {
-        [ModSetting(ModSettingsConstants.FPS_CAP, -1)]
+        [ModSetting(ModSettingIDs.FPS_CAP, -1)]
         public static int FPSCap;
 
         public static readonly List<Dropdown.OptionData> FPSCapOptions = new List<Dropdown.OptionData>()
@@ -64,7 +64,7 @@ namespace OverhaulMod.Visuals
 
         public void SetFPSCap(int value)
         {
-            ModSettingsManager.SetIntValue(ModSettingsConstants.FPS_CAP, value);
+            ModSettingsManager.SetIntValue(ModSettingIDs.FPS_CAP, value);
         }
 
         public void RefreshDropdownOptionTranslation()

@@ -27,16 +27,16 @@ namespace OverhaulMod.Visuals
 
         public const string LOGO_EXPLOSION_PARTICLES_ID = "VFX_LogoExplosion";
 
-        [ModSetting(ModSettingsConstants.ENABLE_HIT_PARTICLES, true)]
+        [ModSetting(ModSettingIDs.ENABLE_HIT_PARTICLES, true)]
         public static bool EnableHitParticles;
 
-        [ModSetting(ModSettingsConstants.NEW_EXPLOSION_PARTICLES, true)]
+        [ModSetting(ModSettingIDs.NEW_EXPLOSION_PARTICLES, true)]
         public static bool NewExplosionParticles;
 
-        [ModSetting(ModSettingsConstants.REDUCE_FLASHES, false)]
+        [ModSetting(ModSettingIDs.REDUCE_FLASHES, false)]
         public static bool ReduceFlashes;
 
-        [ModSetting(ModSettingsConstants.NEW_WELDING_PARTICLES, true)]
+        [ModSetting(ModSettingIDs.NEW_WELDING_PARTICLES, true)]
         public static bool ReworkWeldingParticles;
 
         private GameObject _logoParticles;

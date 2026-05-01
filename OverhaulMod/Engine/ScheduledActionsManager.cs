@@ -5,19 +5,19 @@ namespace OverhaulMod.Engine
 {
     public class ScheduledActionsManager : Singleton<ScheduledActionsManager>
     {
-        [ModSetting(ModSettingsConstants.REFRESH_MOD_UPDATES_DATE_TIME, null, ModSetting.Tags.IgnoreExport)]
+        [ModSetting(ModSettingIDs.REFRESH_MOD_UPDATES_DATE_TIME, null, ModSetting.Tags.IgnoreExport)]
         public static string RefreshModUpdatesDateTime;
 
-        [ModSetting(ModSettingsConstants.REFRESH_EXCLUSIVE_PERKS_DATE_TIME, null, ModSetting.Tags.IgnoreExport)]
+        [ModSetting(ModSettingIDs.REFRESH_EXCLUSIVE_PERKS_DATE_TIME, null, ModSetting.Tags.IgnoreExport)]
         public static string RefreshExclusivePerksDateTime;
 
-        [ModSetting(ModSettingsConstants.REFRESH_CUSTOMIZATION_ASSETS_REMOTE_VERSION_DATE_TIME, null, ModSetting.Tags.IgnoreExport)]
+        [ModSetting(ModSettingIDs.REFRESH_CUSTOMIZATION_ASSETS_REMOTE_VERSION_DATE_TIME, null, ModSetting.Tags.IgnoreExport)]
         public static string RefreshCustomizationAssetsRemoteVersionDateTime;
 
-        [ModSetting(ModSettingsConstants.REFRESH_NEWS_DATE_TIME, null, ModSetting.Tags.IgnoreExport)]
+        [ModSetting(ModSettingIDs.REFRESH_NEWS_DATE_TIME, null, ModSetting.Tags.IgnoreExport)]
         public static string RefreshNewsDateTime;
 
-        [ModSetting(ModSettingsConstants.REFRESH_ADDON_UPDATES_DATE_TIME, null, ModSetting.Tags.IgnoreExport)]
+        [ModSetting(ModSettingIDs.REFRESH_ADDON_UPDATES_DATE_TIME, null, ModSetting.Tags.IgnoreExport)]
         public static string RefreshAddonUpdatesDateTime;
 
         public void SetActionExecuted(ScheduledActionType scheduledAction)
@@ -26,19 +26,19 @@ namespace OverhaulMod.Engine
             switch (scheduledAction)
             {
                 case ScheduledActionType.RefreshModUpdates:
-                    ModSettingsManager.SetStringValue(ModSettingsConstants.REFRESH_MOD_UPDATES_DATE_TIME, dateTime.AddDays(2).ToString());
+                    ModSettingsManager.SetStringValue(ModSettingIDs.REFRESH_MOD_UPDATES_DATE_TIME, dateTime.AddDays(2).ToString());
                     break;
                 case ScheduledActionType.RefreshExclusivePerks:
-                    ModSettingsManager.SetStringValue(ModSettingsConstants.REFRESH_EXCLUSIVE_PERKS_DATE_TIME, dateTime.AddDays(5).ToString());
+                    ModSettingsManager.SetStringValue(ModSettingIDs.REFRESH_EXCLUSIVE_PERKS_DATE_TIME, dateTime.AddDays(5).ToString());
                     break;
                 case ScheduledActionType.RefreshCustomizationAssetsRemoteVersion:
-                    ModSettingsManager.SetStringValue(ModSettingsConstants.REFRESH_CUSTOMIZATION_ASSETS_REMOTE_VERSION_DATE_TIME, dateTime.AddDays(2).ToString());
+                    ModSettingsManager.SetStringValue(ModSettingIDs.REFRESH_CUSTOMIZATION_ASSETS_REMOTE_VERSION_DATE_TIME, dateTime.AddDays(2).ToString());
                     break;
                 case ScheduledActionType.RefreshNews:
-                    ModSettingsManager.SetStringValue(ModSettingsConstants.REFRESH_NEWS_DATE_TIME, dateTime.AddDays(3).ToString());
+                    ModSettingsManager.SetStringValue(ModSettingIDs.REFRESH_NEWS_DATE_TIME, dateTime.AddDays(3).ToString());
                     break;
                 case ScheduledActionType.RefreshAddonUpdates:
-                    ModSettingsManager.SetStringValue(ModSettingsConstants.REFRESH_ADDON_UPDATES_DATE_TIME, dateTime.AddDays(5).ToString());
+                    ModSettingsManager.SetStringValue(ModSettingIDs.REFRESH_ADDON_UPDATES_DATE_TIME, dateTime.AddDays(5).ToString());
                     break;
             }
             ModSettingsDataManager.Instance.Save();

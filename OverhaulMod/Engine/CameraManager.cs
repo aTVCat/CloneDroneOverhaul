@@ -10,10 +10,10 @@ namespace OverhaulMod.Engine
 
         public const string FIRST_PERSON_MODE_SWITCHED_EVENT = "FirstPersonModeSwitched";
 
-        [ModSetting(ModSettingsConstants.ENABLE_FIRST_PERSON_MODE, false)]
+        [ModSetting(ModSettingIDs.ENABLE_FIRST_PERSON_MODE, false)]
         public static bool EnableFirstPersonMode;
 
-        [ModSetting(ModSettingsConstants.CAMERA_MODE_TOGGLE_KEYBIND, KeyCode.Y)]
+        [ModSetting(ModSettingIDs.CAMERA_MODE_TOGGLE_KEYBIND, KeyCode.Y)]
         public static KeyCode CameraModeToggleKeyBind;
 
         public bool IsCameraControlledByCutscene
@@ -233,7 +233,7 @@ namespace OverhaulMod.Engine
                 return;
 
             bool value = !EnableFirstPersonMode;
-            ModSettingsManager.SetBoolValue(ModSettingsConstants.ENABLE_FIRST_PERSON_MODE, value);
+            ModSettingsManager.SetBoolValue(ModSettingIDs.ENABLE_FIRST_PERSON_MODE, value);
 
             EnergyUI energyUI = ModCache.UIRoot?.EnergyUI;
             if (energyUI)

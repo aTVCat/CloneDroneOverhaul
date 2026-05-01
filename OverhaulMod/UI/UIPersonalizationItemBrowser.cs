@@ -12,7 +12,7 @@ namespace OverhaulMod.UI
 {
     public class UIPersonalizationItemBrowser : OverhaulUIBehaviour
     {
-        [ModSetting(ModSettingsConstants.HAS_EVER_ROTATED_THE_CAMERA, false)]
+        [ModSetting(ModSettingIDs.HAS_EVER_ROTATED_THE_CAMERA, false)]
         public static bool HasEverRotatedTheCamera;
 
         public static bool IsPreviewing;
@@ -236,7 +236,7 @@ namespace OverhaulMod.UI
                 bool mouseButtonDown = Input.GetMouseButton(1);
                 if (mouseButtonDown && !HasEverRotatedTheCamera)
                 {
-                    ModSettingsManager.SetBoolValue(ModSettingsConstants.HAS_EVER_ROTATED_THE_CAMERA, true);
+                    ModSettingsManager.SetBoolValue(ModSettingIDs.HAS_EVER_ROTATED_THE_CAMERA, true);
                 }
 
                 float d2 = Time.deltaTime * 15f;
@@ -694,7 +694,7 @@ namespace OverhaulMod.UI
             if (!_allowUICallbacks)
                 return;
 
-            ModSettingsManager.SetBoolValue(ModSettingsConstants.ALLOW_ENEMIES_USE_WEAPON_SKINS, value, true);
+            ModSettingsManager.SetBoolValue(ModSettingIDs.ALLOW_ENEMIES_USE_WEAPON_SKINS, value, true);
 
             PersonalizationManager.Instance.RefreshCustomizationOnAllRobots(false, true);
         }

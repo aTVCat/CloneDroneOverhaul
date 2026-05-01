@@ -2,7 +2,7 @@
 
 namespace OverhaulMod.Utils
 {
-    public static class ModSettingsConstants
+    public static class ModSettingIDs
     {
         public const string UI_PREFIX = "ModUI_";
 
@@ -119,7 +119,7 @@ namespace OverhaulMod.Utils
         /// <summary>
         /// <see cref="UI.UIImageEffects"/>
         /// </summary>
-        public const string ENABLE_VIGNETTE = "EnableVignette";
+        public const string ENABLE_VIGNETTE = "EnableVignette_2";
 
         /// <summary>
         /// <see cref="UI.UIImageEffects"/>
@@ -132,7 +132,7 @@ namespace OverhaulMod.Utils
         public const string ENABLE_HIT_PARTICLES = "EnableHitParticles";
 
         /// <summary>
-        /// <see cref="Visuals.Environment.SeveredBodyPartSparks"/>
+        /// <see cref="Visuals.SeveredBodyPartSparks"/>
         /// </summary>
         public const string ENABLE_GARBAGE_PARTICLES = "EnableGarbageParticles";
 
@@ -169,27 +169,27 @@ namespace OverhaulMod.Utils
         /// <summary>
         /// <see cref="Content.Personalization.PersonalizationController"/>
         /// </summary>
-        public const string SWORD_SKIN = "SwordSkinV2";
+        public const string SWORD_SKIN = "SwordSkin";
 
         /// <summary>
         /// <see cref="Content.Personalization.PersonalizationController"/>
         /// </summary>
-        public const string BOW_SKIN = "BowSkinV2";
+        public const string BOW_SKIN = "BowSkin";
 
         /// <summary>
         /// <see cref="Content.Personalization.PersonalizationController"/>
         /// </summary>
-        public const string HAMMER_SKIN = "HammerSkinV2";
+        public const string HAMMER_SKIN = "HammerSkin";
 
         /// <summary>
         /// <see cref="Content.Personalization.PersonalizationController"/>
         /// </summary>
-        public const string SPEAR_SKIN = "SpearSkinV2";
+        public const string SPEAR_SKIN = "SpearSkin";
 
         /// <summary>
         /// <see cref="Content.Personalization.PersonalizationController"/>
         /// </summary>
-        public const string SHIELD_SKIN = "ShieldSkinV2";
+        public const string SHIELD_SKIN = "ShieldSkin";
 
         /// <summary>
         /// <see cref="Content.Personalization.PersonalizationController"/>
@@ -459,7 +459,7 @@ namespace OverhaulMod.Utils
         /// <summary>
         /// <see cref="Content.NewsManager"/>
         /// </summary>
-        public const string PREV_NEWS_COUNT = "PrevNewsCountV3";
+        public const string PREV_NEWS_COUNT = "PrevNewsCount";
 
         /// <summary>
         /// <see cref="Content.NewsManager"/>
@@ -555,11 +555,6 @@ namespace OverhaulMod.Utils
         /// <see cref="Visuals.PostEffectsManager"/>
         /// </summary>
         public const string ENABLE_GLOBAL_ILLUMINATION = "EnableGI";
-
-        /// <summary>
-        /// <see cref="Visuals.PostEffectsManager"/>
-        /// </summary>
-        public const string ENABLE_REFLECTION_PROBE = "EnableReflectionProbeV2";
 
         /// <summary>
         /// <see cref="ModCore"/>

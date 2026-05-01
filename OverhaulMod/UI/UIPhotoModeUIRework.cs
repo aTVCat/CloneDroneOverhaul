@@ -74,10 +74,6 @@ namespace OverhaulMod.UI
         [UIElement("GlobalIlluminationToggle")]
         private readonly Toggle _globalIlluminationToggle;
 
-        [UIElementAction(nameof(OnReflectionProbeToggled))]
-        [UIElement("ReflectionProbeToggle")]
-        private readonly Toggle _reflectionProbeToggle;
-
         [UIElementAction(nameof(OnCAToggled))]
         [UIElement("CAToggle")]
         private readonly Toggle _caToggle;
@@ -194,7 +190,7 @@ namespace OverhaulMod.UI
             base.Show();
             ModActionUtils.DoInFrame(setFieldsValues);
 
-            _autoResetLightingSettingsToggle.isOn = ModSettingsManager.GetBoolValue(ModSettingsConstants.AUTO_RESET_LIGHTING_SETTINGS);
+            _autoResetLightingSettingsToggle.isOn = ModSettingsManager.GetBoolValue(ModSettingIDs.AUTO_RESET_LIGHTING_SETTINGS);
         }
 
         public override void Hide()
@@ -241,7 +237,6 @@ namespace OverhaulMod.UI
             _ambientOcclusionToggle.isOn = AdvancedPhotoModeManager.Settings.EnableSSAO;
             _vignetteIntensitySlider.value = AdvancedPhotoModeManager.Settings.VignetteIntensity;
             _globalIlluminationToggle.isOn = AdvancedPhotoModeManager.Settings.EnableGlobalIllumination;
-            _reflectionProbeToggle.isOn = AdvancedPhotoModeManager.Settings.EnableReflectionProbe;
             _caToggle.isOn = AdvancedPhotoModeManager.Settings.EnableCA;
             _sunShaftsToggle.isOn = AdvancedPhotoModeManager.Settings.EnableSunShafts;
             _dofToggle.isOn = AdvancedPhotoModeManager.Settings.EnableDoF;
@@ -452,15 +447,6 @@ namespace OverhaulMod.UI
             PostEffectsManager.Instance.RefreshCameraPostEffects();
         }
 
-        public void OnReflectionProbeToggled(bool value)
-        {
-            if (_disallowCallbacks)
-                return;
-
-            AdvancedPhotoModeManager.Settings.EnableReflectionProbe = value;
-            PostEffectsManager.Instance.RefreshCameraPostEffects();
-        }
-
         public void OnCAToggled(bool value)
         {
             if (_disallowCallbacks)
@@ -634,7 +620,7 @@ namespace OverhaulMod.UI
 
         public void OnAutoResetLightingSettingsToggleChanged(bool value)
         {
-            ModSettingsManager.SetBoolValue(ModSettingsConstants.AUTO_RESET_LIGHTING_SETTINGS, value, true);
+            ModSettingsManager.SetBoolValue(ModSettingIDs.AUTO_RESET_LIGHTING_SETTINGS, value, true);
         }
     }
 }

@@ -12,7 +12,7 @@ namespace OverhaulMod.UI
     {
         private static Color s_darkerWhite = new Color(0.95f, 0.95f, 0.95f, 1f);
 
-        [ModSetting(ModSettingsConstants.LAST_BUILD_CHANGELOG_WAS_SHOWN, null)]
+        [ModSetting(ModSettingIDs.LAST_BUILD_CHANGELOG_WAS_SHOWN, null)]
         public static string LastBuildChangelogWasShownOn;
 
         [UIElementAction(nameof(OnCloseButtonClicked))]
@@ -158,7 +158,7 @@ namespace OverhaulMod.UI
         {
             base.Hide();
 
-            ModSettingsManager.SetStringValue(ModSettingsConstants.LAST_BUILD_CHANGELOG_WAS_SHOWN, ModBuild.Version.ToString());
+            ModSettingsManager.SetStringValue(ModSettingIDs.LAST_BUILD_CHANGELOG_WAS_SHOWN, ModBuild.Version.ToString());
             ModSettingsDataManager.Instance.Save();
         }
 

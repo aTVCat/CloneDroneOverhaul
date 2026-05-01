@@ -11,16 +11,16 @@ namespace OverhaulMod.UI
     {
         public const int CHARACTER_LIMIT = 500;
 
-        [ModSetting(ModSettingsConstants.HAS_EVER_SENT_FEEDBACK, false)]
+        [ModSetting(ModSettingIDs.HAS_EVER_SENT_FEEDBACK, false)]
         public static bool HasEverSentFeedback;
 
-        [ModSetting(ModSettingsConstants.FEEDBACK_MENU_RATE, 0)]
+        [ModSetting(ModSettingIDs.FEEDBACK_MENU_RATE, 0)]
         public static int SavedRating;
 
-        [ModSetting(ModSettingsConstants.FEEDBACK_MENU_IMPROVE_TEXT, null)]
+        [ModSetting(ModSettingIDs.FEEDBACK_MENU_IMPROVE_TEXT, null)]
         public static string SavedImproveText;
 
-        [ModSetting(ModSettingsConstants.FEEDBACK_MENU_FAVORITE_TEXT, null)]
+        [ModSetting(ModSettingIDs.FEEDBACK_MENU_FAVORITE_TEXT, null)]
         public static string SavedFavoriteText;
 
         public static bool HasSentFeedback, HasLikedTheMod;
@@ -141,9 +141,9 @@ namespace OverhaulMod.UI
         {
             base.Hide();
 
-            ModSettingsManager.SetIntValue(ModSettingsConstants.FEEDBACK_MENU_RATE, selectedRank);
-            ModSettingsManager.SetStringValue(ModSettingsConstants.FEEDBACK_MENU_IMPROVE_TEXT, _improveField.text);
-            ModSettingsManager.SetStringValue(ModSettingsConstants.FEEDBACK_MENU_FAVORITE_TEXT, _favoriteField.text);
+            ModSettingsManager.SetIntValue(ModSettingIDs.FEEDBACK_MENU_RATE, selectedRank);
+            ModSettingsManager.SetStringValue(ModSettingIDs.FEEDBACK_MENU_IMPROVE_TEXT, _improveField.text);
+            ModSettingsManager.SetStringValue(ModSettingIDs.FEEDBACK_MENU_FAVORITE_TEXT, _favoriteField.text);
             ModSettingsDataManager.Instance.Save();
         }
 
@@ -220,9 +220,9 @@ namespace OverhaulMod.UI
 
                 if (!HasEverSentFeedback)
                 {
-                    ModSettingsManager.SetStringValue(ModSettingsConstants.FEEDBACK_MENU_IMPROVE_TEXT, string.Empty);
-                    ModSettingsManager.SetStringValue(ModSettingsConstants.FEEDBACK_MENU_FAVORITE_TEXT, string.Empty);
-                    ModSettingsManager.SetBoolValue(ModSettingsConstants.HAS_EVER_SENT_FEEDBACK, true);
+                    ModSettingsManager.SetStringValue(ModSettingIDs.FEEDBACK_MENU_IMPROVE_TEXT, string.Empty);
+                    ModSettingsManager.SetStringValue(ModSettingIDs.FEEDBACK_MENU_FAVORITE_TEXT, string.Empty);
+                    ModSettingsManager.SetBoolValue(ModSettingIDs.HAS_EVER_SENT_FEEDBACK, true);
                     _skipButton.gameObject.SetActive(false);
                 }
             }, delegate (string error)
@@ -271,7 +271,7 @@ namespace OverhaulMod.UI
         public void OnSkipButtonClicked()
         {
             _skipButton.interactable = false;
-            ModSettingsManager.SetBoolValue(ModSettingsConstants.HAS_EVER_SENT_FEEDBACK, true);
+            ModSettingsManager.SetBoolValue(ModSettingIDs.HAS_EVER_SENT_FEEDBACK, true);
         }
     }
 }

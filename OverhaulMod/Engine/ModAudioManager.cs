@@ -7,31 +7,31 @@ namespace OverhaulMod.Engine
 {
     public class ModAudioManager : Singleton<ModAudioManager>, IGameLoadListener
     {
-        [ModSetting(ModSettingsConstants.ENABLE_REVERB_FILTER, true)]
+        [ModSetting(ModSettingIDs.ENABLE_REVERB_FILTER, true)]
         public static bool EnableReverbFilter;
 
-        [ModSetting(ModSettingsConstants.REVERB_FILTER_INTENSITY, 0.6f)]
+        [ModSetting(ModSettingIDs.REVERB_FILTER_INTENSITY, 0.6f)]
         public static float ReverbIntensity;
 
-        [ModSetting(ModSettingsConstants.MUTE_SOUND_WHEN_UNFOCUSED, false)]
+        [ModSetting(ModSettingIDs.MUTE_SOUND_WHEN_UNFOCUSED, false)]
         public static bool MuteSoundWhenUnfocused;
 
-        [ModSetting(ModSettingsConstants.MUTE_MASTER_VOLUME_WHEN_UNFOCUSED, true)]
+        [ModSetting(ModSettingIDs.MUTE_MASTER_VOLUME_WHEN_UNFOCUSED, true)]
         public static bool MuteMasterVolumeWhenUnfocused;
 
-        [ModSetting(ModSettingsConstants.MUTE_MUSIC_WHEN_UNFOCUSED, true)]
+        [ModSetting(ModSettingIDs.MUTE_MUSIC_WHEN_UNFOCUSED, true)]
         public static bool MuteMusicWhenUnfocused;
 
-        [ModSetting(ModSettingsConstants.MUTE_COMMENTATORS_WHEN_UNFOCUSED, true)]
+        [ModSetting(ModSettingIDs.MUTE_COMMENTATORS_WHEN_UNFOCUSED, true)]
         public static bool MuteCommentatorsWhenUnfocused;
 
-        [ModSetting(ModSettingsConstants.MUTE_SOUND_INSTANTLY_WHEN_UNFOCUSED, false)]
+        [ModSetting(ModSettingIDs.MUTE_SOUND_INSTANTLY_WHEN_UNFOCUSED, false)]
         public static bool MuteSoundInstantlyWhenUnfocused;
 
-        [ModSetting(ModSettingsConstants.MUTE_SPEED_MULTIPLIER, 0.6f)]
+        [ModSetting(ModSettingIDs.MUTE_SPEED_MULTIPLIER, 0.6f)]
         public static float MuteSpeedMultiplier;
 
-        [ModSetting(ModSettingsConstants.UI_SOUNDS, true)]
+        [ModSetting(ModSettingIDs.UI_SOUNDS, true)]
         public static bool UISounds;
 
         private AudioSource _musicAudioSource;

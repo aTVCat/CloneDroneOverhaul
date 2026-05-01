@@ -8,16 +8,16 @@ namespace OverhaulMod.Visuals
 {
     public class QualityManager : Singleton<QualityManager>
     {
-        [ModSetting(ModSettingsConstants.SHADOW_RESOLUTION, 3)]
+        [ModSetting(ModSettingIDs.SHADOW_RESOLUTION, 3)]
         public static ShadowResolution ShadowResolution;
 
-        [ModSetting(ModSettingsConstants.SHADOW_DISTANCE, 300f)]
+        [ModSetting(ModSettingIDs.SHADOW_DISTANCE, 300f)]
         public static float ShadowDistance;
 
-        [ModSetting(ModSettingsConstants.MAX_LIGHT_COUNT, 6)]
+        [ModSetting(ModSettingIDs.MAX_LIGHT_COUNT, 6)]
         public static int MaxLightCount;
 
-        [ModSetting(ModSettingsConstants.UNLIMITED_LIGHT_SOURCES, false)]
+        [ModSetting(ModSettingIDs.UNLIMITED_LIGHT_SOURCES, false)]
         public static bool UnlimitedLightSources;
 
         public void RefreshQualitySettings()

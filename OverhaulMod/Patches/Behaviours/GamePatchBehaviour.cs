@@ -21,7 +21,7 @@ namespace OverhaulMod.Patches.Behaviours
                 typeof(SubtitleTextFieldPatchBehaviour),
                 typeof(ChallengeManagerPatchBehaviour),
                 typeof(CustomizationButtonPatchBehaviour),
-                typeof(CloneDroneLogoParticlesBehaviour),
+                //typeof(CloneDroneLogoParticlesBehaviour) obsolete, new clone drone update added fire particles back
                 typeof(ChunkUpdateDelayPatchBehaviour),
             });
         }

@@ -7,7 +7,7 @@ namespace OverhaulMod.UI
 {
     public class UIVersionLabel : OverhaulUIBehaviour
     {
-        [ModSetting(ModSettingsConstants.SHOW_VERSION_LABEL, true)]
+        [ModSetting(ModSettingIDs.SHOW_VERSION_LABEL, true)]
         public static bool ShowLabel;
 
         [UIElement("NewVersionLabel_TitleScreen")]

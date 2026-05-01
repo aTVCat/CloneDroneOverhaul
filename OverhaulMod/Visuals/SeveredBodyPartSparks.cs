@@ -6,7 +6,7 @@ namespace OverhaulMod.Visuals
 {
     public class SeveredBodyPartSparks : MonoBehaviour
     {
-        [ModSetting(ModSettingsConstants.ENABLE_GARBAGE_PARTICLES, true)]
+        [ModSetting(ModSettingIDs.ENABLE_GARBAGE_PARTICLES, true)]
         public static bool EnableGarbageParticles;
 
         private CameraManager _cameraManager;

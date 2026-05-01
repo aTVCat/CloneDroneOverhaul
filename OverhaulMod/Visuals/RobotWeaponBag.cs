@@ -21,7 +21,7 @@ namespace OverhaulMod.Visuals
 
         public const float ADDITIONAL_OFFSET = -0.1f;
 
-        [ModSetting(ModSettingsConstants.ENABLE_WEAPON_BAG, true)]
+        [ModSetting(ModSettingIDs.ENABLE_WEAPON_BAG, true)]
         public static bool EnableWeaponBag;
 
         public static readonly WeaponType[] SupportedWeapons = new WeaponType[]

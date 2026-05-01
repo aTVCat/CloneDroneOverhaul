@@ -10,10 +10,10 @@ namespace OverhaulMod.Engine
 {
     public class AutoBuildManager : Singleton<AutoBuildManager>
     {
-        [ModSetting(ModSettingsConstants.AUTO_BUILD_KEY_BIND, KeyCode.U)]
+        [ModSetting(ModSettingIDs.AUTO_BUILD_KEY_BIND, KeyCode.U)]
         public static KeyCode AutoBuildKeyBind;
 
-        [ModSetting(ModSettingsConstants.AUTO_BUILD_INDEX_TO_USE_ON_MATCH_START, -1)]
+        [ModSetting(ModSettingIDs.AUTO_BUILD_INDEX_TO_USE_ON_MATCH_START, -1)]
         public static int AutoBuildIndexToUseOnMatchStart;
 
         private bool _hasSelectedUpgradesForMatch;

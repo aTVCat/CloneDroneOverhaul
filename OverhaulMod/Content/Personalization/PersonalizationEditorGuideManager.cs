@@ -7,7 +7,7 @@ namespace OverhaulMod.Content.Personalization
 {
     public class PersonalizationEditorGuideManager : Singleton<PersonalizationEditorGuideManager>
     {
-        [ModSetting(ModSettingsConstants.NEVER_SHOW_INTRODUCTION_GUIDE, false)]
+        [ModSetting(ModSettingIDs.NEVER_SHOW_INTRODUCTION_GUIDE, false)]
         public static bool NeverShowIntroductionGuide;
 
         private List<PersonalizationEditorGuide> _guides;
@@ -58,7 +58,7 @@ namespace OverhaulMod.Content.Personalization
 
         private void setNeverShowIntroductionGuide()
         {
-            ModSettingsManager.SetBoolValue(ModSettingsConstants.NEVER_SHOW_INTRODUCTION_GUIDE, true, true);
+            ModSettingsManager.SetBoolValue(ModSettingIDs.NEVER_SHOW_INTRODUCTION_GUIDE, true, true);
             ModUIManager.Instance.Get<UIPersonalizationEditor>(AssetBundleConstants.UI, ModUIConstants.UI_PERSONALIZATION_EDITOR).GuideWindow.FinishGuide();
         }
     }

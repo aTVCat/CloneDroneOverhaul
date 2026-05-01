@@ -149,7 +149,7 @@ namespace OverhaulMod.UI
         public void OnMusicTrackDropdownChanged(int index)
         {
             if (_ignoreCallbacks) return;
-            ModSettingsManager.Instance.SetSettingValueFromUI(ModSettingsConstants.TITLE_SCREEN_MUSIC_TRACK_INDEX, index);
+            ModSettingsManager.Instance.SetSettingValueFromUI(ModSettingIDs.TITLE_SCREEN_MUSIC_TRACK_INDEX, index);
             TitleScreenCustomizationManager.Instance.RefreshMusicTrack();
         }
 
@@ -162,38 +162,38 @@ namespace OverhaulMod.UI
         public void OnLogoParticlesToggled(bool value)
         {
             if (_ignoreCallbacks) return;
-            ModSettingsManager.Instance.SetSettingValueFromUI(ModSettingsConstants.CLONE_DRONE_LOGO_FIRE, value);
+            ModSettingsManager.Instance.SetSettingValueFromUI(ModSettingIDs.CLONE_DRONE_LOGO_FIRE, value);
         }
 
         public void OnSocialMediaPopupsToggled(bool value)
         {
             if (_ignoreCallbacks) return;
-            ModSettingsManager.Instance.SetSettingValueFromUI(ModSettingsConstants.TITLE_SCREEN_SOCIAL_MEDIA_POPUPS, value);
+            ModSettingsManager.Instance.SetSettingValueFromUI(ModSettingIDs.TITLE_SCREEN_SOCIAL_MEDIA_POPUPS, value);
         }
 
         public void OnSocialMediaButtonsToggled(bool value)
         {
             if (_ignoreCallbacks) return;
-            ModSettingsManager.Instance.SetSettingValueFromUI(ModSettingsConstants.TITLE_SCREEN_SOCIAL_MEDIA_BUTTONS, value);
+            ModSettingsManager.Instance.SetSettingValueFromUI(ModSettingIDs.TITLE_SCREEN_SOCIAL_MEDIA_BUTTONS, value);
             refreshSocialPopupsToggle();
         }
 
         public void OnModBotAccountInfoToggled(bool value)
         {
             if (_ignoreCallbacks) return;
-            ModSettingsManager.Instance.SetSettingValueFromUI(ModSettingsConstants.TITLE_SCREEN_SHOW_MODBOT_ACCOUNT_INFO, value);
+            ModSettingsManager.Instance.SetSettingValueFromUI(ModSettingIDs.TITLE_SCREEN_SHOW_MODBOT_ACCOUNT_INFO, value);
         }
 
         public void OnBGFadePowerChanged(float value)
         {
             if (_ignoreCallbacks) return;
-            ModSettingsManager.Instance.SetSettingValueFromUI(ModSettingsConstants.TITLE_SCREEN_BACKGROUND_FADE_POWER, value);
+            ModSettingsManager.Instance.SetSettingValueFromUI(ModSettingIDs.TITLE_SCREEN_BACKGROUND_FADE_POWER, value);
         }
 
         public void OnPanelPositionChanged(int value)
         {
             if (_ignoreCallbacks) return;
-            ModSettingsManager.Instance.SetSettingValueFromUI(ModSettingsConstants.TITLE_SCREEN_PANEL_POSITION, value);
+            ModSettingsManager.Instance.SetSettingValueFromUI(ModSettingIDs.TITLE_SCREEN_PANEL_POSITION, value);
         }
     }
 }

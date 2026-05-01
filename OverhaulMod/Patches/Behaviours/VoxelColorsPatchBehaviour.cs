@@ -6,7 +6,7 @@ namespace OverhaulMod.Patches.Behaviours
 {
     internal class VoxelColorsPatchBehaviour : GamePatchBehaviour
     {
-        [ModSetting(ModSettingsConstants.CHANGE_HIT_COLORS, true)]
+        [ModSetting(ModSettingIDs.CHANGE_HIT_COLORS, true)]
         public static bool ChangeColors;
 
         private static readonly Color _overhaulHitColor = new Color(4f, 0.65f, 0.35f, 0.2f);

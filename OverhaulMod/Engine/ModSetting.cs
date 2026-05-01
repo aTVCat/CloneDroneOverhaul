@@ -7,7 +7,7 @@ namespace OverhaulMod.Engine
 {
     public class ModSetting
     {
-        public string Name;
+        public string ID;
 
         public object DefaultValue;
 
@@ -36,16 +36,11 @@ namespace OverhaulMod.Engine
 
         public bool _hasNotifiedAboutRestarting;
 
-        public string GetPlayerPrefKey()
-        {
-            return "OverhaulMod." + Name;
-        }
-
         public object GetValue()
         {
             ModSettingsDataManager modSettingsDataManager = ModSettingsDataManager.Instance;
 
-            string key = GetPlayerPrefKey();
+            string key = ID;
             object result;
             switch (ValueType)
             {
@@ -84,7 +79,7 @@ namespace OverhaulMod.Engine
                 fieldInfo.SetValue(null, value);
             }
 
-            string key = GetPlayerPrefKey();
+            string key = ID;
             switch (ValueType)
             {
                 case ValueTypes.Bool:
@@ -109,7 +104,10 @@ namespace OverhaulMod.Engine
                     {
                         a?.Invoke(value);
                     }
-                    catch { }
+                    catch (Exception e)
+                    {
+                        ModDebug.Exception(e);
+                    }
                 }
             }
 

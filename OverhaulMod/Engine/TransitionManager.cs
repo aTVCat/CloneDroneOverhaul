@@ -11,13 +11,13 @@ namespace OverhaulMod.Engine
     {
         public const float WAIT_BEFORE_FADING_TRANSITION = 0.3f;
 
-        [ModSetting(ModSettingsConstants.OVERHAUL_SCENE_TRANSITIONS, true)]
+        [ModSetting(ModSettingIDs.OVERHAUL_SCENE_TRANSITIONS, true)]
         public static bool OverhaulSceneTransitions;
 
-        [ModSetting(ModSettingsConstants.TRANSITION_ON_STARTUP, true)]
+        [ModSetting(ModSettingIDs.TRANSITION_ON_STARTUP, true)]
         public static bool TransitionOnStartup;
 
-        [ModSetting(ModSettingsConstants.TRANSITION_SOUND, true)]
+        [ModSetting(ModSettingIDs.TRANSITION_SOUND, true)]
         public static bool TransitionSound;
 
         private TransitionBehaviour _transitionBehaviour;

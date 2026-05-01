@@ -24,7 +24,7 @@ namespace OverhaulMod.Content.Personalization
 
         public const GameMode GAME_MODE_VALUE = (GameMode)2500;
 
-        [ModSetting(ModSettingsConstants.CUSTOMIZATION_EDITOR_AMBIANCE, true)]
+        [ModSetting(ModSettingIDs.CUSTOMIZATION_EDITOR_AMBIANCE, true)]
         public static bool PlayAmbiance;
 
         public readonly GameData GameData = new GameData();

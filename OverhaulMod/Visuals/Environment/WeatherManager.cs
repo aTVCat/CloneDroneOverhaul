@@ -11,10 +11,10 @@ namespace OverhaulMod.Visuals.Environment
 {
     public class WeatherManager : Singleton<WeatherManager>, IGameLoadListener
     {
-        [ModSetting(ModSettingsConstants.ENABLE_WEATHER, true)]
+        [ModSetting(ModSettingIDs.ENABLE_WEATHER, true)]
         public static bool EnableWeather;
 
-        [ModSetting(ModSettingsConstants.FORCE_WEATHER_TYPE, 0)]
+        [ModSetting(ModSettingIDs.FORCE_WEATHER_TYPE, 0)]
         public static int ForceWeatherType;
 
         public static readonly List<Dropdown.OptionData> WeatherOptions = new List<Dropdown.OptionData>()

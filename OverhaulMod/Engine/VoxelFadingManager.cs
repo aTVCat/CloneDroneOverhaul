@@ -7,10 +7,10 @@ namespace OverhaulMod.Engine
 {
     public class VoxelFadingManager : Singleton<VoxelFadingManager>
     {
-        [ModSetting(ModSettingsConstants.ENABLE_VOXEL_FIRE_FADING, true)]
+        [ModSetting(ModSettingIDs.ENABLE_VOXEL_FIRE_FADING, true)]
         public static bool EnableFading;
 
-        [ModSetting(ModSettingsConstants.ENABLE_VOXEL_BURNING, true)]
+        [ModSetting(ModSettingIDs.ENABLE_VOXEL_BURNING, true)]
         public static bool EnableBurning;
 
         private List<FadingVoxel> _voxelsToFade;

@@ -24,6 +24,8 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>
+    </DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -32,6 +34,8 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>
+    </DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="0Harmony, Version=2.2.2.0, Culture=neutral, processorArchitecture=MSIL">
@@ -366,6 +370,7 @@
     <Compile Include="Content\WorkshopItem.cs" />
     <Compile Include="Engine\WeaponVariantManager.cs" />
     <Compile Include="Content\GoogleDriveFileDownloader.cs" />
+    <Compile Include="GlobalDefinitions.cs" />
     <Compile Include="IGameLoadListener.cs" />
     <Compile Include="IModLoadListener.cs" />
     <Compile Include="Content\UpdateManager.cs" />
@@ -611,7 +616,7 @@
     <Compile Include="Utils\ModGameUtils.cs" />
     <Compile Include="Utils\ModIntegrationUtils.cs" />
     <Compile Include="Utils\ModParseUtils.cs" />
-    <Compile Include="Utils\ModSettingsConstants.cs" />
+    <Compile Include="Utils\ModSettingIDs.cs" />
     <Compile Include="Utils\ModSteamUGC.cs" />
     <Compile Include="Utils\ModSteamUserStats.cs" />
     <Compile Include="Utils\ModUIUtils.cs" />

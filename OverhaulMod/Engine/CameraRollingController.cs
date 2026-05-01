@@ -8,10 +8,10 @@ namespace OverhaulMod.Engine
         public const float TILT = 1.8f;
         public const float ONE_LEG_TILT = 2.6f;
 
-        [ModSetting(ModSettingsConstants.ENABLE_CAMERA_BOBBING, true)]
+        [ModSetting(ModSettingIDs.ENABLE_CAMERA_BOBBING, true)]
         public static bool EnableBobbing;
 
-        [ModSetting(ModSettingsConstants.ENABLE_CAMERA_ROLLING, true)]
+        [ModSetting(ModSettingIDs.ENABLE_CAMERA_ROLLING, true)]
         public static bool EnableRolling;
 
         public static bool Invert = false;

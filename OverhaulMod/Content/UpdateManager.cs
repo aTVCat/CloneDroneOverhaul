@@ -15,19 +15,19 @@ namespace OverhaulMod.Content
     {
         public const string REPOSITORY_FILE = "UpdateInfo.json";
 
-        [ModSetting(ModSettingsConstants.CHECK_FOR_UPDATES_ON_STARTUP, true)]
+        [ModSetting(ModSettingIDs.CHECK_FOR_UPDATES_ON_STARTUP, true)]
         public static bool CheckForUpdatesOnStartup;
 
-        [ModSetting(ModSettingsConstants.NOTIFY_ABOUT_NEW_TEST_BUILDS, false)]
+        [ModSetting(ModSettingIDs.NOTIFY_ABOUT_NEW_TEST_BUILDS, false)]
         public static bool NotifyAboutNewTestBuilds;
 
-        [ModSetting(ModSettingsConstants.SAVED_NEW_VERSION, null, ModSetting.Tags.IgnoreExport)]
+        [ModSetting(ModSettingIDs.SAVED_NEW_VERSION, null, ModSetting.Tags.IgnoreExport)]
         public static string SavedNewVersion;
 
-        [ModSetting(ModSettingsConstants.UPDATES_LAST_CHECKED_DATE, null, ModSetting.Tags.IgnoreExport)]
+        [ModSetting(ModSettingIDs.UPDATES_LAST_CHECKED_DATE, null, ModSetting.Tags.IgnoreExport)]
         public static string UpdatesLastCheckedDate;
 
-        [ModSetting(ModSettingsConstants.CHECK_UPDATES_ON_NEXT_START, false, ModSetting.Tags.IgnoreExport)]
+        [ModSetting(ModSettingIDs.CHECK_UPDATES_ON_NEXT_START, false, ModSetting.Tags.IgnoreExport)]
         public static bool CheckUpdatesOnNextStart;
 
         public static bool HasNotifiedAboutNewBuild;
@@ -87,7 +87,7 @@ namespace OverhaulMod.Content
             {
                 ScheduledActionsManager.Instance.SetActionExecuted(ScheduledActionType.RefreshModUpdates);
 
-                ModSettingsManager.SetBoolValue(ModSettingsConstants.CHECK_UPDATES_ON_NEXT_START, false);
+                ModSettingsManager.SetBoolValue(ModSettingIDs.CHECK_UPDATES_ON_NEXT_START, false);
                 ModSettingsDataManager.Instance.Save();
             }, null);
             yield break;
@@ -132,11 +132,11 @@ namespace OverhaulMod.Content
 
                 if (maxVersion != null)
                 {
-                    ModSettingsManager.SetStringValue(ModSettingsConstants.SAVED_NEW_VERSION, maxVersion.ToString());
+                    ModSettingsManager.SetStringValue(ModSettingIDs.SAVED_NEW_VERSION, maxVersion.ToString());
                 }
                 else
                 {
-                    ModSettingsManager.SetStringValue(ModSettingsConstants.SAVED_NEW_VERSION, "0.0.0");
+                    ModSettingsManager.SetStringValue(ModSettingIDs.SAVED_NEW_VERSION, "0.0.0");
                 }
                 ModSettingsDataManager.Instance.Save();
 

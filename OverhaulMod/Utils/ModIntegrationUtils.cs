@@ -10,7 +10,7 @@ namespace OverhaulMod.Utils
 {
     public static class ModIntegrationUtils
     {
-        [ModSetting(ModSettingsConstants.ENABLE_TITLE_BAR_OVERHAUL, true)]
+        [ModSetting(ModSettingIDs.ENABLE_TITLE_BAR_OVERHAUL, true)]
         public static bool EnableTitleBarOverhaul;
 
         private static bool s_hasLoaded;

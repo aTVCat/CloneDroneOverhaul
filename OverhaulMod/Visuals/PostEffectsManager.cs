@@ -9,55 +9,50 @@ namespace OverhaulMod.Visuals
 {
     public class PostEffectsManager : Singleton<PostEffectsManager>
     {
-        [ModSetting(ModSettingsConstants.ENABLE_SSAO, true)]
+        [ModSetting(ModSettingIDs.ENABLE_SSAO, true)]
         public static bool EnableSSAO;
 
-        [ModSetting(ModSettingsConstants.SSAO_SAMPLE_COUNT, 1)]
+        [ModSetting(ModSettingIDs.SSAO_SAMPLE_COUNT, 2)]
         public static int SSAOSampleCount;
 
-        [ModSetting(ModSettingsConstants.SSAO_INTENSITY, 0.8f)]
+        [ModSetting(ModSettingIDs.SSAO_INTENSITY, 0.6f)]
         public static float SSAOIntensity;
 
-        [ModSetting(ModSettingsConstants.ENABLE_CHROMATIC_ABERRATION, true)]
+        [ModSetting(ModSettingIDs.ENABLE_CHROMATIC_ABERRATION, false)]
         public static bool EnableChromaticAberration;
 
-        [ModSetting(ModSettingsConstants.CHROMATIC_ABERRATION_INTENSITY, 0.12f)]
+        [ModSetting(ModSettingIDs.CHROMATIC_ABERRATION_INTENSITY, 0.12f)]
         public static float ChromaticAberrationIntensity;
 
-        [ModSetting(ModSettingsConstants.CHROMATIC_ABERRATION_ON_SCREEN_EDGES, true)]
+        [ModSetting(ModSettingIDs.CHROMATIC_ABERRATION_ON_SCREEN_EDGES, true)]
         public static bool ChromaticAberrationOnScreenEdges;
 
-        [ModSetting(ModSettingsConstants.COLOR_BLINDNESS_MODE, 0)]
+        [ModSetting(ModSettingIDs.COLOR_BLINDNESS_MODE, 0)]
         public static int ColorBlindnessMode;
-
-        [ModSetting(ModSettingsConstants.COLOR_BLINDNESS_AFFECT_UI, true)]
+            
+        [ModSetting(ModSettingIDs.COLOR_BLINDNESS_AFFECT_UI, true)]
         public static bool ColorBlindnessAffectUI;
 
-        [ModSetting(ModSettingsConstants.ENABLE_DOF, false)]
+        [ModSetting(ModSettingIDs.ENABLE_DOF, false)]
         public static bool EnableDoF;
 
-        [ModSetting(ModSettingsConstants.BLOOM_MODE, (int)BloomMode.Fancy)]
+        [ModSetting(ModSettingIDs.BLOOM_MODE, (int)BloomMode.Fancy)]
         public static int Bloom;
 
-        [ModSetting(ModSettingsConstants.ENABLE_VIGNETTE, true)]
+        [ModSetting(ModSettingIDs.ENABLE_VIGNETTE, false)]
         public static bool EnableVignette;
 
-        [ModSetting(ModSettingsConstants.ENABLE_DITHERING, false)]
+        [ModSetting(ModSettingIDs.ENABLE_DITHERING, false)]
         public static bool EnableDithering;
 
-        [ModSetting(ModSettingsConstants.ENABLE_SUN_SHAFTS, false)]
+        [ModSetting(ModSettingIDs.ENABLE_SUN_SHAFTS, false)]
         public static bool EnableSunShafts;
 
-        [ModSetting(ModSettingsConstants.ENABLE_GLOBAL_ILLUMINATION, false)]
+        [ModSetting(ModSettingIDs.ENABLE_GLOBAL_ILLUMINATION, false)]
         public static bool EnableGlobalIllumination;
 
-        [ModSetting(ModSettingsConstants.ENABLE_REFLECTION_PROBE, false)]
-        public static bool EnableReflectionProbe;
-
-        [ModSetting(ModSettingsConstants.DISABLE_SCREEN_SHAKING, false)]
+        [ModSetting(ModSettingIDs.DISABLE_SCREEN_SHAKING, false)]
         public static bool DisableScreenShaking;
-
-        private List<ModSettingsPreset> _graphicsPresets;
 
         public static List<Dropdown.OptionData> ColorBlindnessOptions = new List<Dropdown.OptionData>()
         {
@@ -88,12 +83,24 @@ namespace OverhaulMod.Visuals
             new DropdownIntOptionData() { text = "Fanciest", IntValue = (int)BloomMode.Fanciest },
         };
 
+        private List<ModSettingsPreset> _graphicsPresets;
+
+        private bool _refreshEffectsNextFrame;
+
         public override void Awake()
         {
             base.Awake();
             createGraphicsPresets();
         }
 
+        private void Update()
+        {
+            if (_refreshEffectsNextFrame)
+            {
+                _refreshEffectsNextFrame = false;
+                RefreshCameraPostEffects();
+            }
+        }
         private void OnDestroy()
         {
             RemovePostEffectsFromCamera(Camera.main);
@@ -115,14 +122,14 @@ namespace OverhaulMod.Visuals
                 QualityLevel = CloneDroneQualityLevels.Fast,
                 AntiAliasingMode = AntiAliasingMode.NoAntiAliasing
             };
-            lowest.AddValue(ModSettingsConstants.ENABLE_SSAO, false);
-            lowest.AddValue(ModSettingsConstants.ENABLE_GLOBAL_ILLUMINATION, false);
-            lowest.AddValue(ModSettingsConstants.ENABLE_CHROMATIC_ABERRATION, false);
-            lowest.AddValue(ModSettingsConstants.ENABLE_DITHERING, false);
-            lowest.AddValue(ModSettingsConstants.ENABLE_VIGNETTE, false);
-            lowest.AddValue(ModSettingsConstants.BLOOM_MODE, (int)BloomMode.Disabled);
-            lowest.AddValue(ModSettingsConstants.ENABLE_DOF, false);
-            lowest.AddValue(ModSettingsConstants.ENABLE_SUN_SHAFTS, false);
+            lowest.AddValue(ModSettingIDs.ENABLE_SSAO, false);
+            lowest.AddValue(ModSettingIDs.ENABLE_GLOBAL_ILLUMINATION, false);
+            lowest.AddValue(ModSettingIDs.ENABLE_CHROMATIC_ABERRATION, false);
+            lowest.AddValue(ModSettingIDs.ENABLE_DITHERING, false);
+            lowest.AddValue(ModSettingIDs.ENABLE_VIGNETTE, false);
+            lowest.AddValue(ModSettingIDs.BLOOM_MODE, (int)BloomMode.Disabled);
+            lowest.AddValue(ModSettingIDs.ENABLE_DOF, false);
+            lowest.AddValue(ModSettingIDs.ENABLE_SUN_SHAFTS, false);
             list.Add(lowest);
 
             ModSettingsPreset low = new ModSettingsPreset(true)
@@ -130,14 +137,14 @@ namespace OverhaulMod.Visuals
                 QualityLevel = CloneDroneQualityLevels.Fast,
                 AntiAliasingMode = AntiAliasingMode.NoAntiAliasing
             };
-            low.AddValue(ModSettingsConstants.ENABLE_SSAO, false);
-            low.AddValue(ModSettingsConstants.ENABLE_GLOBAL_ILLUMINATION, false);
-            low.AddValue(ModSettingsConstants.ENABLE_CHROMATIC_ABERRATION, false);
-            low.AddValue(ModSettingsConstants.ENABLE_DITHERING, false);
-            low.AddValue(ModSettingsConstants.ENABLE_VIGNETTE, false);
-            low.AddValue(ModSettingsConstants.BLOOM_MODE, (int)BloomMode.Vanilla);
-            low.AddValue(ModSettingsConstants.ENABLE_DOF, false);
-            low.AddValue(ModSettingsConstants.ENABLE_SUN_SHAFTS, false);
+            low.AddValue(ModSettingIDs.ENABLE_SSAO, false);
+            low.AddValue(ModSettingIDs.ENABLE_GLOBAL_ILLUMINATION, false);
+            low.AddValue(ModSettingIDs.ENABLE_CHROMATIC_ABERRATION, false);
+            low.AddValue(ModSettingIDs.ENABLE_DITHERING, false);
+            low.AddValue(ModSettingIDs.ENABLE_VIGNETTE, false);
+            low.AddValue(ModSettingIDs.BLOOM_MODE, (int)BloomMode.Vanilla);
+            low.AddValue(ModSettingIDs.ENABLE_DOF, false);
+            low.AddValue(ModSettingIDs.ENABLE_SUN_SHAFTS, false);
             list.Add(low);
 
             ModSettingsPreset mid = new ModSettingsPreset(true)
@@ -145,14 +152,14 @@ namespace OverhaulMod.Visuals
                 QualityLevel = CloneDroneQualityLevels.Good,
                 AntiAliasingMode = AntiAliasingMode.MSAA2X
             };
-            mid.AddValue(ModSettingsConstants.ENABLE_SSAO, false);
-            mid.AddValue(ModSettingsConstants.ENABLE_GLOBAL_ILLUMINATION, false);
-            mid.AddValue(ModSettingsConstants.ENABLE_CHROMATIC_ABERRATION, false);
-            mid.AddValue(ModSettingsConstants.ENABLE_DITHERING, false);
-            mid.AddValue(ModSettingsConstants.ENABLE_VIGNETTE, false);
-            mid.AddValue(ModSettingsConstants.BLOOM_MODE, (int)BloomMode.Vanilla);
-            mid.AddValue(ModSettingsConstants.ENABLE_DOF, false);
-            mid.AddValue(ModSettingsConstants.ENABLE_SUN_SHAFTS, false);
+            mid.AddValue(ModSettingIDs.ENABLE_SSAO, false);
+            mid.AddValue(ModSettingIDs.ENABLE_GLOBAL_ILLUMINATION, false);
+            mid.AddValue(ModSettingIDs.ENABLE_CHROMATIC_ABERRATION, false);
+            mid.AddValue(ModSettingIDs.ENABLE_DITHERING, false);
+            mid.AddValue(ModSettingIDs.ENABLE_VIGNETTE, false);
+            mid.AddValue(ModSettingIDs.BLOOM_MODE, (int)BloomMode.Vanilla);
+            mid.AddValue(ModSettingIDs.ENABLE_DOF, false);
+            mid.AddValue(ModSettingIDs.ENABLE_SUN_SHAFTS, false);
             list.Add(mid);
 
             ModSettingsPreset standardVanilla = new ModSettingsPreset(true)
@@ -160,14 +167,14 @@ namespace OverhaulMod.Visuals
                 QualityLevel = CloneDroneQualityLevels.Beautiful,
                 AntiAliasingMode = AntiAliasingMode.MSAA4X
             };
-            standardVanilla.AddValue(ModSettingsConstants.ENABLE_SSAO, false);
-            standardVanilla.AddValue(ModSettingsConstants.ENABLE_GLOBAL_ILLUMINATION, false);
-            standardVanilla.AddValue(ModSettingsConstants.ENABLE_CHROMATIC_ABERRATION, false);
-            standardVanilla.AddValue(ModSettingsConstants.ENABLE_DITHERING, false);
-            standardVanilla.AddValue(ModSettingsConstants.ENABLE_VIGNETTE, false);
-            standardVanilla.AddValue(ModSettingsConstants.BLOOM_MODE, (int)BloomMode.Vanilla);
-            standardVanilla.AddValue(ModSettingsConstants.ENABLE_DOF, false);
-            standardVanilla.AddValue(ModSettingsConstants.ENABLE_SUN_SHAFTS, false);
+            standardVanilla.AddValue(ModSettingIDs.ENABLE_SSAO, false);
+            standardVanilla.AddValue(ModSettingIDs.ENABLE_GLOBAL_ILLUMINATION, false);
+            standardVanilla.AddValue(ModSettingIDs.ENABLE_CHROMATIC_ABERRATION, false);
+            standardVanilla.AddValue(ModSettingIDs.ENABLE_DITHERING, false);
+            standardVanilla.AddValue(ModSettingIDs.ENABLE_VIGNETTE, false);
+            standardVanilla.AddValue(ModSettingIDs.BLOOM_MODE, (int)BloomMode.Vanilla);
+            standardVanilla.AddValue(ModSettingIDs.ENABLE_DOF, false);
+            standardVanilla.AddValue(ModSettingIDs.ENABLE_SUN_SHAFTS, false);
             list.Add(standardVanilla);
 
             ModSettingsPreset standardOverhaul = new ModSettingsPreset(true)
@@ -175,14 +182,14 @@ namespace OverhaulMod.Visuals
                 QualityLevel = CloneDroneQualityLevels.Beautiful,
                 AntiAliasingMode = AntiAliasingMode.MSAA8X
             };
-            standardOverhaul.AddValue(ModSettingsConstants.ENABLE_SSAO, true);
-            standardOverhaul.AddValue(ModSettingsConstants.ENABLE_GLOBAL_ILLUMINATION, false);
-            standardOverhaul.AddValue(ModSettingsConstants.ENABLE_CHROMATIC_ABERRATION, false);
-            standardOverhaul.AddValue(ModSettingsConstants.ENABLE_DITHERING, false);
-            standardOverhaul.AddValue(ModSettingsConstants.ENABLE_VIGNETTE, true);
-            standardOverhaul.AddValue(ModSettingsConstants.BLOOM_MODE, (int)BloomMode.Fancy);
-            standardOverhaul.AddValue(ModSettingsConstants.ENABLE_DOF, false);
-            standardOverhaul.AddValue(ModSettingsConstants.ENABLE_SUN_SHAFTS, false);
+            standardOverhaul.AddValue(ModSettingIDs.ENABLE_SSAO, true);
+            standardOverhaul.AddValue(ModSettingIDs.ENABLE_GLOBAL_ILLUMINATION, false);
+            standardOverhaul.AddValue(ModSettingIDs.ENABLE_CHROMATIC_ABERRATION, false);
+            standardOverhaul.AddValue(ModSettingIDs.ENABLE_DITHERING, false);
+            standardOverhaul.AddValue(ModSettingIDs.ENABLE_VIGNETTE, true);
+            standardOverhaul.AddValue(ModSettingIDs.BLOOM_MODE, (int)BloomMode.Fancy);
+            standardOverhaul.AddValue(ModSettingIDs.ENABLE_DOF, false);
+            standardOverhaul.AddValue(ModSettingIDs.ENABLE_SUN_SHAFTS, false);
             list.Add(standardOverhaul);
 
             ModSettingsPreset high = new ModSettingsPreset(true)
@@ -190,14 +197,14 @@ namespace OverhaulMod.Visuals
                 QualityLevel = CloneDroneQualityLevels.Beautiful,
                 AntiAliasingMode = AntiAliasingMode.MSAA8X
             };
-            high.AddValue(ModSettingsConstants.ENABLE_SSAO, true);
-            high.AddValue(ModSettingsConstants.ENABLE_GLOBAL_ILLUMINATION, false);
-            high.AddValue(ModSettingsConstants.ENABLE_CHROMATIC_ABERRATION, true);
-            high.AddValue(ModSettingsConstants.ENABLE_DITHERING, true);
-            high.AddValue(ModSettingsConstants.ENABLE_VIGNETTE, true);
-            high.AddValue(ModSettingsConstants.BLOOM_MODE, (int)BloomMode.Fancy);
-            high.AddValue(ModSettingsConstants.ENABLE_DOF, false);
-            high.AddValue(ModSettingsConstants.ENABLE_SUN_SHAFTS, false);
+            high.AddValue(ModSettingIDs.ENABLE_SSAO, true);
+            high.AddValue(ModSettingIDs.ENABLE_GLOBAL_ILLUMINATION, false);
+            high.AddValue(ModSettingIDs.ENABLE_CHROMATIC_ABERRATION, true);
+            high.AddValue(ModSettingIDs.ENABLE_DITHERING, true);
+            high.AddValue(ModSettingIDs.ENABLE_VIGNETTE, true);
+            high.AddValue(ModSettingIDs.BLOOM_MODE, (int)BloomMode.Fancy);
+            high.AddValue(ModSettingIDs.ENABLE_DOF, false);
+            high.AddValue(ModSettingIDs.ENABLE_SUN_SHAFTS, false);
             list.Add(high);
 
             ModSettingsPreset veryHigh = new ModSettingsPreset(true)
@@ -205,14 +212,14 @@ namespace OverhaulMod.Visuals
                 QualityLevel = CloneDroneQualityLevels.Beautiful,
                 AntiAliasingMode = AntiAliasingMode.MSAA8X
             };
-            veryHigh.AddValue(ModSettingsConstants.ENABLE_SSAO, true);
-            veryHigh.AddValue(ModSettingsConstants.ENABLE_GLOBAL_ILLUMINATION, false);
-            veryHigh.AddValue(ModSettingsConstants.ENABLE_CHROMATIC_ABERRATION, true);
-            veryHigh.AddValue(ModSettingsConstants.ENABLE_DITHERING, true);
-            veryHigh.AddValue(ModSettingsConstants.ENABLE_VIGNETTE, true);
-            veryHigh.AddValue(ModSettingsConstants.BLOOM_MODE, (int)BloomMode.Fanciest);
-            veryHigh.AddValue(ModSettingsConstants.ENABLE_DOF, true);
-            veryHigh.AddValue(ModSettingsConstants.ENABLE_SUN_SHAFTS, true);
+            veryHigh.AddValue(ModSettingIDs.ENABLE_SSAO, true);
+            veryHigh.AddValue(ModSettingIDs.ENABLE_GLOBAL_ILLUMINATION, false);
+            veryHigh.AddValue(ModSettingIDs.ENABLE_CHROMATIC_ABERRATION, true);
+            veryHigh.AddValue(ModSettingIDs.ENABLE_DITHERING, true);
+            veryHigh.AddValue(ModSettingIDs.ENABLE_VIGNETTE, true);
+            veryHigh.AddValue(ModSettingIDs.BLOOM_MODE, (int)BloomMode.Fanciest);
+            veryHigh.AddValue(ModSettingIDs.ENABLE_DOF, true);
+            veryHigh.AddValue(ModSettingIDs.ENABLE_SUN_SHAFTS, true);
             list.Add(veryHigh);
 
             ModSettingsPreset extreme = new ModSettingsPreset(true)
@@ -220,14 +227,14 @@ namespace OverhaulMod.Visuals
                 QualityLevel = CloneDroneQualityLevels.Beautiful,
                 AntiAliasingMode = AntiAliasingMode.MSAA8X
             };
-            extreme.AddValue(ModSettingsConstants.ENABLE_SSAO, true);
-            extreme.AddValue(ModSettingsConstants.ENABLE_GLOBAL_ILLUMINATION, true);
-            extreme.AddValue(ModSettingsConstants.ENABLE_CHROMATIC_ABERRATION, true);
-            extreme.AddValue(ModSettingsConstants.ENABLE_DITHERING, true);
-            extreme.AddValue(ModSettingsConstants.ENABLE_VIGNETTE, true);
-            extreme.AddValue(ModSettingsConstants.BLOOM_MODE, (int)BloomMode.Fanciest);
-            extreme.AddValue(ModSettingsConstants.ENABLE_DOF, true);
-            extreme.AddValue(ModSettingsConstants.ENABLE_SUN_SHAFTS, true);
+            extreme.AddValue(ModSettingIDs.ENABLE_SSAO, true);
+            extreme.AddValue(ModSettingIDs.ENABLE_GLOBAL_ILLUMINATION, true);
+            extreme.AddValue(ModSettingIDs.ENABLE_CHROMATIC_ABERRATION, true);
+            extreme.AddValue(ModSettingIDs.ENABLE_DITHERING, true);
+            extreme.AddValue(ModSettingIDs.ENABLE_VIGNETTE, true);
+            extreme.AddValue(ModSettingIDs.BLOOM_MODE, (int)BloomMode.Fanciest);
+            extreme.AddValue(ModSettingIDs.ENABLE_DOF, true);
+            extreme.AddValue(ModSettingIDs.ENABLE_SUN_SHAFTS, true);
             list.Add(extreme);
         }
 
@@ -247,6 +254,11 @@ namespace OverhaulMod.Visuals
         public void RefreshCameraPostEffects()
         {
             AddPostEffectsToCamera(CameraManager.Instance.MainCamera);
+        }
+
+        public void RefreshCameraPostEffectsNextFrame()
+        {
+            _refreshEffectsNextFrame = true;
         }
 
         public void AddPostEffectsToCamera(Camera camera)

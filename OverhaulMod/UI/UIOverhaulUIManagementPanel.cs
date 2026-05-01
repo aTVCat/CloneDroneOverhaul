@@ -49,7 +49,7 @@ namespace OverhaulMod.UI
         {
             foreach (ModSetting setting in ModSettingsManager.Instance.GetSettings(ModSetting.Tags.UISetting))
             {
-                InstantiateToggle(setting.Name);
+                InstantiateToggle(setting.ID);
             }
         }
 
@@ -61,15 +61,15 @@ namespace OverhaulMod.UI
 
             ModdedObject moddedObject = Instantiate(_uiDisplayPrefab, _uiDisplayContainer);
             moddedObject.gameObject.SetActive(true);
-            moddedObject.GetObject<Text>(0).text = LocalizationManager.Instance.GetTranslatedString(setting.Name);
+            moddedObject.GetObject<Text>(0).text = LocalizationManager.Instance.GetTranslatedString(setting.ID);
             moddedObject.GetObject<Button>(2).onClick.AddListener(delegate
             {
-                GUIUtility.systemCopyBuffer = setting.Name;
+                GUIUtility.systemCopyBuffer = setting.ID;
                 ModUIUtils.MessagePopupOK("Copied localization ID", "", false);
             });
 
             UIElementOverhaulUIInfo info = moddedObject.gameObject.AddComponent<UIElementOverhaulUIInfo>();
-            info.PreviewFile = Path.Combine(ModDirectories.TexturesFolder, "uiPreviews", $"{setting.Name.Replace("ModUI_UI", string.Empty).Replace("Rework", string.Empty)}.png");
+            info.PreviewFile = Path.Combine(ModDirectories.TexturesFolder, "uiPreviews", $"{setting.ID.Replace("ModUI_UI", string.Empty).Replace("Rework", string.Empty)}.png");
             info.InitializeElement();
 
             bool isOn = (bool)setting.GetFieldValue();

@@ -8,7 +8,7 @@ namespace OverhaulMod.Patches.Behaviours
 {
     internal class EnergyBarPatchBehaviour : GamePatchBehaviour
     {
-        [ModSetting(ModSettingsConstants.ENERGY_UI_REWORK, true)]
+        [ModSetting(ModSettingIDs.ENERGY_UI_REWORK, true)]
         public static bool EnablePatch;
 
         private EnergyUI _playerEnergyBar;

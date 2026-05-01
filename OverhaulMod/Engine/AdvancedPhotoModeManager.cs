@@ -6,13 +6,13 @@ namespace OverhaulMod.Engine
 {
     public class AdvancedPhotoModeManager : Singleton<AdvancedPhotoModeManager>, IGameLoadListener
     {
-        [ModSetting(ModSettingsConstants.ADVANCED_PHOTO_MODE, true)]
+        [ModSetting(ModSettingIDs.ADVANCED_PHOTO_MODE, true)]
         public static bool EnableAdvancedPhotoMode;
 
-        [ModSetting(ModSettingsConstants.REQUIRE_RMB_HOLD_WHEN_UI_IS_HIDDEN, false)]
+        [ModSetting(ModSettingIDs.REQUIRE_RMB_HOLD_WHEN_UI_IS_HIDDEN, false)]
         public static bool RequireHoldingRMBWhenUIIsHidden;
 
-        [ModSetting(ModSettingsConstants.AUTO_RESET_LIGHTING_SETTINGS, true)]
+        [ModSetting(ModSettingIDs.AUTO_RESET_LIGHTING_SETTINGS, true)]
         public static bool AutoResetLightingSettings;
 
         private LightingInfo _nonEditedLightingInfo, _editedLightingInfo;
@@ -157,14 +157,13 @@ namespace OverhaulMod.Engine
                 }
             }
 
-            public static bool EnableReflectionProbe, EnableGlobalIllumination, EnableSSAO, EnableVignette, EnableDithering, EnableCA, EnableSunShafts, EnableDoF;
+            public static bool EnableGlobalIllumination, EnableSSAO, EnableVignette, EnableDithering, EnableCA, EnableSunShafts, EnableDoF;
 
             public static float VignetteIntensity;
 
             public static void SetDefaultSettings()
             {
                 VignetteIntensity = 0.23f;
-                EnableReflectionProbe = PostEffectsManager.EnableReflectionProbe;
                 EnableGlobalIllumination = PostEffectsManager.EnableGlobalIllumination;
                 EnableSSAO = PostEffectsManager.EnableSSAO;
                 EnableVignette = PostEffectsManager.EnableVignette;

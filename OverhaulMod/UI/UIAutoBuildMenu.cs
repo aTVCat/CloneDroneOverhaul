@@ -182,7 +182,7 @@ namespace OverhaulMod.UI
                 {
                     if (_selectingBuildToUseOnMatchStart)
                     {
-                        ModSettingsManager.SetIntValue(ModSettingsConstants.AUTO_BUILD_INDEX_TO_USE_ON_MATCH_START, builds.IndexOf(build));
+                        ModSettingsManager.SetIntValue(ModSettingIDs.AUTO_BUILD_INDEX_TO_USE_ON_MATCH_START, builds.IndexOf(build));
                         RefreshBuildToUseOnStartButton();
                         OnStopSelectingBuildToUseOnMatchStartButtonClicked();
                         return;
@@ -209,7 +209,7 @@ namespace OverhaulMod.UI
                         _ = autoBuildManager.BuildList.Builds.Remove(build);
                         if (autoBuildInfo != null)
                         {
-                            ModSettingsManager.SetIntValue(ModSettingsConstants.AUTO_BUILD_INDEX_TO_USE_ON_MATCH_START, builds.IndexOf(autoBuildInfo));
+                            ModSettingsManager.SetIntValue(ModSettingIDs.AUTO_BUILD_INDEX_TO_USE_ON_MATCH_START, builds.IndexOf(autoBuildInfo));
                         }
 
                         Destroy(moddedObject.gameObject);
@@ -364,12 +364,12 @@ namespace OverhaulMod.UI
 
         public void OnAutoActivationToggled(bool value)
         {
-            ModSettingsManager.SetBoolValue(ModSettingsConstants.AUTO_BUILD_ACTIVATION_ON_MATCH_START, value, true);
+            ModSettingsManager.SetBoolValue(ModSettingIDs.AUTO_BUILD_ACTIVATION_ON_MATCH_START, value, true);
         }
 
         public void OnKeyBindChanged(KeyCode keyCode)
         {
-            ModSettingsManager.SetIntValue(ModSettingsConstants.AUTO_BUILD_KEY_BIND, (int)keyCode, true);
+            ModSettingsManager.SetIntValue(ModSettingIDs.AUTO_BUILD_KEY_BIND, (int)keyCode, true);
         }
 
         public void OnSelectBuildToUseOnMatchStartButtonClicked()
@@ -393,7 +393,7 @@ namespace OverhaulMod.UI
 
         public void OnSelectNothingToUseOnMatchStartButtonClicked()
         {
-            ModSettingsManager.SetIntValue(ModSettingsConstants.AUTO_BUILD_INDEX_TO_USE_ON_MATCH_START, -1, true);
+            ModSettingsManager.SetIntValue(ModSettingIDs.AUTO_BUILD_INDEX_TO_USE_ON_MATCH_START, -1, true);
 
             _selectingBuildToUseOnMatchStart = false;
             _stopSelectingBuildToUseOnMatchStartButton.gameObject.SetActive(false);

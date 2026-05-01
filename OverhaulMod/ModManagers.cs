@@ -8,7 +8,7 @@ namespace OverhaulMod
 {
     public class ModManagers : Singleton<ModManagers>
     {
-        [ModSetting(ModSettingsConstants.SHOW_MOD_SETUP_SCREEN_ON_START, true)]
+        [ModSetting(ModSettingIDs.SHOW_MOD_SETUP_SCREEN_ON_START, true)]
         public static bool ShowModSetupScreenOnStart;
 
         private List<IGameLoadListener> _gameLoadListeners;

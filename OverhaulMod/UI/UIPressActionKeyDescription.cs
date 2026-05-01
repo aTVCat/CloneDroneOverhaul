@@ -7,13 +7,13 @@ namespace OverhaulMod.UI
 {
     public class UIPressActionKeyDescription : OverhaulUIBehaviour
     {
-        [ModSetting(ModSettingsConstants.PAK_DESCRIPTION_BG, true)]
+        [ModSetting(ModSettingIDs.PAK_DESCRIPTION_BG, true)]
         public static bool EnableBG;
 
-        [ModSetting(ModSettingsConstants.PAK_DESCRIPTION_FONT, 1)]
+        [ModSetting(ModSettingIDs.PAK_DESCRIPTION_FONT, 1)]
         public static int FontType;
 
-        [ModSetting(ModSettingsConstants.PAK_DESCRIPTION_FONT_SIZE, 10)]
+        [ModSetting(ModSettingIDs.PAK_DESCRIPTION_FONT_SIZE, 10)]
         public static int FontSize;
 
         [UIElement("BG")]
@@ -50,9 +50,9 @@ namespace OverhaulMod.UI
 
             GlobalEventManager.Instance.AddEventListener<string>(ModResources.ASSET_BUNDLE_LOADED_EVENT, onAssetBundleLoaded);
 
-            ModSettingsManager.Instance.AddSettingValueChangedListener(refreshSettings, ModSettingsConstants.PAK_DESCRIPTION_BG);
-            ModSettingsManager.Instance.AddSettingValueChangedListener(refreshSettings, ModSettingsConstants.PAK_DESCRIPTION_FONT);
-            ModSettingsManager.Instance.AddSettingValueChangedListener(refreshSettings, ModSettingsConstants.PAK_DESCRIPTION_FONT_SIZE);
+            ModSettingsManager.Instance.AddSettingValueChangedListener(refreshSettings, ModSettingIDs.PAK_DESCRIPTION_BG);
+            ModSettingsManager.Instance.AddSettingValueChangedListener(refreshSettings, ModSettingIDs.PAK_DESCRIPTION_FONT);
+            ModSettingsManager.Instance.AddSettingValueChangedListener(refreshSettings, ModSettingIDs.PAK_DESCRIPTION_FONT_SIZE);
 
             refreshSettings(null);
         }
@@ -63,9 +63,9 @@ namespace OverhaulMod.UI
 
             GlobalEventManager.Instance.RemoveEventListener<string>(ModResources.ASSET_BUNDLE_LOADED_EVENT, onAssetBundleLoaded);
 
-            ModSettingsManager.Instance.RemoveSettingValueChangedListener(refreshSettings, ModSettingsConstants.PAK_DESCRIPTION_BG);
-            ModSettingsManager.Instance.RemoveSettingValueChangedListener(refreshSettings, ModSettingsConstants.PAK_DESCRIPTION_FONT);
-            ModSettingsManager.Instance.RemoveSettingValueChangedListener(refreshSettings, ModSettingsConstants.PAK_DESCRIPTION_FONT_SIZE);
+            ModSettingsManager.Instance.RemoveSettingValueChangedListener(refreshSettings, ModSettingIDs.PAK_DESCRIPTION_BG);
+            ModSettingsManager.Instance.RemoveSettingValueChangedListener(refreshSettings, ModSettingIDs.PAK_DESCRIPTION_FONT);
+            ModSettingsManager.Instance.RemoveSettingValueChangedListener(refreshSettings, ModSettingIDs.PAK_DESCRIPTION_FONT_SIZE);
         }
 
         public override void Update()

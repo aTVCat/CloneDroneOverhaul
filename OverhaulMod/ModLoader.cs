@@ -185,32 +185,32 @@ namespace OverhaulMod
         private static void addSettingsListeners()
         {
             ModSettingsManager modSettingsManager = ModSettingsManager.Instance;
-            modSettingsManager.AddSettingValueChangedListener(refreshEditorAmbiance, ModSettingsConstants.CUSTOMIZATION_EDITOR_AMBIANCE);
-            modSettingsManager.AddSettingValueChangedListener(refreshCameraPostEffects, ModSettingsConstants.ENABLE_TITLE_BAR_OVERHAUL);
-            modSettingsManager.AddSettingValueChangedListener(refreshCameraPostEffects, ModSettingsConstants.ENABLE_SSAO);
-            modSettingsManager.AddSettingValueChangedListener(refreshCameraPostEffects, ModSettingsConstants.SSAO_INTENSITY);
-            modSettingsManager.AddSettingValueChangedListener(refreshCameraPostEffects, ModSettingsConstants.SSAO_SAMPLE_COUNT);
-            modSettingsManager.AddSettingValueChangedListener(refreshCameraPostEffects, ModSettingsConstants.ENABLE_CHROMATIC_ABERRATION);
-            modSettingsManager.AddSettingValueChangedListener(refreshCameraPostEffects, ModSettingsConstants.CHROMATIC_ABERRATION_INTENSITY);
-            modSettingsManager.AddSettingValueChangedListener(refreshCameraPostEffects, ModSettingsConstants.CHROMATIC_ABERRATION_ON_SCREEN_EDGES);
-            modSettingsManager.AddSettingValueChangedListener(refreshCameraPostEffects, ModSettingsConstants.COLOR_BLINDNESS_MODE);
-            modSettingsManager.AddSettingValueChangedListener(refreshCameraPostEffects, ModSettingsConstants.COLOR_BLINDNESS_AFFECT_UI);
-            modSettingsManager.AddSettingValueChangedListener(refreshCameraPostEffects, ModSettingsConstants.ENABLE_DOF);
-            modSettingsManager.AddSettingValueChangedListener(refreshCameraPostEffects, ModSettingsConstants.BLOOM_MODE);
-            modSettingsManager.AddSettingValueChangedListener(refreshCameraPostEffects, ModSettingsConstants.ENABLE_DITHERING);
-            modSettingsManager.AddSettingValueChangedListener(refreshCameraPostEffects, ModSettingsConstants.ENABLE_VIGNETTE);
-            modSettingsManager.AddSettingValueChangedListener(refreshCameraPostEffects, ModSettingsConstants.ENABLE_SUN_SHAFTS);
-            modSettingsManager.AddSettingValueChangedListener(refreshCameraPostEffects, ModSettingsConstants.ENABLE_GLOBAL_ILLUMINATION);
+            modSettingsManager.AddSettingValueChangedListener(refreshEditorAmbiance, ModSettingIDs.CUSTOMIZATION_EDITOR_AMBIANCE);
+            modSettingsManager.AddSettingValueChangedListener(refreshCameraPostEffects, ModSettingIDs.ENABLE_TITLE_BAR_OVERHAUL);
+            modSettingsManager.AddSettingValueChangedListener(refreshCameraPostEffects, ModSettingIDs.ENABLE_SSAO);
+            modSettingsManager.AddSettingValueChangedListener(refreshCameraPostEffects, ModSettingIDs.SSAO_INTENSITY);
+            modSettingsManager.AddSettingValueChangedListener(refreshCameraPostEffects, ModSettingIDs.SSAO_SAMPLE_COUNT);
+            modSettingsManager.AddSettingValueChangedListener(refreshCameraPostEffects, ModSettingIDs.ENABLE_CHROMATIC_ABERRATION);
+            modSettingsManager.AddSettingValueChangedListener(refreshCameraPostEffects, ModSettingIDs.CHROMATIC_ABERRATION_INTENSITY);
+            modSettingsManager.AddSettingValueChangedListener(refreshCameraPostEffects, ModSettingIDs.CHROMATIC_ABERRATION_ON_SCREEN_EDGES);
+            modSettingsManager.AddSettingValueChangedListener(refreshCameraPostEffects, ModSettingIDs.COLOR_BLINDNESS_MODE);
+            modSettingsManager.AddSettingValueChangedListener(refreshCameraPostEffects, ModSettingIDs.COLOR_BLINDNESS_AFFECT_UI);
+            modSettingsManager.AddSettingValueChangedListener(refreshCameraPostEffects, ModSettingIDs.ENABLE_DOF);
+            modSettingsManager.AddSettingValueChangedListener(refreshCameraPostEffects, ModSettingIDs.BLOOM_MODE);
+            modSettingsManager.AddSettingValueChangedListener(refreshCameraPostEffects, ModSettingIDs.ENABLE_DITHERING);
+            modSettingsManager.AddSettingValueChangedListener(refreshCameraPostEffects, ModSettingIDs.ENABLE_VIGNETTE);
+            modSettingsManager.AddSettingValueChangedListener(refreshCameraPostEffects, ModSettingIDs.ENABLE_SUN_SHAFTS);
+            modSettingsManager.AddSettingValueChangedListener(refreshCameraPostEffects, ModSettingIDs.ENABLE_GLOBAL_ILLUMINATION);
             modSettingsManager.AddSettingValueChangedListener(delegate (object obj)
             {
                 refreshCameraPostEffects(obj);
                 GlobalEventManager.Instance.Dispatch(CameraManager.FIRST_PERSON_MODE_SWITCHED_EVENT);
-            }, ModSettingsConstants.ENABLE_FIRST_PERSON_MODE);
-            modSettingsManager.AddSettingValueChangedListener(refreshFPSCap, ModSettingsConstants.FPS_CAP);
+            }, ModSettingIDs.ENABLE_FIRST_PERSON_MODE);
+            modSettingsManager.AddSettingValueChangedListener(refreshFPSCap, ModSettingIDs.FPS_CAP);
             modSettingsManager.AddSettingValueChangedListener(delegate
             {
                 ModUIManager.RefreshCursor();
-            }, ModSettingsConstants.CURSOR_SKIN);
+            }, ModSettingIDs.CURSOR_SKIN);
             modSettingsManager.AddSettingValueChangedListener(delegate (object obj)
             {
                 UseKeyTriggerManager manager = UseKeyTriggerManager.Instance;
@@ -240,7 +240,7 @@ namespace OverhaulMod
                         }
                     }
                 }
-            }, ModSettingsConstants.ENABLE_PRESS_BUTTON_TRIGGER_DESCRIPTION_REWORK);
+            }, ModSettingIDs.ENABLE_PRESS_BUTTON_TRIGGER_DESCRIPTION_REWORK);
 
             modSettingsManager.AddSettingValueChangedListener(delegate (object obj)
             {
@@ -250,14 +250,14 @@ namespace OverhaulMod
                     if (energyUIPatch)
                         energyUIPatch.PatchEnergyUI();
                 });
-            }, ModSettingsConstants.ENERGY_UI_REWORK);
+            }, ModSettingIDs.ENERGY_UI_REWORK);
 
             modSettingsManager.AddSettingValueChangedListener(delegate
             {
                 CloneDroneLogoParticlesBehaviour particlesPatch = GamePatchBehaviour.GetBehaviour<CloneDroneLogoParticlesBehaviour>();
                 if (particlesPatch)
                     particlesPatch.RefreshVisibility();
-            }, ModSettingsConstants.CLONE_DRONE_LOGO_FIRE);
+            }, ModSettingIDs.CLONE_DRONE_LOGO_FIRE);
 
             modSettingsManager.AddSettingValueChangedListener(delegate (object obj)
             {
@@ -269,26 +269,26 @@ namespace OverhaulMod
                         player._cameraMover.ShortenedDistanceAddition = CameraFOVController.DEFAULT_SHORTENED_DISTANCE_ADDITION;
                     }
                 }
-            }, ModSettingsConstants.ENABLE_FOV_OVERRIDE);
+            }, ModSettingIDs.ENABLE_FOV_OVERRIDE);
 
             modSettingsManager.AddSettingValueChangedListener(delegate (object obj)
             {
                 UITitleScreenRework titleScreenRework = ModUIManager.Instance.Get<UITitleScreenRework>(AssetBundleConstants.UI, ModUIConstants.UI_TITLE_SCREEN);
                 if (titleScreenRework) titleScreenRework.RefreshPosition();
-            }, ModSettingsConstants.TITLE_SCREEN_PANEL_POSITION);
+            }, ModSettingIDs.TITLE_SCREEN_PANEL_POSITION);
 
             modSettingsManager.AddSettingValueChangedListener(delegate (object obj)
             {
                 UITitleScreenRework titleScreenRework = ModUIManager.Instance.Get<UITitleScreenRework>(AssetBundleConstants.UI, ModUIConstants.UI_TITLE_SCREEN);
                 if (titleScreenRework) titleScreenRework.RefreshFade();
-            }, ModSettingsConstants.TITLE_SCREEN_BACKGROUND_FADE_POWER);
+            }, ModSettingIDs.TITLE_SCREEN_BACKGROUND_FADE_POWER);
 
             modSettingsManager.AddSettingValueChangedListener(delegate (object obj)
             {
                 ChunkUpdateDelayPatchBehaviour chunkUpdateDelayPatch = GamePatchBehaviour.GetBehaviour<ChunkUpdateDelayPatchBehaviour>();
                 if (chunkUpdateDelayPatch)
                     chunkUpdateDelayPatch.Refresh();
-            }, ModSettingsConstants.CHUNK_UPDATE_DELAY);
+            }, ModSettingIDs.CHUNK_UPDATE_DELAY);
         }
 
         private static void loadGameUIThemeData()

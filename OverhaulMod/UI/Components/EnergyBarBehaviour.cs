@@ -7,10 +7,10 @@ namespace OverhaulMod.UI
 {
     public class EnergyBarBehaviour : MonoBehaviour
     {
-        [ModSetting(ModSettingsConstants.ENERGY_UI_FADE_OUT_IF_FULL, true)]
+        [ModSetting(ModSettingIDs.ENERGY_UI_FADE_OUT_IF_FULL, true)]
         public static bool EnableBehaviour;
 
-        [ModSetting(ModSettingsConstants.ENERGY_UI_FADE_OUT_INTENSITY, 0.9f)]
+        [ModSetting(ModSettingIDs.ENERGY_UI_FADE_OUT_INTENSITY, 0.9f)]
         public static float FadeOutIntensity;
 
         public EnergyUI EnergyUI;

@@ -7,10 +7,10 @@ namespace OverhaulMod.Gameplay
 {
     public class CharacterExtension : MonoBehaviour
     {
-        [ModSetting(ModSettingsConstants.ENABLE_SCROLL_TO_SWITCH_WEAPON, true)]
+        [ModSetting(ModSettingIDs.ENABLE_SCROLL_TO_SWITCH_WEAPON, true)]
         public static bool EnableScrollToSwitchWeapon;
 
-        [ModSetting(ModSettingsConstants.WEAPON_SWITCH_COOLDOWN, 0.1f)]
+        [ModSetting(ModSettingIDs.WEAPON_SWITCH_COOLDOWN, 0.1f)]
         public static float WeaponSwitchCooldown;
 
         private float _weaponSwitchCooldown;

@@ -92,6 +92,7 @@ namespace OverhaulMod.Visuals
         public void RefreshEffects()
         {
             bool shouldEnableEffects = ShouldEnableEffects();
+            bool forceDisableOverhaulEffets = GlobalDefinitions.DisableOverhaulPostEffects;
             bool overrideSettings = AdvancedPhotoModeManager.Settings.overrideSettings;
 
             GameObject cameraObject = _camera.gameObject;
@@ -99,15 +100,15 @@ namespace OverhaulMod.Visuals
             LevelLightSettings activeLightSettings = LevelEditorLightManager.Instance.GetActiveLightSettings();
             float cameraExposure = activeLightSettings ? activeLightSettings.CameraExposure : 1f;
 
-            refreshBloom((BloomMode)PostEffectsManager.Bloom, cameraObject);
-            refreshAmplifyOcclusion(shouldEnableEffects && (overrideSettings ? AdvancedPhotoModeManager.Settings.EnableSSAO : PostEffectsManager.EnableSSAO), cameraObject);
-            refreshGlobalIllumination(shouldEnableEffects && (overrideSettings ? AdvancedPhotoModeManager.Settings.EnableGlobalIllumination : PostEffectsManager.EnableGlobalIllumination), cameraObject);
-            refreshDoF(shouldEnableEffects && (overrideSettings ? AdvancedPhotoModeManager.Settings.EnableDoF : PostEffectsManager.EnableDoF), cameraObject);
-            refreshSunShafts(shouldEnableEffects && (overrideSettings ? AdvancedPhotoModeManager.Settings.EnableSunShafts : PostEffectsManager.EnableSunShafts), cameraObject);
-            refreshChromaticAberration(shouldEnableEffects && (overrideSettings ? AdvancedPhotoModeManager.Settings.EnableCA : PostEffectsManager.EnableChromaticAberration), cameraExposure, cameraObject);
-            refreshDithering(shouldEnableEffects && (overrideSettings ? AdvancedPhotoModeManager.Settings.EnableDithering : PostEffectsManager.EnableDithering), cameraObject);
-            refreshVignette(shouldEnableEffects && (overrideSettings ? AdvancedPhotoModeManager.Settings.EnableVignette : PostEffectsManager.EnableVignette), cameraObject);
-            refreshColorBlindness(!PostEffectsManager.ColorBlindnessAffectUI && PostEffectsManager.ColorBlindnessMode >= 1 && PostEffectsManager.ColorBlindnessMode <= 3, cameraObject);
+            if (!GlobalDefinitions.DisableBloomChanges) refreshBloom((BloomMode)PostEffectsManager.Bloom, cameraObject);
+            refreshAmplifyOcclusion(!forceDisableOverhaulEffets && shouldEnableEffects && (overrideSettings ? AdvancedPhotoModeManager.Settings.EnableSSAO : PostEffectsManager.EnableSSAO), cameraObject);
+            refreshGlobalIllumination(!forceDisableOverhaulEffets && shouldEnableEffects && (overrideSettings ? AdvancedPhotoModeManager.Settings.EnableGlobalIllumination : PostEffectsManager.EnableGlobalIllumination), cameraObject);
+            refreshDoF(!forceDisableOverhaulEffets && shouldEnableEffects && (overrideSettings ? AdvancedPhotoModeManager.Settings.EnableDoF : PostEffectsManager.EnableDoF), cameraObject);
+            refreshSunShafts(!forceDisableOverhaulEffets && shouldEnableEffects && (overrideSettings ? AdvancedPhotoModeManager.Settings.EnableSunShafts : PostEffectsManager.EnableSunShafts), cameraObject);
+            refreshChromaticAberration(!forceDisableOverhaulEffets && shouldEnableEffects && (overrideSettings ? AdvancedPhotoModeManager.Settings.EnableCA : PostEffectsManager.EnableChromaticAberration), cameraExposure, cameraObject);
+            refreshDithering(!forceDisableOverhaulEffets && shouldEnableEffects && (overrideSettings ? AdvancedPhotoModeManager.Settings.EnableDithering : PostEffectsManager.EnableDithering), cameraObject);
+            refreshVignette(!forceDisableOverhaulEffets && shouldEnableEffects && (overrideSettings ? AdvancedPhotoModeManager.Settings.EnableVignette : PostEffectsManager.EnableVignette), cameraObject);
+            refreshColorBlindness(!forceDisableOverhaulEffets && !PostEffectsManager.ColorBlindnessAffectUI && PostEffectsManager.ColorBlindnessMode >= 1 && PostEffectsManager.ColorBlindnessMode <= 3, cameraObject);
         }
 
         private void refreshBloom(BloomMode bloomMode, GameObject cameraObject)

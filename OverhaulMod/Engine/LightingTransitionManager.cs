@@ -5,7 +5,7 @@ namespace OverhaulMod.Engine
 {
     public class LightingTransitionManager : Singleton<LightingTransitionManager>
     {
-        [ModSetting(ModSettingsConstants.ENABLE_LIGHTING_TRANSITION, true)]
+        [ModSetting(ModSettingIDs.ENABLE_LIGHTING_TRANSITION, true)]
         public static bool EnableLightTransitions;
 
         public static bool allowLightTransitions

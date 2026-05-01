@@ -9,7 +9,7 @@ namespace OverhaulMod.UI
 {
     public class UIPersonalizationEditorExportAllMenu : OverhaulUIBehaviour
     {
-        [ModSetting(ModSettingsConstants.PERSONALIZATION_ITEMS_EXPORT_PATH, null)]
+        [ModSetting(ModSettingIDs.PERSONALIZATION_ITEMS_EXPORT_PATH, null)]
         public static string ExportFolderPath;
 
         [UIElementAction(nameof(Hide))]
@@ -43,7 +43,7 @@ namespace OverhaulMod.UI
         private void onExportFolderSelected(string path)
         {
             _exportFolderField.text = path;
-            ModSettingsManager.SetStringValue(ModSettingsConstants.PERSONALIZATION_ITEMS_EXPORT_PATH, path, true);
+            ModSettingsManager.SetStringValue(ModSettingIDs.PERSONALIZATION_ITEMS_EXPORT_PATH, path, true);
         }
 
         public void OnBumpUpVersionButtonClicked()

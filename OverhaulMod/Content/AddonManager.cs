@@ -27,7 +27,7 @@ namespace OverhaulMod.Content
 
         public const string ADDON_UPDATES_REFRESHED = "AddonUpdatesRefreshed";
 
-        [ModSetting(ModSettingsConstants.ADDONS_TO_UPDATE, "", ModSetting.Tags.IgnoreExport)]
+        [ModSetting(ModSettingIDs.ADDONS_TO_UPDATE, "", ModSetting.Tags.IgnoreExport)]
         public static string AddonsToUpdate;
 
         private Dictionary<string, float> _downloadingAddons;
@@ -78,7 +78,7 @@ namespace OverhaulMod.Content
                     stringBuilder.Append(',');
                 }
             }
-            ModSettingsManager.SetStringValue(ModSettingsConstants.ADDONS_TO_UPDATE, stringBuilder.ToString(), false);
+            ModSettingsManager.SetStringValue(ModSettingIDs.ADDONS_TO_UPDATE, stringBuilder.ToString(), false);
         }
 
         public bool HasDownloadsListOnDisk()
@@ -222,7 +222,7 @@ namespace OverhaulMod.Content
 
                 if (DoesAddonNeedUpdate(uniqueId))
                 {
-                    ModSettingsManager.SetStringValue(ModSettingsConstants.ADDONS_TO_UPDATE, AddonsToUpdate.Replace($"{uniqueId},", string.Empty), false);
+                    ModSettingsManager.SetStringValue(ModSettingIDs.ADDONS_TO_UPDATE, AddonsToUpdate.Replace($"{uniqueId},", string.Empty), false);
                 }
 
                 RefreshInstalledAddons();

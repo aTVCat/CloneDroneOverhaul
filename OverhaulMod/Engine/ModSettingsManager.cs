@@ -116,7 +116,7 @@ namespace OverhaulMod.Engine
                         continue;
 
                     _settings.Add(modSetting);
-                    _nameToSetting.Add(modSetting.Name, modSetting);
+                    _nameToSetting.Add(modSetting.ID, modSetting);
                 }
             }
         }
@@ -160,17 +160,11 @@ namespace OverhaulMod.Engine
 
         public bool HasSettingWithName(string name)
         {
-            if (name.StartsWith("OverhaulMod."))
-                name = name.Substring("OverhaulMod.".Length);
-
             return _nameToSetting.ContainsKey(name);
         }
 
         public ModSetting GetSetting(string name)
         {
-            if (name.StartsWith("OverhaulMod."))
-                name = name.Substring("OverhaulMod.".Length);
-
             return _nameToSetting.TryGetValue(name, out ModSetting modSetting) ? modSetting : null;
         }
 
@@ -234,7 +228,7 @@ namespace OverhaulMod.Engine
 
             ModSetting setting = new ModSetting
             {
-                Name = modSettingAttribute.Name,
+                ID = modSettingAttribute.Name,
                 DefaultValue = modSettingAttribute.DefaultValue,
                 Tag = modSettingAttribute.Tag,
                 ValueType = valueType,

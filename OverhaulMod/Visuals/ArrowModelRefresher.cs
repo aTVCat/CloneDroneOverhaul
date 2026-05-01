@@ -8,7 +8,7 @@ namespace OverhaulMod.Visuals
 {
     public class ArrowModelRefresher : ModBehaviour
     {
-        [ModSetting(ModSettingsConstants.ENABLE_ARROW_REWORK, true)]
+        [ModSetting(ModSettingIDs.ENABLE_ARROW_REWORK, true)]
         public static bool EnableArrowRework;
 
         private ArrowProjectile _arrowProjectile;
