@@ -131,7 +131,7 @@ namespace OverhaulMod.Patches
                     downloadPersonalizationAssetsMenu.Hide();
                     return false;
                 }
-                else if (lastShownUi is UIPersonalizationEditorVerificationMenu personalizationEditorVerificationMenu)
+                else if (lastShownUi is UIPEVerificationMenu personalizationEditorVerificationMenu)
                 {
                     if (!personalizationEditorVerificationMenu.CanExit())
                         return false;

@@ -220,12 +220,12 @@ namespace OverhaulMod.Content.Personalization
 
             if (personalizationItemInfo != null)
             {
-                UIPersonalizationEditor editorUi = UIPersonalizationEditor.Instance;
-                editorUi.ItemConfig.Populate();
-                UIElementPersonalizationEditorUtilitiesPanel utils = editorUi.Utilities;
+                UIPE editorUi = UIPE.Instance;
+                editorUi.SetValuesFromItem();
+                UIElementPEUtilitiesPane utils = editorUi.Utilities;
                 utils.OnItemSelected();
 
-                UIPersonalizationEditor.Instance.ShowNotification("Success", $"Loaded {personalizationItemInfo.Name}!", UIElementPersonalizationEditorNotification.SuccessColor);
+                UIPE.Instance.ShowNotification("Success", $"Loaded {personalizationItemInfo.Name}!", UIElementPENotification.SuccessColor);
             }
         }
 
@@ -234,7 +234,7 @@ namespace OverhaulMod.Content.Personalization
             if (EditingItemInfo == null) return new PersonalizationItemSaveResult("Editing item info is NULL");
             if (!EditingRoot) return new PersonalizationItemSaveResult("Editing item is NULL");
 
-            UIPersonalizationEditor.Instance.ItemConfig.ApplyValues(ignoreDevPanel);
+            //UIPersonalizationEditor.Instance.ItemConfig.ApplyValues(ignoreDevPanel);
             SerializeRoot();
 
             return PersonalizationEditorDataManager.Instance.SaveItem(EditingItemInfo);
@@ -263,7 +263,7 @@ namespace OverhaulMod.Content.Personalization
             GameObject spawnPoint = new GameObject("Temporary Player Spawn Point");
             spawnPoint.transform.position = Vector3.zero;
 
-            UIElementPersonalizationEditorUtilitiesPanel utilities = UIPersonalizationEditor.Instance.Utilities;
+            UIElementPEUtilitiesPane utilities = UIPE.Instance.Utilities;
             Color favColor = utilities.GetFavoriteColor();
             CharacterModel model = MultiplayerCharacterCustomizationManager.Instance.GetCharacterModel(utilities.GetCharacterModelIndex());
             CloneSpawningData cloneSpawningData = new CloneSpawningData(spawnPoint.transform, true, false, favColor, model);
@@ -341,7 +341,7 @@ namespace OverhaulMod.Content.Personalization
                 _camera.gameObject.SetActive(false);
                 PostEffectsManager.Instance.RefreshCameraPostEffects(true);
 
-                UIPersonalizationEditor.Instance.Hide();
+                UIPE.Instance.Hide();
                 _ = ModUIs.ShowPersonalizationEditorPlaytestHUD();
             }
         }
@@ -368,7 +368,7 @@ namespace OverhaulMod.Content.Personalization
                 camera.gameObject.SetActive(true);
                 PostEffectsManager.Instance.RefreshCameraPostEffects(true);
 
-                UIPersonalizationEditor.Instance.Show();
+                UIPE.Instance.Show();
                 ModUIs.HidePersonalizationEditorPlaytestHUD();
 
                 _ = base.StartCoroutine(exitPlaytestModeCoroutine(firstPersonMover));
@@ -404,7 +404,7 @@ namespace OverhaulMod.Content.Personalization
             PersonalizationItemSaveResult saveResult = SaveItem();
             if (EditingItemInfo != null && saveResult.HasFailed())
             {
-                UIPersonalizationEditor.Instance.ShowSaveErrorMessage(saveResult.Error);
+                UIPE.Instance.ShowSaveErrorMessage(saveResult.Error);
                 return;
             }
 
@@ -420,7 +420,7 @@ namespace OverhaulMod.Content.Personalization
 
             _camera.gameObject.SetActive(false);
 
-            UIPersonalizationEditor.Instance.Hide();
+            UIPE.Instance.Hide();
 
             PersonalizationEditorScreenshotManager stage = PersonalizationEditorScreenshotManager.Instance;
             stage.ShowStage();
@@ -446,7 +446,7 @@ namespace OverhaulMod.Content.Personalization
 
             _camera.gameObject.SetActive(true);
 
-            UIPersonalizationEditor.Instance.Show();
+            UIPE.Instance.Show();
 
             PersonalizationEditorScreenshotManager stage = PersonalizationEditorScreenshotManager.Instance;
             stage.DestroyStageItem();
@@ -496,7 +496,7 @@ namespace OverhaulMod.Content.Personalization
 
         public void WelcomeMessage()
         {
-            UIPersonalizationEditor.Instance.Dropdown.Hide();
+            UIPE.Instance.Dropdown.Hide();
             ModUIUtils.MessagePopupOK("Welcome to customization editor!", "Here you can make weapon skins. Accessories and pets are coming soon." +
                 "\n\n<color=#FFFFFF><size=14>HOW TO MAKE STUFF?</size></color>" +
                 "\nTo open or create a project, click on 'File' at the top left and click on 'Open'." +

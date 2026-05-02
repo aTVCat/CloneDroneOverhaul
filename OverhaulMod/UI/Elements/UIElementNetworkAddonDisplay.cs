@@ -30,7 +30,7 @@ namespace OverhaulMod.UI
 
         public void Initialize(AddonDownloadInfo addonDownloadInfo, Transform subUIParent)
         {
-            base.InitializeElement();
+            base.InitializeAsElement();
             Button button = base.GetComponent<Button>();
             button.onClick.AddListener(OnClicked);
 

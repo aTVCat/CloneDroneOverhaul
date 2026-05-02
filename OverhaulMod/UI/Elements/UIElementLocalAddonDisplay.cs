@@ -36,7 +36,7 @@ namespace OverhaulMod.UI
 
         public void Initialize(AddonInfo addonInfo, UIAddonsMenu addonsMenu)
         {
-            base.InitializeElement();
+            base.InitializeAsElement();
 
             _addonInfo = addonInfo;
             _addonMenu = addonsMenu;
@@ -46,7 +46,7 @@ namespace OverhaulMod.UI
 
             refreshUpdateElements();
 
-            GlobalEventManager.Instance.AddEventListener(AddonManager.ADDON_UPDATES_REFRESHED, refreshUpdateElements);
+            GlobalEventManager.Instance.AddEventListener(AddonManager.ADDON_UPDATES_REFRESHED_EVENT, refreshUpdateElements);
             _hasAddedEventListeners = true;
         }
 
@@ -55,7 +55,7 @@ namespace OverhaulMod.UI
             base.OnDestroy();
             if (_hasAddedEventListeners)
             {
-                GlobalEventManager.Instance.RemoveEventListener(AddonManager.ADDON_UPDATES_REFRESHED, refreshUpdateElements);
+                GlobalEventManager.Instance.RemoveEventListener(AddonManager.ADDON_UPDATES_REFRESHED_EVENT, refreshUpdateElements);
                 _hasAddedEventListeners = false;
             }
         }

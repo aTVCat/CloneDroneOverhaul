@@ -776,7 +776,7 @@ namespace OverhaulMod.Content.Personalization
                 {
                     if (PersonalizationEditorManager.IsInEditorMode())
                     {
-                        int index = UIPersonalizationEditor.Instance.Utilities.GetCharacterModelIndex();
+                        int index = UIPE.Instance.Utilities.GetCharacterModelIndex();
                         headModelIndex = index;
                         torsoModelIndex = index;
                         legsModelIndex = index;

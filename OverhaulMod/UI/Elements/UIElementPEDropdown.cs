@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 namespace OverhaulMod.UI
 {
-    public class UIElementPersonalizationEditorDropdown : OverhaulUIBehaviour
+    public class UIElementPEDropdown : OverhaulUIBehaviour
     {
         [UIElement("Button", false)]
         private readonly Button _buttonPrefab;
@@ -28,7 +28,7 @@ namespace OverhaulMod.UI
         public override void Update()
         {
             base.Update();
-            if (Input.GetMouseButtonDown(0) && !_mouseChecker.isMouseOverElement)
+            if (Input.GetMouseButtonDown(0) && !_mouseChecker.IsMouseOverElement)
             {
                 Hide();
             }

@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 namespace OverhaulMod.UI
 {
-    public class UIElementPersonalizationEditorVolumeColorsSettings : OverhaulUIBehaviour
+    public class UIElementPEVolumeColorsSettings : OverhaulUIBehaviour
     {
         [UIElementAction(nameof(Hide))]
         [UIElement("CloseButton")]
@@ -63,12 +63,12 @@ namespace OverhaulMod.UI
                     int i = index;
                     ModdedObject colorPairDisplay = Instantiate(_replaceColorDisplay, _container);
                     colorPairDisplay.gameObject.SetActive(true);
-                    UIElementPersonalizationEditorColorPairDisplay editorColorPairDisplay = colorPairDisplay.gameObject.AddComponent<UIElementPersonalizationEditorColorPairDisplay>();
-                    editorColorPairDisplay.InitializeElement();
+                    UIElementPEColorPairDisplay editorColorPairDisplay = colorPairDisplay.gameObject.AddComponent<UIElementPEColorPairDisplay>();
+                    editorColorPairDisplay.InitializeAsElement();
                     editorColorPairDisplay.returnNewPair = false;
                     editorColorPairDisplay.colorPair = cp;
                     editorColorPairDisplay.favoriteColorSettings = replaceWithFavoriteColors;
-                    editorColorPairDisplay.colorPickerTransform = UIPersonalizationEditor.Instance.transform;
+                    editorColorPairDisplay.colorPickerTransform = UIPE.Instance.transform;
                     editorColorPairDisplay.OnValueChanged.AddListener(onColorChangedCallback);
                     editorColorPairDisplay.OnFavoriteColorSettingsChanged.AddListener(delegate
                     {

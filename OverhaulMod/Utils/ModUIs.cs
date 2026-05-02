@@ -61,7 +61,6 @@ namespace OverhaulMod.Utils
         public const string UI_PERSONALIZATION_ASSETS_MENU = "UI_PersonalizationAssetsMenu";
         public const string UI_DISCORD_SERVER_MENU = "UI_DiscordServerMenu";
         public const string UI_PERSONALIZATION_EDITOR_EXCLUSIVITY_EDIT_MENU = "UI_PersonalizationEditorExclusivityEditMenu";
-        public const string UI_PERSONALIZATION_EDITOR_ABOUT_DIALOG = "UI_PersonalizationEditorAboutDialog";
         public const string UI_ASSET_BUNDLE_ASSETS_BROWSER = "UI_AssetBundleAssetsBrowser";
         public const string UI_PATCH_NOTES = "UI_PatchNotes";
         public const string UI_PERSONALIZATION_EDITOR_ITEM_CREATION_DIALOG = "UI_PersonalizationEditorItemCreationDialog";
@@ -256,9 +255,9 @@ namespace OverhaulMod.Utils
             return ModUIManager.Instance.Show<UIOverhaulUIManagementPanel>(ModAssetBundles.UI, UI_OVERHAUL_UI_MANAGEMENT_PANEL, parent);
         }
 
-        public static UIPersonalizationEditor ShowPersonalizationEditorUI()
+        public static UIPE ShowPersonalizationEditorUI()
         {
-            return ModUIManager.Instance.Show<UIPersonalizationEditor>(ModAssetBundles.UI, UI_PERSONALIZATION_EDITOR, ModUIManager.UILayer.BeforeEscMenu);
+            return ModUIManager.Instance.Show<UIPE>(ModAssetBundles.UI, UI_PERSONALIZATION_EDITOR, ModUIManager.UILayer.BeforeEscMenu);
         }
 
         public static UICreditsMenu ShowCreditsMenu(Transform parent)
@@ -328,14 +327,14 @@ namespace OverhaulMod.Utils
             return ModUIManager.Instance.Show<UISetKeyBindWindow>(ModAssetBundles.UI, UI_SET_KEY_BIND_WINDOW, parent);
         }
 
-        public static UIPersonalizationEditorItemBrowser ShowPersonalizationEditorItemsBrowser(Transform parent)
+        public static UIPEItemBrowser ShowPersonalizationEditorItemsBrowser(Transform parent)
         {
-            return ModUIManager.Instance.Show<UIPersonalizationEditorItemBrowser>(ModAssetBundles.UI, UI_PERSONALIZATION_EDITOR_ITEMS_BROWSER, parent);
+            return ModUIManager.Instance.Show<UIPEItemBrowser>(ModAssetBundles.UI, UI_PERSONALIZATION_EDITOR_ITEMS_BROWSER, parent);
         }
 
-        public static UIPersonalizationEditorVerificationMenu ShowPersonalizationEditorVerificationMenu(Transform parent)
+        public static UIPEVerificationMenu ShowPersonalizationEditorVerificationMenu(Transform parent)
         {
-            return ModUIManager.Instance.Show<UIPersonalizationEditorVerificationMenu>(ModAssetBundles.UI, UI_PERSONALIZATION_EDITOR_VERIFICATION_MENU, parent);
+            return ModUIManager.Instance.Show<UIPEVerificationMenu>(ModAssetBundles.UI, UI_PERSONALIZATION_EDITOR_VERIFICATION_MENU, parent);
         }
 
         public static UIDebugMenu ShowDebugMenu()
@@ -376,9 +375,9 @@ namespace OverhaulMod.Utils
             return ModUIManager.Instance.Show<UIGenericImageViewer>(ModAssetBundles.UI, UI_GENERIC_IMAGE_VIEWER, parent);
         }
 
-        public static UIPersonalizationEditorAuthorsEditMenu ShowPersonalizationEditorAuthorsEditMenu(Transform parent)
+        public static UIPEAuthorsEditMenu ShowPersonalizationEditorAuthorsEditMenu(Transform parent)
         {
-            return ModUIManager.Instance.Show<UIPersonalizationEditorAuthorsEditMenu>(ModAssetBundles.UI, UI_PERSONALIZATION_EDITOR_AUTHORS_EDIT_MENU, parent);
+            return ModUIManager.Instance.Show<UIPEAuthorsEditMenu>(ModAssetBundles.UI, UI_PERSONALIZATION_EDITOR_AUTHORS_EDIT_MENU, parent);
         }
 
         public static UIDuelInviteMenuRework ShowDuelInviteMenuRework(GameMode gameMode)
@@ -398,9 +397,9 @@ namespace OverhaulMod.Utils
             return ModUIManager.Instance.Show<UIFileExplorer>(ModAssetBundles.UI, UI_FILE_EXPLORER, parent);
         }
 
-        public static UIPersonalizationEditorObjectBrowser ShowPersonalizationEditorObjectBrowser(Transform parent)
+        public static UIPEObjectBrowser ShowPersonalizationEditorObjectBrowser(Transform parent)
         {
-            return ModUIManager.Instance.Show<UIPersonalizationEditorObjectBrowser>(ModAssetBundles.UI, UI_PERSONALIZATION_EDITOR_OBJECT_BROWSER, parent);
+            return ModUIManager.Instance.Show<UIPEObjectBrowser>(ModAssetBundles.UI, UI_PERSONALIZATION_EDITOR_OBJECT_BROWSER, parent);
         }
 
         public static UICinematicEffects ShowCinematicEffects()
@@ -428,14 +427,9 @@ namespace OverhaulMod.Utils
             return ModUIManager.Instance.Show<UIDiscordServerMenu>(ModAssetBundles.UI, UI_DISCORD_SERVER_MENU, transform);
         }
 
-        public static UIPersonalizationEditorExclusivityEditMenu ShowPersonalizationEditorExclusivityEditMenu(Transform transform)
+        public static UIPEExclusivityEditMenu ShowPersonalizationEditorExclusivityEditMenu(Transform transform)
         {
-            return ModUIManager.Instance.Show<UIPersonalizationEditorExclusivityEditMenu>(ModAssetBundles.UI, UI_PERSONALIZATION_EDITOR_EXCLUSIVITY_EDIT_MENU, transform);
-        }
-
-        public static UIPersonalizationEditorAboutDialog ShowPersonalizationEditorAboutDialog(Transform transform)
-        {
-            return ModUIManager.Instance.Show<UIPersonalizationEditorAboutDialog>(ModAssetBundles.UI, UI_PERSONALIZATION_EDITOR_ABOUT_DIALOG, transform);
+            return ModUIManager.Instance.Show<UIPEExclusivityEditMenu>(ModAssetBundles.UI, UI_PERSONALIZATION_EDITOR_EXCLUSIVITY_EDIT_MENU, transform);
         }
 
         public static UIAssetBundleAssetsBrowser ShowAssetBundleAssetsBrowser(Transform transform)
@@ -462,9 +456,9 @@ namespace OverhaulMod.Utils
             ModUIManager.Instance.Hide(ModAssetBundles.UI, UI_PATCH_NOTES);
         }
 
-        public static UIPersonalizationEditorItemCreationDialog ShowPersonalizationEditorItemCreationDialog(Transform transform)
+        public static UIPEItemCreationDialog ShowPersonalizationEditorItemCreationDialog(Transform transform)
         {
-            return ModUIManager.Instance.Show<UIPersonalizationEditorItemCreationDialog>(ModAssetBundles.UI, UI_PERSONALIZATION_EDITOR_ITEM_CREATION_DIALOG, transform);
+            return ModUIManager.Instance.Show<UIPEItemCreationDialog>(ModAssetBundles.UI, UI_PERSONALIZATION_EDITOR_ITEM_CREATION_DIALOG, transform);
         }
 
         public static UIPressActionKeyDescription ShowPressActionKeyDescription(bool overEverything = false)
@@ -482,9 +476,9 @@ namespace OverhaulMod.Utils
             return ModUIManager.Instance.Show<UIAutoBuildSelectionMenu>(ModAssetBundles.UI, UI_AUTO_BUILD_SELECTION_MENU, ModUIManager.UILayer.AfterTitleScreen);
         }
 
-        public static UIPersonalizationEditorPlaytestHUD ShowPersonalizationEditorPlaytestHUD()
+        public static UIPEPlaytestHUD ShowPersonalizationEditorPlaytestHUD()
         {
-            return ModUIManager.Instance.Show<UIPersonalizationEditorPlaytestHUD>(ModAssetBundles.UI, UI_PERSONALIZATION_EDITOR_PLAYTEST_HUD, ModUIManager.UILayer.AfterEnergyUI);
+            return ModUIManager.Instance.Show<UIPEPlaytestHUD>(ModAssetBundles.UI, UI_PERSONALIZATION_EDITOR_PLAYTEST_HUD, ModUIManager.UILayer.AfterEnergyUI);
         }
 
         public static void HidePersonalizationEditorPlaytestHUD()
@@ -492,9 +486,9 @@ namespace OverhaulMod.Utils
             _ = ModUIManager.Instance.Hide(ModAssetBundles.UI, UI_PERSONALIZATION_EDITOR_PLAYTEST_HUD);
         }
 
-        public static UIPersonalizationEditorItemImportDialog ShowPersonalizationEditorItemImportDialog(Transform transform)
+        public static UIPEItemImportDialog ShowPersonalizationEditorItemImportDialog(Transform transform)
         {
-            return ModUIManager.Instance.Show<UIPersonalizationEditorItemImportDialog>(ModAssetBundles.UI, UI_PERSONALIZATION_EDITOR_ITEM_IMPORT_DIALOG, transform);
+            return ModUIManager.Instance.Show<UIPEItemImportDialog>(ModAssetBundles.UI, UI_PERSONALIZATION_EDITOR_ITEM_IMPORT_DIALOG, transform);
         }
 
         public static UIUpdatesWindowRework ShowUpdatesWindowRework()
@@ -502,9 +496,9 @@ namespace OverhaulMod.Utils
             return ModUIManager.Instance.Show<UIUpdatesWindowRework>(ModAssetBundles.UI, UI_UPDATES_WINDOW_REWORK, ModUIManager.UILayer.AfterTitleScreen);
         }
 
-        public static UIPersonalizationEditorMagicaVoxelTip ShowPersonalizationEditorMagicaVoxelTip(Transform transform)
+        public static UIPEMagicaVoxelTip ShowPersonalizationEditorMagicaVoxelTip(Transform transform)
         {
-            return ModUIManager.Instance.Show<UIPersonalizationEditorMagicaVoxelTip>(ModAssetBundles.UI, UI_PERSONALIZATION_EDITOR_MAGICA_VOXEL_TIP, transform);
+            return ModUIManager.Instance.Show<UIPEMagicaVoxelTip>(ModAssetBundles.UI, UI_PERSONALIZATION_EDITOR_MAGICA_VOXEL_TIP, transform);
         }
 
         public static UIIntro ShowIntro()
@@ -554,19 +548,19 @@ namespace OverhaulMod.Utils
             return ModUIManager.Instance.Show<UITitleScreenHypocrisisSkin>(ModAssetBundles.HYPOCRISIS, UI_TITLE_SCREEN_HYPOCRISIS_SKIN, transform);
         }
 
-        public static UIPersonalizationEditorExportAllMenu ShowPersonalizationEditorExportAllMenu(Transform transform)
+        public static UIPEExportAllMenu ShowPersonalizationEditorExportAllMenu(Transform transform)
         {
-            return ModUIManager.Instance.Show<UIPersonalizationEditorExportAllMenu>(ModAssetBundles.UI, UI_PERSONALIZATION_EDITOR_EXPORT_ALL_MENU, transform);
+            return ModUIManager.Instance.Show<UIPEExportAllMenu>(ModAssetBundles.UI, UI_PERSONALIZATION_EDITOR_EXPORT_ALL_MENU, transform);
         }
 
-        public static UIPersonalizationEditorItemImportHelper ShowPersonalizationEditorItemImportHelper(Transform transform)
+        public static UIPEItemImportHelper ShowPersonalizationEditorItemImportHelper(Transform transform)
         {
-            return ModUIManager.Instance.Show<UIPersonalizationEditorItemImportHelper>(ModAssetBundles.UI, UI_PERSONALIZATION_EDITOR_ITEM_IMPORT_HELPER, transform);
+            return ModUIManager.Instance.Show<UIPEItemImportHelper>(ModAssetBundles.UI, UI_PERSONALIZATION_EDITOR_ITEM_IMPORT_HELPER, transform);
         }
 
-        public static UIPersonalizationEditorScreenshotControls ShowPersonalizationEditorScreenshotControls()
+        public static UIPEScreenshotControls ShowPersonalizationEditorScreenshotControls()
         {
-            return ModUIManager.Instance.Show<UIPersonalizationEditorScreenshotControls>(ModAssetBundles.UI, UI_PERSONALIZATION_EDITOR_SCREENSHOT_CONTROLS, ModUIManager.UILayer.BeforeEscMenu);
+            return ModUIManager.Instance.Show<UIPEScreenshotControls>(ModAssetBundles.UI, UI_PERSONALIZATION_EDITOR_SCREENSHOT_CONTROLS, ModUIManager.UILayer.BeforeEscMenu);
         }
 
         public static void HidePersonalizationEditorScreenshotControls()

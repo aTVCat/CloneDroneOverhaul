@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 namespace OverhaulMod.UI
 {
-    public class UIElementPersonalizationEditorHierarchyPanel : OverhaulUIBehaviour
+    public class UIElementPEHierarchyPanel : OverhaulUIBehaviour
     {
         [UIElementAction(nameof(OnCreateButtonClicked))]
         [UIElement("CreateButton")]
@@ -18,18 +18,9 @@ namespace OverhaulMod.UI
         [UIElement("Content")]
         private readonly Transform _objectDisplayContainer;
 
-        private PersonalizationItemInfo _itemInfo;
-        public PersonalizationItemInfo ItemInfo
+        public PersonalizationItemInfo EditingItemInfo
         {
-            get
-            {
-                return _itemInfo;
-            }
-            set
-            {
-                _itemInfo = value;
-                Populate();
-            }
+            get => PersonalizationEditorManager.Instance.EditingItemInfo;
         }
 
         public void Populate()
@@ -37,7 +28,7 @@ namespace OverhaulMod.UI
             if (_objectDisplayContainer.childCount != 0)
                 TransformUtils.DestroyAllChildren(_objectDisplayContainer);
 
-            foreach (PersonalizationEditorObjectInfo obj in ItemInfo.RootObject.Children)
+            foreach (PersonalizationEditorObjectInfo obj in EditingItemInfo.RootObject.Children)
             {
                 ModdedObject moddedObject = Instantiate(_objectDisplayPrefab, _objectDisplayContainer);
                 moddedObject.gameObject.SetActive(true);
@@ -58,12 +49,12 @@ namespace OverhaulMod.UI
                 Button button = moddedObject.GetComponent<Button>();
                 button.onClick.AddListener(delegate
                 {
-                    UIPersonalizationEditor.Instance.Inspector.EditObject(PersonalizationEditorObjectManager.Instance.GetInstantiatedObject(obj.UniqueIndex));
+                    UIPE.Instance.Inspector.EditObject(PersonalizationEditorObjectManager.Instance.GetInstantiatedObject(obj.UniqueIndex));
                 });
 
                 Action refreshAction = delegate
                 {
-                    if (button) button.interactable = UIPersonalizationEditor.Instance.Inspector.GetEditingObjectUniqueIndex() != obj.UniqueIndex;
+                    if (button) button.interactable = UIPE.Instance.Inspector.GetEditingObjectUniqueIndex() != obj.UniqueIndex;
                 };
                 refreshAction();
 
@@ -74,7 +65,7 @@ namespace OverhaulMod.UI
 
         public void OnCreateButtonClicked()
         {
-            UIPersonalizationEditorObjectBrowser ob = ModUIs.ShowPersonalizationEditorObjectBrowser(UIPersonalizationEditor.Instance.transform);
+            UIPEObjectBrowser ob = ModUIs.ShowPersonalizationEditorObjectBrowser(UIPE.Instance.transform);
             ob.callback = Populate;
         }
     }

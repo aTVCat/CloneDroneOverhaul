@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 namespace OverhaulMod.UI
 {
-    public class UIPersonalizationEditorExportAllMenu : OverhaulUIBehaviour
+    public class UIPEExportAllMenu : OverhaulUIBehaviour
     {
         [ModSetting(ModSettingIDs.PERSONALIZATION_ITEMS_EXPORT_PATH, null)]
         public static string ExportFolderPath;

@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 namespace OverhaulMod.UI
 {
-    public class UIPersonalizationEditorScreenshotControls : OverhaulUIBehaviour
+    public class UIPEScreenshotControls : OverhaulUIBehaviour
     {
         [UIElementAction(nameof(OnTakeScreenshotButtonClicked))]
         [UIElement("TakeScreenshotButton")]

@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 namespace OverhaulMod.UI
 {
-    public class UIPersonalizationEditorExclusivityEditMenu : OverhaulUIBehaviour
+    public class UIPEExclusivityEditMenu : OverhaulUIBehaviour
     {
         [UIElementAction(nameof(Hide))]
         [UIElement("CloseButton")]

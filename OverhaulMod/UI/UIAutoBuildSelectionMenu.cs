@@ -158,7 +158,7 @@ namespace OverhaulMod.UI
                 UIElementAutoBuildSelectionEntry autoBuildSelectionEntry = moddedObject.gameObject.AddComponent<UIElementAutoBuildSelectionEntry>();
                 autoBuildSelectionEntry.BuildInfo = build;
                 autoBuildSelectionEntry.Menu = this;
-                autoBuildSelectionEntry.InitializeElement();
+                autoBuildSelectionEntry.InitializeAsElement();
             }
         }
 

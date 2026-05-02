@@ -1,6 +1,6 @@
 ﻿namespace OverhaulMod.UI
 {
-    public class UIPersonalizationEditorPlaytestHUD : OverhaulUIBehaviour
+    public class UIPEPlaytestHUD : OverhaulUIBehaviour
     {
         public override bool CloseOnEscapeButtonPress => false;
     }

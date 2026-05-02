@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 namespace OverhaulMod.UI
 {
-    public class UIPersonalizationEditorVerificationMenu : OverhaulUIBehaviour
+    public class UIPEVerificationMenu : OverhaulUIBehaviour
     {
         public const string ALL_WEAPON_VARIANTS_PRESENT_COLOR = "#262626";
         public const string ALL_WEAPON_VARIANTS_NOT_PRESENT_COLOR = "#802020";
@@ -211,7 +211,7 @@ namespace OverhaulMod.UI
                 string error = saveResult.Error;
                 if (error.Length > 512) error = error.Remove(512);
 
-                UIPersonalizationEditor.Instance.ShowSaveErrorMessage(error);
+                UIPE.Instance.ShowSaveErrorMessage(error);
                 return;
             }
 

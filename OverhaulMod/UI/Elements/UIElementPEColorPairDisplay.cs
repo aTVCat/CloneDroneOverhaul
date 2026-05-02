@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 namespace OverhaulMod.UI
 {
-    public class UIElementPersonalizationEditorColorPairDisplay : OverhaulUIBehaviour
+    public class UIElementPEColorPairDisplay : OverhaulUIBehaviour
     {
         [UIElement("ColorAGraphic")]
         private readonly Graphic _colorAGraphic;

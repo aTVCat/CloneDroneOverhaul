@@ -382,7 +382,7 @@ namespace OverhaulMod.UI
                 playerDisplay.GetObject<GameObject>(4).SetActive(playerInfoState.IsDisconnected);
 
                 UIElementPlayerInfoDisplay playerInfoDisplay = playerDisplay.gameObject.AddComponent<UIElementPlayerInfoDisplay>();
-                playerInfoDisplay.InitializeElement();
+                playerInfoDisplay.InitializeAsElement();
                 playerInfoDisplay.LoadRobotHead(playerInfoState.CharacterModelHeadIndex, playerInfoState.HeadColor);
             }
         }

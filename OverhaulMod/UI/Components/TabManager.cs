@@ -94,7 +94,7 @@ namespace OverhaulMod.UI
             UIElementTab tab = (UIElementTab)moddedObject.AddComponent(_type);
             tab.tabId = tabId;
             callOnTabCreateMethod(tab);
-            tab.InitializeElement();
+            tab.InitializeAsElement();
             Button button = tab.GetButton();
             button.interactable = IsInteractable;
             button.onClick.AddListener(delegate

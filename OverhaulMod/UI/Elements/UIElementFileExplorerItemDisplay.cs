@@ -49,7 +49,7 @@ namespace OverhaulMod.UI
         public override void Start()
         {
             UIElementShowTooltipOnHightLight showTooltipOnHightLight = base.gameObject.AddComponent<UIElementShowTooltipOnHightLight>();
-            showTooltipOnHightLight.InitializeElement();
+            showTooltipOnHightLight.InitializeAsElement();
             showTooltipOnHightLight.TooltipText = displayName;
             showTooltipOnHightLight.TooltipShowDuration = 2f;
         }

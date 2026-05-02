@@ -311,7 +311,7 @@ namespace OverhaulMod.UI
                 UIElementPatchNotesImageEmbed imageEmbed = moddedObject.gameObject.AddComponent<UIElementPatchNotesImageEmbed>();
                 imageEmbed.URL = line.Substring(4);
                 imageEmbed.PatchNotesTransform = base.transform;
-                imageEmbed.InitializeElement();
+                imageEmbed.InitializeAsElement();
             }
             else
             {

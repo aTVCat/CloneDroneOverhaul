@@ -103,7 +103,7 @@ namespace OverhaulMod.UI
                 ModdedObject moddedObject = Instantiate(_imageDisplayPrefab, _imageDisplayContainer);
                 moddedObject.gameObject.SetActive(true);
                 UIElementImageDisplay imageDisplay = moddedObject.gameObject.AddComponent<UIElementImageDisplay>();
-                imageDisplay.InitializeElement();
+                imageDisplay.InitializeAsElement();
                 imageDisplay.Populate(p, false);
                 imageDisplay.imageViewerParentTransform = base.transform;
             }

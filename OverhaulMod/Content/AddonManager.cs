@@ -11,21 +11,21 @@ namespace OverhaulMod.Content
 {
     public class AddonManager : Singleton<AddonManager>
     {
+        public const string ADDON_DOWNLOADED_EVENT = "OverhaulAddonDownloaded";
+
+        public const string ADDON_UPDATES_REFRESHED_EVENT = "AddonUpdatesRefreshed";
+
         public const string ADDONS_LIST_REPOSITORY_FILE = "AddonDownloads.json";
 
         public const string ADDONS_LIST_TEST_REPOSITORY_FILE = "test/AddonDownloads.json";
 
         public const string ADDON_INFO_FILE = "AddonInfo.json";
 
-        public const string ADDON_DOWNLOADED_EVENT = "OverhaulAddonDownloaded";
-
         public const string EXTRAS_ADDON_ID = "d1ca04f0";
 
         public const string REALISTIC_SKYBOXES_ADDON_ID = "51a9fc49";
 
         public const string GALLERY_ADDON_ID = "b63ebd97";
-
-        public const string ADDON_UPDATES_REFRESHED = "AddonUpdatesRefreshed";
 
         [ModSetting(ModSettingIDs.ADDONS_TO_UPDATE, "", ModSetting.Tags.IgnoreExport)]
         public static string AddonsToUpdate;
@@ -62,7 +62,7 @@ namespace OverhaulMod.Content
                 {
                     RefreshOutdatedAddons(getDownloadsResult.List.Addons);
                     ScheduledActionsManager.Instance.SetActionExecuted(ScheduledActionType.RefreshAddonUpdates);
-                    GlobalEventManager.Instance.Dispatch(ADDON_UPDATES_REFRESHED);
+                    GlobalEventManager.Instance.Dispatch(ADDON_UPDATES_REFRESHED_EVENT);
                 }
             });
         }

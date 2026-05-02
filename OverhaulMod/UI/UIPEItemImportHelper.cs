@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 namespace OverhaulMod.UI
 {
-    public class UIPersonalizationEditorItemImportHelper : OverhaulUIBehaviour
+    public class UIPEItemImportHelper : OverhaulUIBehaviour
     {
         [UIElementAction(nameof(Hide))]
         [UIElement("CloseButton")]
@@ -147,7 +147,7 @@ namespace OverhaulMod.UI
         private void exportAllItems()
         {
             Hide();
-            ModUIs.ShowPersonalizationEditorExportAllMenu(UIPersonalizationEditor.Instance.transform);
+            ModUIs.ShowPersonalizationEditorExportAllMenu(UIPE.Instance.transform);
         }
 
         private void onSelectedFiles(List<string> files)
@@ -201,7 +201,7 @@ namespace OverhaulMod.UI
             PersonalizationItemSaveResult saveResult = PersonalizationEditorManager.Instance.SaveItem(true);
             if (saveResult.HasFailed())
             {
-                UIPersonalizationEditor.Instance.ShowSaveErrorMessage(saveResult.Error);
+                UIPE.Instance.ShowSaveErrorMessage(saveResult.Error);
                 return false;
             }
             return true;

@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 namespace OverhaulMod.UI
 {
-    public class UIPersonalizationEditorItemBrowser : OverhaulUIBehaviour
+    public class UIPEItemBrowser : OverhaulUIBehaviour
     {
         [UIElementAction(nameof(Hide))]
         [UIElement("CloseButton")]
@@ -145,7 +145,7 @@ namespace OverhaulMod.UI
                     Button button = moddedObject.GetComponent<Button>();
                     button.onClick.AddListener(delegate
                     {
-                        UIPersonalizationEditor.Instance.ShowEverything();
+                        UIPE.Instance.ShowEverything();
                         PersonalizationEditorManager.Instance.EditItem(item);
                         Hide();
                     });
@@ -198,7 +198,7 @@ namespace OverhaulMod.UI
 
         public void OnCreateNewButtonClicked()
         {
-            UIPersonalizationEditorItemCreationDialog panel = ModUIs.ShowPersonalizationEditorItemCreationDialog(base.transform);
+            UIPEItemCreationDialog panel = ModUIs.ShowPersonalizationEditorItemCreationDialog(base.transform);
             panel.UsePersistentFolder = _usePersistentDirectoryToggle.isOn;
             panel.ItemCreatedCallback = Hide;
         }

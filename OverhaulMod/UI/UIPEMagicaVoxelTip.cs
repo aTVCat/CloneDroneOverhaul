@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 namespace OverhaulMod.UI
 {
-    public class UIPersonalizationEditorMagicaVoxelTip : OverhaulUIBehaviour
+    public class UIPEMagicaVoxelTip : OverhaulUIBehaviour
     {
         [UIElementAction(nameof(Hide))]
         [UIElement("CloseButton")]
@@ -18,7 +18,7 @@ namespace OverhaulMod.UI
         public override void Show()
         {
             base.Show();
-            UIElementPersonalizationEditorFileImportPanel.HasShownMagicaVoxelTip = true;
+            UIElementPEImportedFilesPanel.HasShownMagicaVoxelTip = true;
         }
 
         public override void Hide()

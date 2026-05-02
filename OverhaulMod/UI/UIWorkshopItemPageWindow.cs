@@ -213,7 +213,7 @@ namespace OverhaulMod.UI
         {
             UIElementShowTooltipOnHightLight tooltipOnHightLight = _itemTitleText.gameObject.AddComponent<UIElementShowTooltipOnHightLight>();
             tooltipOnHightLight.TooltipShowDuration = 2f;
-            tooltipOnHightLight.InitializeElement();
+            tooltipOnHightLight.InitializeAsElement();
             _tooltipOnHightLight = tooltipOnHightLight;
 
             EaseMultiplier = 50f;
@@ -479,7 +479,7 @@ namespace OverhaulMod.UI
                 workshopItemPreviewDisplay.link = preview.URL;
                 workshopItemPreviewDisplay.imageViewerOpenedCallback = onImageViewerOpened;
                 workshopItemPreviewDisplay.imageViewerClosedCallback = onImageViewerClosed;
-                workshopItemPreviewDisplay.InitializeElement();
+                workshopItemPreviewDisplay.InitializeAsElement();
             }
         }
 

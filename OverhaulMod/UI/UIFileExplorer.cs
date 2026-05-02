@@ -262,7 +262,7 @@ namespace OverhaulMod.UI
                 _prevSelectedIndicator = moddedObject.GetObject<GameObject>(3);
 
             UIElementFileExplorerItemDisplay itemDisplay = moddedObject.gameObject.AddComponent<UIElementFileExplorerItemDisplay>();
-            itemDisplay.InitializeElement();
+            itemDisplay.InitializeAsElement();
             itemDisplay.isFolder = isFolder;
             itemDisplay.fullName = fileSystemInfo.FullName;
             itemDisplay.displayName = fileSystemInfo.Name;

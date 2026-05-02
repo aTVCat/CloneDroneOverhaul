@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 namespace OverhaulMod.UI
 {
-    public class UIElementPersonalizationEditorNotification : OverhaulUIBehaviour
+    public class UIElementPENotification : OverhaulUIBehaviour
     {
         public static readonly Color StandardColor = new Color(0.1f, 0.1f, 0.1f, 1f);
         public static readonly Color SuccessColor = new Color(0.04f, 0.196f, 0.13f, 1f);

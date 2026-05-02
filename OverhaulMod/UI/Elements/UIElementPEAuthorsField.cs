@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 namespace OverhaulMod.UI
 {
-    public class UIElementPersonalizationAuthorsField : OverhaulUIBehaviour
+    public class UIElementPEAuthorsField : OverhaulUIBehaviour
     {
         [UIElement("Text")]
         private readonly Text _text;
@@ -35,7 +35,7 @@ namespace OverhaulMod.UI
 
         public void OnEditButtonClicked()
         {
-            UIPersonalizationEditorAuthorsEditMenu menu = ModUIs.ShowPersonalizationEditorAuthorsEditMenu(UIPersonalizationEditor.Instance.transform);
+            UIPEAuthorsEditMenu menu = ModUIs.ShowPersonalizationEditorAuthorsEditMenu(UIPE.Instance.transform);
             menu.Populate(referenceList, refreshText);
         }
     }

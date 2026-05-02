@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 namespace OverhaulMod.UI
 {
-    public class UIPersonalizationEditorItemImportDialog : OverhaulUIBehaviour
+    public class UIPEItemImportDialog : OverhaulUIBehaviour
     {
         [UIElementAction(nameof(Hide))]
         [UIElement("CloseButton")]
@@ -22,7 +22,7 @@ namespace OverhaulMod.UI
         [UIElement("ItemFolderNameField")]
         private readonly InputField _itemFolderNameField;
 
-        public UIPersonalizationEditorItemBrowser ItemBrowser;
+        public UIPEItemBrowser ItemBrowser;
 
         public string FilePath;
 

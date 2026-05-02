@@ -49,7 +49,7 @@ namespace OverhaulMod.UI
 
         public void Initialize(AddonDownloadInfo addonDownloadInfo, AddonDownloadListInfo addonDownloadListInfo)
         {
-            base.InitializeElement();
+            base.InitializeAsElement();
             _addonDownloadInfo = addonDownloadInfo;
             _addonDownloadListInfo = addonDownloadListInfo;
             _addonIdField.text = addonDownloadInfo.UniqueID;

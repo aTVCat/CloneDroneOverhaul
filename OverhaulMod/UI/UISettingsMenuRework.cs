@@ -1726,7 +1726,7 @@ namespace OverhaulMod.UI
                 moddedObject.gameObject.SetActive(true);
 
                 UIElementKeyBindSetter elementKeyBind = moddedObject.gameObject.AddComponent<UIElementKeyBindSetter>();
-                elementKeyBind.InitializeElement();
+                elementKeyBind.InitializeAsElement();
                 elementKeyBind.key = keyCode;
                 elementKeyBind.defaultKey = defaultKey;
                 elementKeyBind.SetDescription(LocalizationManager.Instance.GetTranslatedString($"settings_subheader_{name.ToLower().Replace(' ', '_')}"));
@@ -1847,7 +1847,7 @@ namespace OverhaulMod.UI
                 addonEmbed.AddonId = addonId;
                 if (addonInstalledCallback != null)
                     addonEmbed.onContentDownloaded.AddListener(addonInstalledCallback);
-                addonEmbed.InitializeElement();
+                addonEmbed.InitializeAsElement();
             }
 
             public void AddDescriptionBoxToRecentElement(string settingId)
@@ -1855,8 +1855,8 @@ namespace OverhaulMod.UI
                 Transform transform = SettingsMenu.PageContentsTransform.GetChild(SettingsMenu.PageContentsTransform.childCount - 1);
 
                 UIElementMouseEventsComponent mouseEventsComponent = transform.gameObject.AddComponent<UIElementMouseEventsComponent>();
-                mouseEventsComponent.InitializeElement();
-                mouseEventsComponent.pointerEnterStateCallback = delegate (bool value)
+                mouseEventsComponent.InitializeAsElement();
+                mouseEventsComponent.PointerEnterStateCallback = delegate (bool value)
                 {
                     if (value)
                         SettingsMenu.ShowDescriptionBox(settingId, transform.transform as RectTransform);

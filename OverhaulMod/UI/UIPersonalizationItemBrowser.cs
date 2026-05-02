@@ -263,7 +263,7 @@ namespace OverhaulMod.UI
             _isPopulating = false;
         }
 
-        public bool IsMouseOverPanel() => _panelMouseEvents.isMouseOverElement;
+        public bool IsMouseOverPanel() => _panelMouseEvents.IsMouseOverElement;
 
         public void ShowDescriptionBox(PersonalizationItemInfo itemInfo, RectTransform rectTransform)
         {
@@ -494,7 +494,7 @@ namespace OverhaulMod.UI
             UIElementPersonalizationItemDisplay personalizationItemDisplay = moddedObject.gameObject.AddComponent<UIElementPersonalizationItemDisplay>();
             personalizationItemDisplay.ItemInfo = item;
             personalizationItemDisplay.SetBrowserUI(this);
-            personalizationItemDisplay.InitializeElement();
+            personalizationItemDisplay.InitializeAsElement();
 
             string text = item.Name.ToLower();
             while (_cachedDisplays.ContainsKey(text))

@@ -61,7 +61,7 @@ namespace OverhaulMod.UI
                 moddedObject.gameObject.SetActive(true);
                 UIElementGalleryImage galleryImage = moddedObject.gameObject.AddComponent<UIElementGalleryImage>();
                 galleryImage.filePath = imageFilePath;
-                galleryImage.InitializeElement();
+                galleryImage.InitializeAsElement();
 
                 counter++;
 

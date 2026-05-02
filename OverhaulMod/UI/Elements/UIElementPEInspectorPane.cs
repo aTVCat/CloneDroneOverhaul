@@ -9,7 +9,7 @@ using UnityEngine.UI;
 
 namespace OverhaulMod.UI
 {
-    public class UIElementPersonalizationEditorInspectorPanel : OverhaulUIBehaviour
+    public class UIElementPEInspectorPane : OverhaulUIBehaviour
     {
         public static readonly List<Dropdown.OptionData> s_weapons = new List<Dropdown.OptionData>()
         {
@@ -27,8 +27,8 @@ namespace OverhaulMod.UI
             new Dropdown.OptionData("Fire (Multiplayer)"),
         };
 
-        [UIElement("VolumeColorsConfigPanel", typeof(UIElementPersonalizationEditorVolumeColorsSettings), false)]
-        private readonly UIElementPersonalizationEditorVolumeColorsSettings _volumeColorsSettings;
+        [UIElement("VolumeColorsConfigPanel", typeof(UIElementPEVolumeColorsSettings), false)]
+        private readonly UIElementPEVolumeColorsSettings _volumeColorsSettings;
 
         [UIElementAction(nameof(OnPositionChanged))]
         [UIElement("PositionPanel", typeof(UIElementVector3Field))]
@@ -238,13 +238,13 @@ namespace OverhaulMod.UI
             {
                 _inspectingObject.Name = str;
                 PersonalizationEditorManager.Instance.SerializeRoot();
-                UIPersonalizationEditor.Instance.ItemConfig.RefreshHierarchyPanel();
+                //UIPersonalizationEditor.Instance.ItemConfig.RefreshHierarchyPanel();
             }
         }
 
         public class ObjectPropertiesController
         {
-            public virtual void PopulateFields(UIElementPersonalizationEditorInspectorPanel propertiesPanel, Transform container, PersonalizationEditorObjectBehaviour objectBehaviour)
+            public virtual void PopulateFields(UIElementPEInspectorPane propertiesPanel, Transform container, PersonalizationEditorObjectBehaviour objectBehaviour)
             {
 
             }
@@ -252,7 +252,7 @@ namespace OverhaulMod.UI
 
         public class CvmModelPropertiesController : ObjectPropertiesController
         {
-            public override void PopulateFields(UIElementPersonalizationEditorInspectorPanel propertiesPanel, Transform container, PersonalizationEditorObjectBehaviour objectBehaviour)
+            public override void PopulateFields(UIElementPEInspectorPane propertiesPanel, Transform container, PersonalizationEditorObjectBehaviour objectBehaviour)
             {
                 void populateFieldsAction()
                 {
@@ -287,7 +287,7 @@ namespace OverhaulMod.UI
                         voxelModelFileFieldText.text = Path.GetFileName(preset.CvmFilePath);
                         voxelModelFileField.GetObject<Button>(1).onClick.AddListener(delegate
                         {
-                            ModUIUtils.FileExplorer(UIPersonalizationEditor.Instance.transform, true, delegate (string filePath)
+                            ModUIUtils.FileExplorer(UIPE.Instance.transform, true, delegate (string filePath)
                             {
                                 if (filePath.IsNullOrEmpty())
                                 {
@@ -306,7 +306,7 @@ namespace OverhaulMod.UI
                                     voxelModelFileFieldText.text = fileName;
                                     preset.CvmFilePath = path;
 
-                                    UIPersonalizationEditor.Instance.Utilities.SetPreviewingPreset(keyValue.Key);
+                                    UIPE.Instance.Utilities.SetPreviewingPreset(keyValue.Key);
                                 }
 
                                 GlobalEventManager.Instance.Dispatch(PersonalizationEditorManager.OBJECT_EDITED_EVENT);
@@ -491,7 +491,7 @@ namespace OverhaulMod.UI
 
         public class FireParticlesPropertiesController : ObjectPropertiesController
         {
-            public override void PopulateFields(UIElementPersonalizationEditorInspectorPanel propertiesPanel, Transform container, PersonalizationEditorObjectBehaviour objectBehaviour)
+            public override void PopulateFields(UIElementPEInspectorPane propertiesPanel, Transform container, PersonalizationEditorObjectBehaviour objectBehaviour)
             {
                 PersonalizationEditorObjectFireParticles fireParticles = objectBehaviour.GetComponent<PersonalizationEditorObjectFireParticles>();
 
@@ -499,8 +499,8 @@ namespace OverhaulMod.UI
                 colorPickButton.gameObject.SetActive(true);
                 colorPickButton.GetObject<Text>(2).text = "Fire color";
                 UIElementColorPickerButton colorPickerButtonComponent = colorPickButton.gameObject.AddComponent<UIElementColorPickerButton>();
-                colorPickerButtonComponent.InitializeElement();
-                colorPickerButtonComponent.ColorPickerParent = UIPersonalizationEditor.Instance.transform;
+                colorPickerButtonComponent.InitializeAsElement();
+                colorPickerButtonComponent.ColorPickerParent = UIPE.Instance.transform;
                 colorPickerButtonComponent.useAlpha = true;
                 colorPickerButtonComponent.color = fireParticles.color;
                 colorPickerButtonComponent.onValueChanged.AddListener(delegate (Color color)
@@ -578,7 +578,7 @@ namespace OverhaulMod.UI
 
         public class VisibilityPropertiesController : ObjectPropertiesController
         {
-            public override void PopulateFields(UIElementPersonalizationEditorInspectorPanel propertiesPanel, Transform container, PersonalizationEditorObjectBehaviour objectBehaviour)
+            public override void PopulateFields(UIElementPEInspectorPane propertiesPanel, Transform container, PersonalizationEditorObjectBehaviour objectBehaviour)
             {
                 ModdedObject enableIfPresetDropdown = Instantiate(propertiesPanel._enableIfPresetDropdown, container);
                 enableIfPresetDropdown.gameObject.SetActive(true);
@@ -616,7 +616,7 @@ namespace OverhaulMod.UI
 
         public class VolumePropertiesController : ObjectPropertiesController
         {
-            public override void PopulateFields(UIElementPersonalizationEditorInspectorPanel propertiesPanel, Transform container, PersonalizationEditorObjectBehaviour objectBehaviour)
+            public override void PopulateFields(UIElementPEInspectorPane propertiesPanel, Transform container, PersonalizationEditorObjectBehaviour objectBehaviour)
             {
                 void populateFieldsAction()
                 {
@@ -656,7 +656,7 @@ namespace OverhaulMod.UI
                         voxelModelFileFieldText.text = Path.GetFileName(settingsPreset.VoxFilePath);
                         voxelModelFileField.GetObject<Button>(1).onClick.AddListener(delegate
                         {
-                            ModUIUtils.FileExplorer(UIPersonalizationEditor.Instance.transform, true, delegate (string filePath)
+                            ModUIUtils.FileExplorer(UIPE.Instance.transform, true, delegate (string filePath)
                             {
                                 if (filePath.IsNullOrEmpty())
                                 {
@@ -684,7 +684,7 @@ namespace OverhaulMod.UI
                                     voxelModelFileFieldText.text = fileName;
                                     settingsPreset.VoxFilePath = path;
 
-                                    UIPersonalizationEditor.Instance.Utilities.SetPreviewingPreset(preset.Key);
+                                    UIPE.Instance.Utilities.SetPreviewingPreset(preset.Key);
                                 }
 
                                 GlobalEventManager.Instance.Dispatch(PersonalizationEditorManager.OBJECT_EDITED_EVENT);
@@ -769,7 +769,7 @@ namespace OverhaulMod.UI
 
                         display.GetObject<Button>(3).onClick.AddListener(delegate
                         {
-                            UIElementPersonalizationEditorVolumeColorsSettings volumeColorsSettings = propertiesPanel._volumeColorsSettings;
+                            UIElementPEVolumeColorsSettings volumeColorsSettings = propertiesPanel._volumeColorsSettings;
                             volumeColorsSettings.Show();
                             volumeColorsSettings.Populate(settingsPreset);
                             volumeColorsSettings.OnColorChanged = onColorChangedAction;

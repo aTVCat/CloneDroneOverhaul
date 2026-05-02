@@ -4,6 +4,7 @@ using OverhaulMod.Engine;
 using OverhaulMod.Gameplay;
 using OverhaulMod.Patches.Behaviours;
 using OverhaulMod.UI;
+using OverhaulMod.UI.Windows;
 using OverhaulMod.Utils;
 using OverhaulMod.Visuals;
 using OverhaulMod.Visuals.Environment;
@@ -107,6 +108,7 @@ namespace OverhaulMod
             modManagers.AddSingleton<ModTime>(coreManagers);
             modManagers.AddSingleton<ModPhysicsManager>(coreManagers);
             modManagers.AddSingleton<ModUIManager>(coreManagers);
+            modManagers.AddSingleton<WindowManager>(coreManagers);
             modManagers.AddSingleton<CameraManager>(coreManagers);
             modManagers.AddSingleton<PooledPrefabManager>(coreManagers);
             modManagers.AddSingleton<ScheduledActionsManager>(coreManagers);

@@ -36,7 +36,7 @@ namespace OverhaulMod.UI
 
         public void Populate(GameplayAchievement gameplayAchievement, GameplayAchievementManager gameplayAchievementManager)
         {
-            InitializeElement();
+            InitializeAsElement();
 
             bool isComplete = gameplayAchievementManager.HasUnlockedAchievement(gameplayAchievement.AchievementID);
             int currentProgress = gameplayAchievementManager.GetProgress(gameplayAchievement.AchievementID);

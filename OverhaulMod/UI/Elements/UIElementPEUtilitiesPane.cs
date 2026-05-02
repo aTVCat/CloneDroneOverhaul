@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 namespace OverhaulMod.UI
 {
-    public class UIElementPersonalizationEditorUtilitiesPanel : OverhaulUIBehaviour
+    public class UIElementPEUtilitiesPane : OverhaulUIBehaviour
     {
         [ShowTooltipOnHighLight("Show player", 1f)]
         [UIElementAction(nameof(OnShowPlayerToggled))]

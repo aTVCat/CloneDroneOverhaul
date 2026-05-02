@@ -72,7 +72,7 @@ namespace OverhaulMod.Engine
                 Button button = spawnedButton.GetComponent<Button>();
                 button.onClick.AddListener(ToggleMode);
                 UpgradeModeButtonController upgradeModeButtonController = spawnedButton.gameObject.AddComponent<UpgradeModeButtonController>();
-                upgradeModeButtonController.InitializeElement();
+                upgradeModeButtonController.InitializeAsElement();
                 _buttonController = upgradeModeButtonController;
             }
             SetMode(UpgradeModes.Upgrade);

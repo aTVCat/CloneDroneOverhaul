@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 namespace OverhaulMod.UI
 {
-    public class UIElementPersonalizationExclusiveForField : OverhaulUIBehaviour
+    public class UIElementPEExclusivityField : OverhaulUIBehaviour
     {
         [UIElement("Text")]
         private readonly Text _text;
@@ -70,7 +70,7 @@ namespace OverhaulMod.UI
 
         public void OnEditButtonClicked()
         {
-            UIPersonalizationEditorExclusivityEditMenu menu = ModUIs.ShowPersonalizationEditorExclusivityEditMenu(UIPersonalizationEditor.Instance.transform);
+            UIPEExclusivityEditMenu menu = ModUIs.ShowPersonalizationEditorExclusivityEditMenu(UIPE.Instance.transform);
             menu.Populate(referenceList, refreshText);
         }
     }

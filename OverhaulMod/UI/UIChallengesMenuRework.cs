@@ -180,7 +180,7 @@ namespace OverhaulMod.UI
                 moddedObject.GetObject<Button>(7).onClick.AddListener(leaderboardAction);
                 moddedObject.GetObject<Button>(7).interactable = challengeDefinition.UseEndlessLevels && !isCoop;
                 UIElementShowTooltipOnHightLight showTooltipOnHightLight = moddedObject.GetObject<Button>(7).gameObject.AddComponent<UIElementShowTooltipOnHightLight>();
-                showTooltipOnHightLight.InitializeElement();
+                showTooltipOnHightLight.InitializeAsElement();
                 showTooltipOnHightLight.TooltipText = "leaderboard";
                 showTooltipOnHightLight.TooltipShowDuration = 1f;
                 showTooltipOnHightLight.TextIsLocalizationId = true;

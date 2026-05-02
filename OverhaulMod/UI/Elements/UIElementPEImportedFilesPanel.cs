@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 namespace OverhaulMod.UI
 {
-    public class UIElementPersonalizationEditorFileImportPanel : OverhaulUIBehaviour
+    public class UIElementPEImportedFilesPanel : OverhaulUIBehaviour
     {
         public static bool HasShownMagicaVoxelTip;
 
@@ -28,18 +28,9 @@ namespace OverhaulMod.UI
         [UIElement("Content")]
         private readonly Transform _fileDisplayContainer;
 
-        private PersonalizationItemInfo _itemInfo;
-        public PersonalizationItemInfo itemInfo
+        public PersonalizationItemInfo EditingItemInfo
         {
-            get
-            {
-                return _itemInfo;
-            }
-            set
-            {
-                _itemInfo = value;
-                Populate();
-            }
+            get => PersonalizationEditorManager.Instance.EditingItemInfo;
         }
 
         public void Populate()
@@ -47,7 +38,7 @@ namespace OverhaulMod.UI
             if (_fileDisplayContainer.childCount != 0)
                 TransformUtils.DestroyAllChildren(_fileDisplayContainer);
 
-            foreach (string file in itemInfo.ImportedFiles)
+            foreach (string file in EditingItemInfo.ImportedFiles)
             {
                 ModdedObject moddedObject = Instantiate(_fileDisplayPrefab, _fileDisplayContainer);
                 moddedObject.gameObject.SetActive(true);
@@ -56,14 +47,14 @@ namespace OverhaulMod.UI
                 {
                     ModUIUtils.MessagePopup(true, $"Delete {file}?", LocalizationManager.Instance.GetTranslatedString("action_cannot_be_undone"), 125f, MessageMenu.ButtonLayout.EnableDisableButtons, "ok", "Yes", "No", null, delegate
                     {
-                        string path = PersonalizationItemInfo.GetImportedFileFullPath(itemInfo, file);
+                        string path = PersonalizationItemInfo.GetImportedFileFullPath(EditingItemInfo, file);
                         if (File.Exists(path))
                         {
                             File.Delete(path);
                         }
                         PersonalizationCacheManager.Instance.Remove(path.Replace("/", "\\"));
 
-                        itemInfo.GetImportedFiles();
+                        EditingItemInfo.GetImportedFiles();
                         Populate();
                         GlobalEventManager.Instance.Dispatch(PersonalizationEditorManager.OBJECT_EDITED_EVENT);
                     });
@@ -73,8 +64,8 @@ namespace OverhaulMod.UI
 
         private void importFileDialog(string initialFolder, string pattern)
         {
-            PersonalizationItemInfo item = itemInfo;
-            ModUIUtils.FileExplorer(UIPersonalizationEditor.Instance.transform, true, delegate (string path)
+            PersonalizationItemInfo item = EditingItemInfo;
+            ModUIUtils.FileExplorer(UIPE.Instance.transform, true, delegate (string path)
             {
                 if (!File.Exists(path))
                     return;
@@ -123,7 +114,7 @@ namespace OverhaulMod.UI
         {
             if (!HasShownMagicaVoxelTip)
             {
-                UIPersonalizationEditorMagicaVoxelTip tip = ModUIs.ShowPersonalizationEditorMagicaVoxelTip(UIPersonalizationEditor.Instance.transform);
+                UIPEMagicaVoxelTip tip = ModUIs.ShowPersonalizationEditorMagicaVoxelTip(UIPE.Instance.transform);
                 tip.Callback = voxFileImportDialog;
                 return;
             }
@@ -137,7 +128,7 @@ namespace OverhaulMod.UI
 
         public void OnMagicaVoxelTipButtonClicked()
         {
-            UIPersonalizationEditorMagicaVoxelTip tip = ModUIs.ShowPersonalizationEditorMagicaVoxelTip(UIPersonalizationEditor.Instance.transform);
+            UIPEMagicaVoxelTip tip = ModUIs.ShowPersonalizationEditorMagicaVoxelTip(UIPE.Instance.transform);
             tip.Callback = null;
         }
     }

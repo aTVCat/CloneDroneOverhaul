@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 namespace OverhaulMod.UI
 {
-    public class UIElementPersonalizationEditorItemOffsetsPanel : OverhaulUIBehaviour
+    public class UIElementPEItemOffsetsPanel : OverhaulUIBehaviour
     {
         [UIElement("CharacterModelButton", false)]
         private readonly ModdedObject _characterModelButtonPrefab;
@@ -136,7 +136,7 @@ namespace OverhaulMod.UI
         private void onOffsetButtonClicked(int index)
         {
             _editingOffset = EditingItemInfo.AccessoryOffsets.Offsets[index];
-            UIPersonalizationEditor.Instance.Utilities.SetCharacterModel(index);
+            UIPE.Instance.Utilities.SetCharacterModel(index);
 
             _skinNameLabel.text = $"Edit offset for {MultiplayerCharacterCustomizationManager.Instance.CharacterModels[index].Name}";
             _nothingToEditOverlay.SetActive(false);

@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 namespace OverhaulMod.UI
 {
-    public class UIPersonalizationEditorItemCreationDialog : OverhaulUIBehaviour
+    public class UIPEItemCreationDialog : OverhaulUIBehaviour
     {
         [UIElementAction(nameof(Hide))]
         [UIElement("CloseButton")]
@@ -253,7 +253,7 @@ namespace OverhaulMod.UI
             }
             else
             {
-                UIPersonalizationEditor.Instance.ShowEverything();
+                UIPE.Instance.ShowEverything();
                 PersonalizationEditorManager.Instance.EditItem(creationResult.NewItem);
                 Hide();
 

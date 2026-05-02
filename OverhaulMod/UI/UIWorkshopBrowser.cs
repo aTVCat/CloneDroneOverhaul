@@ -300,7 +300,7 @@ namespace OverhaulMod.UI
                 }
             }
 
-            if (Input.GetMouseButtonDown(0) && _contextMenu.gameObject.activeSelf && !_contextMenuMouseChecker.isMouseOverElement)
+            if (Input.GetMouseButtonDown(0) && _contextMenu.gameObject.activeSelf && !_contextMenuMouseChecker.IsMouseOverElement)
             {
                 ShowContextMenu(null);
             }
@@ -493,7 +493,7 @@ namespace OverhaulMod.UI
                 workshopItemDisplay.itemPageWindowParentTransform = base.transform;
                 workshopItemDisplay.browserUI = this;
                 workshopItemDisplay.isCollection = collections;
-                workshopItemDisplay.InitializeElement();
+                workshopItemDisplay.InitializeAsElement();
                 workshopItemDisplay.Populate(workshopItem);
             }
         }

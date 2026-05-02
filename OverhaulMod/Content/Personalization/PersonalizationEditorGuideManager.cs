@@ -59,7 +59,7 @@ namespace OverhaulMod.Content.Personalization
         private void setNeverShowIntroductionGuide()
         {
             ModSettingsManager.SetBoolValue(ModSettingIDs.NEVER_SHOW_INTRODUCTION_GUIDE, true, true);
-            ModUIManager.Instance.Get<UIPersonalizationEditor>(ModAssetBundles.UI, ModUIs.UI_PERSONALIZATION_EDITOR).GuideWindow.FinishGuide();
+            ModUIManager.Instance.Get<UIPE>(ModAssetBundles.UI, ModUIs.UI_PERSONALIZATION_EDITOR).GuideWindow.FinishGuide();
         }
     }
 }

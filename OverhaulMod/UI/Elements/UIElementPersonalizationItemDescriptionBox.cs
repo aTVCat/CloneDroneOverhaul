@@ -48,7 +48,7 @@ namespace OverhaulMod.UI
 
         public override void Update()
         {
-            if (Input.GetMouseButtonDown(0) && !_mouseEvents.isMouseOverElement && !_browser.IsMouseOverPanel())
+            if (Input.GetMouseButtonDown(0) && !_mouseEvents.IsMouseOverElement && !_browser.IsMouseOverPanel())
             {
                 Hide();
             }

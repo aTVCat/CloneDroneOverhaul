@@ -31,7 +31,7 @@ namespace OverhaulMod.UI
 
         public virtual bool CloseOnEscapeButtonPress => true;
 
-        public void InitializeUI()
+        public void InitializeAsUI()
         {
             List<(FieldInfo, TabManagerAttribute)> tabManagers = new List<(FieldInfo, TabManagerAttribute)>();
 
@@ -81,7 +81,7 @@ namespace OverhaulMod.UI
                     if (showTooltipHighLightAttribute != null)
                     {
                         UIElementShowTooltipOnHightLight showTooltipOnHightLight = elementObject.AddComponent<UIElementShowTooltipOnHightLight>();
-                        showTooltipOnHightLight.InitializeElement();
+                        showTooltipOnHightLight.InitializeAsElement();
                         showTooltipOnHightLight.TooltipText = showTooltipHighLightAttribute.Text;
                         showTooltipOnHightLight.TooltipShowDuration = showTooltipHighLightAttribute.Duration;
                         showTooltipOnHightLight.TextIsLocalizationId = showTooltipHighLightAttribute.TextIsLocalizationID;
@@ -124,7 +124,7 @@ namespace OverhaulMod.UI
                     {
                         UnityEngine.Object component = elementObject.AddComponent(elementAttribute.ComponentToAdd);
                         if (component is OverhaulUIBehaviour uib)
-                            uib.InitializeElement();
+                            uib.InitializeAsElement();
 
                         if (component.GetType() == fieldInfo.FieldType)
                             element = component;
@@ -134,14 +134,14 @@ namespace OverhaulMod.UI
                     else if (colorPickerAttribute != null)
                     {
                         UIElementColorPickerButton colorPickerButton = elementObject.AddComponent<UIElementColorPickerButton>();
-                        colorPickerButton.InitializeElement();
+                        colorPickerButton.InitializeAsElement();
                         colorPickerButton.useAlpha = colorPickerAttribute.UseAlpha;
                         element = colorPickerButton;
                     }
                     else if (keyBindSetterAttribute != null)
                     {
                         UIElementKeyBindSetter keyBindSetter = elementObject.AddComponent<UIElementKeyBindSetter>();
-                        keyBindSetter.InitializeElement();
+                        keyBindSetter.InitializeAsElement();
                         keyBindSetter.key = keyBindSetterAttribute.DefaultKey;
                         keyBindSetter.defaultKey = keyBindSetterAttribute.DefaultKey;
                         element = keyBindSetter;
@@ -332,10 +332,10 @@ namespace OverhaulMod.UI
             OnInitialized();
         }
 
-        public void InitializeElement()
+        public void InitializeAsElement()
         {
             IsElement = true;
-            InitializeUI();
+            InitializeAsUI();
         }
 
         protected virtual void OnInitialized()

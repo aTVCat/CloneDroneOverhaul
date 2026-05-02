@@ -23,7 +23,7 @@ namespace OverhaulMod.Content.Personalization
 
         public Color GetFavoriteColor()
         {
-            if (PersonalizationEditorManager.IsInEditorMode()) UIPersonalizationEditor.Instance.Utilities.GetFavoriteColor();
+            if (PersonalizationEditorManager.IsInEditorMode()) UIPE.Instance.Utilities.GetFavoriteColor();
 
             PersonalizationItemInfo itemInfo = ItemInfo;
             if (itemInfo != null)

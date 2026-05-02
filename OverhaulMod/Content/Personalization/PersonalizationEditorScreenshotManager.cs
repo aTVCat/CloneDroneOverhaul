@@ -251,7 +251,7 @@ namespace OverhaulMod.Content.Personalization
 
                 if (onlyNew && File.Exists(Path.Combine(item.FolderPath, "preview.png"))) continue;
 
-                UIPersonalizationEditor.Instance.Utilities.SetRandomFavoriteColor();
+                UIPE.Instance.Utilities.SetRandomFavoriteColor();
 
                 SpawnItemInHolder(item);
                 AdjustCameraPositionForCurrentItem();
