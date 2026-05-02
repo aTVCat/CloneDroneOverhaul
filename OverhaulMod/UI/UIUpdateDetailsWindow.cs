@@ -47,7 +47,7 @@ namespace OverhaulMod.UI
                 HideVersionList = true,
                 DisableShading = true,
             });
-            patchNotes.PopulateText(updateInfo.DisplayVersion?.ToString(), updateInfo.Changelog);
+            patchNotes.PopulateText(updateInfo.ModVersion?.ToString(), updateInfo.Changelog);
         }
 
         public override void Show()
@@ -75,7 +75,7 @@ namespace OverhaulMod.UI
             _progressBarFill.fillAmount = 0f;
             _buttonsContainer.SetActive(false);
 
-            UpdateManager.Instance.DownloadBuild(_updateInfo.DownloadLink, _updateInfo.IsGoogleDriveLink, $"OverhaulMod_{_updateInfo.DisplayVersion}_{_branch}", delegate (UpdateManager.InstallUpdateResult installUpdateResult)
+            UpdateManager.Instance.DownloadBuild(_updateInfo.DownloadLink, _updateInfo.IsGoogleDriveLink, $"OverhaulMod_{_updateInfo.ModVersion}_{_branch}", delegate (UpdateManager.InstallUpdateResult installUpdateResult)
             {
                 _allowHidingThisMenu = true;
                 _progressBar.SetActive(false);

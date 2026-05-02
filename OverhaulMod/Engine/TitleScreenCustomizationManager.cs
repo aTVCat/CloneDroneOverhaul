@@ -212,7 +212,7 @@ namespace OverhaulMod.Engine
 
             titleScreenCustomizationInfo.FixValues();
 
-            _ = ModActionUtils.RunCoroutine(spawnStaticBackgroundCoroutine());
+            spawnStaticBackgroundCoroutine().Run();
         }
 
         public void SetLevelIsLoadingBG(GameObject gameObject)

@@ -92,7 +92,7 @@ namespace OverhaulMod.UI
 
         public void GenerateNoiseTextures()
         {
-            _ = ModActionUtils.RunCoroutine(generateNoiseTexturesCoroutine(onGeneratedTextures), true);
+            generateNoiseTexturesCoroutine(onGeneratedTextures).Run();
         }
 
         private IEnumerator generateNoiseTexturesCoroutine(Action<Texture2D[]> callback)
@@ -101,18 +101,18 @@ namespace OverhaulMod.UI
             int height = 576;
 
             Texture2D[] result = new Texture2D[3];
-            yield return ModActionUtils.RunCoroutine(generatePerlinNoiseCoroutine(width, height, delegate (Texture2D texture)
+            yield return generatePerlinNoiseCoroutine(width, height, delegate (Texture2D texture)
             {
                 result[0] = texture;
-            }));
-            yield return ModActionUtils.RunCoroutine(generatePerlinNoiseCoroutine(width, height, delegate (Texture2D texture)
+            }).Run();
+            yield return generatePerlinNoiseCoroutine(width, height, delegate (Texture2D texture)
             {
                 result[1] = texture;
-            }));
-            yield return ModActionUtils.RunCoroutine(generatePerlinNoiseCoroutine(width, height, delegate (Texture2D texture)
+            }).Run();
+            yield return generatePerlinNoiseCoroutine(width, height, delegate (Texture2D texture)
             {
                 result[2] = texture;
-            }));
+            }).Run();
             callback?.Invoke(result);
             yield break;
         }

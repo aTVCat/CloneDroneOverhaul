@@ -117,7 +117,7 @@ namespace OverhaulMod.UI
             {
                 ModdedObject moddedObject = Instantiate(_branchDisplay, _content);
                 moddedObject.gameObject.SetActive(true);
-                moddedObject.GetObject<Text>(0).text = $"{update.Value.DisplayVersion} ({update.Value.ModVersion})";
+                moddedObject.GetObject<Text>(0).text = $"{update.Value.ModVersion} ({update.Value.ModVersion})";
                 moddedObject.GetObject<Text>(1).text = update.Key.ToUpper();
 
                 Button button = moddedObject.GetComponent<Button>();
@@ -257,7 +257,7 @@ namespace OverhaulMod.UI
                 ShrinkPanel = true,
                 HideVersionList = true,
             });
-            patchNotes.PopulateText($"{_editingUpdate.DisplayVersion} [{_editingBranch}]", _editingUpdate.Changelog);
+            patchNotes.PopulateText($"{_editingUpdate.ModVersion} [{_editingBranch}]", _editingUpdate.Changelog);
         }
 
         public void OnVersionFieldChanged(string value)

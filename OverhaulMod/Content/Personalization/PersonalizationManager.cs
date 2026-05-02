@@ -363,6 +363,8 @@ namespace OverhaulMod.Content.Personalization
                 personalizationUserInfo = new PersonalizationUserInfo();
             }
 
+            if (personalizationUserInfo == null) personalizationUserInfo = new PersonalizationUserInfo();
+
             personalizationUserInfo.FixValues();
 
             UserInfo = personalizationUserInfo;

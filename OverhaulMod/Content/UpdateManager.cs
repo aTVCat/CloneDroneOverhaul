@@ -58,7 +58,7 @@ namespace OverhaulMod.Content
             ScheduledActionsManager scheduledActionsManager = ScheduledActionsManager.Instance;
             if (!scheduledActionsManager.ShouldExecuteAction(ScheduledActionType.RefreshModUpdates)) return;
 
-            _ = ModActionUtils.RunCoroutine(retrieveDataOnStartCoroutine());
+            retrieveDataOnStartCoroutine().Run();
         }
 
         private void Update()
@@ -123,9 +123,9 @@ namespace OverhaulMod.Content
 
                     if (build.Key == UpdateInfoList.RELEASE_BRANCH || NotifyAboutNewTestBuilds)
                     {
-                        if (maxVersion == null || build.Value.DisplayVersion > maxVersion)
+                        if (maxVersion == null || build.Value.ModVersion > maxVersion)
                         {
-                            maxVersion = build.Value.DisplayVersion;
+                            maxVersion = build.Value.ModVersion;
                         }
                     }
                 }

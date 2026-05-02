@@ -331,7 +331,7 @@ namespace OverhaulMod.Utils
                     };
 
                     if (shouldRunUserInfoCoroutine)
-                        _ = ModActionUtils.RunCoroutine(requestUserInformationCoroutine(item, itemAuthor));
+                        requestUserInformationCoroutine(item, itemAuthor).Run();
 
                     items.Add(item);
                 }

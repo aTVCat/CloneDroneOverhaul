@@ -15,7 +15,7 @@ namespace OverhaulMod
         public const string BUILD_INFO_FILE_PATH = "buildInfo.json";
 
 #if OVERRIDE_VER
-        public const string OVERRIDE_VERSION = "4.2.1110";
+        public const string OVERRIDE_VERSION = "4.2.1110.1";
 #endif
 
         private static bool s_loaded;
@@ -44,6 +44,12 @@ namespace OverhaulMod
             private set;
         }
 
+        public static int VersionRevision
+        {
+            get;
+            private set;
+        }
+
         private static Version s_version;
         public static Version Version
         {
@@ -51,7 +57,7 @@ namespace OverhaulMod
             {
                 if (s_version == null)
                 {
-                    s_version = new Version(VersionMajor, VersionMinor, VersionBuild);
+                    s_version = new Version(VersionMajor, VersionMinor, VersionBuild, VersionRevision);
                 }
                 return s_version;
             }
@@ -64,7 +70,14 @@ namespace OverhaulMod
             {
                 if (s_versionString == null)
                 {
-                    s_versionString = $"{VersionMajor}.{VersionMinor}.{VersionBuild}";
+                    if(VersionRevision <= 0)
+                    {
+                        s_versionString = $"{VersionMajor}.{VersionMinor}.{VersionBuild}";
+                    }
+                    else
+                    {
+                        s_versionString = $"{VersionMajor}.{VersionMinor}.{VersionBuild}.{VersionRevision}";
+                    }
                 }
                 return s_versionString;
             }
@@ -147,13 +160,10 @@ namespace OverhaulMod
 #else
             Version version = ModCache.ModAssemblyName.Version;
 #endif
-            int major = version.Major;
-            int minor = version.Minor;
-            int build = version.Build;
-
-            VersionMajor = major;
-            VersionMinor = minor;
-            VersionBuild = build;
+            VersionMajor = version.Major;
+            VersionMinor = version.Minor;
+            VersionBuild = version.Build;
+            VersionRevision = version.Revision;
         }
 
         private static void loadBuildInfo()

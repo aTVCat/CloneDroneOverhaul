@@ -63,7 +63,7 @@ namespace OverhaulMod.Engine
                 }, path);
             }
 
-            _ = ModActionUtils.RunCoroutine(processSkyboxesCoroutine());
+            processSkyboxesCoroutine().Run();
         }
 
         private IEnumerator processSkyboxesCoroutine()
@@ -106,7 +106,7 @@ namespace OverhaulMod.Engine
                 if (kv.Value.HasValue && kv.Value.Value)
                 {
                     _loadingSkyboxes.Add(kv.Key, false);
-                    ModActionUtils.RunCoroutine(processBundle(ModResources.AssetBundle(kv.Key, addonPath), kv.Key));
+                    processBundle(ModResources.AssetBundle(kv.Key, addonPath), kv.Key).Run();
                 }
             }
 

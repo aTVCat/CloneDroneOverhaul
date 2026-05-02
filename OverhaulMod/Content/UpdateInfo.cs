@@ -14,29 +14,12 @@ namespace OverhaulMod.Content
         public string AllowedUsers;
         public ExclusivePerkType RequireExclusivePerk;
 
-        private Version _displayVersion;
-        public Version DisplayVersion
-        {
-            get
-            {
-                if (_displayVersion == null || !ModParseUtils.CompareVersionsWithDiffFormats(ModVersion, _displayVersion))
-                {
-                    _displayVersion = ModParseUtils.ConvertOldVersionFormat(ModVersion);
-                }
-                return _displayVersion;
-            }
-        }
-
         public void FixValues()
         {
-            if (ModVersion == null)
-                ModVersion = new Version(0, ModBuild.VersionMajor, ModBuild.VersionMinor, ModBuild.VersionBuild);
+            if (ModVersion == null) ModVersion = new Version(ModBuild.VersionMajor, ModBuild.VersionMinor, ModBuild.VersionBuild, ModBuild.VersionRevision);
         }
 
-        public override string ToString()
-        {
-            return $"Overhaul mod {DisplayVersion} ({ModVersion})";
-        }
+        public override string ToString() => $"Overhaul mod {ModVersion}";
 
         public bool CanBeInstalledByLocalUser()
         {
@@ -49,19 +32,10 @@ namespace OverhaulMod.Content
             return AllowedUsers.IsNullOrEmpty() || AllowedUsers.IsNullOrWhiteSpace() || AllowedUsers.Contains(ModUserInfo.localPlayerPlayFabID) || AllowedUsers.Contains(ModUserInfo.localPlayerSteamID.ToString());
         }
 
-        public bool IsCurrentBuild()
-        {
-            return ModBuild.Version == DisplayVersion;
-        }
+        public bool IsCurrentBuild() => ModBuild.Version == ModVersion;
 
-        public bool IsNewerBuild()
-        {
-            return ModBuild.Version < DisplayVersion;
-        }
+        public bool IsNewerBuild() => ModBuild.Version < ModVersion;
 
-        public bool IsOlderBuild()
-        {
-            return ModBuild.Version > DisplayVersion;
-        }
+        public bool IsOlderBuild() => ModBuild.Version > ModVersion;
     }
 }

@@ -67,7 +67,7 @@ namespace OverhaulMod.Visuals
                 Destroy(this);
                 return;
             }
-            _ = ModActionUtils.RunCoroutine(waitThenRefreshAllVisuals());
+            waitThenRefreshAllVisuals().Run();
         }
 
         public void RefreshAllVisuals()

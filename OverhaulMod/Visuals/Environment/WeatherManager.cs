@@ -291,7 +291,7 @@ namespace OverhaulMod.Visuals.Environment
 
         private void onLevelSpawned()
         {
-            _ = ModActionUtils.RunCoroutine(waitThenRefreshWeather());
+            waitThenRefreshWeather().Run();
         }
 
         private IEnumerator waitThenRefreshWeather()

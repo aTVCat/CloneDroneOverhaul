@@ -57,6 +57,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\GameDLLs\bolt.user.dll</HintPath>
     </Reference>
+    <Reference Include="com.rlabrecque.steamworks.net">
+      <HintPath>..\GameDLLs\com.rlabrecque.steamworks.net.dll</HintPath>
+    </Reference>
     <Reference Include="DiscordWebhook, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\AdditionalDLLs\DiscordWebhook.dll</HintPath>
@@ -71,6 +74,9 @@
     </Reference>
     <Reference Include="ModLibrary">
       <HintPath>..\GameDLLs\ModLibrary.dll</HintPath>
+    </Reference>
+    <Reference Include="netstandard">
+      <HintPath>..\GameDLLs\netstandard.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -273,7 +279,6 @@
     <Compile Include="Engine\CharacterUpdateImportance.cs" />
     <Compile Include="Engine\CharacterUpdateScheduler.cs" />
     <Compile Include="Engine\ChunkUpdateDelay.cs" />
-    <Compile Include="Engine\MeshSerializer.cs" />
     <Compile Include="Engine\ModAudioLibrary.cs" />
     <Compile Include="Engine\ModDownloadCacheManager.cs" />
     <Compile Include="Engine\ModSettingsPreset.cs" />
@@ -385,7 +390,6 @@
     <Compile Include="ModDataManager.cs" />
     <Compile Include="Content\NewsInfoList.cs" />
     <Compile Include="ModUserInfo.cs" />
-    <Compile Include="Patches\ArenaCameraManager_Patch.cs" />
     <Compile Include="Patches\AttackManager_Patch.cs" />
     <Compile Include="Patches\AudienceManager_Patch.cs" />
     <Compile Include="Patches\AudioManager_Patch.cs" />

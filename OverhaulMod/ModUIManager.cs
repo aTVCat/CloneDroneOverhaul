@@ -277,7 +277,7 @@ namespace OverhaulMod
         public void HideLegacyMenuInsteadOfCustom(GameObject objectToTrack)
         {
             SkipHidingCustomUIs = true;
-            _ = ModActionUtils.RunCoroutine(letOriginalUIHideNextTime(objectToTrack));
+            letOriginalUIHideNextTime(objectToTrack).Run(objectToTrack);
         }
 
         public void InvokeActionInsteadOfHidingCustomUI(Action action)
