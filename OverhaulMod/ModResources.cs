@@ -160,17 +160,17 @@ namespace OverhaulMod
 
         public static Font EditUndoFont()
         {
-            return Load<Font>(AssetBundleConstants.UI, "Edit-Undo-BRK");
+            return Load<Font>(ModAssetBundles.UI, "Edit-Undo-BRK");
         }
 
         public static Font PiksieliProstoFont()
         {
-            return Load<Font>(AssetBundleConstants.UI, "Piksieli-Prosto");
+            return Load<Font>(ModAssetBundles.UI, "Piksieli-Prosto");
         }
 
         public static Font VSROSDMonoFont()
         {
-            return Load<Font>(AssetBundleConstants.UI, "VCR-OSD-Mono");
+            return Load<Font>(ModAssetBundles.UI, "VCR-OSD-Mono");
         }
 
         public static Font FontByIndex(int index)
@@ -178,8 +178,8 @@ namespace OverhaulMod
             string path = null;
             bool hasAddon = AddonManager.Instance.HasInstalledAddon(AddonManager.EXTRAS_ADDON_ID, out path);
 
-            if (index > 5 && (!hasAddon || IsAssetBundleNotLoadedOrBeingLoaded(AssetBundleConstants.UI_EXTRA, path)))
-                return Font(AssetBundleConstants.UI, "OpenSans-Regular");
+            if (index > 5 && (!hasAddon || IsAssetBundleNotLoadedOrBeingLoaded(ModAssetBundles.UI_EXTRA, path)))
+                return Font(ModAssetBundles.UI, "OpenSans-Regular");
 
             switch (index)
             {
@@ -190,15 +190,15 @@ namespace OverhaulMod
                 case 3:
                     return EditUndoFont();
                 case 5:
-                    return Font(AssetBundleConstants.UI, "OpenSans-ExtraBold");
+                    return Font(ModAssetBundles.UI, "OpenSans-ExtraBold");
                 case 6:
-                    return Font(AssetBundleConstants.UI_EXTRA, "NotoSansCJKtc-Regular", path);
+                    return Font(ModAssetBundles.UI_EXTRA, "NotoSansCJKtc-Regular", path);
                 case 7:
-                    return Font(AssetBundleConstants.UI_EXTRA, "NotoSansCJKtc-Bold", path);
+                    return Font(ModAssetBundles.UI_EXTRA, "NotoSansCJKtc-Bold", path);
                 case 8:
-                    return Font(AssetBundleConstants.UI_EXTRA, "NotoSansCJKtc-Black", path);
+                    return Font(ModAssetBundles.UI_EXTRA, "NotoSansCJKtc-Black", path);
                 default:
-                    return Font(AssetBundleConstants.UI, "OpenSans-Regular");
+                    return Font(ModAssetBundles.UI, "OpenSans-Regular");
             }
         }
 

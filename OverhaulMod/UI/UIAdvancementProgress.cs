@@ -47,7 +47,7 @@ namespace OverhaulMod.UI
             _achievementImage.sprite = gameplayAchievement.GetImageSprite();
             _achievementProgressBarFill.fillAmount = progress / (float)targetProgress;
             _achievementProgressText.text = $"{progress}/{targetProgress}";
-            _ = ModActionUtils.RunCoroutine(waitThenHide());
+            waitThenHide().Run();
         }
 
         private IEnumerator waitThenHide()

@@ -230,7 +230,7 @@ namespace OverhaulMod.UI
 
         public void OnNewAddonButtonClicked()
         {
-            UIAddonsEditorCreationDialog dialog = ModUIConstants.ShowAddonsEditorCreationDialog(base.transform);
+            UIAddonsEditorCreationDialog dialog = ModUIs.ShowAddonsEditorCreationDialog(base.transform);
             dialog.Callback = onAddonCreation;
         }
 

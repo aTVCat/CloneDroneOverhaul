@@ -77,7 +77,7 @@ namespace OverhaulMod.UI
             ModSettingsManager.Instance.SaveElementDescriptions();
 
             _saveButton.interactable = false;
-            DelegateScheduler.Instance.Schedule(delegate
+            ModActionUtils.DoInTime(delegate
             {
                 if (_saveButton) _saveButton.interactable = true;
             }, 3f);

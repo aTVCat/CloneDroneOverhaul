@@ -119,7 +119,7 @@ namespace OverhaulMod.Engine
             SetValue(value);
             if (RequiresRestarting && !_hasNotifiedAboutRestarting)
             {
-                _ = ModUIConstants.ShowRestartRequiredScreen(true);
+                _ = ModUIs.ShowRestartRequiredScreen(true);
                 _hasNotifiedAboutRestarting = true;
             }
         }

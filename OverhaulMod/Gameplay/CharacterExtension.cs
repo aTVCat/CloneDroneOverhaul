@@ -90,10 +90,10 @@ namespace OverhaulMod.Gameplay
 
                 _doubleJumpParticles = new List<ParticleSystem>();
 
-                _doubleJumpTrail1 = Instantiate(ModResources.Prefab(AssetBundleConstants.VFX, "VFX_DoubleJumpTrail"), footLTransform, false);
+                _doubleJumpTrail1 = Instantiate(ModResources.Prefab(ModAssetBundles.VFX, "VFX_DoubleJumpTrail"), footLTransform, false);
                 _doubleJumpTrail1.SetActive(hasDoubleJumpUpgrade);
                 _doubleJumpParticles.AddRange(_doubleJumpTrail1.GetComponentsInChildren<ParticleSystem>(true));
-                _doubleJumpTrail2 = Instantiate(ModResources.Prefab(AssetBundleConstants.VFX, "VFX_DoubleJumpTrail"), footRTransform, false);
+                _doubleJumpTrail2 = Instantiate(ModResources.Prefab(ModAssetBundles.VFX, "VFX_DoubleJumpTrail"), footRTransform, false);
                 _doubleJumpTrail2.SetActive(hasDoubleJumpUpgrade);
                 _doubleJumpParticles.AddRange(_doubleJumpTrail2.GetComponentsInChildren<ParticleSystem>(true));
 

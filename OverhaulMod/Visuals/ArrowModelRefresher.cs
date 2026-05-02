@@ -67,7 +67,7 @@ namespace OverhaulMod.Visuals
                 Destroy(this);
                 return;
             }
-            _ = ModActionUtils.RunCoroutine(waitThenRefreshAllVisuals());
+            waitThenRefreshAllVisuals().Run();
         }
 
         public void RefreshAllVisuals()
@@ -131,7 +131,7 @@ namespace OverhaulMod.Visuals
 
             if (!_newNormalModelTransform)
             {
-                Transform arrowModel = Instantiate(ModResources.Prefab(AssetBundleConstants.MODELS, "OverhaulVRArrowModel")).transform;
+                Transform arrowModel = Instantiate(ModResources.Prefab(ModAssetBundles.MODELS, "OverhaulVRArrowModel")).transform;
                 arrowModel.SetParent(_normalVisualsTransform);
                 arrowModel.localPosition = new Vector3(0.025f, -0.025f, -0.6f);
                 arrowModel.localEulerAngles = new Vector3(0f, 180f, 0f);
@@ -147,7 +147,7 @@ namespace OverhaulMod.Visuals
 
             if (!_newFireModelTransform)
             {
-                Transform arrowModel = Instantiate(ModResources.Prefab(AssetBundleConstants.MODELS, "OverhaulVRArrowModel")).transform;
+                Transform arrowModel = Instantiate(ModResources.Prefab(ModAssetBundles.MODELS, "OverhaulVRArrowModel")).transform;
                 arrowModel.SetParent(_fireVisualsTransform);
                 arrowModel.localPosition = new Vector3(0.025f, -0.025f, -0.6f);
                 arrowModel.localEulerAngles = new Vector3(0f, 180f, 0f);

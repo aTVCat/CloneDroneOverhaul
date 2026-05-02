@@ -24,7 +24,7 @@ namespace OverhaulMod.Patches
             Player player = ReInput.players.GetPlayer(0);
             if (player != null)
             {
-                bool rmbHeld = player.GetButton(3) || (!AdvancedPhotoModeManager.RequireHoldingRMBWhenUIIsHidden && modUIManager && !modUIManager.IsUIVisible(AssetBundleConstants.UI, ModUIConstants.UI_PHOTO_MODE_UI_REWORK));
+                bool rmbHeld = player.GetButton(3) || (!AdvancedPhotoModeManager.RequireHoldingRMBWhenUIIsHidden && modUIManager && !modUIManager.IsVisible(ModAssetBundles.UI, ModUIs.UI_PHOTO_MODE_UI_REWORK));
 
                 InputManager inputManager = InputManager.Instance;
                 inputManager.SetCursorEnabled(!rmbHeld);

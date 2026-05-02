@@ -34,7 +34,7 @@ namespace OverhaulMod.Patches.Behaviours
                     ModCache.TitleScreenUI.OnPlayStoryButtonClicked();
                     return;
                 }
-                _ = ModUIConstants.ShowChapterSelectMenu();
+                _ = ModUIs.ShowChapterSelectMenu();
             });
             singleplayerDatas[0].ClickedCallback = storyModeEvent;
 
@@ -46,7 +46,7 @@ namespace OverhaulMod.Patches.Behaviours
                     ModCache.TitleScreenUI.OnPlayEndlessButtonClicked();
                     return;
                 }
-                _ = ModUIConstants.ShowEndlessModeMenu();
+                _ = ModUIs.ShowEndlessModeMenu();
             });
             singleplayerDatas[1].ClickedCallback = endlessModeEvent;
 

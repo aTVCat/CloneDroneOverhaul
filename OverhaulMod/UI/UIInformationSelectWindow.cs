@@ -40,7 +40,7 @@ namespace OverhaulMod.UI
 
         public void OnOverhaulInfoButtonClicked()
         {
-            _ = ModUIConstants.ShowOverhaulModInfoMenu(base.transform);
+            _ = ModUIs.ShowOverhaulModInfoMenu(base.transform);
         }
 
         public void OnModBotInfoButtonClicked()
@@ -56,7 +56,7 @@ namespace OverhaulMod.UI
 
         public void OnGalleryButtonClicked()
         {
-            _ = ModUIConstants.ShowDevelopmentGallery(base.transform);
+            _ = ModUIs.ShowDevelopmentGallery(base.transform);
         }
     }
 }

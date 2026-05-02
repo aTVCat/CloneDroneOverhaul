@@ -141,7 +141,7 @@ namespace OverhaulMod.Engine
             _garbageDoor2Transform = _garbageShuteTransform.FindChildRecursive("GarbageDoor2019Static");
             _garbageDoor2Transform.GetComponent<Renderer>().enabled = false;
 
-            GameObject gameObject = Instantiate(ModResources.Prefab(AssetBundleConstants.MODELS, "ArenaOverhaul"), _arenaFinalTransform);
+            GameObject gameObject = Instantiate(ModResources.Prefab(ModAssetBundles.MODELS, "ArenaOverhaul"), _arenaFinalTransform);
             gameObject.transform.localPosition = Vector3.zero;
             gameObject.transform.localEulerAngles = Vector3.zero;
             gameObject.transform.localScale = Vector3.one;

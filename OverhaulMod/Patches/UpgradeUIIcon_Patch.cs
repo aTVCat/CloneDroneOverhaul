@@ -60,7 +60,7 @@ namespace OverhaulMod.Patches
                     Image image = content.GetComponent<Image>();
                     if (image)
                     {
-                        image.sprite = ModResources.Sprite(AssetBundleConstants.UI, "NA-HQ-128x128");
+                        image.sprite = ModResources.Sprite(ModAssetBundles.UI, "NA-HQ-128x128");
                     }
                 }
             }

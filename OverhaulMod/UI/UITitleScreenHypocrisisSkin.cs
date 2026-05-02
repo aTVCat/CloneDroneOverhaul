@@ -274,7 +274,7 @@ namespace OverhaulMod.UI
 
         public void OnSettingsButtonClicked()
         {
-            ModUIConstants.ShowSettingsMenuRework(false);
+            ModUIs.ShowSettingsMenuRework(false);
         }
 
         public void OnDiscordButtonClicked()

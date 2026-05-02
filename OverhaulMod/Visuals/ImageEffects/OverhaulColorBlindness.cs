@@ -37,7 +37,7 @@ namespace OverhaulMod.Visuals.ImageEffects
             if (!SystemInfo.supportsImageEffects || SystemInfo.graphicsShaderLevel < 30)
                 return;
 
-            _shader = ModResources.Shader(AssetBundleConstants.IMAGE_EFFECTS, "Colorblind");
+            _shader = ModResources.Shader(ModAssetBundles.IMAGE_EFFECTS, "Colorblind");
             if (!_shader || !_shader.isSupported)
                 return;
 

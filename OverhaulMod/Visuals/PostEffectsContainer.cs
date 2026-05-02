@@ -224,8 +224,8 @@ namespace OverhaulMod.Visuals
                 if (!depthOfField && enable)
                 {
                     depthOfField = cameraObject.AddComponent<DepthOfField>();
-                    depthOfField.dofHdrShader = ModResources.Shader(AssetBundleConstants.IMAGE_EFFECTS, "DepthOfFieldScatter");
-                    depthOfField.dx11BokehShader = ModResources.Shader(AssetBundleConstants.IMAGE_EFFECTS, "DepthOfFieldDX11");
+                    depthOfField.dofHdrShader = ModResources.Shader(ModAssetBundles.IMAGE_EFFECTS, "DepthOfFieldScatter");
+                    depthOfField.dx11BokehShader = ModResources.Shader(ModAssetBundles.IMAGE_EFFECTS, "DepthOfFieldDX11");
                     depthOfField.blurSampleCount = DepthOfField.BlurSampleCount.Low;
                     depthOfField.focalSize = 0.9f;
                 }
@@ -252,8 +252,8 @@ namespace OverhaulMod.Visuals
                 if (!sunShafts && enable)
                 {
                     sunShafts = cameraObject.AddComponent<SunShafts>();
-                    sunShafts.simpleClearShader = ModResources.Shader(AssetBundleConstants.IMAGE_EFFECTS, "SimpleClear");
-                    sunShafts.sunShaftsShader = ModResources.Shader(AssetBundleConstants.IMAGE_EFFECTS, "SunShaftsComposite");
+                    sunShafts.simpleClearShader = ModResources.Shader(ModAssetBundles.IMAGE_EFFECTS, "SimpleClear");
+                    sunShafts.sunShaftsShader = ModResources.Shader(ModAssetBundles.IMAGE_EFFECTS, "SunShaftsComposite");
                     sunShafts.sunThreshold = new Color(0.8f, 0.9f, 0.8f, 1f);
                     sunShafts.resolution = SunShafts.SunShaftsResolution.Low;
                     sunShafts.sunShaftIntensity = 1.2f;
@@ -300,9 +300,9 @@ namespace OverhaulMod.Visuals
                 if (!dithering && enable)
                 {
                     dithering = cameraObject.AddComponent<NoiseAndGrain>();
-                    dithering.noiseShader = ModResources.Shader(AssetBundleConstants.IMAGE_EFFECTS, "NoiseAndGrain");
-                    dithering.dx11NoiseShader = ModResources.Shader(AssetBundleConstants.IMAGE_EFFECTS, "NoiseAndGrainDX11");
-                    dithering.noiseTexture = ModResources.Texture2D(AssetBundleConstants.IMAGE_EFFECTS, "Noise");
+                    dithering.noiseShader = ModResources.Shader(ModAssetBundles.IMAGE_EFFECTS, "NoiseAndGrain");
+                    dithering.dx11NoiseShader = ModResources.Shader(ModAssetBundles.IMAGE_EFFECTS, "NoiseAndGrainDX11");
+                    dithering.noiseTexture = ModResources.Texture2D(ModAssetBundles.IMAGE_EFFECTS, "Noise");
                     dithering.generalIntensity = 0.15f;
                     dithering.intensityMultiplier = 0.2f;
                     dithering.whiteIntensity = 0.75f;
@@ -328,9 +328,9 @@ namespace OverhaulMod.Visuals
                 if (!vignetteAndChromaticAberration && enable)
                 {
                     vignetteAndChromaticAberration = cameraObject.AddComponent<VignetteAndChromaticAberration>();
-                    vignetteAndChromaticAberration.vignetteShader = ModResources.Shader(AssetBundleConstants.IMAGE_EFFECTS, "VignettingShader");
-                    vignetteAndChromaticAberration.chromAberrationShader = ModResources.Shader(AssetBundleConstants.IMAGE_EFFECTS, "ChromaticAberrationShader");
-                    vignetteAndChromaticAberration.separableBlurShader = ModResources.Shader(AssetBundleConstants.IMAGE_EFFECTS, "SeparableBlur");
+                    vignetteAndChromaticAberration.vignetteShader = ModResources.Shader(ModAssetBundles.IMAGE_EFFECTS, "VignettingShader");
+                    vignetteAndChromaticAberration.chromAberrationShader = ModResources.Shader(ModAssetBundles.IMAGE_EFFECTS, "ChromaticAberrationShader");
+                    vignetteAndChromaticAberration.separableBlurShader = ModResources.Shader(ModAssetBundles.IMAGE_EFFECTS, "SeparableBlur");
                     vignetteAndChromaticAberration.chromaticAberration = 0f;
                 }
 

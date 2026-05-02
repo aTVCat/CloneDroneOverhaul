@@ -3,8 +3,8 @@ using OverhaulMod.Engine;
 using OverhaulMod.UI;
 using OverhaulMod.Utils;
 using System;
-using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -43,19 +43,6 @@ namespace OverhaulMod
 
         private List<OverhaulUIBehaviour> _shownUIs;
 
-        private Transform _gameUIRootTransform;
-        public Transform GameUIRootTransform
-        {
-            get
-            {
-                if (!_gameUIRootTransform)
-                {
-                    _gameUIRootTransform = ModCache.UIRoot.transform;
-                }
-                return _gameUIRootTransform;
-            }
-        }
-
         public bool SkipHidingCustomUIs
         {
             get;
@@ -82,7 +69,7 @@ namespace OverhaulMod
             _shownUIs = new List<OverhaulUIBehaviour>();
 
             if (Time.timeSinceLevelLoad < 3f)
-                ModUIConstants.ShowIntro();
+                ModUIs.ShowIntro();
         }
 
         private void Start()
@@ -91,7 +78,7 @@ namespace OverhaulMod
 
             if (AddonManager.Instance.HasInstalledAddon(AddonManager.EXTRAS_ADDON_ID, out string path))
             {
-                ModResources.LoadBundleAsync(AssetBundleConstants.UI_EXTRA, null, path);
+                ModResources.LoadBundleAsync(ModAssetBundles.UI_EXTRA, null, path);
             }
         }
 
@@ -123,9 +110,9 @@ namespace OverhaulMod
             foreach (string key in keysToRemove)
                 _ = _instantiatedUIs.Remove(key);
 
-            _ = ModUIConstants.ShowVersionLabel();
-            _ = ModUIConstants.ShowCinematicEffects();
-            _ = ModUIConstants.ShowSubtitleTextFieldRework();
+            _ = ModUIs.ShowVersionLabel();
+            _ = ModUIs.ShowCinematicEffects();
+            _ = ModUIs.ShowSubtitleTextFieldRework();
         }
 
         public bool HasInstantiatedUI(string assetKey)
@@ -133,7 +120,7 @@ namespace OverhaulMod
             return _instantiatedUIs.ContainsKey(assetKey);
         }
 
-        public bool IsUIVisible(string assetBundle, string assetKey)
+        public bool IsVisible(string assetBundle, string assetKey)
         {
             string fullName = $"{assetBundle}.{assetKey}";
             return HasInstantiatedUI(fullName) && _instantiatedUIs[fullName].activeInHierarchy;
@@ -144,7 +131,7 @@ namespace OverhaulMod
             switch (layer)
             {
                 case UILayer.Last:
-                    return GameUIRootTransform.childCount;
+                    return ModCache.UIRootTransform.childCount;
                 case UILayer.BeforeTitleScreen:
                     return ModCache.TitleScreenUI.transform.GetSiblingIndex();
                 case UILayer.AfterTitleScreen:
@@ -179,22 +166,21 @@ namespace OverhaulMod
             if (!HasInstantiatedUI(fullName))
             {
                 GameObject prefab = ModResources.Prefab(assetBundle, assetKey);
-                GameObject gameObject = Instantiate(prefab, GameUIRootTransform);
+                GameObject gameObject = Instantiate(prefab, ModCache.UIRootTransform);
                 gameObject.SetActive(true);
                 _instantiatedUIs.Add(fullName, gameObject);
-                reparentUI(gameObject.transform as RectTransform, layer, siblingIndexOffset);
+
+                adjustUITransform(gameObject.transform as RectTransform);
+                gameObject.transform.SetSiblingIndex(GetSiblingIndex(layer) + siblingIndexOffset);
 
                 T result1 = gameObject.AddComponent<T>();
                 result1.Name = fullName;
 
-#if DEBUG
-                System.Diagnostics.Stopwatch stopwatch = System.Diagnostics.Stopwatch.StartNew();
+                Stopwatch stopwatch = Stopwatch.StartNew();
                 result1.InitializeUI();
                 stopwatch.Stop();
                 ModDebug.Log($"Initialized {assetBundle}.{assetKey} in {stopwatch.ElapsedMilliseconds} ms, {stopwatch.ElapsedTicks} ticks");
-#else
-                result1.InitializeUI();
-#endif
+
                 result1.Show();
 
                 if (result1.CloseOnEscapeButtonPress)
@@ -205,8 +191,10 @@ namespace OverhaulMod
             else
             {
                 RectTransform uiTransform = _instantiatedUIs[fullName].transform as RectTransform;
-                if (uiTransform.parent != GameUIRootTransform) uiTransform.SetParent(GameUIRootTransform, false);
-                reparentUI(uiTransform, layer, siblingIndexOffset);
+                if (uiTransform.parent != ModCache.UIRootTransform) uiTransform.SetParent(ModCache.UIRootTransform, false);
+
+                adjustUITransform(uiTransform);
+                uiTransform.SetSiblingIndex(GetSiblingIndex(layer) + siblingIndexOffset);
             }
 
             T result = _instantiatedUIs[fullName].GetComponent<T>();
@@ -218,9 +206,8 @@ namespace OverhaulMod
             return result;
         }
 
-        private void reparentUI(RectTransform transform, UILayer layer, int siblingIndexOffset)
+        private void adjustUITransform(RectTransform transform)
         {
-            transform.SetSiblingIndex(GetSiblingIndex(layer) + siblingIndexOffset);
             transform.anchorMin = Vector2.zero;
             transform.anchorMax = Vector2.one;
             transform.sizeDelta = Vector2.zero;
@@ -231,10 +218,7 @@ namespace OverhaulMod
         public T Show<T>(string assetBundle, string assetKey, Transform parent) where T : OverhaulUIBehaviour
         {
             T result = Show<T>(assetBundle, assetKey, UILayer.Last);
-            if (parent)
-            {
-                result.transform.SetParent(parent);
-            }
+            if (parent && result.transform.parent != parent) result.transform.SetParent(parent);
             result.transform.SetAsLastSibling();
             return result;
         }
@@ -279,12 +263,6 @@ namespace OverhaulMod
             }
         }
 
-        public void HideLegacyMenuInsteadOfCustom(GameObject objectToTrack)
-        {
-            SkipHidingCustomUIs = true;
-            _ = ModActionUtils.RunCoroutine(letOriginalUIHideNextTime(objectToTrack));
-        }
-
         public void InvokeActionInsteadOfHidingCustomUI(Action action)
         {
             ActionToInvoke = action;
@@ -299,15 +277,6 @@ namespace OverhaulMod
                 return true;
             }
             return false;
-        }
-
-        private IEnumerator letOriginalUIHideNextTime(GameObject objectToTrack)
-        {
-            while (objectToTrack && objectToTrack.activeInHierarchy)
-                yield return null;
-
-            SkipHidingCustomUIs = false;
-            yield break;
         }
 
         public bool ShouldEnableCursor()
@@ -385,10 +354,10 @@ namespace OverhaulMod
             switch (CursorSkin)
             {
                 case 1:
-                    Cursor.SetCursor(ModResources.Texture2D(AssetBundleConstants.UI, "Cursor"), Vector2.zero, CursorMode.Auto);
+                    Cursor.SetCursor(ModResources.Texture2D(ModAssetBundles.UI, "Cursor"), Vector2.zero, CursorMode.Auto);
                     break;
                 case 2:
-                    Cursor.SetCursor(ModResources.Texture2D(AssetBundleConstants.UI, "Cursor2"), Vector2.zero, CursorMode.Auto);
+                    Cursor.SetCursor(ModResources.Texture2D(ModAssetBundles.UI, "Cursor2"), Vector2.zero, CursorMode.Auto);
                     break;
                 default:
                     Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
@@ -430,7 +399,7 @@ namespace OverhaulMod
             private void Awake()
             {
                 _windows = new Dictionary<string, WindowBehaviour>();
-                _windowPrefab = ModResources.Prefab(AssetBundleConstants.UI, "WindowPrefab").GetComponent<ModdedObject>();
+                _windowPrefab = ModResources.Prefab(ModAssetBundles.UI, "WindowPrefab").GetComponent<ModdedObject>();
             }
 
             public string Window(Transform parent, Transform content, string title, Vector2 size, Vector2 position = default, bool destroyOnClose = false)

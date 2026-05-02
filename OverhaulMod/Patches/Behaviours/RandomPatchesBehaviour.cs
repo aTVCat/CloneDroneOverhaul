@@ -19,6 +19,16 @@ namespace OverhaulMod.Patches.Behaviours
                         break;
                     }
 
+                // reduce trophy shadows
+                foreach (ChallengeDefinition challenge in ChallengeManager.Instance.GetChallenges(false))
+                    if (challenge.TrophyPrefab)
+                    {
+                        Light light = challenge.TrophyPrefab.GetComponentInChildren<Light>();
+                        //light.shadowResolution = UnityEngine.Rendering.LightShadowResolution.Low;
+                        light.shadows = LightShadows.None;
+                        light.intensity = 3f;
+                    }
+
                 /*
                 CrosshairsUI crosshairsUI = gameUIRoot.CrosshairsUI;
                 if (crosshairsUI && crosshairsUI.Child)

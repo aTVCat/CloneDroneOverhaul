@@ -22,11 +22,11 @@ namespace OverhaulMod.Patches
             __instance.gameObject.SetActive(false);
             if (value)
             {
-                _ = ModUIConstants.ShowPhotoModeUIRework();
+                _ = ModUIs.ShowPhotoModeUIRework();
             }
             else
             {
-                ModUIConstants.HidePhotoModeUIRework();
+                ModUIs.HidePhotoModeUIRework();
             }
         }
     }

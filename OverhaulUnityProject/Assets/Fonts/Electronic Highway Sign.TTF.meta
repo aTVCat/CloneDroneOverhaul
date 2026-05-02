@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: f246626039f03e14385021d6ad5de96e
+guid: 8a2b9e2a607dd2143b58c44bc32410b4
 TrueTypeFontImporter:
   externalObjects: {}
   serializedVersion: 4
@@ -8,9 +8,9 @@ TrueTypeFontImporter:
   characterSpacing: 0
   characterPadding: 1
   includeFontData: 1
-  fontName: DSEG7 Classic
+  fontName: Electronic Highway Sign
   fontNames:
-  - DSEG7 Classic
+  - Electronic Highway Sign
   fallbackFontReferences: []
   customCharacters: 
   fontRenderingMode: 0
@@ -18,5 +18,5 @@ TrueTypeFontImporter:
   useLegacyBoundsCalculation: 0
   shouldRoundAdvanceValue: 1
   userData: 
-  assetBundleName: overhaul_ui
+  assetBundleName: 
   assetBundleVariant: 

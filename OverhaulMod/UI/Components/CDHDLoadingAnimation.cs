@@ -35,7 +35,7 @@ namespace OverhaulMod.UI
                         numString = i.ToString();
                     }
 
-                    sprites[i] = ModResources.Sprite(AssetBundleConstants.UI_TRANSTION, $"Loading.000{numString}");
+                    sprites[i] = ModResources.Sprite(ModAssetBundles.UI_TRANSTION, $"Loading.000{numString}");
                 }
                 _sprites = sprites;
             }

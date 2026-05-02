@@ -193,7 +193,7 @@ namespace OverhaulMod.Content.Personalization
             }
             GlobalEventManager.Instance.Dispatch(GlobalEvents.LevelSpawned);
 
-            ModUIConstants.ShowPersonalizationEditorUI();
+            ModUIs.ShowPersonalizationEditorUI();
 
             SpawnBot(false);
             GlobalEventManager.Instance.Dispatch(EDITOR_STARTED_EVENT);
@@ -342,7 +342,7 @@ namespace OverhaulMod.Content.Personalization
                 PostEffectsManager.Instance.RefreshCameraPostEffects(true);
 
                 UIPersonalizationEditor.Instance.Hide();
-                _ = ModUIConstants.ShowPersonalizationEditorPlaytestHUD();
+                _ = ModUIs.ShowPersonalizationEditorPlaytestHUD();
             }
         }
 
@@ -369,7 +369,7 @@ namespace OverhaulMod.Content.Personalization
                 PostEffectsManager.Instance.RefreshCameraPostEffects(true);
 
                 UIPersonalizationEditor.Instance.Show();
-                ModUIConstants.HidePersonalizationEditorPlaytestHUD();
+                ModUIs.HidePersonalizationEditorPlaytestHUD();
 
                 _ = base.StartCoroutine(exitPlaytestModeCoroutine(firstPersonMover));
             }
@@ -432,8 +432,8 @@ namespace OverhaulMod.Content.Personalization
             cameraController.gameObject.SetActive(true);
             PostEffectsManager.Instance.RefreshCameraPostEffects(true);
 
-            _ = ModUIConstants.ShowPersonalizationEditorPlaytestHUD();
-            ModUIConstants.ShowPersonalizationEditorScreenshotControls();
+            _ = ModUIs.ShowPersonalizationEditorPlaytestHUD();
+            ModUIs.ShowPersonalizationEditorScreenshotControls();
         }
 
         public void ExitScreenshotMode()
@@ -459,8 +459,8 @@ namespace OverhaulMod.Content.Personalization
             cameraController.gameObject.SetActive(false);
             PostEffectsManager.Instance.RefreshCameraPostEffects(true);
 
-            ModUIConstants.HidePersonalizationEditorPlaytestHUD();
-            ModUIConstants.HidePersonalizationEditorScreenshotControls();
+            ModUIs.HidePersonalizationEditorPlaytestHUD();
+            ModUIs.HidePersonalizationEditorScreenshotControls();
         }
 
         public bool IsInScreenshotMode() => _isInScreenshotMode;

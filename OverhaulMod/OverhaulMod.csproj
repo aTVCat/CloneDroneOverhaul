@@ -541,7 +541,7 @@
     <Compile Include="UI\UICinematicEffects.cs" />
     <Compile Include="UI\UIImageExplorer.cs" />
     <Compile Include="UI\UIAutoBuildMenu.cs" />
-    <Compile Include="UI\UIDownloadPersonalizationAssetsMenu.cs" />
+    <Compile Include="UI\UIPersonalizationAssetsMenu.cs" />
     <Compile Include="UI\UIDiscordServerMenu.cs" />
     <Compile Include="UI\UIAssetBundleAssetsBrowser.cs" />
     <Compile Include="UI\UIAutoBuildSelectionMenu.cs" />
@@ -566,16 +566,13 @@
     <Compile Include="UI\UIPatchNotes.cs" />
     <Compile Include="UI\UIPersonalizationEditorAboutDialog.cs" />
     <Compile Include="UI\UIPersonalizationEditorExclusivityEditMenu.cs" />
-    <Compile Include="UI\UIPersonalizationSettingsMenu.cs" />
     <Compile Include="UI\UIPersonalizationEditorObjectBrowser.cs" />
-    <Compile Include="UI\UIPersonalizationEditorHelpMenu.cs" />
     <Compile Include="UI\UIScreenTooltips.cs" />
     <Compile Include="UI\UIPersonalizationEditorAuthorsEditMenu.cs" />
     <Compile Include="UI\UIPersonalizationItemBrowser.cs" />
     <Compile Include="UI\UIPersonalizationEditorVerificationMenu.cs" />
     <Compile Include="UI\UISetKeyBindWindow.cs" />
     <Compile Include="UI\UIPhotoModeUIRework.cs" />
-    <Compile Include="UI\UIImageEffects.cs" />
     <Compile Include="UI\UILocalizationEditor.cs" />
     <Compile Include="UI\UIAddonsEditor.cs" />
     <Compile Include="UI\UIGenericInputFieldWindow.cs" />
@@ -641,7 +638,7 @@
     <Compile Include="Visuals\PostEffectsManager.cs" />
     <Compile Include="Visuals\RobotWeaponBag.cs" />
     <Compile Include="UI\UIDeveloperMenu.cs" />
-    <Compile Include="Utils\AssetBundleConstants.cs" />
+    <Compile Include="Utils\ModAssetBundles.cs" />
     <Compile Include="ModUIManager.cs" />
     <Compile Include="Gameplay\ModUpgradesManager.cs" />
     <Compile Include="Gameplay\ModWeaponsManager.cs" />
@@ -657,7 +654,7 @@
     <Compile Include="UI\UIEndlessModeMenu.cs" />
     <Compile Include="UI\OverhaulUIBehaviour.cs" />
     <Compile Include="ModBehaviour.cs" />
-    <Compile Include="Utils\ModUIContants.cs" />
+    <Compile Include="Utils\ModUIs.cs" />
     <Compile Include="UI\Attributes\UIElementActionAttribute.cs" />
     <Compile Include="UI\Attributes\UIElementAttribute.cs" />
     <Compile Include="UI\UIVersionLabel.cs" />

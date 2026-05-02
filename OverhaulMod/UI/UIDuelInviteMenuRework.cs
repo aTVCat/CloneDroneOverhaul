@@ -245,7 +245,7 @@ namespace OverhaulMod.UI
             if (displayingGameMode == GameMode.CoopChallenge)
             {
                 Hide();
-                _ = ModUIConstants.ShowChallengesMenuRework(true, false);
+                _ = ModUIs.ShowChallengesMenuRework(true, false);
                 return;
             }
 
@@ -278,7 +278,7 @@ namespace OverhaulMod.UI
             if (displayingGameMode == GameMode.CoopChallenge)
             {
                 Hide();
-                _ = ModUIConstants.ShowChallengesMenuRework(true, true);
+                _ = ModUIs.ShowChallengesMenuRework(true, true);
                 return;
             }
 
@@ -315,7 +315,7 @@ namespace OverhaulMod.UI
         {
             GameObject gameObject = _panelObject;
             gameObject.SetActive(false);
-            UIAutoBuildMenu ui = ModUIConstants.ShowAutoBuildMenu();
+            UIAutoBuildMenu ui = ModUIs.ShowAutoBuildMenu();
             ui.objectToShow = gameObject;
         }
 

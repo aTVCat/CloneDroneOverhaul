@@ -14,7 +14,7 @@ namespace OverhaulMod.Patches
         {
             if (!ModCore.IsActive()) return;
 
-            UISettingsMenuRework settingsMenuRework = ModUIManager.Instance.Get<UISettingsMenuRework>(AssetBundleConstants.UI, ModUIConstants.UI_SETTINGS_MENU);
+            UISettingsMenuRework settingsMenuRework = ModUIManager.Instance.Get<UISettingsMenuRework>(ModAssetBundles.UI, ModUIs.UI_SETTINGS_MENU_REWORK);
             if (settingsMenuRework && settingsMenuRework.IsVisible && settingsMenuRework.GetSelectedTabID() == "Advanced")
                 settingsMenuRework.PopulatePage("Advanced");
         }

@@ -198,7 +198,7 @@ namespace OverhaulMod.UI
 
         public void OnCreateNewButtonClicked()
         {
-            UIPersonalizationEditorItemCreationDialog panel = ModUIConstants.ShowPersonalizationEditorItemCreationDialog(base.transform);
+            UIPersonalizationEditorItemCreationDialog panel = ModUIs.ShowPersonalizationEditorItemCreationDialog(base.transform);
             panel.UsePersistentFolder = _usePersistentDirectoryToggle.isOn;
             panel.ItemCreatedCallback = Hide;
         }

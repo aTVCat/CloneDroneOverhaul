@@ -14,7 +14,7 @@ namespace OverhaulMod.Patches
 
             if (!ModUIManager.Instance) return;
 
-            _ = ModUIConstants.ShowLoadingScreen();
+            _ = ModUIs.ShowLoadingScreen();
         }
 
         [HarmonyPostfix]
@@ -25,7 +25,7 @@ namespace OverhaulMod.Patches
 
             if (!ModUIManager.Instance) return;
 
-            ModUIConstants.HideLoadingScreen();
+            ModUIs.HideLoadingScreen();
         }
     }
 }

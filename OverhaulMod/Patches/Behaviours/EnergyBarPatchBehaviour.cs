@@ -100,7 +100,7 @@ namespace OverhaulMod.Patches.Behaviours
             glowFillTransform.offsetMax = new Vector2(25f, 25f);
             glowFillTransform.offsetMin = new Vector2(-50f, -15f);
             Image image = glowFillTransform.GetComponent<Image>();
-            image.sprite = ModResources.Sprite(AssetBundleConstants.UI, "Glow-3-256x256");
+            image.sprite = ModResources.Sprite(ModAssetBundles.UI, "Glow-3-256x256");
 
             Color color = image.color;
             color.a = 1f;

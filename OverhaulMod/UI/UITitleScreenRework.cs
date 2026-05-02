@@ -233,7 +233,7 @@ namespace OverhaulMod.UI
 
                 if (hypocrisis && !_hasSpawnedHypocrisisSkin)
                 {
-                    ModUIConstants.ShowTitleScreenHypocrisisSkin(_hypocrisisSkinHolder);
+                    ModUIs.ShowTitleScreenHypocrisisSkin(_hypocrisisSkinHolder);
                     _hasSpawnedHypocrisisSkin = true;
                 }
             }
@@ -498,17 +498,17 @@ namespace OverhaulMod.UI
 
         public void OnExclusivePerksMenuButtonClicked()
         {
-            _ = ModUIConstants.ShowExclusivePerksMenu();
+            _ = ModUIs.ShowExclusivePerksMenu();
         }
 
         public void OnAddonsButtonClicked()
         {
-            _ = ModUIConstants.ShowAddonsMenu();
+            _ = ModUIs.ShowAddonsMenu();
         }
 
         public void OnUpdatesButtonClicked()
         {
-            _ = ModUIConstants.ShowUpdatesWindowRework();
+            _ = ModUIs.ShowUpdatesWindowRework();
         }
 
         public void OnAdvancementsButtonClicked()
@@ -518,7 +518,7 @@ namespace OverhaulMod.UI
                 ModCache.TitleScreenUI.OnAchievementsButtonClicked();
                 return;
             }
-            _ = ModUIConstants.ShowAdvancementsMenuRework();
+            _ = ModUIs.ShowAdvancementsMenuRework();
         }
 
         public void OnWorkshopBrowserButtonClicked()
@@ -528,7 +528,7 @@ namespace OverhaulMod.UI
                 ModCache.TitleScreenUI.OnWorkshopBrowserButtonClicked();
                 return;
             }
-            _ = ModUIConstants.ShowWorkshopBrowserRework();
+            _ = ModUIs.ShowWorkshopBrowserRework();
         }
 
         public void OnLevelEditorButtonClicked()
@@ -551,17 +551,17 @@ namespace OverhaulMod.UI
                 ModCache.TitleScreenUI.OnOptionsButtonClicked();
                 return;
             }
-            _ = ModUIConstants.ShowSettingsMenuRework(false);
+            _ = ModUIs.ShowSettingsMenuRework(false);
         }
 
         public void OnSettingReworkMenuV2Clicked()
         {
-            _ = ModUIConstants.ShowSettingsMenuReworkV2();
+            _ = ModUIs.ShowSettingsMenuReworkV2();
         }
 
         public void OnCreditsButtonClicked()
         {
-            _ = ModUIConstants.ShowInformationSelectMenu();
+            _ = ModUIs.ShowInformationSelectMenu();
         }
 
         public void OnExitButtonClicked()
@@ -575,23 +575,20 @@ namespace OverhaulMod.UI
                 }
 
                 _quitButton.interactable = false;
-                DelegateScheduler.Instance.Schedule(delegate
-                {
-                    Application.Quit();
-                }, 1f);
+                ModActionUtils.DoInTime(Application.Quit, 1f);
                 return;
             }
-            _ = ModUIConstants.ShowFeedbackUIRework(true);
+            _ = ModUIs.ShowFeedbackUIRework(true);
         }
 
         public void OnFeedbackClicked()
         {
-            _ = ModUIConstants.ShowFeedbackUIRework(false);
+            _ = ModUIs.ShowFeedbackUIRework(false);
         }
 
         public void OnCustomizeButtonClicked()
         {
-            _ = ModUIConstants.ShowTitleScreenCustomizationPanel(base.transform);
+            _ = ModUIs.ShowTitleScreenCustomizationPanel(base.transform);
         }
 
         public void OnSkinButtonClicked()
@@ -620,12 +617,12 @@ namespace OverhaulMod.UI
 
         public void OnDiscordServerButtonClicked()
         {
-            _ = ModUIConstants.ShowDiscordServerMenu(base.transform);
+            _ = ModUIs.ShowDiscordServerMenu(base.transform);
         }
 
         public void OnPatchNotesButtonClicked()
         {
-            _ = ModUIConstants.ShowPatchNotes(new UIPatchNotes.ShowArguments()
+            _ = ModUIs.ShowPatchNotes(new UIPatchNotes.ShowArguments()
             {
                 CloseButtonActive = true,
                 PanelOffset = Vector2.zero,
@@ -636,7 +633,7 @@ namespace OverhaulMod.UI
 
         public void OnLocalizationEditorButtonClicked()
         {
-            ModUIConstants.ShowLocalizationEditor();
+            ModUIs.ShowLocalizationEditor();
         }
 
         public enum TitleScreenSkinType

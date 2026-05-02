@@ -47,7 +47,7 @@ namespace OverhaulMod.Content.Personalization
         {
             if (!_screenshotOverlay)
             {
-                GameObject gameObject = Instantiate(ModResources.Prefab(AssetBundleConstants.UI, "PersonalizationItemScreenshotOverlay"), null, false);
+                GameObject gameObject = Instantiate(ModResources.Prefab(ModAssetBundles.UI, "PersonalizationItemScreenshotOverlay"), null, false);
                 _screenshotOverlay = gameObject.AddComponent<PersonalizationEditorScreenshotOverlay>();
             }
             _screenshotOverlay.Show();
@@ -160,7 +160,7 @@ namespace OverhaulMod.Content.Personalization
         {
             if (_stageObject) return;
 
-            GameObject stageObject = Instantiate(ModResources.Prefab(AssetBundleConstants.MISCELLANEOUS, "PersonalizationItemScreenshotStage"));
+            GameObject stageObject = Instantiate(ModResources.Prefab(ModAssetBundles.MISCELLANEOUS, "PersonalizationItemScreenshotStage"));
             stageObject.transform.position = Vector3.up * 1000f;
 
             ModdedObject moddedObject = stageObject.GetComponent<ModdedObject>();

@@ -57,7 +57,7 @@ namespace OverhaulMod.UI
                 (ModParseUtils.TryParseColor("00B301", Color.white), ModParseUtils.TryParseColor("00610A", Color.gray))
             };
 
-            ModUIManager.Instance.Get<UITitleScreenRework>(AssetBundleConstants.UI, ModUIConstants.UI_TITLE_SCREEN).SetMultiplayerButtonActive(false);
+            ModUIManager.Instance.Get<UITitleScreenRework>(ModAssetBundles.UI, ModUIs.UI_TITLE_SCREEN_REWORK).SetMultiplayerButtonActive(false);
         }
 
         public override void Update()
@@ -107,7 +107,7 @@ namespace OverhaulMod.UI
                 shouldActivateMultiplayerButton = true;
             }
 
-            UITitleScreenRework titleScreenRework = ModUIManager.Instance?.Get<UITitleScreenRework>(AssetBundleConstants.UI, ModUIConstants.UI_TITLE_SCREEN);
+            UITitleScreenRework titleScreenRework = ModUIManager.Instance?.Get<UITitleScreenRework>(ModAssetBundles.UI, ModUIs.UI_TITLE_SCREEN_REWORK);
             if (!titleScreenRework)
                 return;
 

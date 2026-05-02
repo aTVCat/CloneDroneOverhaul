@@ -32,9 +32,11 @@ namespace OverhaulMod.UI
         [UIElement("Content")]
         private readonly Transform _container;
 
+        [BetterOutline]
         [UIElement("Header")]
         private readonly Text _headerText;
 
+        [BetterOutline]
         [UIElement("TextLine", false)]
         private readonly Text _textLine;
 
@@ -78,7 +80,6 @@ namespace OverhaulMod.UI
         {
             _allowHidingThisMenu = true;
             _shading = base.GetComponent<Image>();
-            _textLine.gameObject.AddComponent<BetterOutline>().effectColor = Color.black;
 
             string path = Path.Combine(ModDirectories.DataFolder, "changelogs");
             if (!Directory.Exists(path)) return;
@@ -401,7 +402,7 @@ namespace OverhaulMod.UI
 
         public void OnFeedbackButtonClicked()
         {
-            _ = ModUIConstants.ShowFeedbackUIRework(false);
+            _ = ModUIs.ShowFeedbackUIRework(false);
         }
 
         public static int CompareByVersion(Version a, Version b)

@@ -58,7 +58,7 @@ namespace OverhaulMod.UI
 
         public void OnCreditsButtonClicked()
         {
-            _ = ModUIConstants.ShowCreditsMenu(base.transform);
+            _ = ModUIs.ShowCreditsMenu(base.transform);
         }
 
         public void OnModBotPageButtonClicked()

@@ -57,20 +57,20 @@ namespace OverhaulMod.Gameplay
                 "scythe_unlock_desc",
                 SCYTHE_UNLOCK_UPGRADE,
                 1,
-                AssetBundleConstants.UPGRADES,
+                ModAssetBundles.UPGRADES,
                 "Scythe-128x128");
             _ = CreateUpgrade<UpgradeDescription>("fire_scythe",
                   "fire_scythe_desc",
                   SCYTHE_FIRE_UPGRADE,
                   1,
-                  AssetBundleConstants.UPGRADES,
+                  ModAssetBundles.UPGRADES,
                   "FireScythe-128x128",
                   scythe);
             _ = CreateUpgrade<UpgradeDescription>("sharp_blade",
                   "sharp_blade_desc",
                   SCYTHE_BLADE_UPGRADE,
                   1,
-                  AssetBundleConstants.UPGRADES,
+                  ModAssetBundles.UPGRADES,
                   "ScytheBlade-128x128",
                   scythe);
 
@@ -78,7 +78,7 @@ namespace OverhaulMod.Gameplay
                 "double_jump_desc",
                 DOUBLE_JUMP_UPGRADE,
                 1,
-                AssetBundleConstants.UPGRADES,
+                ModAssetBundles.UPGRADES,
                 "DoubleJump-128x128",
                 UpgradeManager.Instance.GetUpgrade(UpgradeType.EnergyCapacity, 1));
 
@@ -86,7 +86,7 @@ namespace OverhaulMod.Gameplay
                 "triple_jump_desc",
                 DOUBLE_JUMP_UPGRADE,
                 2,
-                AssetBundleConstants.UPGRADES,
+                ModAssetBundles.UPGRADES,
                 "DoubleJump-128x128",
                 doubleJump,
                 UpgradeManager.Instance.GetUpgrade(UpgradeType.EnergyCapacity, 2));

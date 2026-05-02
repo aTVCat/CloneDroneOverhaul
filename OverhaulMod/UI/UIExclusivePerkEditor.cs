@@ -217,7 +217,7 @@ namespace OverhaulMod.UI
             _ownerPlayfabIDField.text = perk.PlayFabID;
             _ownerSteamIDField.text = perk.SteamID.ToString();
 
-            _perkIcon.sprite = perk.Icon.IsNullOrEmpty() ? null : ModResources.Sprite(AssetBundleConstants.PERK_ICONS, perk.Icon);
+            _perkIcon.sprite = perk.Icon.IsNullOrEmpty() ? null : ModResources.Sprite(ModAssetBundles.PERK_ICONS, perk.Icon);
 
             object data = perk.DeserializeData();
             if (data == null)
@@ -288,7 +288,7 @@ namespace OverhaulMod.UI
                     ModdedObject moddedObject = Instantiate(_perkDisplay, _perkPanelContent);
                     moddedObject.gameObject.SetActive(true);
                     moddedObject.GetObject<Text>(0).text = perk.DisplayName;
-                    moddedObject.GetObject<Image>(1).sprite = perk.Icon.IsNullOrEmpty() ? null : ModResources.Sprite(AssetBundleConstants.PERK_ICONS, perk.Icon);
+                    moddedObject.GetObject<Image>(1).sprite = perk.Icon.IsNullOrEmpty() ? null : ModResources.Sprite(ModAssetBundles.PERK_ICONS, perk.Icon);
 
                     Button button = moddedObject.GetComponent<Button>();
                     button.onClick.AddListener(delegate
@@ -346,7 +346,7 @@ namespace OverhaulMod.UI
             if (_perkIconsPanelContent.childCount != 0)
                 return;
 
-            AssetBundle assetBundle = ModResources.LoadAndGetAssetBundle(AssetBundleConstants.PERK_ICONS);
+            AssetBundle assetBundle = ModResources.LoadAndGetAssetBundle(ModAssetBundles.PERK_ICONS);
             foreach (Sprite sprite in assetBundle.LoadAllAssets<Sprite>())
             {
                 ModdedObject moddedObject = Instantiate(_perkIconDisplay, _perkIconsPanelContent);

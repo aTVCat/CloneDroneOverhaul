@@ -89,10 +89,9 @@ namespace OverhaulMod.UI
         public void OnNewAddonButtonClicked()
         {
             _newAddonButton.interactable = false;
-            DelegateScheduler.Instance.Schedule(delegate
+            ModActionUtils.DoInTime(delegate
             {
-                if (_newAddonButton)
-                    _newAddonButton.interactable = true;
+                if (_newAddonButton) _newAddonButton.interactable = true;
             }, 1f);
 
             AddonDownloadInfo addonDownloadInfo = new AddonDownloadInfo();

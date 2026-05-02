@@ -90,7 +90,7 @@ namespace OverhaulMod.UI
                     if (manager)
                     {
                         Hide();
-                        _ = manager.Hide(Utils.AssetBundleConstants.UI, Utils.ModUIConstants.UI_CHAPTER_SELECT_MENU);
+                        _ = manager.Hide(Utils.ModAssetBundles.UI, Utils.ModUIs.UI_CHAPTER_SELECT_MENU);
                     }
 
                     _ = ModLevelManager.Instance.SetStoryModeLevelProgress(chapterSection);
@@ -119,7 +119,7 @@ namespace OverhaulMod.UI
                 if (manager)
                 {
                     Hide();
-                    _ = manager.Hide(AssetBundleConstants.UI, ModUIConstants.UI_CHAPTER_SELECT_MENU);
+                    _ = manager.Hide(ModAssetBundles.UI, ModUIs.UI_CHAPTER_SELECT_MENU);
                 }
                 _ = methodInfo.Invoke(legacyUI, null);
             }

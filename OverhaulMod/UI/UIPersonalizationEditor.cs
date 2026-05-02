@@ -97,10 +97,7 @@ namespace OverhaulMod.UI
 
             if (PersonalizationEditorGuideManager.NeverShowIntroductionGuide) return;
 
-            DelegateScheduler.Instance.Schedule(delegate
-            {
-                Guide();
-            }, 3f);
+            ModActionUtils.DoInTime(Guide, 3f);
         }
 
         public override void Update()
@@ -279,7 +276,7 @@ namespace OverhaulMod.UI
         public void OnSelectItemButtonClicked()
         {
             Dropdown.Hide();
-            _ = ModUIConstants.ShowPersonalizationEditorItemsBrowser(base.transform);
+            _ = ModUIs.ShowPersonalizationEditorItemsBrowser(base.transform);
         }
 
         public void OnSaveButtonClicked()
@@ -295,13 +292,13 @@ namespace OverhaulMod.UI
         public void OnExportItemsButtonClicked()
         {
             Dropdown.Hide();
-            _ = ModUIConstants.ShowPersonalizationEditorExportAllMenu(base.transform);
+            _ = ModUIs.ShowPersonalizationEditorExportAllMenu(base.transform);
         }
 
         public void OnImportItemsButtonClicked()
         {
             Dropdown.Hide();
-            _ = ModUIConstants.ShowPersonalizationEditorItemImportHelper(base.transform);
+            _ = ModUIs.ShowPersonalizationEditorItemImportHelper(base.transform);
         }
 
         public void OnPlaytestButtonClicked()
@@ -313,19 +310,19 @@ namespace OverhaulMod.UI
         public void OnSendToVerificationButtonClicked()
         {
             Dropdown.Hide();
-            _ = ModUIConstants.ShowPersonalizationEditorVerificationMenu(base.transform);
+            _ = ModUIs.ShowPersonalizationEditorVerificationMenu(base.transform);
         }
 
         public void OnUploadButtonClicked()
         {
             Dropdown.Hide();
-            _ = ModUIConstants.ShowPersonalizationEditorVerificationMenu(base.transform);
+            _ = ModUIs.ShowPersonalizationEditorVerificationMenu(base.transform);
         }
 
         public void OnAboutButtonClicked()
         {
             Dropdown.Hide();
-            _ = ModUIConstants.ShowPersonalizationEditorAboutDialog(base.transform);
+            _ = ModUIs.ShowPersonalizationEditorAboutDialog(base.transform);
         }
 
         public void OnFileButtonClicked()

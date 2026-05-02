@@ -75,7 +75,7 @@ namespace OverhaulMod.UI
 
             ShowImportPanel();
 
-            UIDownloadPersonalizationAssetsMenu menu = ModUIConstants.ShowDownloadPersonalizationAssetsMenu(base.transform);
+            UIPersonalizationAssetsMenu menu = ModUIs.ShowPersonalizationAssetsMenu(base.transform);
             menu.OnRefreshButtonClicked();
         }
 
@@ -147,7 +147,7 @@ namespace OverhaulMod.UI
         private void exportAllItems()
         {
             Hide();
-            ModUIConstants.ShowPersonalizationEditorExportAllMenu(UIPersonalizationEditor.Instance.transform);
+            ModUIs.ShowPersonalizationEditorExportAllMenu(UIPersonalizationEditor.Instance.transform);
         }
 
         private void onSelectedFiles(List<string> files)

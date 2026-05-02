@@ -148,7 +148,7 @@ namespace OverhaulMod.Engine
             UIPressActionKeyDescription actionDescription = _pressActionKeyDescription;
             if (!actionDescription)
             {
-                actionDescription = ModUIConstants.ShowPressActionKeyDescription();
+                actionDescription = ModUIs.ShowPressActionKeyDescription(ModUIManager.Instance.IsVisible(ModAssetBundles.UI, ModUIs.UI_SETTINGS_MENU_REWORK));
                 _pressActionKeyDescription = actionDescription;
             }
 
@@ -174,7 +174,7 @@ namespace OverhaulMod.Engine
                 Image image = bgGlow.GetComponent<Image>();
                 if (image)
                 {
-                    image.sprite = ModResources.Sprite(AssetBundleConstants.UI, "Glow-2-256x256");
+                    image.sprite = ModResources.Sprite(ModAssetBundles.UI, "Glow-2-256x256");
                     image.color = UseKeyTriggerManager.BGGlowColor;
                 }
             }

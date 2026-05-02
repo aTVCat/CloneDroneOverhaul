@@ -117,7 +117,7 @@ namespace OverhaulMod.UI
 
         public override bool HideTitleScreen => true;
 
-        public bool disallowUsingKey
+        public bool DisallowUsingKey
         {
             get;
             private set;
@@ -135,21 +135,7 @@ namespace OverhaulMod.UI
             base.Show();
 
             SubtitleTextFieldPatchBehaviour subtitleTextFieldPatchBehaviour = GamePatchBehaviour.GetBehaviour<SubtitleTextFieldPatchBehaviour>();
-            if (subtitleTextFieldPatchBehaviour)
-            {
-                subtitleTextFieldPatchBehaviour.SetSiblingIndex(base.transform);
-            }
-
-            UISubtitleTextFieldRework subtitleTextFieldRework = ModUIManager.Instance.Get<UISubtitleTextFieldRework>(AssetBundleConstants.UI, ModUIConstants.UI_SUBTITLE_TEXT_FIELD_REWORK);
-            if (subtitleTextFieldRework)
-            {
-                subtitleTextFieldRework.SetSiblingIndex(true);
-            }
-
-            UIPressActionKeyDescription pressActionKeyDescription = ModUIManager.Instance.Get<UIPressActionKeyDescription>(AssetBundleConstants.UI, ModUIConstants.UI_PRESS_ACTION_KEY_DESCRIPTION);
-            if (!pressActionKeyDescription)
-                pressActionKeyDescription = ModUIConstants.ShowPressActionKeyDescription();
-            pressActionKeyDescription.SetSiblingIndex(true);
+            if (subtitleTextFieldPatchBehaviour) subtitleTextFieldPatchBehaviour.SetSiblingIndex(base.transform);
 
             if (!_selectedTabId.IsNullOrEmpty())
                 PopulatePage(_selectedTabId);
@@ -162,22 +148,7 @@ namespace OverhaulMod.UI
             base.Hide();
 
             SubtitleTextFieldPatchBehaviour subtitleTextFieldPatchBehaviour = GamePatchBehaviour.GetBehaviour<SubtitleTextFieldPatchBehaviour>();
-            if (subtitleTextFieldPatchBehaviour)
-            {
-                subtitleTextFieldPatchBehaviour.ResetSiblingIndex();
-            }
-
-            UISubtitleTextFieldRework subtitleTextFieldRework = ModUIManager.Instance.Get<UISubtitleTextFieldRework>(AssetBundleConstants.UI, ModUIConstants.UI_SUBTITLE_TEXT_FIELD_REWORK);
-            if (subtitleTextFieldRework)
-            {
-                subtitleTextFieldRework.SetSiblingIndex(false);
-            }
-
-            UIPressActionKeyDescription pressActionKeyDescription = ModUIManager.Instance.Get<UIPressActionKeyDescription>(AssetBundleConstants.UI, ModUIConstants.UI_PRESS_ACTION_KEY_DESCRIPTION);
-            if (pressActionKeyDescription)
-            {
-                pressActionKeyDescription.SetSiblingIndex(false);
-            }
+            if (subtitleTextFieldPatchBehaviour) subtitleTextFieldPatchBehaviour.ResetSiblingIndex();
 
             ModSettingsDataManager.Instance.Save();
             if (_hasMultiplayerCustomizationChanges && BoltNetwork.IsRunning && !BoltNetwork.IsServer && !BoltNetwork.IsSinglePlayer)
@@ -208,7 +179,7 @@ namespace OverhaulMod.UI
 
         public void ShowRegularElements()
         {
-            disallowUsingKey = false;
+            DisallowUsingKey = false;
             _panelTransform.anchorMax = new Vector2(1f, 1f);
             _panelTransform.anchorMin = new Vector2(0f, 0f);
             _panelTransform.sizeDelta = new Vector2(0f, 0f);
@@ -226,7 +197,7 @@ namespace OverhaulMod.UI
 
         public void ShowSetupElements()
         {
-            disallowUsingKey = true;
+            DisallowUsingKey = true;
             _panelTransform.anchorMax = new Vector2(0.5f, 0.5f);
             _panelTransform.anchorMin = new Vector2(0.5f, 0.5f);
             _panelTransform.sizeDelta = new Vector2(360f, 500f);
@@ -413,13 +384,13 @@ namespace OverhaulMod.UI
             _ = pageBuilder.Toggle(ModSettingIDs.SHOW_VERSION_LABEL, "Show Overhaul mod version");
             _ = pageBuilder.Button("Configure Overhaul mod UIs", delegate
             {
-                _ = ModUIConstants.ShowOverhaulUIManagementPanel(base.transform);
+                _ = ModUIs.ShowOverhaulUIManagementPanel(base.transform);
             });
 
             _ = pageBuilder.Button("Done", delegate
             {
                 ModSettingsManager.SetBoolValue(ModSettingIDs.SHOW_MOD_SETUP_SCREEN_ON_START, false);
-                UITitleScreenRework titleScreenCustomizationPanel = ModUIManager.Instance?.Get<UITitleScreenRework>(AssetBundleConstants.UI, ModUIConstants.UI_TITLE_SCREEN);
+                UITitleScreenRework titleScreenCustomizationPanel = ModUIManager.Instance?.Get<UITitleScreenRework>(ModAssetBundles.UI, ModUIs.UI_TITLE_SCREEN_REWORK);
                 if (titleScreenCustomizationPanel)
                 {
                     titleScreenCustomizationPanel.SetSkinAccordingToSettings();
@@ -444,6 +415,13 @@ namespace OverhaulMod.UI
 
             _ = pageBuilder.DropdownWithImage(cursorSkinOptions, ModSettingIDs.CURSOR_SKIN);
 
+            _ = pageBuilder.Button("Configure Overhaul mod UIs", delegate
+            {
+                _ = ModUIs.ShowOverhaulUIManagementPanel(base.transform);
+            });
+            _ = pageBuilder.Toggle(ModSettingIDs.SHOW_VERSION_LABEL, "Show Overhaul mod version");
+            _ = pageBuilder.Toggle(ModSettingIDs.UI_SOUNDS, "Interface sounds");
+
             GameObject hideGameUIToggleNote = null;
             _ = pageBuilder.Toggle(!settingsMenu.HideGameUIToggle.isOn, delegate (bool value)
             {
@@ -453,18 +431,25 @@ namespace OverhaulMod.UI
             hideGameUIToggleNote = pageBuilder.Header4("You're in cutscene mode, UI will be still hidden.".AddColor(Color.yellow)).transform.parent.gameObject;
             hideGameUIToggleNote.SetActive(!settingsMenu.HideGameUIToggle.isOn && CutSceneManager.Instance.IsInCutscene());
 
+
+            _ = pageBuilder.Header1("Subtitles");
             _ = pageBuilder.Toggle(settingsMenu.SubtitlesToggle.isOn, OnSubtitlesToggleChanged, "Show subtitles");
             _ = pageBuilder.Toggle(ModSettingIDs.SHOW_SPEAKER_NAME, "Display who's speaking", delegate
             {
                 SpeechAudioManager.Instance.PlaySequence("CloneDroneIntro", false);
             });
-            _ = pageBuilder.Button("Configure Overhaul mod UIs", delegate
+            _ = pageBuilder.ToggleWithOptions(ModSettingIDs.ENABLE_SUBTITLE_TEXT_FIELD_REWORK, "Commentator subtitles rework", "SubtitlesRework", delegate (bool value)
             {
-                _ = ModUIConstants.ShowOverhaulUIManagementPanel(base.transform);
+                SpeechAudioManager.Instance.PlaySequence("CloneDroneIntro", false);
             });
-            _ = pageBuilder.Toggle(ModSettingIDs.UI_SOUNDS, "Interface sounds");
 
-            _ = pageBuilder.Toggle(ModSettingIDs.SHOW_VERSION_LABEL, "Show Overhaul mod version");
+
+            _ = pageBuilder.Header1("Labels");
+            _ = pageBuilder.ToggleWithOptions(ModSettingIDs.ENABLE_PRESS_BUTTON_TRIGGER_DESCRIPTION_REWORK, "Use key trigger description rework", "UKTD", delegate (bool value)
+            {
+                if (value) UseKeyTriggerManager.Instance.ShowThenHideDescription(ModConstants.LoremIpsumText, 2f);
+            });
+
 
             _ = pageBuilder.Header1("Energy bar enhancements");
             _ = pageBuilder.Toggle(ModSettingIDs.ENERGY_UI_FADE_OUT_IF_FULL, "Fade out energy bar if full", "Interface");
@@ -481,6 +466,7 @@ namespace OverhaulMod.UI
                 PopulatePage("Interface");
             });
 
+
             _ = pageBuilder.Header1("Photo mode");
             _ = pageBuilder.Toggle(ModSettingIDs.ADVANCED_PHOTO_MODE, "Advanced photo mode", "Interface");
             if (AdvancedPhotoModeManager.EnableAdvancedPhotoMode)
@@ -492,15 +478,6 @@ namespace OverhaulMod.UI
                 (rmbHoldHeader4.transform.parent as RectTransform).sizeDelta = rmbHoldHeader4SizeDelta;
             }
 
-            _ = pageBuilder.Header1("Labels");
-            _ = pageBuilder.ToggleWithOptions(ModSettingIDs.ENABLE_PRESS_BUTTON_TRIGGER_DESCRIPTION_REWORK, "Use key trigger description rework", "UKTD", delegate (bool value)
-            {
-                if (value) UseKeyTriggerManager.Instance.ShowThenHideDescription(ModConstants.LoremIpsumText, 2f);
-            });
-            _ = pageBuilder.ToggleWithOptions(ModSettingIDs.ENABLE_SUBTITLE_TEXT_FIELD_REWORK, "Commentator subtitles rework", "SubtitlesRework", delegate (bool value)
-            {
-                SpeechAudioManager.Instance.PlaySequence("CloneDroneIntro", false);
-            });
 
             _ = pageBuilder.Header1("Transitions");
             _ = pageBuilder.Toggle(ModSettingIDs.OVERHAUL_SCENE_TRANSITIONS, "Better scene transitions", "Interface");
@@ -732,7 +709,7 @@ namespace OverhaulMod.UI
             {
                 Hide();
                 if (ModUIManager.ShowWorkshopBrowserRework)
-                    _ = ModUIConstants.ShowWorkshopBrowserRework();
+                    _ = ModUIs.ShowWorkshopBrowserRework();
                 else
                     ModCache.TitleScreenUI.OnWorkshopBrowserButtonClicked();
             });
@@ -905,7 +882,7 @@ namespace OverhaulMod.UI
                 ModUIUtils.MessagePopup(true, LocalizationManager.Instance.GetTranslatedString("settings_reset_settings_header"), LocalizationManager.Instance.GetTranslatedString("settings_reset_settings_description"), 125f, MessageMenu.ButtonLayout.EnableDisableButtons, "Ok", "Yes", "No", null, delegate
                 {
                     ModSettingsManager.Instance.ResetSettings();
-                    _ = ModUIConstants.ShowRestartRequiredScreen(true);
+                    _ = ModUIs.ShowRestartRequiredScreen(true);
                 });
             });
         }
@@ -1265,7 +1242,7 @@ namespace OverhaulMod.UI
 
         public void OnExportSettingsButtonClicked()
         {
-            ModUIConstants.ShowSettingsImportExportMenu(base.transform);
+            ModUIs.ShowSettingsImportExportMenu(base.transform);
         }
 
         public void OnQualityDropdownChanged(int value)
@@ -1423,7 +1400,7 @@ namespace OverhaulMod.UI
             ModBotUIRoot.Instance.ModBotSignInUI.SetSession("");
             VersionLabelManager.Instance.SetLine(2, "Not signed in");
 
-            UISettingsMenuRework settingsMenuRework = ModUIManager.Instance.Get<UISettingsMenuRework>(AssetBundleConstants.UI, ModUIConstants.UI_SETTINGS_MENU);
+            UISettingsMenuRework settingsMenuRework = ModUIManager.Instance.Get<UISettingsMenuRework>(ModAssetBundles.UI, ModUIs.UI_SETTINGS_MENU_REWORK);
             if (settingsMenuRework) settingsMenuRework.PopulatePage("Advanced");
         }
 

@@ -64,7 +64,7 @@ namespace OverhaulMod.UI
 
         public void OnClicked()
         {
-            UIAddonDetailsMenu menu = ModUIConstants.ShowAddonDetailsMenu(_subUIParent);
+            UIAddonDetailsMenu menu = ModUIs.ShowAddonDetailsMenu(_subUIParent);
             menu.SetAddon(_addonDownloadInfo);
         }
     }

@@ -141,10 +141,9 @@ namespace OverhaulMod.UI
         {
             GUIUtility.systemCopyBuffer = "getplayfabids true";
             _copyButton.interactable = false;
-            DelegateScheduler.Instance.Schedule(delegate
+            ModActionUtils.DoInTime(delegate
             {
-                if (_copyButton)
-                    _copyButton.interactable = true;
+                if (_copyButton) _copyButton.interactable = true;
             }, 2f);
         }
     }

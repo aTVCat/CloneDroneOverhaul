@@ -147,7 +147,7 @@ namespace OverhaulMod.UI
                     }
                     else
                     {
-                        sprite = ModResources.Sprite(AssetBundleConstants.UI, "NA-HQ-128x128");
+                        sprite = ModResources.Sprite(ModAssetBundles.UI, "NA-HQ-128x128");
                     }
 
                     Image upgradeIcon = Instantiate(upgradeIconPrefab, upgradeIconContainer);

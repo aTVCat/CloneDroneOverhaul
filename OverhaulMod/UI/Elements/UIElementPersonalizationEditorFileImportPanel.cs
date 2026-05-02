@@ -10,10 +10,6 @@ namespace OverhaulMod.UI
     {
         public static bool HasShownMagicaVoxelTip;
 
-        [UIElementAction(nameof(OnHelpButtonClicked))]
-        [UIElement("HelpButton")]
-        private readonly Button _helpButton;
-
         [UIElementAction(nameof(OnImportVoxButtonClicked))]
         [UIElement("ImportVoxButton")]
         private readonly Button _importVoxButton;
@@ -123,16 +119,11 @@ namespace OverhaulMod.UI
             importFileDialog(InternalModBot.ModsManager.Instance.ModFolderPath, "*.vox");
         }
 
-        public void OnHelpButtonClicked()
-        {
-            _ = ModUIConstants.ShowPersonalizationEditorHelpMenu(UIPersonalizationEditor.Instance.transform);
-        }
-
         public void OnImportVoxButtonClicked()
         {
             if (!HasShownMagicaVoxelTip)
             {
-                UIPersonalizationEditorMagicaVoxelTip tip = ModUIConstants.ShowPersonalizationEditorMagicaVoxelTip(UIPersonalizationEditor.Instance.transform);
+                UIPersonalizationEditorMagicaVoxelTip tip = ModUIs.ShowPersonalizationEditorMagicaVoxelTip(UIPersonalizationEditor.Instance.transform);
                 tip.Callback = voxFileImportDialog;
                 return;
             }
@@ -146,7 +137,7 @@ namespace OverhaulMod.UI
 
         public void OnMagicaVoxelTipButtonClicked()
         {
-            UIPersonalizationEditorMagicaVoxelTip tip = ModUIConstants.ShowPersonalizationEditorMagicaVoxelTip(UIPersonalizationEditor.Instance.transform);
+            UIPersonalizationEditorMagicaVoxelTip tip = ModUIs.ShowPersonalizationEditorMagicaVoxelTip(UIPersonalizationEditor.Instance.transform);
             tip.Callback = null;
         }
     }

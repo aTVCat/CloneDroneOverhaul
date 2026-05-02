@@ -54,7 +54,7 @@ namespace OverhaulMod.Engine
             if (TransitionManager.TransitionSound && !FadeOut)
                 ModAudioManager.Instance.PlayTransitionSound();
 
-            ModUIConstants.HideLoadingScreen();
+            ModUIs.HideLoadingScreen();
         }
 
         public override void OnDestroy()
@@ -116,7 +116,7 @@ namespace OverhaulMod.Engine
 
         public void RunCoroutine(IEnumerator enumerator)
         {
-            if (enumerator != null) _ = ModActionUtils.RunCoroutine(enumerator, IsCrossScene);
+            if (enumerator != null) enumerator.Run(IsCrossScene);
         }
 
         private IEnumerator changeLoadingTextCoroutine(string localizedStringId)

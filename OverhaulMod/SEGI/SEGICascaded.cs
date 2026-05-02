@@ -499,7 +499,7 @@ public class SEGICascaded : MonoBehaviour
         for (int i = 0; i < 64; i++)
         {
             string filename = "LDR_RGBA_" + i.ToString();
-            Texture2D blueNoiseTexture = ModResources.Texture2D(AssetBundleConstants.GLOBAL_ILLUMINATION, "Noise Textures/" + filename); //Resources.Load("Noise Textures/" + filename) as Texture2D;
+            Texture2D blueNoiseTexture = ModResources.Texture2D(ModAssetBundles.GLOBAL_ILLUMINATION, "Noise Textures/" + filename); //Resources.Load("Noise Textures/" + filename) as Texture2D;
 
             if (blueNoiseTexture == null)
             {
@@ -513,14 +513,14 @@ public class SEGICascaded : MonoBehaviour
     private void Init()
     {
         //Setup shaders and materials
-        sunDepthShader = ModResources.Shader(AssetBundleConstants.GLOBAL_ILLUMINATION, "SEGIRenderSunDepth_C"); //Shader.Find("Hidden/SEGIRenderSunDepth_C");
-        clearCompute = ModResources.Load<ComputeShader>(AssetBundleConstants.GLOBAL_ILLUMINATION, "SEGIClear_C"); //Resources.Load("SEGIClear_C") as ComputeShader;
-        transferIntsCompute = ModResources.Load<ComputeShader>(AssetBundleConstants.GLOBAL_ILLUMINATION, "SEGITransferInts_C"); //Resources.Load("SEGITransferInts_C") as ComputeShader;
-        mipFilterCompute = ModResources.Load<ComputeShader>(AssetBundleConstants.GLOBAL_ILLUMINATION, "SEGIMipFilter_C"); //Resources.Load("SEGIMipFilter_C") as ComputeShader;
-        voxelizationShader = ModResources.Shader(AssetBundleConstants.GLOBAL_ILLUMINATION, "SEGIVoxelizeScene_C"); //Shader.Find("Hidden/SEGIVoxelizeScene_C");
-        voxelTracingShader = ModResources.Shader(AssetBundleConstants.GLOBAL_ILLUMINATION, "SEGITraceScene_C"); //Shader.Find("Hidden/SEGITraceScene_C");
+        sunDepthShader = ModResources.Shader(ModAssetBundles.GLOBAL_ILLUMINATION, "SEGIRenderSunDepth_C"); //Shader.Find("Hidden/SEGIRenderSunDepth_C");
+        clearCompute = ModResources.Load<ComputeShader>(ModAssetBundles.GLOBAL_ILLUMINATION, "SEGIClear_C"); //Resources.Load("SEGIClear_C") as ComputeShader;
+        transferIntsCompute = ModResources.Load<ComputeShader>(ModAssetBundles.GLOBAL_ILLUMINATION, "SEGITransferInts_C"); //Resources.Load("SEGITransferInts_C") as ComputeShader;
+        mipFilterCompute = ModResources.Load<ComputeShader>(ModAssetBundles.GLOBAL_ILLUMINATION, "SEGIMipFilter_C"); //Resources.Load("SEGIMipFilter_C") as ComputeShader;
+        voxelizationShader = ModResources.Shader(ModAssetBundles.GLOBAL_ILLUMINATION, "SEGIVoxelizeScene_C"); //Shader.Find("Hidden/SEGIVoxelizeScene_C");
+        voxelTracingShader = ModResources.Shader(ModAssetBundles.GLOBAL_ILLUMINATION, "SEGITraceScene_C"); //Shader.Find("Hidden/SEGITraceScene_C");
 
-        material = new Material(ModResources.Shader(AssetBundleConstants.GLOBAL_ILLUMINATION, "SEGI_C"))//Shader.Find("Hidden/SEGI_C"))
+        material = new Material(ModResources.Shader(ModAssetBundles.GLOBAL_ILLUMINATION, "SEGI_C"))//Shader.Find("Hidden/SEGI_C"))
         {
             hideFlags = HideFlags.HideAndDontSave
         };

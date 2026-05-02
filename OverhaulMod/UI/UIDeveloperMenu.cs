@@ -61,11 +61,11 @@ namespace OverhaulMod.UI
                 if (value)
                 {
                     if (!Cursor.visible || GameModeManager.IsOnTitleScreen())
-                        _ = ModUIConstants.ShowDebugMenu();
+                        _ = ModUIs.ShowDebugMenu();
                 }
                 else
                 {
-                    ModUIConstants.HideDebugMenu();
+                    ModUIs.HideDebugMenu();
                 }
             }
         }

@@ -1,6 +1,6 @@
 ﻿namespace OverhaulMod.Utils
 {
-    public static class AssetBundleConstants
+    public static class ModAssetBundles
     {
         public const string UI = "overhaul_ui";
         public const string UI_EXTRA = "overhaul_ui_extra";

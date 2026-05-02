@@ -1,6 +1,5 @@
 ﻿using OverhaulMod.UI;
 using OverhaulMod.Utils;
-using System.Linq;
 using UnityEngine;
 
 namespace OverhaulMod.Content.Personalization

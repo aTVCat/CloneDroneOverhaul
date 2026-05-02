@@ -105,13 +105,13 @@ namespace OverhaulMod.UI
 
         public void OnEditorButtonClicked()
         {
-            ModUIConstants.ShowUpdatesEditor(base.transform);
+            ModUIs.ShowUpdatesEditor(base.transform);
         }
 
         public void OnPatchNotesButtonClicked()
         {
             Hide();
-            ModUIConstants.ShowPatchNotes(new UIPatchNotes.ShowArguments()
+            ModUIs.ShowPatchNotes(new UIPatchNotes.ShowArguments()
             {
                 CloseButtonActive = true,
                 PanelOffset = Vector2.zero,
@@ -181,7 +181,7 @@ namespace OverhaulMod.UI
             Button button = moddedObject.GetComponent<Button>();
             button.onClick.AddListener(delegate
             {
-                ModUIConstants.ShowUpdateDetailsWindow(base.transform, updateInfo, branch);
+                ModUIs.ShowUpdateDetailsWindow(base.transform, updateInfo, branch);
             });
         }
     }

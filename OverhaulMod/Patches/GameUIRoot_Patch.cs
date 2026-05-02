@@ -123,7 +123,7 @@ namespace OverhaulMod.Patches
                     autoBuildMenu.Hide();
                     return false;
                 }
-                else if (lastShownUi is UIDownloadPersonalizationAssetsMenu downloadPersonalizationAssetsMenu)
+                else if (lastShownUi is UIPersonalizationAssetsMenu downloadPersonalizationAssetsMenu)
                 {
                     if (!downloadPersonalizationAssetsMenu.CanExit())
                         return false;
@@ -154,7 +154,7 @@ namespace OverhaulMod.Patches
                         return false;
                     }
 
-                    if (!settingsMenuRework.disallowUsingKey)
+                    if (!settingsMenuRework.DisallowUsingKey)
                         settingsMenuRework.Hide();
 
                     return false;

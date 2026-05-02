@@ -116,6 +116,19 @@ namespace OverhaulMod.Utils
             }
         }
 
+        private static Transform s_uiRootTransform;
+        public static Transform UIRootTransform
+        {
+            get
+            {
+                if (!s_uiRootTransform)
+                {
+                    s_uiRootTransform = UIRoot.transform;
+                }
+                return s_uiRootTransform;
+            }
+        }
+
 
         private static Canvas s_uiRootCanvas;
         public static Canvas UIRootCanvas
@@ -144,7 +157,7 @@ namespace OverhaulMod.Utils
         }
 
         private static Camera s_uiRootCamera;
-        public static Camera GameUIRootCamera
+        public static Camera UIRootCamera
         {
             get
             {

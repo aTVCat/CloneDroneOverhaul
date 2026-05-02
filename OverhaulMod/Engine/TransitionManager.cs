@@ -89,7 +89,7 @@ namespace OverhaulMod.Engine
                 parent = ModCache.UIRoot.transform;
             }
 
-            GameObject gameObject = Instantiate(ModResources.Prefab(AssetBundleConstants.UI, "UI_Transition"), parent, false);
+            GameObject gameObject = Instantiate(ModResources.Prefab(ModAssetBundles.UI, "UI_Transition"), parent, false);
             RectTransform transform = gameObject.transform as RectTransform;
             transform.anchoredPosition = Vector2.zero;
             transform.localEulerAngles = Vector2.zero;
@@ -140,7 +140,7 @@ namespace OverhaulMod.Engine
             if (BoltNetwork.IsConnected || BoltNetwork.IsRunning)
             {
                 fadeOutMusic(1.5f);
-                DelegateScheduler.Instance.Schedule(delegate
+                ModActionUtils.DoInTime(delegate
                 {
                     if (AudioManager.Instance) AudioManager.Instance.StopMusic();
                 }, 2f);

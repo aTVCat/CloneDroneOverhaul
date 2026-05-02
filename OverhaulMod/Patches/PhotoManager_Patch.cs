@@ -42,7 +42,7 @@ namespace OverhaulMod.Patches
                 return true;
 
             ModUIManager modUIManager = ModUIManager.Instance;
-            if (modUIManager && modUIManager.IsUIVisible(AssetBundleConstants.UI, ModUIConstants.UI_PAUSE_MENU))
+            if (modUIManager && modUIManager.IsVisible(ModAssetBundles.UI, ModUIs.UI_PAUSE_MENU))
                 return false;
 
             GameUIRoot gameUIRoot = ModCache.UIRoot;

@@ -124,13 +124,13 @@ namespace OverhaulMod.Visuals.Environment
                 {
                     Name = "Snowy",
                     EmissionRate = 75f,
-                    BundleAndAsset = new KeyValuePair<string, string>(AssetBundleConstants.VFX, "WeatherVFX_Snow"),
+                    BundleAndAsset = new KeyValuePair<string, string>(ModAssetBundles.VFX, "WeatherVFX_Snow"),
                 },
                 new WeatherInfo()
                 {
                     Name = "Rainy",
                     EmissionRate = 125f,
-                    BundleAndAsset = new KeyValuePair<string, string>(AssetBundleConstants.VFX, "WeatherVFX_Rain"),
+                    BundleAndAsset = new KeyValuePair<string, string>(ModAssetBundles.VFX, "WeatherVFX_Rain"),
                 },
             };
         }
@@ -291,7 +291,7 @@ namespace OverhaulMod.Visuals.Environment
 
         private void onLevelSpawned()
         {
-            _ = ModActionUtils.RunCoroutine(waitThenRefreshWeather());
+            waitThenRefreshWeather().Run();
         }
 
         private IEnumerator waitThenRefreshWeather()

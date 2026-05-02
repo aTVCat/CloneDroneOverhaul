@@ -39,7 +39,7 @@ namespace OverhaulMod.UI
             _updateInfo = updateInfo;
             _branch = branch;
 
-            UIPatchNotes patchNotes = ModUIConstants.ShowPatchNotes(base.transform, new UIPatchNotes.ShowArguments
+            UIPatchNotes patchNotes = ModUIs.ShowPatchNotes(base.transform, new UIPatchNotes.ShowArguments
             {
                 CloseButtonActive = false,
                 PanelOffset = new UnityEngine.Vector2(0f, 65f),
@@ -59,7 +59,7 @@ namespace OverhaulMod.UI
         public override void Hide()
         {
             base.Hide();
-            ModUIConstants.HidePatchNotes();
+            ModUIs.HidePatchNotes();
         }
 
         public override void Update()
@@ -83,7 +83,7 @@ namespace OverhaulMod.UI
 
                 if (!installUpdateResult.HasFailed())
                 {
-                    _ = ModUIConstants.ShowRestartRequiredScreen(false);
+                    _ = ModUIs.ShowRestartRequiredScreen(false);
                 }
                 else
                 {

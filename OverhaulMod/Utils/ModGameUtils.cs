@@ -252,7 +252,7 @@ namespace OverhaulMod.Utils
                 return;
 
             audioManager.FadeOutMusic(duration);
-            DelegateScheduler.Instance.Schedule(delegate
+            ModActionUtils.DoInTime(delegate
             {
                 audioManager.StopMusic();
             }, duration);

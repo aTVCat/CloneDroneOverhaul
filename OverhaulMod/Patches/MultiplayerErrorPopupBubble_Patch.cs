@@ -13,7 +13,7 @@ namespace OverhaulMod.Patches
         {
             if (!ModCore.IsActive()) return;
 
-            UITitleScreenRework titleScreenRework = ModUIManager.Instance.Get<UITitleScreenRework>(AssetBundleConstants.UI, ModUIConstants.UI_TITLE_SCREEN);
+            UITitleScreenRework titleScreenRework = ModUIManager.Instance.Get<UITitleScreenRework>(ModAssetBundles.UI, ModUIs.UI_TITLE_SCREEN_REWORK);
             if (titleScreenRework && titleScreenRework.IsVisible)
             {
                 UIElementMultiplayerMessageBox em = titleScreenRework.ErrorMessage;

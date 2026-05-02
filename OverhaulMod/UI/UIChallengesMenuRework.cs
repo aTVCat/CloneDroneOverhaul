@@ -146,7 +146,7 @@ namespace OverhaulMod.UI
                     {
                         highScores = new List<HighScoreData>();
                     }
-                    _ = ModUIConstants.ShowLeaderboard(base.transform, highScores, fileName);
+                    _ = ModUIs.ShowLeaderboard(base.transform, highScores, fileName);
                 }
 
                 CharacterModelCustomizationEntry characterModelCustomizationEntry = getCharacterModelUnlockedByChallenge(challengeDefinition.ChallengeID);
@@ -219,7 +219,7 @@ namespace OverhaulMod.UI
             {
                 ModUIManager modUIManager = ModUIManager.Instance;
                 if (modUIManager)
-                    _ = modUIManager.Hide(AssetBundleConstants.UI, ModUIConstants.UI_DUEL_INVITE_MENU_REWORK);
+                    _ = modUIManager.Hide(ModAssetBundles.UI, ModUIs.UI_DUEL_INVITE_MENU_REWORK);
 
                 if (startPrivateMatch)
                     ChallengeManager.Instance.CreatePrivateCoopChallenge(challengeDefinition.ChallengeID);

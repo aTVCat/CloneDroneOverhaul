@@ -16,7 +16,7 @@ namespace OverhaulMod.Patches
             {
                 ModActionUtils.DoInFrames(delegate
                 {
-                    _ = ModUIConstants.ShowSettingsMenuRework(true);
+                    _ = ModUIs.ShowSettingsMenuRework(true);
                 }, 10);
             }
             else

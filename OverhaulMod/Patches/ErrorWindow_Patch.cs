@@ -19,7 +19,7 @@ namespace OverhaulMod.Patches
             {
                 try
                 {
-                    _ = ModUIConstants.ShowCrashScreen(errorMessage);
+                    _ = ModUIs.ShowCrashScreen(errorMessage);
                 }
                 catch (Exception)
                 {
@@ -45,7 +45,7 @@ namespace OverhaulMod.Patches
 
             try
             {
-                ModUIConstants.HideCrashScreen();
+                ModUIs.HideCrashScreen();
             }
             catch { }
             return true;

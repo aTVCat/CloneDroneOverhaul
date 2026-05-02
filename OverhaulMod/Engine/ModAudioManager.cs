@@ -65,8 +65,8 @@ namespace OverhaulMod.Engine
             oneShotAudioSource.spatialBlend = 0f;
             _oneShotGlobalAudioSource = oneShotAudioSource;
 
-            _loadingSoundSourcePrefab = ModResources.Prefab(AssetBundleConstants.SFX, "LoadingSoundSource");
-            _customizationEditorAmbianceSourcePrefab = ModResources.Prefab(AssetBundleConstants.SFX, "CustEditorAmbianceSource");
+            _loadingSoundSourcePrefab = ModResources.Prefab(ModAssetBundles.SFX, "LoadingSoundSource");
+            _customizationEditorAmbianceSourcePrefab = ModResources.Prefab(ModAssetBundles.SFX, "CustEditorAmbianceSource");
             _focused = !MuteSoundWhenUnfocused || Application.isFocused;
             _volumeMultiplier = _focused ? 1f : 0f;
             RefreshVolume();

@@ -12,7 +12,7 @@ namespace OverhaulMod.Patches
         {
             if (!ModCore.IsActive()) return;
 
-            _ = ModUIConstants.ShowLoadingScreen();
+            _ = ModUIs.ShowLoadingScreen();
         }
 
         [HarmonyPostfix]
@@ -21,7 +21,7 @@ namespace OverhaulMod.Patches
         {
             if (!ModCore.IsActive()) return;
 
-            ModUIConstants.HideLoadingScreen();
+            ModUIs.HideLoadingScreen();
         }
     }
 }

@@ -74,7 +74,7 @@ namespace OverhaulMod.UI
 
         public void OnCreateButtonClicked()
         {
-            UIPersonalizationEditorObjectBrowser ob = ModUIConstants.ShowPersonalizationEditorObjectBrowser(UIPersonalizationEditor.Instance.transform);
+            UIPersonalizationEditorObjectBrowser ob = ModUIs.ShowPersonalizationEditorObjectBrowser(UIPersonalizationEditor.Instance.transform);
             ob.callback = Populate;
         }
     }

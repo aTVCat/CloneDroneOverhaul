@@ -11,7 +11,7 @@ namespace OverhaulMod.Patches.Behaviours
 
         public override void Patch()
         {
-            _ = ModActionUtils.RunCoroutine(patchCoroutine());
+            patchCoroutine().Run();
         }
 
         public override void Unpatch()

@@ -14,19 +14,19 @@ namespace OverhaulMod.Content
         public void GetTextFile(string path, Action<string> doneCallback, Action<string> errorCallback, out UnityWebRequest unityWebRequest, int timeOut = 20)
         {
             unityWebRequest = UnityWebRequest.Get(REPOSITORY_URL + path);
-            _ = ModActionUtils.RunCoroutine(getFileCoroutine(unityWebRequest, true, delegate (object obj)
+            getFileCoroutine(unityWebRequest, true, delegate (object obj)
             {
                 if (doneCallback != null) doneCallback((string)obj);
-            }, errorCallback, timeOut));
+            }, errorCallback, timeOut).Run();
         }
 
         public void GetFile(string path, Action<byte[]> doneCallback, Action<string> errorCallback, out UnityWebRequest unityWebRequest, int timeOut = 20)
         {
             unityWebRequest = UnityWebRequest.Get(REPOSITORY_URL + path);
-            _ = ModActionUtils.RunCoroutine(getFileCoroutine(unityWebRequest, false, delegate (object obj)
+            getFileCoroutine(unityWebRequest, false, delegate (object obj)
             {
                 if (doneCallback != null) doneCallback((byte[])obj);
-            }, errorCallback, timeOut));
+            }, errorCallback, timeOut).Run();
         }
 
         public void GetTexture(string link, Action<Texture2D> doneCallback, Action<string> errorCallback, out UnityWebRequest unityWebRequest, int timeOut = 20, bool cache = false)
@@ -40,25 +40,25 @@ namespace OverhaulMod.Content
             }
 
             unityWebRequest = UnityWebRequestTexture.GetTexture(fullUrl);
-            _ = ModActionUtils.RunCoroutine(getTextureCoroutine(unityWebRequest, doneCallback, errorCallback, timeOut, cache));
+            getTextureCoroutine(unityWebRequest, doneCallback, errorCallback, timeOut, cache).Run();
         }
 
         public void GetCustomTextFile(string link, Action<string> doneCallback, Action<string> errorCallback, out UnityWebRequest unityWebRequest, int timeOut = 20)
         {
             unityWebRequest = UnityWebRequest.Get(link);
-            _ = ModActionUtils.RunCoroutine(getFileCoroutine(unityWebRequest, true, delegate (object obj)
+            getFileCoroutine(unityWebRequest, true, delegate (object obj)
             {
                 if (doneCallback != null) doneCallback((string)obj);
-            }, errorCallback, timeOut));
+            }, errorCallback, timeOut).Run();
         }
 
         public void GetCustomFile(string link, Action<byte[]> doneCallback, Action<string> errorCallback, out UnityWebRequest unityWebRequest, int timeOut = 20)
         {
             unityWebRequest = UnityWebRequest.Get(link);
-            _ = ModActionUtils.RunCoroutine(getFileCoroutine(unityWebRequest, false, delegate (object obj)
+            getFileCoroutine(unityWebRequest, false, delegate (object obj)
             {
                 if (doneCallback != null) doneCallback((byte[])obj);
-            }, errorCallback, timeOut));
+            }, errorCallback, timeOut).Run();
         }
 
         public void GetCustomTexture(string link, Action<Texture2D> doneCallback, Action<string> errorCallback, out UnityWebRequest unityWebRequest, int timeOut = 20, bool cache = false)
@@ -71,31 +71,31 @@ namespace OverhaulMod.Content
             }
 
             unityWebRequest = UnityWebRequestTexture.GetTexture(link);
-            _ = ModActionUtils.RunCoroutine(getTextureCoroutine(unityWebRequest, doneCallback, errorCallback, timeOut, cache));
+            getTextureCoroutine(unityWebRequest, doneCallback, errorCallback, timeOut, cache).Run();
         }
 
         public void GetLocalTextFile(string path, Action<string> doneCallback, Action<string> errorCallback, out UnityWebRequest unityWebRequest)
         {
             unityWebRequest = UnityWebRequest.Get("file://" + path);
-            _ = ModActionUtils.RunCoroutine(getFileCoroutine(unityWebRequest, true, delegate (object obj)
+            getFileCoroutine(unityWebRequest, true, delegate (object obj)
             {
                 if (doneCallback != null) doneCallback((string)obj);
-            }, errorCallback, -1));
+            }, errorCallback, -1).Run();
         }
 
         public void GetLocalFile(string path, Action<byte[]> doneCallback, Action<string> errorCallback, out UnityWebRequest unityWebRequest)
         {
             unityWebRequest = UnityWebRequest.Get("file://" + path);
-            _ = ModActionUtils.RunCoroutine(getFileCoroutine(unityWebRequest, false, delegate (object obj)
+            getFileCoroutine(unityWebRequest, false, delegate (object obj)
             {
                 if (doneCallback != null) doneCallback((byte[])obj);
-            }, errorCallback, -1));
+            }, errorCallback, -1).Run();
         }
 
         public void GetLocalTexture(string path, Action<Texture2D> doneCallback, Action<string> errorCallback, out UnityWebRequest unityWebRequest)
         {
             unityWebRequest = UnityWebRequestTexture.GetTexture("file://" + path);
-            _ = ModActionUtils.RunCoroutine(getTextureCoroutine(unityWebRequest, doneCallback, errorCallback, -1, false));
+            getTextureCoroutine(unityWebRequest, doneCallback, errorCallback, -1, false).Run();
         }
 
         private IEnumerator getFileCoroutine(UnityWebRequest webRequest, bool returnText, Action<object> doneCallback, Action<string> errorCallback, int timeOut)
@@ -106,7 +106,7 @@ namespace OverhaulMod.Content
 
             try
             {
-                if (!webRequest.isNetworkError && !webRequest.isHttpError)
+                if (webRequest.result == UnityWebRequest.Result.Success)
                 {
                     if (doneCallback != null)
                     {
@@ -118,7 +118,7 @@ namespace OverhaulMod.Content
                 }
                 else
                 {
-                    if (errorCallback != null) errorCallback(webRequest.error);
+                    if (errorCallback != null) errorCallback(ModUnityUtils.GetWebRequestErrorString(webRequest));
                 }
             }
             finally
@@ -136,7 +136,7 @@ namespace OverhaulMod.Content
 
             try
             {
-                if (!webRequest.isNetworkError && !webRequest.isHttpError)
+                if (webRequest.result == UnityWebRequest.Result.Success)
                 {
                     if (cache)
                     {
@@ -148,7 +148,7 @@ namespace OverhaulMod.Content
                 }
                 else
                 {
-                    if (errorCallback != null) errorCallback(webRequest.error);
+                    if (errorCallback != null) errorCallback(ModUnityUtils.GetWebRequestErrorString(webRequest));
                 }
             }
             finally

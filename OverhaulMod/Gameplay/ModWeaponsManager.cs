@@ -21,7 +21,7 @@ namespace OverhaulMod.Gameplay
             _Weapons = new Dictionary<WeaponType, (GameObject, Type)>();
             _meleeWeapons = new List<WeaponType>();
 
-            AddWeapon<ScytheWeaponModel>(SCYTHE_TYPE, true, AssetBundleConstants.WEAPONS, "OverhaulScythe");
+            AddWeapon<ScytheWeaponModel>(SCYTHE_TYPE, true, ModAssetBundles.WEAPONS, "OverhaulScythe");
         }
 
         public void AddWeapon<T>(WeaponType weaponType, bool melee, string assetBundle, string assetName) where T : ModWeaponModel

@@ -282,7 +282,7 @@ namespace OverhaulMod.UI
 
             if (PersonalizationManager.Instance.GetPersonalizationAssetsState() != PersonalizationAssetsState.Installed)
             {
-                _ = ModUIConstants.ShowDownloadPersonalizationAssetsMenu(base.transform);
+                _ = ModUIs.ShowPersonalizationAssetsMenu(base.transform);
                 HasShownAssetsUpdateMenu = true;
             }
         }
@@ -659,14 +659,9 @@ namespace OverhaulMod.UI
             });
         }
 
-        public void OnSettingsButtonClicked()
-        {
-            _ = ModUIConstants.ShowPersonalizationSettingsMenu(base.transform);
-        }
-
         public void OnUpdateButtonClicked()
         {
-            _ = ModUIConstants.ShowDownloadPersonalizationAssetsMenu(base.transform);
+            _ = ModUIs.ShowPersonalizationAssetsMenu(base.transform);
         }
 
         public void OnSearchBoxChanged(string text)

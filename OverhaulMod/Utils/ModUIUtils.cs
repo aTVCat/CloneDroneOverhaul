@@ -23,9 +23,9 @@ namespace OverhaulMod.Utils
 
             if (showChangelog)
             {
-                DelegateScheduler.Instance.Schedule(delegate
+                ModActionUtils.DoInTime(delegate
                 {
-                    _ = ModUIConstants.ShowPatchNotes(new UIPatchNotes.ShowArguments()
+                    _ = ModUIs.ShowPatchNotes(new UIPatchNotes.ShowArguments()
                     {
                         CloseButtonActive = true,
                         PanelOffset = Vector2.zero,
@@ -36,7 +36,7 @@ namespace OverhaulMod.Utils
             }
             else if (showNewUpdateMessage && !UpdateManager.HasNotifiedAboutNewBuild && UpdateManager.CheckForUpdatesOnStartup)
             {
-                DelegateScheduler.Instance.Schedule(delegate
+                ModActionUtils.DoInTime(delegate
                 {
                     UpdateManager.HasNotifiedAboutNewBuild = true;
 
@@ -51,7 +51,7 @@ namespace OverhaulMod.Utils
                     {
                         MessagePopup(true, LocalizationManager.Instance.GetTranslatedString("update_available_header"), string.Format(LocalizationManager.Instance.GetTranslatedString("update_available_description"), newVersion), 150f, MessageMenu.ButtonLayout.EnableDisableButtons, "ok", "Yes", "No", null, delegate
                         {
-                            UIUpdatesWindowRework windowNew = ModUIConstants.ShowUpdatesWindowRework();
+                            UIUpdatesWindowRework windowNew = ModUIs.ShowUpdatesWindowRework();
                             windowNew.OnCheckForUpdatesButtonClicked();
                         });
                     }
@@ -61,13 +61,13 @@ namespace OverhaulMod.Utils
 
         public static void ImageExplorer(List<string> imagePaths, bool customLinks, Transform parent)
         {
-            UIImageExplorer imageExplorer = ModUIConstants.ShowImageExplorer(parent);
+            UIImageExplorer imageExplorer = ModUIs.ShowImageExplorer(parent);
             imageExplorer.Populate(imagePaths, customLinks);
         }
 
         public static void FileExplorer(Transform parent, bool selectMode, Action<string> callback, string initialFolder, string searchPattern = null, bool selectFolder = false)
         {
-            UIFileExplorer fileExplorer = ModUIConstants.ShowFileExplorer(parent);
+            UIFileExplorer fileExplorer = ModUIs.ShowFileExplorer(parent);
 
             if (initialFolder.IsNullOrEmpty() || !Directory.Exists(initialFolder))
                 fileExplorer.OnDownloadsFolderButtonClicked();
@@ -82,7 +82,7 @@ namespace OverhaulMod.Utils
 
         public static void FileExplorer(Transform parent, bool selectMode, Action<List<string>> callback, string initialFolder, string searchPattern = null, bool selectFolder = false)
         {
-            UIFileExplorer fileExplorer = ModUIConstants.ShowFileExplorer(parent);
+            UIFileExplorer fileExplorer = ModUIs.ShowFileExplorer(parent);
 
             if (initialFolder.IsNullOrEmpty() || !Directory.Exists(initialFolder))
                 fileExplorer.OnDownloadsFolderButtonClicked();
@@ -97,32 +97,32 @@ namespace OverhaulMod.Utils
 
         public static void Tooltip(string text, float duration = 2f)
         {
-            UIScreenTooltips screenTooltips = UIScreenTooltips.Instance ?? ModUIConstants.ShowScreenTooltips();
+            UIScreenTooltips screenTooltips = UIScreenTooltips.Instance ?? ModUIs.ShowScreenTooltips();
             screenTooltips.ShowText(text, duration);
         }
 
         public static void ImageViewer(Texture2D texture, Transform parent, Action closedCallback = null)
         {
-            UIGenericImageViewer genericImageViewer = ModUIConstants.ShowGenericImageViewer(parent);
+            UIGenericImageViewer genericImageViewer = ModUIs.ShowGenericImageViewer(parent);
             genericImageViewer.Populate(texture, closedCallback);
         }
 
         public static void ColorPicker(Color currentColor, bool showAlphaChannel, Action<Color> callback, Transform parent)
         {
-            UIGenericColorPicker genericColorPicker = ModUIConstants.ShowGenericColorPicker(parent);
+            UIGenericColorPicker genericColorPicker = ModUIs.ShowGenericColorPicker(parent);
             genericColorPicker.Populate(currentColor, showAlphaChannel, callback);
         }
 
         public static void KeyBinder(string name, KeyCode defaultKey, Action<KeyCode> callback, Transform parent)
         {
-            UISetKeyBindWindow setKeyBindWindow = ModUIConstants.ShowSetKeyBindWindow(parent);
+            UISetKeyBindWindow setKeyBindWindow = ModUIs.ShowSetKeyBindWindow(parent);
             setKeyBindWindow.callBack = callback;
             setKeyBindWindow.SetContents(name, defaultKey);
         }
 
         public static void LevelDescriptionBrowser(List<LevelDescription> levelDescriptions, Action<LevelDescription> callback)
         {
-            UILevelDescriptionBrowser levelDescriptionBrowser = ModUIConstants.ShowLevelDescriptionBrowser();
+            UILevelDescriptionBrowser levelDescriptionBrowser = ModUIs.ShowLevelDescriptionBrowser();
             levelDescriptionBrowser.callback = callback;
             levelDescriptionBrowser.Populate(levelDescriptions);
         }
@@ -132,7 +132,7 @@ namespace OverhaulMod.Utils
             if (initialText == null)
                 initialText = string.Empty;
 
-            UIGenericInputFieldWindow genericInputFieldWindow = ModUIConstants.ShowGenericInputFieldWindow();
+            UIGenericInputFieldWindow genericInputFieldWindow = ModUIs.ShowGenericInputFieldWindow();
             genericInputFieldWindow.SetTexts(header, description);
             genericInputFieldWindow.SetHeight(height);
             genericInputFieldWindow.SetInputFieldText(initialText, limit);
@@ -141,7 +141,7 @@ namespace OverhaulMod.Utils
 
         public static void MessagePopup(bool fullScreen, string header, string description, float height = 125f, MessageMenu.ButtonLayout buttonLayout = MessageMenu.ButtonLayout.OkButton, string okText = null, string yesText = null, string noText = null, Action okAction = null, Action yesAction = null, Action noAction = null)
         {
-            UIMessagePopup messagePopup = fullScreen ? ModUIConstants.ShowFullScreenMessagePopup() : ModUIConstants.ShowMessagePopup();
+            UIMessagePopup messagePopup = fullScreen ? ModUIs.ShowFullScreenMessagePopup() : ModUIs.ShowMessagePopup();
             messagePopup.SetTexts(header, description);
             messagePopup.SetHeight(height);
             messagePopup.SetButtonLayout(buttonLayout);
@@ -184,18 +184,13 @@ namespace OverhaulMod.Utils
 
         public static void ReplaceBackgroundSprite(Image image, bool addShadow)
         {
-            image.sprite = ModResources.Sprite(AssetBundleConstants.UI, "FrameBGDark-16x16");
+            image.sprite = ModResources.Sprite(ModAssetBundles.UI, "FrameBGDark-16x16");
             if (addShadow)
             {
                 Shadow shadow = image.GetComponent<Shadow>() ?? image.gameObject.AddComponent<Shadow>();
                 shadow.effectDistance = new Vector2(-2f, -2f);
                 shadow.effectColor = new Color(0f, 0f, 0f, 0.5f);
             }
-        }
-
-        public static bool IsEscKeyDown()
-        {
-            return Input.GetKeyDown(KeyCode.Escape);
         }
     }
 }

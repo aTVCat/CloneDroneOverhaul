@@ -335,7 +335,7 @@ namespace OverhaulMod.Utils
                     };
 
                     if (shouldRunUserInfoCoroutine)
-                        _ = ModActionUtils.RunCoroutine(requestUserInformationCoroutine(item, itemAuthor));
+                        requestUserInformationCoroutine(item, itemAuthor).Run();
 
                     items.Add(item);
                 }
@@ -384,7 +384,7 @@ namespace OverhaulMod.Utils
                 callResult?.Dispose();
             });
 
-            DelegateScheduler.Instance.Schedule(delegate
+            ModActionUtils.DoInTime(delegate
             {
                 if (callResult != null) callResult.Dispose();
                 if (!done && errorCallback != null) errorCallback("Request timeout.");

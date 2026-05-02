@@ -65,14 +65,14 @@ namespace OverhaulMod.UI
                     ModdedObject moddedObject = Instantiate(_unlockedPerkDisplay, _container);
                     moddedObject.gameObject.SetActive(true);
                     moddedObject.GetObject<Text>(0).text = perkInfo.DisplayName;
-                    moddedObject.GetObject<Image>(1).sprite = perkInfo.Icon.IsNullOrEmpty() ? null : ModResources.Sprite(AssetBundleConstants.PERK_ICONS, perkInfo.Icon);
+                    moddedObject.GetObject<Image>(1).sprite = perkInfo.Icon.IsNullOrEmpty() ? null : ModResources.Sprite(ModAssetBundles.PERK_ICONS, perkInfo.Icon);
                 }
             }
         }
 
         public void OnEditorButtonClicked()
         {
-            ModUIConstants.ShowExclusivePerksEditor(base.transform);
+            ModUIs.ShowExclusivePerksEditor(base.transform);
         }
 
         public void OnRefreshButtonClicked()

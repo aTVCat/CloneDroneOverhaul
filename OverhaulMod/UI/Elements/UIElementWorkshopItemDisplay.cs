@@ -157,7 +157,7 @@ namespace OverhaulMod.UI
                 return;
             }
 
-            UIWorkshopItemPageWindow window = ModUIConstants.ShowWorkshopItemPageWindow(itemPageWindowParentTransform);
+            UIWorkshopItemPageWindow window = ModUIs.ShowWorkshopItemPageWindow(itemPageWindowParentTransform);
             window.browserUI = browser;
             window.Populate(item);
         }

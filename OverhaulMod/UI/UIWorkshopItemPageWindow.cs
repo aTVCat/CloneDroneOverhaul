@@ -56,6 +56,7 @@ namespace OverhaulMod.UI
         [UIElement("UpVoteButton")]
         private readonly Button _voteUpButton;
 
+        [BetterOutline]
         [UIElement("UpVoteButtonText")]
         private readonly Text _upVoteButtonText;
 
@@ -63,6 +64,7 @@ namespace OverhaulMod.UI
         [UIElement("DownVoteButton")]
         private readonly Button _voteDownButton;
 
+        [BetterOutline]
         [UIElement("DownVoteButtonText")]
         private readonly Text _downVoteButtonText;
 
@@ -213,9 +215,6 @@ namespace OverhaulMod.UI
             tooltipOnHightLight.TooltipShowDuration = 2f;
             tooltipOnHightLight.InitializeElement();
             _tooltipOnHightLight = tooltipOnHightLight;
-
-            _upVoteButtonText.gameObject.AddComponent<BetterOutline>().effectColor = Color.black;
-            _downVoteButtonText.gameObject.AddComponent<BetterOutline>().effectColor = Color.black;
 
             EaseMultiplier = 50f;
         }
@@ -762,7 +761,7 @@ namespace OverhaulMod.UI
 
         public void OnPlayOptionsClicked()
         {
-            ModUIConstants.ShowWorkshopItemPagePlayOptions(base.transform);
+            ModUIs.ShowWorkshopItemPagePlayOptions(base.transform);
         }
 
         public void OnEraseProgressButtonClicked()
@@ -863,10 +862,9 @@ namespace OverhaulMod.UI
         {
             _refreshButton.interactable = false;
             Populate(_workshopItem);
-            DelegateScheduler.Instance.Schedule(delegate
+            ModActionUtils.DoInTime(delegate
             {
-                if (_refreshButton)
-                    _refreshButton.interactable = true;
+                if (_refreshButton) _refreshButton.interactable = true;
             }, 1f);
         }
     }

@@ -27,7 +27,7 @@ namespace OverhaulMod.Engine
             {
                 if (!_autoBuildSelectionMenu)
                 {
-                    _autoBuildSelectionMenu = ModUIConstants.ShowAutoBuildSelectionMenu();
+                    _autoBuildSelectionMenu = ModUIs.ShowAutoBuildSelectionMenu();
                 }
                 return _autoBuildSelectionMenu;
             }

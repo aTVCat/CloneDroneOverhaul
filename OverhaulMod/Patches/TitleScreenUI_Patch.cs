@@ -24,10 +24,9 @@ namespace OverhaulMod.Patches
                     ArenaCameraManager.Instance.TitleScreenLogoCamera.GetComponent<Animator>().Play("RobotClicked", 0, 0f);
                     _ = AudioManager.Instance.PlayClipGlobal(AudioLibrary.Instance.DogVoteUpZap, 0f, false, 1f, 0f);
                     titleScreenCustomizationManager.disallowClickingLogo = true;
-                    DelegateScheduler.Instance.Schedule(delegate
+                    ModActionUtils.DoInTime(delegate
                     {
-                        if (titleScreenCustomizationManager)
-                            titleScreenCustomizationManager.disallowClickingLogo = false;
+                        if (titleScreenCustomizationManager) titleScreenCustomizationManager.disallowClickingLogo = false;
                     }, 0.7f);
                 }
                 return false;
@@ -41,7 +40,7 @@ namespace OverhaulMod.Patches
         {
             if (!ModCore.IsActive()) return;
 
-            UIIntro intro = ModUIManager.Instance.Get<UIIntro>(AssetBundleConstants.UI, ModUIConstants.UI_INTRO);
+            UIIntro intro = ModUIManager.Instance.Get<UIIntro>(ModAssetBundles.UI, ModUIs.UI_INTRO);
             if (intro)
             {
                 intro.StartFadingOut();
@@ -54,7 +53,7 @@ namespace OverhaulMod.Patches
         {
             if (!ModCore.IsActive()) return;
 
-            ModUIConstants.ShowTitleScreenRework();
+            ModUIs.ShowTitleScreenRework();
         }
 
         [HarmonyPostfix]
@@ -63,7 +62,7 @@ namespace OverhaulMod.Patches
         {
             if (!ModCore.IsActive()) return;
 
-            ModUIConstants.HideTitleScreenRework();
+            ModUIs.HideTitleScreenRework();
         }
 
         [HarmonyPostfix]

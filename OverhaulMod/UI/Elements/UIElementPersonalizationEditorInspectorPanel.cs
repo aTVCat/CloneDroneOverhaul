@@ -147,7 +147,7 @@ namespace OverhaulMod.UI
         {
             bool isNotNull = objectBehaviour;
 
-            ModUIConstants.HideGenericColorPicker();
+            ModUIs.HideGenericColorPicker();
             _volumeColorsSettings.Hide();
             _nothingToEditOverlay.SetActive(!isNotNull);
             if (!isNotNull)

@@ -35,10 +35,9 @@ namespace OverhaulMod
                 GamePatchBehaviour.Load();
 
                 // for cases when transition doesnt end automatically for some reason
-                DelegateScheduler.Instance.Schedule(delegate
+                ModActionUtils.DoInTime(delegate
                 {
-                    if (!LevelManager.Instance.IsSpawningCurrentLevel())
-                        TransitionManager.Instance.EndTransition();
+                    if (!LevelManager.Instance.IsSpawningCurrentLevel()) TransitionManager.Instance.EndTransition();
                 }, 1f);
 
                 if (gameFlowStartedThisFrame) ModManagers.Instance.TriggerModLoadedEvent();
@@ -68,7 +67,7 @@ namespace OverhaulMod
             ModSpecialUtils.SetTitleBarStateDependingOnSettings();
             GamePatchBehaviour.Load();
 
-            if (GameModeManager.IsOnTitleScreen()) _ = ModUIConstants.ShowTitleScreenReworkIfHaventBefore();
+            if (GameModeManager.IsOnTitleScreen()) _ = ModUIs.ShowTitleScreenReworkIfHaventBefore();
 
             ModManagers.Instance.TriggerModLoadedEvent();
         }
@@ -178,8 +177,8 @@ namespace OverhaulMod
 
         private static void loadMiscellaneousAssets()
         {
-            ModConstants.CursorSkinOptions[1].image = ModUnityUtils.ToSprite(ModResources.Texture2D(AssetBundleConstants.UI, "Cursor"));
-            ModConstants.CursorSkinOptions[2].image = ModUnityUtils.ToSprite(ModResources.Texture2D(AssetBundleConstants.UI, "Cursor2"));
+            ModConstants.CursorSkinOptions[1].image = ModUnityUtils.ToSprite(ModResources.Texture2D(ModAssetBundles.UI, "Cursor"));
+            ModConstants.CursorSkinOptions[2].image = ModUnityUtils.ToSprite(ModResources.Texture2D(ModAssetBundles.UI, "Cursor2"));
         }
 
         private static void addSettingsListeners()
@@ -273,13 +272,13 @@ namespace OverhaulMod
 
             modSettingsManager.AddSettingValueChangedListener(delegate (object obj)
             {
-                UITitleScreenRework titleScreenRework = ModUIManager.Instance.Get<UITitleScreenRework>(AssetBundleConstants.UI, ModUIConstants.UI_TITLE_SCREEN);
+                UITitleScreenRework titleScreenRework = ModUIManager.Instance.Get<UITitleScreenRework>(ModAssetBundles.UI, ModUIs.UI_TITLE_SCREEN_REWORK);
                 if (titleScreenRework) titleScreenRework.RefreshPosition();
             }, ModSettingIDs.TITLE_SCREEN_PANEL_POSITION);
 
             modSettingsManager.AddSettingValueChangedListener(delegate (object obj)
             {
-                UITitleScreenRework titleScreenRework = ModUIManager.Instance.Get<UITitleScreenRework>(AssetBundleConstants.UI, ModUIConstants.UI_TITLE_SCREEN);
+                UITitleScreenRework titleScreenRework = ModUIManager.Instance.Get<UITitleScreenRework>(ModAssetBundles.UI, ModUIs.UI_TITLE_SCREEN_REWORK);
                 if (titleScreenRework) titleScreenRework.RefreshFade();
             }, ModSettingIDs.TITLE_SCREEN_BACKGROUND_FADE_POWER);
 
@@ -333,9 +332,9 @@ namespace OverhaulMod
             if (!uiRoot) return;
 
             ModUIManager modUIManager = ModUIManager.Instance;
-            if (!modUIManager || !modUIManager.IsUIVisible(AssetBundleConstants.UI, ModUIConstants.UI_PAUSE_MENU)) return;
+            if (!modUIManager || !modUIManager.IsVisible(ModAssetBundles.UI, ModUIs.UI_PAUSE_MENU)) return;
 
-            _ = modUIManager.Hide(AssetBundleConstants.UI, ModUIConstants.UI_PAUSE_MENU);
+            _ = modUIManager.Hide(ModAssetBundles.UI, ModUIs.UI_PAUSE_MENU);
             if (uiRoot.EscMenu) uiRoot.EscMenu.Show();
         }
 

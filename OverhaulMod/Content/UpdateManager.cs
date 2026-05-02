@@ -58,7 +58,7 @@ namespace OverhaulMod.Content
             ScheduledActionsManager scheduledActionsManager = ScheduledActionsManager.Instance;
             if (!scheduledActionsManager.ShouldExecuteAction(ScheduledActionType.RefreshModUpdates)) return;
 
-            _ = ModActionUtils.RunCoroutine(retrieveDataOnStartCoroutine());
+            retrieveDataOnStartCoroutine().Run();
         }
 
         private void Update()

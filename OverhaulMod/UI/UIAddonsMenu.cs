@@ -64,7 +64,7 @@ namespace OverhaulMod.UI
             base.Hide();
             if (_shouldSuggestGameRestart)
             {
-                _ = ModUIConstants.ShowRestartRequiredScreen(true);
+                _ = ModUIs.ShowRestartRequiredScreen(true);
                 _shouldSuggestGameRestart = false;
             }
         }
@@ -166,12 +166,12 @@ namespace OverhaulMod.UI
 
         public void OnAddonsEditorButtonClicked()
         {
-            _ = ModUIConstants.ShowAddonsEditor(base.transform);
+            _ = ModUIs.ShowAddonsEditor(base.transform);
         }
 
         public void OnAddonsDownloadEditorButtonClicked()
         {
-            _ = ModUIConstants.ShowAddonsDownloadEditor(base.transform);
+            _ = ModUIs.ShowAddonsDownloadEditor(base.transform);
         }
     }
 }

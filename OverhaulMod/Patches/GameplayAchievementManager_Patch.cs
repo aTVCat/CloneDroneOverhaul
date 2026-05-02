@@ -17,7 +17,7 @@ namespace OverhaulMod.Patches
 
             if (achievement && !silentCompletion)
             {
-                _ = ModUIConstants.ShowAdvancementProgress(achievement);
+                _ = ModUIs.ShowAdvancementProgress(achievement);
             }
         }
     }

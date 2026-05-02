@@ -17,7 +17,7 @@ namespace OverhaulMod.Visuals
 
         private void Start()
         {
-            _prefab = ModResources.Prefab(AssetBundleConstants.VFX, "VFX_Welding").transform;
+            _prefab = ModResources.Prefab(ModAssetBundles.VFX, "VFX_Welding").transform;
             getReferences();
             ReplaceWeldingParticles();
             RefreshParticles();

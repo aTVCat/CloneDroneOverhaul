@@ -20,7 +20,7 @@ namespace OverhaulMod.Utils
             bool isCompleted = false;
 
             CallResult<UserStatsReceived_t> callResult = null;
-            DelegateScheduler.Instance.Schedule(delegate
+            ModActionUtils.DoInTime(delegate
             {
                 if (callResult != null) callResult.Dispose();
                 if (!isCompleted && callback != null) callback(false);
@@ -55,10 +55,9 @@ namespace OverhaulMod.Utils
 
             bool isCompleted = false;
             CallResult<GlobalAchievementPercentagesReady_t> cr = null;
-            DelegateScheduler.Instance.Schedule(delegate
+            ModActionUtils.DoInTime(delegate
             {
                 if (cr != null) cr.Dispose();
-
                 if (!isCompleted && callback != null) callback(false);
             }, 10f);
 
@@ -76,7 +75,7 @@ namespace OverhaulMod.Utils
         }
 
         /// <summary>
-        /// Call <see cref="RefreshLocalStats(Action{bool})"/> and <see cref="RefreshGlobalAchievementPercentages(Action{bool})"/>
+        /// Calls <see cref="RefreshLocalStats(Action{bool})"/> and <see cref="RefreshGlobalAchievementPercentages(Action{bool})"/>
         /// </summary>
         /// <param name="callback"></param>
         public static void RefreshAllStats(Action<bool> callback)

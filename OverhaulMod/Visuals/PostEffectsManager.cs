@@ -29,7 +29,7 @@ namespace OverhaulMod.Visuals
 
         [ModSetting(ModSettingIDs.COLOR_BLINDNESS_MODE, 0)]
         public static int ColorBlindnessMode;
-            
+
         [ModSetting(ModSettingIDs.COLOR_BLINDNESS_AFFECT_UI, true)]
         public static bool ColorBlindnessAffectUI;
 
@@ -276,7 +276,7 @@ namespace OverhaulMod.Visuals
                 postEffectsContainer.RefreshEffects();
             }
 
-            Camera uiCamera = ModCache.GameUIRootCamera;
+            Camera uiCamera = ModCache.UIRootCamera;
             OverhaulColorBlindness overhaulColorBlindnessOverUI = uiCamera.GetComponent<OverhaulColorBlindness>();
             if (!overhaulColorBlindnessOverUI && ColorBlindnessAffectUI && ColorBlindnessMode >= 1 && ColorBlindnessMode <= 3)
                 overhaulColorBlindnessOverUI = uiCamera.gameObject.AddComponent<OverhaulColorBlindness>();

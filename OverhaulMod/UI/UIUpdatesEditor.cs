@@ -250,7 +250,7 @@ namespace OverhaulMod.UI
 
         public void OnPreviewChangelogButtonClicked()
         {
-            UIPatchNotes patchNotes = ModUIConstants.ShowPatchNotes(base.transform, new UIPatchNotes.ShowArguments()
+            UIPatchNotes patchNotes = ModUIs.ShowPatchNotes(base.transform, new UIPatchNotes.ShowArguments()
             {
                 CloseButtonActive = true,
                 PanelOffset = Vector2.zero,

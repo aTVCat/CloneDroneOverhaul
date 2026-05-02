@@ -54,8 +54,6 @@ namespace OverhaulMod.UI
 
         private bool _show;
 
-        private int _siblingIndex;
-
         protected override void OnInitialized()
         {
             _stringBuilder = new StringBuilder();
@@ -116,7 +114,7 @@ namespace OverhaulMod.UI
 
         private void onAssetBundleLoaded(string assetBundle)
         {
-            if (assetBundle == AssetBundleConstants.UI_EXTRA)
+            if (assetBundle == ModAssetBundles.UI_EXTRA)
                 refreshSettings(null);
         }
 
@@ -209,19 +207,6 @@ namespace OverhaulMod.UI
         public void HideText()
         {
             _show = false;
-        }
-
-        public void SetSiblingIndex(bool last)
-        {
-            if (last)
-            {
-                _siblingIndex = base.transform.GetSiblingIndex();
-                base.transform.SetAsLastSibling();
-            }
-            else if (_siblingIndex != 0)
-            {
-                base.transform.SetSiblingIndex(_siblingIndex);
-            }
         }
     }
 }

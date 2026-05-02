@@ -813,7 +813,7 @@ namespace OverhaulMod.UI
 
         public void OnHistoryButtonClicked()
         {
-            ModUIConstants.ShowWorkshopBrowserHistoryPanel(base.transform);
+            ModUIs.ShowWorkshopBrowserHistoryPanel(base.transform);
         }
     }
 }

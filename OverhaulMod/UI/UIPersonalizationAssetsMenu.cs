@@ -5,11 +5,11 @@ using UnityEngine.UI;
 
 namespace OverhaulMod.UI
 {
-    public class UIDownloadPersonalizationAssetsMenu : OverhaulUIBehaviour
+    public class UIPersonalizationAssetsMenu : OverhaulUIBehaviour
     {
-        public const float PANEL_HEIGHT_IDLE = 300f;
+        public const float PANEL_HEIGHT_IDLE = 275f;
 
-        public const float PANEL_HEIGHT_UPDATE = 455f;
+        public const float PANEL_HEIGHT_UPDATE = 430f;
 
         [UIElementAction(nameof(Hide))]
         [UIElement("CloseButton")]
@@ -211,7 +211,7 @@ namespace OverhaulMod.UI
 
             if (hasAnyVisibleChanges)
             {
-                if(!remoteVersion.IsSuitableForComparison() || !localVersion.IsSuitableForComparison())
+                if (!remoteVersion.IsSuitableForComparison() || !localVersion.IsSuitableForComparison())
                 {
                     hasAnyVisibleChanges = false;
                 }
@@ -290,7 +290,7 @@ namespace OverhaulMod.UI
             _refreshButton.interactable = false;
             if (Time.realtimeSinceStartup < _dontActuallyRefreshRemoteVersionUntilTime)
             {
-                DelegateScheduler.Instance.Schedule(delegate
+                ModActionUtils.DoInTime(delegate
                 {
                     _refreshButton.interactable = true;
                 }, 1f);

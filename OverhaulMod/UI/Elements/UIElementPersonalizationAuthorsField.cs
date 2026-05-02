@@ -35,7 +35,7 @@ namespace OverhaulMod.UI
 
         public void OnEditButtonClicked()
         {
-            UIPersonalizationEditorAuthorsEditMenu menu = ModUIConstants.ShowPersonalizationEditorAuthorsEditMenu(UIPersonalizationEditor.Instance.transform);
+            UIPersonalizationEditorAuthorsEditMenu menu = ModUIs.ShowPersonalizationEditorAuthorsEditMenu(UIPersonalizationEditor.Instance.transform);
             menu.Populate(referenceList, refreshText);
         }
     }
