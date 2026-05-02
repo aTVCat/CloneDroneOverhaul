@@ -10,8 +10,6 @@ namespace OverhaulMod.Engine
 {
     public class ModSettingsManager : Singleton<ModSettingsManager>
     {
-        public const string SETTING_CHANGED_EVENT = "OverhaulSettingChanged";
-
         public const string SETTING_NAME_TRANSLATION_PREFIX = "setting_name_";
 
         public const string SETTINGS_INFO_CONTAINER_FILE = "settingInfos.json";
@@ -19,7 +17,7 @@ namespace OverhaulMod.Engine
         public static int ExtraResolutionLength;
 
         private List<ModSetting> _settings;
-        private Dictionary<string, ModSetting> _nameToSetting;
+        private Dictionary<string, ModSetting> _idToSetting;
         private Dictionary<string, ModSettingSubDescription> _idToDescription;
 
         private ModSettingElementsContainer _settingsInfos;
@@ -29,7 +27,7 @@ namespace OverhaulMod.Engine
             base.Awake();
 
             _settings = new List<ModSetting>();
-            _nameToSetting = new Dictionary<string, ModSetting>();
+            _idToSetting = new Dictionary<string, ModSetting>();
             _idToDescription = new Dictionary<string, ModSettingSubDescription>();
 
             loadSettings();
@@ -107,16 +105,15 @@ namespace OverhaulMod.Engine
 
         private void loadSettings()
         {
-            foreach (System.Type type in ModCache.ModAssembly.GetTypes())
+            foreach (Type type in ModCache.ModAssembly.GetTypes())
             {
-                foreach (FieldInfo fieldInfo in type.GetFields(BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic))
+                foreach (FieldInfo fieldInfo in type.GetFields(BindingFlags.Static | BindingFlags.Public))
                 {
                     ModSetting modSetting = CreateSettingFromField(fieldInfo);
-                    if (modSetting == null)
-                        continue;
+                    if (modSetting == null) continue;
 
                     _settings.Add(modSetting);
-                    _nameToSetting.Add(modSetting.ID, modSetting);
+                    _idToSetting.Add(modSetting.ID, modSetting);
                 }
             }
         }
@@ -158,14 +155,14 @@ namespace OverhaulMod.Engine
             return null;
         }
 
-        public bool HasSettingWithName(string name)
+        public bool HasSetting(string name)
         {
-            return _nameToSetting.ContainsKey(name);
+            return _idToSetting.ContainsKey(name);
         }
 
         public ModSetting GetSetting(string name)
         {
-            return _nameToSetting.TryGetValue(name, out ModSetting modSetting) ? modSetting : null;
+            return _idToSetting.TryGetValue(name, out ModSetting modSetting) ? modSetting : null;
         }
 
         public List<ModSetting> GetSettings()
@@ -205,13 +202,12 @@ namespace OverhaulMod.Engine
             setting.ValueChangedEvent -= action;
         }
 
-        public ModSetting CreateSettingFromField(FieldInfo field, bool setFieldValue = true)
+        public ModSetting CreateSettingFromField(FieldInfo field)
         {
-            if (field == null)
-                return null;
+            if (field == null) return null;
 
             ModSettingAttribute modSettingAttribute = field.GetCustomAttribute<ModSettingAttribute>();
-            if (modSettingAttribute == null || modSettingAttribute.Name.IsNullOrEmpty() || HasSettingWithName(modSettingAttribute.Name))
+            if (modSettingAttribute == null || modSettingAttribute.Name.IsNullOrEmpty() || HasSetting(modSettingAttribute.Name))
                 return null;
 
             ModSetting.ValueTypes valueType;
@@ -235,9 +231,7 @@ namespace OverhaulMod.Engine
                 Field = field,
                 RequiresRestarting = field.GetCustomAttribute<ModSettingRequireRestartAttribute>() != null
             };
-
-            if (setFieldValue)
-                field.SetValue(null, setting.GetValue());
+            setting.SetValue(setting.GetValue());
 
             return setting;
         }

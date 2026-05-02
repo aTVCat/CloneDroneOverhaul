@@ -288,6 +288,13 @@ namespace OverhaulMod
                 if (chunkUpdateDelayPatch)
                     chunkUpdateDelayPatch.Refresh();
             }, ModSettingIDs.CHUNK_UPDATE_DELAY);
+
+            modSettingsManager.AddSettingValueChangedListener(delegate (object obj)
+            {
+                VoxelColorsPatchBehaviour voxelColorsPatchBehaviour = GamePatchBehaviour.GetBehaviour<VoxelColorsPatchBehaviour>();
+                if (voxelColorsPatchBehaviour)
+                    voxelColorsPatchBehaviour.Refresh();
+            }, ModSettingIDs.CHANGE_HIT_COLORS);
         }
 
         private static void loadGameUIThemeData()

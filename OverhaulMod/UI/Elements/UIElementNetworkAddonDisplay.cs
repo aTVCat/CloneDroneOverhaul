@@ -46,8 +46,8 @@ namespace OverhaulMod.UI
             if (!isSupported)
             {
                 string versionString;
-                if (addonDownloadInfo.Addon.DisplayMinModVersion != null)
-                    versionString = addonDownloadInfo.Addon.DisplayMinModVersion.ToString();
+                if (addonDownloadInfo.Addon.MinModVersion != null)
+                    versionString = addonDownloadInfo.Addon.MinModVersion.ToStringRevision();
                 else
                     versionString = "N/A";
 

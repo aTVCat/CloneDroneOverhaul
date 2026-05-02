@@ -88,7 +88,7 @@ namespace OverhaulMod.UI
             foreach (string directory in Directory.GetDirectories(path))
             {
                 string dirName = ModFileUtils.GetDirectoryName(directory);
-                if (!Version.TryParse(dirName, out Version version)) version = new Version(0, 0, 0);
+                if (!Version.TryParse(dirName, out Version version)) version = new Version(0, 0, 0, 0);
 
                 if (ModBuild.Version < version) continue;
 
@@ -124,7 +124,7 @@ namespace OverhaulMod.UI
                 ModdedObject display = Instantiate(_versionDisplay, _container);
                 display.gameObject.SetActive(true);
 
-                string verString = version.ToString();
+                string verString = version.ToStringRevision();
                 string detailsString = getBuildDetails(verString);
                 string verHeader = detailsString.IsNullOrEmpty() ? verString : $"{detailsString} ({verString})";
                 display.GetObject<Text>(0).text = verHeader;
@@ -139,7 +139,7 @@ namespace OverhaulMod.UI
                     button.interactable = false;
                     _previousButtonClicked = button;
 
-                    PopulateChangelog(updateString, verHeader, verString);
+                    PopulateChangelog(updateString, verHeader, version.ToString());
                 });
 
                 if (!firstButton)
@@ -345,6 +345,10 @@ namespace OverhaulMod.UI
 
             switch (folder)
             {
+                // previews
+                case "4.3.225.1":
+                    return "Preview";
+
                 // releases
                 case "3.0.345":
                 case "3.1.0":

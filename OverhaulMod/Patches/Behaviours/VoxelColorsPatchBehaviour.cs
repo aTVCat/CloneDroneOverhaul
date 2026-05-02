@@ -21,14 +21,11 @@ namespace OverhaulMod.Patches.Behaviours
             _originalHitColor = attackManager.HitColor;
             _originalBodyOnFireColor = attackManager.BodyOnFireColor;
 
-            GlobalEventManager.Instance.AddEventListener(ModSettingsManager.SETTING_CHANGED_EVENT, Refresh);
-
             Refresh();
         }
 
         public override void Unpatch()
         {
-            GlobalEventManager.Instance.RemoveEventListener(ModSettingsManager.SETTING_CHANGED_EVENT, Refresh);
             Refresh(false);
         }
 

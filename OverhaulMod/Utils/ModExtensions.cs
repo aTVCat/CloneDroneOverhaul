@@ -30,6 +30,11 @@ namespace OverhaulMod.Utils
                 return null;
         }
 
+        public static string ToStringRevision(this System.Version version)
+        {
+            return version.Revision <= 0 ? version.ToString(3) : version.ToString();
+        }
+
         public static bool IsModdedEnumValue(this System.Enum enumValue)
         {
             string enumName = enumValue.ToString();

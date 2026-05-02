@@ -1,5 +1,6 @@
 ﻿using OverhaulMod.Utils;
 using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace OverhaulMod.Engine
@@ -35,7 +36,7 @@ namespace OverhaulMod.Engine
             {
                 try
                 {
-                    modSettingsDataContainer = ModJsonUtils.DeserializeStream<ModSettingsDataContainer>(SettingsFilePath);
+                    modSettingsDataContainer = ModJsonUtils.DeserializeStreamFormatted<ModSettingsDataContainer>(SettingsFilePath);
                 }
                 catch (Exception)
                 {
@@ -48,6 +49,44 @@ namespace OverhaulMod.Engine
             }
             _dataContainer = modSettingsDataContainer;
             _dataContainer.FixValues();
+        }
+
+        private void Start()
+        {
+            ModSettingsDataContainer dataContaier = _dataContainer;
+            if (dataContaier == null) return;
+
+            ModSettingsManager modSettingsManager = ModSettingsManager.Instance;
+            foreach (string key in new List<string>(dataContaier.IntValues.Keys))
+            {
+                if (!modSettingsManager.HasSetting(key))
+                {
+                    dataContaier.IntValues.Remove(key);
+                    _hasToSaveFile = true;
+                }
+            }
+            foreach (string key in new List<string>(dataContaier.FloatValues.Keys))
+            {
+                if (!modSettingsManager.HasSetting(key))
+                {
+                    dataContaier.FloatValues.Remove(key);
+                    _hasToSaveFile = true;
+                }
+            }
+            foreach (string key in new List<string>(dataContaier.StringValues.Keys))
+            {
+                if (!modSettingsManager.HasSetting(key))
+                {
+                    dataContaier.StringValues.Remove(key);
+                    _hasToSaveFile = true;
+                }
+            }
+
+            if (_hasToSaveFile)
+            {
+                ModDebug.Log("Removed unused setting keys!");
+            }
+            Save();
         }
 
         private void OnApplicationQuit()
@@ -89,43 +128,40 @@ namespace OverhaulMod.Engine
 
         public void SetInt(string key, int value)
         {
+            if (_dataContainer.IntValues.ContainsKey(key) && _dataContainer.IntValues[key] == value) return;
+
             _hasToSaveFile = true;
             _dataContainer.SetInt(key, value);
         }
 
         public void SetFloat(string key, float value)
         {
+            if (_dataContainer.FloatValues.ContainsKey(key) && _dataContainer.FloatValues[key] == value) return;
+
             _hasToSaveFile = true;
             _dataContainer.SetFloat(key, value);
         }
 
         public void SetString(string key, string value)
         {
+            if (_dataContainer.StringValues.ContainsKey(key) && _dataContainer.StringValues[key] == value) return;
+
             _hasToSaveFile = true;
             _dataContainer.SetString(key, value);
         }
 
-        public int GetInt(string key, int defaultValue)
-        {
-            return _dataContainer.GetInt(key, defaultValue);
-        }
+        public int GetInt(string key, int defaultValue) => _dataContainer.GetInt(key, defaultValue);
 
-        public float GetFloat(string key, float defaultValue)
-        {
-            return _dataContainer.GetFloat(key, defaultValue);
-        }
+        public float GetFloat(string key, float defaultValue) => _dataContainer.GetFloat(key, defaultValue);
 
-        public string GetString(string key, string defaultValue)
-        {
-            return _dataContainer.GetString(key, defaultValue);
-        }
+        public string GetString(string key, string defaultValue) => _dataContainer.GetString(key, defaultValue);
 
         public void Save(bool force = false)
         {
             if (force || _hasToSaveFile)
             {
                 _hasToSaveFile = false;
-                ModJsonUtils.WriteStream(SettingsFilePath, _dataContainer);
+                ModJsonUtils.WriteStreamFormatted(SettingsFilePath, _dataContainer);
             }
         }
     }

@@ -176,10 +176,10 @@ namespace OverhaulMod.Utils
 
         public static void ShowVanillaEscMenu()
         {
-            UIPauseMenuRework.disableOverhauledVersion = true;
+            UIPauseMenuRework.DisableOverhauledVersion = true;
             ModCache.UIRoot.EscMenu.Show();
             ModCache.UIRoot.RefreshCursorEnabled();
-            UIPauseMenuRework.disableOverhauledVersion = false;
+            UIPauseMenuRework.DisableOverhauledVersion = false;
         }
 
         public static void ReplaceBackgroundSprite(Image image, bool addShadow)

@@ -123,9 +123,9 @@ namespace OverhaulMod.Content
 
                     if (build.Key == UpdateInfoList.RELEASE_BRANCH || NotifyAboutNewTestBuilds)
                     {
-                        if (maxVersion == null || build.Value.DisplayVersion > maxVersion)
+                        if (maxVersion == null || build.Value.ModVersion > maxVersion)
                         {
-                            maxVersion = build.Value.DisplayVersion;
+                            maxVersion = build.Value.ModVersion;
                         }
                     }
                 }

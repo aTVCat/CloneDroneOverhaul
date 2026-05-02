@@ -196,6 +196,23 @@ namespace OverhaulMod.Utils
             }
         }
 
+        private static RenderTexture s_logoRenderTexture;
+        public static RenderTexture LogoRenderTexture
+        {
+            get
+            {
+                if (!s_logoRenderTexture)
+                {
+                    Transform logoRenderTextureImage = TitleScreenUI.LogoContainer.transform.FindChildRecursive("LogoRenderTextureImage");
+                    if (logoRenderTextureImage)
+                    {
+                        s_logoRenderTexture = logoRenderTextureImage.GetComponent<RawImage>().texture as RenderTexture;
+                    }
+                }
+                return s_logoRenderTexture;
+            }
+        }
+
         private static SettingsMenu s_settingsMenu;
         public static SettingsMenu SettingsMenu
         {

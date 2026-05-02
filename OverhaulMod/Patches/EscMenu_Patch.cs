@@ -13,7 +13,7 @@ namespace OverhaulMod.Patches
         {
             if (!ModCore.IsActive()) return true;
 
-            if (UIPauseMenuRework.disableOverhauledVersion)
+            if (UIPauseMenuRework.DisableOverhauledVersion)
                 return true;
 
             _ = ModUIs.ShowPauseMenuRework();

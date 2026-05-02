@@ -71,7 +71,9 @@ namespace OverhaulMod
 
             Pets,
 
-            SettingsMenuReworkV2
+            SettingsMenuReworkV2,
+
+            PauseMenuLogoAsRenderTexture
         }
     }
 }

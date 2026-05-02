@@ -69,7 +69,6 @@ namespace OverhaulMod.Visuals.Environment
         {
             if (_hasAddedEventListeners)
             {
-                GlobalEventManager.Instance.RemoveEventListener(ModSettingsManager.SETTING_CHANGED_EVENT, refreshWeatherBasedOnLevel);
                 GlobalEventManager.Instance.RemoveEventListener(GlobalEvents.LevelSpawned, onLevelSpawned);
                 GlobalEventManager.Instance.RemoveEventListener(GlobalEvents.LevelEditorLevelOpened, onLevelSpawned);
                 _hasAddedEventListeners = false;
@@ -282,7 +281,6 @@ namespace OverhaulMod.Visuals.Environment
 
             if (!_hasAddedEventListeners)
             {
-                GlobalEventManager.Instance.AddEventListener(ModSettingsManager.SETTING_CHANGED_EVENT, refreshWeatherBasedOnLevel);
                 GlobalEventManager.Instance.AddEventListener(GlobalEvents.LevelSpawned, onLevelSpawned);
                 GlobalEventManager.Instance.AddEventListener(GlobalEvents.LevelEditorLevelOpened, onLevelSpawned);
                 _hasAddedEventListeners = true;

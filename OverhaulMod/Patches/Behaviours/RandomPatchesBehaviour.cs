@@ -80,6 +80,11 @@ namespace OverhaulMod.Patches.Behaviours
 
                 // make spectator ui not overlap pause menu
                 gameUIRoot.CurrentlySpectatingUI.transform.SetSiblingIndex(gameUIRoot.EndlessResultScreen.transform.GetSiblingIndex());
+
+                if (ModFeatures.IsEnabled(ModFeatures.FeatureType.PauseMenuLogoAsRenderTexture))
+                {
+                    ArenaCameraManager.Instance.TitleScreenLogoCamera.GetComponent<Animator>().updateMode = AnimatorUpdateMode.UnscaledTime;
+                }
             }
 
             /*

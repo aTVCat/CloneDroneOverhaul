@@ -51,6 +51,9 @@ namespace OverhaulMod.UI
         [UIElement("LogoKo")]
         private readonly GameObject _logoKo;
 
+        [UIElement("LogoRenderTextureImage")]
+        private readonly RawImage _logoImage;
+
         [UIElement("ExitDialogue", false)]
         private readonly GameObject _exitDialogue;
 
@@ -173,7 +176,7 @@ namespace OverhaulMod.UI
             }
         }
 
-        public static bool disableOverhauledVersion { get; set; }
+        public static bool DisableOverhauledVersion { get; set; }
 
         protected override void OnInitialized()
         {
@@ -249,11 +252,16 @@ namespace OverhaulMod.UI
 
         private void refreshLogo()
         {
+            bool showRenderTexture = ModFeatures.IsEnabled(ModFeatures.FeatureType.PauseMenuLogoAsRenderTexture);
+
+            _logoImage.gameObject.SetActive(showRenderTexture);
+            if(showRenderTexture) _logoImage.texture = ModCache.LogoRenderTexture;
+
             string langId = LocalizationManager.Instance.GetCurrentLanguageCode();
-            _logoEn.SetActive(langId != "ko" && langId != "ja" && langId != "zh-CN" && langId != "zh-TW");
-            _logoCh.SetActive(langId == "zh-CN" || langId == "zh-TW");
-            _logoKo.SetActive(langId == "ko");
-            _logoJa.SetActive(langId == "ja");
+            _logoEn.SetActive(!showRenderTexture && langId != "ko" && langId != "ja" && langId != "zh-CN" && langId != "zh-TW");
+            _logoCh.SetActive(!showRenderTexture && (langId == "zh-CN" || langId == "zh-TW"));
+            _logoKo.SetActive(!showRenderTexture && langId == "ko");
+            _logoJa.SetActive(!showRenderTexture && langId == "ja");
         }
 
         private void refreshButtons()

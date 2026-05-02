@@ -12,14 +12,9 @@ namespace OverhaulMod.Engine
 
         public void FixValues()
         {
-            if (IntValues == null)
-                IntValues = new Dictionary<string, int>();
-
-            if (FloatValues == null)
-                FloatValues = new Dictionary<string, float>();
-
-            if (StringValues == null)
-                StringValues = new Dictionary<string, string>();
+            if (IntValues == null) IntValues = new Dictionary<string, int>();
+            if (FloatValues == null) FloatValues = new Dictionary<string, float>();
+            if (StringValues == null) StringValues = new Dictionary<string, string>();
         }
 
         public void SetValues(ModSettingsDataContainer otherContainer, bool fromUI = false)
@@ -32,7 +27,7 @@ namespace OverhaulMod.Engine
             {
                 foreach (KeyValuePair<string, int> keyValue in otherContainer.IntValues)
                 {
-                    if (modSettingsManager.HasSettingWithName(keyValue.Key))
+                    if (modSettingsManager.HasSetting(keyValue.Key))
                     {
                         if (modSettingsManager.GetSetting(keyValue.Key).ValueType == ModSetting.ValueTypes.Bool)
                         {
@@ -51,7 +46,7 @@ namespace OverhaulMod.Engine
             {
                 foreach (KeyValuePair<string, float> keyValue in otherContainer.FloatValues)
                 {
-                    if (modSettingsManager.HasSettingWithName(keyValue.Key) && ModSettingsManager.GetFloatValue(keyValue.Key) != keyValue.Value)
+                    if (modSettingsManager.HasSetting(keyValue.Key) && ModSettingsManager.GetFloatValue(keyValue.Key) != keyValue.Value)
                         ModSettingsManager.SetFloatValue(keyValue.Key, keyValue.Value, fromUI);
                 }
             }
@@ -59,38 +54,17 @@ namespace OverhaulMod.Engine
             {
                 foreach (KeyValuePair<string, string> keyValue in otherContainer.StringValues)
                 {
-                    if (modSettingsManager.HasSettingWithName(keyValue.Key) && ModSettingsManager.GetStringValue(keyValue.Key) != keyValue.Value)
+                    if (modSettingsManager.HasSetting(keyValue.Key) && ModSettingsManager.GetStringValue(keyValue.Key) != keyValue.Value)
                         ModSettingsManager.SetStringValue(keyValue.Key, keyValue.Value, fromUI);
                 }
             }
         }
 
-        public void SetInt(string key, int value)
-        {
-            Dictionary<string, int> dictionary = IntValues;
-            if (dictionary.ContainsKey(key))
-                dictionary[key] = value;
-            else
-                dictionary.Add(key, value);
-        }
+        public void SetInt(string key, int value) => IntValues[key] = value;
 
-        public void SetFloat(string key, float value)
-        {
-            Dictionary<string, float> dictionary = FloatValues;
-            if (dictionary.ContainsKey(key))
-                dictionary[key] = value;
-            else
-                dictionary.Add(key, value);
-        }
+        public void SetFloat(string key, float value) => FloatValues[key] = value;
 
-        public void SetString(string key, string value)
-        {
-            Dictionary<string, string> dictionary = StringValues;
-            if (dictionary.ContainsKey(key))
-                dictionary[key] = value;
-            else
-                dictionary.Add(key, value);
-        }
+        public void SetString(string key, string value) => StringValues[key] = value;
 
         public int GetInt(string key, int defaultValue)
         {

@@ -71,47 +71,37 @@ namespace OverhaulMod.Engine
 
         public void SetValue(object value)
         {
-            ModSettingsDataManager modSettingsDataManager = ModSettingsDataManager.Instance;
+            Field.SetValue(null, value);
 
-            FieldInfo fieldInfo = this.Field;
-            if (fieldInfo != null)
-            {
-                fieldInfo.SetValue(null, value);
-            }
-
-            string key = ID;
             switch (ValueType)
             {
                 case ValueTypes.Bool:
-                    modSettingsDataManager.SetInt(key, (bool)value ? 1 : 0);
+                    ModSettingsDataManager.Instance.SetInt(ID, (bool)value ? 1 : 0);
                     break;
                 case ValueTypes.Int:
-                    modSettingsDataManager.SetInt(key, (int)value);
+                    ModSettingsDataManager.Instance.SetInt(ID, (int)value);
                     break;
                 case ValueTypes.Float:
-                    modSettingsDataManager.SetFloat(key, (float)value);
+                    ModSettingsDataManager.Instance.SetFloat(ID, (float)value);
                     break;
                 case ValueTypes.String:
-                    modSettingsDataManager.SetString(key, (string)value);
+                    ModSettingsDataManager.Instance.SetString(ID, (string)value);
                     break;
             }
 
-            if (!_valueChangedListeners.IsNullOrEmpty())
+            if (_valueChangedListeners.IsNullOrEmpty()) return;
+
+            foreach (Action<object> action in _valueChangedListeners)
             {
-                foreach (Action<object> a in _valueChangedListeners)
+                try
                 {
-                    try
-                    {
-                        a?.Invoke(value);
-                    }
-                    catch (Exception e)
-                    {
-                        ModDebug.Exception(e);
-                    }
+                    if (action != null) action(value);
+                }
+                catch (Exception e)
+                {
+                    ModDebug.Exception(e);
                 }
             }
-
-            GlobalEventManager.Instance.Dispatch(ModSettingsManager.SETTING_CHANGED_EVENT);
         }
 
         public void SetValueFromUI(object value)
