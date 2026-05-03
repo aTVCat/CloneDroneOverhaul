@@ -24,50 +24,60 @@ namespace OverhaulMod.UI
             get => PersonalizationEditorManager.Instance.EditingItemInfo;
         }
 
+        public PersonalizationEditorPlacedObject EditingRoot
+        {
+            get => PersonalizationEditorManager.Instance.EditingRoot;
+        }
+
         public void Populate()
         {
-            if (_objectDisplayContainer.childCount != 0)
-                TransformUtils.DestroyAllChildren(_objectDisplayContainer);
+            if (_objectDisplayContainer.childCount != 0) TransformUtils.DestroyAllChildren(_objectDisplayContainer);
 
-            foreach (PersonalizationEditorObjectInfo obj in EditingItemInfo.RootObject.Children)
+            foreach (PersonalizationEditorPlacedObject child in EditingRoot.Children)
             {
-                ModdedObject moddedObject = Instantiate(_objectDisplayPrefab, _objectDisplayContainer);
-                moddedObject.gameObject.SetActive(true);
-                moddedObject.GetObject<Text>(1).text = obj.Name;
-                moddedObject.GetObject<Button>(2).onClick.AddListener(delegate
+                populateRecursive(child, 0);
+            }
+        }
+
+        private void populateRecursive(PersonalizationEditorPlacedObject placedObject, int depth)
+        {
+            ModdedObject moddedObject = Instantiate(_objectDisplayPrefab, _objectDisplayContainer);
+            moddedObject.gameObject.SetActive(true);
+            moddedObject.GetObject<Text>(1).text = placedObject.Name;
+            moddedObject.GetObject<Button>(2).onClick.AddListener(delegate
+            {
+                ModUIUtils.MessagePopup(true, $"Delete {placedObject.Name}?", LocalizationManager.Instance.GetTranslatedString("action_cannot_be_undone"), 125f, MessageMenu.ButtonLayout.EnableDisableButtons, "ok", "Yes", "No", null, delegate
                 {
-                    ModUIUtils.MessagePopup(true, $"Delete {obj.Name}?", LocalizationManager.Instance.GetTranslatedString("action_cannot_be_undone"), 125f, MessageMenu.ButtonLayout.EnableDisableButtons, "ok", "Yes", "No", null, delegate
-                    {
-                        PersonalizationEditorPlacedObject behaviour = PersonalizationEditorObjectManager.Instance.GetInstantiatedObject(obj.UniqueIndex);
-                        if (behaviour)
-                        {
-                            Destroy(moddedObject.gameObject);
-                            PersonalizationEditorObjectManager.Instance.DeleteObject(behaviour);
-                        }
-                    });
+                    Destroy(moddedObject.gameObject);
+                    PersonalizationEditorObjectManager.Instance.DeleteObject(placedObject);
                 });
+            });
 
-                Button button = moddedObject.GetComponent<Button>();
-                button.onClick.AddListener(delegate
-                {
-                    UIPE.Instance.Inspector.EditObject(PersonalizationEditorObjectManager.Instance.GetInstantiatedObject(obj.UniqueIndex));
-                });
+            Button button = moddedObject.GetComponent<Button>();
+            button.onClick.AddListener(delegate
+            {
+                UIPE.Instance.Inspector.Inspect(placedObject);
+            });
 
-                Action refreshAction = delegate
-                {
-                    if (button) button.interactable = UIPE.Instance.Inspector.GetEditingObjectUniqueIndex() != obj.UniqueIndex;
-                };
-                refreshAction();
+            Action refreshAction = delegate
+            {
+                if (button) button.interactable = UIPE.Instance.Inspector.GetInspectingObject() != placedObject;
+            };
+            refreshAction();
 
-                EventController eventController = moddedObject.gameObject.AddComponent<EventController>();
-                eventController.AddEventListener(PersonalizationEditorObjectManager.OBJECT_SELECTION_CHANGED_EVENT, refreshAction);
+            EventController eventController = moddedObject.gameObject.AddComponent<EventController>();
+            eventController.AddEventListener(PersonalizationEditorObjectManager.OBJECT_SELECTION_CHANGED_EVENT, refreshAction);
+
+            foreach (PersonalizationEditorPlacedObject child in placedObject.Children)
+            {
+                populateRecursive(child, depth + 1);
             }
         }
 
         public void OnCreateButtonClicked()
         {
             UIPEObjectBrowser ob = ModUIs.ShowPersonalizationEditorObjectBrowser(UIPE.Instance.transform);
-            ob.callback = Populate;
+            ob.Callback = Populate;
         }
     }
 }

@@ -59,6 +59,8 @@ namespace OverhaulMod.Content.Personalization.Objects
             }
         }
 
+        public override string GetDisplayName() => "CVM Model settings";
+
         public WeaponVariant2 GetUnusedWeaponVariant()
         {
             WeaponType weaponType = PlacedObject.SpawnInfo.ItemInfo.Weapon;

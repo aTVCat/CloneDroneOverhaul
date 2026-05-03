@@ -138,8 +138,8 @@ namespace OverhaulMod.Content.Personalization.Objects
             t.localPosition = Vector3.zero;
             t.localEulerAngles = Vector3.zero;
             t.localScale = Vector3.one;
-            _ = gameObject.AddComponent<PersonalizationEditorVoxModel>();
             _ = gameObject.AddComponent<PersonalizationEditorVisibilityToggler>();
+            _ = gameObject.AddComponent<PersonalizationEditorVoxModel>();
             _ = gameObject.AddComponent<PersonalizationEditorRotator>();
             Volume volume = gameObject.GetComponent<Volume>();
             volume.Material = getVolumeMaterial();
@@ -155,8 +155,8 @@ namespace OverhaulMod.Content.Personalization.Objects
             t.localPosition = Vector3.zero;
             t.localEulerAngles = Vector3.zero;
             t.localScale = Vector3.one;
-            _ = obj.AddComponent<PersonalizationEditorCVMModel>();
             _ = obj.AddComponent<PersonalizationEditorVisibilityToggler>();
+            _ = obj.AddComponent<PersonalizationEditorCVMModel>();
             _ = obj.AddComponent<PersonalizationEditorRotator>();
             return obj;
         }

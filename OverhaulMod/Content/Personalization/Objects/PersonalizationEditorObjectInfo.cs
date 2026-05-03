@@ -79,11 +79,13 @@ namespace OverhaulMod.Content.Personalization.Objects
             behaviour.SpawnInfo = spawnInfo;
             behaviour.Name = Name;
             behaviour.PropertyValues = PropertyValues;
+            behaviour.SerializedPosition = GetPosition();
+            behaviour.SerializedEulerAngles = GetEulerAngles();
             behaviour.SerializedScale = GetScale();
             if (PersonalizationEditorManager.IsInEditorMode()) PersonalizationEditorObjectManager.Instance.AddInstantiatedObject(behaviour);
             Transform transform = behaviour.transform;
-            transform.localPosition = GetPosition();
-            transform.localEulerAngles = GetEulerAngles();
+            transform.localPosition = behaviour.SerializedPosition;
+            transform.localEulerAngles = behaviour.SerializedEulerAngles;
             transform.localScale = behaviour.SerializedScale;
             if (!Children.IsNullOrEmpty())
             {

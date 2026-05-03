@@ -33,6 +33,8 @@ namespace OverhaulMod.Content.Personalization.Objects
             }
         }
 
+        public override string GetDisplayName() => "Be visible when...";
+
         public void RefreshVisibility()
         {
             base.gameObject.SetActive(MustShowTheObject());

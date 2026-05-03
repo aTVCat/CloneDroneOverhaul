@@ -15,7 +15,7 @@ namespace OverhaulMod.Content.Personalization.Objects
 
         public ItemSpawnInfo SpawnInfo;
 
-        public Vector3 SerializedScale;
+        public Vector3 SerializedPosition, SerializedEulerAngles, SerializedScale;
 
         private List<PersonalizationEditorPlacedObject> _children;
         public List<PersonalizationEditorPlacedObject> Children
@@ -196,9 +196,9 @@ namespace OverhaulMod.Content.Personalization.Objects
             }
             else
             {
-                objectInfo.SetPosition(base.transform.localPosition);
-                objectInfo.SetEulerAngles(base.transform.localEulerAngles);
-                objectInfo.SetScale(base.transform.localScale);
+                objectInfo.SetPosition(SerializedPosition);
+                objectInfo.SetEulerAngles(SerializedEulerAngles);
+                objectInfo.SetScale(SerializedScale);
             }
 
             List<PersonalizationEditorPlacedObject> list = Children;

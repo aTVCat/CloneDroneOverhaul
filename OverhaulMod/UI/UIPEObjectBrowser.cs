@@ -19,7 +19,7 @@ namespace OverhaulMod.UI
         [UIElement("Content")]
         private readonly Transform _container;
 
-        public Action callback
+        public Action Callback
         {
             get;
             set;
@@ -49,8 +49,8 @@ namespace OverhaulMod.UI
                     PersonalizationEditorManager.Instance.SerializeRoot();
                     Hide();
 
-                    callback?.Invoke();
-                    callback = null;
+                    Callback?.Invoke();
+                    Callback = null;
                 });
             }
         }

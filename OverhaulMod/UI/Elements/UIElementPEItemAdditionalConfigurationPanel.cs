@@ -113,7 +113,7 @@ namespace OverhaulMod.UI
             PersonalizationEditorManager manager = PersonalizationEditorManager.Instance;
             manager.SerializeRoot();
             manager.SpawnRootObject();
-            UIPE.Instance.Inspector.EditObjectAgain();
+            UIPE.Instance.Inspector.Refresh();
         }
 
         public void OnEditedBowStringsWidth(float value)

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using OverhaulMod.UI;
+using UnityEngine;
 
 namespace OverhaulMod.Content.Personalization.Objects
 {
@@ -17,5 +18,11 @@ namespace OverhaulMod.Content.Personalization.Objects
         public void SetPropertyValue(string className, string fieldName, object value) => PlacedObject.SetPropertyValue(className, fieldName, value);
 
         public T GetPropertyValue<T>(string className, string fieldName, T defaultValue) => PlacedObject.GetPropertyValue(className, fieldName, defaultValue);
+
+        public virtual string GetDisplayName() => GetType().Name;
+
+        public virtual Sprite GetIcon() => null;
+
+        public virtual void InstantiateSettingsForInspector(UIElementPEInspectorGroup group, UIElementPEInspectorFieldsStore fieldsStore) { }
     }
 }

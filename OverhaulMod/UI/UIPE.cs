@@ -35,8 +35,8 @@ namespace OverhaulMod.UI
         public readonly UIElementPEHierarchyPanel HierarchyPanel;
 
 
-        [UIElement("InspectorWindow", typeof(UIElementPEInspectorPane), false)]
-        public readonly UIElementPEInspectorPane Inspector;
+        [UIElement("InspectorWindow", typeof(UIElementPEInspectorPanel), false)]
+        public readonly UIElementPEInspectorPanel Inspector;
 
         [UIElement("ItemOffsetsWindow", typeof(UIElementPEItemOffsetsPanel), false)]
         public readonly UIElementPEItemOffsetsPanel ItemOffsets;

@@ -10,7 +10,7 @@ using UnityEngine.UI;
 
 namespace OverhaulMod.UI
 {
-    public class UIElementPEInspectorPane : OverhaulUIBehaviour
+    public class UIElementPEInspectorPanelOLD : OverhaulUIBehaviour
     {
         public static readonly List<Dropdown.OptionData> s_weapons = new List<Dropdown.OptionData>()
         {
@@ -206,6 +206,7 @@ namespace OverhaulMod.UI
                 return;
 
             objectBehaviour.transform.localPosition = value;
+            objectBehaviour.SerializedPosition = value;
         }
 
         public void OnRotationChanged(Vector3 value)
@@ -218,6 +219,7 @@ namespace OverhaulMod.UI
                 return;
 
             objectBehaviour.transform.localEulerAngles = value;
+            objectBehaviour.SerializedEulerAngles = value;
         }
 
         public void OnScaleChanged(Vector3 value)
@@ -245,7 +247,7 @@ namespace OverhaulMod.UI
 
         public class ObjectPropertiesController
         {
-            public virtual void PopulateFields(UIElementPEInspectorPane propertiesPanel, Transform container, PersonalizationEditorPlacedObject objectBehaviour)
+            public virtual void PopulateFields(UIElementPEInspectorPanelOLD propertiesPanel, Transform container, PersonalizationEditorPlacedObject objectBehaviour)
             {
 
             }
@@ -253,7 +255,7 @@ namespace OverhaulMod.UI
 
         public class CvmModelPropertiesController : ObjectPropertiesController
         {
-            public override void PopulateFields(UIElementPEInspectorPane propertiesPanel, Transform container, PersonalizationEditorPlacedObject objectBehaviour)
+            public override void PopulateFields(UIElementPEInspectorPanelOLD propertiesPanel, Transform container, PersonalizationEditorPlacedObject objectBehaviour)
             {
                 void populateFieldsAction()
                 {
@@ -492,7 +494,7 @@ namespace OverhaulMod.UI
 
         public class FireParticlesPropertiesController : ObjectPropertiesController
         {
-            public override void PopulateFields(UIElementPEInspectorPane propertiesPanel, Transform container, PersonalizationEditorPlacedObject objectBehaviour)
+            public override void PopulateFields(UIElementPEInspectorPanelOLD propertiesPanel, Transform container, PersonalizationEditorPlacedObject objectBehaviour)
             {
                 PersonalizationEditorFireParticles fireParticles = objectBehaviour.GetComponent<PersonalizationEditorFireParticles>();
 
@@ -579,7 +581,7 @@ namespace OverhaulMod.UI
 
         public class VisibilityPropertiesController : ObjectPropertiesController
         {
-            public override void PopulateFields(UIElementPEInspectorPane propertiesPanel, Transform container, PersonalizationEditorPlacedObject objectBehaviour)
+            public override void PopulateFields(UIElementPEInspectorPanelOLD propertiesPanel, Transform container, PersonalizationEditorPlacedObject objectBehaviour)
             {
                 ModdedObject enableIfPresetDropdown = Instantiate(propertiesPanel._enableIfPresetDropdown, container);
                 enableIfPresetDropdown.gameObject.SetActive(true);
@@ -617,7 +619,7 @@ namespace OverhaulMod.UI
 
         public class VolumePropertiesController : ObjectPropertiesController
         {
-            public override void PopulateFields(UIElementPEInspectorPane propertiesPanel, Transform container, PersonalizationEditorPlacedObject objectBehaviour)
+            public override void PopulateFields(UIElementPEInspectorPanelOLD propertiesPanel, Transform container, PersonalizationEditorPlacedObject objectBehaviour)
             {
                 void populateFieldsAction()
                 {

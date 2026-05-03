@@ -86,6 +86,8 @@ namespace OverhaulMod.Content.Personalization.Objects
             }
         }
 
+        public override string GetDisplayName() => "VOX Model settings";
+
         public WeaponVariant2 GetUnusedWeaponVariant()
         {
             WeaponType weaponType = PlacedObject.SpawnInfo.ItemInfo.Weapon;

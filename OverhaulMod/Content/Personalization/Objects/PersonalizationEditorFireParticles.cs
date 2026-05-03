@@ -60,6 +60,8 @@ namespace OverhaulMod.Content.Personalization.Objects
             refreshColor();
         }
 
+        public override string GetDisplayName() => "Fire particles settings";
+
         public void RefreshColor()
         {
             if (!base.enabled || !base.gameObject.activeInHierarchy)

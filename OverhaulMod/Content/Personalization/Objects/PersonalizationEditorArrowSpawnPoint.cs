@@ -37,5 +37,7 @@ namespace OverhaulMod.Content.Personalization.Objects
                 if (gm) gm.SetActive(true);
             });
         }
+
+        public override string GetDisplayName() => "Arrow spawn point settings";
     }
 }
