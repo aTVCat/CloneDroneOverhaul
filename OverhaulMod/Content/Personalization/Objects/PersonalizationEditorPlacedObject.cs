@@ -3,33 +3,29 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace OverhaulMod.Content.Personalization
+namespace OverhaulMod.Content.Personalization.Objects
 {
-    public class PersonalizationEditorObjectBehaviour : MonoBehaviour
+    public class PersonalizationEditorPlacedObject : MonoBehaviour
     {
-        private bool _hasHiddenObjects;
-
-        private Dictionary<GameObject, bool> _hiddenObjects;
-
         public string Name, Path;
 
         public int UniqueIndex;
 
         public Dictionary<string, object> PropertyValues;
 
-        public ItemSpawnInfo ControllerInfo;
+        public ItemSpawnInfo SpawnInfo;
 
         public Vector3 SerializedScale;
 
-        private List<PersonalizationEditorObjectBehaviour> _children;
-        public List<PersonalizationEditorObjectBehaviour> Children
+        private List<PersonalizationEditorPlacedObject> _children;
+        public List<PersonalizationEditorPlacedObject> Children
         {
             get
             {
-                List<PersonalizationEditorObjectBehaviour> list = _children;
+                List<PersonalizationEditorPlacedObject> list = _children;
                 if (list == null)
                 {
-                    list = new List<PersonalizationEditorObjectBehaviour>();
+                    list = new List<PersonalizationEditorPlacedObject>();
                     _children = list;
                 }
                 else
@@ -44,7 +40,7 @@ namespace OverhaulMod.Content.Personalization
                         Transform child = transform.GetChild(i);
                         if (child)
                         {
-                            PersonalizationEditorObjectBehaviour personalizationEditorObjectBehaviour = child.GetComponent<PersonalizationEditorObjectBehaviour>();
+                            PersonalizationEditorPlacedObject personalizationEditorObjectBehaviour = child.GetComponent<PersonalizationEditorPlacedObject>();
                             if (personalizationEditorObjectBehaviour)
                             {
                                 list.Add(personalizationEditorObjectBehaviour);
@@ -68,7 +64,7 @@ namespace OverhaulMod.Content.Personalization
                     Transform child = transform.GetChild(i);
                     if (child)
                     {
-                        PersonalizationEditorObjectBehaviour personalizationEditorObjectBehaviour = child.GetComponent<PersonalizationEditorObjectBehaviour>();
+                        PersonalizationEditorPlacedObject personalizationEditorObjectBehaviour = child.GetComponent<PersonalizationEditorPlacedObject>();
                         if (personalizationEditorObjectBehaviour)
                         {
                             result += personalizationEditorObjectBehaviour.ChildrenCount;
@@ -79,9 +75,13 @@ namespace OverhaulMod.Content.Personalization
             }
         }
 
+        private bool _hasHiddenObjects;
+
+        private Dictionary<GameObject, bool> _hiddenObjects;
+
         private void Awake()
         {
-            _children = new List<PersonalizationEditorObjectBehaviour>();
+            _children = new List<PersonalizationEditorPlacedObject>();
         }
 
         private void OnDestroy()
@@ -136,12 +136,13 @@ namespace OverhaulMod.Content.Personalization
             HideChildren();
         }
 
-        public T GetPropertyValue<T>(string name, T defaultValue)
+        public T GetPropertyValue<T>(string className, string fieldName, T defaultValue)
         {
             if (PropertyValues.IsNullOrEmpty())
                 return defaultValue;
 
-            if (!PropertyValues.TryGetValue(name, out object obj))
+            string fullName = $"{className}.{fieldName}";
+            if (!PropertyValues.TryGetValue(fullName, out object obj))
                 return defaultValue;
 
             if (typeof(T) == typeof(float) && obj is double)
@@ -156,23 +157,21 @@ namespace OverhaulMod.Content.Personalization
             return (T)obj;
         }
 
-        public void SetPropertyValue(string name, object value)
+        public void SetPropertyValue(string className, string fieldName, object value)
         {
-            if (PropertyValues == null)
-                PropertyValues = new Dictionary<string, object>();
+            string fullName = $"{className}.{fieldName}";
 
-            if (value is Color color)
-            {
-                value = ColorUtility.ToHtmlStringRGBA(color);
-            }
+            if (PropertyValues == null) PropertyValues = new Dictionary<string, object>();
 
-            if (!PropertyValues.ContainsKey(name))
+            if (value is Color color) value = ColorUtility.ToHtmlStringRGBA(color);
+
+            if (!PropertyValues.ContainsKey(fullName))
             {
-                PropertyValues.Add(name, value);
+                PropertyValues.Add(fullName, value);
             }
             else
             {
-                PropertyValues[name] = value;
+                PropertyValues[fullName] = value;
             }
         }
 
@@ -202,11 +201,11 @@ namespace OverhaulMod.Content.Personalization
                 objectInfo.SetScale(base.transform.localScale);
             }
 
-            List<PersonalizationEditorObjectBehaviour> list = Children;
+            List<PersonalizationEditorPlacedObject> list = Children;
             if (list == null)
                 return objectInfo;
 
-            foreach (PersonalizationEditorObjectBehaviour c in list)
+            foreach (PersonalizationEditorPlacedObject c in list)
             {
                 if (!c || !c.gameObject)
                     continue;

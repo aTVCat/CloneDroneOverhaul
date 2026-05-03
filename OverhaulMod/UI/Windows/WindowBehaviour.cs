@@ -101,13 +101,18 @@ namespace OverhaulMod.UI.Windows
             _rectTransform.pivot = pivot;
         }
 
-        public void SetRect(Rect rect)
+        public void SetRect(Rect rect, float scaleFactor = 1f, float horizontalAnchor = 0f)
         {
-            _rectTransform.anchoredPosition = new Vector2(rect.x, rect.y);
+            _rectTransform.anchoredPosition = new Vector2(rect.x + (rect.width * (1f - scaleFactor) * (1f - horizontalAnchor)), rect.y);
             _rectTransform.sizeDelta = new Vector2(rect.width, rect.height);
 
             _width = rect.width;
             _height = rect.height;
+        }
+
+        public void SetScale(float scale)
+        {
+            _rectTransform.localScale = Vector3.one * scale;
         }
 
         public void SetContents(Transform transform)

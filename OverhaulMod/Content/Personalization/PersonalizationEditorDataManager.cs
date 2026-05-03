@@ -1,4 +1,5 @@
 ﻿using ICSharpCode.SharpZipLib.Zip;
+using OverhaulMod.Content.Personalization.Objects;
 using OverhaulMod.Engine;
 using OverhaulMod.UI;
 using OverhaulMod.Utils;
@@ -198,7 +199,7 @@ namespace OverhaulMod.Content.Personalization
                 {
                     if (child.Path == "Volume")
                     {
-                        if (child.PropertyValues.TryGetValue(nameof(PersonalizationEditorObjectVolume.volumeSettingPresets), out object obj) && obj is Dictionary<WeaponVariant2, VolumeSettingsPreset> dictionary && !dictionary.IsNullOrEmpty())
+                        if (child.PropertyValues.TryGetValue(nameof(PersonalizationEditorVoxModel.VolumeSettingPresets), out object obj) && obj is Dictionary<WeaponVariant2, VolumeSettingsPreset> dictionary && !dictionary.IsNullOrEmpty())
                         {
                             foreach (VolumeSettingsPreset value in dictionary.Values)
                             {
@@ -214,7 +215,7 @@ namespace OverhaulMod.Content.Personalization
                     }
                     else if (child.Path == "CvmModel")
                     {
-                        if (child.PropertyValues.TryGetValue(nameof(PersonalizationEditorObjectCVMModel.presets), out object obj) && obj is Dictionary<WeaponVariant2, CVMModelPreset> dictionary && !dictionary.IsNullOrEmpty())
+                        if (child.PropertyValues.TryGetValue(nameof(PersonalizationEditorCVMModel.Presets), out object obj) && obj is Dictionary<WeaponVariant2, CVMModelPreset> dictionary && !dictionary.IsNullOrEmpty())
                         {
                             foreach (CVMModelPreset value in dictionary.Values)
                             {

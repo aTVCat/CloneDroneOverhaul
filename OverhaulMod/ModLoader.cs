@@ -1,5 +1,6 @@
 ﻿using OverhaulMod.Content;
 using OverhaulMod.Content.Personalization;
+using OverhaulMod.Content.Personalization.Objects;
 using OverhaulMod.Engine;
 using OverhaulMod.Gameplay;
 using OverhaulMod.Patches.Behaviours;
@@ -139,7 +140,6 @@ namespace OverhaulMod
             modManagers.AddSingleton<RealisticLightingManager>(environmentManagers);
             modManagers.AddSingleton<LightingTransitionManager>(environmentManagers);
             modManagers.AddSingleton<FloatingDustManager>(environmentManagers);
-            modManagers.AddSingleton<WeatherManager>(environmentManagers);
             modManagers.AddSingleton<ArenaRemodelManager>(environmentManagers);
             modManagers.AddSingleton<ArenaAudienceManager>(environmentManagers);
 

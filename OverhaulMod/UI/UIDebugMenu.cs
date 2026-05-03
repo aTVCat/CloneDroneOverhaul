@@ -8,8 +8,6 @@ namespace OverhaulMod.UI
 {
     public class UIDebugMenu : OverhaulUIBehaviour
     {
-        public override bool EnableUIOverLogoMode => true;
-
         public override bool EnableCursor => true;
 
         [UIElementAction(nameof(OnUpdateBuildCompilationInfoButtonClicked))]

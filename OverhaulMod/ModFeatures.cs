@@ -51,8 +51,6 @@ namespace OverhaulMod
 
         public enum FeatureType
         {
-            WeatherSystem,
-
             WorkshopBrowserContextMenu,
 
             DisplayNewGraphicsOptionsInSettings,

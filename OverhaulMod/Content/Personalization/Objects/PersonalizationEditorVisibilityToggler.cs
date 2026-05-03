@@ -1,21 +1,13 @@
 ﻿using OverhaulMod.Engine;
 
-namespace OverhaulMod.Content.Personalization
+namespace OverhaulMod.Content.Personalization.Objects
 {
-    public class PersonalizationEditorObjectVisibilityController : PersonalizationEditorObjectComponentBase
+    public class PersonalizationEditorVisibilityToggler : PersonalizationEditorComponent
     {
-        public WeaponVariant2 enableIfWeaponVariant
+        public WeaponVariant2 EnableIfWeaponVariant
         {
-            get
-            {
-                PersonalizationEditorObjectBehaviour ob = objectBehaviour;
-                return (WeaponVariant2)ob.GetPropertyValue(nameof(enableIfWeaponVariant), 0);
-            }
-            set
-            {
-                PersonalizationEditorObjectBehaviour ob = objectBehaviour;
-                ob.SetPropertyValue(nameof(enableIfWeaponVariant), (int)value);
-            }
+            get => (WeaponVariant2)GetPropertyValue(nameof(PersonalizationEditorVisibilityToggler), nameof(EnableIfWeaponVariant), 0);
+            set => SetPropertyValue(nameof(PersonalizationEditorVisibilityToggler), nameof(EnableIfWeaponVariant), (int)value);
         }
 
         private bool _hasAddedEventListeners;
@@ -48,26 +40,21 @@ namespace OverhaulMod.Content.Personalization
 
         public bool MustShowTheObject()
         {
-            if (enableIfWeaponVariant == WeaponVariant2.None)
+            if (EnableIfWeaponVariant == WeaponVariant2.None)
                 return true;
 
             WeaponVariant2 weaponVariant1;
             if (PersonalizationEditorManager.IsInEditorMode())
                 weaponVariant1 = PersonalizationEditorManager.Instance.PreviewPresetKey;
             else
-                WeaponVariantManager.GetWeaponVariant(objectBehaviour.ControllerInfo.Reference.GetOwner(), objectBehaviour.ControllerInfo.ItemInfo.Weapon, out weaponVariant1);
+                WeaponVariantManager.GetWeaponVariant(PlacedObject.SpawnInfo.Reference.GetOwner(), PlacedObject.SpawnInfo.ItemInfo.Weapon, out weaponVariant1);
 
-            return enableIfWeaponVariant == weaponVariant1;
+            return EnableIfWeaponVariant == weaponVariant1;
         }
 
         public void GetWeaponVariant(out WeaponVariant2 showConditions)
         {
-            WeaponVariantManager.GetWeaponVariant(objectBehaviour.ControllerInfo.Reference.GetOwner(), objectBehaviour.ControllerInfo.ItemInfo.Weapon, out showConditions);
-        }
-
-        public void GetWeaponVariant(out bool isOnFire, out bool isGreatSword)
-        {
-            WeaponVariantManager.GetWeaponVariant(objectBehaviour.ControllerInfo.Reference.GetOwner(), objectBehaviour.ControllerInfo.ItemInfo.Weapon, out isOnFire, out isGreatSword);
+            WeaponVariantManager.GetWeaponVariant(PlacedObject.SpawnInfo.Reference.GetOwner(), PlacedObject.SpawnInfo.ItemInfo.Weapon, out showConditions);
         }
     }
 }

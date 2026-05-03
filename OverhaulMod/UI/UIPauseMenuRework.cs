@@ -255,7 +255,7 @@ namespace OverhaulMod.UI
             bool showRenderTexture = ModFeatures.IsEnabled(ModFeatures.FeatureType.PauseMenuLogoAsRenderTexture);
 
             _logoImage.gameObject.SetActive(showRenderTexture);
-            if(showRenderTexture) _logoImage.texture = ModCache.LogoRenderTexture;
+            if (showRenderTexture) _logoImage.texture = ModCache.LogoRenderTexture;
 
             string langId = LocalizationManager.Instance.GetCurrentLanguageCode();
             _logoEn.SetActive(!showRenderTexture && langId != "ko" && langId != "ja" && langId != "zh-CN" && langId != "zh-TW");

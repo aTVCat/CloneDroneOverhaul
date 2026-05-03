@@ -1,4 +1,5 @@
-﻿using OverhaulMod.Engine;
+﻿using OverhaulMod.Content.Personalization.Objects;
+using OverhaulMod.Engine;
 using OverhaulMod.Gameplay;
 using OverhaulMod.Gameplay.Weapons;
 using OverhaulMod.UI;
@@ -45,7 +46,7 @@ namespace OverhaulMod.Content.Personalization
 
         private Dictionary<WeaponType, Transform[]> _weaponTypeToParts;
 
-        private Dictionary<PersonalizationItemInfo, PersonalizationEditorObjectBehaviour> _spawnedItems;
+        private Dictionary<PersonalizationItemInfo, PersonalizationEditorPlacedObject> _spawnedItems;
 
         private Dictionary<WeaponType, WeaponVariant2> _weaponTypeToVariant;
 
@@ -113,7 +114,7 @@ namespace OverhaulMod.Content.Personalization
 
             _weaponTypeToParts = new Dictionary<WeaponType, Transform[]>();
             _weaponTypeToVariant = new Dictionary<WeaponType, WeaponVariant2>();
-            _spawnedItems = new Dictionary<PersonalizationItemInfo, PersonalizationEditorObjectBehaviour>();
+            _spawnedItems = new Dictionary<PersonalizationItemInfo, PersonalizationEditorPlacedObject>();
 
             _owner = firstPersonMover;
             _ownerModel = firstPersonMover.GetCharacterModel();
@@ -265,8 +266,8 @@ namespace OverhaulMod.Content.Personalization
             FirstPersonMover firstPersonMover = _owner;
             if (!firstPersonMover) return;
 
-            PersonalizationEditorObjectBehaviour weaponSkinObject = GetSpawnedWeaponSkin(WeaponType.Bow);
-            if (weaponSkinObject && weaponSkinObject.ControllerInfo.ItemInfo != null && !weaponSkinObject.ControllerInfo.ItemInfo.OverrideParent.IsNullOrEmpty())
+            PersonalizationEditorPlacedObject weaponSkinObject = GetSpawnedWeaponSkin(WeaponType.Bow);
+            if (weaponSkinObject && weaponSkinObject.SpawnInfo.ItemInfo != null && !weaponSkinObject.SpawnInfo.ItemInfo.OverrideParent.IsNullOrEmpty())
             {
                 weaponSkinObject.gameObject.SetActive(firstPersonMover.GetEquippedWeaponType() == WeaponType.Bow);
             }
@@ -276,14 +277,14 @@ namespace OverhaulMod.Content.Personalization
         {
             if (!_isEnemy)
             {
-                PersonalizationEditorObjectBehaviour item = GetSpawnedWeaponSkin(WeaponType.Bow);
+                PersonalizationEditorPlacedObject item = GetSpawnedWeaponSkin(WeaponType.Bow);
                 if (!item)
                 {
                     _arrowSpawnPoint = null;
                 }
                 else
                 {
-                    PersonalizationEditorObjectArrowSpawnPoint spawnPoint = item.GetComponentInChildren<PersonalizationEditorObjectArrowSpawnPoint>();
+                    PersonalizationEditorArrowSpawnPoint spawnPoint = item.GetComponentInChildren<PersonalizationEditorArrowSpawnPoint>();
                     _arrowSpawnPoint = spawnPoint ? spawnPoint.transform : null;
                 }
             }
@@ -413,14 +414,14 @@ namespace OverhaulMod.Content.Personalization
             ModDebug.Log("Refreshed accessories");
         }
 
-        public PersonalizationEditorObjectBehaviour SpawnItem(string itemId)
+        public PersonalizationEditorPlacedObject SpawnItem(string itemId)
         {
             if (itemId.IsNullOrEmpty()) return null;
 
             return SpawnItem(PersonalizationManager.Instance.ItemList.GetItem(itemId));
         }
 
-        public PersonalizationEditorObjectBehaviour SpawnItem(PersonalizationItemInfo itemInfo)
+        public PersonalizationEditorPlacedObject SpawnItem(PersonalizationItemInfo itemInfo)
         {
             bool inEditor = PersonalizationEditorManager.IsInEditorMode();
             if (itemInfo == null || HasSpawnedItem(itemInfo) || !_owner)
@@ -463,7 +464,7 @@ namespace OverhaulMod.Content.Personalization
             if (itemInfo.Category == PersonalizationCategory.WeaponSkins) RefreshVariantOfWeapon(itemInfo.Weapon);
 
             itemInfo.LoadRootObjectIfRequired();
-            PersonalizationEditorObjectBehaviour behaviour = itemInfo.RootObject.Deserialize(transform, new ItemSpawnInfo(this, itemInfo));
+            PersonalizationEditorPlacedObject behaviour = itemInfo.RootObject.Deserialize(transform, new ItemSpawnInfo(this, itemInfo));
             if (!behaviour)
             {
                 _spawnedItems.Add(itemInfo, null);
@@ -533,7 +534,7 @@ namespace OverhaulMod.Content.Personalization
             if (personalizationItemInfo == null || !HasSpawnedItem(personalizationItemInfo))
                 return;
 
-            PersonalizationEditorObjectBehaviour behaviour = _spawnedItems[personalizationItemInfo];
+            PersonalizationEditorPlacedObject behaviour = _spawnedItems[personalizationItemInfo];
             if (!behaviour) return;
 
             if (personalizationItemInfo.Category == PersonalizationCategory.WeaponSkins)
@@ -541,7 +542,7 @@ namespace OverhaulMod.Content.Personalization
 
             if (personalizationItemInfo.Category == PersonalizationCategory.WeaponSkins)
             {
-                WeaponModel weaponModel = _ownerModel.GetWeaponModel(behaviour.ControllerInfo.ItemInfo.Weapon);
+                WeaponModel weaponModel = _ownerModel.GetWeaponModel(behaviour.SpawnInfo.ItemInfo.Weapon);
                 if (weaponModel && weaponModel.PartsToDrop.Contains(behaviour.transform))
                 {
                     List<Transform> list = weaponModel.PartsToDrop.ToList();
@@ -564,11 +565,11 @@ namespace OverhaulMod.Content.Personalization
 
         public void DestroyAllItems()
         {
-            Dictionary<PersonalizationItemInfo, PersonalizationEditorObjectBehaviour> dictionary = _spawnedItems;
+            Dictionary<PersonalizationItemInfo, PersonalizationEditorPlacedObject> dictionary = _spawnedItems;
             if (dictionary == null || dictionary.Count == 0)
                 return;
 
-            foreach (KeyValuePair<PersonalizationItemInfo, PersonalizationEditorObjectBehaviour> kv in dictionary)
+            foreach (KeyValuePair<PersonalizationItemInfo, PersonalizationEditorPlacedObject> kv in dictionary)
                 DestroyItem(kv.Key, false);
 
             dictionary.Clear();
@@ -576,12 +577,12 @@ namespace OverhaulMod.Content.Personalization
 
         public void DestroyItemsOfCategory(PersonalizationCategory personalizationCategory)
         {
-            Dictionary<PersonalizationItemInfo, PersonalizationEditorObjectBehaviour> dictionary = _spawnedItems;
+            Dictionary<PersonalizationItemInfo, PersonalizationEditorPlacedObject> dictionary = _spawnedItems;
             if (dictionary == null || dictionary.Count == 0)
                 return;
 
             List<PersonalizationItemInfo> toRemove = null;
-            foreach (KeyValuePair<PersonalizationItemInfo, PersonalizationEditorObjectBehaviour> kv in dictionary)
+            foreach (KeyValuePair<PersonalizationItemInfo, PersonalizationEditorPlacedObject> kv in dictionary)
                 if (kv.Key.Category == personalizationCategory)
                 {
                     if (toRemove == null)
@@ -621,7 +622,7 @@ namespace OverhaulMod.Content.Personalization
 
         public PersonalizationItemInfo GetSpawnedWeaponSkinInfo(WeaponType weaponType)
         {
-            foreach (KeyValuePair<PersonalizationItemInfo, PersonalizationEditorObjectBehaviour> keyValue in _spawnedItems)
+            foreach (KeyValuePair<PersonalizationItemInfo, PersonalizationEditorPlacedObject> keyValue in _spawnedItems)
                 if (keyValue.Key.Category == PersonalizationCategory.WeaponSkins && keyValue.Key.Weapon == weaponType)
                     return keyValue.Key;
 
@@ -630,14 +631,14 @@ namespace OverhaulMod.Content.Personalization
 
         public PersonalizationItemInfo GetSpawnedAccessoryInfo(string bodyPart)
         {
-            foreach (KeyValuePair<PersonalizationItemInfo, PersonalizationEditorObjectBehaviour> keyValue in _spawnedItems)
+            foreach (KeyValuePair<PersonalizationItemInfo, PersonalizationEditorPlacedObject> keyValue in _spawnedItems)
                 if (keyValue.Key.Category == PersonalizationCategory.Accessories && keyValue.Key.BodyPartName == bodyPart)
                     return keyValue.Key;
 
             return null;
         }
 
-        public PersonalizationEditorObjectBehaviour GetSpawnedItemOfSameType(PersonalizationItemInfo personalizationItemInfo)
+        public PersonalizationEditorPlacedObject GetSpawnedItemOfSameType(PersonalizationItemInfo personalizationItemInfo)
         {
             if (personalizationItemInfo.Category == PersonalizationCategory.WeaponSkins)
             {
@@ -650,18 +651,18 @@ namespace OverhaulMod.Content.Personalization
             return null;
         }
 
-        public PersonalizationEditorObjectBehaviour GetSpawnedWeaponSkin(WeaponType weaponType)
+        public PersonalizationEditorPlacedObject GetSpawnedWeaponSkin(WeaponType weaponType)
         {
-            foreach (KeyValuePair<PersonalizationItemInfo, PersonalizationEditorObjectBehaviour> keyValue in _spawnedItems)
+            foreach (KeyValuePair<PersonalizationItemInfo, PersonalizationEditorPlacedObject> keyValue in _spawnedItems)
                 if (keyValue.Key.Category == PersonalizationCategory.WeaponSkins && keyValue.Key.Weapon == weaponType)
                     return keyValue.Value;
 
             return null;
         }
 
-        public PersonalizationEditorObjectBehaviour GetSpawnedAccessory(string bodyPart)
+        public PersonalizationEditorPlacedObject GetSpawnedAccessory(string bodyPart)
         {
-            foreach (KeyValuePair<PersonalizationItemInfo, PersonalizationEditorObjectBehaviour> keyValue in _spawnedItems)
+            foreach (KeyValuePair<PersonalizationItemInfo, PersonalizationEditorPlacedObject> keyValue in _spawnedItems)
                 if (keyValue.Key.Category == PersonalizationCategory.WeaponSkins && keyValue.Key.BodyPartName == bodyPart)
                     return keyValue.Value;
 

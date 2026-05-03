@@ -1,5 +1,6 @@
 ﻿using ModLibrary;
 using OverhaulMod.Content.Personalization;
+using OverhaulMod.Content.Personalization.Objects;
 using OverhaulMod.Engine;
 using OverhaulMod.Gameplay;
 using OverhaulMod.Gameplay.Weapons;
@@ -301,7 +302,7 @@ namespace OverhaulMod.Visuals
                 if (itemInfo != null)
                 {
                     itemInfo.LoadRootObjectIfRequired();
-                    PersonalizationEditorObjectBehaviour rootObject = itemInfo.RootObject.Deserialize(parent, new ItemSpawnInfo(_personalizationController, itemInfo));
+                    PersonalizationEditorPlacedObject rootObject = itemInfo.RootObject.Deserialize(parent, new ItemSpawnInfo(_personalizationController, itemInfo));
                     renderer = rootObject.transform;
                 }
             }

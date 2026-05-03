@@ -1,4 +1,5 @@
 ﻿using OverhaulMod.Content.Personalization;
+using OverhaulMod.Content.Personalization.Objects;
 using OverhaulMod.Utils;
 using System;
 using UnityEngine;
@@ -37,7 +38,7 @@ namespace OverhaulMod.UI
                 {
                     ModUIUtils.MessagePopup(true, $"Delete {obj.Name}?", LocalizationManager.Instance.GetTranslatedString("action_cannot_be_undone"), 125f, MessageMenu.ButtonLayout.EnableDisableButtons, "ok", "Yes", "No", null, delegate
                     {
-                        PersonalizationEditorObjectBehaviour behaviour = PersonalizationEditorObjectManager.Instance.GetInstantiatedObject(obj.UniqueIndex);
+                        PersonalizationEditorPlacedObject behaviour = PersonalizationEditorObjectManager.Instance.GetInstantiatedObject(obj.UniqueIndex);
                         if (behaviour)
                         {
                             Destroy(moddedObject.gameObject);

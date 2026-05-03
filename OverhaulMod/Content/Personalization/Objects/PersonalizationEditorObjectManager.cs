@@ -5,7 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace OverhaulMod.Content.Personalization
+namespace OverhaulMod.Content.Personalization.Objects
 {
     public class PersonalizationEditorObjectManager : Singleton<PersonalizationEditorObjectManager>
     {
@@ -15,7 +15,7 @@ namespace OverhaulMod.Content.Personalization
 
         private Material _volumeMaterial;
 
-        private List<PersonalizationEditorObjectBehaviour> _instantiatedObjects;
+        private List<PersonalizationEditorPlacedObject> _instantiatedObjects;
 
         private int _nextUniqueIndex;
 
@@ -23,7 +23,7 @@ namespace OverhaulMod.Content.Personalization
         {
             base.Awake();
 
-            _instantiatedObjects = new List<PersonalizationEditorObjectBehaviour>();
+            _instantiatedObjects = new List<PersonalizationEditorPlacedObject>();
             _objectInfos = new List<PersonalizationEditorObjectSpawnInfo>();
             addObjectInfo("Empty object", "Empty", instantiateEmpty);
             addObjectInfo("Voxel Model (.vox)", "Volume", instantiateVolume);
@@ -38,7 +38,7 @@ namespace OverhaulMod.Content.Personalization
         {
             PersonalizationEditorObjectSpawnInfo personalizationEditorObjectInfo = new PersonalizationEditorObjectSpawnInfo()
             {
-                Name = name,
+                DisplayName = name,
                 Path = path,
                 InstantiateFunction = func
             };
@@ -53,32 +53,32 @@ namespace OverhaulMod.Content.Personalization
         public int GetMaxUniqueIndex()
         {
             int result = 0;
-            foreach (PersonalizationEditorObjectBehaviour instantiatedObject in _instantiatedObjects)
+            foreach (PersonalizationEditorPlacedObject instantiatedObject in _instantiatedObjects)
                 result = Mathf.Max(result, instantiatedObject.UniqueIndex);
 
             return result;
         }
 
-        public void AddInstantiatedObject(PersonalizationEditorObjectBehaviour behaviour)
+        public void AddInstantiatedObject(PersonalizationEditorPlacedObject behaviour)
         {
             if (!_instantiatedObjects.Contains(behaviour)) _instantiatedObjects.Add(behaviour);
         }
 
-        public void RemoveInstantiatedObject(PersonalizationEditorObjectBehaviour behaviour)
+        public void RemoveInstantiatedObject(PersonalizationEditorPlacedObject behaviour)
         {
             _ = _instantiatedObjects.Remove(behaviour);
         }
 
-        public PersonalizationEditorObjectBehaviour GetInstantiatedObject(int uniqueIndex)
+        public PersonalizationEditorPlacedObject GetInstantiatedObject(int uniqueIndex)
         {
-            List<PersonalizationEditorObjectBehaviour> list = _instantiatedObjects;
+            List<PersonalizationEditorPlacedObject> list = _instantiatedObjects;
             if (list.IsNullOrEmpty())
                 return null;
 
             int i = 0;
             do
             {
-                PersonalizationEditorObjectBehaviour obj = list[i];
+                PersonalizationEditorPlacedObject obj = list[i];
                 if (obj && obj.UniqueIndex == uniqueIndex)
                     return obj;
 
@@ -138,8 +138,9 @@ namespace OverhaulMod.Content.Personalization
             t.localPosition = Vector3.zero;
             t.localEulerAngles = Vector3.zero;
             t.localScale = Vector3.one;
-            _ = gameObject.AddComponent<PersonalizationEditorObjectVolume>();
-            _ = gameObject.AddComponent<PersonalizationEditorObjectVisibilityController>();
+            _ = gameObject.AddComponent<PersonalizationEditorVoxModel>();
+            _ = gameObject.AddComponent<PersonalizationEditorVisibilityToggler>();
+            _ = gameObject.AddComponent<PersonalizationEditorRotator>();
             Volume volume = gameObject.GetComponent<Volume>();
             volume.Material = getVolumeMaterial();
             Destroy(bodyPart);
@@ -154,8 +155,9 @@ namespace OverhaulMod.Content.Personalization
             t.localPosition = Vector3.zero;
             t.localEulerAngles = Vector3.zero;
             t.localScale = Vector3.one;
-            _ = obj.AddComponent<PersonalizationEditorObjectCVMModel>();
-            _ = obj.AddComponent<PersonalizationEditorObjectVisibilityController>();
+            _ = obj.AddComponent<PersonalizationEditorCVMModel>();
+            _ = obj.AddComponent<PersonalizationEditorVisibilityToggler>();
+            _ = obj.AddComponent<PersonalizationEditorRotator>();
             return obj;
         }
 
@@ -166,8 +168,9 @@ namespace OverhaulMod.Content.Personalization
             t.localPosition = Vector3.zero;
             t.localEulerAngles = Vector3.zero;
             t.localScale = Vector3.one * 0.01f;
-            _ = fireParticles.gameObject.AddComponent<PersonalizationEditorObjectVisibilityController>();
-            _ = fireParticles.gameObject.AddComponent<PersonalizationEditorObjectFireParticles>();
+            _ = fireParticles.gameObject.AddComponent<PersonalizationEditorVisibilityToggler>();
+            _ = fireParticles.gameObject.AddComponent<PersonalizationEditorFireParticles>();
+            _ = fireParticles.gameObject.AddComponent<PersonalizationEditorRotator>();
             return fireParticles.gameObject;
         }
 
@@ -178,8 +181,9 @@ namespace OverhaulMod.Content.Personalization
             t.localPosition = Vector3.zero;
             t.localEulerAngles = Vector3.zero;
             t.localScale = Vector3.one * 0.01f;
-            _ = fireParticles.gameObject.AddComponent<PersonalizationEditorObjectVisibilityController>();
-            _ = fireParticles.gameObject.AddComponent<PersonalizationEditorObjectFireParticles>();
+            _ = fireParticles.gameObject.AddComponent<PersonalizationEditorVisibilityToggler>();
+            _ = fireParticles.gameObject.AddComponent<PersonalizationEditorFireParticles>();
+            _ = fireParticles.gameObject.AddComponent<PersonalizationEditorRotator>();
             return fireParticles.gameObject;
         }
 
@@ -190,14 +194,17 @@ namespace OverhaulMod.Content.Personalization
             t.localPosition = Vector3.zero;
             t.localEulerAngles = Vector3.zero;
             t.localScale = Vector3.one * 0.01f;
-            _ = fireParticles.gameObject.AddComponent<PersonalizationEditorObjectVisibilityController>();
-            _ = fireParticles.gameObject.AddComponent<PersonalizationEditorObjectFireParticles>();
+            _ = fireParticles.gameObject.AddComponent<PersonalizationEditorVisibilityToggler>();
+            _ = fireParticles.gameObject.AddComponent<PersonalizationEditorFireParticles>();
+            _ = fireParticles.gameObject.AddComponent<PersonalizationEditorRotator>();
             return fireParticles.gameObject;
         }
 
         private GameObject instantiateEmpty(Transform parent)
         {
             GameObject obj = new GameObject();
+            _ = obj.AddComponent<PersonalizationEditorRotator>();
+
             Transform t = obj.transform;
             t.SetParent(parent);
             t.localPosition = Vector3.zero;
@@ -214,7 +221,7 @@ namespace OverhaulMod.Content.Personalization
             t.localPosition = Vector3.zero;
             t.localEulerAngles = Vector3.zero;
             t.localScale = Vector3.one;
-            _ = obj.gameObject.AddComponent<PersonalizationEditorObjectArrowSpawnPoint>();
+            _ = obj.gameObject.AddComponent<PersonalizationEditorArrowSpawnPoint>();
             return obj;
         }
 
@@ -227,7 +234,7 @@ namespace OverhaulMod.Content.Personalization
             return null;
         }
 
-        public PersonalizationEditorObjectBehaviour PlaceObject(string path, Transform parent = null, bool assignEditableValues = true)
+        public PersonalizationEditorPlacedObject PlaceObject(string path, Transform parent = null, bool assignEditableValues = true)
         {
             PersonalizationEditorObjectSpawnInfo objectInfo = GetObjectInfo(path);
             if (objectInfo == null)
@@ -235,19 +242,19 @@ namespace OverhaulMod.Content.Personalization
 
             GameObject gameObject = objectInfo.Instantiate(parent);
             gameObject.name = gameObject.name.Replace("(Clone)", string.Empty);
-            PersonalizationEditorObjectBehaviour personalizationEditorObject = gameObject.AddComponent<PersonalizationEditorObjectBehaviour>();
+            PersonalizationEditorPlacedObject personalizationEditorObject = gameObject.AddComponent<PersonalizationEditorPlacedObject>();
             personalizationEditorObject.Path = objectInfo.Path;
 
             if (assignEditableValues)
             {
-                personalizationEditorObject.Name = objectInfo.Name;
+                personalizationEditorObject.Name = objectInfo.DisplayName;
                 personalizationEditorObject.PropertyValues = new Dictionary<string, object>();
             }
 
             return personalizationEditorObject;
         }
 
-        public void DeleteObject(PersonalizationEditorObjectBehaviour objectBehaviour)
+        public void DeleteObject(PersonalizationEditorPlacedObject objectBehaviour)
         {
             StartCoroutine(deleteObjectCoroutine(objectBehaviour.gameObject));
         }

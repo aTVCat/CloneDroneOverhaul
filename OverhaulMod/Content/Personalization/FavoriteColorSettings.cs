@@ -4,10 +4,7 @@
     {
         public float SaturationMultiplier, BrightnessMultiplier, GlowPercent;
 
-        public FavoriteColorSettings()
-        {
-
-        }
+        public FavoriteColorSettings() { }
 
         public FavoriteColorSettings(float saturationMultiplier, float brightnessMultiplier, float glowPercent)
         {

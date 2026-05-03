@@ -12,6 +12,8 @@ namespace OverhaulMod.UI
     /// </summary>
     public class UIPE : OverhaulUIBehaviour
     {
+        public const float WINDOWS_SCALE = 0.75f;
+
         private List<UIElementPEDropdown.OptionData> s_fileOptions, s_windowOptions, s_helpOptions;
 
         [UIElement("UtilitiesPane", typeof(UIElementPEUtilitiesPane), false)]
@@ -136,7 +138,7 @@ namespace OverhaulMod.UI
 
         public void ApplyValuesToItem()
         {
-            if(PersonalizationEditorManager.Instance.CanVerifyItems) ModeratorPanel.ApplyValues();
+            if (PersonalizationEditorManager.Instance.CanVerifyItems) ModeratorPanel.ApplyValues();
             ItemInformationPanel.ApplyValues();
             ItemAdditionalConfigurationPanel.ApplyValues();
         }
@@ -160,10 +162,19 @@ namespace OverhaulMod.UI
 
             s_windowOptions = new List<UIElementPEDropdown.OptionData>()
             {
-                //new UIElementPEDropdown.OptionData("Show item info editor", "Redirect-16x16", Instance.ShowItemConfig),
+                new UIElementPEDropdown.OptionData("Item information", "Redirect-16x16", Instance.ShowItemInformation),
+                new UIElementPEDropdown.OptionData("Item configuration", "Redirect-16x16", Instance.ShowItemAdditionalConfiguration),
+                new UIElementPEDropdown.OptionData("Imported files", "Redirect-16x16", Instance.ShowImportedFiles),
+                new UIElementPEDropdown.OptionData("Hierarchy", "Redirect-16x16", Instance.ShowHierarchy),
                 new UIElementPEDropdown.OptionData("Show object editor", "Redirect-16x16", Instance.ShowInspector),
-                new UIElementPEDropdown.OptionData(true),
-                new UIElementPEDropdown.OptionData("Show item moderator", "Redirect-16x16", Instance.ShowItemModerator),
+                new UIElementPEDropdown.OptionData(true)
+                {
+                    DisplayedForVerifiers = true
+                },
+                new UIElementPEDropdown.OptionData("Show item moderator", "Redirect-16x16", Instance.ShowItemModerator)
+                {
+                    DisplayedForVerifiers = true
+                },
             };
 
             s_helpOptions = new List<UIElementPEDropdown.OptionData>
@@ -226,12 +237,15 @@ namespace OverhaulMod.UI
                 ModeratorWindow = WindowManager.Instance.NewWindow(_windowBoundaries, ModeratorPanel.transform as RectTransform, "Moderation", new WindowRectSettings()
                 {
                     PreserveContentSize = true,
-                    Rect = new Rect(25f, _windowBoundaries.rect.height - 25f, 0f, 0f),
-                    Pivot = new Vector2(0f, 1f)
+                    Rect = new Rect(_windowBoundaries.rect.width - 45f - (Inspector.transform as RectTransform).rect.width, 25f + (ModeratorPanel.transform as RectTransform).rect.height, 0f, 0f),
+                    Scale = WINDOWS_SCALE,
+                    HorizontalAnchor = 1f
                 });
             }
             else
                 WindowManager.Instance.ShowWindow(ModeratorWindow);
+
+            if (Dropdown.IsVisible) Dropdown.Hide();
         }
 
         public void ShowItemInformation()
@@ -242,13 +256,15 @@ namespace OverhaulMod.UI
                 {
                     PreserveContentSize = true,
                     Rect = new Rect(25f, _windowBoundaries.rect.height - 25f, 0f, 0f),
-                    Pivot = new Vector2(0f, 1f)
+                    Scale = WINDOWS_SCALE,
                 });
             }
             else
             {
                 WindowManager.Instance.ShowWindow(ItemInformationWindow);
             }
+
+            if (Dropdown.IsVisible) Dropdown.Hide();
         }
 
         public void ShowItemAdditionalConfiguration()
@@ -258,31 +274,35 @@ namespace OverhaulMod.UI
                 ItemAdditionalConfigurationWindow = WindowManager.Instance.NewWindow(_windowBoundaries, ItemAdditionalConfigurationPanel.transform as RectTransform, "Configuration", new WindowRectSettings()
                 {
                     PreserveContentSize = true,
-                    Rect = new Rect(25f, _windowBoundaries.rect.height - 25f, 0f, 0f),
-                    Pivot = new Vector2(0f, 1f)
+                    Rect = new Rect(((ItemInformationPanel.transform as RectTransform).rect.width + 50f) * WINDOWS_SCALE, _windowBoundaries.rect.height - 25f, 0f, 0f),
+                    Scale = WINDOWS_SCALE,
                 });
             }
             else
             {
                 WindowManager.Instance.ShowWindow(ItemAdditionalConfigurationWindow);
             }
+
+            if (Dropdown.IsVisible) Dropdown.Hide();
         }
 
         public void ShowImportedFiles()
         {
             if (ImportedFilesWindow.IsInvalid())
             {
-                ImportedFilesWindow = WindowManager.Instance.NewWindow(_windowBoundaries, ImportedFilesPanel.transform as RectTransform, "Imported files", new WindowRectSettings()
+                ImportedFilesWindow = WindowManager.Instance.NewWindow(_windowBoundaries, ImportedFilesPanel.transform as RectTransform, "Files", new WindowRectSettings()
                 {
                     PreserveContentSize = true,
-                    Rect = new Rect(25f, _windowBoundaries.rect.height - 25f, 0f, 0f),
-                    Pivot = new Vector2(0f, 1f)
+                    Rect = new Rect(((ItemInformationPanel.transform as RectTransform).rect.width + 50f) * WINDOWS_SCALE, _windowBoundaries.rect.height - (50f + (ItemAdditionalConfigurationPanel.transform as RectTransform).rect.height) * WINDOWS_SCALE, 0f, 0f),
+                    Scale = WINDOWS_SCALE,
                 });
             }
             else
             {
                 WindowManager.Instance.ShowWindow(ImportedFilesWindow);
             }
+
+            if (Dropdown.IsVisible) Dropdown.Hide();
         }
 
         public void ShowHierarchy()
@@ -292,46 +312,56 @@ namespace OverhaulMod.UI
                 HierarchyWindow = WindowManager.Instance.NewWindow(_windowBoundaries, HierarchyPanel.transform as RectTransform, "Hierarchy", new WindowRectSettings()
                 {
                     PreserveContentSize = true,
-                    Rect = new Rect(25f, _windowBoundaries.rect.height - 25f, 0f, 0f),
-                    Pivot = new Vector2(0f, 1f)
+                    Rect = new Rect(25f, _windowBoundaries.rect.height - (50f + (ItemInformationPanel.transform as RectTransform).rect.height) * WINDOWS_SCALE, 0f, 0f),
+                    Scale = WINDOWS_SCALE,
                 });
             }
             else
             {
                 WindowManager.Instance.ShowWindow(HierarchyWindow);
             }
+
+            if (Dropdown.IsVisible) Dropdown.Hide();
         }
 
         public void ShowInspector()
         {
-            WindowManager windowManager = WindowManager.Instance;
             if (InspectorWindow.IsInvalid())
             {
-                InspectorWindow = windowManager.NewWindow(_windowBoundaries, Inspector.transform as RectTransform, "Edit object", new WindowRectSettings()
+                InspectorWindow = WindowManager.Instance.NewWindow(_windowBoundaries, Inspector.transform as RectTransform, "Edit object", new WindowRectSettings()
                 {
                     PreserveContentSize = true,
                     Rect = new Rect(_windowBoundaries.rect.width - 45f - (Inspector.transform as RectTransform).rect.width, _windowBoundaries.rect.height - 25f, 0f, 0f),
-                    Pivot = new Vector2(0f, 1f)
+                    Scale = WINDOWS_SCALE,
+                    HorizontalAnchor = 1f,
                 });
             }
             else
-                windowManager.ShowWindow(InspectorWindow);
+            {
+                WindowManager.Instance.ShowWindow(InspectorWindow);
+            }
+
+            if (Dropdown.IsVisible) Dropdown.Hide();
         }
 
 
         public void ShowItemOffsets()
         {
-            WindowManager windowManager = WindowManager.Instance;
             if (ItemOffsetsWindow.IsInvalid())
             {
-                ItemOffsetsWindow = windowManager.NewWindow(_windowBoundaries, ItemOffsets.transform as RectTransform, "Configure offsets", new WindowRectSettings()
+                ItemOffsetsWindow = WindowManager.Instance.NewWindow(_windowBoundaries, ItemOffsets.transform as RectTransform, "Configure offsets", new WindowRectSettings()
                 {
                     PreserveContentSize = true,
-                    Rect = new Rect(25f, 25f, 0f, 0f)
+                    Rect = new Rect((_windowBoundaries.rect.width / 2f) - ((ItemOffsets.transform as RectTransform).rect.width / 2f), (_windowBoundaries.rect.height / 2f) + ((ItemOffsets.transform as RectTransform).rect.height / 2f), 0f, 0f),
+                    Scale = WINDOWS_SCALE,
                 });
             }
             else
-                windowManager.ShowWindow(ItemOffsetsWindow);
+            {
+                WindowManager.Instance.ShowWindow(ItemOffsetsWindow);
+            }
+
+            if (Dropdown.IsVisible) Dropdown.Hide();
         }
 
         public void OnExitButtonClicked()

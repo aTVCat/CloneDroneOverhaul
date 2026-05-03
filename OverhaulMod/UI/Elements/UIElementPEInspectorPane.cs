@@ -1,4 +1,5 @@
 ﻿using OverhaulMod.Content.Personalization;
+using OverhaulMod.Content.Personalization.Objects;
 using OverhaulMod.Engine;
 using OverhaulMod.Utils;
 using System.Collections.Generic;
@@ -91,7 +92,7 @@ namespace OverhaulMod.UI
 
         private CvmModelPropertiesController _cvmModelPropertiesController;
 
-        private PersonalizationEditorObjectBehaviour _inspectingObject;
+        private PersonalizationEditorPlacedObject _inspectingObject;
 
         private int _inspectingObjectId;
 
@@ -143,7 +144,7 @@ namespace OverhaulMod.UI
             EditObject(PersonalizationEditorObjectManager.Instance.GetInstantiatedObject(_inspectingObjectId));
         }
 
-        public void EditObject(PersonalizationEditorObjectBehaviour objectBehaviour)
+        public void EditObject(PersonalizationEditorPlacedObject objectBehaviour)
         {
             bool isNotNull = objectBehaviour;
 
@@ -170,24 +171,24 @@ namespace OverhaulMod.UI
             _rotationField.Vector = objectBehaviour.transform.localEulerAngles;
             _scaleField.Vector = objectBehaviour.transform.localScale;
 
-            bool isWeaponSkin = objectBehaviour.ControllerInfo.ItemInfo.Category == PersonalizationCategory.WeaponSkins;
+            bool isWeaponSkin = objectBehaviour.SpawnInfo.ItemInfo.Category == PersonalizationCategory.WeaponSkins;
 
-            if (isWeaponSkin && objectBehaviour.GetComponent<PersonalizationEditorObjectVisibilityController>())
+            if (isWeaponSkin && objectBehaviour.GetComponent<PersonalizationEditorVisibilityToggler>())
             {
                 _visibilityPropertiesController.PopulateFields(this, _container, objectBehaviour);
             }
 
-            if (objectBehaviour.GetComponent<PersonalizationEditorObjectVolume>())
+            if (objectBehaviour.GetComponent<PersonalizationEditorVoxModel>())
             {
                 _volumePropertiesController.PopulateFields(this, _container, objectBehaviour);
             }
 
-            if (objectBehaviour.GetComponent<PersonalizationEditorObjectCVMModel>())
+            if (objectBehaviour.GetComponent<PersonalizationEditorCVMModel>())
             {
                 _cvmModelPropertiesController.PopulateFields(this, _container, objectBehaviour);
             }
 
-            if (objectBehaviour.GetComponent<PersonalizationEditorObjectFireParticles>())
+            if (objectBehaviour.GetComponent<PersonalizationEditorFireParticles>())
             {
                 _fireParticlesPropertiesController.PopulateFields(this, _container, objectBehaviour);
             }
@@ -200,7 +201,7 @@ namespace OverhaulMod.UI
             if (_disableCallbacks)
                 return;
 
-            PersonalizationEditorObjectBehaviour objectBehaviour = _inspectingObject;
+            PersonalizationEditorPlacedObject objectBehaviour = _inspectingObject;
             if (!objectBehaviour)
                 return;
 
@@ -212,7 +213,7 @@ namespace OverhaulMod.UI
             if (_disableCallbacks)
                 return;
 
-            PersonalizationEditorObjectBehaviour objectBehaviour = _inspectingObject;
+            PersonalizationEditorPlacedObject objectBehaviour = _inspectingObject;
             if (!objectBehaviour)
                 return;
 
@@ -224,7 +225,7 @@ namespace OverhaulMod.UI
             if (_disableCallbacks)
                 return;
 
-            PersonalizationEditorObjectBehaviour objectBehaviour = _inspectingObject;
+            PersonalizationEditorPlacedObject objectBehaviour = _inspectingObject;
             if (!objectBehaviour)
                 return;
 
@@ -244,7 +245,7 @@ namespace OverhaulMod.UI
 
         public class ObjectPropertiesController
         {
-            public virtual void PopulateFields(UIElementPEInspectorPane propertiesPanel, Transform container, PersonalizationEditorObjectBehaviour objectBehaviour)
+            public virtual void PopulateFields(UIElementPEInspectorPane propertiesPanel, Transform container, PersonalizationEditorPlacedObject objectBehaviour)
             {
 
             }
@@ -252,26 +253,26 @@ namespace OverhaulMod.UI
 
         public class CvmModelPropertiesController : ObjectPropertiesController
         {
-            public override void PopulateFields(UIElementPEInspectorPane propertiesPanel, Transform container, PersonalizationEditorObjectBehaviour objectBehaviour)
+            public override void PopulateFields(UIElementPEInspectorPane propertiesPanel, Transform container, PersonalizationEditorPlacedObject objectBehaviour)
             {
                 void populateFieldsAction()
                 {
                     propertiesPanel.Refresh();
                 }
 
-                PersonalizationEditorObjectCVMModel model = objectBehaviour.GetComponent<PersonalizationEditorObjectCVMModel>();
+                PersonalizationEditorCVMModel model = objectBehaviour.GetComponent<PersonalizationEditorCVMModel>();
 
                 ModdedObject volumeExtraSettings = Instantiate(propertiesPanel._volumeExtraSettings, container);
                 volumeExtraSettings.gameObject.SetActive(true);
                 Toggle hideIfNoPresetToggle = volumeExtraSettings.GetObject<Toggle>(0);
-                hideIfNoPresetToggle.isOn = model.hideIfNoPreset;
+                hideIfNoPresetToggle.isOn = model.HideIfNoPreset;
                 hideIfNoPresetToggle.onValueChanged.AddListener(delegate (bool value)
                 {
-                    model.hideIfNoPreset = value;
+                    model.HideIfNoPreset = value;
                     GlobalEventManager.Instance.Dispatch(PersonalizationEditorManager.OBJECT_EDITED_EVENT);
                 });
 
-                Dictionary<WeaponVariant2, CVMModelPreset> presets = model.presets;
+                Dictionary<WeaponVariant2, CVMModelPreset> presets = model.Presets;
                 if (presets != null && presets.Count != 0)
                 {
                     foreach (KeyValuePair<WeaponVariant2, CVMModelPreset> keyValue in presets)
@@ -482,7 +483,7 @@ namespace OverhaulMod.UI
                     newPresetButton.gameObject.SetActive(true);
                     newPresetButton.onClick.AddListener(delegate
                     {
-                        model.presets.Add(model.GetUnusedWeaponVariant(), new CVMModelPreset(true));
+                        model.Presets.Add(model.GetUnusedWeaponVariant(), new CVMModelPreset(true));
                         populateFieldsAction();
                     });
                 }
@@ -491,9 +492,9 @@ namespace OverhaulMod.UI
 
         public class FireParticlesPropertiesController : ObjectPropertiesController
         {
-            public override void PopulateFields(UIElementPEInspectorPane propertiesPanel, Transform container, PersonalizationEditorObjectBehaviour objectBehaviour)
+            public override void PopulateFields(UIElementPEInspectorPane propertiesPanel, Transform container, PersonalizationEditorPlacedObject objectBehaviour)
             {
-                PersonalizationEditorObjectFireParticles fireParticles = objectBehaviour.GetComponent<PersonalizationEditorObjectFireParticles>();
+                PersonalizationEditorFireParticles fireParticles = objectBehaviour.GetComponent<PersonalizationEditorFireParticles>();
 
                 ModdedObject colorPickButton = Instantiate(propertiesPanel._colorPickButton, container);
                 colorPickButton.gameObject.SetActive(true);
@@ -502,20 +503,20 @@ namespace OverhaulMod.UI
                 colorPickerButtonComponent.InitializeAsElement();
                 colorPickerButtonComponent.ColorPickerParent = UIPE.Instance.transform;
                 colorPickerButtonComponent.useAlpha = true;
-                colorPickerButtonComponent.color = fireParticles.color;
+                colorPickerButtonComponent.color = fireParticles.Color;
                 colorPickerButtonComponent.onValueChanged.AddListener(delegate (Color color)
                 {
-                    fireParticles.color = color;
+                    fireParticles.Color = color;
                     fireParticles.RefreshColor();
                 });
 
                 ModdedObject applyFavoriteColorToggleModdedObject = Instantiate(propertiesPanel._togglePrefab, container);
                 applyFavoriteColorToggleModdedObject.gameObject.SetActive(true);
                 Toggle applyFavoriteColorToggle = applyFavoriteColorToggleModdedObject.GetComponent<Toggle>();
-                applyFavoriteColorToggle.isOn = fireParticles.applyFavoriteColor;
+                applyFavoriteColorToggle.isOn = fireParticles.ApplyFavoriteColor;
                 applyFavoriteColorToggle.onValueChanged.AddListener(delegate (bool value)
                 {
-                    fireParticles.applyFavoriteColor = value;
+                    fireParticles.ApplyFavoriteColor = value;
                     fireParticles.RefreshColor();
                 });
                 applyFavoriteColorToggleModdedObject.GetObject<Text>(0).text = "Apply favorite color";
@@ -526,12 +527,12 @@ namespace OverhaulMod.UI
                 Slider hueOffsetSlider = hueOffsetSliderModdedObject.GetObject<Slider>(0);
                 hueOffsetSlider.minValue = -0.1f;
                 hueOffsetSlider.maxValue = 0.1f;
-                hueOffsetSlider.value = fireParticles.favoriteColorHueOffset;
+                hueOffsetSlider.value = fireParticles.FavoriteColorHueOffset;
                 hueOffsetSlider.onValueChanged.AddListener(delegate (float value)
                 {
                     float ho = Mathf.Round(value * 100f) / 100f;
                     ModUIUtils.Tooltip($"{ho}");
-                    fireParticles.favoriteColorHueOffset = ho;
+                    fireParticles.FavoriteColorHueOffset = ho;
                     fireParticles.RefreshColor();
                 });
 
@@ -541,11 +542,11 @@ namespace OverhaulMod.UI
                 Slider brightnessSlider = brightnessSliderModdedObject.GetObject<Slider>(0);
                 brightnessSlider.minValue = 0f;
                 brightnessSlider.maxValue = 100f;
-                brightnessSlider.value = Mathf.Round(fireParticles.favoriteColorBrightness * 100f);
+                brightnessSlider.value = Mathf.Round(fireParticles.FavoriteColorBrightness * 100f);
                 brightnessSlider.onValueChanged.AddListener(delegate (float value)
                 {
                     ModUIUtils.Tooltip($"{value}%");
-                    fireParticles.favoriteColorBrightness = value / 100f;
+                    fireParticles.FavoriteColorBrightness = value / 100f;
                     fireParticles.RefreshColor();
                 });
 
@@ -555,21 +556,21 @@ namespace OverhaulMod.UI
                 Slider saturationSlider = saturationSliderModdedObject.GetObject<Slider>(0);
                 saturationSlider.minValue = 0f;
                 saturationSlider.maxValue = 100f;
-                saturationSlider.value = Mathf.Round(fireParticles.favoriteColorSaturation * 100f);
+                saturationSlider.value = Mathf.Round(fireParticles.FavoriteColorSaturation * 100f);
                 saturationSlider.onValueChanged.AddListener(delegate (float value)
                 {
                     ModUIUtils.Tooltip($"{value}%");
-                    fireParticles.favoriteColorSaturation = value / 100f;
+                    fireParticles.FavoriteColorSaturation = value / 100f;
                     fireParticles.RefreshColor();
                 });
 
                 ModdedObject enableSmokeToggleModdedObject = Instantiate(propertiesPanel._togglePrefab, container);
                 enableSmokeToggleModdedObject.gameObject.SetActive(true);
                 Toggle enableSmokeToggle = enableSmokeToggleModdedObject.GetComponent<Toggle>();
-                enableSmokeToggle.isOn = fireParticles.enableSmoke;
+                enableSmokeToggle.isOn = fireParticles.EnableSmoke;
                 enableSmokeToggle.onValueChanged.AddListener(delegate (bool value)
                 {
-                    fireParticles.enableSmoke = value;
+                    fireParticles.EnableSmoke = value;
                     fireParticles.RefreshColor();
                 });
                 enableSmokeToggleModdedObject.GetObject<Text>(0).text = "Enable smoke";
@@ -578,12 +579,12 @@ namespace OverhaulMod.UI
 
         public class VisibilityPropertiesController : ObjectPropertiesController
         {
-            public override void PopulateFields(UIElementPEInspectorPane propertiesPanel, Transform container, PersonalizationEditorObjectBehaviour objectBehaviour)
+            public override void PopulateFields(UIElementPEInspectorPane propertiesPanel, Transform container, PersonalizationEditorPlacedObject objectBehaviour)
             {
                 ModdedObject enableIfPresetDropdown = Instantiate(propertiesPanel._enableIfPresetDropdown, container);
                 enableIfPresetDropdown.gameObject.SetActive(true);
 
-                PersonalizationEditorObjectVisibilityController visibilityController = objectBehaviour.GetComponent<PersonalizationEditorObjectVisibilityController>();
+                PersonalizationEditorVisibilityToggler visibilityController = objectBehaviour.GetComponent<PersonalizationEditorVisibilityToggler>();
 
                 Dropdown dropdown = enableIfPresetDropdown.GetObject<Dropdown>(0);
                 dropdown.options = PersonalizationEditorManager.Instance.GetPresetsForEditingWeaponSkin(true);
@@ -591,7 +592,7 @@ namespace OverhaulMod.UI
                 int conditionDropdownValueToSet = -1;
                 for (int i = 0; i < dropdown.options.Count; i++)
                 {
-                    if (dropdown.options[i] is DropdownWeaponVariantOptionData showConditionOptionData && showConditionOptionData.Value == visibilityController.enableIfWeaponVariant)
+                    if (dropdown.options[i] is DropdownWeaponVariantOptionData showConditionOptionData && showConditionOptionData.Value == visibilityController.EnableIfWeaponVariant)
                     {
                         conditionDropdownValueToSet = i;
                     }
@@ -599,7 +600,7 @@ namespace OverhaulMod.UI
 
                 if (conditionDropdownValueToSet == -1)
                 {
-                    dropdown.options.Add(new DropdownWeaponVariantOptionData(visibilityController.enableIfWeaponVariant));
+                    dropdown.options.Add(new DropdownWeaponVariantOptionData(visibilityController.EnableIfWeaponVariant));
                     dropdown.RefreshShownValue();
                     conditionDropdownValueToSet = dropdown.options.Count - 1;
                 }
@@ -608,7 +609,7 @@ namespace OverhaulMod.UI
                 dropdown.onValueChanged.AddListener(delegate (int value)
                 {
                     WeaponVariant2 weaponVariant = (dropdown.options[value] as DropdownWeaponVariantOptionData).Value;
-                    visibilityController.enableIfWeaponVariant = weaponVariant;
+                    visibilityController.EnableIfWeaponVariant = weaponVariant;
                     visibilityController.RefreshVisibility();
                 });
             }
@@ -616,31 +617,31 @@ namespace OverhaulMod.UI
 
         public class VolumePropertiesController : ObjectPropertiesController
         {
-            public override void PopulateFields(UIElementPEInspectorPane propertiesPanel, Transform container, PersonalizationEditorObjectBehaviour objectBehaviour)
+            public override void PopulateFields(UIElementPEInspectorPane propertiesPanel, Transform container, PersonalizationEditorPlacedObject objectBehaviour)
             {
                 void populateFieldsAction()
                 {
                     propertiesPanel.Refresh();
                 }
 
-                bool isWeaponSkin = objectBehaviour.ControllerInfo.ItemInfo.Category == PersonalizationCategory.WeaponSkins;
+                bool isWeaponSkin = objectBehaviour.SpawnInfo.ItemInfo.Category == PersonalizationCategory.WeaponSkins;
 
-                PersonalizationEditorObjectVolume volume = objectBehaviour.GetComponent<PersonalizationEditorObjectVolume>();
+                PersonalizationEditorVoxModel volume = objectBehaviour.GetComponent<PersonalizationEditorVoxModel>();
 
                 if (isWeaponSkin)
                 {
                     ModdedObject volumeExtraSettings = Instantiate(propertiesPanel._volumeExtraSettings, container);
                     volumeExtraSettings.gameObject.SetActive(true);
                     Toggle hideIfNoPresetToggle = volumeExtraSettings.GetObject<Toggle>(0);
-                    hideIfNoPresetToggle.isOn = volume.hideIfNoPreset;
+                    hideIfNoPresetToggle.isOn = volume.HideIfNoPreset;
                     hideIfNoPresetToggle.onValueChanged.AddListener(delegate (bool value)
                     {
-                        volume.hideIfNoPreset = value;
+                        volume.HideIfNoPreset = value;
                         GlobalEventManager.Instance.Dispatch(PersonalizationEditorManager.OBJECT_EDITED_EVENT);
                     });
                 }
 
-                Dictionary<WeaponVariant2, VolumeSettingsPreset> volumePresets = volume.volumeSettingPresets;
+                Dictionary<WeaponVariant2, VolumeSettingsPreset> volumePresets = volume.VolumeSettingPresets;
                 if (volumePresets != null && volumePresets.Count != 0)
                 {
                     foreach (KeyValuePair<WeaponVariant2, VolumeSettingsPreset> preset in volumePresets)
@@ -814,7 +815,7 @@ namespace OverhaulMod.UI
                     newPresetButton.gameObject.SetActive(true);
                     newPresetButton.onClick.AddListener(delegate
                     {
-                        volume.volumeSettingPresets.Add(volume.GetUnusedWeaponVariant(), new VolumeSettingsPreset()
+                        volume.VolumeSettingPresets.Add(volume.GetUnusedWeaponVariant(), new VolumeSettingsPreset()
                         {
                             CenterPivot = true,
                             VoxelSize = 0.1f,

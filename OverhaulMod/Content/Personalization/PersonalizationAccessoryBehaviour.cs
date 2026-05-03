@@ -1,4 +1,5 @@
-﻿using OverhaulMod.Engine;
+﻿using OverhaulMod.Content.Personalization.Objects;
+using OverhaulMod.Engine;
 using UnityEngine;
 
 namespace OverhaulMod.Content.Personalization
@@ -9,7 +10,7 @@ namespace OverhaulMod.Content.Personalization
 
         private MechBodyPart _bodyPart;
 
-        private PersonalizationEditorObjectBehaviour _itemObject;
+        private PersonalizationEditorPlacedObject _itemObject;
 
         private PersonalizationAccessoryReferences _references;
 
@@ -34,7 +35,7 @@ namespace OverhaulMod.Content.Personalization
             _isBodyPartActive = bodyPart && bodyPart.gameObject.activeSelf;
         }
 
-        public void SetItemObject(PersonalizationEditorObjectBehaviour objectBehaviour)
+        public void SetItemObject(PersonalizationEditorPlacedObject objectBehaviour)
         {
             _itemObject = objectBehaviour;
         }
@@ -76,7 +77,7 @@ namespace OverhaulMod.Content.Personalization
                 }
                 else if (owner.IsMainPlayer())
                 {
-                    PersonalizationItemInfo itemInfo = _itemObject.ControllerInfo?.ItemInfo;
+                    PersonalizationItemInfo itemInfo = _itemObject.SpawnInfo?.ItemInfo;
                     if (itemInfo != null && itemInfo.BodyPartName == "Head" && CameraManager.EnableFirstPersonMode && !CameraManager.Instance.IsCameraControlledByCutscene && !PhotoManager.Instance.IsInPhotoMode())
                     {
                         _itemObject.SetChildrenActive(false);

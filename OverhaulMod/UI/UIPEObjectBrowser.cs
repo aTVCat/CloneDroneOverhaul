@@ -1,4 +1,5 @@
 ﻿using OverhaulMod.Content.Personalization;
+using OverhaulMod.Content.Personalization.Objects;
 using OverhaulMod.Utils;
 using System;
 using UnityEngine;
@@ -34,15 +35,15 @@ namespace OverhaulMod.UI
 
                 ModdedObject moddedObject = Instantiate(_objectDisplayPrefab, _container);
                 moddedObject.gameObject.SetActive(true);
-                moddedObject.GetObject<Text>(0).text = obj.Name;
-                moddedObject.GetObject<Text>(1).text = LocalizationManager.Instance.GetTranslatedString($"ce_object_{obj.Name}");
+                moddedObject.GetObject<Text>(0).text = obj.DisplayName;
+                moddedObject.GetObject<Text>(1).text = LocalizationManager.Instance.GetTranslatedString($"ce_object_{obj.DisplayName}");
 
                 Button button = moddedObject.GetComponent<Button>();
                 button.onClick.AddListener(delegate
                 {
-                    PersonalizationEditorObjectBehaviour b = PersonalizationEditorObjectManager.Instance.PlaceObject(obj.Path, PersonalizationEditorManager.Instance.EditingRoot.transform, true);
+                    PersonalizationEditorPlacedObject b = PersonalizationEditorObjectManager.Instance.PlaceObject(obj.Path, PersonalizationEditorManager.Instance.EditingRoot.transform, true);
                     b.UniqueIndex = PersonalizationEditorObjectManager.Instance.GetNextUniqueIndex();
-                    b.ControllerInfo = PersonalizationEditorManager.Instance.EditingRoot.ControllerInfo;
+                    b.SpawnInfo = PersonalizationEditorManager.Instance.EditingRoot.SpawnInfo;
                     b.SerializedScale = Vector3.one;
                     PersonalizationEditorObjectManager.Instance.AddInstantiatedObject(b);
                     PersonalizationEditorManager.Instance.SerializeRoot();

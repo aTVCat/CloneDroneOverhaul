@@ -1,4 +1,5 @@
 ﻿using OverhaulMod.Content.Personalization;
+using OverhaulMod.Content.Personalization.Objects;
 using OverhaulMod.Utils;
 using System.Collections.Generic;
 using UnityEngine;
@@ -45,7 +46,7 @@ namespace OverhaulMod.UI
             get => PersonalizationEditorManager.Instance.EditingItemInfo;
         }
 
-        public PersonalizationEditorObjectBehaviour EditingItemRoot
+        public PersonalizationEditorPlacedObject EditingItemRoot
         {
             get => PersonalizationEditorManager.Instance.EditingRoot;
         }

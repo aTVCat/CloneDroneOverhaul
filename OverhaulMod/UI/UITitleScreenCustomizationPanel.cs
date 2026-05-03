@@ -65,8 +65,6 @@ namespace OverhaulMod.UI
 
         public override bool HideTitleScreen => true;
 
-        public override bool EnableUIOverLogoMode => true;
-
         protected override void OnInitialized()
         {
             _ignoreCallbacks = true;

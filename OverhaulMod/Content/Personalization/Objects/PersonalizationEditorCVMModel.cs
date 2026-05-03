@@ -5,49 +5,30 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
-namespace OverhaulMod.Content.Personalization
+namespace OverhaulMod.Content.Personalization.Objects
 {
-    public class PersonalizationEditorObjectCVMModel : PersonalizationEditorObjectComponentBase
+    public class PersonalizationEditorCVMModel : PersonalizationEditorComponent
     {
-        private PersonalizationEditorObjectVisibilityController _visibilityController;
-        public PersonalizationEditorObjectVisibilityController visibilityController
+        private PersonalizationEditorVisibilityToggler _visibilityController;
+        public PersonalizationEditorVisibilityToggler VisibilityController
         {
             get
             {
-                if (!_visibilityController)
-                {
-                    _visibilityController = base.GetComponent<PersonalizationEditorObjectVisibilityController>();
-                }
+                if (!_visibilityController) _visibilityController = base.GetComponent<PersonalizationEditorVisibilityToggler>();
                 return _visibilityController;
             }
         }
 
-        public Dictionary<WeaponVariant2, CVMModelPreset> presets
+        public Dictionary<WeaponVariant2, CVMModelPreset> Presets
         {
-            get
-            {
-                PersonalizationEditorObjectBehaviour ob = objectBehaviour;
-                return ob.GetPropertyValue<Dictionary<WeaponVariant2, CVMModelPreset>>(nameof(presets), null);
-            }
-            set
-            {
-                PersonalizationEditorObjectBehaviour ob = objectBehaviour;
-                ob.SetPropertyValue(nameof(presets), value);
-            }
+            get => GetPropertyValue<Dictionary<WeaponVariant2, CVMModelPreset>>(nameof(PersonalizationEditorCVMModel), nameof(Presets), null);
+            set => SetPropertyValue(nameof(PersonalizationEditorCVMModel), nameof(Presets), value);
         }
 
-        public bool hideIfNoPreset
+        public bool HideIfNoPreset
         {
-            get
-            {
-                PersonalizationEditorObjectBehaviour ob = objectBehaviour;
-                return ob.GetPropertyValue(nameof(hideIfNoPreset), false);
-            }
-            set
-            {
-                PersonalizationEditorObjectBehaviour ob = objectBehaviour;
-                ob.SetPropertyValue(nameof(hideIfNoPreset), value);
-            }
+            get => GetPropertyValue(nameof(PersonalizationEditorCVMModel), nameof(HideIfNoPreset), false);
+            set => SetPropertyValue(nameof(PersonalizationEditorCVMModel), nameof(HideIfNoPreset), value);
         }
 
         private CVMImporter.SaveClass _loadedModel;
@@ -56,8 +37,8 @@ namespace OverhaulMod.Content.Personalization
 
         private void Start()
         {
-            if (presets == null)
-                presets = new Dictionary<WeaponVariant2, CVMModelPreset>();
+            if (Presets == null)
+                Presets = new Dictionary<WeaponVariant2, CVMModelPreset>();
 
             if (PersonalizationEditorManager.IsInEditorMode())
             {
@@ -80,14 +61,14 @@ namespace OverhaulMod.Content.Personalization
 
         public WeaponVariant2 GetUnusedWeaponVariant()
         {
-            WeaponType weaponType = objectBehaviour.ControllerInfo.ItemInfo.Weapon;
-            if (!presets.ContainsKey(WeaponVariant2.Normal))
+            WeaponType weaponType = PlacedObject.SpawnInfo.ItemInfo.Weapon;
+            if (!Presets.ContainsKey(WeaponVariant2.Normal))
                 return WeaponVariant2.Normal;
-            else if (!presets.ContainsKey(WeaponVariant2.OnFire) && weaponType != WeaponType.Bow)
+            else if (!Presets.ContainsKey(WeaponVariant2.OnFire) && weaponType != WeaponType.Bow)
                 return WeaponVariant2.OnFire;
-            else if (!presets.ContainsKey(WeaponVariant2.NormalMultiplayer) && weaponType == WeaponType.Sword)
+            else if (!Presets.ContainsKey(WeaponVariant2.NormalMultiplayer) && weaponType == WeaponType.Sword)
                 return WeaponVariant2.NormalMultiplayer;
-            else if (!presets.ContainsKey(WeaponVariant2.OnFireMultiplayer) && weaponType == WeaponType.Sword)
+            else if (!Presets.ContainsKey(WeaponVariant2.OnFireMultiplayer) && weaponType == WeaponType.Sword)
                 return WeaponVariant2.OnFireMultiplayer;
 
             return WeaponVariant2.None;
@@ -99,20 +80,20 @@ namespace OverhaulMod.Content.Personalization
             {
                 return PersonalizationEditorManager.Instance.PreviewPresetKey;
             }
-            visibilityController.GetWeaponVariant(out WeaponVariant2 showConditions);
+            VisibilityController.GetWeaponVariant(out WeaponVariant2 showConditions);
             return showConditions;
         }
 
         public CVMModelPreset GetCurrentPreset()
         {
             WeaponVariant2 condition = GetActiveWeaponVariant();
-            Dictionary<WeaponVariant2, CVMModelPreset> d = presets;
+            Dictionary<WeaponVariant2, CVMModelPreset> d = Presets;
             if (d == null || d.Count == 0)
                 return null;
 
             if (!d.ContainsKey(condition))
             {
-                if (hideIfNoPreset)
+                if (HideIfNoPreset)
                 {
                     return null;
                 }
@@ -150,7 +131,7 @@ namespace OverhaulMod.Content.Personalization
             }
             else
             {
-                itemInfo = objectBehaviour.ControllerInfo.ItemInfo;
+                itemInfo = PlacedObject.SpawnInfo.ItemInfo;
             }
 
             string path = Path.Combine(itemInfo.RootFolderPath, preset.CvmFilePath);

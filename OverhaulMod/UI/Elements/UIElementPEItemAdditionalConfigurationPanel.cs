@@ -1,8 +1,5 @@
 ﻿using OverhaulMod.Content.Personalization;
-using OverhaulMod.Gameplay;
-using OverhaulMod.Utils;
 using System.Collections.Generic;
-using UnityEngine;
 using UnityEngine.UI;
 
 namespace OverhaulMod.UI

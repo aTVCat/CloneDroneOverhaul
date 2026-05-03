@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json.Linq;
+using OverhaulMod.Content.Personalization.Objects;
 using OverhaulMod.Engine;
 using OverhaulMod.Utils;
 using System;
@@ -114,7 +115,7 @@ namespace OverhaulMod.Content.Personalization
                     _ = Directory.CreateDirectory(filesDirectory);
 
                 string rawData = ModFileUtils.ReadText(infoFilePath);
-                if (personalizationItemMetaData.CustomizationSystemVersion < 1) // meta data files update, renamed OverhaulMod.Content.Personalization.PersonalizationEditorObjectShowConditions to OverhaulMod.Engine.WeaponVariant2
+                if (personalizationItemMetaData.CustomizationSystemVersion < 1) // meta data files update, renamed OverhaulMod.Content.Personalization.PersonalizationEditorObjectShowConditions to OverhaulMod.Engine.WeaponVariant
                 {
                     updateMetaDataFile = true;
                     updateInfoFile = true;
@@ -131,22 +132,35 @@ namespace OverhaulMod.Content.Personalization
                     rawData = rawData.Replace("\"IsNormalMultiplayer\"", "\"NormalMultiplayer\"");
                     rawData = rawData.Replace("\"IsOnFireMultiplayer\"", "\"OnFireMultiplayer\"");
                 }
-                if (personalizationItemMetaData.CustomizationSystemVersion < 3) // renamed WeaponVariant to OverhaulWeaponVariant, because the game has similar enum now
+                if (personalizationItemMetaData.CustomizationSystemVersion < 3) // renamed WeaponVariant to WeaponVariant2, because the game now has enum with the same name
                 {
                     updateMetaDataFile = true;
                     updateInfoFile = true;
 
                     rawData = rawData.Replace("OverhaulMod.Engine.WeaponVariant", "OverhaulMod.Engine.WeaponVariant2");
                 }
-                if (personalizationItemMetaData.CustomizationSystemVersion < 4) // moved root object info to separate file
+                if (personalizationItemMetaData.CustomizationSystemVersion < 4) // moved root object info to a separate file
                 {
                     updateMetaDataFile = true;
                     updateInfoFile = false;
                     serializeInfoFile = true;
 
+                    rawData = rawData.Replace("OverhaulMod.Content.Personalization.PersonalizationEditorObjectInfo", "OverhaulMod.Content.Personalization.Objects.PersonalizationEditorObjectInfo");
                     JObject data = ModJsonUtils.Deserialize<JObject>(rawData);
                     PersonalizationEditorObjectInfo rootObject = data["RootObject"].ToObject<PersonalizationEditorObjectInfo>();
                     fixCastsRecursive(rootObject);
+                    ModJsonUtils.WriteStream(objectsFilePath, rootObject);
+                }
+                if (personalizationItemMetaData.CustomizationSystemVersion < 5) // reworked how properties are stored, renamed classes
+                {
+                    updateMetaDataFile = true;
+                    updateInfoFile = false;
+                    serializeInfoFile = true;
+
+                    string objectsRawData = ModFileUtils.ReadText(objectsFilePath);
+                    objectsRawData = objectsRawData.Replace("OverhaulMod.Content.Personalization.PersonalizationEditorObjectInfo", "OverhaulMod.Content.Personalization.Objects.PersonalizationEditorObjectInfo");
+                    PersonalizationEditorObjectInfo rootObject = ModJsonUtils.Deserialize<PersonalizationEditorObjectInfo>(objectsRawData);
+                    fixPropertiesRecursive(rootObject);
                     ModJsonUtils.WriteStream(objectsFilePath, rootObject);
                 }
                 personalizationItemMetaData.CustomizationSystemVersion = PersonalizationItemMetaData.CurrentCustomizationSystemVersion;
@@ -221,6 +235,48 @@ namespace OverhaulMod.Content.Personalization
                 foreach (PersonalizationEditorObjectInfo child in objectInfo.Children)
                 {
                     fixCastsRecursive(child);
+                }
+            }
+        }
+
+        private void fixPropertiesRecursive(PersonalizationEditorObjectInfo objectInfo)
+        {
+            if (objectInfo.PropertyValues != null && objectInfo.PropertyValues.Count != 0)
+            {
+                foreach (KeyValuePair<string, object> keyValue in new Dictionary<string, object>(objectInfo.PropertyValues))
+                {
+                    // capitalize property names
+                    string key = keyValue.Key;
+                    string newKey = key[0].ToString().ToUpper() + key.Substring(1);
+
+                    // add class names
+                    bool isEnableIfWeaponVariant = newKey == nameof(PersonalizationEditorVisibilityToggler.EnableIfWeaponVariant);
+                    if (isEnableIfWeaponVariant) newKey = "PersonalizationEditorVisibilityToggler." + newKey;
+                    if (objectInfo.Path == "Volume")
+                    {
+                        if (newKey == nameof(PersonalizationEditorVoxModel.VolumeSettingPresets)) newKey = "PersonalizationEditorVoxModel." + newKey;
+                        else if (newKey == nameof(PersonalizationEditorVoxModel.HideIfNoPreset)) newKey = "PersonalizationEditorVoxModel." + newKey;
+                    }
+                    else if (objectInfo.Path == "CvmModel")
+                    {
+                        if (newKey == nameof(PersonalizationEditorCVMModel.Presets)) newKey = "PersonalizationEditorCVMModel." + newKey;
+                        else if (newKey == nameof(PersonalizationEditorCVMModel.HideIfNoPreset)) newKey = "PersonalizationEditorCVMModel." + newKey;
+                    }
+                    else if (objectInfo.Path.StartsWith("FireParticles") && !isEnableIfWeaponVariant)
+                    {
+                        newKey = "PersonalizationEditorFireParticles." + newKey;
+                    }
+
+                    objectInfo.PropertyValues.Remove(key);
+                    objectInfo.PropertyValues.Add(newKey, keyValue.Value);
+                }
+            }
+
+            if (objectInfo.Children != null && objectInfo.Children.Count != 0)
+            {
+                foreach (PersonalizationEditorObjectInfo child in objectInfo.Children)
+                {
+                    fixPropertiesRecursive(child);
                 }
             }
         }

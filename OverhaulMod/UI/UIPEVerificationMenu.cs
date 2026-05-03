@@ -1,4 +1,5 @@
 ﻿using OverhaulMod.Content.Personalization;
+using OverhaulMod.Content.Personalization.Objects;
 using OverhaulMod.Engine;
 using OverhaulMod.Utils;
 using System.Collections.Generic;
@@ -51,7 +52,7 @@ namespace OverhaulMod.UI
 
         private PersonalizationItemInfo _itemInfo;
 
-        private PersonalizationEditorObjectBehaviour _itemRootObject;
+        private PersonalizationEditorPlacedObject _itemRootObject;
 
         public override void Show()
         {
@@ -88,7 +89,7 @@ namespace OverhaulMod.UI
             }
         }
 
-        private void updateWeaponSkinCompletion(PersonalizationEditorObjectBehaviour rootObject)
+        private void updateWeaponSkinCompletion(PersonalizationEditorPlacedObject rootObject)
         {
             string bgColor = ALL_WEAPON_VARIANTS_PRESENT_COLOR;
 
@@ -131,7 +132,7 @@ namespace OverhaulMod.UI
             _weaponSkinTaskListBG.color = ModParseUtils.TryParseColor(bgColor, Color.gray);
         }
 
-        private void updateAccessoryCompletion(PersonalizationEditorObjectBehaviour rootObject)
+        private void updateAccessoryCompletion(PersonalizationEditorPlacedObject rootObject)
         {
             _currentItemIsFullyIncomplete = false;
             _currentItemIsNotFullyCompleted = false;

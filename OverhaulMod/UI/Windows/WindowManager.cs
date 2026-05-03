@@ -46,8 +46,9 @@ namespace OverhaulMod.UI.Windows
             moddedObject.gameObject.name = title;
             WindowBehaviour windowBehaviour = moddedObject.gameObject.AddComponent<WindowBehaviour>();
             windowBehaviour.InitializeAsElement();
-            windowBehaviour.SetPivot(rectSettings.Pivot);
-            windowBehaviour.SetRect(rectToSet);
+            windowBehaviour.SetPivot(new Vector2(0f, 1f));
+            windowBehaviour.SetRect(rectToSet, rectSettings.Scale, rectSettings.HorizontalAnchor);
+            windowBehaviour.SetScale(rectSettings.Scale);
             windowBehaviour.SetTitle(title);
             windowBehaviour.SetContents(content);
             windowBehaviour.Handle = windowHandle;

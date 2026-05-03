@@ -7,7 +7,6 @@ using OverhaulMod.Gameplay;
 using OverhaulMod.Patches.Behaviours;
 using OverhaulMod.Utils;
 using OverhaulMod.Visuals;
-using OverhaulMod.Visuals.Environment;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -683,13 +682,6 @@ namespace OverhaulMod.UI
             _ = pageBuilder.Toggle(ModSettingIDs.ENABLE_LIGHTING_TRANSITION, "Lighting transitions");
             _ = pageBuilder.Header4("The lighting changes smoothly as level switches");
             _ = pageBuilder.Toggle(ModSettingIDs.ENABLE_FLOATING_DUST, "Floating dust");
-
-            if (ModFeatures.IsEnabled(ModFeatures.FeatureType.WeatherSystem))
-            {
-                _ = pageBuilder.Toggle(ModSettingIDs.ENABLE_WEATHER, "Enable weather");
-                _ = pageBuilder.Header3("Force weather type");
-                _ = pageBuilder.Dropdown(WeatherManager.Instance.GetTranslatedWeatherOptions(), ModSettingIDs.FORCE_WEATHER_TYPE);
-            }
 
             _ = pageBuilder.Header1("Garbage");
             _ = pageBuilder.Dropdown(settingsMenu.GarbageSettingsDropdown.options, settingsMenu.GarbageSettingsDropdown.value, OnGarbageSettingsChanged);

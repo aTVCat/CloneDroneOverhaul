@@ -23,8 +23,6 @@ namespace OverhaulMod.UI
 
         public virtual bool EnableCursor => false;
 
-        public virtual bool EnableUIOverLogoMode => false;
-
         public virtual bool HideTitleScreen => false;
 
         public virtual bool RefreshOnlyCursor => false;

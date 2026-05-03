@@ -152,7 +152,7 @@ namespace OverhaulMod.Content
                     {
                         if (!download.Addon.IsSupported())
                         {
-                            if(callback != null) callback($"This addon requires new Overhaul mod version: {download.Addon.MinModVersion.ToStringRevision()}");
+                            if (callback != null) callback($"This addon requires new Overhaul mod version: {download.Addon.MinModVersion.ToStringRevision()}");
                             return;
                         }
 

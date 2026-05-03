@@ -1,4 +1,5 @@
-﻿using OverhaulMod.Engine;
+﻿using OverhaulMod.Content.Personalization.Objects;
+using OverhaulMod.Engine;
 using OverhaulMod.Gameplay;
 using OverhaulMod.UI;
 using OverhaulMod.Utils;
@@ -66,7 +67,7 @@ namespace OverhaulMod.Content.Personalization
             set;
         }
 
-        public PersonalizationEditorObjectBehaviour EditingRoot
+        public PersonalizationEditorPlacedObject EditingRoot
         {
             get;
             set;

@@ -1,4 +1,5 @@
-﻿using OverhaulMod.Engine;
+﻿using OverhaulMod.Content.Personalization.Objects;
+using OverhaulMod.Engine;
 using OverhaulMod.Gameplay;
 using OverhaulMod.Utils;
 using System;
@@ -8,13 +9,13 @@ namespace OverhaulMod.Content.Personalization
 {
     public class PersonalizationItemVerificationManager : Singleton<PersonalizationItemVerificationManager>
     {
-        public bool DoesWeaponSkinSupportWeaponVariant(PersonalizationEditorObjectBehaviour root, WeaponVariant2 weaponVariant, out bool weaponDoesHaveThisVariant)
+        public bool DoesWeaponSkinSupportWeaponVariant(PersonalizationEditorPlacedObject root, WeaponVariant2 weaponVariant, out bool weaponDoesHaveThisVariant)
         {
             weaponDoesHaveThisVariant = false;
             if (!root)
                 return false;
 
-            switch (root.ControllerInfo.ItemInfo.Weapon)
+            switch (root.SpawnInfo.ItemInfo.Weapon)
             {
                 case WeaponType.Sword:
                     weaponDoesHaveThisVariant = true;
@@ -29,34 +30,34 @@ namespace OverhaulMod.Content.Personalization
                     break;
             }
 
-            PersonalizationEditorObjectCVMModel[] cvmModels = root.GetComponentsInChildren<PersonalizationEditorObjectCVMModel>(true);
-            foreach (PersonalizationEditorObjectCVMModel cvmModel in cvmModels)
+            PersonalizationEditorCVMModel[] cvmModels = root.GetComponentsInChildren<PersonalizationEditorCVMModel>(true);
+            foreach (PersonalizationEditorCVMModel cvmModel in cvmModels)
             {
-                System.Collections.Generic.Dictionary<WeaponVariant2, CVMModelPreset> d = cvmModel.presets;
+                System.Collections.Generic.Dictionary<WeaponVariant2, CVMModelPreset> d = cvmModel.Presets;
                 if (d.IsNullOrEmpty())
                     continue;
 
                 if (d.ContainsKey(weaponVariant))
                 {
                     CVMModelPreset cvmModelPreset = d[weaponVariant];
-                    if (cvmModelPreset != null && !cvmModelPreset.CvmFilePath.IsNullOrEmpty() && File.Exists(Path.Combine(root.ControllerInfo.ItemInfo.RootFolderPath, cvmModelPreset.CvmFilePath)))
+                    if (cvmModelPreset != null && !cvmModelPreset.CvmFilePath.IsNullOrEmpty() && File.Exists(Path.Combine(root.SpawnInfo.ItemInfo.RootFolderPath, cvmModelPreset.CvmFilePath)))
                     {
                         return true;
                     }
                 }
             }
 
-            PersonalizationEditorObjectVolume[] volumes = root.GetComponentsInChildren<PersonalizationEditorObjectVolume>(true);
-            foreach (PersonalizationEditorObjectVolume volume in volumes)
+            PersonalizationEditorVoxModel[] volumes = root.GetComponentsInChildren<PersonalizationEditorVoxModel>(true);
+            foreach (PersonalizationEditorVoxModel volume in volumes)
             {
-                System.Collections.Generic.Dictionary<WeaponVariant2, VolumeSettingsPreset> d = volume.volumeSettingPresets;
+                System.Collections.Generic.Dictionary<WeaponVariant2, VolumeSettingsPreset> d = volume.VolumeSettingPresets;
                 if (d.IsNullOrEmpty())
                     continue;
 
                 if (d.ContainsKey(weaponVariant))
                 {
                     VolumeSettingsPreset volumeSettingsPreset = d[weaponVariant];
-                    if (volumeSettingsPreset != null && !volumeSettingsPreset.VoxFilePath.IsNullOrEmpty() && File.Exists(Path.Combine(root.ControllerInfo.ItemInfo.RootFolderPath, volumeSettingsPreset.VoxFilePath)))
+                    if (volumeSettingsPreset != null && !volumeSettingsPreset.VoxFilePath.IsNullOrEmpty() && File.Exists(Path.Combine(root.SpawnInfo.ItemInfo.RootFolderPath, volumeSettingsPreset.VoxFilePath)))
                     {
                         return true;
                     }

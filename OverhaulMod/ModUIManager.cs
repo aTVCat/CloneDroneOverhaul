@@ -6,7 +6,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace OverhaulMod
 {
@@ -251,7 +250,6 @@ namespace OverhaulMod
             ModCache.UIRoot.RefreshCursorEnabled();
             if (!refreshOnlyCursor)
             {
-                ModCache.UIRoot.SetUIOverLogoModeEnabled(ShouldEnableUIOverLogoMode());
                 ModCache.TitleScreenUI.setLogoAndRootButtonsVisible(GameModeManager.IsOnTitleScreen() && !ShouldHideTitleScreen());
             }
         }
@@ -281,20 +279,6 @@ namespace OverhaulMod
 
                 OverhaulUIBehaviour behaviour = gameObject.GetComponent<OverhaulUIBehaviour>();
                 if (behaviour && !behaviour.IsElement && behaviour.EnableCursor)
-                    return true;
-            }
-            return false;
-        }
-
-        public bool ShouldEnableUIOverLogoMode()
-        {
-            foreach (GameObject gameObject in _instantiatedUIs.Values)
-            {
-                if (!gameObject || !gameObject.activeInHierarchy)
-                    continue;
-
-                OverhaulUIBehaviour behaviour = gameObject.GetComponent<OverhaulUIBehaviour>();
-                if (behaviour && !behaviour.IsElement && behaviour.EnableUIOverLogoMode)
                     return true;
             }
             return false;

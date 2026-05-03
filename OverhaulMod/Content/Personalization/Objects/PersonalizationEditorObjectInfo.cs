@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace OverhaulMod.Content.Personalization
+namespace OverhaulMod.Content.Personalization.Objects
 {
     public class PersonalizationEditorObjectInfo
     {
@@ -10,11 +10,11 @@ namespace OverhaulMod.Content.Personalization
 
         public string Name, Path;
 
+        public int UniqueIndex;
+
         public List<PersonalizationEditorObjectInfo> Children;
 
         public Dictionary<string, object> PropertyValues;
-
-        public int UniqueIndex;
 
         public void InitializeTransformArrays()
         {
@@ -62,7 +62,7 @@ namespace OverhaulMod.Content.Personalization
             return Mathf.Round(value * 1000f) / 1000f;
         }
 
-        public PersonalizationEditorObjectBehaviour Deserialize(Transform parent, ItemSpawnInfo spawnInfo)
+        public PersonalizationEditorPlacedObject Deserialize(Transform parent, ItemSpawnInfo spawnInfo)
         {
             PersonalizationEditorObjectManager objectManager = PersonalizationEditorObjectManager.Instance;
             if (objectManager.GetObjectInfo(Path) == null)
@@ -74,9 +74,9 @@ namespace OverhaulMod.Content.Personalization
                 parent = gameObject.transform;
             }
 
-            PersonalizationEditorObjectBehaviour behaviour = objectManager.PlaceObject(Path, parent, false);
+            PersonalizationEditorPlacedObject behaviour = objectManager.PlaceObject(Path, parent, false);
             behaviour.UniqueIndex = UniqueIndex;
-            behaviour.ControllerInfo = spawnInfo;
+            behaviour.SpawnInfo = spawnInfo;
             behaviour.Name = Name;
             behaviour.PropertyValues = PropertyValues;
             behaviour.SerializedScale = GetScale();

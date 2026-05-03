@@ -7,21 +7,18 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
-namespace OverhaulMod.Content.Personalization
+namespace OverhaulMod.Content.Personalization.Objects
 {
-    public class PersonalizationEditorObjectVolume : PersonalizationEditorObjectComponentBase
+    public class PersonalizationEditorVoxModel : PersonalizationEditorComponent
     {
         public static readonly MeshingMode VolumeMeshingMode = MeshingMode.Culled;
 
-        private PersonalizationEditorObjectVisibilityController _visibilityController;
-        public PersonalizationEditorObjectVisibilityController visibilityController
+        private PersonalizationEditorVisibilityToggler _visibilityController;
+        public PersonalizationEditorVisibilityToggler VisibilityController
         {
             get
             {
-                if (!_visibilityController)
-                {
-                    _visibilityController = base.GetComponent<PersonalizationEditorObjectVisibilityController>();
-                }
+                if (!_visibilityController) _visibilityController = base.GetComponent<PersonalizationEditorVisibilityToggler>();
                 return _visibilityController;
             }
         }
@@ -31,40 +28,21 @@ namespace OverhaulMod.Content.Personalization
         {
             get
             {
-                if (!_volume)
-                {
-                    _volume = base.GetComponent<Volume>();
-                }
+                if (!_volume) _volume = base.GetComponent<Volume>();
                 return _volume;
             }
         }
 
-        public Dictionary<WeaponVariant2, VolumeSettingsPreset> volumeSettingPresets
+        public Dictionary<WeaponVariant2, VolumeSettingsPreset> VolumeSettingPresets
         {
-            get
-            {
-                PersonalizationEditorObjectBehaviour ob = objectBehaviour;
-                return ob.GetPropertyValue<Dictionary<WeaponVariant2, VolumeSettingsPreset>>(nameof(volumeSettingPresets), null);
-            }
-            set
-            {
-                PersonalizationEditorObjectBehaviour ob = objectBehaviour;
-                ob.SetPropertyValue(nameof(volumeSettingPresets), value);
-            }
+            get => GetPropertyValue<Dictionary<WeaponVariant2, VolumeSettingsPreset>>(nameof(PersonalizationEditorVoxModel), nameof(VolumeSettingPresets), null);
+            set => SetPropertyValue(nameof(PersonalizationEditorVoxModel), nameof(VolumeSettingPresets), value);
         }
 
-        public bool hideIfNoPreset
+        public bool HideIfNoPreset
         {
-            get
-            {
-                PersonalizationEditorObjectBehaviour ob = objectBehaviour;
-                return ob.GetPropertyValue(nameof(hideIfNoPreset), false);
-            }
-            set
-            {
-                PersonalizationEditorObjectBehaviour ob = objectBehaviour;
-                ob.SetPropertyValue(nameof(hideIfNoPreset), value);
-            }
+            get => GetPropertyValue(nameof(PersonalizationEditorVoxModel), nameof(HideIfNoPreset), false);
+            set => SetPropertyValue(nameof(PersonalizationEditorVoxModel), nameof(HideIfNoPreset), value);
         }
 
         private List<ColorPairFloat> _currentColorReplacement;
@@ -79,11 +57,11 @@ namespace OverhaulMod.Content.Personalization
         {
             _hasStarted = true;
 
-            if (volumeSettingPresets == null)
-                volumeSettingPresets = new Dictionary<WeaponVariant2, VolumeSettingsPreset>();
+            if (VolumeSettingPresets == null)
+                VolumeSettingPresets = new Dictionary<WeaponVariant2, VolumeSettingsPreset>();
             else
             {
-                foreach (VolumeSettingsPreset value in volumeSettingPresets.Values)
+                foreach (VolumeSettingsPreset value in VolumeSettingPresets.Values)
                     if (value.ReplaceWithFavoriteColors == null)
                         value.ReplaceWithFavoriteColors = new Dictionary<string, FavoriteColorSettings>();
             }
@@ -110,14 +88,14 @@ namespace OverhaulMod.Content.Personalization
 
         public WeaponVariant2 GetUnusedWeaponVariant()
         {
-            WeaponType weaponType = objectBehaviour.ControllerInfo.ItemInfo.Weapon;
-            if (!volumeSettingPresets.ContainsKey(WeaponVariant2.Normal))
+            WeaponType weaponType = PlacedObject.SpawnInfo.ItemInfo.Weapon;
+            if (!VolumeSettingPresets.ContainsKey(WeaponVariant2.Normal))
                 return WeaponVariant2.Normal;
-            else if (!volumeSettingPresets.ContainsKey(WeaponVariant2.OnFire) && weaponType != WeaponType.Bow)
+            else if (!VolumeSettingPresets.ContainsKey(WeaponVariant2.OnFire) && weaponType != WeaponType.Bow)
                 return WeaponVariant2.OnFire;
-            else if (!volumeSettingPresets.ContainsKey(WeaponVariant2.NormalMultiplayer) && weaponType == WeaponType.Sword)
+            else if (!VolumeSettingPresets.ContainsKey(WeaponVariant2.NormalMultiplayer) && weaponType == WeaponType.Sword)
                 return WeaponVariant2.NormalMultiplayer;
-            else if (!volumeSettingPresets.ContainsKey(WeaponVariant2.OnFireMultiplayer) && weaponType == WeaponType.Sword)
+            else if (!VolumeSettingPresets.ContainsKey(WeaponVariant2.OnFireMultiplayer) && weaponType == WeaponType.Sword)
                 return WeaponVariant2.OnFireMultiplayer;
 
             return WeaponVariant2.None;
@@ -129,20 +107,20 @@ namespace OverhaulMod.Content.Personalization
             {
                 return PersonalizationEditorManager.Instance.PreviewPresetKey;
             }
-            visibilityController.GetWeaponVariant(out WeaponVariant2 showConditions);
+            VisibilityController.GetWeaponVariant(out WeaponVariant2 showConditions);
             return showConditions;
         }
 
         public VolumeSettingsPreset GetCurrentPreset()
         {
             WeaponVariant2 condition = GetActiveWeaponVariant();
-            Dictionary<WeaponVariant2, VolumeSettingsPreset> d = volumeSettingPresets;
+            Dictionary<WeaponVariant2, VolumeSettingsPreset> d = VolumeSettingPresets;
             if (d == null || d.Count == 0)
                 return null;
 
             if (!d.ContainsKey(condition))
             {
-                if (hideIfNoPreset)
+                if (HideIfNoPreset)
                 {
                     return null;
                 }
@@ -169,7 +147,7 @@ namespace OverhaulMod.Content.Personalization
 
         private IEnumerator refreshVolumeCoroutine() // this fixes weird crash
         {
-            while (!_isDestroyed && !PersonalizationEditorManager.IsInEditorMode() && (!objectBehaviour || objectBehaviour.ControllerInfo == null))
+            while (!_isDestroyed && !PersonalizationEditorManager.IsInEditorMode() && (!PlacedObject || PlacedObject.SpawnInfo == null))
                 yield return null;
 
             if (_isDestroyed)
@@ -207,7 +185,7 @@ namespace OverhaulMod.Content.Personalization
             if (preset == null)
             {
                 volumeComponent.GenerateBasic(FillMode.None);
-                base.transform.localScale = objectBehaviour.SerializedScale;
+                base.transform.localScale = PlacedObject.SerializedScale;
                 return;
             }
 
@@ -224,7 +202,7 @@ namespace OverhaulMod.Content.Personalization
             }
             else
             {
-                itemInfo = objectBehaviour.ControllerInfo.ItemInfo;
+                itemInfo = PlacedObject.SpawnInfo.ItemInfo;
             }
 
             string path = Path.Combine(itemInfo.RootFolderPath, voxFilePath);
@@ -235,7 +213,7 @@ namespace OverhaulMod.Content.Personalization
                 if (!File.Exists(path))
                 {
                     volumeComponent.GenerateBasic(FillMode.None);
-                    base.transform.localScale = objectBehaviour.SerializedScale;
+                    base.transform.localScale = PlacedObject.SerializedScale;
                     return;
                 }
                 else
@@ -292,13 +270,13 @@ namespace OverhaulMod.Content.Personalization
                 }
             }
 
-            base.transform.localScale = objectBehaviour.SerializedScale;
+            base.transform.localScale = PlacedObject.SerializedScale;
         }
 
         public void ReplaceColors(List<ColorPairFloat> colors, VolumeSettingsPreset preset)
         {
             _currentColorReplacement = colors;
-            Color favoriteColor = objectBehaviour.ControllerInfo == null ? UIPE.Instance.Utilities.GetFavoriteColor() : objectBehaviour.ControllerInfo.GetFavoriteColor();
+            Color favoriteColor = PlacedObject.SpawnInfo == null ? UIPE.Instance.Utilities.GetFavoriteColor() : PlacedObject.SpawnInfo.GetFavoriteColor();
 
             foreach (ColorPairFloat cp in colors)
             {
@@ -330,7 +308,7 @@ namespace OverhaulMod.Content.Personalization
                 return;
             }
 
-            Color favoriteColor = objectBehaviour.ControllerInfo == null ? UIPE.Instance.Utilities.GetFavoriteColor() : objectBehaviour.ControllerInfo.GetFavoriteColor();
+            Color favoriteColor = PlacedObject.SpawnInfo == null ? UIPE.Instance.Utilities.GetFavoriteColor() : PlacedObject.SpawnInfo.GetFavoriteColor();
 
             for (int i = 0; i < colors.Count; i++)
             {

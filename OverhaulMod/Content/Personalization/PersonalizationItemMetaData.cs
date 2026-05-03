@@ -2,7 +2,7 @@
 {
     public class PersonalizationItemMetaData
     {
-        public static readonly int CurrentCustomizationSystemVersion = 4;
+        public static readonly int CurrentCustomizationSystemVersion = 5;
 
         public int CustomizationSystemVersion;
     }

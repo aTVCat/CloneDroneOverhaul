@@ -213,6 +213,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Content\Personalization\Objects\PersonalizationEditorRotator.cs" />
     <Compile Include="Gameplay\CharacterExtension.cs" />
     <Compile Include="Gameplay\ModCharacterManager.cs" />
     <Compile Include="Gameplay\Weapons\ModSwordBlockArea.cs" />
@@ -227,7 +228,6 @@
     <Compile Include="Content\OperationResult.cs" />
     <Compile Include="Content\ExclusivePerkColor.cs" />
     <Compile Include="Content\GoogleDriveManager.cs" />
-    <Compile Include="Content\LevelEditor\LevelEditorWeatherSettingsOverride.cs" />
     <Compile Include="Content\MagicaVoxelImporter.cs" />
     <Compile Include="Content\Personalization\BowPartType.cs" />
     <Compile Include="Content\Personalization\CVMImporter.cs" />
@@ -247,12 +247,12 @@
     <Compile Include="Content\Personalization\PersonalizationEditorGuideManager.cs" />
     <Compile Include="Content\Personalization\PersonalizationEditorGuideStage.cs" />
     <Compile Include="Content\Personalization\PersonalizationEditorManager.cs" />
-    <Compile Include="Content\Personalization\PersonalizationEditorObjectArrowSpawnPoint.cs" />
-    <Compile Include="Content\Personalization\PersonalizationEditorObjectBehaviour.cs" />
-    <Compile Include="Content\Personalization\PersonalizationEditorObjectComponentBase.cs" />
-    <Compile Include="Content\Personalization\PersonalizationEditorObjectCVMModel.cs" />
-    <Compile Include="Content\Personalization\PersonalizationEditorObjectFireParticles.cs" />
-    <Compile Include="Content\Personalization\PersonalizationEditorObjectInfo.cs" />
+    <Compile Include="Content\Personalization\Objects\PersonalizationEditorArrowSpawnPoint.cs" />
+    <Compile Include="Content\Personalization\Objects\PersonalizationEditorPlacedObject.cs" />
+    <Compile Include="Content\Personalization\Objects\PersonalizationEditorComponent.cs" />
+    <Compile Include="Content\Personalization\Objects\PersonalizationEditorCVMModel.cs" />
+    <Compile Include="Content\Personalization\Objects\PersonalizationEditorFireParticles.cs" />
+    <Compile Include="Content\Personalization\Objects\PersonalizationEditorObjectInfo.cs" />
     <Compile Include="Content\Personalization\PersonalizationEditorScreenshotCameraAngle.cs" />
     <Compile Include="Content\Personalization\PersonalizationEditorScreenshotCameraAnglesInfo.cs" />
     <Compile Include="Content\Personalization\PersonalizationEditorScreenshotManager.cs" />
@@ -290,10 +290,10 @@
     <Compile Include="Engine\ScheduledActionsManager.cs" />
     <Compile Include="Engine\ScheduledActionType.cs" />
     <Compile Include="Engine\WeaponVariant2.cs" />
-    <Compile Include="Content\Personalization\PersonalizationEditorObjectVisibilityController.cs" />
-    <Compile Include="Content\Personalization\PersonalizationEditorObjectSpawnInfo.cs" />
-    <Compile Include="Content\Personalization\PersonalizationEditorObjectManager.cs" />
-    <Compile Include="Content\Personalization\PersonalizationEditorObjectVolume.cs" />
+    <Compile Include="Content\Personalization\Objects\PersonalizationEditorVisibilityToggler.cs" />
+    <Compile Include="Content\Personalization\Objects\PersonalizationEditorObjectSpawnInfo.cs" />
+    <Compile Include="Content\Personalization\Objects\PersonalizationEditorObjectManager.cs" />
+    <Compile Include="Content\Personalization\Objects\PersonalizationEditorVoxModel.cs" />
     <Compile Include="Content\Personalization\PersonalizationUserInfo.cs" />
     <Compile Include="Content\Personalization\PersonalizationItemInfo.cs" />
     <Compile Include="Content\Personalization\PersonalizationItemList.cs" />
@@ -632,8 +632,6 @@
     <Compile Include="Visuals\ReplacedParticles.cs" />
     <Compile Include="Visuals\Environment\FloatingDustManager.cs" />
     <Compile Include="Visuals\SeveredBodyPartSparks.cs" />
-    <Compile Include="Visuals\Environment\WeatherInfo.cs" />
-    <Compile Include="Visuals\Environment\WeatherManager.cs" />
     <Compile Include="Visuals\FPSManager.cs" />
     <Compile Include="Visuals\ImageEffects\OverhaulAntialiasingMode.cs" />
     <Compile Include="Visuals\ImageEffects\OverhaulChromaticAberration.cs" />

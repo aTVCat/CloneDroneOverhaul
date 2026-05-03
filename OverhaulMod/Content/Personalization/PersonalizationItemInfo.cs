@@ -1,4 +1,5 @@
-﻿using OverhaulMod.Utils;
+﻿using OverhaulMod.Content.Personalization.Objects;
+using OverhaulMod.Utils;
 using Steamworks;
 using System;
 using System.Collections.Generic;
