@@ -1,7 +1,8 @@
 ﻿using OverhaulMod.Utils;
-using System;
+using System.Collections;
 using System.IO;
 using UnityEngine;
+using UnityEngine.Networking;
 using UnityEngine.UI;
 
 namespace OverhaulMod.UI
@@ -9,15 +10,17 @@ namespace OverhaulMod.UI
     public class UIElementGalleryImage : OverhaulUIBehaviour
     {
         [UIElement("Title")]
-        public Text _titleText;
+        public Text m_titleText;
 
         [UIElement("Description")]
-        public Text _descriptionText;
+        public Text m_descriptionText;
 
         [UIElement("Image")]
-        public RawImage _image;
+        public RawImage m_image;
 
-        private Texture2D _texture;
+        private Texture2D m_texture;
+
+        private UnityWebRequest m_request;
 
         public string filePath
         {
@@ -33,14 +36,24 @@ namespace OverhaulMod.UI
             Button button = base.GetComponent<Button>();
             button.onClick.AddListener(delegate
             {
-                ModUIUtils.ImageViewer(_texture, ModCache.UIRoot.transform);
+                ModUIUtils.ImageViewer(m_texture, ModCache.UIRoot.transform);
             });
         }
 
         public override void OnDestroy()
         {
-            if (_texture)
-                Destroy(_texture);
+            if (m_request != null)
+            {
+                try
+                {
+                    m_request.Abort();
+                }
+                catch { }
+                m_request = null;
+            }
+
+            if (m_texture)
+                Destroy(m_texture);
         }
 
         public void GetDescription()
@@ -125,27 +138,39 @@ namespace OverhaulMod.UI
             displayName = LocalizationManager.Instance.GetTranslatedString($"{translationKey}_name");
             string description = LocalizationManager.Instance.GetTranslatedString($"{translationKey}_description");
 
-            _titleText.text = displayName;
-            _descriptionText.text = description;
+            m_titleText.text = displayName;
+            m_descriptionText.text = description;
         }
 
         public void GetImage()
         {
-            byte[] bytes;
-            try
-            {
-                bytes = ModFileUtils.ReadBytes(filePath);
-            }
-            catch (Exception)
-            {
-                base.gameObject.SetActive(false);
-                return;
-            }
+            loadImageCoroutine(filePath).Run();
+        }
 
-            Texture2D texture = new Texture2D(1, 1);
-            texture.Apply();
-            _texture = texture;
-            _image.texture = texture;
+        private IEnumerator loadImageCoroutine(string path)
+        {
+            m_image.enabled = false;
+            using (UnityWebRequest unityWebRequest = UnityWebRequestTexture.GetTexture($"file://{path}"))
+            {
+                m_request = unityWebRequest;
+                yield return unityWebRequest.SendWebRequest();
+                m_request = null;
+                if (unityWebRequest.result == UnityWebRequest.Result.Success)
+                {
+                    Texture2D texture = (unityWebRequest.downloadHandler as DownloadHandlerTexture).texture;
+
+                    if (!m_image)
+                    {
+                        Destroy(texture);
+                        yield break;
+                    }
+
+                    m_texture = texture;
+                    m_image.texture = texture;
+                    m_image.enabled = true;
+                }
+            }
+            yield break;
         }
     }
 }

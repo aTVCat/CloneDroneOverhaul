@@ -7,6 +7,8 @@ using OverhaulMod.UI;
 using OverhaulMod.Utils;
 using OverhaulMod.Visuals;
 using OverhaulMod.Visuals.Environment;
+using System.IO;
+using System.Reflection;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -22,6 +24,8 @@ namespace OverhaulMod
                 ModManagers.Instance.TriggerModLoadedEvent();
                 return;
             }
+
+            Assembly.Load(AssemblyName.GetAssemblyName(Path.Combine(ModCore.Folder, "DiscordWebhook.dll")));
 
             createDirectories();
             loadGameUIThemeData();
