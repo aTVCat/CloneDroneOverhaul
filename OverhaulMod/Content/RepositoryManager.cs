@@ -106,7 +106,7 @@ namespace OverhaulMod.Content
 
             try
             {
-                if (!webRequest.isNetworkError && !webRequest.isHttpError)
+                if (webRequest.result == UnityWebRequest.Result.Success)
                 {
                     if (doneCallback != null)
                     {
@@ -136,7 +136,7 @@ namespace OverhaulMod.Content
 
             try
             {
-                if (!webRequest.isNetworkError && !webRequest.isHttpError)
+                if (webRequest.result == UnityWebRequest.Result.Success)
                 {
                     if (cache)
                     {
