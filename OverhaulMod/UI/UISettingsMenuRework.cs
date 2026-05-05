@@ -1056,7 +1056,7 @@ namespace OverhaulMod.UI
                 ModCache.gameUIRoot.ControlMapper.Open();
                 ModUIManager.Instance.InvokeActionInsteadOfHidingCustomUI(delegate
                 {
-                    _ = ModCache.gameUIRoot.ControlMapper.Close(true);
+                    ModCache.gameUIRoot.ControlMapper.Close(true);
                 });
             });
 

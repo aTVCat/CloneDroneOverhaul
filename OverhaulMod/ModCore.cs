@@ -219,9 +219,6 @@ namespace OverhaulMod
             instance = this;
             GlobalEventManager.Instance.AddEventListenerOnce(GlobalEvents.GameInitializtionCompleted, onGameInitialized);
             ModLoader.Load();
-
-            TVCat.Launcher.Launcher.LoadAssembly(this, "TVCat.CloneDrone.dll");
-            TVCat.Launcher.Launcher.AddModsLoadedEventListener(ModLoader.AddLevelObjectListeners);
         }
 
         public override void OnModEnabled()
@@ -269,7 +266,6 @@ namespace OverhaulMod
             ModSpecialUtils.SetTitleBarStateDependingOnSettings();
 
             GamePatchBehaviour.Unload();
-            ModLoader.RemoveLevelObjectListeners();
             ModLoader.Unload();
         }
 
@@ -293,11 +289,6 @@ namespace OverhaulMod
             PersonalizationMultiplayerManager.Instance.OnEvent(moddedEvent);
         }
 
-        public override UnityEngine.Object OnResourcesLoad(string path)
-        {
-            return LevelEditorPatch.Patch.GetResourceObject(path);
-        }
-
         public override void OnFirstPersonMoverSpawned(FirstPersonMover firstPersonMover)
         {
             _ = ModActionUtils.RunCoroutine(waitUntilCharacterModelInitialization(firstPersonMover));
@@ -305,7 +296,7 @@ namespace OverhaulMod
 
         public override void OnUpgradesRefreshed(FirstPersonMover owner, UpgradeCollection upgrades)
         {
-            owner.addWeaponToEquipppedIfHasUpgradeAndModelPresent(ModUpgradesManager.SCYTHE_UNLOCK_UPGRADE, ModWeaponsManager.SCYTHE_TYPE);
+            owner.AddWeaponToEquipppedIfHasUpgradeAndModelPresent(ModUpgradesManager.SCYTHE_UNLOCK_UPGRADE, ModWeaponsManager.SCYTHE_TYPE);
             owner.RefreshModWeaponModels();
 
             CharacterExtension robotInventory = ModComponentCache.GetRobotInventory(owner.transform);

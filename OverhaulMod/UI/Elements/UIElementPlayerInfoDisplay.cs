@@ -87,7 +87,7 @@ namespace OverhaulMod.UI
                 m_webRequest = unityWebRequest;
                 yield return unityWebRequest.SendWebRequest();
                 m_webRequest = null;
-                if (!unityWebRequest.isHttpError && !unityWebRequest.isNetworkError && unityWebRequest.isDone)
+                if (unityWebRequest.result == UnityWebRequest.Result.Success)
                 {
                     Texture2D texture = (unityWebRequest.downloadHandler as DownloadHandlerTexture).texture;
                     m_texture = texture;

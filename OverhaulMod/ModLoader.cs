@@ -1,7 +1,5 @@
-﻿using LevelEditorPatch;
-using OverhaulMod.Combat;
+﻿using OverhaulMod.Combat;
 using OverhaulMod.Content;
-using OverhaulMod.Content.LevelEditor;
 using OverhaulMod.Content.Personalization;
 using OverhaulMod.Engine;
 using OverhaulMod.Patches.Behaviours;
@@ -10,6 +8,7 @@ using OverhaulMod.Visuals;
 using OverhaulMod.Visuals.Environment;
 using System;
 using System.IO;
+using System.Reflection;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -17,10 +16,6 @@ namespace OverhaulMod
 {
     public static class ModLoader
     {
-        private static bool s_hasAddedObjects;
-
-        private static bool s_hasInitializedTVCatLibrary;
-
         public static void Load()
         {
             if (!HasToLoad())
@@ -45,7 +40,6 @@ namespace OverhaulMod
             ModManagers.Instance.TriggerModLoadedEvent();
 
             loadMiscellaneousAssets();
-            addLevelEditorObjects();
             addListeners();
 
             QualitySettings.softParticles = true;
@@ -128,7 +122,7 @@ namespace OverhaulMod
 
         private static void loadAssemblies()
         {
-            LevelEditorPatch.Patch.Apply();
+            Assembly.Load(AssemblyName.GetAssemblyName(Path.Combine(ModCore.folder, "DiscordWebhook.dll")));
             ModIntegrationUtils.Load();
         }
 
@@ -136,47 +130,6 @@ namespace OverhaulMod
         {
             ModConstants.CursorSkinOptions[1].image = ModUnityUtils.ToSprite(ModResources.Texture2D(AssetBundleConstants.UI, "Cursor"));
             ModConstants.CursorSkinOptions[2].image = ModUnityUtils.ToSprite(ModResources.Texture2D(AssetBundleConstants.UI, "Cursor2"));
-        }
-
-        private static void addLevelEditorObjects()
-        {
-            if (!s_hasAddedObjects)
-            {
-                Patch.AddObject("WeatherSettingsOverride", "OverhaulMod", "", GameObject.CreatePrimitive(PrimitiveType.Cylinder).transform, new Type[] { typeof(LevelEditorWeatherSettingsOverride) }, Path.Combine(ModCore.editorTexturesFolder, "WeatherSettingsOverride.png"));
-
-                /*
-                if (ModBuildInfo.debug)
-                    Patch.AddObject("ArenaAudienceLinePoint", "OverhaulMod", "", GameObject.CreatePrimitive(PrimitiveType.Sphere).transform, new Type[] { typeof(ArenaAudienceLinePoint) }, null);*/
-
-                s_hasAddedObjects = true;
-            }
-        }
-
-        public static void AddLevelObjectListeners()
-        {
-            if (s_hasInitializedTVCatLibrary)
-                return;
-
-            TVCat.CloneDrone.ObjectPlacedInLevelUtils.AddPreInitializeCallback(onLevelObjectPreInitialized);
-            s_hasInitializedTVCatLibrary = true;
-        }
-
-        public static void RemoveLevelObjectListeners()
-        {
-            if (!s_hasInitializedTVCatLibrary)
-                return;
-
-            TVCat.CloneDrone.ObjectPlacedInLevelUtils.RemovePreInitializeCallback(onLevelObjectPreInitialized);
-            s_hasInitializedTVCatLibrary = false;
-        }
-
-        private static void onLevelObjectPreInitialized(ObjectPlacedInLevel objectPlacedInLevel)
-        {
-            LevelObjectEntry levelObjectEntry = objectPlacedInLevel.LevelObjectEntry;
-            if (levelObjectEntry != null && (levelObjectEntry.PathUnderResources == RealisticLightingManager.LightSettingsObjectResourcePath || levelObjectEntry.PathUnderResources == RealisticLightingManager.LightSettingsOverrideObjectResourcePath) && !objectPlacedInLevel.GetComponent<AdditionalSkyboxSettings>())
-            {
-                objectPlacedInLevel.gameObject.AddComponent<AdditionalSkyboxSettings>();
-            }
         }
 
         private static void createDirectories()

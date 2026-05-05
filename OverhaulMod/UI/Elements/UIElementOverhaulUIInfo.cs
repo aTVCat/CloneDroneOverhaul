@@ -75,7 +75,7 @@ namespace OverhaulMod.UI
                 if (m_destroyed)
                     yield break;
 
-                if (unityWebRequest.isDone && !unityWebRequest.isHttpError && !unityWebRequest.isNetworkError)
+                if (unityWebRequest.result == UnityWebRequest.Result.Success)
                 {
                     Texture2D texture = (unityWebRequest.downloadHandler as DownloadHandlerTexture).texture;
                     m_loadedImage = texture;

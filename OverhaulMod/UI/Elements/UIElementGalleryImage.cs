@@ -1,6 +1,9 @@
 ﻿using OverhaulMod.Utils;
+using System.Collections;
 using System.IO;
+using System.Net;
 using UnityEngine;
+using UnityEngine.Networking;
 using UnityEngine.UI;
 
 namespace OverhaulMod.UI
@@ -17,6 +20,8 @@ namespace OverhaulMod.UI
         public RawImage m_image;
 
         private Texture2D m_texture;
+
+        private UnityWebRequest m_request;
 
         public string filePath
         {
@@ -38,6 +43,16 @@ namespace OverhaulMod.UI
 
         public override void OnDestroy()
         {
+            if(m_request != null)
+            {
+                try
+                {
+                    m_request.Abort();
+                }
+                catch { }
+                m_request = null;
+            }
+
             if (m_texture)
                 Destroy(m_texture);
         }
@@ -130,22 +145,33 @@ namespace OverhaulMod.UI
 
         public void GetImage()
         {
-            byte[] bytes;
-            try
-            {
-                bytes = ModFileUtils.ReadBytes(filePath);
-            }
-            catch
-            {
-                base.gameObject.SetActive(false);
-                return;
-            }
+            loadImageCoroutine(filePath).Run();
+        }
 
-            Texture2D texture = new Texture2D(1, 1);
-            _ = texture.LoadImage(bytes);
-            texture.Apply();
-            m_texture = texture;
-            m_image.texture = texture;
+        private IEnumerator loadImageCoroutine(string path)
+        {
+            m_image.enabled = false;
+            using (UnityWebRequest unityWebRequest = UnityWebRequestTexture.GetTexture($"file://{path}"))
+            {
+                m_request = unityWebRequest;
+                yield return unityWebRequest.SendWebRequest();
+                m_request = null;
+                if (unityWebRequest.result == UnityWebRequest.Result.Success)
+                {
+                    Texture2D texture = (unityWebRequest.downloadHandler as DownloadHandlerTexture).texture;
+
+                    if (!m_image)
+                    {
+                        Destroy(texture);
+                        yield break;
+                    }
+
+                    m_texture = texture;
+                    m_image.texture = texture;
+                    m_image.enabled = true;
+                }
+            }
+            yield break;
         }
     }
 }

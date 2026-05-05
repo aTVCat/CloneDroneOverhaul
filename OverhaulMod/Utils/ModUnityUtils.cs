@@ -13,19 +13,7 @@ namespace OverhaulMod.Utils
             if (unityWebRequest == null)
                 return null;
 
-            if (!unityWebRequest.error.IsNullOrEmpty())
-            {
-                return unityWebRequest.error;
-            }
-            else if (unityWebRequest.isHttpError)
-            {
-                return "Unknown HTTP error.";
-            }
-            else if (unityWebRequest.isNetworkError)
-            {
-                return "Unknown network error.";
-            }
-            return null;
+            return unityWebRequest.error;
         }
 
         public static Transform CloneAndSetLevelEnemySpawnerUp(string name, EnemyType enemyType)

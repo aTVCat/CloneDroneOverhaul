@@ -91,7 +91,7 @@ namespace OverhaulMod.Content
 
             try
             {
-                if (!webRequest.isNetworkError && !webRequest.isHttpError)
+                if (webRequest.result == UnityWebRequest.Result.Success)
                 {
                     if (returnText)
                         doneCallback?.Invoke(webRequest.downloadHandler.text);
@@ -119,7 +119,7 @@ namespace OverhaulMod.Content
 
             try
             {
-                if (!webRequest.isNetworkError && !webRequest.isHttpError)
+                if (webRequest.result == UnityWebRequest.Result.Success)
                 {
                     doneCallback?.Invoke((webRequest.downloadHandler as DownloadHandlerTexture).texture);
                 }
