@@ -313,7 +313,7 @@ namespace OverhaulMod.UI
         public override void Hide()
         {
             base.Hide();
-            if (UIVersionLabel.instance) UIVersionLabel.instance.ResetGameplayWatermark();
+            if (UIVersionLabel.Instance) UIVersionLabel.Instance.ResetGameplayWatermark();
         }
 
         public override void Update()
@@ -385,7 +385,7 @@ namespace OverhaulMod.UI
 
             ModActionUtils.DoInFrames(delegate
             {
-                UIVersionLabel versionLabel = UIVersionLabel.instance;
+                UIVersionLabel versionLabel = UIVersionLabel.Instance;
                 if (versionLabel)
                 {
                     if (isLeftSide)

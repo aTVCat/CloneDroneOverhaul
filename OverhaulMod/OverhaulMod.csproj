@@ -386,7 +386,6 @@
     <Compile Include="ModDataManager.cs" />
     <Compile Include="Content\NewsInfoList.cs" />
     <Compile Include="ModUserInfo.cs" />
-    <Compile Include="Patches\ArenaCameraManager_Patch.cs" />
     <Compile Include="Patches\ArmorPiece_Patch.cs" />
     <Compile Include="Patches\AttackManager_Patch.cs" />
     <Compile Include="Patches\AudienceManager_Patch.cs" />
@@ -437,7 +436,6 @@
     <Compile Include="Patches\ModBotSignInUI_Patch.cs" />
     <Compile Include="Patches\MultiplayerErrorPopupBubble_Patch.cs" />
     <Compile Include="Patches\MultiplayerSpawnPoint_Patch.cs" />
-    <Compile Include="Patches\ObjectPlacedInLevel_Patch.cs" />
     <Compile Include="Patches\PhotoManager_Patch.cs" />
     <Compile Include="Patches\PhotoModeControlsDisplay_Patch.cs" />
     <Compile Include="Patches\PlanetCollider_Patch.cs" />

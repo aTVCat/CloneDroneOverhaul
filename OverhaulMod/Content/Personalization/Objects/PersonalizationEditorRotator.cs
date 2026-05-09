@@ -41,6 +41,8 @@ namespace OverhaulMod.Content.Personalization.Objects
             rotatorSettings.InitializeAsElement();
             rotatorSettings.SetComponent(this);
             rotatorSettings.SetValuesFromComponent();
+
+            group.SetHeight(85f);
         }
 
         public void ResetRotation()

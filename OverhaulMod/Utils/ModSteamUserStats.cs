@@ -6,7 +6,7 @@ namespace OverhaulMod.Utils
     public static class ModSteamUserStats
     {
         /// <summary>
-        /// StartFading local player stats
+        /// Refresh local player stats
         /// </summary>
         /// <param name="callback"></param><b>True</b> if data was successfully refreshed, otherwise <b>False</b></param>
         public static void RefreshLocalStats(Action<bool> callback)
@@ -42,7 +42,7 @@ namespace OverhaulMod.Utils
         }
 
         /// <summary>
-        /// StartFading global player stats related to achievements
+        /// Refresh global player stats related to achievements
         /// </summary>
         /// <param name="callback"></param><b>True</b> if data was successfully refreshed, otherwise <b>False</b></param>
         public static void RefreshGlobalAchievementPercentages(Action<bool> callback)

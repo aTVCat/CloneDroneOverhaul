@@ -1,10 +1,12 @@
-﻿using ModLibrary;
+﻿using InternalModBot;
+using ModLibrary;
 using OverhaulMod.Content.Personalization;
 using OverhaulMod.Engine;
 using OverhaulMod.Gameplay;
 using OverhaulMod.Visuals;
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace OverhaulMod
 {
@@ -67,6 +69,17 @@ namespace OverhaulMod
             PostEffectsManager.Instance.RefreshCameraPostEffects();
         }
 
+        public override void OnObjectPlacedInLevelInitialized(ObjectPlacedInLevel objectPlacedInLevel, Transform levelRoot)
+        {
+            if (s_restrictLaunching) return;
+
+            LevelObjectEntry levelObjectEntry = objectPlacedInLevel.LevelObjectEntry;
+            if (levelObjectEntry != null && (levelObjectEntry.PathUnderResources == RealisticLightingManager.LightSettingsObjectResourcePath || levelObjectEntry.PathUnderResources == RealisticLightingManager.LightSettingsOverrideObjectResourcePath) && !objectPlacedInLevel.GetComponent<AdditionalSkyboxSettings>())
+            {
+                objectPlacedInLevel.gameObject.AddComponent<AdditionalSkyboxSettings>();
+            }
+        }
+
         public override void OnMultiplayerEventReceived(GenericStringForModdingEvent moddedEvent)
         {
             if (s_restrictLaunching) return;
@@ -120,13 +133,25 @@ namespace OverhaulMod
             if (!Version.TryParse(versionString, out Version gameVersion))
             {
                 s_restrictLaunching = true;
-                throw new System.Exception("Could not parse the game version string!\n");
+                throw new Exception("Could not parse the game version string!\n");
             }
 
-            if (!ModBuild.CanBeRan(gameVersion))
+            if (!ModBuild.IsGameVersionSupported(gameVersion))
             {
                 s_restrictLaunching = true;
-                throw new Exception($"Clone Drone must be on version {ModBuild.MinimumGameVersion.ToString().AddColor(UnityEngine.Color.cyan)} or higher (You're on {versionString.AddColor(UnityEngine.Color.yellow)}). Update the game.\n");
+                throw new Exception($"{"Clone Drone".AddColor(Color.orange)} must be on version {ModBuild.MinimumGameVersion.ToString().AddColor(Color.cyan)} or higher (You're on {versionString.AddColor(Color.yellow)}). Update the game.\n");
+            }
+
+            checkModBotVersion();
+        }
+
+        private void checkModBotVersion()
+        {
+            Version modBotVersion = typeof(StartupManager).Assembly.GetName().Version;
+            if (!ModBuild.IsModBotVersionSupported(modBotVersion))
+            {
+                s_restrictLaunching = true;
+                throw new Exception($"{"Mod-Bot".AddColor(Color.orange)} must be on version {ModBuild.MinimumModBotVersion.ToString().AddColor(Color.cyan)} or higher (You're on {modBotVersion.ToString().AddColor(Color.yellow)}). Update Mod-Bot.\n");
             }
         }
     }

@@ -25,6 +25,7 @@ namespace OverhaulMod.UI
         public void SetHeight(float value)
         {
             _height = value;
+            RefreshHeight();
         }
 
         public void RefreshHeight()

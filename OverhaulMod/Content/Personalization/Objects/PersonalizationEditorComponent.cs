@@ -23,6 +23,9 @@ namespace OverhaulMod.Content.Personalization.Objects
 
         public virtual Sprite GetIcon() => null;
 
-        public virtual void InstantiateSettingsForInspector(UIElementPEInspectorGroup group, UIElementPEInspectorFieldsStore fieldsStore) { }
+        public virtual void InstantiateSettingsForInspector(UIElementPEInspectorGroup group, UIElementPEInspectorFieldsStore fieldsStore)
+        {
+            group.SetHeight(5f);
+        }
     }
 }

@@ -45,7 +45,7 @@ namespace OverhaulMod.UI
                 if (_canvasGroup.alpha <= 0f)
                 {
                     DestroyThis();
-                    UIVersionLabel versionLabel = UIVersionLabel.instance;
+                    UIVersionLabel versionLabel = UIVersionLabel.Instance;
                     if (versionLabel)
                         versionLabel.ShowTitleScreenLabel();
                 }

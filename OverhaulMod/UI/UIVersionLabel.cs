@@ -42,22 +42,14 @@ namespace OverhaulMod.UI
 
         public override bool CloseOnEscapeButtonPress => false;
 
-        public static UIVersionLabel instance
+        public static UIVersionLabel Instance
         {
             get;
             set;
         }
 
-        public bool showWatermark
-        {
-            get
-            {
-                return ShowLabel && !GameModeManager.IsInLevelEditor() && !ModCache.PhotoManager.IsInPhotoMode();
-            }
-        }
-
         private float _offsetX;
-        public float offsetX
+        public float OffsetX
         {
             get
             {
@@ -74,7 +66,7 @@ namespace OverhaulMod.UI
 
         protected override void OnInitialized()
         {
-            instance = this;
+            Instance = this;
             _gameplayVersionText.font = ModResources.EditUndoFont();
             _gameplayVersionText.fontSize = 10;
             _gameplayWatermarkTransform.localScale = Vector3.one * 0.8f;
@@ -89,7 +81,7 @@ namespace OverhaulMod.UI
         public override void OnDestroy()
         {
             base.OnDestroy();
-            instance = null;
+            Instance = null;
         }
 
         public override void Update()
@@ -120,7 +112,7 @@ namespace OverhaulMod.UI
             if (Time.frameCount % 10 != 0)
                 return;
 
-            bool show = !ForceHide && showWatermark;
+            bool show = !ForceHide && ShowLabel && canBeVisible();
             bool rootButtonsAreActive = ModCache.TitleScreenUI.RootButtonsContainerBG.activeInHierarchy;
             _watermark.SetActive(show && !showGameplayWatermarkOnTitleScreen && rootButtonsAreActive && isOnTitleScreen && !UITitleScreenHypocrisisSkin.HideVersionLabel);
             _gameplayWatermark.SetActive(show && (!isOnTitleScreen || (showGameplayWatermarkOnTitleScreen && rootButtonsAreActive && !UITitleScreenHypocrisisSkin.HideVersionLabel)));
@@ -138,17 +130,19 @@ namespace OverhaulMod.UI
 
         public void CenterGameplayWatermark()
         {
-            offsetX = (ModCache.UIRootCanvasScaler.referenceResolution.x / 2f) + _gameplayWatermarkTransform.sizeDelta.x;
+            OffsetX = (ModCache.UIRootCanvasScaler.referenceResolution.x / 2f) + _gameplayWatermarkTransform.sizeDelta.x;
         }
 
         public void ResetGameplayWatermark()
         {
-            offsetX = 0f;
+            OffsetX = 0f;
         }
 
         public void ShowTitleScreenLabel()
         {
             _fadeInLabel = true;
         }
+
+        private bool canBeVisible() => !GameModeManager.IsInLevelEditor() && !ModCache.PhotoManager.IsInPhotoMode();
     }
 }

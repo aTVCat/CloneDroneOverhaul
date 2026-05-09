@@ -16,10 +16,12 @@ namespace OverhaulMod
         public const string BUILD_INFO_FILE_PATH = "buildInfo.json";
 
 #if OVERRIDE_VER
-        public const string OVERRIDE_VERSION = "4.2.1123.0";
+        public const string OVERRIDE_VERSION = "4.2.1125.0";
 #endif
 
         public static readonly Version MinimumGameVersion = new Version(1, 11, 0, 20);
+
+        public static readonly Version MinimumModBotVersion = new Version(2, 1, 0, 0);
 
         private static bool s_loaded;
 
@@ -192,7 +194,9 @@ namespace OverhaulMod
 
         public static bool IsInVRMode() => XRSettings.enabled;
 
-        public static bool CanBeRan(Version gameVersion) => gameVersion >= MinimumGameVersion;
+        public static bool IsGameVersionSupported(Version gameVersion) => gameVersion >= MinimumGameVersion;
+
+        public static bool IsModBotVersionSupported(Version modBotVersion) => modBotVersion >= MinimumModBotVersion;
 
         public class Info
         {
