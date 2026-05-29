@@ -1,5 +1,4 @@
-﻿using InternalModBot;
-using OverhaulMod.Engine;
+﻿using OverhaulMod.Engine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -150,14 +149,6 @@ namespace OverhaulMod.Utils
             public static bool IsModAvailable()
             {
                 return s_modMethodsPresent && ModSpecialUtils.IsModEnabled("battle-royale-garbage-bot-selection");
-            }
-        }
-
-        public static class ModBot
-        {
-            public static string GetModBotUsername()
-            {
-                return ModBotSignInUI._userName;
             }
         }
     }

@@ -16,7 +16,7 @@ namespace OverhaulMod
         public const string BUILD_INFO_FILE_PATH = "buildInfo.json";
 
 #if OVERRIDE_VER
-        public const string OVERRIDE_VERSION = "4.2.1125.0";
+        public const string OVERRIDE_VERSION = "4.2.1126.0";
 #endif
 
         public static readonly Version MinimumGameVersion = new Version(1, 11, 0, 20);

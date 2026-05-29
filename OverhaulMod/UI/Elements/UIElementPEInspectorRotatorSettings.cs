@@ -1,6 +1,4 @@
 ﻿using OverhaulMod.Content.Personalization.Objects;
-using OverhaulMod.Utils;
-using System.Globalization;
 using UnityEngine;
 using UnityEngine.UI;
 

@@ -1,15 +1,15 @@
 ﻿using HarmonyLib;
-using InternalModBot;
+using ModLibrary;
 using OverhaulMod.UI;
 using OverhaulMod.Utils;
 
 namespace OverhaulMod.Patches
 {
-    [HarmonyPatch(typeof(ModBotSignInUI))]
-    internal static class ModBotSignInUI_Patch
+    [HarmonyPatch(typeof(ModBotUserIdentifier))]
+    internal static class ModBotUserIdentifier_Patch
     {
         [HarmonyPostfix]
-        [HarmonyPatch(nameof(ModBotSignInUI.onSignedIn))]
+        [HarmonyPatch(nameof(ModBotUserIdentifier.onSignedIn))]
         private static void onSignedIn_Postfix(WorldAudioSource __instance)
         {
             if (!ModCore.IsActive()) return;

@@ -190,8 +190,6 @@ namespace OverhaulMod.UI
 
         private bool _hasSpawnedHypocrisisSkin;
 
-        private bool _mobBotUsernameAvailable;
-
         public bool hideVanillaTitleScreen
         {
             get
@@ -306,8 +304,6 @@ namespace OverhaulMod.UI
             RefreshFade();
 
             refreshSkinButtonLabel();
-
-            _mobBotUsernameAvailable = checkIfModBotUserNameIsAvailable();
         }
 
         public override void Hide()
@@ -327,9 +323,9 @@ namespace OverhaulMod.UI
 
             if (Time.frameCount % 20 == 0)
             {
-                if (TitleScreenCustomizationManager.ShowModBotAccountInfo && _mobBotUsernameAvailable)
+                if (TitleScreenCustomizationManager.ShowModBotAccountInfo)
                 {
-                    string userName = ModIntegrationUtils.ModBot.GetModBotUsername();
+                    string userName = ModLibrary.ModBotUserIdentifier.UserNameColored;
                     if (!userName.IsNullOrEmpty())
                     {
                         _modBotLogonText.text = $"{LocalizationManager.Instance.GetTranslatedString("modui_modbot_logged_as")} {userName.AddColor(Color.white)}";
@@ -411,17 +407,6 @@ namespace OverhaulMod.UI
             {
                 skin = ModUIManager.ShowTitleScreenRework ? TitleScreenSkinType.Overhaul : TitleScreenSkinType.Vanilla;
             }
-        }
-
-        private bool checkIfModBotUserNameIsAvailable()
-        {
-            try
-            {
-                string str = ModIntegrationUtils.ModBot.GetModBotUsername();
-                return true;
-            }
-            catch { }
-            return false;
         }
 
         public void SetMultiplayerButtonActive(bool value)

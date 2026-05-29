@@ -21,7 +21,7 @@ namespace OverhaulMod
             string modBotVersion = $"Mod-Bot {ModLibrary.Properties.Resources.ModBotVersion}";
             string gameVersion = $"Clone Drone {VersionNumberManager.Instance.GetVersionString()}";
             string unityVersion = $"Unity {Application.unityVersion}";
-            string platform = $"{(GameVersionManager.IsSteamBuild() ? "Steam" : "Non-Steam")}";
+            string platform = GameVersionManager.GetPlatformName();
             string language = $"{LocalizationManager.Instance.GetCurrentLanguageCode()}";
 
             // game environment info

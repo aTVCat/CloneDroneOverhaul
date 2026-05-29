@@ -1,5 +1,4 @@
-﻿using InternalModBot;
-using ModBotWebsiteAPI;
+﻿using ModBotWebsiteAPI;
 using OverhaulMod.Engine;
 using OverhaulMod.Utils;
 using UnityEngine;
@@ -118,7 +117,7 @@ namespace OverhaulMod.UI
             base.Show();
 
             _charsLeftText = LocalizationManager.Instance.GetTranslatedString("charsleft");
-            _likeButton.interactable = !ModBotSignInUI._userName.IsNullOrEmpty() && !HasLikedTheMod;
+            _likeButton.interactable = API.HasSession && !HasLikedTheMod;
 
             _skipButton.interactable = true;
 

@@ -111,7 +111,7 @@ namespace OverhaulMod.Gameplay
                     if (!upgradeManager.IsUpgradeTypeAndLevelUsed(upgrade.UpgradeType, upgrade.Level))
                         upgradeManager.UpgradeDescriptions.Add(upgrade);
 
-                    UpgradePagesManager.AddUpgrade(upgrade.UpgradeType, upgrade.Level, mod.ModInfo.UniqueID);
+                    UpgradePagesManager.AddUpgrade(upgrade.UpgradeType, upgrade.Level, mod.ModInfo.UniqueID, 0);
                     if (upgrade is AbilityUpgrade)
                     {
                         Dictionary<UpgradeType, bool> abilityUpgradeTypes = upgradeManager._abilityUpgradeTypes;

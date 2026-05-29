@@ -77,7 +77,7 @@
       <HintPath>..\GameDLLs\ModBotWebsiteAPI.dll</HintPath>
     </Reference>
     <Reference Include="ModLibrary">
-      <HintPath>..\GameDLLs\ModLibrary.dll</HintPath>
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Clone Drone in the Danger Zone\Clone Drone in the Danger Zone_Data\Managed\ModLibrary.dll</HintPath>
     </Reference>
     <Reference Include="netstandard">
       <HintPath>..\GameDLLs\netstandard.dll</HintPath>
@@ -433,7 +433,7 @@
     <Compile Include="Patches\LoadingScreen_Patch.cs" />
     <Compile Include="Patches\LocalizedTextField_Patch.cs" />
     <Compile Include="Patches\MechBodyPart_Patch.cs" />
-    <Compile Include="Patches\ModBotSignInUI_Patch.cs" />
+    <Compile Include="Patches\ModBotUserIdentifier_Patch.cs" />
     <Compile Include="Patches\MultiplayerErrorPopupBubble_Patch.cs" />
     <Compile Include="Patches\MultiplayerSpawnPoint_Patch.cs" />
     <Compile Include="Patches\PhotoManager_Patch.cs" />
