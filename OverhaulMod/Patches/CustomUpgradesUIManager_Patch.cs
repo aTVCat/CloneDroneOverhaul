@@ -5,12 +5,12 @@ using UnityEngine;
 
 namespace OverhaulMod.Patches
 {
-    [HarmonyPatch(typeof(CustomUpgradeManager))]
-    internal static class CustomUpgradeManager_Patch
+    [HarmonyPatch(typeof(CustomUpgradesUIManager))]
+    internal static class CustomUpgradesUIManager_Patch
     {
         [HarmonyPostfix]
-        [HarmonyPatch(nameof(CustomUpgradeManager.Update))]
-        private static void Update_Postfix(CustomUpgradeManager __instance)
+        [HarmonyPatch(nameof(CustomUpgradesUIManager.Update))]
+        private static void Update_Postfix(CustomUpgradesUIManager __instance)
         {
             bool hide = AutoBuildManager.Instance.isInAutoBuildConfigurationMode;
             if (hide)

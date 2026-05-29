@@ -861,13 +861,13 @@ namespace OverhaulMod.UI
 
             _ = pageBuilder.Header1("Mod-Bot");
             _ = pageBuilder.Header3("Controls");
-            _ = pageBuilder.KeyBind("Open console", ModBotInputManager.GetKeyCode(ModBotInputType.OpenConsole), KeyCode.F1, delegate (KeyCode value)
+            _ = pageBuilder.KeyBind("Open console", ModBotPrefs.GetKeyCode(ModBotInputType.OpenConsole), KeyCode.F1, delegate (KeyCode value)
             {
-                ModBotInputManager.InputOptions[0].Key = value;
+                ModBotPrefs.InputOptions[0].Key = value;
             });
-            _ = pageBuilder.KeyBind("Toggle FPS label", ModBotInputManager.GetKeyCode(ModBotInputType.ToggleFPSLabel), KeyCode.F3, delegate (KeyCode value)
+            _ = pageBuilder.KeyBind("Toggle FPS label", ModBotPrefs.GetKeyCode(ModBotInputType.ToggleFPSLabel), KeyCode.F3, delegate (KeyCode value)
             {
-                ModBotInputManager.InputOptions[1].Key = value;
+                ModBotPrefs.InputOptions[1].Key = value;
             });
 
             _ = pageBuilder.Header3("Website integration");
@@ -1420,7 +1420,7 @@ namespace OverhaulMod.UI
 
         private static void onSignedOut(JsonObject jsonObject)
         {
-            ModBotUIRoot.Instance.ModBotSignInUI.SetSession("");
+            ModLibrary.ModBotUserIdentifier.Instance.SignOut();
             VersionLabelManager.Instance.SetLine(2, "Not signed in");
 
             UISettingsMenuRework settingsMenuRework = ModUIManager.Instance.Get<UISettingsMenuRework>(AssetBundleConstants.UI, ModUIConstants.UI_SETTINGS_MENU);

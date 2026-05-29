@@ -148,13 +148,5 @@ namespace OverhaulMod.Utils
                 return s_modMethodsPresent && ModSpecialUtils.IsModEnabled("battle-royale-garbage-bot-selection");
             }
         }
-
-        public static class ModBot
-        {
-            public static string GetModBotUsername()
-            {
-                return ModBotSignInUI._userName;
-            }
-        }
     }
 }

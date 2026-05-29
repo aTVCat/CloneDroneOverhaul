@@ -283,7 +283,7 @@ namespace OverhaulMod.Visuals
                     if (!prefab) return;
 
                     renderer = Instantiate(prefab, parent, false);
-                    weapon.replaceWeaponGlowColor(renderer.gameObject, _firstPersonMover._characterModel.GetFavouriteColors().GetWeaponColor(weapon.WeaponType));
+                    WeaponModel.ReplaceWeaponGlowColor(renderer.gameObject, _firstPersonMover._characterModel.GetFavouriteColors().GetWeaponColor(weapon.WeaponType), false);
                 }
             }
             else

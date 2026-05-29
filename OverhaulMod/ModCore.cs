@@ -1,5 +1,4 @@
-﻿using ModLibrary;
-using OverhaulMod.Combat;
+﻿using OverhaulMod.Combat;
 using OverhaulMod.Content.Personalization;
 using OverhaulMod.Engine;
 using OverhaulMod.Patches.Behaviours;
@@ -11,6 +10,7 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using UnityEngine.XR;
+using ModLibrary;
 
 namespace OverhaulMod
 {
@@ -401,7 +401,7 @@ namespace OverhaulMod
                 yield return null;
 
             if (firstPersonMover && firstPersonMover.HasCharacterModel() && firstPersonMover._playerCamera)
-                CameraManager.Instance.AddControllers(firstPersonMover._playerCamera, firstPersonMover);
+                Engine.CameraManager.Instance.AddControllers(firstPersonMover._playerCamera, firstPersonMover);
 
             yield break;
         }

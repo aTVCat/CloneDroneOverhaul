@@ -83,6 +83,7 @@ namespace OverhaulMod.UI
 
             _bgFadePowerSlider.value = TitleScreenCustomizationManager.BackgroundFadePower;
             _panelPositionDropdown.value = (int)TitleScreenCustomizationManager.PanelPosition;
+            _panelPositionDropdown.interactable = TitleScreenCustomizationManager.PanelPosition != TitleScreenPanelPosition.LeftSide;
             _ignoreCallbacks = false;
 
             refreshSocialPopupsToggle();
