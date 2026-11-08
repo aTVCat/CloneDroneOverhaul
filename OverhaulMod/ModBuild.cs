@@ -11,17 +11,15 @@ namespace OverhaulMod
 {
     public static class ModBuild
     {
-        public const bool VERSION_4_3 = true;
-
         public const string BUILD_INFO_FILE_PATH = "buildInfo.json";
 
 #if OVERRIDE_VER
         public const string OVERRIDE_VERSION = "4.2.1126.0";
 #endif
 
-        public static readonly Version MinimumGameVersion = new Version(1, 11, 0, 20);
+        public static readonly Version MinimumGameVersion = new Version(1, 12, 0, 100);
 
-        public static readonly Version MinimumModBotVersion = new Version(2, 1, 0, 0);
+        public static readonly Version MinimumModBotVersion = new Version(2, 1, 1, 0);
 
         private static bool s_loaded;
 

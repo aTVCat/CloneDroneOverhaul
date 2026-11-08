@@ -37,7 +37,7 @@ namespace OverhaulMod.Engine
             ClearCustomPlacementLines();
             GameObject gameObject = new GameObject("OverhaulAudienceLines");
             CreateCustomPlacementLines(gameObject.transform);
-            SetAudiencePlacement(ArenaRemodelManager.EnableRemodel, true);
+            SetAudiencePlacement(ModFeatures.IsEnabled(ModFeatures.FeatureType.ReworkedArena) && ArenaRemodelManager.EnableRemodel, true);
         }
 
         public void AddLinePoint(ArenaAudienceLinePoint arenaAudienceLine)

@@ -253,13 +253,6 @@ namespace OverhaulMod
                 });
             }, ModSettingIDs.ENERGY_UI_REWORK);
 
-            modSettingsManager.AddSettingValueChangedListener(delegate
-            {
-                CloneDroneLogoParticlesBehaviour particlesPatch = GamePatchBehaviour.GetBehaviour<CloneDroneLogoParticlesBehaviour>();
-                if (particlesPatch)
-                    particlesPatch.RefreshVisibility();
-            }, ModSettingIDs.CLONE_DRONE_LOGO_FIRE);
-
             modSettingsManager.AddSettingValueChangedListener(delegate (object obj)
             {
                 if (obj is bool boolVal && !boolVal)
@@ -286,14 +279,7 @@ namespace OverhaulMod
 
             modSettingsManager.AddSettingValueChangedListener(delegate (object obj)
             {
-                ChunkUpdateDelayPatchBehaviour chunkUpdateDelayPatch = GamePatchBehaviour.GetBehaviour<ChunkUpdateDelayPatchBehaviour>();
-                if (chunkUpdateDelayPatch)
-                    chunkUpdateDelayPatch.Refresh();
-            }, ModSettingIDs.CHUNK_UPDATE_DELAY);
-
-            modSettingsManager.AddSettingValueChangedListener(delegate (object obj)
-            {
-                VoxelColorsPatchBehaviour voxelColorsPatchBehaviour = GamePatchBehaviour.GetBehaviour<VoxelColorsPatchBehaviour>();
+                VoxelPatchBehaviour voxelColorsPatchBehaviour = GamePatchBehaviour.GetBehaviour<VoxelPatchBehaviour>();
                 if (voxelColorsPatchBehaviour)
                     voxelColorsPatchBehaviour.Refresh();
             }, ModSettingIDs.CHANGE_HIT_COLORS);

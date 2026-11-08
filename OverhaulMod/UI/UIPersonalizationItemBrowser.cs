@@ -172,9 +172,6 @@ namespace OverhaulMod.UI
             _ = base.StartCoroutine(waitThenRefreshCameraCoroutine());
             ShowDownloadCustomizationAssetsDownloadMenuIfRequired();
 
-            if (UIVersionLabel.Instance)
-                UIVersionLabel.Instance.OffsetX = 325f;
-
             _cachedDisplays.Clear();
             if (_container.childCount != 0)
                 TransformUtils.DestroyAllChildren(_container);
@@ -193,7 +190,6 @@ namespace OverhaulMod.UI
             base.Hide();
             _isOpen = false;
             setCameraZoomedIn(false);
-            UIVersionLabel.Instance.OffsetX = 0f;
 
             PersonalizationManager.Instance.UserInfo.SaveIfDirty();
             ModSettingsDataManager.Instance.Save();

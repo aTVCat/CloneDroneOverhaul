@@ -14,15 +14,13 @@ namespace OverhaulMod.Patches.Behaviours
                 typeof(GameModeCardsPatchBehaviour),
                 typeof(ProjectilePatchBehaviour),
                 typeof(SkyboxesPatchBehaviour),
-                typeof(VoxelColorsPatchBehaviour),
+                typeof(VoxelPatchBehaviour),
                 typeof(RandomPatchesBehaviour),
                 typeof(EnergyBarPatchBehaviour),
                 typeof(MenuButtonsPatchBehaviour),
                 typeof(SubtitleTextFieldPatchBehaviour),
                 typeof(ChallengeManagerPatchBehaviour),
                 typeof(CustomizationButtonPatchBehaviour),
-                //typeof(CloneDroneLogoParticlesBehaviour) obsolete, new clone drone update added fire particles back
-                typeof(ChunkUpdateDelayPatchBehaviour),
             });
         }
 

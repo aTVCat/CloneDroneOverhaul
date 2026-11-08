@@ -306,12 +306,6 @@ namespace OverhaulMod.UI
             refreshSkinButtonLabel();
         }
 
-        public override void Hide()
-        {
-            base.Hide();
-            if (UIVersionLabel.Instance) UIVersionLabel.Instance.ResetGameplayWatermark();
-        }
-
         public override void Update()
         {
             bool reworkEnabled = skin == TitleScreenSkinType.Overhaul;
@@ -378,22 +372,6 @@ namespace OverhaulMod.UI
             _vanillaTitleScreenButtonsContainer.offsetMax = isLeftSide ? _oldVanillaOffsetMax : _newVanillaOffsetMax;
 
             _centerFade.SetActive(!isLeftSide);
-
-            ModActionUtils.DoInFrames(delegate
-            {
-                UIVersionLabel versionLabel = UIVersionLabel.Instance;
-                if (versionLabel)
-                {
-                    if (isLeftSide)
-                    {
-                        versionLabel.ResetGameplayWatermark();
-                    }
-                    else
-                    {
-                        versionLabel.CenterGameplayWatermark();
-                    }
-                }
-            }, 10);
         }
 
         public void SetSkinAccordingToSettings()
@@ -416,13 +394,14 @@ namespace OverhaulMod.UI
 
         private IEnumerator levelEditorTransitionCoroutine()
         {
-            yield return new WaitForSecondsRealtime(1f);
+            yield return new WaitForSecondsRealtime(1.25f);
             while (LevelManager.Instance.IsSpawningCurrentLevel())
                 yield return null;
 
             yield return null;
             _titleScreenUI.OnLevelEditorButtonClicked();
-            yield return new WaitForSecondsRealtime(1f);
+            yield return null;
+            yield return null;
             TransitionManager.Instance.EndTransition();
             yield break;
         }

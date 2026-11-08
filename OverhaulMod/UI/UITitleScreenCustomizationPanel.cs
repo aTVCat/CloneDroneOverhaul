@@ -95,7 +95,7 @@ namespace OverhaulMod.UI
             TitleScreenUI titleScreen = ModCache.TitleScreenUI;
             if (TitleScreenCustomizationManager.ShowSocialMediaButtons)
             {
-                titleScreen.SocialButtonPanel.ShowAndSelectFirstButton();
+                titleScreen.SocialButtonPanel.Show();
             }
             else
             {

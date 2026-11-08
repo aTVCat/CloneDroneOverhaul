@@ -26,8 +26,8 @@ namespace OverhaulMod.Patches
         }
 
         [HarmonyPostfix]
-        [HarmonyPatch(nameof(MechBodyPart.createNewVoxelBeingDestroyed), new Type[] { typeof(PicaVoxelPoint), typeof(FireSpreadDefinition), typeof(float) })]
-        private static void createNewVoxelBeingDestroyed_Postfix(MechBodyPart __instance, ref VoxelBeingDestroyed __result, PicaVoxelPoint picaVoxelPoint, FireSpreadDefinition fireSpreadDefinition, float probabilityOfFireSpread)
+        [HarmonyPatch(nameof(MechBodyPart.createNewVoxelBeingDestroyed), new Type[] { typeof(Vector3Int), typeof(FireSpreadDefinition), typeof(float) })]
+        private static void createNewVoxelBeingDestroyed_Postfix(MechBodyPart __instance, ref VoxelBeingDestroyed __result, Vector3Int picaVoxelPoint, FireSpreadDefinition fireSpreadDefinition, float probabilityOfFireSpread)
         {
             if (!ModCore.IsActive()) return;
 
@@ -72,7 +72,7 @@ namespace OverhaulMod.Patches
                         VoxelFadingManager fadingVoxelManager = ModCache.FadingVoxelManager;
                         foreach (PicaVoxelPoint p in fadingVoxelManager.GetSurroundingPoints(picaVoxelPoint))
                         {
-                            if (__instance.IsVoxelWaitingToBeDestroyed(p))
+                            if (__instance.IsVoxelWaitingToBeDestroyed(p.ToVector3Int()))
                                 continue;
 
                             Voxel? vox = currentFrame.GetVoxelAtArrayPosition(p);
@@ -100,7 +100,7 @@ namespace OverhaulMod.Patches
                 Value = 1
             });
 
-            __instance.DestroyVoxelAfterWait(picaVoxelPoint, fireSpreadDefinition);
+            __instance.DestroyVoxelAfterWait(picaVoxelPoint.ToVector3Int(), fireSpreadDefinition);
             return false;
         }
     }

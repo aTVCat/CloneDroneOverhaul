@@ -1,4 +1,5 @@
 ﻿using OverhaulMod.Engine;
+using PicaVoxel;
 using Steamworks;
 using System;
 using System.Collections.Generic;
@@ -11,6 +12,11 @@ namespace OverhaulMod.Utils
     public static class ModGameUtils
     {
         private static readonly List<Action<IFPMoveCommandInput>> _playerInputUpdateActions = new List<Action<IFPMoveCommandInput>>();
+
+        public static Vector3Int ToVector3Int(this PicaVoxelPoint picaVoxelPoint)
+        {
+            return new Vector3Int(picaVoxelPoint.X, picaVoxelPoint.Y, picaVoxelPoint.Z);
+        }
 
         public static int GetNumOfAchievements()
         {
@@ -54,7 +60,7 @@ namespace OverhaulMod.Utils
             list.Clear();
         }
 
-        public static bool SyncSteamAchievements() // todo: sync game with steam or steam with game
+        public static bool SyncSteamAchievements()
         {
             GameplayAchievementManager gameplayAchievementManager = GameplayAchievementManager.Instance;
             if (!gameplayAchievementManager)

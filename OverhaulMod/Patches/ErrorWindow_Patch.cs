@@ -8,11 +8,11 @@ namespace OverhaulMod.Patches
     [HarmonyPatch(typeof(ErrorWindow))]
     internal static class ErrorWindow_Patch
     {
-        [HarmonyPrefix]
+        [HarmonyPostfix]
         [HarmonyPatch(nameof(ErrorWindow.Show))]
-        private static bool Show_Prefix(ErrorWindow __instance, string errorMessage)
+        private static void Show_Postfix(ErrorWindow __instance, string errorMessage)
         {
-            if (!ModCore.IsActive()) return true;
+            if (!ModCore.IsActive()) return;
 
             PostmanManager.ErrorReportText = errorMessage;
             if (ModUIManager.Instance)
@@ -20,14 +20,10 @@ namespace OverhaulMod.Patches
                 try
                 {
                     _ = ModUIs.ShowCrashScreen(errorMessage);
+                    __instance.gameObject.SetActive(false);
                 }
-                catch (Exception)
-                {
-                    return true;
-                }
-                return false;
+                catch (Exception) { }
             }
-            return true;
         }
 
         [HarmonyPrefix]

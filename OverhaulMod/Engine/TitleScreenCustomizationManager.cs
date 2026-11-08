@@ -15,7 +15,7 @@ namespace OverhaulMod.Engine
     {
         public const string CUSTOMIZATION_INFO_FILE = "TitleScreenCustomizationInfo.json";
 
-        public const string CUSTO_LEVEL_ID = "customTitleScreenLevel";
+        public const string CUSTOM_LEVEL_ID = "customTitleScreenLevel";
 
         [ModSetting(ModSettingIDs.TITLE_SCREEN_MUSIC_TRACK_INDEX, 0)]
         public static int MusicTrackIndex;
@@ -46,13 +46,13 @@ namespace OverhaulMod.Engine
 
         private bool _isWaitingForSoundpackToLoad;
 
-        public LevelDescription overrideLevelDescription
+        public LevelDescription OverrideLevelDescription
         {
             get;
             set;
         }
 
-        public bool disallowClickingLogo
+        public bool DisallowClickingOnLogo
         {
             get;
             set;
@@ -85,13 +85,7 @@ namespace OverhaulMod.Engine
             GlobalEventManager.Instance.AddEventListener(GlobalEvents.LevelEditorStarted, StopTitleScreenMusic);
             GlobalEventManager.Instance.AddEventListener(PersonalizationEditorManager.EDITOR_STARTED_EVENT, StopTitleScreenMusic);
 
-            Transform transform = ArenaCameraManager.Instance?.ArenaCameraTransform?.parent;
-            if (transform)
-                transform.SetParent(WorldRoot.Instance?.transform);
-
-            Camera camera = ArenaCameraManager.Instance?.TitleScreenLevelCamera;
-            if (camera)
-                camera.farClipPlane = 10000f;
+            ArenaCameraManager.Instance.TitleScreenLevelCamera.farClipPlane = 10000f;
         }
 
         public bool ShouldLockUserCustomization()
@@ -136,12 +130,12 @@ namespace OverhaulMod.Engine
 
                 LevelDescription level = new LevelDescription()
                 {
-                    LevelID = CUSTO_LEVEL_ID,
+                    LevelID = CUSTOM_LEVEL_ID,
                     LevelJSONPath = Path.Combine(folder, "LevelData.json"),
                     LevelTags = new List<LevelTags>(),
                     WorkshopItem = workshopItem
                 };
-                overrideLevelDescription = level;
+                OverrideLevelDescription = level;
                 _customizationInfo.StaticBackgroundInfo.Level = level;
                 SpawnStaticBackground();
                 SaveCustomizationInfo();
@@ -162,7 +156,7 @@ namespace OverhaulMod.Engine
                 titleScreenCustomizationInfo.FixValues();
             }
             _customizationInfo = titleScreenCustomizationInfo;
-            overrideLevelDescription = titleScreenCustomizationInfo.StaticBackgroundInfo.Level;
+            OverrideLevelDescription = titleScreenCustomizationInfo.StaticBackgroundInfo.Level;
         }
 
         public void SaveCustomizationInfo()
@@ -199,7 +193,7 @@ namespace OverhaulMod.Engine
 
             if (refresh)
             {
-                overrideLevelDescription = level;
+                OverrideLevelDescription = level;
                 SpawnStaticBackground();
             }
         }

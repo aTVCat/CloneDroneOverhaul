@@ -25,15 +25,21 @@ namespace OverhaulMod
             switch (feature)
             {
                 case FeatureType.Accessories:
-                    result = ModBuild.VERSION_4_3;
+                    result = true;
                     break;
                 case FeatureType.Pets:
-                    result = false;// ModBuild.VERSION_4_3;
+                    result = false;
                     break;
                 case FeatureType.UISounds:
-                    result = ModBuild.VERSION_4_3;
+                    result = true;
                     break;
                 case FeatureType.SettingsMenuReworkV2:
+                    result = false;
+                    break;
+                case FeatureType.ReworkedArena:
+                    result = false;
+                    break;
+                case FeatureType.Updates:
                     result = false;
                     break;
                 default:
@@ -71,7 +77,11 @@ namespace OverhaulMod
 
             SettingsMenuReworkV2,
 
-            PauseMenuLogoAsRenderTexture
+            PauseMenuLogoAsRenderTexture,
+
+            ReworkedArena,
+
+            Updates
         }
     }
 }

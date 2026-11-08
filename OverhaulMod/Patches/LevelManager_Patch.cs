@@ -15,9 +15,9 @@ namespace OverhaulMod.Patches
             if (GameModeManager.IsOnTitleScreen())
             {
                 TitleScreenCustomizationManager titleScreenCustomizationManager = TitleScreenCustomizationManager.Instance;
-                if (titleScreenCustomizationManager && titleScreenCustomizationManager.overrideLevelDescription != null)
+                if (titleScreenCustomizationManager && titleScreenCustomizationManager.OverrideLevelDescription != null)
                 {
-                    __result = titleScreenCustomizationManager.overrideLevelDescription;
+                    __result = titleScreenCustomizationManager.OverrideLevelDescription;
                     return false;
                 }
             }
@@ -30,7 +30,7 @@ namespace OverhaulMod.Patches
         {
             if (!ModCore.IsActive()) return true;
 
-            if (levelDescription != null && levelDescription.LevelID == TitleScreenCustomizationManager.CUSTO_LEVEL_ID)
+            if (levelDescription != null && levelDescription.LevelID == TitleScreenCustomizationManager.CUSTOM_LEVEL_ID)
             {
                 __instance._currentWorkshopLevelDifficultyIndex = 0;
                 return false;

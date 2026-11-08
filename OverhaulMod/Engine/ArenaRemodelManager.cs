@@ -91,7 +91,7 @@ namespace OverhaulMod.Engine
 
         public void RefreshArenaLook()
         {
-            if (!EnableRemodel || _newArenaObject)
+            if (!ModFeatures.IsEnabled(ModFeatures.FeatureType.ReworkedArena) || !EnableRemodel || _newArenaObject)
                 return;
 
             _worldRootTransform = WorldRoot.Instance.transform;

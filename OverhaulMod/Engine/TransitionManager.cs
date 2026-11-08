@@ -126,7 +126,7 @@ namespace OverhaulMod.Engine
 
         private IEnumerator sceneTransitionCoroutine()
         {
-            yield return new WaitForSecondsRealtime(0.5f);
+            yield return new WaitForSecondsRealtime(0.6f);
 
             SceneTransitionManager sceneTransitionManager = SceneTransitionManager.Instance;
             sceneTransitionManager._isExitingToMainMenu = true;

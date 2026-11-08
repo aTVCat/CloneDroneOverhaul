@@ -59,7 +59,7 @@ namespace OverhaulMod.Engine
             }
         }
 
-        public void AddFadingVoxel(PicaVoxelPoint picaVoxelPoint, MechBodyPart mechBodyPart, float timeToDestroy)
+        public void AddFadingVoxel(Vector3Int picaVoxelPoint, MechBodyPart mechBodyPart, float timeToDestroy)
         {
             if (!_hasInitialized || _voxelsToFade.Count > fadingVoxelsLimit)
                 return;

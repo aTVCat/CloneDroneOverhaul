@@ -377,8 +377,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 993799794573578828}
   m_HandleRect: {fileID: 5632314628573521044}
   m_Direction: 2
-  m_Value: 1
-  m_Size: 0.61782175
+  m_Value: 0
+  m_Size: 0.65
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -2240,7 +2240,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 180}
+  m_SizeDelta: {x: 0, y: 155}
   m_Pivot: {x: 0, y: 1}
 --- !u!222 &5564339844508067024
 CanvasRenderer:
@@ -3149,7 +3149,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 2, y: 0}
+  m_AnchoredPosition: {x: 2, y: 168.00003}
   m_SizeDelta: {x: -7, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &3232829070030363034
@@ -3992,6 +3992,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: SocialMediaButtonsToggle
       objectReference: {fileID: 0}
+    - target: {fileID: 6863317400568672449, guid: 8ea7de3310219bf4bbbd18bd6e3150a1,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -4589,6 +4594,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: SocialMediaPopupsToggle
       objectReference: {fileID: 0}
+    - target: {fileID: 6863317400568672449, guid: 8ea7de3310219bf4bbbd18bd6e3150a1,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -5166,7 +5176,7 @@ PrefabInstance:
     - target: {fileID: 315424749555345685, guid: 8ea7de3310219bf4bbbd18bd6e3150a1,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -145
+      value: -120
       objectReference: {fileID: 0}
     - target: {fileID: 315424749555345685, guid: 8ea7de3310219bf4bbbd18bd6e3150a1,
         type: 3}
@@ -6324,6 +6334,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6314812432652991794, guid: 117e260d9e6a31e4cb26e42d3139dd98,
         type: 3}
+      propertyPath: m_Interactable
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6314812432652991794, guid: 117e260d9e6a31e4cb26e42d3139dd98,
+        type: 3}
       propertyPath: m_Options.m_Options.Array.size
       value: 2
       objectReference: {fileID: 0}
@@ -6351,6 +6366,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: PanelSideDropdown
+      objectReference: {fileID: 0}
+    - target: {fileID: 7290446583408787204, guid: 117e260d9e6a31e4cb26e42d3139dd98,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8065122747796991923, guid: 117e260d9e6a31e4cb26e42d3139dd98,
         type: 3}

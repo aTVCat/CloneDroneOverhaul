@@ -12,7 +12,7 @@ namespace OverhaulMod.Patches
         [HarmonyPatch(nameof(AudienceManager.InitializeAudienceDataForLevel))]
         private static void InitializeAudienceDataForLevel_Postfix()
         {
-            if (!ModCore.IsActive()) return;
+            if (!ModCore.IsActive() || !ModFeatures.IsEnabled(ModFeatures.FeatureType.ReworkedArena)) return;
 
             ArenaAudienceManager arenaAudienceManager = ArenaAudienceManager.Instance;
             if (arenaAudienceManager && ArenaRemodelManager.EnableRemodel)

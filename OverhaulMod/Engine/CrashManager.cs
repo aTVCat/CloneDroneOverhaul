@@ -25,7 +25,7 @@
                     TitleScreenCustomizationManager titleScreenCustomizationManager = TitleScreenCustomizationManager.Instance;
                     if (titleScreenCustomizationManager)
                     {
-                        titleScreenCustomizationManager.overrideLevelDescription = null;
+                        titleScreenCustomizationManager.OverrideLevelDescription = null;
                         titleScreenCustomizationManager.SaveCustomizationInfo();
                     }
                 }

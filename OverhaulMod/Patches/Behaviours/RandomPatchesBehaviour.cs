@@ -52,6 +52,14 @@ namespace OverhaulMod.Patches.Behaviours
                     image.enabled = false;
                 }
 
+                // move social buttons up
+                float shiftAmount = 38f;
+                Transform socialButtonsInnerContainerTransform = GameUIRoot.Instance.TitleScreenUI.SocialButtonPanel.InnerContainer.transform;
+                for (int i = 1; i < socialButtonsInnerContainerTransform.childCount; i++)
+                {
+                    ((RectTransform)socialButtonsInnerContainerTransform.GetChild(i)).anchoredPosition += Vector2.up * shiftAmount;
+                }
+
                 // remove background from control mapper
                 GameObject controlMapperObject = gameUIRoot.ControlMapper?.gameObject;
                 if (controlMapperObject)

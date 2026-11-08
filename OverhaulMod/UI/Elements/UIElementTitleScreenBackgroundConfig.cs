@@ -73,7 +73,7 @@ namespace OverhaulMod.UI
                     LevelTags = new List<LevelTags>() { },
                     LevelJSONPath = levelPath,
                     LevelEditorDifficultyIndex = 0,
-                    LevelID = TitleScreenCustomizationManager.CUSTO_LEVEL_ID
+                    LevelID = TitleScreenCustomizationManager.CUSTOM_LEVEL_ID
                 };
                 LevelManager.Instance._currentWorkshopLevelDifficultyIndex = 0;
                 onSetLevel(levelDescription);
@@ -104,7 +104,7 @@ namespace OverhaulMod.UI
                 _label.text = $"{steamWorkshopItem.Title} (by {steamWorkshopItem.CreatorName})";
                 return;
             }
-            if (info.Level.LevelID == TitleScreenCustomizationManager.CUSTO_LEVEL_ID)
+            if (info.Level.LevelID == TitleScreenCustomizationManager.CUSTOM_LEVEL_ID)
             {
                 _label.text = Path.GetFileNameWithoutExtension(info.Level.LevelJSONPath);
                 return;

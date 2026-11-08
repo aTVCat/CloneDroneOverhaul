@@ -1,10 +1,11 @@
 ﻿using OverhaulMod.Engine;
 using OverhaulMod.Utils;
+using PicaVoxel;
 using UnityEngine;
 
 namespace OverhaulMod.Patches.Behaviours
 {
-    internal class VoxelColorsPatchBehaviour : GamePatchBehaviour
+    internal class VoxelPatchBehaviour : GamePatchBehaviour
     {
         [ModSetting(ModSettingIDs.CHANGE_HIT_COLORS, true)]
         public static bool ChangeColors;
@@ -20,6 +21,9 @@ namespace OverhaulMod.Patches.Behaviours
             AttackManager attackManager = AttackManager.Instance;
             _originalHitColor = attackManager.HitColor;
             _originalBodyOnFireColor = attackManager.BodyOnFireColor;
+
+            VoxelParticleSystem.Instance.System.GetComponent<ParticleSystemRenderer>().alignment = ParticleSystemRenderSpace.Velocity;
+            VoxelParticleSystem.Instance.System.GetComponent<ParticleSystem>().startLifetime = 5f;
 
             Refresh();
         }

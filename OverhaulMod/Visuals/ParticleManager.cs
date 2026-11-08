@@ -55,7 +55,7 @@ namespace OverhaulMod.Visuals
             pooledPrefabManager.MakePooledPrefab(SPARKS_PARTICLES_ID, ModAssetBundles.VFX, "VFX_Sparks", 0.3f, 20);
             pooledPrefabManager.MakePooledPrefab(SWORD_BLOCK_PARTICLES_ID, ModAssetBundles.VFX, "VFX_SwordBlock", 0.45f, 20);
             pooledPrefabManager.MakePooledPrefab(FIRE_SWORD_BLOCK_PARTICLES_ID, ModAssetBundles.VFX, "VFX_FireSwordBlock", 0.45f, -1);
-            pooledPrefabManager.MakePooledPrefab(HAMMER_HIT_ID, ModAssetBundles.VFX, "VFX_HammerHit", 0.6f, 20);
+            pooledPrefabManager.MakePooledPrefab(HAMMER_HIT_ID, ModAssetBundles.VFX, "VFX_HammerHit", 2.1f, 20);
             pooledPrefabManager.MakePooledPrefab(RED_GRENADE_EXPLOSION, ModAssetBundles.VFX, "VFX_RedGrenadeExplosion", 1.25f, 20);
             pooledPrefabManager.MakePooledPrefab(BLUE_GRENADE_EXPLOSION, ModAssetBundles.VFX, "VFX_BlueGrenadeExplosion", 1.25f, 20);
             pooledPrefabManager.MakePooledPrefab(LOGO_EXPLOSION_PARTICLES_ID, GetCloneDroneLogoExplosionParticles(), 2.5f, 20); // todo: this no longer works. make custom particles
