@@ -70,7 +70,7 @@ namespace OverhaulMod
             {
                 if (s_versionString == null)
                 {
-                    if(VersionRevision <= 0)
+                    if (VersionRevision <= 0)
                     {
                         s_versionString = $"{VersionMajor}.{VersionMinor}.{VersionBuild}";
                     }

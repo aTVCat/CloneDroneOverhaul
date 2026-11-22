@@ -1,5 +1,4 @@
 ﻿using HarmonyLib;
-using InternalModBot;
 using ModLibrary;
 using OverhaulMod.UI;
 using OverhaulMod.Utils;

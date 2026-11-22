@@ -24,8 +24,8 @@ namespace OverhaulMod.Patches
         }
 
         [HarmonyPostfix]
-        [HarmonyPatch(nameof(MechBodyPart.createNewVoxelBeingDestroyed), new Type[] { typeof(PicaVoxelPoint), typeof(FireSpreadDefinition), typeof(float) })]
-        private static void createNewVoxelBeingDestroyed_Postfix(MechBodyPart __instance, ref VoxelBeingDestroyed __result, PicaVoxelPoint picaVoxelPoint, FireSpreadDefinition fireSpreadDefinition, float probabilityOfFireSpread)
+        [HarmonyPatch(nameof(MechBodyPart.createNewVoxelBeingDestroyed), new Type[] { typeof(Vector3Int), typeof(FireSpreadDefinition), typeof(float) })]
+        private static void createNewVoxelBeingDestroyed_Postfix(MechBodyPart __instance, ref VoxelBeingDestroyed __result, Vector3Int picaVoxelPoint, FireSpreadDefinition fireSpreadDefinition, float probabilityOfFireSpread)
         {
             if (VoxelFadingManager.EnableFading && fireSpreadDefinition != null && !__instance.IgnoreColorBurnForGlowingVoxels)
             {
@@ -40,7 +40,7 @@ namespace OverhaulMod.Patches
 
         [HarmonyPrefix]
         [HarmonyPatch(nameof(MechBodyPart.destroyVoxelAtPositionFromCut))]
-        private static bool destroyVoxelAtPositionFromCut_Prefix(MechBodyPart __instance, PicaVoxelPoint picaVoxelPoint, Voxel? voxelAtPosition, Vector3 localPosition, Vector3 volumeWorldCenter, Vector3 impactDirectionWorld, FireSpreadDefinition fireSpreadDefinition, Frame currentFrame)
+        private static bool destroyVoxelAtPositionFromCut_Prefix(MechBodyPart __instance, Vector3Int picaVoxelPoint, Voxel? voxelAtPosition, Vector3 localPosition, Vector3 volumeWorldCenter, Vector3 impactDirectionWorld, FireSpreadDefinition fireSpreadDefinition, Frame currentFrame)
         {
             bool hasFire = fireSpreadDefinition != null;
             if (voxelAtPosition != null)
@@ -64,9 +64,9 @@ namespace OverhaulMod.Patches
                     if (VoxelFadingManager.EnableBurning)
                     {
                         VoxelFadingManager fadingVoxelManager = ModCache.FadingVoxelManager;
-                        foreach (PicaVoxelPoint p in fadingVoxelManager.GetSurroundingPoints(picaVoxelPoint))
+                        foreach (PicaVoxelPoint p in fadingVoxelManager.GetSurroundingPoints(new PicaVoxelPoint(picaVoxelPoint)))
                         {
-                            if (__instance.IsVoxelWaitingToBeDestroyed(p))
+                            if (__instance.IsVoxelWaitingToBeDestroyed(new Vector3Int(p.X, p.Y, p.Z)))
                                 continue;
 
                             Voxel? vox = currentFrame.GetVoxelAtArrayPosition(p);

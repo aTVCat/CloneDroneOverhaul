@@ -18,7 +18,7 @@ namespace OverhaulMod.Visuals
         [ModSetting(ModSettingsConstants.SSAO_INTENSITY, 0.8f)]
         public static float SSAOIntensity;
 
-        [ModSetting(ModSettingsConstants.ENABLE_CHROMATIC_ABERRATION, true)]
+        [ModSetting(ModSettingsConstants.ENABLE_CHROMATIC_ABERRATION, false)]
         public static bool EnableChromaticAberration;
 
         [ModSetting(ModSettingsConstants.CHROMATIC_ABERRATION_INTENSITY, 0.12f)]
@@ -39,7 +39,7 @@ namespace OverhaulMod.Visuals
         [ModSetting(ModSettingsConstants.BLOOM_MODE, (int)BloomMode.Fancy)]
         public static int Bloom;
 
-        [ModSetting(ModSettingsConstants.ENABLE_VIGNETTE, true)]
+        [ModSetting(ModSettingsConstants.ENABLE_VIGNETTE, false)]
         public static bool EnableVignette;
 
         [ModSetting(ModSettingsConstants.ENABLE_DITHERING, false)]

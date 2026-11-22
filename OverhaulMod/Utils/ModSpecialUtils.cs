@@ -1,7 +1,6 @@
 ﻿using InternalModBot;
 using System;
 using System.Runtime.InteropServices;
-using UnityEngine;
 
 namespace OverhaulMod.Utils
 {
@@ -143,7 +142,7 @@ namespace OverhaulMod.Utils
             {
                 InnerModSpecialUtils.SetTitleBarText(text);
             }
-            catch(Exception exc)
+            catch (Exception exc)
             {
                 ModDebug.LogWarning(exc.ToString(), true);
             }

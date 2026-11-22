@@ -53,7 +53,7 @@ namespace OverhaulMod.Content.Personalization
         public int GetMaxUniqueIndex()
         {
             int result = 0;
-            foreach (var instantiatedObject in _instantiatedObjects)
+            foreach (PersonalizationEditorObjectBehaviour instantiatedObject in _instantiatedObjects)
                 result = Mathf.Max(result, instantiatedObject.UniqueIndex);
 
             return result;

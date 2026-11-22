@@ -94,16 +94,6 @@ namespace OverhaulMod.UI
             base.OnDisable();
             stopPreviewing();
             ModSettingsDataManager.Instance.Save();
-
-            TitleScreenUI titleScreen = ModCache.TitleScreenUI;
-            if (TitleScreenCustomizationManager.ShowSocialMediaButtons)
-            {
-                titleScreen.SocialButtonPanel.ShowAndSelectFirstButton();
-            }
-            else
-            {
-                titleScreen.SocialButtonPanel.HideOnStartup();
-            }
         }
 
         public override void Update()

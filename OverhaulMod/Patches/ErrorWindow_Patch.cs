@@ -1,6 +1,7 @@
 ﻿using HarmonyLib;
 using OverhaulMod.Utils;
 using System;
+using System.Reflection;
 using UnityEngine;
 
 namespace OverhaulMod.Patches
@@ -8,9 +9,9 @@ namespace OverhaulMod.Patches
     [HarmonyPatch(typeof(ErrorWindow))]
     internal static class ErrorWindow_Patch
     {
-        [HarmonyPrefix]
+        [HarmonyPostfix]
         [HarmonyPatch(nameof(ErrorWindow.Show))]
-        private static bool Show_Prefix(ErrorWindow __instance, string errorMessage)
+        private static void Show_Postfix(ErrorWindow __instance, string errorMessage)
         {
             PostmanManager.ErrorReportText = errorMessage;
             if (ModUIManager.Instance)
@@ -18,14 +19,10 @@ namespace OverhaulMod.Patches
                 try
                 {
                     _ = ModUIConstants.ShowCrashScreen(errorMessage);
+                    __instance.gameObject.SetActive(false);
                 }
-                catch (Exception)
-                {
-                    return true;
-                }
-                return false;
+                catch (Exception) { }
             }
-            return true;
         }
 
         [HarmonyPrefix]

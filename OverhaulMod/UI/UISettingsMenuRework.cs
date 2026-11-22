@@ -685,24 +685,11 @@ namespace OverhaulMod.UI
             _ = pageBuilder.Toggle(ModSettingsConstants.ENABLE_VOXEL_FIRE_FADING, "Better fire spreading");
             _ = pageBuilder.Toggle(ModSettingsConstants.ENABLE_VOXEL_BURNING, "Always burn voxels");
 
-            _ = pageBuilder.Header3("Chunk update delay");
-            _ = pageBuilder.Slider(0, 2, true, ModSettingsManager.GetIntValue(ModSettingsConstants.CHUNK_UPDATE_DELAY), delegate (float value)
-            {
-                ModSettingsManager.SetIntValue(ModSettingsConstants.CHUNK_UPDATE_DELAY, Mathf.RoundToInt(value), true);
-            }, true, (float val) =>
-            {
-                ChunkUpdateDelay value = (ChunkUpdateDelay)Mathf.RoundToInt(val);
-                return LocalizationManager.Instance.GetTranslatedString($"chunkupdatedelay_{value.ToString().ToLower()}");
-            });
-            _ = pageBuilder.Header4("chunkupdatedelay_desc");
-
             _ = pageBuilder.Header1("Robots");
             _ = pageBuilder.Toggle(ModSettingsConstants.ENABLE_WEAPON_BAG, "Weapons on back");
             _ = pageBuilder.Toggle(ModSettingsConstants.ENABLE_ARROW_REWORK, "New arrow model");
 
             _ = pageBuilder.Header1("Environment");
-            _ = pageBuilder.Toggle(ModSettingsConstants.ENABLE_ARENA_REMODEL, "Arena remodel");
-            _ = pageBuilder.Header4("arena_rework");
             _ = pageBuilder.Toggle(ModSettingsConstants.ENABLE_LIGHTING_TRANSITION, "Lighting transitions");
             _ = pageBuilder.Header4("The lighting changes smoothly as level switches");
             _ = pageBuilder.Toggle(ModSettingsConstants.ENABLE_FLOATING_DUST, "Floating dust");

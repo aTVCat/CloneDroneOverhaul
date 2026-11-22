@@ -1,4 +1,5 @@
-﻿using OverhaulMod.Combat;
+﻿using ModLibrary;
+using OverhaulMod.Combat;
 using OverhaulMod.Content.Personalization;
 using OverhaulMod.Engine;
 using OverhaulMod.Patches.Behaviours;
@@ -10,7 +11,6 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using UnityEngine.XR;
-using ModLibrary;
 
 namespace OverhaulMod
 {

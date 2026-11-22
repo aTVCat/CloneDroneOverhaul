@@ -23,7 +23,6 @@ namespace OverhaulMod.Patches.Behaviours
                 typeof(ChallengeManagerPatchBehaviour),
                 typeof(CustomizationButtonPatchBehaviour),
                 typeof(CloneDroneLogoParticlesBehaviour),
-                typeof(ChunkUpdateDelayPatchBehaviour),
             });
         }
 

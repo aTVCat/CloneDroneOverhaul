@@ -89,7 +89,7 @@ namespace OverhaulMod.Content.Personalization
                 return;
             }
 
-            if(item.Category == PersonalizationCategory.Accessories)
+            if (item.Category == PersonalizationCategory.Accessories)
             {
                 PersonalizationEditorScreenshotCameraAngle angle1 = _anglesInfo.GetAngle("Sword");
                 angle1.ApplyToTransform(_camerasObject.transform);

@@ -126,7 +126,7 @@ namespace OverhaulMod.UI
 
         public void RefreshStatus()
         {
-            if(_category == PersonalizationCategory.None)
+            if (_category == PersonalizationCategory.None)
             {
                 SetStatusText("You have not chosen the category.", Color.red);
                 _doneButton.interactable = false;

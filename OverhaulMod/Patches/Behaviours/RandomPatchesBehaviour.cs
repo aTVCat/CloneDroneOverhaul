@@ -30,6 +30,18 @@ namespace OverhaulMod.Patches.Behaviours
                     }
                 }*/
 
+                // move social buttons up
+                Transform socialButtonsInnerContainerTransform = GameUIRoot.Instance.TitleScreenUI.SocialButtonPanel.InnerContainer.transform;
+                for (int i = 1; i < socialButtonsInnerContainerTransform.childCount; i++)
+                {
+                    RectTransform rt = (RectTransform)socialButtonsInnerContainerTransform.GetChild(i);
+                    float yPosition = rt.anchoredPosition.y;
+                    if (i == 1) yPosition = 55f;
+                    else if (i == 2) yPosition = 220f;
+
+                    rt.anchoredPosition = new Vector2(rt.anchoredPosition.x, yPosition);
+                }
+
                 // remove background from emote selection screen
                 GameObject emoteSelectionUIObject = gameUIRoot.EmoteSelectionUI?.gameObject;
                 if (emoteSelectionUIObject)

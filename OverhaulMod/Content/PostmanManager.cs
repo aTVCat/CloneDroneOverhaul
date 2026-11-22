@@ -214,7 +214,7 @@ namespace OverhaulMod
             {
                 fullCategoryDetailString = $"- **Body part:** {personalizationItem.BodyPartName}";
             }
-                
+
             bool update = personalizationItem.IsVerified;
 
             int color = int.Parse(update ? "ffc526" : "32a852", System.Globalization.NumberStyles.HexNumber);

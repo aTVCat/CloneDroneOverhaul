@@ -1,5 +1,4 @@
-﻿using InternalModBot;
-using ModBotWebsiteAPI;
+﻿using ModBotWebsiteAPI;
 using OverhaulMod.Engine;
 using OverhaulMod.Utils;
 using UnityEngine;

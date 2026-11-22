@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using UnityEngine;
 
 namespace OverhaulMod.Content.Personalization
 {
@@ -155,7 +154,7 @@ namespace OverhaulMod.Content.Personalization
             if (updateMetaDataFile)
                 ModJsonUtils.WriteStream(metaDataFilePath, personalizationItemMetaData);
 
-            if(personalizationItemInfo != null)
+            if (personalizationItemInfo != null)
             {
                 if (personalizationItemInfo.Category == PersonalizationCategory.Accessories)
                 {

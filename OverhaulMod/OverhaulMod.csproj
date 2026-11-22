@@ -374,7 +374,6 @@
     <Compile Include="Patches\AudienceManager_Patch.cs" />
     <Compile Include="Patches\AudioManager_Patch.cs" />
     <Compile Include="Patches\BaseBodyPart_Patch.cs" />
-    <Compile Include="Patches\Behaviours\ChunkUpdateDelayPatchBehaviour.cs" />
     <Compile Include="Patches\Behaviours\CustomizationButtonPatchBehaviour.cs" />
     <Compile Include="Patches\Behaviours\CloneDroneLogoParticlesBehaviour.cs" />
     <Compile Include="Patches\Behaviours\EnergyBarPatchBehaviour.cs" />
@@ -432,7 +431,6 @@
     <Compile Include="Patches\SingleplayerServerStarter_Patch.cs" />
     <Compile Include="Patches\SkyBoxManager_Patch.cs" />
     <Compile Include="Patches\SubtitleTextField_Patch.cs" />
-    <Compile Include="Patches\SocialButtonPanel_Patch.cs" />
     <Compile Include="Patches\TitleScreenUI_Patch.cs" />
     <Compile Include="Patches\UpgradeDescription_Patch.cs" />
     <Compile Include="Patches\UpgradeManager_Patch.cs" />

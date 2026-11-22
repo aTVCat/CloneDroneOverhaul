@@ -1,4 +1,4 @@
-﻿using PicaVoxel;
+﻿using UnityEngine;
 
 namespace OverhaulMod.Engine
 {
@@ -8,6 +8,6 @@ namespace OverhaulMod.Engine
 
         public float TimeToDestroy;
 
-        public PicaVoxelPoint Point;
+        public Vector3Int Point;
     }
 }
